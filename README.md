@@ -28,13 +28,19 @@ Built on the ComfyUI **V3 API** (`comfy_api.latest`). Category:
 ---
 
 ## Showcase
-
-<!-- Add screenshots / example generations here.
-     Suggested: the node graph (Archetype → Identity Forge → CLIP Text Encode),
-     and a grid of images produced from the same workflow at different seeds.
-     Markdown: ![caption](images/your-screenshot.png) -->
-
-_Screenshots and example generations coming soon._
+Main node - many more options are available than shown:
+<img width="1563" height="1515" alt="Screenshot 2026-06-18 153436" src="https://github.com/user-attachments/assets/01be6441-457a-4ea1-b88d-e93b40623756" />
+Example archetypes:
+<img width="999" height="1287" alt="image" src="https://github.com/user-attachments/assets/96da503c-eea8-489a-82c8-a48f34888ba5" />
+Sample outputs with embedded test workflow:
+<img width="1312" height="1984" alt="zit_identityforge_00205_" src="https://github.com/user-attachments/assets/26f0ec17-35dd-40e1-a036-21a7de81a0cd" />
+<img width="1312" height="1984" alt="zit_identityforge_00207_" src="https://github.com/user-attachments/assets/ebb55a64-6694-4285-bb92-13cba5745709" />
+<img width="1312" height="1984" alt="zit_identityforge_00200_" src="https://github.com/user-attachments/assets/d7107faf-498d-41e2-8b7c-dce5c6c0f503" />
+<img width="1312" height="1984" alt="zit_identityforge_00202_" src="https://github.com/user-attachments/assets/5794b2d8-a0ce-41f4-b02f-731cb3f85992" />
+<img width="1312" height="1984" alt="zit_identityforge_00189_" src="https://github.com/user-attachments/assets/16805e63-77b1-4334-9f25-5f9f30877929" />
+<img width="1312" height="1984" alt="zit_identityforge_00187_" src="https://github.com/user-attachments/assets/7ae12729-d7f6-4ea8-aea3-e7b769c87e59" />
+<img width="1312" height="1984" alt="zit_identityforge_00251_" src="https://github.com/user-attachments/assets/1ab4f93a-ce8b-43c0-a587-308db8475344" />
+<img width="1312" height="1984" alt="zit_identityforge_00263_" src="https://github.com/user-attachments/assets/4db343ea-1c57-43a8-b5e8-d530416cb780" />
 
 ---
 
@@ -178,8 +184,6 @@ Seed `42`, Female, `hair_color` = auburn:
   don't apply (colours still vary by seed).
 - Prose summarizes: a few fine fields (hair volume, eye size, teeth) live in the
   JSON but are left out of the prose to avoid clutter.
-- **Not included by design:** no negative prompt, no preset save/load, no LLM, no
-  image generation, no NSFW.
 
 ## Development
 
