@@ -1,0 +1,22 @@
+{
+  "_comment": "Copy this file to 'user_options.json' (same folder) to add your own choices. They survive updates. Reload the node or restart ComfyUI to apply.",
+  "_comment_fields": "'fields' extends any dropdown EXCEPT gender, hair_color_scope, location_setting, outfit_style and outfit_description.",
+  "fields": {
+    "ethnicity": ["Atlantean", "Martian colonist"],
+    "hair_color": ["galaxy swirl", "holographic"],
+    "eye_color": ["glowing gold"],
+    "location": ["a floating sky temple", "a derelict space station"],
+    "expression": ["smug", "awestruck"]
+  },
+  "_comment_outfits": "'outfits' adds whole new outfit_style choices WITH their garment text (the proper way to extend outfit_style). Buckets: unisex (always eligible) plus female/male (picked by the wardrobe control). Any subset is fine; a style with no usable text is skipped.",
+  "outfits": {
+    "spacesuit": {
+      "unisex": ["a sleek white EVA suit with a mirrored gold visor and magnetic boots"],
+      "female": ["a form-fitting flight suit with a utility harness and grav boots"],
+      "male": ["a bulky pressurized exosuit with chest controls and a domed helmet"]
+    },
+    "battle armor": {
+      "unisex": ["weathered plate armor over chainmail with a tattered cloak and steel gauntlets"]
+    }
+  }
+}

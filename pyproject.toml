@@ -1,0 +1,21 @@
+[project]
+name = "comfyui-identity-forge"
+version = "0.5.0"
+description = "A 70+ field character randomizer node pack for ComfyUI with a constraint engine, themed archetype presets with varying costumes, and dual prose/JSON output."
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["comfyui", "character", "prompt", "randomizer", "constraint"]
+dependencies = []
+
+[[project.authors]]
+name = "EnragedAntelope"
+
+[project.urls]
+Repository = "https://github.com/EnragedAntelope/comfyui-identity-forge"
+"Bug Tracker" = "https://github.com/EnragedAntelope/comfyui-identity-forge/issues"
+
+[tool.comfy]
+PublisherId = "EnragedAntelope"
+DisplayName = "Identity Forge"
+requires-comfyui = ">=0.25.0"
