@@ -23,8 +23,11 @@ from nodes.identity_forge import (
     _CONTROL_FIELDS,
     _EXTRA_ABSENCE,
 )
+from nodes.identity_forge import _COSPLAY_LABEL_KEY
 from nodes.identity_forge_archetype import build_archetype_json
+from nodes.identity_forge_cosplayer import build_cosplayer_json
 from data.templates import ARCHETYPES
+from data.cosplayers import COSPLAYERS, get_cosplayer_names
 from tests.validate_data import validate
 
 
@@ -294,6 +297,102 @@ class ArchetypeTests(unittest.TestCase):
             self.assertEqual(set(template) - valid, set(), f"{name}")
 
 
+class CosplayerTests(unittest.TestCase):
+    def _locked_and_label(self, character, seed=0, look_level="Costume only"):
+        flat = _parse_archetype_json(build_cosplayer_json(character, seed, look_level))
+        label = flat.pop(_COSPLAY_LABEL_KEY, None)
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        return locked, label, flat
+
+    def test_none_returns_empty(self):
+        self.assertEqual(build_cosplayer_json("None"), "{}")
+
+    def test_unknown_returns_empty(self):
+        self.assertEqual(build_cosplayer_json("Definitely Not A Character"), "{}")
+
+    def test_deterministic_for_seed(self):
+        self.assertEqual(
+            build_cosplayer_json("2B", 5, "Costume only"),
+            build_cosplayer_json("2B", 5, "Costume only"),
+        )
+
+    def test_costume_only_omits_physique(self):
+        doc = json.loads(build_cosplayer_json("2B", 0, "Costume only"))
+        for dropped in ("Demographics", "Body", "Face"):
+            self.assertNotIn(dropped, doc)
+        self.assertIn("Clothing", doc)  # the costume is kept
+        self.assertIn("Hair", doc)      # signature look is kept
+
+    def test_full_character_includes_physique(self):
+        doc = json.loads(build_cosplayer_json("2B", 0, "Full character"))
+        self.assertIn("Body", doc)
+        self.assertEqual(doc["Body"]["skin_tone"], "porcelain")
+
+    def test_costume_drives_outfit_description(self):
+        doc = json.loads(build_cosplayer_json("2B", 0, "Costume only"))
+        self.assertEqual(
+            doc["Clothing"]["outfit_description"], COSPLAYERS["2B"]["costume"]
+        )
+
+    def test_meta_records_character_and_franchise(self):
+        meta = json.loads(build_cosplayer_json("2B", 0))["_meta"]
+        self.assertEqual(meta["cosplay_of"], "2B")
+        self.assertEqual(meta["franchise"], "NieR: Automata")
+        self.assertEqual(meta["look_level"], "Costume only")
+
+    def test_random_any_is_seeded_and_valid(self):
+        a = json.loads(build_cosplayer_json("Random — any", 5))["_meta"]["cosplay_of"]
+        b = json.loads(build_cosplayer_json("Random — any", 5))["_meta"]["cosplay_of"]
+        self.assertEqual(a, b)
+        self.assertIn(a, COSPLAYERS)
+
+    def test_random_female_scopes_to_female_sources(self):
+        name = json.loads(build_cosplayer_json("Random — female", 3))["_meta"]["cosplay_of"]
+        self.assertEqual(COSPLAYERS[name]["gender"], "Female")
+
+    def test_random_empty_pool_returns_empty(self):
+        # No male-source characters in the starter set yet — must degrade gracefully.
+        self.assertEqual(build_cosplayer_json("Random — male", 0), "{}")
+
+    def test_end_to_end_prose_has_cosplay_prefix(self):
+        locked, label, _ = self._locked_and_label("2B")
+        prose, js = generate_character(42, "Female", locked, cosplay_label=label)
+        self.assertTrue(prose.startswith("Cosplaying as 2B (NieR: Automata): "))
+        self.assertEqual(json.loads(js)["_meta"]["cosplay_of"], "2B (NieR: Automata)")
+
+    def test_costume_only_randomizes_the_person(self):
+        # Same character + different IdentityForge seeds = different people.
+        locked, label, _ = self._locked_and_label("Ada Wong")
+        a, _ = generate_character(10, "Female", locked, cosplay_label=label)
+        b, _ = generate_character(20, "Female", locked, cosplay_label=label)
+        self.assertNotEqual(a, b)
+
+    def test_crossplay_male_wears_female_costume_without_contradiction(self):
+        # A man cosplaying 2B: the costume + unisex signature survive the gender
+        # gate, the prose uses "He", and no female-only trait leaks in.
+        locked, label, _ = self._locked_and_label("2B")
+        for seed in range(20):
+            prose, js = generate_character(seed, "Male", locked, cosplay_label=label)
+            doc = json.loads(js)
+            self.assertEqual(doc["_meta"]["gender"], "Male")
+            self.assertIn("He ", prose + " ")
+            self.assertEqual(
+                doc["Clothing"]["outfit_description"], COSPLAYERS["2B"]["costume"]
+            )
+            self.assertEqual(doc["Hair"]["hair_color"], "platinum blonde")
+
+    def test_all_cosplayer_fields_valid(self):
+        valid = set(FIELD_DEFINITIONS)
+        for name, entry in COSPLAYERS.items():
+            for section in ("signature", "physique"):
+                self.assertEqual(
+                    set(entry.get(section, {})) - valid, set(), f"{name}.{section}"
+                )
+
+    def test_starter_set_size(self):
+        self.assertGreaterEqual(len(get_cosplayer_names()), 50)
+
+
 class IntegrationTests(unittest.TestCase):
     def test_archetype_seeds_identity_forge(self):
         flat = _parse_archetype_json(build_archetype_json("Dark Sorceress", 0, "Full preset"))
@@ -474,6 +573,82 @@ class UserOptionsTests(unittest.TestCase):
         self.assertNotIn("spacesuit", fd["outfit_style"]["female_options"])
 
 
+class UserPresetExtensionTests(unittest.TestCase):
+    """user_options.json 'archetypes' / 'cosplayers' sections (survive git pull)."""
+
+    def _write(self, payload):
+        import json as _json, tempfile
+        from pathlib import Path
+        d = tempfile.mkdtemp()
+        f = Path(d) / "user_options.json"
+        f.write_text(_json.dumps(payload))
+        return f
+
+    def test_archetypes_merge_and_override(self):
+        from data.user_options import apply_user_archetypes
+        store = {"Existing Hero": {"gender": "Male", "hair_color": "jet black"}}
+        f = self._write({"archetypes": {
+            "Sky Pirate": {"gender": "Female", "hair_color": "copper", "bad": 5},  # non-str dropped
+            "Existing Hero": {"gender": "Female"},   # overrides the built-in
+            "Broken": "not a dict",                  # skipped
+            "Empty": {},                             # skipped
+        }})
+        added = apply_user_archetypes(store, path=f)
+        self.assertEqual(added, 2)
+        self.assertEqual(store["Sky Pirate"], {"gender": "Female", "hair_color": "copper"})
+        self.assertEqual(store["Existing Hero"], {"gender": "Female"})  # overridden
+        self.assertNotIn("Broken", store)
+        self.assertNotIn("Empty", store)
+
+    def test_cosplayers_merge_requires_costume_and_defaults(self):
+        from data.user_options import apply_user_cosplayers
+        store = {}
+        f = self._write({"cosplayers": {
+            "My OC": {"costume": "a teal bodysuit with a star emblem",
+                      "signature": {"hair_color": "electric blue", "bad": 1}},
+            "No Costume": {"franchise": "X", "signature": {"hair_color": "white"}},  # skipped
+            "Bad Gender": {"costume": "a plain robe", "gender": "Other"},  # gender -> Female
+        }})
+        added = apply_user_cosplayers(store, path=f)
+        self.assertEqual(added, 2)
+        oc = store["My OC"]
+        self.assertEqual(oc["gender"], "Female")        # default
+        self.assertEqual(oc["franchise"], "")           # default
+        self.assertEqual(oc["signature"], {"hair_color": "electric blue"})  # non-str dropped
+        self.assertEqual(oc["physique"], {})            # default
+        self.assertNotIn("No Costume", store)
+        self.assertEqual(store["Bad Gender"]["gender"], "Female")
+
+    def test_cosplayer_male_entry_populates_random_male_scope(self):
+        from data.user_options import apply_user_cosplayers
+        from data.cosplayers import get_cosplayer_names_by_gender
+        store = {}
+        f = self._write({"cosplayers": {
+            "Geralt": {"gender": "Male", "costume": "studded leather armor with twin scabbards"},
+        }})
+        apply_user_cosplayers(store, path=f)
+        # The accessor scopes by the stored gender tag.
+        males = sorted(n for n, e in store.items() if e.get("gender") == "Male")
+        self.assertEqual(males, ["Geralt"])
+
+    def test_missing_or_malformed_file_is_safe(self):
+        from pathlib import Path
+        from data.user_options import apply_user_archetypes, apply_user_cosplayers
+        self.assertEqual(apply_user_archetypes({}, path=Path("/no/such.json")), 0)
+        self.assertEqual(apply_user_cosplayers({}, path=Path("/no/such.json")), 0)
+        f = self._write_raw("{ not valid json")
+        self.assertEqual(apply_user_archetypes({}, path=f), 0)
+        self.assertEqual(apply_user_cosplayers({}, path=f), 0)
+
+    def _write_raw(self, text):
+        import tempfile
+        from pathlib import Path
+        d = tempfile.mkdtemp()
+        f = Path(d) / "user_options.json"
+        f.write_text(text)
+        return f
+
+
 class WardrobeAndCostumeTests(unittest.TestCase):
     _FEMININE = ("gown", "sundress", "pencil skirt", "ball gown", "cocktail dress",
                  "maxi dress", "swing dress", "shirt dress", "sweater dress")
@@ -497,6 +672,22 @@ class WardrobeAndCostumeTests(unittest.TestCase):
         _, js = generate_character(1, "Female", {"outfit_description": costume,
                                                  "outfit_style": "smart casual"})
         self.assertEqual(json.loads(js)["Clothing"]["outfit_description"], costume)
+
+    def test_costume_override_suppresses_redundant_garment_fields(self):
+        # A supplied costume is the whole outfit; the auto-randomized garment
+        # fields must not appear alongside it (they only add JSON noise).
+        costume = "a gothic black battle dress and thigh-high heeled boots"
+        for seed in range(20):
+            _, js = generate_character(seed, "Female", {"outfit_description": costume})
+            clothing = json.loads(js)["Clothing"]
+            self.assertEqual(clothing["outfit_description"], costume)
+            for field in ("outfit_style", "footwear", "clothing_color", "clothing_pattern"):
+                self.assertNotIn(field, clothing, f"seed {seed}: {field} leaked")
+
+    def test_generated_outfit_keeps_garment_fields(self):
+        # Without a costume, the normal garment fields are still emitted.
+        _, js = generate_character(1, "Female", {})
+        self.assertIn("footwear", json.loads(js)["Clothing"])
 
     def test_wardrobe_recorded_in_meta(self):
         _, js = generate_character(1, "Female", {}, wardrobe="Any")

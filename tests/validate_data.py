@@ -24,6 +24,7 @@ from data.fields import (
 )
 from data.constraints import CONSTRAINT_RULES
 from data.templates import ARCHETYPES, COSTUME_SLOTS
+from data.cosplayers import COSPLAYERS
 
 _EXPECTED_GROUPS = {
     "Demographics", "Body", "Face", "Hair", "Makeup",
@@ -139,6 +140,29 @@ def validate() -> list[str]:
             if slot not in COSTUME_SLOTS:
                 errors.append(f"archetype '{name}': costume references unknown slot {{{slot}}}")
 
+    # --- cosplayers: costume/signature/physique validity -------------
+    if len(COSPLAYERS) < 50:
+        errors.append(f"COSPLAYERS has {len(COSPLAYERS)}; need >= 50")
+    for name, entry in COSPLAYERS.items():
+        for key in ("franchise", "gender", "costume"):
+            if not entry.get(key):
+                errors.append(f"cosplayer '{name}': missing '{key}'")
+        if entry.get("gender") not in ("Female", "Male"):
+            errors.append(f"cosplayer '{name}': bad gender {entry.get('gender')!r}")
+        # signature is applied in both modes; physique only in Full character.
+        # Every key must be a real field and every value a valid option for it.
+        for section in ("signature", "physique"):
+            for field, value in entry.get(section, {}).items():
+                if field in _FREEFORM_FIELDS or field in ("gender", "hair_color_scope"):
+                    errors.append(f"cosplayer '{name}': {section}.{field} is not allowed here")
+                elif field not in FIELD_DEFINITIONS:
+                    errors.append(f"cosplayer '{name}': {section} unknown field {field!r}")
+                elif field == "age":
+                    if value not in _options("age"):
+                        errors.append(f"cosplayer '{name}': age={value!r} is not a valid option")
+                elif value not in _options(field):
+                    errors.append(f"cosplayer '{name}': {section}.{field}={value!r} is not a valid option")
+
     # --- skin-tone affinity maps -------------------------------------
     skin_options = _options("skin_tone")
     for band, tones in SKIN_TONE_BANDS.items():
@@ -166,6 +190,7 @@ def main() -> int:
     print(f"  Fields:      {len(FIELD_DEFINITIONS)}")
     print(f"  Constraints: {len(CONSTRAINT_RULES)}")
     print(f"  Archetypes:  {len(ARCHETYPES)}")
+    print(f"  Cosplayers:  {len(COSPLAYERS)}")
     print(f"  Outfit sets: {len(OUTFIT_DESCRIPTIONS)}")
     return 0
 

@@ -56,6 +56,10 @@ except ImportError:  # pragma: no cover — exercised only outside ComfyUI
 #: Fields that never get a user-facing widget (engine-generated).
 _HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description"})
 
+#: Reserved key (not a real field) carrying a cosplay character label from a
+#: connected Cosplayer node's ``_meta`` through the parsed-archetype dict.
+_COSPLAY_LABEL_KEY = "__cosplay_label__"
+
 #: Control fields: read from their toggle, never randomized, never described.
 _CONTROL_FIELDS: frozenset[str] = frozenset(
     name for name, meta in FIELD_DEFINITIONS.items() if meta.get("control")
@@ -394,8 +398,13 @@ def _resolve_outfit_description(
 # Output formatting
 # ===========================================================================
 
-def _format_prose(resolved: dict[str, str], gender: str) -> str:
-    """Build a natural-language description from resolved field values."""
+def _format_prose(
+    resolved: dict[str, str], gender: str, cosplay_label: str | None = None
+) -> str:
+    """Build a natural-language description from resolved field values.
+
+    When ``cosplay_label`` is set, the prose is prefixed ``Cosplaying as <label>:``.
+    """
     r = resolved
     subj = _SUBJ.get(gender, "They")
     poss = _POSS.get(gender, "Their")
@@ -588,7 +597,12 @@ def _format_prose(resolved: dict[str, str], gender: str) -> str:
         sentences.append(_join(scene) if len(scene) > 1 else scene[0])
 
     text = ". ".join(s.strip() for s in sentences if s.strip())
-    return (text + ".") if text else ""
+    text = (text + ".") if text else ""
+    if cosplay_label and text:
+        return f"Cosplaying as {cosplay_label}: {text[0].lower() + text[1:]}"
+    if cosplay_label:
+        return f"Cosplaying as {cosplay_label}."
+    return text
 
 
 def group_fields(field_values: dict[str, str]) -> "OrderedDict[str, dict[str, str]]":
@@ -610,19 +624,23 @@ def group_fields(field_values: dict[str, str]) -> "OrderedDict[str, dict[str, st
 
 
 def _format_json(
-    resolved: dict[str, str], gender: str, hair_color_scope: str, wardrobe: str
+    resolved: dict[str, str], gender: str, hair_color_scope: str, wardrobe: str,
+    cosplay_label: str | None = None,
 ) -> str:
     """Build a JSON document: ``_meta`` plus fields nested by group.
 
     The seed is intentionally excluded — it is run-control noise, not part of
     the character description.
     """
+    meta: "OrderedDict[str, str]" = OrderedDict()
+    if cosplay_label:
+        meta["cosplay_of"] = cosplay_label
+    meta["gender"] = gender
+    meta["hair_color_scope"] = hair_color_scope
+    meta["wardrobe"] = wardrobe
+
     document: "OrderedDict[str, Any]" = OrderedDict()
-    document["_meta"] = {
-        "gender": gender,
-        "hair_color_scope": hair_color_scope,
-        "wardrobe": wardrobe,
-    }
+    document["_meta"] = meta
     document.update(group_fields(resolved))
     return json.dumps(document, indent=2)
 
@@ -635,12 +653,16 @@ def generate_character(
     wardrobe: str = "Match gender",
     accessory_density: str = "Balanced",
     location_setting: str = "Any",
+    cosplay_label: str | None = None,
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
     ``locked`` maps field_name → chosen value for every user-locked field
     (control fields excluded). A locked ``outfit_description`` is honoured as a
     costume, overriding the generated outfit (used by costume archetypes).
+
+    ``cosplay_label`` (e.g. ``"2B (NieR: Automata)"``), when set by a connected
+    Cosplayer node, prefixes the prose and is recorded in the JSON ``_meta``.
     """
     rng = random.Random(seed)
     # "None" locks the *absent* state (optional fields only); keep it. Only
@@ -676,13 +698,22 @@ def generate_character(
     for message in warnings:
         print(message)
 
+    # A costume override (outfit_description supplied by an archetype/cosplayer)
+    # is already a complete outfit, so the separately-randomized garment fields
+    # (outfit_style, footwear, colour, pattern) would only add noise — and
+    # sometimes contradiction ("barefoot" beside heeled boots) — to the JSON.
+    # Drop them when a costume is set; the prose already omits them in that case.
+    # When no costume is supplied, generate one from the random outfit_style.
     if _is_absent(resolved.get("outfit_description")):
         resolved["outfit_description"] = _resolve_outfit_description(
             resolved, gender, wardrobe, rng
         )
+    else:
+        for field in ("outfit_style", "footwear", "clothing_color", "clothing_pattern"):
+            resolved.pop(field, None)
 
-    prose = _format_prose(resolved, gender)
-    json_output = _format_json(resolved, gender, hair_color_scope, wardrobe)
+    prose = _format_prose(resolved, gender, cosplay_label)
+    json_output = _format_json(resolved, gender, hair_color_scope, wardrobe, cosplay_label)
     return prose, json_output
 
 
@@ -711,6 +742,16 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
             for control in ("gender", "hair_color_scope"):
                 if isinstance(meta.get(control), str):
                     flat[control] = meta[control]
+            # A cosplay preset names its character; surface a display label under
+            # a reserved key (not a real field, so the locked-field loops ignore
+            # it) for the prose prefix / JSON _meta.
+            cosplay_of = meta.get("cosplay_of")
+            if isinstance(cosplay_of, str) and cosplay_of:
+                franchise = meta.get("franchise")
+                flat[_COSPLAY_LABEL_KEY] = (
+                    f"{cosplay_of} ({franchise})"
+                    if isinstance(franchise, str) and franchise else cosplay_of
+                )
             continue
         if isinstance(value, dict):  # a group sub-dict
             for sub_key, sub_value in value.items():
@@ -816,9 +857,10 @@ if _COMFY_AVAILABLE:
                     default="",
                     optional=True,
                     force_input=True,
-                    tooltip="Connect an IdentityForgeArchetype here. Its fields seed the "
-                            "character; explicit non-'Random' widgets still override it. "
-                            "Leave unconnected (or use archetype 'None') for no override.",
+                    tooltip="Connect an IdentityForgeArchetype or IdentityForgeCosplayer "
+                            "here (use one or the other). Its fields seed the character; "
+                            "explicit non-'Random' widgets still override it. Leave "
+                            "unconnected (or use 'None') for no override.",
                 )
             )
 
@@ -841,6 +883,7 @@ if _COMFY_AVAILABLE:
             seed = int(kwargs.get("seed", 0))
 
             archetype = _parse_archetype_json(kwargs.get("archetype_json", ""))
+            cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
 
             # Gender: an explicit widget choice wins; "Any" defers to the archetype.
             widget_gender = kwargs.get("gender", "Any")
@@ -872,6 +915,6 @@ if _COMFY_AVAILABLE:
 
             prose, json_output = generate_character(
                 seed, gender, locked, hair_color_scope, wardrobe,
-                accessory_density, location_setting,
+                accessory_density, location_setting, cosplay_label,
             )
             return io.NodeOutput(prose, json_output)

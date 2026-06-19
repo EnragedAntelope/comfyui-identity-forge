@@ -15,6 +15,21 @@ source — so updates won't clobber them. Two sections, both optional::
           "female": ["a form-fitting flight suit with magnetic boots"],
           "male":   ["a bulky pressurized exosuit with chest controls"]
         }
+      },
+      "archetypes": {
+        "Sky Pirate": {
+          "gender": "Female", "outfit_style": "edgy alternative",
+          "outfit_description": "a {color} longcoat over a leather bodice with brass buckles",
+          "hair_color": "copper", "expression": "mischievous smile"
+        }
+      },
+      "cosplayers": {
+        "Custom Hero (My OC)": {
+          "franchise": "Original", "gender": "Female",
+          "costume": "a teal-and-silver bodysuit with a star emblem and white boots",
+          "signature": {"hair_color": "electric blue", "hair_length": "long"},
+          "physique": {"body_type": "athletic", "height": "tall"}
+        }
       }
     }
 
@@ -33,6 +48,13 @@ Reload the node / restart ComfyUI to apply. Notes:
 * Custom hair colours appear only under the ``Full spectrum`` scope.
 * For the three gender-specific fields (``bust``, ``facial_hair``,
   ``makeup_style``) custom options may not survive a live gender switch in the UI.
+* ``archetypes`` adds presets to the Archetype node (same ``{field: value}``
+  shape as the built-ins; ``outfit_description`` may use ``{slot}`` costume
+  placeholders). ``cosplayers`` adds characters to the Cosplayer node (keys:
+  ``franchise``, ``gender`` Female/Male, ``costume`` text, optional ``signature``
+  / ``physique`` ``{field: value}`` maps). A user entry whose name matches a
+  built-in overrides it. Run ``python tests/validate_data.py`` to check that your
+  field values are valid options.
 
 The file is parsed as plain JSON — no code is executed.
 """
@@ -158,4 +180,83 @@ def apply_user_options(
 
     if added:
         print(f"[IdentityForge] Loaded {added} custom option(s) from {path.name}.")
+    return added
+
+
+def _load_user_section(path: Path, section: str) -> dict[str, Any]:
+    """Return the dict ``section`` of the user JSON, or {} on any problem.
+
+    Fails closed (warns, returns {}) on a missing/malformed file so a typo can
+    never break node loading.
+    """
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (ValueError, OSError) as exc:
+        print(f"[IdentityForge] Ignoring {path.name}: {exc}")
+        return {}
+    block = data.get(section) if isinstance(data, dict) else None
+    return block if isinstance(block, dict) else {}
+
+
+def _clean_field_map(value: Any) -> dict[str, str]:
+    """Keep only ``{str: non-empty str}`` pairs from a JSON object (else {})."""
+    if not isinstance(value, dict):
+        return {}
+    return {f: v for f, v in value.items() if isinstance(f, str) and isinstance(v, str) and v}
+
+
+def apply_user_archetypes(archetypes: dict[str, dict], path: Path | None = None) -> int:
+    """Merge the ``archetypes`` section of ``user_options.json`` in place.
+
+    Each entry is a ``{field: value}`` preset (same shape as the built-ins;
+    ``outfit_description`` may carry ``{slot}`` placeholders). A user entry whose
+    name matches a built-in overrides it. Values are not strictly validated here
+    — the engine's gender gate and constraints handle stray values at runtime,
+    and ``tests/validate_data.py`` reports any invalid options. Returns count.
+    """
+    path = path or USER_OPTIONS_PATH
+    added = 0
+    for name, preset in _load_user_section(path, "archetypes").items():
+        if not isinstance(name, str) or not name:
+            continue
+        cleaned = _clean_field_map(preset)
+        if not cleaned:
+            continue
+        archetypes[name] = cleaned
+        added += 1
+    if added:
+        print(f"[IdentityForge] Loaded {added} custom archetype(s) from {path.name}.")
+    return added
+
+
+def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None) -> int:
+    """Merge the ``cosplayers`` section of ``user_options.json`` in place.
+
+    Each entry needs a ``costume`` string (the only required key); ``franchise``
+    defaults to "", ``gender`` to "Female" (used only for Random scoping), and
+    ``signature`` / ``physique`` to empty maps. A user entry whose name matches a
+    built-in overrides it. Returns the number of characters added.
+    """
+    path = path or USER_OPTIONS_PATH
+    added = 0
+    for name, entry in _load_user_section(path, "cosplayers").items():
+        if not isinstance(name, str) or not name or not isinstance(entry, dict):
+            continue
+        costume = entry.get("costume")
+        if not isinstance(costume, str) or not costume:
+            continue  # costume is what drives the look; an entry without it is useless
+        gender = entry.get("gender")
+        franchise = entry.get("franchise")
+        cosplayers[name] = {
+            "franchise": franchise if isinstance(franchise, str) else "",
+            "gender": gender if gender in ("Female", "Male") else "Female",
+            "costume": costume,
+            "signature": _clean_field_map(entry.get("signature")),
+            "physique": _clean_field_map(entry.get("physique")),
+        }
+        added += 1
+    if added:
+        print(f"[IdentityForge] Loaded {added} custom cosplayer(s) from {path.name}.")
     return added

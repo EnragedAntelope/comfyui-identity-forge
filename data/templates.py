@@ -1036,3 +1036,11 @@ def get_archetype_names() -> list[str]:
 def get_archetype_preset(name: str) -> dict[str, str]:
     """Return field preset for the named archetype."""
     return ARCHETYPES.get(name, {}).copy()
+
+
+# Merge optional user-supplied archetypes (./user_options.json, "archetypes"
+# section) so they survive ``git pull``. Done last so user entries can override
+# a built-in of the same name.
+from .user_options import apply_user_archetypes  # noqa: E402
+
+apply_user_archetypes(ARCHETYPES)

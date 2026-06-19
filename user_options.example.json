@@ -18,5 +18,27 @@
     "battle armor": {
       "unisex": ["weathered plate armor over chainmail with a tattered cloak and steel gauntlets"]
     }
+  },
+  "_comment_archetypes": "'archetypes' adds presets to the Archetype node. Same {field: value} shape as the built-ins; outfit_description may use {slot} placeholders (color, fabric, metal, gem, fur, flower, ...). A name matching a built-in overrides it. Run 'python tests/validate_data.py' to check your field values.",
+  "archetypes": {
+    "Sky Pirate": {
+      "gender": "Female",
+      "outfit_style": "edgy alternative",
+      "outfit_description": "a {color} longcoat over a leather bodice with brass buckles and tall boots",
+      "hair_color": "copper",
+      "hair_length": "long",
+      "expression": "mischievous smile",
+      "location": "an airship deck"
+    }
+  },
+  "_comment_cosplayers": "'cosplayers' adds characters to the Cosplayer node. 'costume' (worn items only, no held weapons) is required; 'franchise' and 'gender' (Female/Male, used only for Random scoping) are optional; 'signature' (applied in both modes) and 'physique' (Full character only) are {field: value} maps of valid options. Add gender:Male entries to populate 'Random - male'.",
+  "cosplayers": {
+    "Custom Hero (My OC)": {
+      "franchise": "Original",
+      "gender": "Female",
+      "costume": "a teal-and-silver bodysuit with a star emblem, white gloves, and white boots",
+      "signature": {"hair_color": "electric blue", "hair_length": "long", "eye_color": "bright green"},
+      "physique": {"body_type": "athletic", "height": "tall"}
+    }
   }
 }
