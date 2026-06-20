@@ -56,6 +56,12 @@ except ImportError:  # pragma: no cover — exercised only outside ComfyUI
 #: Fields that never get a user-facing widget (engine-generated).
 _HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description"})
 
+#: ``set_all_fields`` control values. "All to None" omits every field still on
+#: "Random" (a blank-slate baseline) so only locked fields appear; a wired
+#: character's signature look is exempt (see :func:`resolve_locked_fields`).
+_SET_ALL_OFF = "Off"
+_SET_ALL_NONE = "All to None"
+
 #: Reserved key (not a real field) carrying a cosplay character label from a
 #: connected Cosplayer node's ``_meta`` through the parsed-archetype dict.
 _COSPLAY_LABEL_KEY = "__cosplay_label__"
@@ -797,6 +803,39 @@ def generate_character(
     return prose, json_output
 
 
+def resolve_locked_fields(
+    field_values: dict[str, str],
+    archetype_locked: dict[str, str],
+    set_all: str = _SET_ALL_OFF,
+) -> dict[str, str]:
+    """Combine a wired character's locks with the per-field widget choices.
+
+    ``archetype_locked`` holds the concrete field values supplied by a connected
+    Archetype/Cosplayer node (its signature look / physique). ``field_values``
+    maps each randomizable field to its widget value (``"Random"`` / a concrete
+    value / ``"None"``).
+
+    With ``set_all == _SET_ALL_NONE`` every field left on ``"Random"`` is omitted
+    (set to ``"None"``) *unless* the wired character supplied it — so a cosplayer's
+    iconic hair/eyes survive the reset while the random-person noise is stripped.
+    Explicit widget choices (a concrete value or ``"None"``) always win, matching
+    the per-field behaviour when the reset is ``"Off"``.
+    """
+    locked = dict(archetype_locked)
+    for field_name in FIELD_DEFINITIONS:
+        if field_name in _HIDDEN_FIELDS or field_name in _CONTROL_FIELDS:
+            continue
+        value = field_values.get(field_name, "Random")
+        if (value == "Random" and set_all == _SET_ALL_NONE
+                and field_name not in archetype_locked):
+            value = "None"
+        if value == "None":
+            locked[field_name] = "None"  # explicit omit, overrides any archetype value
+        elif value != "Random":
+            locked[field_name] = value
+    return locked
+
+
 def _parse_archetype_json(raw: str) -> dict[str, str]:
     """Parse an optional archetype JSON string into a field→value dict.
 
@@ -912,6 +951,18 @@ if _COMFY_AVAILABLE:
                     tooltip="Restrict the random location to indoor or outdoor scenes "
                             "(or leave 'Any'). A locked location overrides this.",
                 ),
+                io.Combo.Input(
+                    "set_all_fields",
+                    options=[_SET_ALL_OFF, _SET_ALL_NONE],
+                    default=_SET_ALL_OFF,
+                    tooltip="Quick reset for the fields below. 'All to None' omits "
+                            "every field left on 'Random', so only the fields you "
+                            "lock to a specific value appear in the output. A wired "
+                            "costume and the character's signature look (hair, eyes, "
+                            "physique) are kept. Handy for tweaking a cosplay: blank "
+                            "the random-person noise, then enable just the fields you "
+                            "want.",
+                ),
             ]
 
             # One COMBO per randomizable field, in group order. Every field
@@ -983,22 +1034,18 @@ if _COMFY_AVAILABLE:
             accessory_density = kwargs.get("accessory_density", "Balanced")
             location_setting = kwargs.get("location_setting", "Any")
 
-            # Locked fields: archetype values, overridden by explicit widgets.
-            locked: dict[str, str] = {
+            # Locked fields: the wired character's values, overridden by explicit
+            # widgets. The 'set_all_fields' reset turns every untouched field into
+            # an omit, while leaving the wired character's signature look intact.
+            archetype_locked: dict[str, str] = {
                 name: value
                 for name, value in archetype.items()
                 if name in FIELD_DEFINITIONS
                 and name not in _CONTROL_FIELDS
                 and value not in ("Random", "None")
             }
-            for field_name in FIELD_DEFINITIONS:
-                if field_name in _HIDDEN_FIELDS or field_name in _CONTROL_FIELDS:
-                    continue
-                value = kwargs.get(field_name, "Random")
-                if value == "None":
-                    locked[field_name] = "None"  # explicit omit, overrides any archetype value
-                elif value != "Random":
-                    locked[field_name] = value
+            set_all = kwargs.get("set_all_fields", _SET_ALL_OFF)
+            locked = resolve_locked_fields(kwargs, archetype_locked, set_all)
 
             prose, json_output = generate_character(
                 seed, gender, locked, hair_color_scope, wardrobe,

@@ -19,10 +19,13 @@ from data.fields import FIELD_DEFINITIONS
 from nodes.identity_forge import (
     generate_character,
     merge_preset_documents,
+    resolve_locked_fields,
     _is_absent,
     _parse_archetype_json,
     _CONTROL_FIELDS,
     _EXTRA_ABSENCE,
+    _SET_ALL_OFF,
+    _SET_ALL_NONE,
 )
 from nodes.identity_forge import _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY
 from nodes.identity_forge_archetype import build_archetype_json
@@ -938,6 +941,77 @@ class NewOptionTests(unittest.TestCase):
     def test_new_outfit_styles_present(self):
         styles = set(FIELD_DEFINITIONS["outfit_style"]["female_options"])
         self.assertTrue({"preppy", "vintage retro", "loungewear"} <= styles)
+
+
+class SetAllFieldsTests(unittest.TestCase):
+    """The 'set_all_fields' reset, resolved by ``resolve_locked_fields``."""
+
+    def test_off_keeps_per_field_semantics(self):
+        # Off: a Random field stays unset, a value locks, an explicit None omits.
+        locked = resolve_locked_fields(
+            {"eye_color": "emerald", "piercings": "None"}, {}, _SET_ALL_OFF
+        )
+        self.assertEqual(locked.get("eye_color"), "emerald")
+        self.assertEqual(locked.get("piercings"), "None")
+        self.assertNotIn("age", locked)  # untouched Random field is left to randomize
+
+    def test_all_to_none_omits_untouched_fields(self):
+        locked = resolve_locked_fields({"eye_color": "emerald"}, {}, _SET_ALL_NONE)
+        self.assertEqual(locked.get("eye_color"), "emerald")  # explicit value kept
+        self.assertEqual(locked.get("age"), "None")           # untouched -> omitted
+        self.assertEqual(locked.get("location"), "None")
+
+    def test_all_to_none_keeps_wired_character_signature(self):
+        # A cosplayer's signature (supplied via the archetype dict) survives the
+        # reset; only the random-person fields it didn't supply are blanked.
+        archetype = {"hair_color": "platinum blonde", "eye_color": "emerald"}
+        locked = resolve_locked_fields({}, archetype, _SET_ALL_NONE)
+        self.assertEqual(locked["hair_color"], "platinum blonde")
+        self.assertEqual(locked["eye_color"], "emerald")
+        self.assertEqual(locked.get("age"), "None")  # non-signature field blanked
+
+    def test_explicit_choice_overrides_archetype_under_reset(self):
+        archetype = {"hair_color": "platinum blonde"}
+        self.assertEqual(
+            resolve_locked_fields({"hair_color": "None"}, archetype, _SET_ALL_NONE)["hair_color"],
+            "None",
+        )
+        self.assertEqual(
+            resolve_locked_fields({"hair_color": "jet black"}, archetype, _SET_ALL_NONE)["hair_color"],
+            "jet black",
+        )
+
+    def test_all_to_none_end_to_end_keeps_costume_and_signature(self):
+        # A She-Hulk cosplayer with the reset on: costume + signature hair show,
+        # the random-person groups (Body / random Setting fields) are gone.
+        flat = _parse_archetype_json(build_cosplayer_json("She-Hulk", 0, "Costume only"))
+        archetype = {k: v for k, v in flat.items()
+                     if k not in _CONTROL_FIELDS and v not in ("Random", "None")}
+        locked = resolve_locked_fields({}, archetype, _SET_ALL_NONE)
+        _, js = generate_character(7, "Female", locked, cosplay_label="She-Hulk")
+        doc = json.loads(js)
+        self.assertEqual(doc["Clothing"]["outfit_description"], COSPLAYERS["She-Hulk"]["costume"])
+        self.assertEqual(doc["Hair"]["hair_color"], "emerald green")  # signature kept
+        self.assertNotIn("Demographics", doc)  # random person blanked
+        self.assertNotIn("Setting & Shot", doc)
+
+
+class BodyPaintPhrasingTests(unittest.TestCase):
+    """Non-natural skin reads as a single even coat, not patchy 'all-over' paint."""
+
+    def test_she_hulk_uses_even_coat(self):
+        costume = COSPLAYERS["She-Hulk"]["costume"]
+        self.assertIn("an even, smooth coat of rich green body paint", costume)
+        self.assertNotIn("all-over", costume)
+
+    def test_body_paint_entries_avoid_bare_all_over(self):
+        # "all-over" may survive only inside the textured "an even, all-over coat"
+        # wording (scales/fur); a bare "all-over <colour> body paint" is the old,
+        # patchy phrasing and must be gone.
+        for name, entry in COSPLAYERS.items():
+            costume = entry["costume"]
+            if "body paint" in costume and "all-over" in costume:
+                self.assertIn("an even, all-over coat", costume, name)
 
 
 if __name__ == "__main__":

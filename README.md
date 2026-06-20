@@ -155,6 +155,7 @@ The widgets at the top of Identity Forge steer the whole character:
 | `hair_color_scope` | Natural only | Keeps random hair realistic; `Full spectrum` allows fantasy colours. |
 | `accessory_density` | Balanced | How often bags/jewellery/accessories appear: `None` (bare) · `Minimal` · `Balanced` · `Maximal`. |
 | `location_setting` | Any | Restrict the random scene to `Indoor` or `Outdoor` (a locked location wins). |
+| `set_all_fields` | Off | `All to None` blanks every field still on `Random` so only the fields you lock to a value appear — a one-click "start from nothing". A wired costume and the character's signature look (hair, eyes, physique) are kept. |
 
 > **Tip:** the old "everyone carries a bag" problem is handled by
 > `accessory_density` — drop it to `Minimal`/`None` for clean portraits, without
@@ -173,6 +174,12 @@ A field's dropdown value *is* its lock state — there's no separate lock button
 Master buttons act on all fields: **🎲 Unlock all (set to Random)** and
 **🔒 Roll + lock all fields** (freeze the current random values so you can tweak
 from there). Click a `▾ Group` header to collapse it.
+
+To go the other way — start from *nothing* and switch on only a handful of
+fields — set **`set_all_fields` → `All to None`**: every field left on `Random`
+is dropped, so just the ones you lock to a value are emitted. Ideal for tweaking
+a cosplay (its costume and signature look are preserved) without setting dozens of
+fields to `None` by hand.
 
 ### Constraints
 

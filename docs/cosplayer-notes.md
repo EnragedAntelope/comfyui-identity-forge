@@ -94,5 +94,14 @@ string (kept out of `costume`) so the *Unmask* toggle can drop it. Keep costume
 text and names plain ASCII (no em dashes / smart quotes) so text-to-image
 tokenizers don't mangle them.
 
+For a **non-natural skin colour** (green, blue, chrome, …), word it as
+`"an even, smooth coat of <colour> body paint"` rather than `"all-over <colour>
+body paint"` — the "even, smooth coat" wording renders as a uniform colour instead
+of the patchy/streaked paint many models produce. Keep the word "paint" (in
+Costume-only mode the person underneath randomizes and their skin tone is spoken,
+so the colour reads as paint *over* that skin, not a contradiction). Textured
+surfaces (scales, fur) use `"an even, all-over coat of …"` and keep their texture
+word; patterns/markings/plating follow as `"… with <pattern>"`.
+
 Contributions are welcome, too: if you'd rather a character ship in the built-in
 set than live in your own `user_options.json`, open an issue or PR suggesting it.

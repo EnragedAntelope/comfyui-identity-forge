@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-identity-forge"
-version = "0.8.0"
+version = "0.9.0"
 description = "A 70+ field character randomizer node pack for ComfyUI with a constraint engine, themed archetype presets, fictional-character cosplay presets, and dual prose/JSON output."
 license = { text = "MIT" }
 readme = "README.md"

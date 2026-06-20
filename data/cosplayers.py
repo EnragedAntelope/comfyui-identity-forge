@@ -42,6 +42,13 @@ Curation rules (so the data stays coherent with the engine):
   orange skin, montrals, antennae, wings, scales) live in ``costume`` as worn
   cosplay elements, and ``skin_tone`` is left out so the person underneath
   randomizes.
+* **Body paint reads as a single even coat.** A solid non-natural skin colour is
+  worded ``"an even, smooth coat of <colour> body paint"`` (drop "all-over") so
+  text-to-image models render it uniform instead of patchy/streaked. Keep "paint"
+  (it layers over the randomized skin without contradicting the spoken skin tone).
+  Where the surface has an intrinsic texture/pattern, anchor on the same even coat
+  and append it: scales/fur use ``"an even, all-over coat of …"`` and keep
+  "scaled-skin" / "fur"; markings, tattoos and plating follow as ``"… with <pattern>"``.
 * **Full masks/helmets** (Spider-Man, a Mandalorian helmet, a ninja hood) set
   ``"covers_face": True`` so IdentityForge drops the randomized face, hair and
   makeup that would otherwise be described fighting the mask. Omit it whenever
@@ -329,7 +336,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a form-fitting dark purple bodysuit with technological enhancements, "
                    "a high collar, integrated armor, a visor, stealth boots, and "
-                   "blue-violet body paint",
+                   "an even, smooth coat of blue-violet body paint",
         "signature": {"hair_color": "raven black", "hair_length": "long",
                       "hair_style": "low ponytail"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -370,7 +377,7 @@ COSPLAYERS: dict[str, dict] = {
     "Ahsoka Tano": {
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "orange body paint with white Togruta facial markings, a blue-and-"
+        "costume": "an even coat of orange body paint with white Togruta facial markings, a blue-and-"
                    "white striped montral-and-lekku headpiece, a practical grey-and-blue "
                    "tunic with leggings, and armored pieces",
         "signature": {},
@@ -556,7 +563,7 @@ COSPLAYERS: dict[str, dict] = {
     "Poison Ivy": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a form-fitting bodysuit of overlapping leaves and vines with green "
+        "costume": "a form-fitting bodysuit of overlapping leaves and vines with an even coat of green "
                    "body paint, and tiny leaves entwined in the hair",
         "signature": {"hair_color": "bright red", "hair_length": "waist length",
                       "hair_style": "worn down", "eye_color": "green"},
@@ -595,7 +602,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC (Teen Titans)",
         "gender": "Female",
         "costume": "a purple crop top, a purple miniskirt, purple thigh-high boots, "
-                   "silver arm guards, and warm golden-orange body paint",
+                   "silver arm guards, and an even, smooth coat of warm golden-orange body paint",
         "signature": {"hair_color": "bright red", "hair_length": "hip length",
                       "hair_style": "worn down", "eye_color": "bright green"},
         "physique": {"body_type": "curvy", "height": "very tall"},
@@ -632,7 +639,7 @@ COSPLAYERS: dict[str, dict] = {
     "Mystique": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "an all-over coat of dark blue scaled-skin body paint with natural "
+        "costume": "an even, all-over coat of dark blue scaled-skin body paint with natural "
                    "scale coverage",
         "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
                       "hair_style": "slicked back"},
@@ -864,7 +871,7 @@ COSPLAYERS: dict[str, dict] = {
     "She-Hulk": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a purple-and-white athletic leotard, with all-over rich green body "
+        "costume": "a purple-and-white athletic leotard, with an even, smooth coat of rich green body "
                    "paint",
         "signature": {"hair_color": "emerald green", "hair_length": "slightly past shoulders",
                       "hair_texture": "loosely wavy", "eye_color": "emerald"},
@@ -919,7 +926,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "tactical dark leather armor in black and deep teal with a long coat, "
-                   "fitted pants, boots, all-over green body paint, and magenta hair tips",
+                   "fitted pants, boots, an even, smooth coat of green body paint, and magenta hair tips",
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height"},
@@ -928,7 +935,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a fitted dark combat suit with armored segments, boots, gauntlets, "
-                   "blue metallic body paint with intricate plating, and purple "
+                   "an even, smooth coat of blue metallic body paint with intricate plating, and purple "
                    "biomechanical lines over a shaved head",
         "signature": {},
         "physique": {"body_type": "lean", "height": "average height"},
@@ -1033,7 +1040,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Female",
         "costume": "a practical brown and orange flight suit with a utility belt, brown "
-                   "boots, green Twi'lek body paint, and two long head-tails (lekku)",
+                   "boots, an even, smooth coat of green Twi'lek body paint, and two long head-tails (lekku)",
         "signature": {"eye_color": "green"},
         "physique": {"body_type": "slender", "height": "average height"},
     },
@@ -1080,7 +1087,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The Little Mermaid",
         "gender": "Female",
         "costume": "a black strapless dress, golden shell earrings, a nautilus necklace, "
-                   "a white bouffant wig, purple-gray body paint, and eight large purple "
+                   "a white bouffant wig, an even, smooth coat of purple-gray body paint, and eight large purple "
                    "octopus tentacles",
         "signature": {},
         "physique": {"body_type": "voluptuous", "height": "statuesque"},
@@ -1098,7 +1105,7 @@ COSPLAYERS: dict[str, dict] = {
     "Marceline the Vampire Queen": {
         "franchise": "Adventure Time",
         "gender": "Female",
-        "costume": "a grey tank top, ripped jeans, sturdy boots, and pale greyish-blue "
+        "costume": "a grey tank top, ripped jeans, sturdy boots, and an even, smooth coat of pale greyish-blue "
                    "body paint with two small neck bite marks",
         "signature": {"hair_color": "jet black", "hair_length": "hip length",
                       "hair_style": "worn down"},
@@ -1294,7 +1301,7 @@ COSPLAYERS: dict[str, dict] = {
     "Cheetah": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "an all-over coat of golden spotted cheetah-fur body paint, pointed "
+        "costume": "an even, all-over coat of golden spotted cheetah-fur body paint, pointed "
                    "ears, a fanged grin, and a spotted bikini-style outfit",
         "signature": {"hair_color": "warm brown", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright green"},
@@ -1324,7 +1331,7 @@ COSPLAYERS: dict[str, dict] = {
     "Smurfette": {
         "franchise": "The Smurfs",
         "gender": "Female",
-        "costume": "a white dress and white high-heeled shoes, with all-over light blue "
+        "costume": "a white dress and white high-heeled shoes, with an even, smooth coat of light blue "
                    "Smurf skin body paint",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright blue"},
@@ -1334,7 +1341,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Mass Effect",
         "gender": "Female",
         "costume": "a white and blue sleeveless top with a high collar, dark fitted "
-                   "pants, and practical boots, with all-over light blue Asari skin body "
+                   "pants, and practical boots, with an even coat of light blue Asari skin body "
                    "paint and a smooth cartilage head crest",
         "signature": {"eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height"},
@@ -1399,7 +1406,7 @@ COSPLAYERS: dict[str, dict] = {
     "Hulk": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "only torn purple trousers, with all-over rich green body paint over "
+        "costume": "only torn purple trousers, with an even, smooth coat of rich green body paint over "
                    "enormous muscles",
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "eye_color": "green"},
@@ -1465,7 +1472,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "gold and blue armored battle plate, blue greaves, and the golden "
-                   "Infinity Gauntlet, with all-over deeply ridged purple body paint",
+                   "Infinity Gauntlet, with an even coat of deeply ridged purple body paint",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Venom": {
@@ -1524,7 +1531,7 @@ COSPLAYERS: dict[str, dict] = {
     "Nightcrawler": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a red and black bodysuit, with all-over velvety indigo-blue body "
+        "costume": "a red and black bodysuit, with an even, velvety coat of indigo-blue body "
                    "paint, pointed ears, and a long spaded tail",
         "signature": {"hair_color": "jet black", "hair_length": "very short"},
         "physique": {"body_type": "lean", "height": "average height"},
@@ -1533,7 +1540,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a seamless mirror-chrome silver bodysuit with all-over reflective "
+        "costume": "a seamless mirror-chrome silver bodysuit with an even, smooth coat of reflective "
                    "silver body paint",
         "mask": "a featureless chrome head with blank silver eyes",
         "physique": {"body_type": "lean", "height": "tall"},
@@ -1660,7 +1667,7 @@ COSPLAYERS: dict[str, dict] = {
     "Joker": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a purple tailcoat suit with a green vest and a yellow shirt, all-over "
+        "costume": "a purple tailcoat suit with a green vest and a yellow shirt, an even, smooth coat of "
                    "chalk-white skin body paint, a wide carved red grin, and slicked-back "
                    "bright green hair",
         "signature": {"hair_color": "emerald green", "hair_length": "jaw length",
@@ -1698,7 +1705,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "costume": "a blue cape held by crossed straps over a bare chest, blue trunks, and "
-                   "blue boots, with all-over smooth green body paint and a bald green head",
+                   "blue boots, with an even, smooth coat of green body paint and a bald green head",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
 
@@ -1793,7 +1800,7 @@ COSPLAYERS: dict[str, dict] = {
     "Darth Maul": {
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "black hooded robes, with all-over blood-red body paint patterned with "
+        "costume": "black hooded robes, with an even coat of blood-red body paint patterned with "
                    "intricate black tattoos and a crown of short black horns ringing the "
                    "head",
         "physique": {"body_type": "lean", "height": "average height"},
@@ -1972,7 +1979,7 @@ COSPLAYERS: dict[str, dict] = {
     "Blanka": {
         "franchise": "Street Fighter",
         "gender": "Male",
-        "costume": "torn brown shorts and ankle manacles, with all-over bright green skin "
+        "costume": "torn brown shorts and ankle manacles, with an even, smooth coat of bright green skin "
                    "body paint, wild orange hair and mane, and sharp teeth",
         "physique": {"body_type": "athletic", "height": "average height"},
     },
@@ -2068,7 +2075,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Mortal Kombat",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a green and black ninja uniform with green scaled skin body paint and "
+        "costume": "a green and black ninja uniform with an even coat of green scaled skin body paint and "
                    "clawed hands",
         "mask": "a green and black ninja mask",
         "physique": {"body_type": "lean", "height": "average height"},
@@ -2313,7 +2320,7 @@ COSPLAYERS: dict[str, dict] = {
     "Kratos": {
         "franchise": "God of War",
         "gender": "Male",
-        "costume": "a leather harness and bracers over a bare chest, with ash-grey pale "
+        "costume": "a leather harness and bracers over a bare chest, with an even, smooth coat of ash-grey pale "
                    "skin body paint and a bold red tattoo across the torso and one eye",
         "signature": {"hair_length": "buzzed very short", "facial_hair": "full beard",
                       "eye_color": "dark brown"},
@@ -2340,7 +2347,7 @@ COSPLAYERS: dict[str, dict] = {
     "Doctor Manhattan": {
         "franchise": "Watchmen",
         "gender": "Male",
-        "costume": "a hydrogen-atom symbol glowing on the forehead, with all-over glowing "
+        "costume": "a hydrogen-atom symbol glowing on the forehead, with an even, smooth coat of glowing "
                    "blue body paint, a bald head, and blank white eyes",
         "physique": {"body_type": "lean", "height": "tall"},
     },
