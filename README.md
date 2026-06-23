@@ -200,9 +200,11 @@ Identity Forge Vault Load ──(character_json)──▶ Identity Forge.archety
 
 - **Vault Save** is a small terminal node, used just like **Save Image**: branch
   Identity Forge's `prompt_json` into it — that's the only required wire. Optionally
-  wire the rendered `image` for a thumbnail. Type a `name` (blank uses the
-  cosplay/archetype label, otherwise a timestamp); `on_existing` chooses overwrite /
-  keep-both / skip. **Mute the node (Ctrl+M) to skip saving** without rewiring.
+  wire the rendered `image` for a thumbnail. The `name` is optional: leave it blank
+  and you get an automatic one — the cosplay/archetype label if present, otherwise a
+  description like `Woman, 25, auburn hair`, otherwise `Character N`. Auto-names never
+  overwrite a prior save; a name you type honours `on_existing` (overwrite / keep-both
+  / skip). **Mute the node (Ctrl+M) to skip saving** without rewiring.
 - **`prompt_json` is all it needs** — by the time Identity Forge emits it, any wired
   Cosplayer / Archetype / Modifier is already baked in, so one saved file captures
   the whole character regardless of how the graph was wired. (The prose is

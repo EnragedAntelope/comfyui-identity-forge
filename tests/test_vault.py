@@ -21,8 +21,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from nodes.identity_forge_vault_save import (
-    _OVERWRITE, _KEEP_BOTH, _SKIP, _derive_name, _entry_dir, sanitize_name,
-    save_character,
+    _OVERWRITE, _KEEP_BOTH, _SKIP, _entry_dir, auto_name, describe_character,
+    sanitize_name, save_character,
 )
 from nodes.identity_forge_vault_load import (
     delete_characters, list_character_names, list_characters, load_character,
@@ -34,6 +34,13 @@ SAMPLE_JSON = json.dumps({
     "_meta": {"cosplay_of": "2B (NieR: Automata)", "gender": "Female"},
     "Body": {"body_type": "slender"},
     "_modifiers": {"footwear": "sci-fi"},
+}, indent=2)
+
+#: A random (non-cosplay) character with describable traits.
+RICH_JSON = json.dumps({
+    "_meta": {"gender": "Female"},
+    "Demographics": {"age": "25"},
+    "Hair": {"hair_color": "auburn"},
 }, indent=2)
 
 
@@ -63,11 +70,34 @@ class SanitizeTests(unittest.TestCase):
         self.assertEqual(sanitize_name(""), "")
 
 
-class DeriveNameTests(unittest.TestCase):
-    def test_priority_custom_then_label_then_seed(self):
-        self.assertEqual(_derive_name("My Hero", SAMPLE_JSON, 7), "My Hero")
-        self.assertEqual(_derive_name("", SAMPLE_JSON, 7), "2B (NieR Automata)")
-        self.assertEqual(_derive_name("", "{}", 7), "7")
+class DescribeTests(unittest.TestCase):
+    def test_describe_from_traits(self):
+        self.assertEqual(describe_character(RICH_JSON), "Woman, 25, auburn hair")
+
+    def test_describe_too_sparse_returns_empty(self):
+        only_gender = json.dumps({"_meta": {"gender": "Female"}})
+        self.assertEqual(describe_character(only_gender), "")
+        self.assertEqual(describe_character("not json"), "")
+
+
+class AutoNameTests(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_label_wins(self):
+        self.assertEqual(auto_name(self.root, SAMPLE_JSON), "2B (NieR Automata)")
+
+    def test_description_when_no_label(self):
+        self.assertEqual(auto_name(self.root, RICH_JSON), "Woman, 25, auburn hair")
+
+    def test_sequential_fallback_counts_up(self):
+        self.assertEqual(auto_name(self.root, "{}"), "Character 1")
+        save_character(self.root, "Character 1", "{}")
+        self.assertEqual(auto_name(self.root, "{}"), "Character 2")
 
 
 class PathSafetyTests(unittest.TestCase):

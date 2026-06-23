@@ -85,18 +85,71 @@ def _source_label(character_json: str) -> str:
     return str(meta.get("cosplay_of") or meta.get("archetype") or "")
 
 
-def _derive_name(custom_name: str, character_json: str, fallback: Any) -> str:
-    """Pick a folder name: sanitized custom name, else cosplay label, else fallback."""
+#: Gender → a friendly noun for descriptive auto-names.
+_GENDER_NOUN = {"Female": "Woman", "Male": "Man"}
+
+#: Salient traits to fold into a descriptive name, in priority order.
+_DESCRIBE_TRAITS = (("age", "{}"), ("hair_color", "{} hair"),
+                    ("ethnicity", "{}"), ("eye_color", "{} eyes"))
+
+#: Matches the sequential fallback names ("Character 7").
+_SEQUENTIAL = re.compile(r"^Character (\d+)$")
+
+
+def _flatten_fields(doc: dict[str, Any]) -> dict[str, Any]:
+    """Collapse a grouped document's field sections into one flat ``{field: value}``."""
+    flat: dict[str, Any] = {}
+    for key, section in doc.items():
+        if not key.startswith("_") and isinstance(section, dict):
+            flat.update(section)
+    return flat
+
+
+def _present(value: Any) -> bool:
+    return isinstance(value, str) and value.strip() != "" and value not in ("None", "Random")
+
+
+def describe_character(character_json: str) -> str:
+    """Build a short readable name from a character's own traits, or ``""``.
+
+    e.g. ``"Woman, 25, auburn hair"``. Returns ``""`` when the document is too
+    sparse to say anything distinctive (fewer than two parts), so callers fall back.
+    """
+    try:
+        doc = json.loads(character_json)
+    except (ValueError, TypeError):
+        return ""
+    if not isinstance(doc, dict):
+        return ""
+    meta = doc.get("_meta") if isinstance(doc.get("_meta"), dict) else {}
+    flat = _flatten_fields(doc)
+
+    noun = _GENDER_NOUN.get((meta or {}).get("gender", ""), "")
+    traits = [fmt.format(flat[field]) for field, fmt in _DESCRIBE_TRAITS
+              if _present(flat.get(field))]
+    parts = ([noun] if noun else []) + traits
+    if not traits or len(parts) < 2:
+        return ""
+    parts = parts[:3] if noun else parts[:2]  # keep it short
+    return sanitize_name(", ".join(parts))
+
+
+def _next_sequential(vault_root: Path | str) -> str:
+    """The next free ``Character N`` name (max existing + 1, else 1)."""
+    root = Path(vault_root)
+    nums = [int(m.group(1)) for p in (root.iterdir() if root.is_dir() else [])
+            if p.is_dir() and (m := _SEQUENTIAL.match(p.name))]
+    return f"Character {max(nums) + 1 if nums else 1}"
+
+
+def auto_name(vault_root: Path | str, character_json: str) -> str:
+    """Derive a name with no user input: cosplay/archetype label, else a
+    description of the character's traits, else a sequential ``Character N``."""
     return (
-        sanitize_name(custom_name)
-        or sanitize_name(_source_label(character_json))
-        or str(fallback)
+        sanitize_name(_source_label(character_json))
+        or describe_character(character_json)
+        or _next_sequential(vault_root)
     )
-
-
-def _timestamp_name() -> str:
-    """A readable, reasonably-unique default name when nothing else is available."""
-    return _dt.datetime.now().strftime("character-%Y%m%d-%H%M%S")
 
 
 def _entry_dir(vault_root: Path, name: str) -> Path:
@@ -233,14 +286,17 @@ if _COMFY_AVAILABLE:
                     io.String.Input(
                         "name",
                         default="",
-                        tooltip="Name for this character. Leave blank to use the cosplay / "
-                                "archetype label if present, otherwise a timestamp.",
+                        tooltip="Optional name. Leave blank for an automatic one: the "
+                                "cosplay/archetype label if present, else a description like "
+                                "'Woman, 25, auburn hair', else 'Character N'. Auto-names "
+                                "never overwrite an existing save.",
                     ),
                     io.Combo.Input(
                         "on_existing",
                         options=[_OVERWRITE, _KEEP_BOTH, _SKIP],
                         default=_OVERWRITE,
-                        tooltip="What to do if a character with this name already exists.",
+                        tooltip="What to do if you type a name that already exists. (Auto "
+                                "names ignore this and always keep both.)",
                     ),
                 ],
                 outputs=[],
@@ -250,7 +306,15 @@ if _COMFY_AVAILABLE:
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
             prompt_json = kwargs.get("prompt_json", "")
-            name = _derive_name(kwargs.get("name", ""), prompt_json, _timestamp_name())
+            root = _vault_root()
+
+            # A name you type wins and honours on_existing; otherwise auto-name and
+            # always keep-both so an automatic name can never clobber a prior save.
+            custom = sanitize_name(kwargs.get("name", ""))
+            if custom:
+                name, on_existing = custom, kwargs.get("on_existing", _OVERWRITE)
+            else:
+                name, on_existing = auto_name(root, prompt_json), _KEEP_BOTH
 
             thumbnail = None
             image = kwargs.get("image")
@@ -261,11 +325,8 @@ if _COMFY_AVAILABLE:
                     print(f"[IdentityForgeVaultSave] Could not build thumbnail: {exc}")
 
             try:
-                saved_as = save_character(
-                    _vault_root(), name, prompt_json,
-                    on_existing=kwargs.get("on_existing", _OVERWRITE),
-                    thumbnail=thumbnail,
-                )
+                saved_as = save_character(root, name, prompt_json,
+                                          on_existing=on_existing, thumbnail=thumbnail)
                 print(f"[IdentityForgeVaultSave] Saved character '{saved_as}'.")
             except Exception as exc:  # noqa: BLE001 — saving must never break a run
                 print(f"[IdentityForgeVaultSave] Save failed: {exc}")
