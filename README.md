@@ -18,6 +18,7 @@ can splice into a larger prompt.
 - 🎭 **Archetypes** — knight, sorceress, pirate, ninja, samurai, pop star, astronaut, surgeon… as a one-wire preset.
 - 🦹 **Cosplayers** — a random person cosplaying a fictional character, with crossplay, a helmet-off *Unmask* toggle, and opt-in signature props (Thor's hammer, Cap's shield) supported.
 - ✨ **Modifiers** — prepend a custom descriptor to a single element (sci-fi shoes, glowing earrings, iridescent skin) without theming the whole image.
+- 💾 **Character vault** — save a generated character (with a thumbnail) and recall it later; a built-in gallery lets you browse, rename and delete saves.
 - 🔗 **Chainable presets** — wire Archetype → Cosplayer → Modifier → Identity Forge so they stack instead of fighting over one socket.
 - 🔌 **Zero dependencies, fully offline** — no LLM, no API keys, no model downloads.
 - ✍️ **Extensible** — add your own dropdown options (and outfit styles) without touching the source.
@@ -28,6 +29,8 @@ can splice into a larger prompt.
 | **Identity Forge Archetype** | Dozens of themed presets (knight, sorceress, pirate, ninja, samurai, pop star, astronaut, surgeon…) that wire into Identity Forge to set the *look* while the person underneath randomizes. |
 | **Identity Forge Cosplayer** | Fictional characters (Spider-Man, Batman, Darth Vader, Cloud, 2B, She-Hulk, Zelda…) as a *cosplay look* — the costume is locked onto a random, optionally cross-gender person. |
 | **Identity Forge Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`) for per-element stylistic tilts — without touching the main node. |
+| **Identity Forge Vault Save** | Save the generated character to a local vault, inline (passes image / text / JSON through unchanged). |
+| **Identity Forge Vault Load** | Recall a saved character as a chainable `character_json` preset, with a thumbnail preview and a Manage Vault gallery. |
 
 Built on the ComfyUI **V3 API** (`comfy_api.latest`). Category:
 `conditioning/character`.
@@ -181,6 +184,40 @@ Clothing: weathered          # a GROUP  -> prepended to every clothing item
 - **Chainable**: wire it after an Archetype/Cosplayer via `upstream`
   (`Cosplayer → Modifier → Identity Forge`). Clear the box or **mute the node** to
   disable it.
+
+### Saving & recalling characters (Vault)
+
+Found a character you love and want it back later? Save it, then load it.
+
+```
+Identity Forge ─(image)──────▶ Identity Forge Vault Save ─(image)──▶ Save Image
+              └─(prompt_text)─▶                          ─(prompt_text)─▶ …
+              └─(prompt_json)─▶                          ─(prompt_json)─▶ …
+              └─(seed)────────▶
+```
+
+```
+Identity Forge Vault Load ──(character_json)──▶ Identity Forge.archetype_json
+```
+
+- **Vault Save** sits *inline* — wire `image`, `prompt_text`, `prompt_json` and
+  `seed` through it and it passes them all out unchanged while writing the entry.
+  Name it with `custom_name`; left blank it uses the cosplay/archetype label if
+  there is one, otherwise the seed. `on_existing` chooses overwrite / keep-both /
+  skip. Set `enabled` to *Disabled* to leave it wired but dormant.
+- **What gets saved is the resolved `prompt_json`** — by the time Identity Forge
+  emits it, any wired Cosplayer / Archetype / Modifier is already baked in, so one
+  saved file captures the whole character regardless of how the graph was wired.
+- **Vault Load** recalls it as a `character_json` — the *same* output the preset
+  nodes use — so it wires into `archetype_json` and can even stack with a Modifier
+  via `upstream`. Because recall flows back through the JSON string input (not the
+  individual dropdowns), it keeps working even if field options change in a later
+  update. **🔄 Refresh** updates the list without restarting; **🗂 Manage Vault…**
+  opens a thumbnail gallery to pick (*Use*), rename, delete, or bulk-delete saves.
+- **Where it's stored:** `ComfyUI/user/identity_forge/characters/<name>/` — one
+  folder per character (`character.json`, `prompt.txt`, `preview.png`, `meta.json`).
+  It lives under `user/`, so it survives node updates and is **not** wiped when you
+  clear your `output/` images. To move or share a single character, copy its folder.
 
 ---
 
