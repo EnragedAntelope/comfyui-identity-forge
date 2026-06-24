@@ -17,9 +17,10 @@ can splice into a larger prompt.
 - 🧩 **Coherent by design** — a constraint engine resolves clashing traits for you.
 - 🎭 **Archetypes** — knight, sorceress, pirate, ninja, samurai, pop star, astronaut, surgeon… as a one-wire preset.
 - 🦹 **Cosplayers** — a random person cosplaying a fictional character, with crossplay, a helmet-off *Unmask* toggle, and opt-in signature props (Thor's hammer, Cap's shield) supported.
+- 🐲 **Creatures** — render the character as an animal / insect / monster / alien / mythic form, *hybridized slot-by-slot* (a praying-mantis body with a sloth's head), anthropomorphic, feral or a subtle accent.
 - ✨ **Modifiers** — prepend a custom descriptor to a single element (sci-fi shoes, glowing earrings, iridescent skin) without theming the whole image.
 - 💾 **Character vault** — save a generated character (with a thumbnail) and recall it later; a built-in gallery lets you browse, rename and delete saves.
-- 🔗 **Chainable presets** — wire Archetype → Cosplayer → Modifier → Identity Forge so they stack instead of fighting over one socket.
+- 🔗 **Chainable presets** — wire Archetype → Cosplayer → Creature → Modifier → Identity Forge so they stack instead of fighting over one socket.
 - 🔌 **Zero dependencies, fully offline** — no LLM, no API keys, no model downloads.
 - ✍️ **Extensible** — add your own dropdown options (and outfit styles) without touching the source.
 
@@ -28,6 +29,7 @@ can splice into a larger prompt.
 | **Identity Forge** | 70+ lockable dropdown fields (8 collapsible groups) + a constraint engine → `prompt_text` (prose) and `prompt_json`. |
 | **Identity Forge Archetype** | Dozens of themed presets (knight, sorceress, pirate, ninja, samurai, pop star, astronaut, surgeon…) that wire into Identity Forge to set the *look* while the person underneath randomizes. |
 | **Identity Forge Cosplayer** | Fictional characters (Spider-Man, Batman, Darth Vader, Cloud, 2B, She-Hulk, Zelda…) as a *cosplay look* — the costume is locked onto a random, optionally cross-gender person. |
+| **Identity Forge Creature** | Render the character as a non-human form — animal, insect, marine, reptile, bird, monster, alien, mythic or plant — picked across all classes or scoped to one, and hybridized slot-by-slot (head / integument / limbs / wings / tail). |
 | **Identity Forge Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`) for per-element stylistic tilts — without touching the main node. |
 | **Identity Forge Vault Save** | Save the generated character to a local vault. Terminal node like Save Image — branch in `prompt_json` (and optionally the image for a thumbnail). |
 | **Identity Forge Vault Load** | Recall a saved character as a chainable `character_json` preset, with a thumbnail preview and a Manage Vault gallery. |
@@ -150,6 +152,45 @@ prefixed `Cosplaying as <Character> (<Franchise>):`.
   only *worn* items; held props beyond the signature toggle go in the prompt.
 
 See [docs/cosplayer-notes.md](docs/cosplayer-notes.md) for the finer details.
+
+### Forging a creature / hybrid
+
+```
+Identity Forge Creature ──(character_json)──▶ Identity Forge.archetype_json
+```
+
+Render the character as a non-human form. The **`creature`** dropdown is the whole
+*only-one vs mix-everything* control in one place: `None` (off), `Random — any`
+(across every class), `Random — <class>` (only a monster / only an insect / only an
+alien …), or a specific creature. Identity Forge then describes the form and drops
+the human fields it replaces (a creature head hides the face/hair, an integument
+hides the skin); a wired costume and the rest of the body still compose.
+
+- **Hybrids / chimeras.** Each anatomy slot — `head`, `eyes`, `integument`, `arms`,
+  `hands`, `legs_feet`, `tail`, `wings` — can override the base: **Follow base**,
+  **Random**, or a specific creature. So a praying-mantis body with a sloth's head is
+  `creature = praying mantis` + `head = sloth`. The free-text **`more_features`** box
+  (`slot: phrase` lines, or bare extra features) adds unlimited detail.
+- **`form`**: **Anthropomorphic** (default) keeps a humanoid silhouette so costumes
+  still fit; **Feral / full creature** drops the human clothing/makeup/jewellery for a
+  true beast; **Subtle hybrid** keeps the human and adds the creature limbs/wings/tail
+  as accents. **Random** rolls one with the seed.
+- **Detail** (collapsed): `integument_finish` (matte / glossy / iridescent / slimy /
+  bioluminescent…), `palette` (recolour the skin/hide), and `size_scale` (tiny …
+  towering).
+- The node stays compact — only `creature` / `form` / `seed` show by default; the
+  slots, detail and free-text box sit in collapsed sections you expand when wanted.
+
+The headline combo: chain a **Cosplayer** in front of it and you get *Superman as an
+anthropomorphic praying-mantis hybrid with a sloth's head* — the costume survives, the
+body becomes the creature:
+
+```
+Identity Forge Cosplayer ─▶ Identity Forge Creature ─(character_json)─▶ Identity Forge.archetype_json
+```
+
+See [docs/creature-notes.md](docs/creature-notes.md) for the slot/suppression details
+and how to add your own creatures.
 
 ### Tilting a single element (Modifier node)
 
@@ -283,14 +324,15 @@ the pigtails). Choose `gender: Any` to mix presentations freely.
 
 Add your own choices without editing the source (they survive updates): copy
 `user_options.example.json` to `user_options.json` in the pack folder, then
-restart ComfyUI. Four optional sections:
+restart ComfyUI. Five optional sections:
 
 ```json
 {
   "fields":     { "ethnicity": ["Atlantean"], "location": ["a floating sky temple"] },
   "outfits":    { "spacesuit": { "unisex": ["a sleek white EVA suit with a gold visor"] } },
   "archetypes": { "Sky Pirate": { "gender": "Female", "outfit_description": "a {color} longcoat over a leather bodice" } },
-  "cosplayers": { "Custom Hero (My OC)": { "gender": "Female", "costume": "a teal-and-silver bodysuit with a star emblem" } }
+  "cosplayers": { "Custom Hero (My OC)": { "gender": "Female", "costume": "a teal-and-silver bodysuit with a star emblem" } },
+  "creatures":  { "axolotl": { "class": "Marine Life", "palette": "pale pink", "head": "a smiling axolotl head with feathery gills", "eyes": "tiny dark eyes", "integument": "smooth translucent skin" } }
 }
 ```
 
@@ -311,6 +353,10 @@ restart ComfyUI. Four optional sections:
   "Male"` entry is how you populate the `Random — male` pick. For a fully masked
   head set `"covers_face": true` **and** put the head covering in a separate
   `"mask"` string (kept out of `costume`) so the *Unmask* toggle can drop it.
+- **`creatures`** adds forms to the **Creature** node. `class` (one of the nine
+  classes), `palette` and the three core slots `head` / `eyes` / `integument` are
+  required; `arms` / `hands` / `legs_feet` / `tail` / `wings` / `extras` are
+  optional. Slot text is free-form prose (keep it plain ASCII).
 
 A user entry whose name matches a built-in **overrides** it. Run
 `python tests/validate_data.py` to check that your custom field values are valid

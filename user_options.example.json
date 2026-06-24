@@ -48,5 +48,19 @@
       "costume": "a matte-black armored bodysuit with a hooded cape",
       "mask": "a full black face helmet with narrow glowing eye slits"
     }
+  },
+  "_comment_creatures": "'creatures' adds forms to the Creature node. Required: 'class' (Mammals, Birds, Reptiles & Amphibians, Insects & Arachnids, Marine Life, Monsters, Aliens, Mythic & Fantasy, Plant & Fungal), 'palette' (default integument colour) and the core slots head/eyes/integument. Optional slots: arms, hands, legs_feet, tail, wings, extras. Leave the colour OUT of 'integument' (palette adds it). Slot text is free-form prose; keep it plain ASCII. A name matching a built-in overrides it.",
+  "creatures": {
+    "axolotl": {
+      "class": "Marine Life",
+      "palette": "pale pink",
+      "head": "a wide-smiling axolotl head fringed with feathery external gills",
+      "eyes": "tiny lidless dark eyes",
+      "integument": "smooth translucent amphibian skin",
+      "arms": "slender arms",
+      "hands": "delicate four-fingered hands",
+      "legs_feet": "small webbed feet",
+      "tail": "a long finned tail"
+    }
   }
 }

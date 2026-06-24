@@ -26,6 +26,7 @@ from data.fields import (
 from data.constraints import CONSTRAINT_RULES
 from data.templates import ARCHETYPES, COSTUME_SLOTS
 from data.cosplayers import COSPLAYERS
+from data.creatures import CREATURES, CREATURE_CLASSES, CREATURE_SLOTS
 
 _EXPECTED_GROUPS = {
     "Demographics", "Body", "Face", "Hair", "Makeup",
@@ -178,6 +179,34 @@ def validate() -> list[str]:
                 elif value not in _options(field):
                     errors.append(f"cosplayer '{name}': {section}.{field}={value!r} is not a valid option")
 
+    # --- creatures: structure + class coverage -----------------------
+    # Slot text is free-form prose (rendered by the species path, not the human
+    # field engine), so only structure is checked here, not value membership.
+    if len(CREATURES) < 40:
+        errors.append(f"CREATURES has {len(CREATURES)}; need >= 40")
+    allowed_keys = {"class", "palette"} | set(CREATURE_SLOTS)
+    class_counts = {cls: 0 for cls in CREATURE_CLASSES}
+    for name, entry in CREATURES.items():
+        if not isinstance(entry, dict):
+            errors.append(f"creature '{name}': not a dict")
+            continue
+        for key in ("class", "palette", "head", "eyes", "integument"):
+            if not isinstance(entry.get(key), str) or not entry.get(key):
+                errors.append(f"creature '{name}': missing/empty required '{key}'")
+        creature_class = entry.get("class")
+        if creature_class not in CREATURE_CLASSES:
+            errors.append(f"creature '{name}': unknown class {creature_class!r}")
+        else:
+            class_counts[creature_class] += 1
+        for key, value in entry.items():
+            if key not in allowed_keys:
+                errors.append(f"creature '{name}': unexpected key {key!r}")
+            elif value is not None and (not isinstance(value, str) or not value):
+                errors.append(f"creature '{name}': slot {key!r} must be a non-empty string")
+    thin = [cls for cls, count in class_counts.items() if count < 3]
+    if thin:
+        errors.append(f"creature classes with < 3 entries: {thin}")
+
     # --- studio backdrops: must be real location options -------------
     # The engine matches the resolved location against STUDIO_BACKDROPS by exact
     # string, so any entry missing from the location pool would silently break the
@@ -215,6 +244,7 @@ def main() -> int:
     print(f"  Constraints: {len(CONSTRAINT_RULES)}")
     print(f"  Archetypes:  {len(ARCHETYPES)}")
     print(f"  Cosplayers:  {len(COSPLAYERS)}")
+    print(f"  Creatures:   {len(CREATURES)}")
     print(f"  Outfit sets: {len(OUTFIT_DESCRIPTIONS)}")
     return 0
 

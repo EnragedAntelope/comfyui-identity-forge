@@ -1,12 +1,14 @@
 """comfyui-identity-forge — V3 custom node pack entrypoint.
 
-Exposes six nodes:
+Exposes seven nodes:
 
 * ``IdentityForge`` — a 70+ field character description randomizer with a
   constraint engine and dual prose/JSON output.
 * ``IdentityForgeArchetype`` — themed presets that seed IdentityForge.
 * ``IdentityForgeCosplayer`` — fictional-character cosplay presets that seed
   IdentityForge (a random person cosplaying a chosen character).
+* ``IdentityForgeCreature`` — a non-human form layer (animal / monster / alien /
+  mythic), optionally hybridized slot-by-slot, that seeds IdentityForge.
 * ``IdentityForgeModifier`` — prepends custom descriptors to individual fields /
   groups (e.g. "sci-fi" shoes) for per-element stylistic tilts.
 * ``IdentityForgeVaultSave`` — save a generated character to a local vault.
@@ -24,6 +26,7 @@ try:
     from .nodes.identity_forge import IdentityForge
     from .nodes.identity_forge_archetype import IdentityForgeArchetype
     from .nodes.identity_forge_cosplayer import IdentityForgeCosplayer
+    from .nodes.identity_forge_creature import IdentityForgeCreature
     from .nodes.identity_forge_modifier import IdentityForgeModifier
     from .nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from .nodes.identity_forge_vault_load import IdentityForgeVaultLoad
@@ -31,6 +34,7 @@ except ImportError:  # pragma: no cover
     from nodes.identity_forge import IdentityForge
     from nodes.identity_forge_archetype import IdentityForgeArchetype
     from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
+    from nodes.identity_forge_creature import IdentityForgeCreature
     from nodes.identity_forge_modifier import IdentityForgeModifier
     from nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from nodes.identity_forge_vault_load import IdentityForgeVaultLoad
@@ -107,7 +111,8 @@ class IdentityForgeExtension(ComfyExtension):
 
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
         return [IdentityForge, IdentityForgeArchetype, IdentityForgeCosplayer,
-                IdentityForgeModifier, IdentityForgeVaultSave, IdentityForgeVaultLoad]
+                IdentityForgeCreature, IdentityForgeModifier,
+                IdentityForgeVaultSave, IdentityForgeVaultLoad]
 
 
 async def comfy_entrypoint() -> IdentityForgeExtension:

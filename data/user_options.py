@@ -38,6 +38,16 @@ source — so updates won't clobber them. Two sections, both optional::
           "mask": "a full black helmet with narrow glowing eye slits",
           "physique": {"body_type": "athletic", "height": "tall"}
         }
+      },
+      "creatures": {
+        "axolotl": {
+          "class": "Marine Life", "palette": "pale pink",
+          "head": "a wide-smiling axolotl head fringed with feathery external gills",
+          "eyes": "tiny lidless dark eyes",
+          "integument": "smooth translucent amphibian skin",
+          "arms": "slender arms", "hands": "delicate four-fingered hands",
+          "legs_feet": "small webbed feet", "tail": "a long finned tail"
+        }
       }
     }
 
@@ -246,6 +256,52 @@ def apply_user_archetypes(archetypes: dict[str, dict], path: Path | None = None)
         added += 1
     if added:
         print(f"[IdentityForge] Loaded {added} custom archetype(s) from {path.name}.")
+    return added
+
+
+#: Anatomy slots a ``creatures`` entry may fill (besides ``class`` / ``palette``).
+_CREATURE_SLOTS: tuple[str, ...] = (
+    "head", "eyes", "integument", "arms", "hands", "legs_feet", "wings", "tail", "extras",
+)
+
+
+def apply_user_creatures(creatures: dict[str, dict], path: Path | None = None) -> int:
+    """Merge the ``creatures`` section of ``user_options.json`` in place.
+
+    Each entry needs a ``class`` (which "Random - <class>" pool it joins), a
+    ``palette`` (default integument colour) and the three core slots ``head`` /
+    ``eyes`` / ``integument``; the limb / tail / wing / extras slots are optional.
+    Slot text is free-form prose (not validated against ``data/fields.py`` — the
+    species group has its own prose path), but it reaches the prompt, so keep it
+    plain ASCII. A user entry whose name matches a built-in overrides it. Returns
+    the number of creatures added. ``tests/validate_data.py`` checks the structure.
+    """
+    path = path or USER_OPTIONS_PATH
+    added = 0
+    for name, entry in _load_user_section(path, "creatures").items():
+        if not isinstance(name, str) or not name or not isinstance(entry, dict):
+            continue
+        # The three core slots plus class/palette are what make a creature renderable.
+        record: dict[str, str] = {}
+        for key in ("class", "palette", "head", "eyes", "integument"):
+            value = entry.get(key)
+            if not isinstance(value, str) or not value:
+                break
+            record[key] = value
+        else:
+            for slot in _CREATURE_SLOTS:
+                if slot in record:
+                    continue
+                value = entry.get(slot)
+                if isinstance(value, str) and value:
+                    record[slot] = value
+            creatures[name] = record
+            added += 1
+            continue
+        print(f"[IdentityForge] Skipping creature {name!r}: needs class, palette, "
+              f"head, eyes and integument.")
+    if added:
+        print(f"[IdentityForge] Loaded {added} custom creature(s) from {path.name}.")
     return added
 
 

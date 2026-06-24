@@ -82,6 +82,28 @@ _MODIFIERS_DOC_KEY = "_modifiers"
 #: parsed-archetype dict (double-underscored so it never collides with a field).
 _MODIFIERS_KEY = "__modifiers__"
 
+#: JSON group a Creature node adds, holding ``{slot: prose}`` anatomy (a creature
+#: head, integument, limbs …). Rendered by a dedicated species path, not the human
+#: field engine, so its keys are *not* :data:`FIELD_DEFINITIONS` fields.
+_SPECIES_GROUP = "Species & Anatomy"
+
+#: Reserved key carrying the parsed species payload (slots + form + suppression)
+#: through the flattened parsed-archetype dict.
+_SPECIES_KEY = "__species__"
+
+#: Canonical transformation-form tokens emitted in a creature document's ``_meta``
+#: (the node maps its friendlier widget labels onto these). ``Anthropomorphic`` and
+#: ``Feral`` lead the prose with the creature; ``Subtle`` keeps the human subject and
+#: appends the creature features as accents.
+_FORM_ANTHRO = "Anthropomorphic"
+_FORM_FERAL = "Feral"
+_FORM_SUBTLE = "Subtle"
+
+#: Order anatomy slots are voiced / serialized in.
+_SPECIES_SLOT_ORDER: tuple[str, ...] = (
+    "head", "eyes", "integument", "arms", "hands", "legs_feet", "wings", "tail", "extras",
+)
+
 #: Field groups suppressed when a cosplayer sets ``covers_face`` — a full mask /
 #: helmet / featureless head hides the randomized face, hair and makeup, so
 #: describing them would only fight the costume at render time. Body and
@@ -95,9 +117,11 @@ _CONTROL_FIELDS: frozenset[str] = frozenset(
     name for name, meta in FIELD_DEFINITIONS.items() if meta.get("control")
 )
 
-#: Canonical group ordering for prose and JSON output.
+#: Canonical group ordering for prose and JSON output. ``Species & Anatomy`` sits
+#: right after Demographics — it sets the substrate the rest is rendered on, and a
+#: Modifier node can target the whole group by this name (it reads ``_GROUP_ORDER``).
 _GROUP_ORDER: tuple[str, ...] = (
-    "Demographics", "Body", "Face", "Hair", "Makeup",
+    "Demographics", _SPECIES_GROUP, "Body", "Face", "Hair", "Makeup",
     "Jewelry & Nails", "Clothing", "Setting & Shot",
 )
 
@@ -434,12 +458,36 @@ def _resolve_outfit_description(
 # Output formatting
 # ===========================================================================
 
+def _species_subject(species: dict, gender: str) -> str:
+    """Return the lead noun for an Anthropomorphic / Feral creature subject.
+
+    e.g. ``"anthropomorphic praying-mantis hybrid"`` or ``"monstrous dragon"``,
+    optionally prefixed by a ``size`` ("towering …"). Falls back to the plain
+    gender noun for the Subtle form (handled by the caller).
+    """
+    base = species.get("creature_of") or "creature"
+    form = species.get("form", "")
+    if form == _FORM_ANTHRO:
+        noun = f"anthropomorphic {base} hybrid"
+    elif form == _FORM_FERAL:
+        creature_class = species.get("creature_class", "")
+        noun = f"monstrous {base}" if creature_class in ("Monsters", "Aliens") else base
+    else:
+        return _GENDER_NOUN.get(gender, "person")
+    size = species.get("size")
+    return f"{size} {noun}" if size else noun
+
+
 def _format_prose(
-    resolved: dict[str, str], gender: str, cosplay_label: str | None = None
+    resolved: dict[str, str], gender: str, cosplay_label: str | None = None,
+    species: dict | None = None,
 ) -> str:
     """Build a natural-language description from resolved field values.
 
     When ``cosplay_label`` is set, the prose is prefixed ``Cosplaying as <label>:``.
+    When ``species`` carries anatomy slots, an Anthropomorphic / Feral form leads
+    with the creature subject and weaves its features in; a Subtle form keeps the
+    human subject and appends the creature features as accents.
     """
     r = resolved
     subj = _SUBJ.get(gender, "They")
@@ -453,11 +501,24 @@ def _format_prose(
         v = r.get(field, "")
         return "" if _is_absent(v) else v
 
+    species = species or {}
+    slots = species.get("slots") or {}
+    form = species.get("form", "")
+    species_lead = bool(slots) and form in (_FORM_ANTHRO, _FORM_FERAL)
+    subject_noun = _species_subject(species, gender) if species_lead \
+        else _GENDER_NOUN.get(gender, "person")
+    # Anatomy phrases in reading order, plus any extras keyed outside the canon.
+    anatomy = [slots[s] for s in _SPECIES_SLOT_ORDER if slots.get(s)]
+    anatomy += [v for k, v in slots.items() if k not in _SPECIES_SLOT_ORDER and v]
+
     sentences: list[str] = []
 
     # --- Demographics + body core --------------------------------------
     lead_bits = [b for b in (f"{g('age')}-year-old" if g("age") else "", g("ethnicity")) if b]
-    lead = "A " + _words(*lead_bits, _GENDER_NOUN.get(gender, "person"))
+    lead_tail = _words(*lead_bits, subject_noun)
+    # Creature subjects pick their article ("An anthropomorphic …"); the human
+    # default keeps the original literal "A " to avoid disturbing existing output.
+    lead = f"{_a(lead_tail).capitalize()} {lead_tail}" if species_lead else "A " + lead_tail
     core = []
     if g("body_type"):
         core.append(_an(g("body_type"), "build"))
@@ -466,6 +527,13 @@ def _format_prose(
     if g("skin_tone"):
         core.append(f"{g('skin_tone')} skin")
     sentences.append(lead + (" with " + _join(core) if core else ""))
+
+    # --- Creature anatomy ----------------------------------------------
+    # Lead forms put the creature features right after the subject; the Subtle
+    # form folds them in as accents on the otherwise-human description.
+    if anatomy:
+        connector = f"{subj} {has} " if species_lead else f"{subj} also {has} "
+        sentences.append(connector + _join(anatomy))
 
     # --- Physique + body proportions -----------------------------------
     physique = " and ".join(x for x in (g("fitness_level"), g("muscle_definition")) if x)
@@ -723,23 +791,47 @@ def merge_preset_documents(upstream_json: str, own_json: str) -> str:
 
 def _format_json(
     resolved: dict[str, str], gender: str, hair_color_scope: str, wardrobe: str,
-    cosplay_label: str | None = None,
+    cosplay_label: str | None = None, species: dict | None = None,
 ) -> str:
     """Build a JSON document: ``_meta`` plus fields nested by group.
 
     The seed is intentionally excluded — it is run-control noise, not part of
-    the character description.
+    the character description. A connected creature's ``Species & Anatomy`` group
+    is re-emitted (in canonical order) alongside its identifying ``_meta``.
     """
+    species = species or {}
+    slots = species.get("slots") or {}
+
     meta: "OrderedDict[str, str]" = OrderedDict()
     if cosplay_label:
         meta["cosplay_of"] = cosplay_label
+    if slots:
+        for key in ("creature_of", "creature_class", "form"):
+            if species.get(key):
+                meta[key] = species[key]
     meta["gender"] = gender
     meta["hair_color_scope"] = hair_color_scope
     meta["wardrobe"] = wardrobe
 
+    grouped = group_fields(resolved)
+    if slots:
+        anatomy: "OrderedDict[str, str]" = OrderedDict(
+            (s, slots[s]) for s in _SPECIES_SLOT_ORDER if slots.get(s)
+        )
+        for slot, value in slots.items():  # any extras keyed outside the canon
+            if slot not in anatomy and value:
+                anatomy[slot] = value
+        grouped[_SPECIES_GROUP] = anatomy
+
     document: "OrderedDict[str, Any]" = OrderedDict()
     document["_meta"] = meta
-    document.update(group_fields(resolved))
+    # Re-order so the (manually added) species group lands in canonical position.
+    for group in _GROUP_ORDER:
+        if group in grouped:
+            document[group] = grouped[group]
+    for group, fields in grouped.items():
+        if group not in document:
+            document[group] = fields
     return json.dumps(document, indent=2)
 
 
@@ -776,6 +868,7 @@ def generate_character(
     cosplay_label: str | None = None,
     covers_face: bool = False,
     modifiers: dict[str, str] | None = None,
+    species: dict | None = None,
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
@@ -792,6 +885,12 @@ def generate_character(
     ``modifiers`` (set by a connected Modifier node) maps a field name or group
     header to a descriptor that is prepended to the matching resolved value(s),
     e.g. ``{"footwear": "sci-fi"}`` → "sci-fi white sneakers".
+
+    ``species`` (set by a connected Creature node) carries non-human anatomy: a
+    ``slots`` map of ``{slot: prose}``, a ``form`` token and ``suppress_groups`` /
+    ``suppress_fields`` lists. The suppressed human fields are dropped (a creature
+    head hides the face/hair, a creature integument hides the skin) and the slots
+    are woven into both outputs by the species-aware formatters.
     """
     rng = random.Random(seed)
     # "None" locks the *absent* state (optional fields only); keep it. Only
@@ -860,13 +959,36 @@ def generate_character(
                     or field in _CONCEALED_FACE_FIELDS):
                 resolved.pop(field, None)
 
+    # A creature form suppresses the human fields it replaces — generalizing the
+    # covers_face mechanism. The two unions naturally: a masked cosplayer + an
+    # integument-only creature drop both the face and the skin.
+    if species:
+        suppress_groups = set(species.get("suppress_groups", []))
+        suppress_fields = set(species.get("suppress_fields", []))
+        if suppress_groups or suppress_fields:
+            for field in list(resolved):
+                if (FIELD_DEFINITIONS.get(field, {}).get("group") in suppress_groups
+                        or field in suppress_fields):
+                    resolved.pop(field, None)
+
     # Style modifiers: prepend a descriptor to the surviving values. Applied last so
     # it decorates exactly what prose and JSON will show (and never an item that was
     # pruned above). Both outputs read from the same modified ``resolved``.
     _apply_modifiers(resolved, modifiers)
+    # The same modifiers can tilt the whole species group (e.g. "Species & Anatomy:
+    # bioluminescent"); a per-slot key wins over the group key if a future Modifier
+    # node exposes slot names.
+    if species and species.get("slots") and modifiers:
+        group_descriptor = modifiers.get(_SPECIES_GROUP)
+        for slot, value in list(species["slots"].items()):
+            descriptor = modifiers.get(slot) or group_descriptor
+            if descriptor and value:
+                species["slots"][slot] = f"{descriptor} {value}"
 
-    prose = _format_prose(resolved, gender, cosplay_label)
-    json_output = _format_json(resolved, gender, hair_color_scope, wardrobe, cosplay_label)
+    prose = _format_prose(resolved, gender, cosplay_label, species)
+    json_output = _format_json(
+        resolved, gender, hair_color_scope, wardrobe, cosplay_label, species
+    )
     return prose, json_output
 
 
@@ -940,6 +1062,29 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                 )
             if meta.get("covers_face"):
                 flat[_COVERS_FACE_KEY] = "1"
+            # A creature preset carries its form + suppression here. ``form`` is
+            # the marker that species data is present; slots arrive in the group.
+            form = meta.get("form")
+            if isinstance(form, str) and form:
+                species = flat.setdefault(_SPECIES_KEY, {})
+                species["form"] = form
+                for str_key in ("creature_of", "creature_class", "size"):
+                    if isinstance(meta.get(str_key), str):
+                        species[str_key] = meta[str_key]
+                for list_key in ("suppress_groups", "suppress_fields"):
+                    raw = meta.get(list_key)
+                    if isinstance(raw, list):
+                        species[list_key] = [v for v in raw if isinstance(v, str)]
+            continue
+        if key == _SPECIES_GROUP:
+            # Anatomy slots: capture the whole group verbatim under the reserved
+            # species key (its slot names are not FIELD_DEFINITIONS fields, so the
+            # generic group-flatten below would otherwise scatter and drop them).
+            if isinstance(value, dict):
+                slots = {k: v for k, v in value.items() if isinstance(v, str) and v}
+                if slots:
+                    species = flat.setdefault(_SPECIES_KEY, {})
+                    species["slots"] = {**species.get("slots", {}), **slots}
             continue
         if key == _MODIFIERS_DOC_KEY:
             # Style modifiers from a Modifier node: a {field_or_group: descriptor}
@@ -1073,10 +1218,11 @@ if _COMFY_AVAILABLE:
                     default="",
                     optional=True,
                     force_input=True,
-                    tooltip="Connect an IdentityForgeArchetype or IdentityForgeCosplayer "
-                            "here (use one or the other). Its fields seed the character; "
-                            "explicit non-'Random' widgets still override it. Leave "
-                            "unconnected (or use 'None') for no override.",
+                    tooltip="Connect an IdentityForgeArchetype, IdentityForgeCosplayer or "
+                            "IdentityForgeCreature here (chain several via their 'upstream' "
+                            "inputs). Its fields seed the character; explicit non-'Random' "
+                            "widgets still override it. Leave unconnected (or use 'None') "
+                            "for no override.",
                 )
             )
 
@@ -1102,6 +1248,9 @@ if _COMFY_AVAILABLE:
             cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
             covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
             modifiers = archetype.pop(_MODIFIERS_KEY, None)
+            species = archetype.pop(_SPECIES_KEY, None)
+            if species is not None and not species.get("slots"):
+                species = None  # form without anatomy → nothing to render
 
             # Gender: an explicit widget choice wins; "Any" defers to the archetype.
             widget_gender = kwargs.get("gender", "Any")
@@ -1130,6 +1279,6 @@ if _COMFY_AVAILABLE:
             prose, json_output = generate_character(
                 seed, gender, locked, hair_color_scope, wardrobe,
                 accessory_density, location_setting, cosplay_label, covers_face,
-                modifiers,
+                modifiers, species,
             )
             return io.NodeOutput(prose, json_output)
