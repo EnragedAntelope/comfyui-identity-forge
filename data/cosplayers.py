@@ -634,6 +634,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a dark blue hooded cloak over a blue bodysuit with a mystical symbol "
                    "belt, and dark blue boots",
+        "eyes": "violet",
         "signature": {"hair_color": "deep purple", "hair_length": "chin length bob",
                       "hair_style": "blunt bangs"},
         "physique": {"body_type": "slender", "height": "short", "skin_tone": "very pale"},
@@ -663,6 +664,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "an even, all-over coat of dark blue scaled-skin body paint with natural "
                    "scale coverage",
+        "eyes": "solid yellow",
         "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
                       "hair_style": "slicked back"},
         "physique": {"body_type": "athletic", "height": "tall"},
@@ -849,6 +851,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a flowing blue-grey gown with dragon-scale motifs and metallic "
                    "elements",
+        "eyes": "violet",
         "signature": {"hair_color": "platinum white", "hair_length": "waist length",
                       "hair_style": "dutch braids"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
@@ -1334,9 +1337,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Female",
         "costume": "an even, all-over coat of golden spotted cheetah-fur body paint, pointed "
-                   "ears, a fanged grin, and a spotted bikini-style outfit",
+                   "ears, sharp fangs, and a spotted bikini-style outfit",
+        "eyes": "green with vertical cat-slit pupils",
         "signature": {"hair_color": "warm brown", "hair_length": "long",
-                      "hair_style": "worn down", "eye_color": "bright green"},
+                      "hair_style": "worn down"},
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Mera": {
@@ -1945,8 +1949,9 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a long black leather coat with armored shoulder pauldrons worn over a "
                    "bare chest",
+        "eyes": "glowing green with vertical cat-slit pupils",
         "signature": {"hair_color": "silver", "hair_length": "very long",
-                      "hair_texture": "pin straight", "eye_color": "bright green"},
+                      "hair_texture": "pin straight"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale"},
         "prop": "the Masamune, an impossibly long slender silver katana",
     },
@@ -2331,7 +2336,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Lord of the Rings (male) -----------------------------------------
     "Aragorn": {
-        "franchise": "Lord of the Rings",
+        "franchise": "The Lord of the Rings",
         "gender": "Male",
         "costume": "worn brown ranger leathers and a hooded travel cloak",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
@@ -2341,7 +2346,7 @@ COSPLAYERS: dict[str, dict] = {
                 "crossguard",
     },
     "Legolas": {
-        "franchise": "Lord of the Rings",
+        "franchise": "The Lord of the Rings",
         "gender": "Male",
         "costume": "a green and brown elven tunic, pointed elf ears, and a quiver on the "
                    "back",
@@ -2351,7 +2356,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a drawn elven longbow of pale carved wood, an arrow nocked",
     },
     "Gandalf": {
-        "franchise": "Lord of the Rings",
+        "franchise": "The Lord of the Rings",
         "gender": "Male",
         "costume": "layered grey robes and a tall pointed grey hat",
         "signature": {"hair_color": "silver", "hair_length": "very long",
@@ -2360,7 +2365,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a tall gnarled wooden staff with a knotted natural crook at the top",
     },
     "Gimli": {
-        "franchise": "Lord of the Rings",
+        "franchise": "The Lord of the Rings",
         "gender": "Male",
         "costume": "a horned and riveted iron helmet, and layered dwarven armor",
         "signature": {"hair_color": "auburn", "hair_length": "shoulder length",
@@ -2370,7 +2375,7 @@ COSPLAYERS: dict[str, dict] = {
                 "and a leather-wrapped haft",
     },
     "Frodo Baggins": {
-        "franchise": "Lord of the Rings",
+        "franchise": "The Lord of the Rings",
         "gender": "Male",
         "costume": "a tan waistcoat over a white shirt with a green travel cloak, "
                    "oversized bare hairy feet, and a glowing ring on a chain",
@@ -2385,9 +2390,9 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "dark studded-leather armor with a medallion, and two swords crossed on "
                    "the back",
+        "eyes": "yellow with vertical cat-slit pupils",
         "signature": {"hair_color": "white", "hair_length": "shoulder length",
-                      "hair_style": "low ponytail", "facial_hair": "stubble",
-                      "eye_color": "amber"},
+                      "hair_style": "low ponytail", "facial_hair": "stubble"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Kratos": {
@@ -2626,6 +2631,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a dark patterned kimono open at the chest, with black curse-mark "
                    "tattoos across the face and body and a second pair of eyes on the cheeks",
+        "eyes": "crimson",
         "signature": {"hair_color": "hot pink", "hair_length": "very short"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
@@ -2717,6 +2723,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a black Akatsuki cloak patterned with red clouds, a scratched "
                    "Hidden Leaf headband, and pronounced tear-trough lines under the eyes",
+        "eyes": "crimson Sharingan with three black tomoe",
         "signature": {"hair_color": "near black", "hair_length": "shoulder length",
                       "hair_style": "low ponytail"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
@@ -2725,6 +2732,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Naruto",
         "gender": "Male",
         "costume": "dark red armor over a high-collared cloak",
+        "eyes": "crimson Sharingan",
         "signature": {"hair_color": "near black", "hair_length": "waist length",
                       "hair_texture": "thick and voluminous"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -2790,6 +2798,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a smooth white-and-purple bio-armor carapace over an even, smooth "
                    "coat of white body paint with purple plated sections, and a long tail",
+        "eyes": "crimson",
         "signature": {},
         "physique": {"body_type": "slim", "height": "short"},
     },
@@ -2914,6 +2923,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a dark hooded coat, dark glasses, a bold red alchemic tattoo down "
                    "the right arm, and a large X-shaped scar across the brow",
+        "eyes": "crimson",
         "signature": {"hair_color": "white", "hair_length": "very short"},
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "warm brown"},
     },
@@ -2979,6 +2989,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a black outfit hung with severed pale hands, one clutched over the "
                    "face, and chapped, cracked pale skin",
+        "eyes": "red-rimmed crimson",
         "signature": {"hair_color": "silver", "hair_length": "shoulder length",
                       "hair_texture": "fine and wispy"},
         "physique": {"body_type": "slim", "height": "tall", "skin_tone": "very pale"},
@@ -3112,6 +3123,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a dark red mandarin coat with porkpie hat, plum-blossom motifs, and "
                    "a flower-shaped Pyro vision, with flower-shaped pupils",
+        "eyes": "crimson with flower-shaped pupils",
         "signature": {"hair_color": "near black", "hair_length": "very long",
                       "hair_style": "pigtails"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
@@ -3717,11 +3729,15 @@ COSPLAYERS: dict[str, dict] = {
     "Titania": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a green-and-purple costume with a spiral chest motif, on a towering, "
-                   "hugely muscular and powerfully built frame",
-        "signature": {"hair_color": "deep red", "hair_length": "long",
-                      "eye_color": "green"},
-        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+        "costume": "a purple-and-white sleeveless high-cut costume with white gloves and "
+                   "boots, over an even, smooth coat of orange-toned skin, with a strong jaw "
+                   "and bold features on a powerfully muscular frame - towering and gigantic, "
+                   "vastly larger than everything around her, dwarfing the entire scene with "
+                   "an overwhelming sense of scale",
+        "eyes": "green",
+        "signature": {"hair_color": "deep red", "hair_length": "very long",
+                      "hair_texture": "wavy"},
+        "physique": {"body_type": "stocky", "height": "very tall"},
     },
 
     # --- DC (more; incl. huge characters) --------------------------------
@@ -3810,6 +3826,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "black biker leathers with chains and spikes over an even, smooth "
                    "coat of chalk-white skin, on a massive muscular frame",
+        "eyes": "red on black sclera",
         "signature": {"hair_color": "jet black", "hair_length": "long"},
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4022,6 +4039,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "an ornate ruffled grey shirt and dark embroidered waistcoat, with "
                    "pale vampiric skin and a pair of small fangs",
+        "eyes": "crimson",
         "signature": {"hair_color": "white", "hair_length": "very short",
                       "hair_texture": "curly"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "very pale"},
@@ -4210,6 +4228,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "long flowing black robes over an even, smooth coat of chalk-white "
                    "skin, with a clean-shaven bald head and flat snake-like slits for a nose",
+        "eyes": "crimson with vertical slit pupils",
         "signature": {"facial_hair": "clean shaven"},
         "physique": {"body_type": "lean", "height": "tall"},
         "prop": "a pale bone-white wand",
@@ -4276,6 +4295,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a long duster coat and a wide-brimmed hat over an even, smooth coat "
                    "of blue skin, with a clean-shaven bald blue head, breathing tubes "
                    "running to the cheeks, and twin blaster holsters",
+        "eyes": "glowing red",
         "signature": {"facial_hair": "clean shaven"},
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -4284,6 +4304,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a crisp white Imperial Grand Admiral's uniform over an even, smooth "
                    "coat of blue skin",
+        "eyes": "glowing red",
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "hair_style": "slicked back"},
         "physique": {"body_type": "lean", "height": "tall"},
@@ -4304,12 +4325,789 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "wavy", "facial_hair": "stubble", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
     },
+
+    # --- Marvel (more heroes) --------------------------------------------
+    "Cyclops": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a blue-and-yellow X-Men uniform with a ruby-quartz visor over the eyes",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Iceman": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "an even, smooth coat of translucent pale-blue ice over a lean frame, "
+                   "with jagged icicle spikes along the shoulders and forearms",
+        "eyes": "solid icy white",
+        "signature": {},
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Beast": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "torn shorts over an even, all-over coat of blue fur on a hulking "
+                   "muscular frame, with pointed ears, fangs, and clawed hands",
+        "eyes": "amber",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Firestar": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a yellow-and-red costume wreathed head to toe in flame, with a fiery aura",
+        "signature": {"hair_color": "bright red", "hair_length": "long",
+                      "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Angel": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a red-and-white X-Factor bodysuit with enormous white feathered wings",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Colossus": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "red-and-yellow trunks over an even, smooth coat of polished chrome "
+                   "steel skin on a huge muscular frame",
+        "eyes": "steel-grey",
+        "signature": {"hair_color": "jet black", "hair_length": "very short"},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Kitty Pryde": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a blue-and-gold X-Men uniform",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Cable": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a blue-and-grey tactical bodysuit with a chrome cybernetic left arm, "
+                   "ammo straps, and a scar over the right eye",
+        "eyes": "one glowing yellow cybernetic eye",
+        "signature": {"hair_color": "white", "hair_length": "very short"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+        "prop": "a massive futuristic plasma rifle bristling with barrels",
+    },
+    "Bishop": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a blue-and-red tactical uniform with shoulder armor and a bold 'M' "
+                   "tattoo over the right eye",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "facial_hair": "goatee", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "dark brown"},
+        "prop": "a large futuristic energy rifle",
+    },
+    "Banshee": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a green-and-yellow costume with a high collar and bat-wing membranes "
+                   "stretched under the arms",
+        "signature": {"hair_color": "orange", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Vision": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a yellow cape and green-and-gold accents over an even, smooth coat of "
+                   "deep red android skin, with a glowing yellow gem set in the forehead",
+        "eyes": "glowing white",
+        "signature": {},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Ant-Man": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a red-and-silver size-changing suit with utility straps, shrunk to a "
+                   "tiny scale beside a towering everyday object",
+        "mask": "a red-and-silver helmet with round antennae and a dark visor",
+        "physique": {"body_type": "athletic", "height": "average height"},
+    },
+    "Hawkeye": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a purple-and-black tactical archer outfit with a quiver of arrows on "
+                   "the back",
+        "signature": {"hair_color": "dark blonde", "hair_length": "very short",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a recurve combat bow drawn with a trick arrow",
+    },
+    "War Machine": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a bulky gunmetal-grey armored suit with a shoulder-mounted minigun",
+        "mask": "a grey armored helmet with a glowing eye slit",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Falcon": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a red-and-white tactical flight suit with mechanical wings and red goggles",
+        "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
+                      "facial_hair": "short beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Drax": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "grey trousers over a bare muscular torso, with an even, all-over coat "
+                   "of grey skin covered in raised dark-red ritual tattoo scars",
+        "signature": {"facial_hair": "clean shaven"},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Rocket Raccoon": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "an orange-and-blue flight suit on a small bipedal frame, over an even, "
+                   "all-over coat of brown-and-grey raccoon fur with a black bandit-mask "
+                   "of fur and a ringed tail",
+        "eyes": "dark beady brown",
+        "signature": {},
+        "physique": {"body_type": "petite and slim", "height": "very petite"},
+        "prop": "an oversized laser blaster rifle",
+    },
+    "Groot": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "an even, all-over coat of brown wooden bark skin with mossy patches "
+                   "and faint glowing seams, on a towering tree-like frame with branching limbs",
+        "eyes": "glowing amber",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Mantis": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a black-and-green high-collared outfit over an even, smooth coat of "
+                   "pale green skin, with two thin antennae rising from the forehead",
+        "eyes": "solid black",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "average height"},
+    },
+
+    # --- DC (more heroes) ------------------------------------------------
+    "Darkseid": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "heavy blue-and-grey Apokoliptian armor over an even, smooth coat of "
+                   "grey craggy stone-like skin, on a towering, monstrously powerful frame",
+        "eyes": "glowing red Omega energy",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Firestorm": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a red-and-yellow jumpsuit with a nuclear-symbol chest emblem and a "
+                   "flame-wreathed collar",
+        "mask": "a head wholly engulfed in roaring orange flame",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Fire": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a green costume wreathed head to toe in green flame, over an even, "
+                   "smooth coat of glowing green skin",
+        "eyes": "glowing green",
+        "signature": {},
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Ice": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a blue-and-white costume with an icy crystalline shimmer over pale skin",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "long",
+                      "eye_color": "ice blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Beast Boy": {
+        "franchise": "DC (Teen Titans)",
+        "gender": "Male",
+        "costume": "a black-and-purple uniform over an even, smooth coat of green skin, "
+                   "with pointed ears and small fangs",
+        "eyes": "green",
+        "signature": {"hair_color": "emerald green", "hair_length": "very short"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Booster Gold": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a gold-and-blue futuristic suit with a star chest emblem, power-disc "
+                   "wristbands, and a flight collar",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Blue Beetle": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "blue chitinous scarab armor with black accents and a clawed gauntlet",
+        "mask": "a smooth blue beetle-carapace helmet with large round yellow eye-lenses",
+        "physique": {"body_type": "athletic", "height": "average height"},
+    },
+    "Hawkman": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a bare muscular chest with green harness straps, golden Nth-metal "
+                   "wings, and golden gauntlets",
+        "mask": "a golden hawk-beaked helmet",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "a heavy spiked mace",
+    },
+    "The Atom": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a red-and-blue size-changing bodysuit, shrunk to a tiny atom-sized "
+                   "scale beside a towering everyday object",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Plastic Man": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a glossy red rubbery costume with a yellow-and-black striped midsection "
+                   "and white goggles, the body comically stretched and bent into impossible shapes",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Huntress": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a dark purple-and-black bodysuit with a cross emblem, a flowing purple "
+                   "cape, and a black domino mask",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "high ponytail", "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light medium"},
+        "prop": "a compact crossbow",
+    },
+
+    # --- Popular villains (Marvel) ---------------------------------------
+    "Sabretooth": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a brown fur-trimmed outfit over a bare chest, with a fanged snarl and "
+                   "long claws",
+        "eyes": "amber",
+        "signature": {"hair_color": "dark blonde", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous", "facial_hair": "mutton chops"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Carnage": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a glistening red symbiote body of corded muscle and tendrils with "
+                   "black web patterns and bladed limbs",
+        "mask": "a writhing red symbiote head with a fanged maw and white eye patches",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Ultron": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a towering chrome-and-silver robotic body of articulated plating",
+        "mask": "a polished silver robotic face with glowing red eyes and a grim metal mouth",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Kang the Conqueror": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a green-and-purple armored conqueror's costume with a high collar and cape",
+        "mask": "a blue full-face mask under a green hood",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Taskmaster": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "an orange-and-blue tactical costume with a brown cape and weapon straps",
+        "mask": "a white skull-faced mask under a brown hood",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a sword and a round shield",
+    },
+    "Mister Sinister": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a black bodysuit with a high jagged collar and a long cape, over an "
+                   "even, smooth coat of chalk-white skin, with a red diamond gem on the forehead",
+        "eyes": "glowing red",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "slicked back"},
+        "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "Bullseye": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a dark bodysuit with white sections and weapon bandoliers",
+        "mask": "a black-and-white mask with a bullseye target carved on the forehead",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+
+    # --- Popular villains (DC) -------------------------------------------
+    "Ra's al Ghul": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "ornate green-and-black League of Assassins robes with a high collar "
+                   "and a flowing cape",
+        "signature": {"hair_color": "salt and pepper", "hair_length": "very short",
+                      "facial_hair": "van dyke", "eye_color": "green"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Reverse-Flash": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a yellow speedster bodysuit with a red lightning-bolt emblem, red "
+                   "boots, and crackling red lightning",
+        "eyes": "glowing red",
+        "signature": {"hair_color": "dark blonde", "hair_length": "very short"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Captain Cold": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a blue insulated parka with a fur-lined hood and round black goggles",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "fair"},
+        "prop": "a bulky white cold gun",
+    },
+    "Black Manta": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a black-and-grey armored diving suit with a chest control panel",
+        "mask": "a large smooth black helmet with huge round red eye-lenses",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Bizarro": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a tattered inside-out Superman costume with a reversed black-and-grey "
+                   "'S', over an even, smooth coat of chalk-white cracked stone-like skin",
+        "eyes": "icy blue",
+        "signature": {"hair_color": "jet black", "hair_length": "very short"},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Silver Banshee": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a black bodysuit with silver chains and a torn cape, over a chalk-white "
+                   "skull-like face with hollow black eye sockets",
+        "eyes": "glowing white",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+
+    # --- The Sandman / The Endless ---------------------------------------
+    "Dream of the Endless": {
+        "franchise": "The Sandman",
+        "gender": "Male",
+        "costume": "a flowing black robe over pale skin, with wild untamed black hair",
+        "eyes": "starry black voids flecked with pinpoint stars",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "very slim", "height": "tall", "skin_tone": "very pale"},
+        "prop": "a leather pouch of glittering dream-sand",
+    },
+    "Death of the Endless": {
+        "franchise": "The Sandman",
+        "gender": "Female",
+        "costume": "a black tank top and black jeans with a silver ankh necklace, and a "
+                   "swirl of dark eyeliner forming an Eye of Horus around the right eye",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "very pale"},
+    },
+    "Delirium": {
+        "franchise": "The Sandman",
+        "gender": "Female",
+        "costume": "mismatched colorful ragged clothing trailing tiny butterflies, over "
+                   "pale skin",
+        "eyes": "heterochromatic - one green and one blue, swirling with colour",
+        "signature": {"hair_color": "rainbow ombre", "hair_length": "chin length bob",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "very pale"},
+    },
+
+    # --- Thundercats -----------------------------------------------------
+    "Lion-O": {
+        "franchise": "Thundercats",
+        "gender": "Male",
+        "costume": "a blue-and-orange bodysuit with one shoulder strap and clawed "
+                   "gauntlets, with a wild orange-red lion's mane of hair",
+        "eyes": "amber",
+        "signature": {"hair_color": "orange", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "the Sword of Omens, a short blade with a glowing cat's-eye gem in the hilt",
+    },
+    "Cheetara": {
+        "franchise": "Thundercats",
+        "gender": "Female",
+        "costume": "a form-fitting orange-and-red speed outfit with boots and arm guards, "
+                   "over an even, all-over coat of golden-yellow black-spotted fur, with an "
+                   "orange-red mane of hair past the shoulders",
+        "eyes": "feline green",
+        "signature": {"hair_color": "orange", "hair_length": "long"},
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a telescoping bo staff",
+    },
+    "Tygra": {
+        "franchise": "Thundercats",
+        "gender": "Male",
+        "costume": "blue trousers over a bare chest, with an even, all-over coat of tan "
+                   "tiger-striped fur",
+        "eyes": "amber",
+        "signature": {"hair_color": "orange", "hair_length": "long", "hair_style": "low ponytail"},
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Panthro": {
+        "franchise": "Thundercats",
+        "gender": "Male",
+        "costume": "red harness straps and studded wristbands over a bare muscular chest, "
+                   "with an even, all-over coat of blue-grey panther fur and a clean-shaven bald head",
+        "eyes": "amber",
+        "signature": {"facial_hair": "clean shaven"},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Mumm-Ra": {
+        "franchise": "Thundercats",
+        "gender": "Male",
+        "costume": "a black headdress and a crimson cape with golden arm bands, over an "
+                   "even, smooth coat of grey-blue skin on a powerful demonic frame",
+        "eyes": "glowing red",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+
+    # --- G.I. Joe --------------------------------------------------------
+    "Snake Eyes": {
+        "franchise": "G.I. Joe",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a full black tactical ninja commando bodysuit with a bandolier and a "
+                   "sheathed knife, a katana on the back",
+        "mask": "a seamless black commando mask with a dark visor",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a drawn katana",
+    },
+    "Cobra Commander": {
+        "franchise": "G.I. Joe",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a blue military uniform with a black-and-silver Cobra emblem and a cape",
+        "mask": "a reflective chrome faceplate under a blue hood",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Baroness": {
+        "franchise": "G.I. Joe",
+        "gender": "Female",
+        "costume": "a glossy black leather catsuit with a silver Cobra emblem, black "
+                   "gloves, and thin angular glasses",
+        "signature": {"hair_color": "raven black", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Duke": {
+        "franchise": "G.I. Joe",
+        "gender": "Male",
+        "costume": "green camouflage military fatigues with a tan tactical vest, dog tags, "
+                   "and a green helmet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "buzzed very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Teenage Mutant Ninja Turtles ------------------------------------
+    "Leonardo": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
+                   "plastron and a domed shell on the back, brown elbow and knee pads, and "
+                   "a blue bandana mask",
+        "eyes": "dark brown",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "average height"},
+        "prop": "twin katanas",
+    },
+    "Raphael": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
+                   "plastron and a domed shell on the back, brown elbow and knee pads, and "
+                   "a red bandana mask",
+        "eyes": "dark brown",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "average height"},
+        "prop": "a pair of three-pronged sai",
+    },
+    "Donatello": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
+                   "plastron and a domed shell on the back, brown elbow and knee pads, and "
+                   "a purple bandana mask",
+        "eyes": "dark brown",
+        "signature": {},
+        "physique": {"body_type": "lean", "height": "average height"},
+        "prop": "a long wooden bo staff",
+    },
+    "Michelangelo": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
+                   "plastron and a domed shell on the back, brown elbow and knee pads, and "
+                   "an orange bandana mask",
+        "eyes": "dark brown",
+        "signature": {},
+        "physique": {"body_type": "athletic", "height": "average height"},
+        "prop": "a pair of nunchaku",
+    },
+    "Shredder": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a purple cape over a body sheathed in bladed silver armor plates with "
+                   "spiked gauntlets",
+        "mask": "a steel samurai helmet and faceplate with a menacing visor",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "April O'Neil": {
+        "franchise": "TMNT",
+        "gender": "Female",
+        "costume": "a yellow jumpsuit with a utility belt",
+        "signature": {"hair_color": "auburn", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Transformers ----------------------------------------------------
+    "Megatron": {
+        "franchise": "Transformers",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a towering grey-and-silver robotic body of tank-like plating with an "
+                   "arm cannon",
+        "mask": "a silver robotic face with a black helmet crest and glowing red eyes",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Bumblebee": {
+        "franchise": "Transformers",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a sleek yellow-and-black robotic body of car-formed plating",
+        "mask": "a yellow-and-black robotic face with blue optic eyes and antennae",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+
+    # --- Masters of the Universe (more) ----------------------------------
+    "Sorceress": {
+        "franchise": "Masters of the Universe",
+        "gender": "Female",
+        "costume": "a white feathered falcon-themed costume with a winged headdress, a "
+                   "blue cape, and feathered arm-wings",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a glowing crystal-topped staff",
+    },
+    "Teela": {
+        "franchise": "Masters of the Universe",
+        "gender": "Female",
+        "costume": "a golden snake-emblem corset with a white skirt, a golden cobra "
+                   "headpiece, and arm bands",
+        "signature": {"hair_color": "auburn", "hair_length": "very long",
+                      "hair_texture": "wavy", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a golden cobra-headed staff",
+    },
+    "Man-At-Arms": {
+        "franchise": "Masters of the Universe",
+        "gender": "Male",
+        "costume": "green-and-orange battle armor with a metal harness and a helmet",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "mustache", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "fair"},
+    },
+    "Beast Man": {
+        "franchise": "Masters of the Universe",
+        "gender": "Male",
+        "costume": "red fur-armor straps over an even, all-over coat of shaggy orange "
+                   "fur, with a fanged ape-like face and clawed hands",
+        "eyes": "yellow",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Orko": {
+        "franchise": "Masters of the Universe",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a floating blue robe with a wide red hat, a yellow scarf, and an 'O' "
+                   "medallion, with no visible legs",
+        "mask": "a shadowed face under a red hat showing only two glowing eyes",
+        "physique": {"body_type": "very slim", "height": "petite"},
+    },
+
+    # --- Big Hero 6 ------------------------------------------------------
+    "Aunt Cass": {
+        "franchise": "Big Hero 6",
+        "gender": "Female",
+        "costume": "a casual cardigan over a blouse and jeans, with a small cafe apron",
+        "signature": {"hair_color": "warm brown", "hair_length": "chin length bob",
+                      "hair_texture": "wavy", "eye_color": "warm hazel"},
+        "physique": {"body_type": "softly curved", "height": "average height", "skin_tone": "fair"},
+    },
+    "Baymax": {
+        "franchise": "Big Hero 6",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a large rounded soft white inflatable vinyl robot body with stubby "
+                   "arms and legs",
+        "mask": "a smooth white inflatable face with two small black dot eyes joined by a line",
+        "physique": {"body_type": "chubby", "height": "very tall"},
+    },
+
+    # --- The Incredibles -------------------------------------------------
+    "Mr. Incredible": {
+        "franchise": "The Incredibles",
+        "gender": "Male",
+        "costume": "a red supersuit with a black eye-mask, black trunks and boots, and a "
+                   "black-and-orange 'i' chest emblem, on a hugely broad muscular frame",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Elastigirl": {
+        "franchise": "The Incredibles",
+        "gender": "Female",
+        "costume": "a red supersuit with a black eye-mask, long gloves, and an 'i' chest emblem",
+        "signature": {"hair_color": "warm brown", "hair_length": "chin length bob",
+                      "eye_color": "warm hazel"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Violet": {
+        "franchise": "The Incredibles",
+        "gender": "Female",
+        "costume": "a red-and-black supersuit with an 'i' emblem",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "violet-gray"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Dash": {
+        "franchise": "The Incredibles",
+        "gender": "Male",
+        "costume": "a red-and-black supersuit with an 'i' emblem, built for speed",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Frozone": {
+        "franchise": "The Incredibles",
+        "gender": "Male",
+        "costume": "a blue-and-white ice-themed supersuit with a visor and ice-form boots",
+        "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
+                      "facial_hair": "goatee", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "dark brown"},
+    },
 }
 
 
-def get_cosplayer_names() -> list[str]:
-    """Return the sorted list of available cosplayer character names."""
-    return sorted(COSPLAYERS.keys())
+#: Broad category each franchise belongs to, for the node's "random_scope" control
+#: (so a Random pick can be limited to e.g. only Anime or only Marvel). Written as
+#: category -> franchises and inverted below. A franchise not listed falls back to
+#: _DEFAULT_CATEGORY, so a new entry still scopes sensibly until it is mapped here.
+_CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
+    "Anime & Manga": (
+        "Naruto", "Dragon Ball", "One Piece", "Bleach", "Demon Slayer", "Jujutsu Kaisen",
+        "My Hero Academia", "JoJo's Bizarre Adventure", "Fullmetal Alchemist", "Death Note",
+        "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
+        "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
+        "Pokemon",
+    ),
+    "Marvel": ("Marvel",),
+    "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman"),
+    "Star Wars": ("Star Wars",),
+    "Disney": (
+        "Disney", "The Little Mermaid", "Sleeping Beauty", "Frozen", "Snow White", "Tangled",
+        "Pocahontas", "Mulan", "Moana", "The Princess and the Frog", "Peter Pan", "Cinderella",
+        "Beauty and the Beast", "Aladdin", "Brave", "Alice in Wonderland", "101 Dalmatians",
+        "Big Hero 6", "The Incredibles",
+    ),
+    "Video Games": (
+        "Final Fantasy", "Final Fantasy VII", "Final Fantasy X", "Final Fantasy XV",
+        "Final Fantasy XIII", "Final Fantasy VI", "NieR: Automata", "Street Fighter",
+        "Mortal Kombat", "Tekken", "Overwatch", "League of Legends", "Arcane", "Genshin Impact",
+        "The Legend of Zelda", "The Legend of Zelda: Breath of the Wild", "Nintendo",
+        "Super Mario", "Metroid", "Resident Evil", "Tomb Raider", "Mass Effect", "Halo",
+        "Metal Gear", "God of War", "Kingdom Hearts", "Baldur's Gate 3", "The Witcher",
+        "Horizon", "Hitman", "Hellblade", "Doom", "Portal", "Silent Hill", "Darkstalkers",
+        "The King of Fighters", "Bayonetta",
+    ),
+    "Fantasy & Literature": (
+        "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
+    ),
+    "Movies & TV": (
+        "Star Trek", "The Terminator", "Alien", "Predator", "RoboCop", "Judge Dredd", "Mad Max",
+        "Escape from New York", "Pirates of the Caribbean", "Movie", "The Addams Family",
+        "Scooby-Doo", "Who Framed Roger Rabbit", "Mistress of the Dark", "Xena: Warrior Princess",
+        "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
+        "The Texas Chain Saw Massacre", "Scream", "Child's Play",
+    ),
+    "Comics & Cartoons": (
+        "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
+        "Invincible", "Image", "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
+        "The Smurfs", "Adventure Time", "Thundercats", "G.I. Joe", "TMNT",
+    ),
+}
+_FRANCHISE_CATEGORY: dict[str, str] = {
+    fr: cat for cat, frs in _CATEGORY_FRANCHISES.items() for fr in frs
+}
+_DEFAULT_CATEGORY = "Movies & TV"
+
+
+def get_cosplayer_category(franchise: str) -> str:
+    """Return the broad category for ``franchise`` (falls back to a sensible default)."""
+    return _FRANCHISE_CATEGORY.get(franchise, _DEFAULT_CATEGORY)
+
+
+def get_cosplayer_categories() -> list[str]:
+    """Return the sorted broad categories that actually have characters."""
+    return sorted({get_cosplayer_category(e.get("franchise", "")) for e in COSPLAYERS.values()})
+
+
+def get_cosplayer_names(gender: str | None = None, category: str | None = None) -> list[str]:
+    """Return sorted character names, optionally filtered by SOURCE gender and/or category.
+
+    ``gender`` (``"Female"``/``"Male"``) and ``category`` scope the node's "Random — …"
+    picks; ``category`` of ``None``/``"Any"`` means no franchise limit. The *person's*
+    gender is chosen separately on the IdentityForge node.
+    """
+    return sorted(
+        name for name, entry in COSPLAYERS.items()
+        if (gender is None or entry.get("gender") == gender)
+        and (category in (None, "Any")
+             or get_cosplayer_category(entry.get("franchise", "")) == category)
+    )
 
 
 def get_cosplayer(name: str) -> dict:
@@ -4318,15 +5116,8 @@ def get_cosplayer(name: str) -> dict:
 
 
 def get_cosplayer_names_by_gender(gender: str) -> list[str]:
-    """Return sorted names whose SOURCE character matches ``gender``.
-
-    Used for the node's "Random — female / male" scoping. The *person's* gender
-    is chosen separately on the IdentityForge node, so this only filters which
-    characters the random pick draws from.
-    """
-    return sorted(
-        name for name, entry in COSPLAYERS.items() if entry.get("gender") == gender
-    )
+    """Return sorted names whose SOURCE character matches ``gender`` (back-compat shim)."""
+    return get_cosplayer_names(gender=gender)
 
 
 # Merge optional user-supplied cosplayers (./user_options.json, "cosplayers"

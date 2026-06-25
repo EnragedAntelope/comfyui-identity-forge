@@ -81,8 +81,9 @@ optional sections:
   built-ins; `outfit_description` may use `{slot}` placeholders).
 - **`cosplayers`** adds characters to the Cosplayer node. `costume` (worn items only) is required;
   `franchise`/`gender` are optional; `signature` (both modes) and `physique` (Full character) are
-  `{field: value}` maps. An optional `"prop"` string adds a signature held item. A `gender: "Male"`
-  entry is how you populate the `Random — male` pick. For a fully masked head set
+  `{field: value}` maps. An optional `"prop"` string adds a signature held item; an optional
+  free-text `"eyes"` string sets a canonical non-standard eye colour (e.g. `"crimson"`). A
+  `gender: "Male"` entry is how you populate the `Random — male` pick. For a fully masked head set
   `"covers_face": true` **and** put the head covering in a separate `"mask"` string. For a bald
   character, state it in `costume` and do not lock a hair length.
 - **`creatures`** adds forms to the Creature node. `class` (one of the nine classes), `palette`

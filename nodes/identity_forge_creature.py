@@ -77,10 +77,12 @@ _AUTO = "Auto"
 #: Palette combo: roll a colour from _PALETTES with the seed (works on any creature).
 _RANDOM_PALETTE = "Random"
 _FINISHES = ["matte", "glossy", "iridescent", "slimy", "bioluminescent",
-             "translucent", "metallic", "wet", "fuzzy"]
+             "translucent", "metallic", "wet", "fuzzy", "furred", "scaled", "plated",
+             "feathered", "mossy", "icy", "spiny", "leathery"]
 _PALETTES = ["emerald", "crimson", "sapphire blue", "royal violet", "gold", "obsidian black",
              "bone white", "ash grey", "blood red", "electric blue", "toxic green",
-             "iridescent", "chrome", "deep purple", "amber", "teal", "rose pink"]
+             "iridescent", "chrome", "deep purple", "amber", "teal", "rose pink",
+             "silver", "jade", "ruby red", "copper", "ivory"]
 _SIZES = ["tiny", "small", "human-sized", "large", "towering"]
 
 # --- form labels (UI) -> canonical tokens (the engine's vocabulary) --------

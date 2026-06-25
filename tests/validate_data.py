@@ -165,6 +165,15 @@ def validate() -> list[str]:
         prop = entry.get("prop")
         if prop is not None and (not isinstance(prop, str) or not prop):
             errors.append(f"cosplayer '{name}': 'prop' must be a non-empty string")
+        # Optional free-text eye-colour override: renders verbatim, intentionally
+        # bypassing the eye_color option pool (for canonical red/violet/cat-slit eyes
+        # without polluting the main node's believable-people dropdown). If present it
+        # must be a non-empty string, and must not also be pinned in the signature.
+        eyes = entry.get("eyes")
+        if eyes is not None and (not isinstance(eyes, str) or not eyes):
+            errors.append(f"cosplayer '{name}': 'eyes' must be a non-empty string")
+        if eyes and entry.get("signature", {}).get("eye_color"):
+            errors.append(f"cosplayer '{name}': set either 'eyes' or signature.eye_color, not both")
         # signature is applied in both modes; physique only in Full character.
         # Every key must be a real field and every value a valid option for it.
         for section in ("signature", "physique"):

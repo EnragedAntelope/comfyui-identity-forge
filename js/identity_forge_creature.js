@@ -3,12 +3,15 @@ import { app } from "../../scripts/app.js";
 /*
  * IdentityForgeCreature frontend extension.
  *
- * Keeps the node compact: the headline widgets (creature / form / seed) stay
- * visible, while the per-slot hybrid overrides and the detail dropdowns live in
- * collapsed-by-default sections (the same zero-height collapse trick the main
- * IdentityForge node uses for its 70+ fields). Collapsing only changes how a
- * widget is *drawn* — it stays in node.widgets, so its value is still serialized
- * and passed to the backend (exactly how the main node's collapsed locks work).
+ * The headline widgets (creature / form / seed) stay visible; the per-slot hybrid
+ * overrides and the detail dropdowns live in collapsible sections that start
+ * EXPANDED (the user can collapse them on demand). They start expanded on purpose:
+ * hiding a widget on first paint desyncs the DOM-positioned widgets below it (a
+ * detail combo could render outside the node frame until a relayout), so the node
+ * is shown fully laid-out up front. Collapsing only changes how a widget is *drawn*
+ * — it stays in node.widgets, so its value is still serialized and passed to the
+ * backend (exactly how the main node's collapsed locks work). The "Hybrid slots"
+ * group also carries two bulk-set buttons (all Follow base / all Random).
  *
  * The multiline `more_features` box is a DOM-backed <textarea>. ComfyUI positions
  * DOM widgets by accumulating the heights of the widgets *above* them, so a textarea
@@ -84,17 +87,41 @@ function setupCreature(node) {
   }
 
   for (const [title, names] of GROUPS) {
-    const widgets = names.map((n) => byName.get(n)).filter(Boolean);
-    if (!widgets.length) continue;
-    const state = { collapsed: true }; // collapsed by default — keep the node small
-    const header = node.addWidget("button", "▸ " + title, null, () => {
+    const slotWidgets = names.map((n) => byName.get(n)).filter(Boolean);
+    if (!slotWidgets.length) continue;
+
+    // "Hybrid slots" gets two bulk-set buttons at the top of the group so all eight
+    // overrides can be set at once. Follow base is the default; Random rolls each slot.
+    const bulk = [];
+    if (title === "Hybrid slots") {
+      const setAll = (val) => {
+        for (const w of slotWidgets) {
+          w.value = val;
+          if (typeof w.callback === "function") w.callback(val);
+        }
+        node.setDirtyCanvas(true, true);
+      };
+      bulk.push(
+        node.addWidget("button", "Slots: all Follow base", null, () => setAll("Follow base"),
+                       { serialize: false }),
+        node.addWidget("button", "Slots: all Random", null, () => setAll("Random"),
+                       { serialize: false }),
+      );
+    }
+
+    const groupWidgets = [...bulk, ...slotWidgets]; // collapse/expand these together
+    // Start EXPANDED. Collapsing a widget on first paint desyncs the DOM-positioned
+    // widgets below it (a detail combo could render outside the node frame until a
+    // relayout); rendering everything visible up front avoids that entirely. The
+    // header button still collapses/expands on demand.
+    const state = { collapsed: false };
+    const header = node.addWidget("button", "▾ " + title, null, () => {
       state.collapsed = !state.collapsed;
       header.name = (state.collapsed ? "▸ " : "▾ ") + title;
-      for (const w of widgets) (state.collapsed ? hideWidget : showWidget)(w);
+      for (const w of groupWidgets) (state.collapsed ? hideWidget : showWidget)(w);
       resize(node);
     }, { serialize: false });
-    for (const w of widgets) hideWidget(w); // start collapsed
-    ordered.push(header, ...widgets);
+    ordered.push(header, ...groupWidgets);
   }
 
   // Safety net: append any widget we didn't explicitly place so a future

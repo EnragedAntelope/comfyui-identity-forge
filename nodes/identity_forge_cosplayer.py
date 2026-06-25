@@ -49,13 +49,13 @@ from typing import Any
 try:
     from ..data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
-        get_cosplayer_names_by_gender,
+        get_cosplayer_names_by_gender, get_cosplayer_categories,
     )
     from .identity_forge import group_fields, merge_preset_documents
 except ImportError:  # pragma: no cover — standalone/test context
     from data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
-        get_cosplayer_names_by_gender,
+        get_cosplayer_names_by_gender, get_cosplayer_categories,
     )
     from nodes.identity_forge import group_fields, merge_preset_documents
 
@@ -88,16 +88,25 @@ _MASK_OFF = "Unmask (show face)"
 _PROP_OFF = "No prop"
 _PROP_ON = "Include signature prop"
 
+#: Random-scope sentinel: no franchise/category limit on the Random picks.
+_SCOPE_ANY = "Any"
 
-def _resolve_character(character: str, rng: random.Random) -> str | None:
+
+def _resolve_character(
+    character: str, rng: random.Random, category: str = _SCOPE_ANY
+) -> str | None:
     """Resolve a combo selection to a concrete character name.
 
     Returns ``None`` for "None", an unknown name, or a Random pick over an empty
-    pool (e.g. "Random — male" before any male characters are added).
+    pool (e.g. "Random — male" before any male characters are added). ``category``
+    limits the Random picks to one franchise/category ("Any" = no limit). A specific
+    character selection ignores ``category``.
     """
     if character in _RANDOM_POOLS:
         gender = _RANDOM_POOLS[character]
-        pool = get_cosplayer_names() if gender is None else get_cosplayer_names_by_gender(gender)
+        pool = get_cosplayer_names(gender=gender, category=category)
+        if not pool:  # empty (gender, category) combo -> fall back to the full gender pool
+            pool = get_cosplayer_names(gender=gender)
         if not pool:
             print(f"[IdentityForgeCosplayer] No characters available for '{character}'.")
             return None
@@ -113,6 +122,7 @@ def build_cosplayer_json(
     look_level: str = _COSTUME_ONLY,
     mask_mode: str = _MASK_DEFAULT,
     include_prop: bool = False,
+    random_scope: str = _SCOPE_ANY,
 ) -> str:
     """Return the cosplay preset as a grouped JSON string.
 
@@ -130,9 +140,12 @@ def build_cosplayer_json(
     ``include_prop`` (default ``False``) adds the character's signature held prop
     (e.g. Thor's hammer) as the hidden ``held_item`` lock, voiced downstream as
     "holding …". It is a no-op for characters without a ``prop``.
+
+    ``random_scope`` (default ``"Any"``) limits the ``"Random — …"`` picks to one
+    franchise/category; it is ignored when a specific character is selected.
     """
     rng = random.Random(seed)
-    name = _resolve_character(character, rng)
+    name = _resolve_character(character, rng, random_scope)
     if name is None:
         return "{}"
 
@@ -149,6 +162,12 @@ def build_cosplayer_json(
     # signature look (hair/eyes) is always applied; physique only in Full mode.
     fields: dict[str, str] = {"outfit_description": costume}
     fields.update(entry.get("signature", {}))
+    # Free-text canonical eye-colour override for characters whose eyes fall outside
+    # the believable-people eye_color pool (e.g. "crimson", "golden cat-slit pupils").
+    # eye_color has identical gender pools, so the downstream gender gate passes the
+    # free-text value straight to the prose. Applied in both look levels.
+    if entry.get("eyes"):
+        fields["eye_color"] = entry["eyes"]
     if look_level == _FULL:
         fields.update(entry.get("physique", {}))
     # Signature held prop → hidden held_item lock (opt-in; off by default).
@@ -191,7 +210,17 @@ if _COMFY_AVAILABLE:
                         default=_NONE,
                         tooltip="Character to cosplay. 'None' emits nothing; the "
                                 "'Random — …' entries pick one using the seed, scoped by "
-                                "the source character's gender. Type to filter the list.",
+                                "the source character's gender (and by 'random_scope' "
+                                "below). Type to filter the list.",
+                    ),
+                    io.Combo.Input(
+                        "random_scope",
+                        options=[_SCOPE_ANY] + get_cosplayer_categories(),
+                        default=_SCOPE_ANY,
+                        tooltip="Limits the 'Random — …' picks to one franchise/category "
+                                "(e.g. only Anime & Manga, only Marvel). 'Any' = no limit. "
+                                "Combines with the gender scope; no effect when a specific "
+                                "character is picked.",
                     ),
                     io.Combo.Input(
                         "look_level",
@@ -257,6 +286,7 @@ if _COMFY_AVAILABLE:
                 kwargs.get("look_level", _COSTUME_ONLY),
                 kwargs.get("mask", _MASK_DEFAULT),
                 kwargs.get("props", _PROP_OFF) == _PROP_ON,
+                kwargs.get("random_scope", _SCOPE_ANY),
             )
             character_json = merge_preset_documents(kwargs.get("upstream", ""), own)
             return io.NodeOutput(character_json)

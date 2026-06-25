@@ -431,6 +431,31 @@ class CosplayerTests(unittest.TestCase):
         name = json.loads(build_cosplayer_json("Random — male", 3))["_meta"]["cosplay_of"]
         self.assertEqual(COSPLAYERS[name]["gender"], "Male")
 
+    def test_random_scope_limits_to_category(self):
+        from data.cosplayers import get_cosplayer_category
+        for seed in range(8):
+            name = json.loads(
+                build_cosplayer_json("Random — any", seed, random_scope="Marvel")
+            )["_meta"]["cosplay_of"]
+            self.assertEqual(get_cosplayer_category(COSPLAYERS[name]["franchise"]), "Marvel")
+
+    def test_random_scope_combines_with_gender(self):
+        from data.cosplayers import get_cosplayer_category
+        name = json.loads(
+            build_cosplayer_json("Random — female", 3, random_scope="DC")
+        )["_meta"]["cosplay_of"]
+        self.assertEqual(COSPLAYERS[name]["gender"], "Female")
+        self.assertEqual(get_cosplayer_category(COSPLAYERS[name]["franchise"]), "DC")
+
+    def test_eyes_override_renders_free_text(self):
+        # A canonical non-standard eye colour ("eyes" override) is voiced verbatim,
+        # without being a selectable option on the main node's eye_color dropdown.
+        doc = json.loads(build_cosplayer_json("Sukuna", 0))
+        self.assertEqual(doc["Face"]["eye_color"], "crimson")
+        locked, label, _ = self._locked_and_label("Sukuna")
+        prose, _ = generate_character(1, "Male", locked, cosplay_label=label)
+        self.assertIn("crimson", prose)
+
     def test_random_unknown_pool_returns_empty(self):
         # A Random pick over an empty pool must still degrade gracefully to "{}".
         from nodes.identity_forge_cosplayer import _resolve_character

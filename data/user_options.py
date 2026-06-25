@@ -328,6 +328,7 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
         franchise = entry.get("franchise")
         mask = entry.get("mask")
         prop = entry.get("prop")
+        eyes = entry.get("eyes")
         cosplayers[name] = {
             "franchise": franchise if isinstance(franchise, str) else "",
             "gender": gender if gender in ("Female", "Male") else "Female",
@@ -335,6 +336,7 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
             "costume": costume,
             "mask": mask if isinstance(mask, str) else "",
             "prop": prop if isinstance(prop, str) else "",
+            "eyes": eyes if isinstance(eyes, str) else "",
             "signature": _clean_field_map(entry.get("signature")),
             "physique": _clean_field_map(entry.get("physique")),
         }

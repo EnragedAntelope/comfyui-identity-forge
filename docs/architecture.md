@@ -72,7 +72,7 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
 gender, used only to scope the `Random — female/male` picks; the *person's* gender is the
 IdentityForge widget, so crossplay works), `costume`. Optional: `signature` / `physique`
 `{field: value}` maps (values **must** be valid `FIELD_DEFINITIONS` options — `validate_data`
-enforces), `covers_face` + `mask`, `prop`.
+enforces), `covers_face` + `mask`, `prop`, and `eyes` (free-text eye-colour override).
 
 Conventions (keep the data coherent):
 
@@ -93,8 +93,15 @@ Conventions (keep the data coherent):
 - **Plain ASCII only** in names and text (no em/en dashes, smart quotes, accents — e.g. use
   `Padme`, `Eowyn`). Tokenizers mangle the rest. Names are dict keys: a duplicate **silently
   overrides** — grep before adding.
-- Eye-colour field has no violet/red/yellow/pink; those characters' eyes just randomize —
-  carry recognizability via hair + costume.
+- **Iconic non-standard eyes** (red/violet/gold cat-slit) use the free-text `eyes` override
+  (a top-level entry key, not the signature) — it replaces `eye_color` and is voiced verbatim,
+  passing the gender gate because `eye_color`'s pools are identical. The main node's dropdown
+  stays believable (no fantasy colours added there).
+- **Random scope.** `_FRANCHISE_CATEGORY` maps every franchise to one of nine broad categories
+  (Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games, Fantasy & Literature, Movies & TV,
+  Comics & Cartoons). The Cosplayer node's `random_scope` control narrows the `Random — …` picks
+  by category (combines with the gender scope); `get_cosplayer_names(gender, category)` does the
+  filtering. Unmapped franchises fall back to a default.
 
 ## creatures.py — non-human form layer
 

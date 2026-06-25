@@ -54,6 +54,17 @@ instead of competing for the single socket. Documents are deep-merged with the
 which passes its upstream through unchanged — so both presets can stay wired and
 you just toggle which one is active.
 
+### Scoping the Random picks
+
+The **`random_scope`** widget limits the `Random — any / female / male` picks to one
+broad franchise category (Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games,
+Fantasy & Literature, Movies & TV, Comics & Cartoons). It **combines** with the gender
+scope — `Random — female` + `Marvel` draws a random female Marvel character — and is
+ignored when a specific character is chosen; `Any` (default) applies no limit. If a
+`(gender, category)` combination is empty it falls back to the full gender pool. Each
+franchise's category lives in `_FRANCHISE_CATEGORY` in `data/cosplayers.py`; an unmapped
+franchise falls back to a default so a new entry still scopes sensibly.
+
 ## Known limitations
 
 1. **One preset input on Identity Forge.** Identity Forge still has a single
@@ -78,9 +89,14 @@ you just toggle which one is active.
    it, or — for a *fully* masked head — set `covers_face: True` (see above) to drop
    the face/hair entirely.
 
-5. **Some iconic eye colours don't map.** The eye-colour field has no violet / red
-   / yellow / pink options, so those characters' eyes randomize rather than being
-   forced. Hair and costume carry recognizability instead.
+5. **Iconic non-standard eye colours use an `eyes` override.** The main node's
+   `eye_color` dropdown stays focused on believable people (no red / violet / gold
+   cat-slit), so a character with canonical fantasy eyes carries a free-text **`eyes`**
+   string (e.g. `"crimson"`, `"yellow with vertical cat-slit pupils"`, `"violet"`) that
+   overrides `eye_color` and is voiced verbatim. It works because `eye_color`'s two
+   gender pools are identical, so the gender gate passes the free text straight through;
+   `validate_data` only checks that it is a non-empty string (and not also pinned in the
+   signature). No effect on `covers_face` characters, whose eyes are hidden.
 
 6. **Costume overrides suppress auto garment fields.** When a costume is supplied,
    the separately-randomized `outfit_style` / `footwear` / `clothing_color` /
@@ -102,7 +118,9 @@ without editing the source (survives `git pull`) via the `cosplayers` section of
 how the `Random — male` pick gets populated. `costume` lists worn items only; give
 a character its one iconic held item via the optional `"prop"` string (emitted only
 when the node's `props` toggle is on), and add any other held items by editing the
-prompt before rendering. For a fully masked
+prompt before rendering. For a canonical **non-standard eye colour** outside the main
+node's pool (red / violet / gold cat-slit), add an optional free-text `"eyes"` string
+(e.g. `"crimson"`) — it overrides `eye_color` and is voiced verbatim. For a fully masked
 head set `"covers_face": true` **and** put the head covering in a separate `"mask"`
 string (kept out of `costume`) so the *Unmask* toggle can drop it. Keep costume
 text and names plain ASCII (no em dashes / smart quotes) so text-to-image

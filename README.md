@@ -119,6 +119,8 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   fields by hand.
 - **Crossplay just works.** The *person's* gender is the Identity Forge `gender` widget,
   independent of the character's; the gender gate drops anything invalid for the chosen gender.
+- **Scope the random character.** On the Cosplayer node, `random_scope` limits the `Random — …`
+  picks to one franchise/category (Anime & Manga, Marvel, DC, Star Wars, …) and combines with gender.
 - **Masked characters** (Spider-Man, a Mandalorian helmet) suppress the randomized face/hair so
   only the mask is described; the Cosplayer `Unmask` toggle reveals the head under the suit.
 - **Vault** — *Vault Save* is a terminal node used like Save Image (branch `prompt_json` in,

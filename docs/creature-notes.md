@@ -57,11 +57,15 @@ slimy / bioluminescent…); `size_scale` scales the subject (tiny … towering).
 **`more_features`** box takes `slot: phrase` lines (override a slot verbatim) or bare
 lines (extra features), for unlimited detail without more widgets.
 
-### Compact UI
+### Layout & bulk slot buttons
 
-Only `creature` / `form` / `seed` show by default. The eight hybrid-slot dropdowns,
-the detail dropdowns and the free-text box live in **collapsed** sections (the same
-zero-height collapse the main node uses for its 70+ fields), so the node stays small.
+The headline `creature` / `form` / `seed` widgets sit on top, with the eight hybrid-slot
+dropdowns and the detail dropdowns under collapsible **`Hybrid slots`** / **`Detail`**
+headers (click a header to collapse it). The sections start **expanded** — collapsing a
+widget on first paint can desync the DOM-positioned widgets below it (a detail combo could
+render outside the node frame until a relayout), so the node is shown fully laid-out up
+front. The `Hybrid slots` group also carries two bulk-set buttons, **`Slots: all Follow base`**
+and **`Slots: all Random`**, to set all eight overrides at once (Follow base stays the default).
 
 ### Chaining presets
 
