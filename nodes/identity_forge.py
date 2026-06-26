@@ -437,9 +437,18 @@ def _apply_constraints(
                         if v not in excluded]
                 if pool:
                     resolved[target] = rng.choice(pool)
+                    changed = True
                 elif field_def["optional"]:
                     resolved[target] = "None"
-                changed = True
+                    changed = True
+                else:
+                    # Non-optional field with no allowed option left: the value is
+                    # stuck at an excluded one. Don't flag a change (a no-op flag
+                    # would churn iterations and mask the contradiction) -- surface
+                    # it so the offending constraint/pool can be fixed.
+                    warn(target, f"'{rule['field']}={rule['value']}' excludes every "
+                                 f"option for required field '{target}'; left at "
+                                 f"'{resolved.get(target)}'.")
 
             else:  # requirement
                 target = rule["requires_field"]

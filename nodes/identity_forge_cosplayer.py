@@ -105,18 +105,23 @@ _SCOPE_ANY = "Any"
 #: can be locked absent (the costume's own colour becomes the only skin descriptor).
 _BODY_PAINT_RE = re.compile(r"\ban even\b.*?\bcoat of\b", re.IGNORECASE)
 
-#: Skin / skin-toned-makeup fields force-locked absent for body-paint characters,
-#: each mapped to the absent token the engine's "no makeup" constraints expect (so
-#: a randomized ``makeup_style="no makeup"`` doesn't fight the lock and emit a
-#: spurious warning). ``"None"`` is the universal absent sentinel for the skin
-#: fields, which carry no such constraint. Cosmetics that sit *on top* without
-#: implying a skin tone (lips, eye makeup, lashes, liner) are deliberately kept.
+#: Skin / makeup fields force-locked absent for body-paint characters, each mapped
+#: to the absent token the engine expects. ``makeup_style`` is locked to "no makeup"
+#: (which the constraints in data/constraints.py cascade to clear every cosmetic
+#: sub-field, and which _is_absent() treats as omitted so the whole makeup sentence
+#: drops): the umbrella style word ("soft glam", "dewy look", ...) implies a face
+#: foundation that t2i models render as a pale base *under* the paint, leaving the
+#: face light while the body is coloured (the She-Hulk / Satana pale-face bug). With
+#: the style suppressed the costume's own paint colour becomes the only skin/face
+#: descriptor. ``"None"`` is the universal absent sentinel for the skin fields, which
+#: carry no such constraint; "no blush"/"none" match the makeup absent tokens.
 _BODY_PAINT_SUPPRESS: dict[str, str] = {
     "skin_tone": "None",
     "complexion": "None",
     "skin_details": "None",
     "freckles_density": "None",
     "skin_finish": "None",
+    "makeup_style": "no makeup",
     "blush": "no blush",
     "contour": "none",
     "highlight": "none",

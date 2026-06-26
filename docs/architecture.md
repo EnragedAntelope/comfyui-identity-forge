@@ -99,11 +99,20 @@ Conventions (keep the data coherent):
   (textured: `"an even, all-over coat of …"` + keep the texture word); leave `skin_tone` out so
   the person underneath randomizes. The builder **auto-detects this `an even … coat of …` marker**
   (face-visible entries only) and force-locks `skin_tone`, `complexion`, `skin_details`,
-  `freckles_density`, and the skin-toned makeup (`blush`, `skin_finish`, `contour`, `highlight`)
-  absent — otherwise a random human skin tone/complexion renders the *face* pale under the paint
-  (the She-Hulk green-body/pale-face bug). Lip/eye cosmetics are kept. An explicit `body_paint:
-  True/False` entry key overrides the auto-detection. See `_BODY_PAINT_RE` /
-  `_BODY_PAINT_SUPPRESS` in `nodes/identity_forge_cosplayer.py`.
+  `freckles_density`, `makeup_style` (→ `no makeup`, which cascades every cosmetic sub-field
+  absent), and the skin-toned makeup (`blush`, `skin_finish`, `contour`, `highlight`)
+  absent — otherwise a random human skin tone/complexion *or* a randomized `makeup_style`
+  ("soft glam" with no foundation colour) renders the *face* pale under the paint (the
+  She-Hulk green-body/pale-face bug). An explicit `body_paint: True/False` entry key
+  overrides the auto-detection. See `_BODY_PAINT_RE` / `_BODY_PAINT_SUPPRESS` in
+  `nodes/identity_forge_cosplayer.py`.
+- **Elemental / energy beings whose head is also covered** (Human Torch flame, Ghost Rider
+  skull): prefer the `covers_face` + `mask` mechanism (head described in `mask`) over a plain
+  body-paint coat. `covers_face` drops the Face/Hair/Makeup groups, so no random hair/face
+  contradicts the effect (a plain body-paint coat suppresses skin but **not** hair, leaving a
+  "bald head in costume + random hair in prose" mismatch — see Doctor Manhattan / Voldemort).
+  Trade-off: `covers_face` does not suppress the Body-group `skin_tone`, so a faint "X skin"
+  can still appear in Costume-only mode; the dominant effect prose overrides it in practice.
 - **Extreme-size characters** (Giganta, Titania, Giant-Man): put the scale in `costume` prose
   ("towering 50-foot stature, …") — there is no size field for humans.
 - **Plain ASCII only** in names and text (no em/en dashes, smart quotes, accents — e.g. use
@@ -167,5 +176,5 @@ creature loader copies only the standard slots).
 - A locked physique doesn't constrain `fitness`/`muscle` (known loose coherence).
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
-- The roster is large (~750 cosplayers, ~130 creatures): always grep the current keys before
+- The roster is large (~840 cosplayers, ~130 creatures): always grep the current keys before
   adding to avoid silent overrides.

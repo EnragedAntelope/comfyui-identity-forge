@@ -596,6 +596,113 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "an oversized wooden mallet with a red-and-black striped head, slung "
                 "over one shoulder",
     },
+    "Deadshot": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a red-and-grey tactical combat suit with body armor, arm gauntlets, "
+                   "and a targeting monocle over the right eye",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "short beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "brown"},
+        "prop": "a long-barreled sniper rifle held ready at the shoulder",
+    },
+    "Peacemaker": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a white-and-silver armored bodysuit with red trim and a polished "
+                   "chrome dove-of-peace helmet",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a pair of large silver pistols, one in each hand",
+    },
+    "Captain Boomerang": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a blue-and-white costume with a boomerang-laden bandolier and "
+                   "harness over a long coat",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "bright blue"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "fair"},
+        "prop": "a razor-edged metal boomerang held in each hand",
+    },
+    "Bloodsport": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black-and-silver high-tech armored combat suit with weaponized "
+                   "gauntlets and a sleek open-face helmet",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "short beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+        "prop": "a modular rifle assembled from his gauntlet, leveled forward",
+    },
+    "Rick Flag": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "military tactical gear with a black load-bearing vest, fatigues, and "
+                   "a holstered sidearm",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "an assault rifle held across the chest",
+    },
+    "King Shark": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "only torn cargo shorts, with an even, all-over coat of grey-and-white "
+                   "shark skin, a massive great-white shark head with rows of jagged "
+                   "teeth and a dorsal fin down the back, on a huge muscular frame",
+        "eyes": "small solid black",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Polka-Dot Man": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a grey bodysuit and snug helmet covered in rows of bright "
+                   "multicolored polka dots, with dot-projecting wrist devices",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "pale"},
+    },
+    "Ratcatcher 2": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a worn brown hooded trench coat over layered scavenged clothing, "
+                   "with round tinted goggles pushed up on the forehead",
+        "signature": {"hair_color": "near black", "hair_length": "mid back",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "tan"},
+        "prop": "a small brown pet rat perched on one shoulder",
+    },
+    "Despero": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a minimal warrior harness with gold trim, over an even, all-over "
+                   "coat of pink-red alien skin, with a large third eye set in the "
+                   "forehead and a tall white finned crest over the head, on a towering "
+                   "muscular frame",
+        "eyes": "glowing red",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Starro": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a full-body giant blue-and-purple starfish costume with five thick "
+                   "textured arms and bumpy ridged skin",
+        "mask": "a starfish head-piece dominated by a single huge central eye",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Starro Spore": {
+        "franchise": "DC",
+        "gender": "Female",
+        "covers_face": True,
+        "costume": "ordinary everyday streetwear, the body standing rigid and slack "
+                   "under mind control",
+        "mask": "a small blue-and-white Starro spore clamped over the face, with a "
+                "single central eye and probing tendrils",
+        "physique": {"body_type": "average", "height": "average height"},
+    },
     "Poison Ivy": {
         "franchise": "DC",
         "gender": "Female",
@@ -1677,9 +1784,59 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a black bodysuit with a bright green torso and shoulders, a green "
                    "circular lantern emblem on the chest, a green domino mask, green "
-                   "gloves and boots, and a glowing green power ring",
+                   "gloves and boots, and a glowing green power ring worn on the finger",
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Hal Jordan": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black bodysuit with a bright green torso and shoulders, a green "
+                   "circular lantern emblem on the chest, a green domino mask, green "
+                   "gloves and boots, and a glowing green power ring worn on the finger",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "John Stewart": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black-and-green Green Lantern bodysuit with a circular lantern "
+                   "emblem on the chest, green gloves and boots, and a glowing green "
+                   "power ring worn on the finger",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "short beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "deep"},
+    },
+    "Guy Gardner": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a green-and-black Green Lantern jacket-style uniform with a circular "
+                   "lantern emblem on the chest, green gloves, and a glowing green power "
+                   "ring worn on the finger",
+        "signature": {"hair_color": "copper", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Kyle Rayner": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a sleek black bodysuit with green panels and a green crab-shaped "
+                   "lantern emblem on the chest, a green domino mask, and a glowing green "
+                   "power ring worn on the finger",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
+    },
+    "Alan Scott": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a Golden Age hero outfit of a red tunic with a green lantern emblem, "
+                   "a high-collared green cape lined with purple, a black-and-green "
+                   "domino mask, and a glowing green magic power ring worn on the finger",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Aquaman": {
@@ -3778,11 +3935,13 @@ COSPLAYERS: dict[str, dict] = {
     "Human Torch": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a blue Fantastic Four bodysuit with a white '4' emblem, wreathed "
-                   "head to toe in flame",
-        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
-                      "eye_color": "bright blue"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+        "covers_face": True,
+        "costume": "a body made entirely of living yellow-orange flame, glowing "
+                   "white-hot at the core and trailing fire off the shoulders and arms, "
+                   "with a circular Fantastic Four '4' emblem burning brighter on the chest",
+        "mask": "a head of living yellow-orange flame with glowing white eyes and no "
+                "solid features",
+        "physique": {"body_type": "athletic", "height": "tall"},
     },
     "The Thing": {
         "franchise": "Marvel",
@@ -3834,6 +3993,51 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a green military uniform under a long black leather coat",
         "mask": "a skinless crimson skull-like face",
         "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Kang the Conqueror": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a green-and-purple armored battle suit with a high collar, layered "
+                   "plating, and gauntlets",
+        "mask": "a purple full-face mask under a green helmet",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Baron Zemo": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a tailored dark coat over a fitted combat suit",
+        "mask": "a purple balaclava-style mask trimmed with a band of grey fur",
+        "physique": {"body_type": "athletic", "height": "average height"},
+    },
+    "Abomination": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "torn dark trousers, with an even, all-over coat of green-grey scaly "
+                   "reptilian skin, ridged bony plates over the brow and spine, pointed "
+                   "finned ears, and a gaunt monstrous face, on a towering muscular frame",
+        "eyes": "pale green",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Pyro": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a black bodysuit with orange flame-pattern accents and a fuel-tank "
+                   "harness feeding wrist flame-igniters",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+        "prop": "a whip of fire curling up from one outstretched hand",
+    },
+    "Sebastian Shaw": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "an 18th-century Hellfire Club outfit of a ruffled white shirt, a "
+                   "dark brocade waistcoat and tailcoat, and a black cravat",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "mutton chops", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Professor X": {
         "franchise": "Marvel",
@@ -3934,9 +4138,68 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "costume": "a black-and-yellow Sinestro Corps uniform with a yellow lantern "
-                   "emblem, over an even, smooth coat of red skin, with a thin black mustache",
+                   "emblem and a glowing yellow power ring worn on the finger, over an "
+                   "even, smooth coat of red skin, with a thin black mustache",
         "signature": {"facial_hair": "mustache", "eye_color": "amber"},
         "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Kilowog": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black-and-green Green Lantern uniform with a circular lantern "
+                   "emblem and a glowing green power ring worn on the finger, over an "
+                   "even, all-over coat of pink-grey ridged Bolovaxian skin, with a heavy "
+                   "tusked underbite and small pointed ears, on a massive muscular frame",
+        "eyes": "solid pink",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Tomar-Re": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black-and-green Green Lantern uniform with a circular lantern "
+                   "emblem and a glowing green power ring worn on the finger, over an "
+                   "even, all-over coat of orange Xudarian skin, with a tall red fin-like "
+                   "crest running over the head and a small beaked mouth",
+        "eyes": "large solid black",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Salaak": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black-and-green Green Lantern uniform on a gaunt four-armed frame, "
+                   "with a circular lantern emblem and a glowing green power ring worn on "
+                   "the finger, over an even, all-over coat of orange-brown alien skin, "
+                   "with a long elongated head and a thin slit mouth",
+        "eyes": "narrow yellow",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Ch'p": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a stylized small-statured Green Lantern cosplay with an even, "
+                   "all-over coat of brown squirrel-like fur, a bushy tail, large dark "
+                   "eyes, and rounded ears, wearing a green-and-black tunic with a "
+                   "circular lantern emblem and a glowing green power ring worn on the finger",
+        "eyes": "large solid black",
+        "physique": {"body_type": "petite and slim", "height": "petite"},
+    },
+    "Atrocitus": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a red-and-black Red Lantern uniform with a clawed red lantern emblem "
+                   "and a glowing red power ring worn on the finger, over an even, all-over "
+                   "coat of deep-red skin with bony ridges, on a towering muscular frame",
+        "eyes": "burning red",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Larfleeze": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "tattered orange Agent Orange robes with a glowing orange power ring "
+                   "worn on the finger, over an even, all-over coat of leathery orange "
+                   "skin, with a gaunt hunched frame, pointed ears, and a wide jagged grin",
+        "eyes": "glowing orange",
+        "physique": {"body_type": "lean", "height": "average height"},
     },
     "Brainiac": {
         "franchise": "DC",
@@ -5681,12 +5944,12 @@ COSPLAYERS: dict[str, dict] = {
     "Satana": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a revealing black-and-red costume emphasizing a demonic nature, with "
-                   "minimal coverage and demonic accessories, over an even, smooth coat of "
-                   "red demon-form body paint",
+        "costume": "a revealing red-and-black succubus outfit with minimal coverage, a "
+                   "high slit, gold-and-bone jewelry, and small curved horns, with a thin "
+                   "barbed tail",
         "eyes": "glowing hellfire red",
         "signature": {"hair_color": "jet black", "hair_length": "very long"},
-        "physique": {"body_type": "hourglass", "height": "average height"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
     },
     "Snowbird": {
         "franchise": "Marvel",
