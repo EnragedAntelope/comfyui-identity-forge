@@ -27,7 +27,9 @@ from nodes.identity_forge import (
     _SET_ALL_OFF,
     _SET_ALL_NONE,
 )
-from nodes.identity_forge import _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _MODIFIERS_KEY
+from nodes.identity_forge import (
+    _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _MODIFIERS_KEY,
+)
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
@@ -1193,6 +1195,68 @@ class GloveSuppressionTests(unittest.TestCase):
             other = self._jewelry(json.loads(js)).get("other_jewelry", "")
             self.assertNotIn("ring", other, f"seed {seed}")
             self.assertNotIn("finger", other, f"seed {seed}")
+
+
+class CoversBodyTests(unittest.TestCase):
+    """A full hard shell (robot/armour/exoskeleton) suppresses worn jewellery and
+    nails -- detected from the costume prose or set via the ``covers_body`` flag."""
+
+    def _has_jewelry(self, js):
+        return "Jewelry & Nails" in json.loads(js)
+
+    def test_robot_costume_auto_suppresses_jewelry(self):
+        costume = "a towering humanoid war robot sheathed in polished chrome armor plating"
+        for seed in range(40):
+            _, js = generate_character(seed, "Male", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            self.assertFalse(self._has_jewelry(js), f"seed {seed}")
+
+    def test_full_plate_archetype_auto_suppresses_jewelry(self):
+        # Holy Paladin's costume is "polished ... plate armor ..." -> full coverage.
+        flat = _parse_archetype_json(build_archetype_json("Holy Paladin", 0, "Essentials"))
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        for seed in range(20):
+            _, js = generate_character(seed, flat.get("gender", "Any"), locked,
+                                       accessory_density="Maximal")
+            self.assertFalse(self._has_jewelry(js), f"seed {seed}")
+
+    def test_covers_body_flag_suppresses_jewelry(self):
+        for seed in range(20):
+            _, js = generate_character(seed, "Female", {"outfit_description": "a plain robe"},
+                                       covers_body=True, accessory_density="Maximal")
+            self.assertFalse(self._has_jewelry(js), f"seed {seed}")
+
+    def test_ordinary_costume_keeps_jewelry(self):
+        # A normal outfit (no hard shell) leaves the jewellery group reachable.
+        costume = "a flowing red sundress with strappy sandals"
+        seen = any(self._has_jewelry(generate_character(s, "Female",
+                   {"outfit_description": costume}, accessory_density="Maximal")[1])
+                   for s in range(40))
+        self.assertTrue(seen)
+
+    def test_locked_necklace_survives_full_cover(self):
+        costume = "a towering humanoid war robot sheathed in chrome armor plating"
+        _, js = generate_character(1, "Female",
+                                   {"outfit_description": costume, "necklace": "pearl necklace"})
+        self.assertEqual(json.loads(js)["Jewelry & Nails"]["necklace"], "pearl necklace")
+
+    def test_cosplayer_flag_round_trips_through_meta(self):
+        # Man-At-Arms carries covers_body in the data; it must reach the engine.
+        meta = json.loads(build_cosplayer_json("Man-At-Arms", 0))["_meta"]
+        self.assertTrue(meta["covers_body"])
+        flat = _parse_archetype_json(build_cosplayer_json("Man-At-Arms", 0))
+        self.assertIn(_COVERS_BODY_KEY, flat)
+
+    def test_cylon_end_to_end_has_no_jewelry(self):
+        flat = _parse_archetype_json(build_cosplayer_json("Cylon Centurion", 0))
+        flat.pop(_COSPLAY_LABEL_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        covers_body = bool(flat.pop(_COVERS_BODY_KEY, None)) or True  # auto-detected anyway
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        for seed in range(15):
+            _, js = generate_character(seed, "Male", locked, covers_face=covers_face,
+                                       covers_body=covers_body, accessory_density="Maximal")
+            self.assertFalse(self._has_jewelry(js), f"seed {seed}")
 
 
 class GrammarAgreementTests(unittest.TestCase):

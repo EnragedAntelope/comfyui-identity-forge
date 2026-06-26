@@ -130,6 +130,13 @@ Conventions (keep the data coherent):
   worn on the finger"), not the `rings` field, so they survive the suppression — keep writing
   them that way. (For an all-metal robot like the Cylon Centurion, give it `gauntlets` so the
   finger details drop.)
+- **Full hard shell (`covers_body`):** a robot / droid / powered-armour / full-plate /
+  exoskeleton body has no bare skin for worn jewellery, so the engine drops the whole
+  **Jewelry & Nails** group. It auto-detects from the costume prose (`_FULL_COVER_RE` —
+  `robot`, `droid`, `exoskeleton`, `plate armor`, `armored bodysuit`, …) and also honours an
+  explicit `covers_body: True` entry key for cases the prose doesn't spell out (Nebula,
+  Man-At-Arms). Independent of `covers_face` (a face mask doesn't imply a covered body, and a
+  covered body may still show the face). Body/demographics stay (the silhouette has a build).
 - **Elemental / energy beings whose head is also covered** (Human Torch flame, Ghost Rider
   skull): use the `covers_face` + `mask` mechanism (head described in `mask`) so no random
   hair/face contradicts the effect, and keep the `an even … coat of …` body-paint phrasing in
@@ -199,9 +206,12 @@ creature loader copies only the standard slots).
   at the end.
 - The roster is large (~840 cosplayers, ~130 creatures): always grep the current keys before
   adding to avoid silent overrides.
-- Gloved/gauntleted costumes suppress randomized `nails`/`rings` in the engine (`_GLOVE_RE`),
-  but **not** other Body-group jewellery (necklace/bracelet/watch) — an all-armour cosplayer
-  (RoboCop, Iron Man, Cylon) may still report a stray necklace; that is pre-existing.
+- Gloved/gauntleted costumes suppress randomized `nails`/`rings` in the engine (`_GLOVE_RE`);
+  a **full hard shell** (robot/droid/powered-armour/full-plate/exoskeleton, detected by
+  `_FULL_COVER_RE` or the cosplayer `covers_body` flag) drops the whole **Jewelry & Nails**
+  group so an all-armour cosplayer (RoboCop, Iron Man, Cylon) reports no stray necklace. Both
+  respect explicit user locks. The shell rule also fires on full-plate **archetypes** (Human
+  Knight, Holy Paladin).
 - Adding options to a **flat** field shifts its distribution; prefer the density-gated
   `_EXTRA_ABSENCE` fields (variety changes, frequency doesn't). New feminine-coded values on a
   shared-pool field must also be added to `_MALE_EXCLUDED_VALUES` so a random Male skips them.

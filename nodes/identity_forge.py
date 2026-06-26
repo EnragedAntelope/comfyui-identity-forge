@@ -75,6 +75,11 @@ _COSPLAY_LABEL_KEY = "__cosplay_label__"
 #: the parsed-archetype dict, the same way the cosplay label travels.
 _COVERS_FACE_KEY = "__covers_face__"
 
+#: Reserved key carrying a cosplayer's ``covers_body`` flag through the parsed dict
+#: (a full hard suit / armour / robot shell / exoskeleton — no skin for worn
+#: jewellery to sit on).
+_COVERS_BODY_KEY = "__covers_body__"
+
 #: Top-level section name a Modifier node adds to the chained preset document,
 #: holding ``{field_or_group: descriptor}`` style modifiers.
 _MODIFIERS_DOC_KEY = "_modifiers"
@@ -113,6 +118,13 @@ _CONCEALED_FACE_GROUPS: frozenset[str] = frozenset({"Face", "Hair", "Makeup"})
 #: Individual head-worn fields (outside the above groups) a full mask also hides.
 _CONCEALED_FACE_FIELDS: frozenset[str] = frozenset({"earrings", "piercings"})
 
+#: Field groups suppressed when a cosplayer sets ``covers_body`` — a full hard
+#: suit / armour / robot shell / exoskeleton leaves no bare skin for worn
+#: jewellery or nails, so a randomized necklace/bracelet/ring/polish would only
+#: render on top of the shell. Body and demographics stay (there is still a body,
+#: and the silhouette has a height/build).
+_CONCEALED_BODY_GROUPS: frozenset[str] = frozenset({"Jewelry & Nails"})
+
 #: Control fields: read from their toggle, never randomized, never described.
 _CONTROL_FIELDS: frozenset[str] = frozenset(
     name for name, meta in FIELD_DEFINITIONS.items() if meta.get("control")
@@ -145,6 +157,20 @@ _ABSENCE_EXACT: frozenset[str] = frozenset({
 #: costume prose (outfit_description), not the ``rings`` field, so they are untouched.
 _GLOVE_RE = re.compile(r"\b(?:glove|gauntlet|mitten)s?\b", re.IGNORECASE)
 _FINGERLESS_RE = re.compile(r"fingerless", re.IGNORECASE)
+
+#: Costume phrases that mean the whole body is encased in a hard shell — a robot /
+#: droid / powered armour / full plate / exoskeleton / carapace — so there is no
+#: bare skin for worn jewellery or nails to sit on. Detected on the resolved
+#: outfit_description; when matched (or the ``covers_body`` flag is set) the engine
+#: drops the Jewelry & Nails group so a random necklace/ring/polish can't render on
+#: top of the shell. Kept conservative (terms that imply full hard coverage, never
+#: a bare-chested gladiator's "breastplate" or a partial "cybernetic arm").
+_FULL_COVER_RE = re.compile(
+    r"exoskeleton|carapace|\bdroid\b|\brobot\b|android|"
+    r"power(?:ed)?[ -]armor|powered exosuit|\bexosuit\b|armored bodysuit|"
+    r"plate armor|armor plating|beskar|mjolnir|bio-armor|suit of .{0,40}?armor",
+    re.IGNORECASE,
+)
 
 #: Maximum constraint-propagation passes before giving up (cycle guard).
 _MAX_CONSTRAINT_ITERATIONS: int = 12
@@ -922,6 +948,7 @@ def generate_character(
     location_setting: str = "Any indoor/outdoor",
     cosplay_label: str | None = None,
     covers_face: bool = False,
+    covers_body: bool = False,
     modifiers: dict[str, str] | None = None,
     species: dict | None = None,
 ) -> tuple[str, str]:
@@ -936,6 +963,10 @@ def generate_character(
 
     ``covers_face`` (set by a full-mask cosplayer) drops the randomized face,
     hair and makeup so only the costume's mask/helmet is described.
+
+    ``covers_body`` (set by a full hard-suit / armour / robot / exoskeleton
+    cosplayer) drops the randomized Jewelry & Nails group so no necklace, ring or
+    nail polish renders on top of the shell.
 
     ``modifiers`` (set by a connected Modifier node) maps a field name or group
     header to a descriptor that is prepended to the matching resolved value(s),
@@ -1010,6 +1041,19 @@ def generate_character(
             other = resolved.get("other_jewelry", "")
             if "ring" in other or "finger" in other:
                 resolved.pop("other_jewelry", None)
+
+    # A full hard shell -- robot / droid / powered armour / full plate / exoskeleton
+    # -- leaves no bare skin for worn jewellery or nails, so a randomized necklace,
+    # ring or polish would only render on top of the shell. Drop the whole Jewelry &
+    # Nails group when the costume reads as full coverage (or the cosplayer set the
+    # ``covers_body`` flag for a case the prose doesn't spell out). Auto-detection
+    # here also covers full-plate archetypes (Holy Paladin, Human Knight). Explicit
+    # user locks are respected, as with the glove rule above.
+    if covers_body or _FULL_COVER_RE.search(outfit_text):
+        for field in list(resolved):
+            if (FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_BODY_GROUPS
+                    and field not in locked_clean):
+                resolved.pop(field, None)
 
     # A studio / solid backdrop wants clean, even studio light — a scene-specific
     # value ("neon-lit street", "dappled forest canopy") on a green screen reads
@@ -1133,6 +1177,8 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                 )
             if meta.get("covers_face"):
                 flat[_COVERS_FACE_KEY] = "1"
+            if meta.get("covers_body"):
+                flat[_COVERS_BODY_KEY] = "1"
             # A creature preset carries its form + suppression here. ``form`` is
             # the marker that species data is present; slots arrive in the group.
             form = meta.get("form")
@@ -1325,6 +1371,7 @@ if _COMFY_AVAILABLE:
             archetype = _parse_archetype_json(kwargs.get("archetype_json", ""))
             cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
             covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
+            covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
             modifiers = archetype.pop(_MODIFIERS_KEY, None)
             species = archetype.pop(_SPECIES_KEY, None)
             if species is not None and not species.get("slots"):
@@ -1357,6 +1404,6 @@ if _COMFY_AVAILABLE:
             prose, json_output = generate_character(
                 seed, gender, locked, hair_color_scope, wardrobe,
                 accessory_density, location_setting, cosplay_label, covers_face,
-                modifiers, species,
+                covers_body, modifiers, species,
             )
             return io.NodeOutput(prose, json_output)

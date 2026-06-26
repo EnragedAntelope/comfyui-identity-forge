@@ -1090,6 +1090,7 @@ COSPLAYERS: dict[str, dict] = {
     },
     "Nebula": {
         "bald": True,
+        "covers_body": True,  # fully armoured cybernetic combat suit, no bare skin
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a fitted dark combat suit with armored segments, boots, gauntlets, "
@@ -1532,6 +1533,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,  # full powered exosuit, no bare skin for jewellery
         "costume": "a glossy hot-rod red and gold plated powered exosuit with a glowing "
                    "circular arc reactor in the chest and articulated armored gauntlets "
                    "and boots",
@@ -4287,6 +4289,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "RoboCop",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,  # full cybernetic armour shell, no bare skin for jewellery
         "costume": "a full suit of matte gunmetal cybernetic police armor with exposed "
                    "servos and a holstered sidearm",
         "mask": "a sleek steel helmet leaving only a stern jaw exposed",
@@ -4296,6 +4299,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Battlestar Galactica",
         "gender": "Male",  # source-gender scope only; Centurions are genderless robots
         "covers_face": True,
+        "covers_body": True,  # all-metal robot shell, no bare skin for jewellery
         "costume": "a towering humanoid war robot sheathed in an even, smooth coat of "
                    "polished gunmetal-chrome armor plating, with a sculpted segmented "
                    "torso, articulated limbs, and clawed armored gauntlets",
@@ -5388,6 +5392,7 @@ COSPLAYERS: dict[str, dict] = {
     "Man-At-Arms": {
         "franchise": "Masters of the Universe",
         "gender": "Male",
+        "covers_body": True,  # full battle armor over the torso and limbs
         "costume": "green-and-orange battle armor with a metal harness and a helmet",
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "facial_hair": "mustache", "eye_color": "dark brown"},
