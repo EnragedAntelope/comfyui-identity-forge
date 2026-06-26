@@ -411,12 +411,23 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "space buns", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
     },
-    "Padmé Amidala": {
+    "Padme Amidala": {
         "franchise": "Star Wars",
         "gender": "Female",
         "costume": "the white Geonosis battle outfit with a form-fitting white top, "
                    "white pants, a utility belt, and beige boots",
         "signature": {"hair_color": "warm brown", "hair_length": "long",
+                      "hair_style": "updo", "eye_color": "warm hazel"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Padme Amidala (Regal Outfit)": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "an opulent floor-length Naboo throne-room gown of deep crimson "
+                   "and gold brocade with enormous flared sleeves, ceremonial chalk-white "
+                   "face paint with a red lower-lip mark and red dots on each cheek, and a "
+                   "towering golden fan-shaped headdress with hanging gold ornaments",
+        "signature": {"hair_color": "near black", "hair_length": "very long",
                       "hair_style": "updo", "eye_color": "warm hazel"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
@@ -509,7 +520,7 @@ COSPLAYERS: dict[str, dict] = {
                    "and a glowing blue Focus device at the temple",
         "signature": {"hair_color": "copper", "hair_length": "long",
                       "hair_style": "dutch braids", "eye_color": "bright green",
-                      "skin_details": "scattered sun freckles"},
+                      "freckles_density": "scattered"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
         "prop": "a drawn wood-and-sinew tribal hunting bow, an arrow nocked",
     },
@@ -710,7 +721,7 @@ COSPLAYERS: dict[str, dict] = {
                    "full skirt, a magenta cape, and brown boots",
         "signature": {"hair_color": "auburn", "hair_length": "long",
                       "hair_style": "pigtails", "eye_color": "bright blue",
-                      "skin_details": "light freckles across nose"},
+                      "freckles_density": "few"},
         "physique": {"body_type": "slender", "height": "short", "skin_tone": "fair"},
     },
     "Belle": {
@@ -805,7 +816,7 @@ COSPLAYERS: dict[str, dict] = {
                    "belt",
         "signature": {"hair_color": "bright red", "hair_length": "long",
                       "hair_texture": "curly", "eye_color": "bright blue",
-                      "skin_details": "light freckles across nose"},
+                      "freckles_density": "moderate"},
         "physique": {"body_type": "athletic", "height": "short", "skin_tone": "fair"},
         "prop": "a drawn wooden longbow worn smooth with use, an arrow nocked",
     },
@@ -906,7 +917,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a purple-and-white athletic leotard, with an even, smooth coat of rich green body "
-                   "paint",
+                   "paint covering her face and entire body",
         "signature": {"hair_color": "emerald green", "hair_length": "slightly past shoulders",
                       "hair_texture": "loosely wavy", "eye_color": "emerald"},
         "physique": {"body_type": "athletic", "height": "very tall"},
@@ -2297,6 +2308,15 @@ COSPLAYERS: dict[str, dict] = {
                    "boots, a black belt, and a completely bald shiny head",
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
+    "Tatsumaki": {
+        "franchise": "One Punch Man",
+        "gender": "Female",
+        "costume": "a form-fitting black sleeveless cocktail dress and black heels, "
+                   "wrapped in a faint swirling green psychic aura, floating just off the ground",
+        "signature": {"hair_color": "emerald green", "hair_texture": "curly",
+                      "hair_length": "short pixie", "eye_color": "green"},
+        "physique": {"body_type": "petite and slim", "height": "very petite"},
+    },
 
     # --- Nintendo (male) --------------------------------------------------
     "Mario": {
@@ -3178,6 +3198,122 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "orange", "hair_length": "very short",
                       "hair_style": "high ponytail", "eye_color": "green"},
         "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+
+    # --- Pokemon (the Pokemon themselves) --------------------------------
+    "Pikachu": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a round chubby body of bright yellow fur with two brown stripes on the "
+                   "back, small stubby arms, and a jagged brown lightning-bolt tail",
+        "mask": "a round yellow Pikachu face with red circular cheek pouches, a tiny nose, "
+                "and long pointed ears tipped in black",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Charizard": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a towering orange draconic body with a cream belly, broad blue-green "
+                   "membranous wings, clawed limbs, and a long tail ending in a burning flame",
+        "mask": "a fierce orange dragon face with a blunt horned snout, sharp teeth, and "
+                "narrow teal eyes",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Bulbasaur": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a squat blue-green four-legged body with darker spots and a large green "
+                   "plant bulb sprouting from the back",
+        "mask": "a wide blue-green Bulbasaur face with large red eyes and a small fanged smile",
+        "physique": {"body_type": "stocky", "height": "very petite"},
+    },
+    "Squirtle": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a small bipedal blue body with stubby limbs and a sturdy brown shell with "
+                   "a cream underside and a short curled tail",
+        "mask": "a friendly blue Squirtle face with large brown eyes and rounded cheeks",
+        "physique": {"body_type": "stocky", "height": "very petite"},
+    },
+    "Eevee": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a small brown furry four-legged body with a thick fluffy cream collar "
+                   "ruff and a bushy cream-tipped tail",
+        "mask": "a fox-like Eevee face with big dark eyes and tall rounded brown ears",
+        "physique": {"body_type": "petite and slim", "height": "very petite"},
+    },
+    "Jigglypuff": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "covers_face": True,
+        "costume": "a round balloon-like pink body with stubby arms and feet and a small "
+                   "curled tuft of fur on the forehead",
+        "mask": "a round pink Jigglypuff face with enormous blue eyes and a tiny mouth",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Snorlax": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "an enormous round dark blue-green body with a broad cream belly, stubby "
+                   "clawed limbs, and a perpetually drowsy slouch",
+        "mask": "a sleepy Snorlax face with closed eyes, a wide mouth, and cat-like ears",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Gengar": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a round squat dark purple shadow body covered in small spikes along the "
+                   "back, with stubby clawed limbs",
+        "mask": "a mischievous Gengar face with a wide toothy grin and round red eyes",
+        "physique": {"body_type": "stocky", "height": "petite"},
+    },
+    "Mewtwo": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a tall sleek bipedal gray-and-purple feline-humanoid body with a long "
+                   "tube running from the back of the skull to the spine and a thick curling tail",
+        "mask": "a sculpted gray Mewtwo face with a small snout, a defined brow, and piercing "
+                "violet eyes",
+        "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "Psyduck": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a stout bipedal pale-yellow duck body with stubby webbed feet and small "
+                   "arms raised to clutch the head",
+        "mask": "a blank Psyduck face with a flat orange bill, vacant staring eyes, and three "
+                "stray tufts of hair",
+        "physique": {"body_type": "stocky", "height": "petite"},
+    },
+    "Lucario": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a lean bipedal blue-and-black jackal-like body with cream chest fur, a "
+                   "spike on the back of each hand and the chest, and a swishing tail",
+        "mask": "a blue-and-black Lucario jackal face with red eyes, a black mask-like muzzle, "
+                "and long backward-pointing ears with sensory appendages",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Meowth": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a slender cream-furred bipedal cat body with a curled brown-tipped tail "
+                   "and small paws",
+        "mask": "a cream Meowth cat face with a gleaming gold oval charm set in the forehead, "
+                "whiskers, and a sly grin",
+        "physique": {"body_type": "slim", "height": "petite"},
     },
 
     # --- Street Fighter (more) -------------------------------------------
@@ -4715,12 +4851,13 @@ COSPLAYERS: dict[str, dict] = {
     "Silver Banshee": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a black bodysuit with silver chains and a torn cape, over a chalk-white "
-                   "skull-like face with hollow black eye sockets",
-        "eyes": "glowing white",
+        "costume": "a black bodysuit with tattered, ragged edges and silver mystical symbols, "
+                   "an even, smooth coat of ashen gray-white body paint marked with bold black "
+                   "patterns tracing across the face and body, and a torn flowing cape",
+        "eyes": "glowing white in hollow blackened sockets",
         "signature": {"hair_color": "white", "hair_length": "very long",
                       "hair_texture": "thick and voluminous"},
-        "physique": {"body_type": "slender", "height": "tall"},
+        "physique": {"body_type": "athletic", "height": "statuesque"},
     },
 
     # --- The Sandman / The Endless ---------------------------------------
@@ -6671,10 +6808,526 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "a round pale-blue Ortolan body with a short trunk-like snout and "
-                   "broad floppy ears, seated at a red keyboard organ",
+                   "broad floppy ears",
         "eyes": "small round dark",
         "signature": {},
         "physique": {"body_type": "plus size", "height": "petite"},
+    },
+
+    # --- Star Wars (expanded: aliens, Imperials, droids, creatures) ------
+    "Lobot": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": False,
+        "costume": "a pale blue Cloud City administrator's tunic, with a silver cybernetic "
+                   "implant band wrapping around the back of a bald head from temple to temple",
+        "signature": {"facial_hair": "clean shaven"},
+        "eyes": "calm pale gray with a faint distant stare",
+        "physique": {"body_type": "average", "height": "average height"},
+    },
+    "Nute Gunray": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "elaborate layered Trade Federation viceroy robes with a tall ridged "
+                   "headdress and high collar, over mottled green-gray reptilian Neimoidian "
+                   "skin and a wide downturned mouth",
+        "eyes": "reddish-orange with narrow horizontal pupils",
+        "signature": {},
+        "physique": {"body_type": "slim", "height": "tall"},
+    },
+    "Imperial Officer": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a crisp gray-green Imperial officer's tunic with a rank insignia plaque, "
+                   "a code cylinder clipped at the chest, black gloves, and a peaked uniform cap",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "clean shaven", "eye_color": "dark brown"},
+        "physique": {"body_type": "fit", "height": "average height", "skin_tone": "light"},
+    },
+    "Captain Phasma": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "covers_face": True,
+        "costume": "mirror-bright chrome stormtrooper armor over a black bodysuit, with a "
+                   "long flowing black cape draped from one shoulder",
+        "mask": "a polished mirror-chrome stormtrooper helmet with a sharp angular crest "
+                "and a dark visor",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a chrome blaster rifle",
+    },
+    "Snowtrooper": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "bulky insulated white armor with a hooded cloak, a ribbed fabric kama "
+                   "skirt, and a survival backpack",
+        "mask": "a ribbed white snowtrooper helmet with round dark goggle lenses and a "
+                "segmented breath hose running down to the chest",
+        "physique": {"body_type": "athletic", "height": "average height"},
+        "prop": "a long-barreled blaster rifle",
+    },
+    "Kuiil": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a simple brown leather smock and apron over a stout Ugnaught body with "
+                   "leathery pinkish skin, long drooping facial whiskers, and small tusks",
+        "eyes": "small dark deep-set",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "petite"},
+    },
+    "Cassian Andor": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a worn field jacket over a henley shirt, with practical trousers and a "
+                   "utility belt",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "light medium"},
+    },
+    "Mon Mothma": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "flowing pale senatorial robes with a long draped white cloak and a "
+                   "simple metal medallion at the throat",
+        "signature": {"hair_color": "auburn", "hair_length": "chin length bob",
+                      "hair_style": "worn down", "eye_color": "blue-gray"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Saw Gerrera": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "heavy battle-worn robes and improvised armor plating, a breathing "
+                   "apparatus tube running to the chest, and rigid mechanical legs",
+        "signature": {"hair_color": "salt and pepper", "hair_length": "very short",
+                      "facial_hair": "short beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "average height", "skin_tone": "dark brown"},
+        "prop": "a heavy blaster rifle",
+    },
+    "Obi-Wan Kenobi (Force Ghost)": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "flowing layered Jedi robes rendered in a luminous, translucent pale-blue "
+                   "glow, the whole figure softly shimmering and faintly transparent with a "
+                   "ghostly aura",
+        "signature": {"hair_color": "white", "hair_length": "ear length",
+                      "facial_hair": "full beard", "eye_color": "blue-gray"},
+        "physique": {"body_type": "average", "height": "average height"},
+    },
+    "Watto": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a grubby leather apron over a potbellied blue-gray leathery Toydarian "
+                   "body with small fluttering insect-like wings, a long trunk-like snout, "
+                   "and short curved tusks",
+        "eyes": "small dark beady",
+        "signature": {},
+        "physique": {"body_type": "plump", "height": "petite"},
+    },
+    "Aurra Sing": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "a form-fitting dark spacer's jumpsuit with bandoliers, an even, smooth "
+                   "coat of chalk-white body paint over gaunt limbs, and a bald scalp trailing "
+                   "a single long thin braid with a slender antenna probe",
+        "eyes": "pale with red rims",
+        "signature": {},
+        "physique": {"body_type": "very slim", "height": "very tall"},
+        "prop": "a long-barreled sniper rifle",
+    },
+    "Dathomirian": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "tattered dark Nightsister robes and leather wraps, with an even, smooth "
+                   "coat of ashen gray-white body paint marked by jagged black clan tattoos "
+                   "across the face and arms",
+        "eyes": "pale yellow",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Asajj Ventress": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "a form-fitting dark layered robe with leather straps, an even, smooth "
+                   "coat of chalk-white body paint over a bald head, and faint dark Nightsister "
+                   "markings tracing the scalp and brow",
+        "eyes": "pale ice-blue",
+        "signature": {},
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a pair of curved-hilt red lightsabers, one ignited in each hand",
+    },
+    "Gran": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a simple belted laborer's tunic over a stocky grayish-brown body",
+        "mask": "a grayish goat-like Gran face with a broad muzzle, floppy ears, and three "
+                "large dark eyes set on short stalks",
+        "physique": {"body_type": "stocky", "height": "average height"},
+    },
+    "Ki-Adi-Mundi": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "earth-toned layered Jedi robes, with a strikingly tall elongated Cerean "
+                   "cranium rising high above the brow and pale skin",
+        "signature": {"hair_color": "white", "hair_length": "shoulder length",
+                      "facial_hair": "full beard", "eye_color": "blue-gray"},
+        "physique": {"body_type": "slim", "height": "tall"},
+        "prop": "an ignited blue lightsaber",
+    },
+    "Plo Koon": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "layered earth-toned Jedi robes over reddish-orange Kel Dor skin",
+        "mask": "a Kel Dor antiox face-mask with a sculpted metal breathing apparatus, large "
+                "round black protective goggles, and a clawed lower jaw",
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "an ignited blue lightsaber",
+    },
+    "Sebulba": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a scuffed podracer's harness over a wiry orange-tan leathery Dug body "
+                   "whose arms and legs are inverted, the forelimbs used as legs",
+        "mask": "a snarling Dug face with deep-set eyes, a flat snout, and long drooping "
+                "fleshy head-tufts",
+        "physique": {"body_type": "lean", "height": "petite"},
+    },
+    "Kaminoan": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "an elegant high-collared robe over a slender pale body, with a very long "
+                   "graceful sinuous neck rising to a small smooth-skinned head",
+        "eyes": "large dark almond-shaped",
+        "signature": {},
+        "physique": {"body_type": "very slim", "height": "very tall"},
+    },
+    "Cal Kestis": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a layered poncho over a henley and padded Jedi field gear, with worn "
+                   "trousers and boots",
+        "signature": {"hair_color": "copper", "hair_length": "ear length",
+                      "facial_hair": "stubble", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "an ignited blue lightsaber",
+    },
+    "Greez Dritus": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a captain's vest and rolled sleeves over a stout orange-skinned Latero "
+                   "body with four arms",
+        "eyes": "small dark",
+        "signature": {"facial_hair": "mustache"},
+        "physique": {"body_type": "stocky", "height": "petite"},
+    },
+    "Devaronian": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a rugged spacer's jacket and trousers, over deep red skin and a pair of "
+                   "curved cranial horns rising from the brow of a sharp-toothed face",
+        "eyes": "dark with a wicked glint",
+        "signature": {"facial_hair": "goatee"},
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Figrin D'an": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a tidy dark cantina-band suit over a slender body",
+        "mask": "a Bith face: a large pink hairless dome of a head with huge black almond "
+                "eyes, a flat folded nose, and a small downturned mouth",
+        "physique": {"body_type": "slim", "height": "average height"},
+        "prop": "a gleaming silver kloo-horn wind instrument",
+    },
+    "Duros": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a practical spacer's jumpsuit, over smooth hairless blue-green Duros skin "
+                   "and a noseless lipless face",
+        "eyes": "large round red",
+        "signature": {},
+        "physique": {"body_type": "slim", "height": "tall"},
+    },
+    "Doctor Cornelius Evazan": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a grimy layered spacer's jacket, with a heavily scarred face crossed by "
+                   "a deep diagonal scar and rough disfiguring marks",
+        "signature": {"hair_color": "dark brown", "hair_length": "ear length",
+                      "hair_style": "windswept", "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "light"},
+    },
+    "Ponda Baba": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a heavy quilted spacer's jacket over a broad hairy body",
+        "mask": "an Aqualish face with coarse fur, a pair of downward walrus tusks, and "
+                "large dark bulbous eyes",
+        "physique": {"body_type": "stocky", "height": "average height"},
+    },
+    "Bothan": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a practical belted tunic and vest over a lean fur-covered body",
+        "mask": "a fur-covered Bothan face with a short canine muzzle, alert eyes, and large "
+                "pointed swept-back ears",
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Constable Zuvio": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a layered militia uniform with a bandolier, over leathery greenish Kyuzo "
+                   "skin, beneath a wide flat-brimmed segmented Kyuzo helmet",
+        "eyes": "deep-set dark and stern",
+        "signature": {},
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Maz Kanata": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "layered earth-toned robes over a tiny deeply wrinkled orange-skinned "
+                   "body, with oversized round vision goggles pushed up on the brow",
+        "eyes": "large warm brown behind thick round goggle lenses",
+        "signature": {},
+        "physique": {"body_type": "petite and slim", "height": "very petite"},
+    },
+    "Nien Nunb": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "an orange Rebel flight suit with a life-support vest and harness",
+        "mask": "a Sullustan face with heavy pouched jowls, large round dark eyes, and broad "
+                "flap-like ears",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "Unkar Plutt": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a grubby junk-boss apron and layered rags over a huge bloated body",
+        "mask": "a Crolute face: a large pale fleshy blobby head with small sunken eyes and "
+                "drooping heavy jowls",
+        "physique": {"body_type": "plus size", "height": "tall"},
+    },
+    "Zorii Bliss": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "covers_face": True,
+        "costume": "an armored maroon-and-gold flight suit with a utility belt and twin holsters",
+        "mask": "a sleek gold-and-maroon spacer helmet with a dark wraparound visor",
+        "physique": {"body_type": "athletic", "height": "average height"},
+        "prop": "a pair of blaster pistols",
+    },
+    "Dexter Jettster": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a stained cook's apron over a huge four-armed Besalisk body",
+        "mask": "a Besalisk face with a row of fleshy chin wattles, small eyes, and a broad "
+                "toothy mouth",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Hondo Ohnaka": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "a flamboyant pirate coat with a bandolier and brass goggles pushed up "
+                   "on the brow, over deeply creased leathery Weequay skin with thin dark "
+                   "facial tendrils framing the jaw",
+        "eyes": "dark and shrewd",
+        "signature": {},
+        "physique": {"body_type": "average", "height": "average height"},
+    },
+    "Sabine Wren": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        "costume": "brightly painted Mandalorian beskar armor in purples and oranges over a "
+                   "gray flight suit, with a jetpack and a holstered blaster, helmet held at "
+                   "the hip",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "jaw length",
+                      "hair_style": "windswept", "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+    },
+    "Zeb Orrelios": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a worn cargo harness and bandolier over a towering purple-gray fur-covered "
+                   "Lasat body with heavy muscled arms",
+        "mask": "a Lasat face covered in purple-gray fur with bold dark stripes, prominent "
+                "sideburns, a heavy brow, and small pointed tusks",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Grand Inquisitor": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "sleek black Inquisitor armor and robes, over an even, smooth coat of "
+                   "ashen gray Pau'an skin etched with thin red ritual markings across a "
+                   "gaunt hairless face",
+        "eyes": "pale yellow sunken",
+        "signature": {},
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a spinning double-bladed red lightsaber",
+    },
+    "Bossk": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a yellow padded flight suit with bandoliers over a scaly green reptilian "
+                   "Trandoshan body with clawed hands",
+        "mask": "a reptilian Trandoshan face with rough green scales, slit reptile eyes, and "
+                "rows of small sharp teeth",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a heavy blaster rifle",
+    },
+    "Dengar": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "costume": "battle-worn fatigues and armor scraps, with a grimy off-white bandage "
+                   "wrapped turban-like around the head and brow",
+        "signature": {"facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "average height", "skin_tone": "light"},
+        "prop": "a heavy blaster rifle",
+    },
+    "Zuckuss": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a heavy layered protective coat and breathing tanks over a slight body",
+        "mask": "a Gand insectoid head with a ribbed breathing respirator over the lower "
+                "face and large round dark eyes",
+        "physique": {"body_type": "slim", "height": "short"},
+    },
+    "K-2SO": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a tall lanky matte-black reprogrammed Imperial security droid body with "
+                   "long thin jointed limbs and a narrow torso",
+        "mask": "a tall angular black droid head with a flat brow and a pair of glowing "
+                "yellow photoreceptor eyes",
+        "physique": {"body_type": "slim", "height": "very tall"},
+    },
+    "Chopper": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a squat dented orange-and-white cylindrical astromech body standing on "
+                   "two mismatched mechanical legs with a small third retractable foot",
+        "mask": "a rounded astromech dome head with a single glowing photoreceptor and a "
+                "pair of bent antennae",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "Battle Droid": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a thin skeletal tan B1 battle-droid body with spindly jointed limbs and "
+                   "a folded backpack unit",
+        "mask": "a narrow elongated tan droid head with dark recessed eye sockets and a "
+                "slit-like mouth grille",
+        "physique": {"body_type": "very slim", "height": "tall"},
+    },
+    "Gonk Droid": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a boxy gray walking power-droid body shaped like an upright crate, "
+                   "plodding on two stubby thick legs",
+        "mask": "a featureless boxy droid head-end with two small dim photoreceptor lights",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "2-1B Droid": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a humanoid coppery medical-droid body with a transparent chest panel "
+                   "and exposed neck cabling",
+        "mask": "a smooth coppery medical-droid face with a fixed expression and softly "
+                "glowing eyes",
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "4-LOM": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a humanoid charcoal-gray protocol-droid body with jointed limbs and a "
+                   "slung bandolier of gear",
+        "mask": "an insectoid protocol-droid face with large round bulbous photoreceptors "
+                "and segmented metal mandibles",
+        "physique": {"body_type": "slim", "height": "tall"},
+        "prop": "a blaster rifle",
+    },
+    "Porg": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a plump round body of brown-and-cream feathers with stubby flipper-like "
+                   "wings and small webbed feet",
+        "mask": "a round porg face with enormous orange eyes and a small downturned beak",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Salacious Crumb": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a scrawny brown reptilian Kowakian monkey-lizard body with spindly limbs "
+                   "and a long whip-like tail",
+        "mask": "a cackling monkey-lizard face with a hooked beak, big yellow eyes, and a "
+                "frill of long spiny ears",
+        "physique": {"body_type": "very slim", "height": "very petite"},
+    },
+    "Mynock": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a winged black leathery parasite body with broad membranous bat-like "
+                   "wings and clawed wing-tips",
+        "mask": "a flat leathery mynock head with no eyes and a round fleshy suction-cup mouth",
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Rancor": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a hulking hunched body of thick brown wrinkled leathery hide with massive "
+                   "long clawed arms and stubby powerful legs",
+        "mask": "a monstrous rancor head with a wide tusked maw, jagged teeth, deep-set small "
+                "eyes, and ridged brown hide",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Tauntaun": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a stocky gray-and-white furred reptilian body on two clawed legs with a "
+                   "thick balancing tail and small forelimbs",
+        "mask": "a horned reptilian tauntaun head with a blunt snout, curved side horns, and "
+                "shaggy fur",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Bantha": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a massive body of thick shaggy brown fur standing on four sturdy legs",
+        "mask": "a shaggy bantha head with a long muzzle and a great pair of curling spiral "
+                "horns sweeping back from the brow",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Loth-Cat": {
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a small lithe body of tan-and-white striped fur with a long tail and "
+                   "soft padded paws",
+        "mask": "a loth-cat face with large pointed tufted ears, wide bright eyes, and short "
+                "whiskered fur",
+        "physique": {"body_type": "petite and slim", "height": "very petite"},
     },
 
     # --- Anime / classic toons (Astro Boy / Speed Racer) -----------------

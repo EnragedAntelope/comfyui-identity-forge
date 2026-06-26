@@ -148,12 +148,17 @@ _WARDROBE_BY_GENDER: dict[str, str] = {
     "Female": "Feminine", "Male": "Masculine", "Any": "Any",
 }
 
-#: "Extra" fields (bags, jewellery, accessories) whose single "absent" option is
-#: otherwise drowned out by 10-26 present options — leaving ~90% of characters
-#: over-accessorised. Each maps to (absent value, P(absent) at "Balanced"); the
-#: accessory_density control scales that probability. Portrait-rare items (bag,
-#: accessories) lean more absent than everyday jewellery (necklace, earrings).
+#: "Extra" fields (bags, jewellery, accessories) plus the two "sometimes" skin
+#: features (freckles, distinguishing marks) whose single "absent" option is
+#: otherwise drowned out by its present options — leaving ~90% of characters
+#: over-accessorised / over-freckled. Each maps to (absent value, P(absent) at
+#: "Balanced"); the accessory_density control scales that probability. Portrait-
+#: rare items (bag, accessories) lean more absent than everyday jewellery
+#: (necklace, earrings). Freckles/marks lean mostly-absent so they read as a
+#: distinguishing feature, not a default.
 _EXTRA_ABSENCE: dict[str, tuple[str, float]] = {
+    "freckles_density": ("none", 0.72),
+    "skin_details": ("no notable marks", 0.60),
     "bag": ("no bag", 0.65),
     "accessories": ("no accessories", 0.55),
     "hair_accessory": ("no hair accessory", 0.55),

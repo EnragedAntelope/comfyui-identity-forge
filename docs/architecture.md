@@ -97,7 +97,13 @@ Conventions (keep the data coherent):
   the Mace Windu bug). A `facial_hair: "clean shaven"` lock is fine.
 - **Non-human skin / body paint:** word as `"an even, smooth coat of <colour> body paint"`
   (textured: `"an even, all-over coat of …"` + keep the texture word); leave `skin_tone` out so
-  the person underneath randomizes.
+  the person underneath randomizes. The builder **auto-detects this `an even … coat of …` marker**
+  (face-visible entries only) and force-locks `skin_tone`, `complexion`, `skin_details`,
+  `freckles_density`, and the skin-toned makeup (`blush`, `skin_finish`, `contour`, `highlight`)
+  absent — otherwise a random human skin tone/complexion renders the *face* pale under the paint
+  (the She-Hulk green-body/pale-face bug). Lip/eye cosmetics are kept. An explicit `body_paint:
+  True/False` entry key overrides the auto-detection. See `_BODY_PAINT_RE` /
+  `_BODY_PAINT_SUPPRESS` in `nodes/identity_forge_cosplayer.py`.
 - **Extreme-size characters** (Giganta, Titania, Giant-Man): put the scale in `costume` prose
   ("towering 50-foot stature, …") — there is no size field for humans.
 - **Plain ASCII only** in names and text (no em/en dashes, smart quotes, accents — e.g. use

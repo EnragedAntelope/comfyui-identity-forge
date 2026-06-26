@@ -119,8 +119,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("skin_details", {
         "group": 'Face',
-        "female_options": ['porcelain smooth', 'dewy and smooth', 'light freckles across nose', 'freckles across nose and cheeks', 'heavy freckles all over', 'scattered sun freckles', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'lightly textured', 'sun-kissed with light freckles'],
-        "male_options": ['porcelain smooth', 'dewy and smooth', 'light freckles across nose', 'freckles across nose and cheeks', 'heavy freckles all over', 'scattered sun freckles', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'lightly textured', 'sun-kissed with light freckles'],
+        # Distinguishing marks / texture only. Freckles are owned solely by the
+        # freckles_density field (no double-sourcing); skin-finish words live in
+        # complexion. The 'no notable marks' token is the absent value driven by
+        # accessory_density via _EXTRA_ABSENCE, so most faces carry no mark.
+        "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines'],
+        "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines'],
         "optional": True
     }),
     ("hair_color", {
@@ -347,8 +351,10 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("complexion", {
         "group": 'Face',
-        "female_options": ['clear', 'rosy', 'sallow', 'olive', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
-        "male_options": ['clear', 'rosy', 'sallow', 'olive', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
+        # Skin finish / undertone (always rendered). 'olive' removed: it collided
+        # with the skin_tone field's 'olive'. Texture words live in skin_details.
+        "female_options": ['clear', 'rosy', 'sallow', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
+        "male_options": ['clear', 'rosy', 'sallow', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
         "optional": False
     }),
     ("shoulder_width", {

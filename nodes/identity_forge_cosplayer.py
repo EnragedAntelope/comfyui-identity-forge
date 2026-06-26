@@ -42,6 +42,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from collections import OrderedDict
 from typing import Any
 
@@ -51,12 +52,14 @@ try:
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
         get_cosplayer_names_by_gender, get_cosplayer_categories,
     )
+    from ..data.fields import FIELD_DEFINITIONS
     from .identity_forge import group_fields, merge_preset_documents
 except ImportError:  # pragma: no cover — standalone/test context
     from data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
         get_cosplayer_names_by_gender, get_cosplayer_categories,
     )
+    from data.fields import FIELD_DEFINITIONS
     from nodes.identity_forge import group_fields, merge_preset_documents
 
 try:
@@ -90,6 +93,46 @@ _PROP_ON = "Include signature prop"
 
 #: Random-scope sentinel: no franchise/category limit on the Random picks.
 _SCOPE_ANY = "Any"
+
+#: A face-visible character whose colour covers the whole body (and therefore the
+#: face) — She-Hulk's green, Mystique's blue, a Nightsister's chalk-white — is
+#: written with the canonical "an even … coat of <colour> …" phrasing (see the
+#: cosplayer conventions in docs/architecture.md). When that paint/skin/fur coat
+#: is present the engine must NOT also randomize a human skin tone, complexion,
+#: skin marks, or skin-toned makeup underneath: those describe a natural-coloured
+#: face that t2i models then render *under* the paint, leaving the face pale while
+#: the body is coloured. This regex detects the marker so the contradicting fields
+#: can be locked absent (the costume's own colour becomes the only skin descriptor).
+_BODY_PAINT_RE = re.compile(r"\ban even\b.*?\bcoat of\b", re.IGNORECASE)
+
+#: Skin / skin-toned-makeup fields force-locked absent for body-paint characters,
+#: each mapped to the absent token the engine's "no makeup" constraints expect (so
+#: a randomized ``makeup_style="no makeup"`` doesn't fight the lock and emit a
+#: spurious warning). ``"None"`` is the universal absent sentinel for the skin
+#: fields, which carry no such constraint. Cosmetics that sit *on top* without
+#: implying a skin tone (lips, eye makeup, lashes, liner) are deliberately kept.
+_BODY_PAINT_SUPPRESS: dict[str, str] = {
+    "skin_tone": "None",
+    "complexion": "None",
+    "skin_details": "None",
+    "freckles_density": "None",
+    "skin_finish": "None",
+    "blush": "no blush",
+    "contour": "none",
+    "highlight": "none",
+}
+
+
+def _is_body_paint(entry: dict, costume: str) -> bool:
+    """Whether the character's colour covers the face (so human skin must be hid).
+
+    Defaults to auto-detecting the canonical body-paint phrase in the costume; an
+    explicit ``body_paint`` key on the entry forces it on or off.
+    """
+    override = entry.get("body_paint")
+    if override is not None:
+        return bool(override)
+    return bool(_BODY_PAINT_RE.search(costume))
 
 
 def _resolve_character(
@@ -196,6 +239,16 @@ def build_cosplayer_json(
                 # off too so a random size doesn't contradict it in the JSON.
                 group_values.setdefault("eye_size", "None")
                 break
+    # Body-paint characters (face shows but the colour covers it): force the human
+    # skin tone / complexion / skin marks / skin-toned makeup absent so only the
+    # costume's paint colour describes the skin — otherwise the face renders pale
+    # under the paint. Skipped when the face is masked away (those fields are hidden
+    # already). Injected here for the same reason as the eye locks above: group_fields
+    # strips "None", but the engine keeps a locked "None" as the absent state.
+    if not (covers and not unmask) and _is_body_paint(entry, costume):
+        for field_name, absent in _BODY_PAINT_SUPPRESS.items():
+            group = FIELD_DEFINITIONS.get(field_name, {}).get("group", "Other")
+            document.setdefault(group, OrderedDict())[field_name] = absent
     return json.dumps(document, indent=2)
 
 
