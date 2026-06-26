@@ -1122,6 +1122,79 @@ class ModifierTests(unittest.TestCase):
         )
 
 
+class GloveSuppressionTests(unittest.TestCase):
+    """Gloved hands hide the fingers, so randomized nails/rings must not render
+    on top of the glove -- except fingerless gloves (fingers exposed), an explicit
+    user lock, and power rings written into the costume prose itself."""
+
+    def _jewelry(self, doc):
+        return doc.get("Jewelry & Nails", {})
+
+    def test_gloves_suppress_nails_and_rings(self):
+        costume = "a sleek black combat bodysuit with white gloves and boots"
+        for seed in range(40):
+            _, js = generate_character(seed, "Female", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            jewelry = self._jewelry(json.loads(js))
+            self.assertNotIn("nails", jewelry, f"seed {seed}")
+            self.assertNotIn("rings", jewelry, f"seed {seed}")
+
+    def test_gauntlets_also_suppress(self):
+        costume = "ornate silver plate armor with articulated gauntlets and a tabard"
+        for seed in range(20):
+            _, js = generate_character(seed, "Male", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            self.assertNotIn("nails", self._jewelry(json.loads(js)), f"seed {seed}")
+
+    def test_fingerless_gloves_keep_nails(self):
+        # Fingerless gloves expose the fingers, so nails should still appear.
+        costume = "a leather jacket, ripped jeans, and fingerless gloves"
+        seen_nails = any(
+            "nails" in self._jewelry(json.loads(
+                generate_character(s, "Female", {"outfit_description": costume},
+                                   accessory_density="Maximal")[1]))
+            for s in range(40)
+        )
+        self.assertTrue(seen_nails)
+
+    def test_no_gloves_keep_nails(self):
+        # A normal outfit (no gloves) leaves the nail field free to appear.
+        costume = "a flowing red sundress with strappy sandals"
+        seen_nails = any(
+            "nails" in self._jewelry(json.loads(
+                generate_character(s, "Female", {"outfit_description": costume},
+                                   accessory_density="Maximal")[1]))
+            for s in range(40)
+        )
+        self.assertTrue(seen_nails)
+
+    def test_locked_nails_survive_gloves(self):
+        # An explicit user lock beats the glove suppression.
+        costume = "a sleek black combat bodysuit with white gloves and boots"
+        _, js = generate_character(1, "Female",
+                                   {"outfit_description": costume, "nails": "red polish"})
+        self.assertEqual(self._jewelry(json.loads(js)).get("nails"), "red polish")
+
+    def test_power_ring_in_costume_survives(self):
+        # Green Lantern style: the power ring lives in the costume prose, not the
+        # ``rings`` field, so suppressing the field never removes it.
+        costume = ("a black-and-green bodysuit with a circular lantern emblem, green "
+                   "gloves and boots, and a glowing green power ring worn on the finger")
+        prose, js = generate_character(3, "Male", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+        self.assertIn("power ring", prose)
+        self.assertNotIn("rings", self._jewelry(json.loads(js)))
+
+    def test_ringtyped_other_jewelry_dropped_under_gloves(self):
+        costume = "a tailored suit with black leather gloves"
+        for seed in range(60):
+            _, js = generate_character(seed, "Female", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            other = self._jewelry(json.loads(js)).get("other_jewelry", "")
+            self.assertNotIn("ring", other, f"seed {seed}")
+            self.assertNotIn("finger", other, f"seed {seed}")
+
+
 class GrammarAgreementTests(unittest.TestCase):
     """The 'Any' gender uses plural 'They' and must take plural verbs."""
 

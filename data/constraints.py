@@ -270,7 +270,8 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     "earrings": [
         "pearl studs", "medium gold hoops", "large bold gold hoops",
         "chandelier earrings", "long drop earrings", "tassel earrings",
-        "mismatched earrings", "clip-on pearl earrings",
+        "mismatched earrings", "clip-on pearl earrings", "huggie hoops",
+        "threader earrings",
     ],
     "necklace": [
         "pearl necklace", "pearl strand", "locket necklace", "choker",
@@ -278,16 +279,17 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     ],
     "other_jewelry": [
         "stacked bracelets", "thin rings on multiple fingers",
-        "cocktail ring", "layered rings",
+        "cocktail ring", "layered rings", "anklet",
     ],
-    "rings": ["stacked thin bands", "delicate gemstone"],
-    "bracelet": ["tennis bracelet", "charm bracelet"],
+    "rings": ["stacked thin bands", "delicate gemstone", "midi ring"],
+    "bracelet": ["tennis bracelet", "charm bracelet", "bangle stack"],
     "hair_style": [
         "space buns", "pigtails", "braided pigtails", "updo", "French twist",
         "crown braid", "fishtail braid", "half up half down",
     ],
     "hair_length": ["chin length bob", "waist length", "hip length"],
-    "hair_highlights": ["subtle balayage", "face framing", "ombre", "sombre"],
+    "hair_highlights": ["subtle balayage", "face framing", "ombre", "sombre",
+                        "money piece", "peekaboo highlights"],
     "eyebrows": [
         "thin and arched", "pencil thin", "feathered", "well defined and arched",
         "bold statement brows", "laminated brows",

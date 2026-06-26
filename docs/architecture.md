@@ -120,6 +120,16 @@ Conventions (keep the data coherent):
   stray hairs, a beard) still wins. See `_BALD_RE` / `_BALD_SUPPRESS`.
 - **Clean-shaven faces:** `"clean-shaven"`/`"clean shaven"` in `costume` **auto-locks**
   `facial_hair` absent so a random beard can't sprout on a bare face. See `_CLEAN_SHAVEN_RE`.
+- **Gloved hands:** a costume that covers the hands (`glove`/`gauntlet`/`mitten`) makes the
+  engine force the finger fields (`nails`, `rings`, and ring-typed `other_jewelry`) absent —
+  otherwise a randomized polish/ring renders *on top of* the glove. This lives in the **engine**
+  (`generate_character`, `_GLOVE_RE`), not the cosplayer builder, so it also covers archetype
+  costumes and random outfits. `"fingerless"` anywhere in the text opts out (fingers exposed →
+  nails/rings stay). A user-locked `nails`/`rings` is respected. **Power rings worn over the
+  glove** (Green Lantern, Sinestro) belong in the `costume` prose ("a glowing green power ring
+  worn on the finger"), not the `rings` field, so they survive the suppression — keep writing
+  them that way. (For an all-metal robot like the Cylon Centurion, give it `gauntlets` so the
+  finger details drop.)
 - **Elemental / energy beings whose head is also covered** (Human Torch flame, Ghost Rider
   skull): use the `covers_face` + `mask` mechanism (head described in `mask`) so no random
   hair/face contradicts the effect, and keep the `an even … coat of …` body-paint phrasing in
@@ -189,3 +199,9 @@ creature loader copies only the standard slots).
   at the end.
 - The roster is large (~840 cosplayers, ~130 creatures): always grep the current keys before
   adding to avoid silent overrides.
+- Gloved/gauntleted costumes suppress randomized `nails`/`rings` in the engine (`_GLOVE_RE`),
+  but **not** other Body-group jewellery (necklace/bracelet/watch) — an all-armour cosplayer
+  (RoboCop, Iron Man, Cylon) may still report a stray necklace; that is pre-existing.
+- Adding options to a **flat** field shifts its distribution; prefer the density-gated
+  `_EXTRA_ABSENCE` fields (variety changes, frequency doesn't). New feminine-coded values on a
+  shared-pool field must also be added to `_MALE_EXCLUDED_VALUES` so a random Male skips them.

@@ -71,8 +71,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("eye_color", {
         "group": 'Face',
-        "female_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray'],
-        "male_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray'],
+        "female_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
+        "male_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
         "optional": False
     }),
     ("eye_shape", {
@@ -123,8 +123,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # freckles_density field (no double-sourcing); skin-finish words live in
         # complexion. The 'no notable marks' token is the absent value driven by
         # accessory_density via _EXTRA_ABSENCE, so most faces carry no mark.
-        "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines'],
-        "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines'],
+        "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
+        "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
         "optional": True
     }),
     ("hair_color", {
@@ -228,26 +228,26 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("earrings", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no earrings', 'small gold studs', 'small silver studs', 'pearl studs', 'diamond studs', 'small gold hoops', 'medium gold hoops', 'large bold gold hoops', 'silver hoops', 'chandelier earrings', 'long drop earrings', 'tassel earrings', 'mismatched earrings', 'clip-on pearl earrings'],
-        "male_options": ['no earrings', 'small gold studs', 'small silver studs', 'pearl studs', 'diamond studs', 'small gold hoops', 'medium gold hoops', 'large bold gold hoops', 'silver hoops', 'chandelier earrings', 'long drop earrings', 'tassel earrings', 'mismatched earrings', 'clip-on pearl earrings'],
+        "female_options": ['no earrings', 'small gold studs', 'small silver studs', 'pearl studs', 'diamond studs', 'small gold hoops', 'medium gold hoops', 'large bold gold hoops', 'silver hoops', 'chandelier earrings', 'long drop earrings', 'tassel earrings', 'mismatched earrings', 'clip-on pearl earrings', 'ear cuff', 'huggie hoops', 'threader earrings'],
+        "male_options": ['no earrings', 'small gold studs', 'small silver studs', 'pearl studs', 'diamond studs', 'small gold hoops', 'medium gold hoops', 'large bold gold hoops', 'silver hoops', 'chandelier earrings', 'long drop earrings', 'tassel earrings', 'mismatched earrings', 'clip-on pearl earrings', 'ear cuff', 'huggie hoops', 'threader earrings'],
         "optional": False
     }),
     ("necklace", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no necklace', 'delicate gold chain', 'layered gold chains', 'pearl necklace', 'pearl strand', 'diamond pendant', 'gemstone pendant', 'cross necklace', 'locket necklace', 'choker', 'velvet choker', 'statement necklace', 'collar necklace', 'nothing but a subtle chain'],
-        "male_options": ['no necklace', 'delicate gold chain', 'layered gold chains', 'pearl necklace', 'pearl strand', 'diamond pendant', 'gemstone pendant', 'cross necklace', 'locket necklace', 'choker', 'velvet choker', 'statement necklace', 'collar necklace', 'nothing but a subtle chain'],
+        "female_options": ['no necklace', 'delicate gold chain', 'layered gold chains', 'pearl necklace', 'pearl strand', 'diamond pendant', 'gemstone pendant', 'cross necklace', 'locket necklace', 'choker', 'velvet choker', 'statement necklace', 'collar necklace', 'nothing but a subtle chain', 'beaded necklace', 'layered pendant necklaces', 'pendant on a leather cord'],
+        "male_options": ['no necklace', 'delicate gold chain', 'layered gold chains', 'pearl necklace', 'pearl strand', 'diamond pendant', 'gemstone pendant', 'cross necklace', 'locket necklace', 'choker', 'velvet choker', 'statement necklace', 'collar necklace', 'nothing but a subtle chain', 'beaded necklace', 'layered pendant necklaces', 'pendant on a leather cord'],
         "optional": False
     }),
     ("other_jewelry", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no other jewelry', 'simple gold bracelet', 'silver cuff bracelet', 'stacked bracelets', 'thin rings on multiple fingers', 'cocktail ring', 'plain band ring', 'watch', 'layered rings'],
-        "male_options": ['no other jewelry', 'simple gold bracelet', 'silver cuff bracelet', 'stacked bracelets', 'thin rings on multiple fingers', 'cocktail ring', 'plain band ring', 'watch', 'layered rings'],
+        "female_options": ['no other jewelry', 'simple gold bracelet', 'silver cuff bracelet', 'stacked bracelets', 'thin rings on multiple fingers', 'cocktail ring', 'plain band ring', 'watch', 'layered rings', 'anklet', 'arm cuff'],
+        "male_options": ['no other jewelry', 'simple gold bracelet', 'silver cuff bracelet', 'stacked bracelets', 'thin rings on multiple fingers', 'cocktail ring', 'plain band ring', 'watch', 'layered rings', 'anklet', 'arm cuff'],
         "optional": False
     }),
     ("piercings", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing'],
-        "male_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing'],
+        "female_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing'],
+        "male_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing'],
         "optional": True
     }),
     ("nails", {
@@ -401,8 +401,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("hair_highlights", {
         "group": 'Hair',
-        "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips'],
-        "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips'],
+        "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights'],
+        "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights'],
         "optional": False
     }),
     ("eyebrow_makeup", {
@@ -425,14 +425,14 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("rings", {
         "group": 'Jewelry & Nails',
-        "female_options": ['none', 'simple band', 'stacked thin bands', 'statement ring', 'signet ring', 'delicate gemstone'],
-        "male_options": ['none', 'simple band', 'stacked thin bands', 'statement ring', 'signet ring', 'delicate gemstone'],
+        "female_options": ['none', 'simple band', 'stacked thin bands', 'statement ring', 'signet ring', 'delicate gemstone', 'thumb ring', 'midi ring'],
+        "male_options": ['none', 'simple band', 'stacked thin bands', 'statement ring', 'signet ring', 'delicate gemstone', 'thumb ring', 'midi ring'],
         "optional": False
     }),
     ("bracelet", {
         "group": 'Jewelry & Nails',
-        "female_options": ['none', 'tennis bracelet', 'chain bracelet', 'cuff', 'beaded bracelet', 'charm bracelet'],
-        "male_options": ['none', 'tennis bracelet', 'chain bracelet', 'cuff', 'beaded bracelet', 'charm bracelet'],
+        "female_options": ['none', 'tennis bracelet', 'chain bracelet', 'cuff', 'beaded bracelet', 'charm bracelet', 'bangle stack', 'leather wrap bracelet'],
+        "male_options": ['none', 'tennis bracelet', 'chain bracelet', 'cuff', 'beaded bracelet', 'charm bracelet', 'bangle stack', 'leather wrap bracelet'],
         "optional": False
     }),
     ("watch_type", {
@@ -443,8 +443,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("footwear", {
         "group": 'Clothing',
-        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'barefoot'],
-        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'barefoot'],
+        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'barefoot', 'ankle boots', 'wedges', 'mules'],
+        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'barefoot', 'ankle boots', 'wedges', 'mules'],
         "optional": False
     }),
     ("clothing_color", {

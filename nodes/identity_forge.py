@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from collections import OrderedDict
 from typing import Any
 
@@ -134,6 +135,16 @@ _GENDER_NOUN = {"Female": "woman", "Male": "man", "Any": "person"}
 _ABSENCE_EXACT: frozenset[str] = frozenset({
     "natural bare", "bare natural lips", "bare nails", "clean shaven", "none",
 })
+
+#: Gloved/gauntleted hands cover the fingers, so a randomized fingernail polish or
+#: ring would render *on top of* the glove (a reported t2i bug). When the resolved
+#: outfit covers the hands the engine forces the finger fields (nails, rings, and
+#: ring-typed other_jewelry) absent — see ``generate_character``. ``_FINGERLESS_RE``
+#: opts out: fingerless gloves expose the fingers, so nails/rings should still show.
+#: Iconic power rings worn *over* the glove (Green Lantern, Sinestro) live in the
+#: costume prose (outfit_description), not the ``rings`` field, so they are untouched.
+_GLOVE_RE = re.compile(r"\b(?:glove|gauntlet|mitten)s?\b", re.IGNORECASE)
+_FINGERLESS_RE = re.compile(r"fingerless", re.IGNORECASE)
 
 #: Maximum constraint-propagation passes before giving up (cycle guard).
 _MAX_CONSTRAINT_ITERATIONS: int = 12
@@ -983,6 +994,22 @@ def generate_character(
     else:
         for field in ("outfit_style", "footwear", "clothing_color", "clothing_pattern"):
             resolved.pop(field, None)
+
+    # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or
+    # ring would render on top of the glove (the reported bug). Force the finger
+    # fields absent when the resolved outfit covers the hands -- unless they expose
+    # the fingers ("fingerless") or the user explicitly locked the field. A power
+    # ring worn over the glove (Green Lantern, Sinestro) is written into the costume
+    # prose itself, not the ``rings`` field, so it survives this suppression.
+    outfit_text = resolved.get("outfit_description") or ""
+    if _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text):
+        for field in ("nails", "rings"):
+            if field not in locked_clean:
+                resolved.pop(field, None)
+        if "other_jewelry" not in locked_clean:
+            other = resolved.get("other_jewelry", "")
+            if "ring" in other or "finger" in other:
+                resolved.pop("other_jewelry", None)
 
     # A studio / solid backdrop wants clean, even studio light — a scene-specific
     # value ("neon-lit street", "dappled forest canopy") on a green screen reads

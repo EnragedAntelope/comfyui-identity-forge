@@ -3142,7 +3142,7 @@ COSPLAYERS: dict[str, dict] = {
     "Misa Amane": {
         "franchise": "Death Note",
         "gender": "Female",
-        "costume": "a gothic-lolita black dress with lace, buckles, and a small top hat",
+        "costume": "a gothic black dress with lace, buckles, and a small top hat",
         "signature": {"hair_color": "light blonde", "hair_length": "long",
                       "hair_style": "pigtails", "eye_color": "light brown"},
         "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "fair"},
@@ -4292,6 +4292,16 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a sleek steel helmet leaving only a stern jaw exposed",
         "physique": {"body_type": "stocky", "height": "tall"},
     },
+    "Cylon Centurion": {
+        "franchise": "Battlestar Galactica",
+        "gender": "Male",  # source-gender scope only; Centurions are genderless robots
+        "covers_face": True,
+        "costume": "a towering humanoid war robot sheathed in an even, smooth coat of "
+                   "polished gunmetal-chrome armor plating, with a sculpted segmented "
+                   "torso, articulated limbs, and clawed armored gauntlets",
+        "mask": "a featureless chrome helmeted head with a single horizontal red "
+                "eye-slit scanning side to side",
+    },
     "The Terminator": {
         "franchise": "The Terminator",
         "gender": "Male",
@@ -4536,7 +4546,7 @@ COSPLAYERS: dict[str, dict] = {
     "Chucky": {
         "franchise": "Child's Play",
         "gender": "Male",
-        "costume": "child-sized denim dungarees over a colorful striped shirt and "
+        "costume": "doll-sized denim dungarees over a colorful striped shirt and "
                    "sneakers, with a freckled doll face crossed by stitched scars",
         "signature": {"hair_color": "deep red", "hair_length": "very short",
                       "eye_color": "bright blue"},
@@ -6299,7 +6309,7 @@ COSPLAYERS: dict[str, dict] = {
     "Homura Akemi (Devil)": {
         "franchise": "Madoka Magica",
         "gender": "Female",
-        "costume": "an elaborate dark gothic-Lolita dress in black with dark purple and "
+        "costume": "an elaborate dark gothic dress in black with dark purple and "
                    "red accents, a feathered collar, a full skirt, and dark feathered wings",
         "eyes": "glowing violet",
         "signature": {"hair_color": "jet black", "hair_length": "waist length",
@@ -8247,7 +8257,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Literature", "Folklore", "Legend", "Dr. Seuss", "Winnie the Pooh",
     ),
     "Movies & TV": (
-        "Star Trek", "The Terminator", "Alien", "Predator", "RoboCop", "Judge Dredd", "Mad Max",
+        "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
+        "Judge Dredd", "Mad Max",
         "Escape from New York", "Pirates of the Caribbean", "Movie", "The Addams Family",
         "Scooby-Doo", "Who Framed Roger Rabbit", "Mistress of the Dark", "Xena: Warrior Princess",
         "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
