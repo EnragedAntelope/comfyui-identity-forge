@@ -1089,6 +1089,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Nebula": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a fitted dark combat suit with armored segments, boots, gauntlets, "
@@ -1195,6 +1196,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- More Star Wars ---------------------------------------------------
     "Hera Syndulla": {
+        "bald": True,
         "franchise": "Star Wars",
         "gender": "Female",
         "costume": "a practical brown and orange flight suit with a utility belt, brown "
@@ -1498,6 +1500,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "petite and slim", "height": "very petite"},
     },
     "Liara T'Soni": {
+        "bald": True,
         "franchise": "Mass Effect",
         "gender": "Female",
         "costume": "a white and blue sleeveless top with a high collar, dark fitted "
@@ -1635,6 +1638,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale"},
     },
     "Thanos": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "gold and blue armored battle plate, blue greaves, and the golden "
@@ -2035,6 +2039,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Darth Maul": {
+        "bald": True,
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "black hooded robes, with an even coat of blood-red body paint patterned with "
@@ -2978,6 +2983,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a straight broadsword in a back scabbard",
     },
     "Frieza": {
+        "bald": True,
         "franchise": "Dragon Ball",
         "gender": "Male",
         "costume": "a smooth white-and-purple bio-armor carapace over an even, smooth "
@@ -2987,6 +2993,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "short"},
     },
     "Cell": {
+        "bald": True,
         "franchise": "Dragon Ball",
         "gender": "Male",
         "costume": "an even, all-over coat of green-and-black insectoid armor plating "
@@ -3004,6 +3011,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "tan"},
     },
     "Beerus": {
+        "bald": True,
         "franchise": "Dragon Ball",
         "gender": "Male",
         "costume": "an Egyptian-styled outfit of purple, gold and teal over an even, "
@@ -4060,6 +4068,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Apocalypse": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "heavy blue-and-grey techno-organic armor with cabling, over an even, "
@@ -4749,6 +4758,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Iceman": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "an even, smooth coat of translucent pale-blue ice over a lean frame, "
@@ -4829,6 +4839,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Vision": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "a yellow cape and green-and-gold accents over an even, smooth coat of "
@@ -4873,6 +4884,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
     },
     "Drax": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "grey trousers over a bare muscular torso, with an even, all-over coat "
@@ -4892,6 +4904,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "an oversized laser blaster rifle",
     },
     "Groot": {
+        "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "an even, all-over coat of brown wooden bark skin with mossy patches "
@@ -4913,6 +4926,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- DC (more heroes) ------------------------------------------------
     "Darkseid": {
+        "bald": True,
         "franchise": "DC",
         "gender": "Male",
         "costume": "heavy blue-and-grey Apokoliptian armor over an even, smooth coat of "
@@ -5206,6 +5220,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Mumm-Ra": {
+        "bald": True,
         "franchise": "Thundercats",
         "gender": "Male",
         "costume": "a black headdress and a crimson cape with golden arm bands, over an "
@@ -5255,6 +5270,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Teenage Mutant Ninja Turtles ------------------------------------
     "Leonardo": {
+        "bald": True,
         "franchise": "TMNT",
         "gender": "Male",
         "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
@@ -5266,6 +5282,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "twin katanas",
     },
     "Raphael": {
+        "bald": True,
         "franchise": "TMNT",
         "gender": "Male",
         "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
@@ -5277,6 +5294,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a pair of three-pronged sai",
     },
     "Donatello": {
+        "bald": True,
         "franchise": "TMNT",
         "gender": "Male",
         "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
@@ -5288,6 +5306,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a long wooden bo staff",
     },
     "Michelangelo": {
+        "bald": True,
         "franchise": "TMNT",
         "gender": "Male",
         "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
@@ -6749,6 +6768,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Etrigan the Demon": {
+        "bald": True,
         "franchise": "DC",
         "gender": "Male",
         "costume": "a red tunic with a cape and a high collar, over an even, all-over "
@@ -6797,6 +6817,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Abe Sapien": {
+        "bald": True,
         "franchise": "Hellboy",
         "gender": "Male",
         "costume": "trunks and a breathing harness, over an even, all-over coat of "
@@ -7436,6 +7457,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Grand Inquisitor": {
+        "bald": True,
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "sleek black Inquisitor armor and robes, over an even, smooth coat of "
