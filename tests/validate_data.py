@@ -20,7 +20,7 @@ if str(ROOT) not in sys.path:
 import re
 
 from data.fields import (
-    FIELD_DEFINITIONS, HAIR_STYLE_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
+    FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
     ETHNICITY_REGION, STUDIO_BACKDROPS,
 )
 from data.constraints import CONSTRAINT_RULES
@@ -76,27 +76,30 @@ def validate() -> list[str]:
         if not FIELD_DEFINITIONS.get(control, {}).get("control"):
             errors.append(f"control field '{control}' missing or not marked control=True")
 
-    # --- hair-style families: must partition the hair_style options ---
-    # The weighted random picker draws from HAIR_STYLE_FAMILIES; if it drifts from
-    # the flat option list, some styles become unreachable or duplicated.
-    family_variants: list[str] = []
-    for fam, meta in HAIR_STYLE_FAMILIES.items():
-        weight = meta.get("weight")
-        if not isinstance(weight, int) or weight <= 0:
-            errors.append(f"hair-style family '{fam}': weight must be a positive int")
-        if not meta.get("variants"):
-            errors.append(f"hair-style family '{fam}': empty variants")
-        family_variants.extend(meta.get("variants", []))
-    if len(family_variants) != len(set(family_variants)):
-        errors.append("HAIR_STYLE_FAMILIES: duplicate variant across families")
-    hair_style_options = _options("hair_style")
-    if set(family_variants) != hair_style_options:
-        missing = sorted(hair_style_options - set(family_variants))
-        extra = sorted(set(family_variants) - hair_style_options)
-        errors.append(
-            f"HAIR_STYLE_FAMILIES variants != hair_style options "
-            f"(missing: {missing}, extra: {extra})"
-        )
+    # --- weighted families: each must partition its field's options exactly ---
+    # The weighted random picker (_pick_family_weighted) draws from FIELD_FAMILIES;
+    # if a field's families drift from its flat option list, some values become
+    # unreachable or duplicated. This covers hair_style + every other grown field
+    # (expression, mood, pose, lighting, location) from one check.
+    for field_name, field_families in FIELD_FAMILIES.items():
+        family_variants: list[str] = []
+        for fam, meta in field_families.items():
+            weight = meta.get("weight")
+            if not isinstance(weight, int) or weight <= 0:
+                errors.append(f"{field_name} family '{fam}': weight must be a positive int")
+            if not meta.get("variants"):
+                errors.append(f"{field_name} family '{fam}': empty variants")
+            family_variants.extend(meta.get("variants", []))
+        if len(family_variants) != len(set(family_variants)):
+            errors.append(f"{field_name} FIELD_FAMILIES: duplicate variant across families")
+        field_options = _options(field_name)
+        if set(family_variants) != field_options:
+            missing = sorted(field_options - set(family_variants))
+            extra = sorted(set(family_variants) - field_options)
+            errors.append(
+                f"{field_name} FIELD_FAMILIES variants != {field_name} options "
+                f"(missing: {missing}, extra: {extra})"
+            )
 
     # --- outfit descriptions (gendered buckets) ----------------------
     if set(OUTFIT_DESCRIPTIONS) != _EXPECTED_OUTFIT_STYLES:

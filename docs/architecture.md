@@ -67,13 +67,19 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
 - **Widget building** (`define_schema`): each field combo = `["Random"] + <real options, with
   `_is_absent` values filtered out> + ["None"]`. Result: exactly one "omit" affordance
   (`None`). Picking `None` == any in-pool absent value == omit.
-- **Weighted hair-style pick.** `hair_style` is the one field that does **not** use a flat
-  `rng.choice`: `_pick_hair_style` first draws a family from `HAIR_STYLE_FAMILIES` (weighted by
-  `weight`, frozen to each family's original variant count, sum = 30), then a variant uniformly
-  within it. So adding a variant subdivides its family's share instead of inflating it (3
-  ponytails still total the same ~6.7% the 2 originals did). The flat option list still drives
-  the widget (every variant lockable); `validate_data` checks the families partition it exactly.
-  New variants must also be slotted into the relevant `data/constraints.py` length lists
+- **Weighted family pick (the bias-safe growth channel).** Fields registered in `FIELD_FAMILIES`
+  do **not** use a flat `rng.choice`: `_pick_family_weighted(field, pool, rng)` first draws a family
+  (weighted by `weight`, frozen to each family's *original* variant count), then a variant uniformly
+  within it. So adding a variant subdivides its family's share instead of inflating it, and the
+  field's top-level distribution never shifts — the safe way to enlarge a flat field without biasing
+  randomization. Because each weight equals the family's original size, the pick reproduces a flat
+  uniform draw until new variants are added. Registered fields: `hair_style` (`HAIR_STYLE_FAMILIES`),
+  `expression`, `mood`, `pose`, `lighting`, `location` (each `<FIELD>_FAMILIES` in `data/fields.py`).
+  The picker intersects each family's variants with `pool` and drops empty families, so upstream
+  filtering still composes — e.g. the `location_setting` Indoor/Outdoor/Studio scope, or a hair-length
+  constraint. The flat option list still drives the widget (every variant lockable); `validate_data`
+  checks **every** `FIELD_FAMILIES` entry partitions its field's options exactly. New `hair_style`
+  variants must also be slotted into the relevant `data/constraints.py` length lists
   (`_LONG_HAIR_STYLES`, the pixie exclusion) so they're culled on short hair like their siblings.
 
 ## cosplayers.py — characters as a worn look

@@ -29,13 +29,13 @@ from typing import Any
 # the generic "data"/"nodes" names), absolute when run standalone for tests.
 try:
     from ..data.fields import (
-        FIELD_DEFINITIONS, HAIR_STYLE_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
+        FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
         ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
     )
     from ..data.constraints import CONSTRAINT_RULES
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
-        FIELD_DEFINITIONS, HAIR_STYLE_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
+        FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
         ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
     )
     from data.constraints import CONSTRAINT_RULES
@@ -390,18 +390,26 @@ def _bias_skin_tone(pool: list[str], ethnicity: str | None, rng: random.Random) 
     return in_band or pool
 
 
-def _pick_hair_style(pool: list[str], rng: random.Random) -> str:
-    """Weighted two-tier hair-style pick: choose a family (weighted by its frozen
-    original size), then a variant uniformly within it.
+def _pick_family_weighted(field_name: str, pool: list[str], rng: random.Random) -> str:
+    """Weighted two-tier pick for any field registered in :data:`FIELD_FAMILIES`:
+    choose a family (weighted by its frozen original size), then a variant
+    uniformly within it.
 
     This keeps each family's overall share independent of how many variants it
-    holds, so adding variants subdivides a family's slice instead of inflating it.
-    Variants are intersected with ``pool`` (and empty families dropped) so any
-    upstream filtering still applies; falls back to a flat pick if nothing maps.
+    holds, so adding variants subdivides a family's slice instead of inflating it
+    (the bias-safe channel for growing a flat field). Because each family's weight
+    equals its original variant count, the pick reproduces a flat uniform draw
+    until new variants are added. Variants are intersected with ``pool`` (and
+    empty families dropped) so any upstream filtering -- e.g. the location_setting
+    indoor/outdoor/studio scope or a hair-length constraint -- still applies;
+    falls back to a flat pick if the field has no families or nothing maps.
     """
+    field_families = FIELD_FAMILIES.get(field_name)
+    if not field_families:
+        return rng.choice(pool)
     families = [
         (fam["weight"], [v for v in fam["variants"] if v in pool])
-        for fam in HAIR_STYLE_FAMILIES.values()
+        for fam in field_families.values()
     ]
     families = [(weight, variants) for weight, variants in families if variants]
     if not families:
@@ -439,12 +447,14 @@ def _randomize_fields(
         pool = _build_option_pool(field_name, field_def, gender, resolved)
         if field_name == "skin_tone":
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
-        if field_name == "hair_style" and pool:
-            resolved[field_name] = _pick_hair_style(pool, rng)
-            continue
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
         if forced_absent is not None:
             resolved[field_name] = forced_absent
+        elif field_name in FIELD_FAMILIES and pool:
+            # Bias-safe weighted pick for grown fields (hair_style, expression,
+            # pose, mood, lighting, location). _maybe_absent is RNG-neutral for
+            # these (none are density-gated), so seeds stay stable for the field.
+            resolved[field_name] = _pick_family_weighted(field_name, pool, rng)
         elif pool:
             resolved[field_name] = rng.choice(pool)
         elif field_def["optional"]:

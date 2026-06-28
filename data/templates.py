@@ -1483,6 +1483,119 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "neon sign glow in multiple colors", "shot_type": "medium close-up from chest up",
         "mood": "playful",
     },
+
+    # --- More crafts, trades, fields & personas ---------------------------
+    "Astronomer": {
+        "hair_style": "messy bun", "outfit_style": "smart casual",
+        "expression": "contemplative", "location": "planetarium dome interior",
+        "lighting": "low key moody single light source",
+        "shot_type": "medium shot from waist up", "mood": "dreamy",
+    },
+    "Beekeeper": {
+        "outfit_style": "casual", "expression": "relaxed",
+        "location": "flower field in bloom", "lighting": "golden hour sunlight",
+        "shot_type": "medium shot from waist up", "mood": "serene",
+    },
+    "Carpenter": {
+        "outfit_style": "casual", "expression": "focused",
+        "location": "woodworking workshop", "lighting": "warm incandescent lamp glow",
+        "shot_type": "medium shot from waist up", "mood": "confident",
+    },
+    "Welder": {
+        "outfit_style": "casual", "expression": "determined",
+        "location": "factory floor", "lighting": "fire and flame warm flicker",
+        "shot_type": "medium close-up from chest up", "mood": "intense",
+    },
+    "Falconer": {
+        "outfit_style": "smart casual", "expression": "calm and composed",
+        "location": "misty moor", "lighting": "overcast diffused daylight",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "serene",
+    },
+    "Cartographer": {
+        "outfit_style": "vintage retro", "expression": "contemplative",
+        "location": "cozy home library", "lighting": "warm candlelight",
+        "shot_type": "medium shot from waist up", "mood": "mysterious",
+    },
+    "Paramedic": {
+        "outfit_style": "athletic", "expression": "determined",
+        "location": "emergency room", "lighting": "cool LED overhead lighting",
+        "shot_type": "medium shot from waist up", "mood": "tense",
+    },
+    "Train Conductor": {
+        "outfit_style": "business casual", "expression": "warm smile",
+        "location": "train station waiting area", "lighting": "soft morning light",
+        "shot_type": "medium shot from waist up", "mood": "cheerful",
+    },
+    "Jeweler": {
+        "outfit_style": "business casual", "expression": "focused",
+        "location": "luxury retail boutique", "lighting": "soft studio three-point lighting",
+        "shot_type": "medium close-up from chest up", "mood": "serene",
+    },
+    "Watchmaker": {
+        "outfit_style": "business casual", "expression": "focused",
+        "location": "cluttered antique shop", "lighting": "warm incandescent lamp glow",
+        "shot_type": "close-up portrait", "mood": "serene",
+    },
+    "Potter": {
+        "outfit_style": "casual", "expression": "at ease",
+        "location": "artist's painting studio", "lighting": "soft window light from the side",
+        "shot_type": "medium shot from waist up", "mood": "peaceful",
+    },
+    "Tailor": {
+        "outfit_style": "smart casual", "expression": "subtle soft smile",
+        "location": "luxury retail boutique", "lighting": "soft window light from the side",
+        "shot_type": "medium shot from waist up", "mood": "serene",
+    },
+    "Calligrapher": {
+        "outfit_style": "smart casual", "expression": "lost in thought",
+        "location": "cozy home library", "lighting": "soft window light from the side",
+        "shot_type": "close-up portrait", "mood": "peaceful",
+    },
+    "Stonemason": {
+        "outfit_style": "casual", "expression": "steely",
+        "location": "crumbling stone ruin", "lighting": "harsh overhead midday sun",
+        "shot_type": "medium shot from waist up", "mood": "confident",
+    },
+    "Winemaker": {
+        "outfit_style": "casual", "expression": "warm smile",
+        "location": "sunlit vineyard", "lighting": "golden hour sunlight",
+        "shot_type": "medium shot from waist up", "mood": "cheerful",
+    },
+    "Desert Nomad": {
+        "ethnicity": "Moroccan", "outfit_style": "bohemian", "expression": "serene",
+        "location": "desert dune at sunset", "lighting": "harsh desert sun",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "mysterious",
+    },
+    "Tribal Shaman": {
+        "outfit_style": "bohemian", "expression": "intense gaze",
+        "location": "forest trail", "lighting": "dappled sunlight through forest canopy",
+        "shot_type": "medium shot from waist up", "mood": "mysterious",
+    },
+    "Trapeze Artist": {
+        "body_type": "athletic", "outfit_style": "athletic", "expression": "bright smile",
+        "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
+        "shot_type": "full body shot", "mood": "playful",
+    },
+    "Deep Sea Diver": {
+        "outfit_style": "athletic", "expression": "determined",
+        "location": "aquarium tunnel", "lighting": "cool LED overhead lighting",
+        "shot_type": "medium shot from waist up", "mood": "mysterious",
+    },
+    "Arctic Explorer": {
+        "outfit_style": "athletic", "expression": "determined",
+        "location": "snowy pine forest", "lighting": "snow-reflected daylight",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
+    },
+    "Safari Guide": {
+        "outfit_style": "casual", "expression": "confident",
+        "location": "open meadow", "lighting": "harsh overhead midday sun",
+        "shot_type": "medium shot from waist up", "mood": "cheerful",
+    },
+    "Toymaker": {
+        "outfit_style": "vintage retro", "expression": "gentle smile",
+        "location": "woodworking workshop", "lighting": "warm incandescent lamp glow",
+        "shot_type": "medium shot from waist up", "mood": "cheerful",
+    },
 }
 
 

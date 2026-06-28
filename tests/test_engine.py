@@ -7,6 +7,7 @@ Pure-stdlib ``unittest`` so it runs without ComfyUI installed:
 from __future__ import annotations
 
 import json
+import random
 import sys
 import unittest
 from pathlib import Path
@@ -15,11 +16,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from data.fields import FIELD_DEFINITIONS
+from data.fields import FIELD_DEFINITIONS, FIELD_FAMILIES
 from nodes.identity_forge import (
     generate_character,
     merge_preset_documents,
     resolve_locked_fields,
+    _pick_family_weighted,
     _is_absent,
     _parse_archetype_json,
     _CONTROL_FIELDS,
@@ -1478,6 +1480,53 @@ class GrammarAgreementTests(unittest.TestCase):
         for gender in ("Female", "Male"):
             prose, _ = generate_character(7, gender, {"outfit_style": "casual"})
             self.assertNotIn(" wear ", prose)  # no plural verb for She/He
+
+
+class FieldFamilyPickTests(unittest.TestCase):
+    """The generalized weighted two-tier picker (_pick_family_weighted)."""
+
+    def test_every_family_field_partitions_its_options(self):
+        # Mirrors validate_data but asserted here too: a drifted family makes some
+        # values unreachable / double-weighted, biasing randomization.
+        for field, families in FIELD_FAMILIES.items():
+            variants = [v for fam in families.values() for v in fam["variants"]]
+            self.assertEqual(len(variants), len(set(variants)),
+                             f"{field}: duplicate variant across families")
+            opts = set(FIELD_DEFINITIONS[field]["female_options"])
+            self.assertEqual(set(variants), opts, f"{field}: families != options")
+
+    def test_pick_returns_in_pool_value(self):
+        rng = random.Random(0)
+        pool = list(FIELD_DEFINITIONS["expression"]["female_options"])
+        for _ in range(200):
+            self.assertIn(_pick_family_weighted("expression", pool, rng), pool)
+
+    def test_pick_respects_filtered_pool(self):
+        # Variants outside the (filtered) pool must never be returned, and empty
+        # families are dropped -- the location_setting / constraint composition.
+        rng = random.Random(1)
+        pool = ["high ponytail", "low ponytail", "afro"]
+        seen = {_pick_family_weighted("hair_style", pool, rng) for _ in range(300)}
+        self.assertTrue(seen.issubset(set(pool)))
+        self.assertEqual(seen, set(pool))  # all reachable
+
+    def test_unregistered_field_falls_back_to_flat_choice(self):
+        rng = random.Random(2)
+        self.assertEqual(_pick_family_weighted("not_a_family", ["only"], rng), "only")
+
+    def test_frozen_weights_reproduce_uniform_at_freeze(self):
+        # With family weight == family size and no added variants, the macro draw
+        # is statistically uniform. hair_style (sum 30) is the canonical check:
+        # every value should appear over many draws, none dominating wildly.
+        rng = random.Random(3)
+        pool = list(FIELD_DEFINITIONS["hair_style"]["female_options"])
+        counts = {v: 0 for v in pool}
+        for _ in range(20000):
+            counts[_pick_family_weighted("hair_style", pool, rng)] += 1
+        # No value should be absent, and none should exceed ~3x the mean share.
+        mean = 20000 / len(pool)
+        self.assertTrue(all(c > 0 for c in counts.values()))
+        self.assertTrue(max(counts.values()) < mean * 3)
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 [project]
 name = "comfyui-identity-forge"
-version = "0.28.0"
-description = "A character randomizer node pack for ComfyUI with a constraint engine, themed archetype presets, a large fictional-character cosplay library (with optional signature props), a creature/monster/alien form layer with slot-by-slot hybridization, per-element style modifiers, a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
+version = "0.29.0"
+description = "A character creator and person generator for ComfyUI: a wildcard-style character randomizer with a constraint engine, themed archetype presets, a large fictional-character cosplay library (with optional signature props), a creature/monster/alien form layer with slot-by-slot hybridization, per-element style modifiers, a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = ["comfyui", "character", "prompt", "randomizer", "constraint", "creature", "monster", "alien", "anthro"]
+keywords = ["comfyui", "character", "character creator", "character generator", "person", "person generator", "portrait", "face", "prompt", "prompt generator", "randomizer", "random", "wildcard", "constraint", "cosplay", "archetype", "creature", "monster", "alien", "anthro", "diversity", "ethnicity", "OC"]
 dependencies = []
 
 [[project.authors]]
