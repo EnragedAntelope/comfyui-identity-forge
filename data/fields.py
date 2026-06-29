@@ -63,34 +63,19 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['narrow', 'slightly narrow', 'average', 'slightly wide', 'wide', 'full', 'very full', 'rounded'],
         "optional": False
     }),
+    # --- Face: ordered structure -> eyes -> nose -> mouth/lower face -> skin.
+    # The widget order on the node follows this list order within the group; the
+    # prose order is independent (hard-coded in _format_prose).
     ("face_shape", {
         "group": 'Face',
         "female_options": ['oval', 'round', 'soft round', 'square', 'soft square', 'heart-shaped', 'diamond', 'oblong', 'rectangular', 'wide with high forehead', 'narrow and angular'],
         "male_options": ['oval', 'round', 'soft round', 'square', 'soft square', 'heart-shaped', 'diamond', 'oblong', 'rectangular', 'wide with high forehead', 'narrow and angular'],
         "optional": False
     }),
-    ("eye_color", {
+    ("forehead", {
         "group": 'Face',
-        "female_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
-        "male_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
-        "optional": False
-    }),
-    ("eye_shape", {
-        "group": 'Face',
-        "female_options": ['almond', 'round', 'slightly hooded', 'hooded', 'upturned', 'downturned', 'monolid', 'deep-set', 'wide-set', 'close-set', 'large and expressive', 'small and delicate'],
-        "male_options": ['almond', 'round', 'slightly hooded', 'hooded', 'upturned', 'downturned', 'monolid', 'deep-set', 'wide-set', 'close-set', 'large and expressive', 'small and delicate'],
-        "optional": False
-    }),
-    ("nose", {
-        "group": 'Face',
-        "female_options": ['small and button', 'small and upturned', 'straight', 'slightly upturned', 'aquiline', 'Roman', 'broad', 'wide', 'narrow and refined', 'slightly crooked', 'prominent', 'petite', 'snub', 'wide with flared nostrils'],
-        "male_options": ['small and button', 'small and upturned', 'straight', 'slightly upturned', 'aquiline', 'Roman', 'broad', 'wide', 'narrow and refined', 'slightly crooked', 'prominent', 'petite', 'snub', 'wide with flared nostrils'],
-        "optional": False
-    }),
-    ("lips", {
-        "group": 'Face',
-        "female_options": ['very thin', 'thin', 'average', 'slightly full', 'full', 'very full', 'plump', 'bow-shaped', 'heart-shaped', 'wide and full', 'petite and defined', 'uneven slightly asymmetric'],
-        "male_options": ['very thin', 'thin', 'average', 'slightly full', 'full', 'very full', 'plump', 'bow-shaped', 'heart-shaped', 'wide and full', 'petite and defined', 'uneven slightly asymmetric'],
+        "female_options": ['high and broad', 'low and broad', 'average', 'narrow', 'rounded', 'prominent brow ridge', 'smooth'],
+        "male_options": ['high and broad', 'low and broad', 'average', 'narrow', 'rounded', 'prominent brow ridge', 'smooth'],
         "optional": False
     }),
     ("cheekbones", {
@@ -99,22 +84,68 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['very high and prominent', 'high and defined', 'high and soft', 'prominent', 'softly prominent', 'average', 'wide and flat', 'subtle', 'barely defined'],
         "optional": False
     }),
-    ("jawline", {
-        "group": 'Face',
-        "female_options": ['sharp and defined', 'strong', 'square', 'slightly square', 'soft', 'rounded', 'delicate', 'narrow', 'wide', 'tapered', 'prominent'],
-        "male_options": ['sharp and defined', 'strong', 'square', 'slightly square', 'soft', 'rounded', 'delicate', 'narrow', 'wide', 'tapered', 'prominent'],
-        "optional": False
-    }),
-    ("chin", {
-        "group": 'Face',
-        "female_options": ['rounded', 'softly pointed', 'pointed', 'slightly cleft', 'cleft', 'wide', 'narrow', 'small and delicate', 'receding', 'strong and square'],
-        "male_options": ['rounded', 'softly pointed', 'pointed', 'slightly cleft', 'cleft', 'wide', 'narrow', 'small and delicate', 'receding', 'strong and square'],
-        "optional": False
-    }),
     ("eyebrows", {
         "group": 'Face',
         "female_options": ['thin and arched', 'thin and straight', 'pencil thin', 'barely there', 'natural full', 'thick and straight', 'thick and arched', 'bushy', 'feathered', 'well defined and arched', 'bleached', 'bold statement brows', 'laminated brows'],
         "male_options": ['thin and arched', 'thin and straight', 'pencil thin', 'barely there', 'natural full', 'thick and straight', 'thick and arched', 'bushy', 'feathered', 'well defined and arched', 'bleached', 'bold statement brows', 'laminated brows'],
+        "optional": False
+    }),
+    ("eye_color", {
+        "group": 'Face',
+        "female_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
+        "male_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
+        "optional": False
+    }),
+    # eye_shape is the single comprehensive eye-structure field: it encodes shape,
+    # lid (monolid/hooded), spacing (wide/close-set) and size (large/small/doe-like),
+    # so separate eye_size / eyelid_type fields were removed to avoid duplication.
+    ("eye_shape", {
+        "group": 'Face',
+        "female_options": ['almond', 'round', 'slightly hooded', 'hooded', 'upturned', 'downturned', 'monolid', 'deep-set', 'wide-set', 'close-set', 'large and expressive', 'small and delicate', 'doe-like'],
+        "male_options": ['almond', 'round', 'slightly hooded', 'hooded', 'upturned', 'downturned', 'monolid', 'deep-set', 'wide-set', 'close-set', 'large and expressive', 'small and delicate', 'doe-like'],
+        "optional": False
+    }),
+    ("nose", {
+        "group": 'Face',
+        "female_options": ['small and button', 'small and upturned', 'straight', 'slightly upturned', 'aquiline', 'Roman', 'broad', 'wide', 'narrow and refined', 'slightly crooked', 'slightly bumped', 'prominent', 'petite', 'snub', 'wide with flared nostrils'],
+        "male_options": ['small and button', 'small and upturned', 'straight', 'slightly upturned', 'aquiline', 'Roman', 'broad', 'wide', 'narrow and refined', 'slightly crooked', 'slightly bumped', 'prominent', 'petite', 'snub', 'wide with flared nostrils'],
+        "optional": False
+    }),
+    ("lips", {
+        "group": 'Face',
+        "female_options": ['very thin', 'thin', 'average', 'slightly full', 'full', 'very full', 'plump', 'bow-shaped', 'heart-shaped', 'wide and full', 'petite and defined', 'uneven slightly asymmetric'],
+        "male_options": ['very thin', 'thin', 'average', 'slightly full', 'full', 'very full', 'plump', 'bow-shaped', 'heart-shaped', 'wide and full', 'petite and defined', 'uneven slightly asymmetric'],
+        "optional": False
+    }),
+    # smile_type is the single mouth-state field (teeth_visibility was merged in and
+    # removed): its values span closed mouth -> toothy grin, so it covers teeth too.
+    ("smile_type", {
+        "group": 'Face',
+        "female_options": ['closed mouth', 'soft smile', 'toothy grin', 'asymmetric', 'broad', 'subtle dimpled'],
+        "male_options": ['closed mouth', 'soft smile', 'toothy grin', 'asymmetric', 'broad', 'subtle dimpled'],
+        "optional": False
+    }),
+    # jawline (line angularity / width) and chin (tip shape) keep disjoint vocabularies
+    # so adjacent face structure never restates the same word ("rounded jawline and
+    # rounded chin"). jawline owns wide/narrow; chin owns rounded.
+    ("jawline", {
+        "group": 'Face',
+        "female_options": ['sharp and defined', 'strong', 'square', 'slightly square', 'soft', 'delicate', 'narrow', 'wide', 'tapered', 'prominent'],
+        "male_options": ['sharp and defined', 'strong', 'square', 'slightly square', 'soft', 'delicate', 'narrow', 'wide', 'tapered', 'prominent'],
+        "optional": False
+    }),
+    ("chin", {
+        "group": 'Face',
+        "female_options": ['rounded', 'softly pointed', 'pointed', 'slightly cleft', 'cleft', 'small and delicate', 'receding', 'strong and square'],
+        "male_options": ['rounded', 'softly pointed', 'pointed', 'slightly cleft', 'cleft', 'small and delicate', 'receding', 'strong and square'],
+        "optional": False
+    }),
+    ("complexion", {
+        "group": 'Face',
+        # Skin finish / undertone (always rendered). 'olive' removed: it collided
+        # with the skin_tone field's 'olive'. Texture words live in skin_details.
+        "female_options": ['clear', 'rosy', 'sallow', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
+        "male_options": ['clear', 'rosy', 'sallow', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
         "optional": False
     }),
     ("skin_details", {
@@ -126,6 +157,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
         "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
         "optional": True
+    }),
+    ("freckles_density", {
+        "group": 'Face',
+        "female_options": ['none', 'few', 'scattered', 'moderate', 'heavy', 'all-over'],
+        "male_options": ['none', 'few', 'scattered', 'moderate', 'heavy', 'all-over'],
+        "optional": False
     }),
     ("hair_color", {
         "group": 'Hair',
@@ -147,8 +184,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("hair_style", {
         "group": 'Hair',
-        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled'],
-        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled'],
+        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled'],
+        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled'],
         "optional": False
     }),
     ("hair_color_scope", {
@@ -240,8 +277,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("other_jewelry", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no other jewelry', 'simple gold bracelet', 'silver cuff bracelet', 'stacked bracelets', 'thin rings on multiple fingers', 'cocktail ring', 'plain band ring', 'watch', 'layered rings', 'anklet', 'arm cuff'],
-        "male_options": ['no other jewelry', 'simple gold bracelet', 'silver cuff bracelet', 'stacked bracelets', 'thin rings on multiple fingers', 'cocktail ring', 'plain band ring', 'watch', 'layered rings', 'anklet', 'arm cuff'],
+        # "Other / body" jewelry only -- rings, bracelets and watches each have their
+        # own dedicated field (rings / bracelet / watch_type), so this slot holds just
+        # the pieces none of those cover, removing the old triple-sourced ring/watch
+        # overlap (a watch could otherwise be asserted by 2-3 fields at once).
+        "female_options": ['no other jewelry', 'anklet', 'arm cuff', 'body chain', 'brooch', 'waist chain'],
+        "male_options": ['no other jewelry', 'anklet', 'arm cuff', 'body chain', 'brooch', 'waist chain'],
         "optional": False
     }),
     ("piercings", {
@@ -279,8 +320,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # Hair-specific pieces (headbands, scarf-in-hair, hair clip) live in the
         # dedicated ``hair_accessory`` field so they can co-exist with a hat or
         # sunglasses and don't double up against this single clothing slot.
-        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'watch', 'smart watch', 'long pendant necklace layered over outfit', 'reading glasses pushed up on head', 'woven hat'],
-        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'watch', 'smart watch', 'long pendant necklace layered over outfit', 'reading glasses pushed up on head', 'woven hat'],
+        # Watches live solely in the dedicated watch_type field, so they are not
+        # repeated here (a watch was previously sourceable from both this slot and
+        # watch_type, over-representing it). Pocket square / statement belt keep variety.
+        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'long pendant necklace layered over outfit', 'reading glasses pushed up on head', 'woven hat'],
+        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'long pendant necklace layered over outfit', 'reading glasses pushed up on head', 'woven hat'],
         "optional": False
     }),
     ("expression", {
@@ -307,56 +351,6 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['extreme close-up on face', 'close-up portrait', 'medium close-up from chest up', 'medium shot from waist up', 'cowboy shot from mid-thigh up', 'full body shot', 'full body shot with environment visible', 'wide shot with subject at center', 'wide shot with subject off-center', 'extreme wide establishing shot', 'straight-on eye level', 'slightly above eye level', 'high angle looking down', "steep overhead bird's-eye view", 'low angle looking up', "worm's-eye view from ground", 'slight Dutch angle', 'three-quarter angle facing left', 'three-quarter angle facing right', 'side profile', 'from slightly behind and to the side', 'view from directly behind', 'over-the-shoulder perspective', 'shot through a doorway frame', 'shot through a window from outside', 'shot through foreground foliage', 'reflected in a mirror', 'reflected in a shop window', 'fish-eye wide lens distortion', 'telephoto compressed perspective'],
         "optional": False
     }),
-    ("forehead", {
-        "group": 'Face',
-        "female_options": ['high and broad', 'low and broad', 'average', 'narrow', 'rounded', 'prominent brow ridge', 'smooth'],
-        "male_options": ['high and broad', 'low and broad', 'average', 'narrow', 'rounded', 'prominent brow ridge', 'smooth'],
-        "optional": False
-    }),
-    ("eye_size", {
-        "group": 'Face',
-        "female_options": ['large', 'medium', 'small', 'almond medium', 'doe-like', 'deep set'],
-        "male_options": ['large', 'medium', 'small', 'almond medium', 'doe-like', 'deep set'],
-        "optional": False
-    }),
-    ("eyelid_type", {
-        "group": 'Face',
-        "female_options": ['double eyelid', 'monolid', 'hooded', 'slightly hooded', 'creased', 'tapered crease'],
-        "male_options": ['double eyelid', 'monolid', 'hooded', 'slightly hooded', 'creased', 'tapered crease'],
-        "optional": False
-    }),
-    ("lip_color", {
-        "group": 'Face',
-        "female_options": ['pale pink', 'rose', 'coral', 'berry', 'red', 'nude', 'brown', 'mauve', 'plum'],
-        "male_options": ['pale pink', 'rose', 'coral', 'berry', 'red', 'nude', 'brown', 'mauve', 'plum'],
-        "optional": False
-    }),
-    ("teeth_visibility", {
-        "group": 'Face',
-        "female_options": ['closed lips', 'slight part', 'teeth showing', 'broad smile showing teeth'],
-        "male_options": ['closed lips', 'slight part', 'teeth showing', 'broad smile showing teeth'],
-        "optional": False
-    }),
-    ("smile_type", {
-        "group": 'Face',
-        "female_options": ['closed mouth', 'soft smile', 'toothy grin', 'asymmetric', 'broad', 'subtle dimpled'],
-        "male_options": ['closed mouth', 'soft smile', 'toothy grin', 'asymmetric', 'broad', 'subtle dimpled'],
-        "optional": False
-    }),
-    ("freckles_density", {
-        "group": 'Face',
-        "female_options": ['none', 'few', 'scattered', 'moderate', 'heavy', 'all-over'],
-        "male_options": ['none', 'few', 'scattered', 'moderate', 'heavy', 'all-over'],
-        "optional": False
-    }),
-    ("complexion", {
-        "group": 'Face',
-        # Skin finish / undertone (always rendered). 'olive' removed: it collided
-        # with the skin_tone field's 'olive'. Texture words live in skin_details.
-        "female_options": ['clear', 'rosy', 'sallow', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
-        "male_options": ['clear', 'rosy', 'sallow', 'ruddy', 'peaches and cream', 'matte', 'dewy'],
-        "optional": False
-    }),
     ("shoulder_width", {
         "group": 'Body',
         "female_options": ['narrow', 'slightly narrow', 'average', 'broad', 'very broad', 'sloped'],
@@ -379,12 +373,6 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "group": 'Body',
         "female_options": ['sedentary', 'lightly active', 'moderately fit', 'very fit', 'athletic', 'muscular'],
         "male_options": ['sedentary', 'lightly active', 'moderately fit', 'very fit', 'athletic', 'muscular'],
-        "optional": False
-    }),
-    ("muscle_definition", {
-        "group": 'Body',
-        "female_options": ['soft', 'lightly toned', 'defined', 'cut', 'very muscular', 'lean'],
-        "male_options": ['soft', 'lightly toned', 'defined', 'cut', 'very muscular', 'lean'],
         "optional": False
     }),
     ("hair_part", {
@@ -443,8 +431,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("clothing_color", {
         "group": 'Clothing',
-        "female_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'all black', 'all white', 'mixed prints'],
-        "male_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'all black', 'all white', 'mixed prints'],
+        "female_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'gradient ombre', 'all black', 'all white', 'mixed prints'],
+        "male_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'gradient ombre', 'all black', 'all white', 'mixed prints'],
         "optional": False
     }),
     ("clothing_pattern", {
@@ -522,7 +510,7 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("bun", {"weight": 5, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'updo', 'French twist']}),
     ("braid", {"weight": 9, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs']}),
     ("knots", {"weight": 2, "variants": ['space buns', 'bantu knots']}),
-    ("pigtails", {"weight": 1, "variants": ['pigtails', 'braided pigtails']}),
+    ("pigtails", {"weight": 1, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
     ("texture", {"weight": 2, "variants": ['afro', 'twist-out']}),
     ("bangs", {"weight": 2, "variants": ['curtain bangs', 'blunt bangs']}),
 ])

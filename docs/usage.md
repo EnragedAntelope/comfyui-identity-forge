@@ -97,9 +97,9 @@ to check that your custom field values are valid options.
 | Group | Fields |
 | --- | --- |
 | Demographics | age, ethnicity |
-| Body | skin tone, body type, height, bust/chest, waist, hips, shoulders, neck, posture, fitness, muscle |
-| Face | shape, eyes, nose, lips, cheekbones, jawline, chin, eyebrows, complexion, freckles, skin details |
-| Hair | colour, length, texture, style, part, volume, highlights, facial hair |
+| Body | skin tone, body type, height, bust/chest, waist, hips, shoulders, neck, posture, fitness |
+| Face | shape, forehead, cheekbones, eyebrows, eyes, nose, lips, smile, jawline, chin, complexion, skin details, freckles |
+| Hair | colour, length, texture, style, part, highlights, facial hair, accessory |
 | Makeup | style, eyeshadow, eyeliner, lashes, lips, blush, brows, contour, highlight, finish |
 | Jewelry & Nails | earrings, necklace, rings, bracelet, watch, other jewellery, piercings, nails |
 | Clothing | outfit style (a full outfit), footwear, colour, pattern, bag, accessories |

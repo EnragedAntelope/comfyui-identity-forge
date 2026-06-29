@@ -326,10 +326,9 @@ def build_cosplayer_json(
     if entry.get("eyes"):
         for group_values in document.values():
             if isinstance(group_values, dict) and "eye_color" in group_values:
+                # eye_shape is the single eye-structure field (it also encodes size),
+                # so locking it absent is enough for the free-text override to read clean.
                 group_values.setdefault("eye_shape", "None")
-                # A free-text eye description already encodes size; lock eye_size
-                # off too so a random size doesn't contradict it in the JSON.
-                group_values.setdefault("eye_size", "None")
                 break
     # Costume-driven suppressions: lock fields absent that the costume prose has
     # already settled, so the engine's randomizer can't add a value that contradicts

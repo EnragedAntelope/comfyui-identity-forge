@@ -33,7 +33,7 @@ socket. On overlap, the node **closest to IdentityForge wins** (downstream wins)
 Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge ─▶ prompt_text + prompt_json
 ```
 
-- **IdentityForge** ([nodes/identity_forge.py](../nodes/identity_forge.py)) — the engine. 70+
+- **IdentityForge** ([nodes/identity_forge.py](../nodes/identity_forge.py)) — the engine. 65+
   lockable dropdowns + control toggles → randomize → constraints → prose + JSON. Entry point
   `generate_character(...)`; widget schema in `define_schema`.
 - **Cosplayer** → `build_cosplayer_json`: a character's `costume` becomes the hidden
@@ -161,8 +161,9 @@ Conventions (keep the data coherent):
 - **Clean-shaven faces:** `"clean-shaven"`/`"clean shaven"` in `costume` **auto-locks**
   `facial_hair` absent so a random beard can't sprout on a bare face. See `_CLEAN_SHAVEN_RE`.
 - **Gloved hands:** a costume that covers the hands (`glove`/`gauntlet`/`mitten`) makes the
-  engine force the finger fields (`nails`, `rings`, and ring-typed `other_jewelry`) absent —
-  otherwise a randomized polish/ring renders *on top of* the glove. This lives in the **engine**
+  engine force the finger fields (`nails`, `rings`) absent — otherwise a randomized polish/ring
+  renders *on top of* the glove. (`other_jewelry` now holds only body pieces — anklet, arm cuff,
+  body chain — that never sit on the fingers, so it is untouched here.) This lives in the **engine**
   (`generate_character`, `_GLOVE_RE`), not the cosplayer builder, so it also covers archetype
   costumes and random outfits. `"fingerless"` anywhere in the text opts out (fingers exposed →
   nails/rings stay). A user-locked `nails`/`rings` is respected. **Power rings worn over the
@@ -199,10 +200,11 @@ Conventions (keep the data coherent):
 - **Iconic non-standard eyes** (red/violet/gold cat-slit) use the free-text `eyes` override
   (a top-level entry key, not the signature) — it replaces `eye_color` and is voiced verbatim,
   passing the gender gate because `eye_color`'s pools are identical. The main node's dropdown
-  stays believable (no fantasy colours added there). The cosplayer also locks `eye_shape` **and
-  `eye_size`** to `None` (injected after `group_fields`, which strips them on the build side) so
-  no random shape/size word contradicts the free-text description — the engine keeps the locked
-  `None` as absent and drops it from prose/JSON.
+  stays believable (no fantasy colours added there). The cosplayer also locks `eye_shape` to
+  `None` (injected after `group_fields`, which strips it on the build side) so no random shape
+  word contradicts the free-text description — the engine keeps the locked `None` as absent and
+  drops it from prose/JSON. (`eye_shape` is the single eye-structure field; it also encodes
+  size/lid, so the former separate `eye_size`/`eyelid_type` fields were merged out.)
 - **Random scope.** `_FRANCHISE_CATEGORY` maps every franchise to one of nine broad categories
   (Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games, Fantasy & Literature, Movies & TV,
   Comics & Cartoons). The Cosplayer node's `random_scope` control narrows the `Random — …` picks

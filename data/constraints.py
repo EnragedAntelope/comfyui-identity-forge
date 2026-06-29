@@ -42,7 +42,8 @@ _LONG_HAIR_STYLES: list[str] = [
     "side braid", "fishtail braid", "French braid", "dutch braids", "crown braid",
     "waterfall braid", "loose braids", "box braids", "locs", "updo", "French twist",
     "top knot", "chignon", "high ponytail", "low ponytail", "side ponytail",
-    "messy bun", "sleek bun", "space buns", "pigtails", "braided pigtails",
+    "messy bun", "sleek bun", "space buns", "pigtails", "high pigtails",
+    "low pigtails", "curled pigtails", "braided pigtails",
     "half up half down", "twist-out", "afro",
 ]
 
@@ -87,18 +88,10 @@ CONSTRAINT_RULES: list[dict] = [
      "excludes_field": "hair_style",
      "excludes_values": ["side braid", "fishtail braid", "French braid",
                          "waterfall braid", "loose braids", "updo", "French twist",
-                         "space buns", "pigtails", "braided pigtails",
+                         "space buns", "pigtails", "high pigtails", "low pigtails",
+                         "curled pigtails", "braided pigtails",
                          "high ponytail", "low ponytail", "side ponytail"],
      "reason": "a pixie cut is too short to braid or tie back"},
-
-    # --- Body coherence: fitness drives plausible muscle definition -------
-    {"type": "exclusion", "field": "fitness_level", "value": "sedentary",
-     "excludes_field": "muscle_definition",
-     "excludes_values": ["defined", "cut", "very muscular"],
-     "reason": "a sedentary build is not chiselled"},
-    {"type": "exclusion", "field": "fitness_level", "value": "lightly active",
-     "excludes_field": "muscle_definition", "excludes_values": ["cut", "very muscular"],
-     "reason": "light activity does not produce competition-level definition"},
 
     # Note: the "Natural only" hair scope is enforced during randomization (see
     # _build_option_pool), so randomized hair is always realistic. We do NOT add
@@ -126,15 +119,17 @@ CONSTRAINT_RULES: list[dict] = [
      "reason": "casual carryalls clash with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "accessories",
-     "excludes_values": ["baseball cap", "woven hat", "smart watch",
-                         "wide brim sun hat"],
-     "reason": "casual headwear and sportswatches clash with black-tie dress"},
+     "excludes_values": ["baseball cap", "woven hat", "wide brim sun hat"],
+     "reason": "casual headwear clashes with black-tie dress"},
+    {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
+     "excludes_field": "watch_type", "excludes_values": ["smart watch"],
+     "reason": "a sportwatch clashes with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "footwear",
      "excludes_values": ["sneakers", "slippers", "barefoot", "sandals"],
      "reason": "black-tie dress calls for heels or oxfords"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
-     "excludes_field": "other_jewelry", "excludes_values": ["stacked bracelets", "watch"],
+     "excludes_field": "bracelet", "excludes_values": ["leather wrap bracelet", "beaded bracelet"],
      "reason": "formal looks favour fine jewellery over everyday pieces"},
 
     {"type": "exclusion", "field": "outfit_style", "value": "business formal",
@@ -159,30 +154,33 @@ CONSTRAINT_RULES: list[dict] = [
 
     {"type": "exclusion", "field": "outfit_style", "value": "resort vacation",
      "excludes_field": "accessories",
-     "excludes_values": ["western belt", "smart watch"],
-     "reason": "office and western accessories clash with resort wear"},
+     "excludes_values": ["western belt"],
+     "reason": "western office accessories clash with resort wear"},
 
     # --- Hair: a buzz cut has no parting ----------------------------------
     {"type": "requirement", "field": "hair_length", "value": "buzzed very short",
      "requires_field": "hair_part", "requires_value": "no part",
      "reason": "a buzz cut has no visible parting"},
 
-    # --- Body: very slim / plus-size builds vs muscle definition ----------
+    # --- Body: very slim / plus-size builds vs fitness level --------------
+    # fitness_level is now the sole muscularity/conditioning axis (muscle_definition
+    # was merged out), so keep it plausible for the body_type silhouette: a
+    # "plus size, muscular" contradiction can never be rolled.
     {"type": "exclusion", "field": "body_type", "value": "very slim",
-     "excludes_field": "muscle_definition", "excludes_values": ["cut", "very muscular"],
+     "excludes_field": "fitness_level", "excludes_values": ["muscular"],
      "reason": "a very slim frame lacks heavy muscle mass"},
     {"type": "exclusion", "field": "body_type", "value": "petite and slim",
-     "excludes_field": "muscle_definition", "excludes_values": ["cut", "very muscular"],
+     "excludes_field": "fitness_level", "excludes_values": ["muscular"],
      "reason": "a petite slim frame lacks heavy muscle mass"},
     {"type": "exclusion", "field": "body_type", "value": "plus size",
-     "excludes_field": "muscle_definition", "excludes_values": ["cut", "very muscular"],
-     "reason": "a plus-size build reads as soft, not shredded"},
+     "excludes_field": "fitness_level", "excludes_values": ["athletic", "muscular"],
+     "reason": "a plus-size build reads as soft, not athletic"},
     {"type": "exclusion", "field": "body_type", "value": "chubby",
-     "excludes_field": "muscle_definition", "excludes_values": ["cut", "very muscular"],
-     "reason": "a chubby build reads as soft, not shredded"},
+     "excludes_field": "fitness_level", "excludes_values": ["athletic", "muscular"],
+     "reason": "a chubby build reads as soft, not athletic"},
     {"type": "exclusion", "field": "body_type", "value": "plump",
-     "excludes_field": "muscle_definition", "excludes_values": ["cut", "very muscular"],
-     "reason": "a plump build reads as soft, not shredded"},
+     "excludes_field": "fitness_level", "excludes_values": ["athletic", "muscular"],
+     "reason": "a plump build reads as soft, not athletic"},
 ]
 
 
@@ -214,15 +212,12 @@ for _style in _NATURAL_MAKEUP:
         "excludes_field": "lashes", "excludes_values": list(_HEAVY_LASHES),
         "reason": f"'{_style}' excludes false/heavy lashes"})
 
-# Expression drives whether teeth show (keeps the smile coherent).
+# Expression drives the mouth/smile state (keeps the smile coherent). smile_type is
+# the single mouth field now -- teeth_visibility was merged out -- so only it is steered.
 _CLOSED_EXPRESSIONS = ["neutral", "serious", "stern", "intense gaze",
                        "pensive and thoughtful", "contemplative", "sultry"]
 _OPEN_EXPRESSIONS = ["wide toothy grin", "laughing", "candid mid-laugh"]
 for _expr in _CLOSED_EXPRESSIONS:
-    CONSTRAINT_RULES.append({
-        "type": "requirement", "field": "expression", "value": _expr,
-        "requires_field": "teeth_visibility", "requires_value": "closed lips",
-        "reason": f"a {_expr} expression keeps the mouth closed"})
     CONSTRAINT_RULES.append({
         "type": "requirement", "field": "expression", "value": _expr,
         "requires_field": "smile_type", "requires_value": "closed mouth",
@@ -230,12 +225,18 @@ for _expr in _CLOSED_EXPRESSIONS:
 for _expr in _OPEN_EXPRESSIONS:
     CONSTRAINT_RULES.append({
         "type": "requirement", "field": "expression", "value": _expr,
-        "requires_field": "teeth_visibility", "requires_value": "broad smile showing teeth",
-        "reason": f"a {_expr} expression shows teeth"})
-    CONSTRAINT_RULES.append({
-        "type": "requirement", "field": "expression", "value": _expr,
         "requires_field": "smile_type", "requires_value": "toothy grin",
         "reason": f"a {_expr} expression is a broad toothy smile"})
+
+# Hairstyles with no visible parting force hair_part to "no part" (treated as absent
+# in prose), resolving the slicked-back/centre-part style conflict.
+_NO_PART_STYLES = ["slicked back", "wet look", "afro", "twist-out",
+                   "bantu knots", "space buns"]
+for _style in _NO_PART_STYLES:
+    CONSTRAINT_RULES.append({
+        "type": "requirement", "field": "hair_style", "value": _style,
+        "requires_field": "hair_part", "requires_value": "no part",
+        "reason": f"a {_style} style shows no visible parting"})
 
 # Masculine presentation defaults (gender == "Male").
 # Many fields (nails, lip colour, jewellery, hairstyle) share one option pool
@@ -253,7 +254,6 @@ CONSTRAINT_RULES.append({
 #: field -> feminine-coded values a random Male should not pick up. The remaining
 #: (masculine / neutral) options stay available for the random re-pick.
 _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
-    "lip_color": ["coral", "berry", "red", "mauve", "plum"],
     "nails": [
         "long nails", "almond nails", "coffin nails", "stiletto nails",
         "french manicure", "nude polish", "red polish", "coral polish",
@@ -271,14 +271,12 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
         "pearl necklace", "pearl strand", "locket necklace", "choker",
         "velvet choker", "statement necklace", "collar necklace",
     ],
-    "other_jewelry": [
-        "stacked bracelets", "thin rings on multiple fingers",
-        "cocktail ring", "layered rings", "anklet",
-    ],
+    "other_jewelry": ["anklet", "body chain", "waist chain"],
     "rings": ["stacked thin bands", "delicate gemstone", "midi ring"],
     "bracelet": ["tennis bracelet", "charm bracelet", "bangle stack"],
     "hair_style": [
-        "space buns", "pigtails", "braided pigtails", "updo", "French twist",
+        "space buns", "pigtails", "high pigtails", "low pigtails", "curled pigtails",
+        "braided pigtails", "updo", "French twist",
         "crown braid", "fishtail braid", "half up half down",
     ],
     "hair_length": ["chin length bob", "waist length", "hip length"],
@@ -289,7 +287,7 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
         "bold statement brows", "laminated brows",
     ],
     "lips": ["bow-shaped", "heart-shaped", "petite and defined"],
-    "eye_size": ["doe-like"],
+    "eye_shape": ["doe-like"],
     "bust": ["large"],
 }
 for _field, _excluded in _MALE_EXCLUDED_VALUES.items():

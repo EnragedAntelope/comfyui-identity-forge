@@ -665,7 +665,7 @@ def _format_prose(
         sentences.append(connector + _join(anatomy))
 
     # --- Physique + body proportions -----------------------------------
-    physique = " and ".join(x for x in (g("fitness_level"), g("muscle_definition")) if x)
+    physique = g("fitness_level")
     body_detail = []
     if g("shoulder_width"):
         body_detail.append(f"{g('shoulder_width')} shoulders")
@@ -711,8 +711,8 @@ def _format_prose(
         features.append(_words(g("eye_color"), g("eye_shape")) + " eyes")
     if g("nose"):
         features.append(_an(g("nose"), "nose"))
-    if g("lips") or g("lip_color"):
-        features.append(_words(g("lip_color"), g("lips")) + " lips")
+    if g("lips"):
+        features.append(g("lips") + " lips")
     if g("eyebrows"):
         brows = g("eyebrows")
         features.append(brows if "brow" in brows else f"{brows} eyebrows")
@@ -1127,15 +1127,14 @@ def generate_character(
     # the fingers ("fingerless") or the user explicitly locked the field. A power
     # ring worn over the glove (Green Lantern, Sinestro) is written into the costume
     # prose itself, not the ``rings`` field, so it survives this suppression.
+    # ``other_jewelry`` now holds only body pieces (anklet, arm cuff, body chain, …),
+    # none of which sit on the fingers, so gloves only suppress nails + the dedicated
+    # rings field.
     outfit_text = resolved.get("outfit_description") or ""
     if _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text):
         for field in ("nails", "rings"):
             if field not in locked_clean:
                 resolved.pop(field, None)
-        if "other_jewelry" not in locked_clean:
-            other = resolved.get("other_jewelry", "")
-            if "ring" in other or "finger" in other:
-                resolved.pop("other_jewelry", None)
 
     # A full hard shell -- robot / droid / powered armour / full plate / exoskeleton
     # -- leaves no bare skin for worn jewellery or nails, so a randomized necklace,
@@ -1478,7 +1477,7 @@ if _COMFY_AVAILABLE:
                 node_id="IdentityForge",
                 display_name="Identity Forge",
                 category="conditioning/character",
-                description="Randomize a detailed character description across 70+ "
+                description="Randomize a detailed character description across 65+ "
                             "lockable fields with a constraint engine, producing "
                             "natural-language prose and structured JSON.",
                 inputs=inputs,

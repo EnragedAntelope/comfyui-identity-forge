@@ -116,7 +116,6 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "body_type": "stocky",
         "height": "short",
         "fitness_level": "very fit",
-        "muscle_definition": "very muscular",
         "facial_hair": "full beard",
         "hair_color": "copper",
         "hair_length": "ear length",
@@ -202,7 +201,6 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "body_type": "athletic",
         "height": "very tall",
         "fitness_level": "very fit",
-        "muscle_definition": "very muscular",
         "facial_hair": "mutton chops",
         "hair_color": "jet black",
         "hair_length": "very short",
@@ -330,6 +328,17 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up",
         "mood": "confident",
     },
+    "Graduate": {
+        "age": "22",
+        "outfit_style": "smart casual",
+        "outfit_description": "a black graduation gown and mortarboard cap with a {jewel_tone} tassel over smart clothing, holding a rolled diploma tied with ribbon",
+        "accessories": "no accessories",
+        "expression": "beaming",
+        "location": "outdoor amphitheater",
+        "lighting": "late afternoon warm sunlight",
+        "shot_type": "medium shot from waist up",
+        "mood": "triumphant",
+    },
     "Barista": {
         "ethnicity": "Colombian",
         "body_type": "slim",
@@ -371,7 +380,6 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "body_type": "athletic",
         "height": "tall",
         "fitness_level": "very fit",
-        "muscle_definition": "defined",
         "hair_color": "warm brown",
         "hair_length": "very short",
         "hair_texture": "thick and voluminous",
@@ -467,7 +475,6 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "body_type": "athletic",
         "height": "tall",
         "fitness_level": "very fit",
-        "muscle_definition": "defined",
         "hair_color": "jet black",
         "hair_length": "very short",
         "hair_texture": "coily",
@@ -578,7 +585,6 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "body_type": "athletic",
         "height": "average height",
         "fitness_level": "very fit",
-        "muscle_definition": "defined",
         "facial_hair": "five o'clock shadow",
         "hair_color": "jet black",
         "hair_length": "very short",
@@ -598,7 +604,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # --- Tabletop / fantasy classes (costume via outfit_description) -------
     "Holy Paladin": {
         "gender": "Male", "ethnicity": "German", "body_type": "athletic", "height": "tall",
-        "fitness_level": "very fit", "muscle_definition": "defined",
+        "fitness_level": "very fit",
         "hair_color": "golden blonde", "hair_length": "short pixie", "hair_texture": "wavy",
         "hair_style": "slicked back", "facial_hair": "short beard", "skin_tone": "light",
         "outfit_style": "business formal",
@@ -621,7 +627,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Shadow Monk": {
         "gender": "Male", "ethnicity": "Tibetan", "body_type": "lean", "height": "average height",
-        "fitness_level": "athletic", "muscle_definition": "defined",
+        "fitness_level": "athletic",
         "hair_color": "jet black", "hair_length": "buzzed very short", "hair_texture": "sleek straight",
         "hair_style": "natural and unstyled", "skin_tone": "light medium",
         "outfit_style": "loungewear",
@@ -633,7 +639,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Berserker Barbarian": {
         "gender": "Male", "ethnicity": "Norwegian", "body_type": "athletic", "height": "very tall",
-        "fitness_level": "muscular", "muscle_definition": "very muscular",
+        "fitness_level": "muscular",
         "facial_hair": "full beard", "hair_color": "auburn", "hair_length": "shoulder length",
         "hair_texture": "thick and voluminous", "hair_style": "loose braids", "skin_tone": "fair",
         "complexion": "ruddy", "outfit_style": "edgy alternative",
@@ -693,7 +699,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Stealth Ninja": {
         "ethnicity": "Japanese", "body_type": "lean", "height": "average height",
-        "fitness_level": "very fit", "muscle_definition": "defined",
+        "fitness_level": "very fit",
         "hair_color": "jet black", "hair_length": "ear length", "hair_texture": "sleek straight",
         "hair_style": "natural and unstyled", "skin_tone": "light medium",
         "outfit_style": "edgy alternative",
@@ -826,8 +832,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "full body shot", "mood": "mysterious",
     },
     "Gladiator": {
-        "gender": "Male", "body_type": "athletic", "fitness_level": "muscular",
-        "muscle_definition": "very muscular", "hair_color": "dark brown", "hair_style": "natural and unstyled",
+        "gender": "Male", "body_type": "athletic", "fitness_level": "muscular", "hair_color": "dark brown", "hair_style": "natural and unstyled",
         "outfit_style": "athletic", "expression": "determined",
         "location": "museum gallery with white walls", "lighting": "dramatic chiaroscuro side lighting",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
@@ -1075,7 +1080,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Personal Trainer": {
         "gender": "Female", "ethnicity": "Brazilian", "body_type": "athletic", "height": "tall",
-        "fitness_level": "very fit", "muscle_definition": "defined", "hair_color": "dark brown",
+        "fitness_level": "very fit", "hair_color": "dark brown",
         "hair_length": "long", "hair_style": "high ponytail", "skin_tone": "warm tan",
         "outfit_style": "athletic", "expression": "confident", "location": "local gym weight room",
         "lighting": "high key bright even lighting", "shot_type": "full body shot",
@@ -1083,7 +1088,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Lifeguard": {
         "gender": "Male", "ethnicity": "English", "body_type": "athletic",
-        "height": "tall", "fitness_level": "very fit", "muscle_definition": "defined",
+        "height": "tall", "fitness_level": "very fit",
         "hair_color": "dark blonde", "hair_length": "very short", "skin_tone": "golden tan",
         "outfit_style": "athletic", "expression": "confident", "location": "sandy beach at golden hour",
         "lighting": "golden hour sunlight", "shot_type": "cowboy shot from mid-thigh up",
@@ -1147,7 +1152,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Rock Climber": {
         "gender": "Female", "ethnicity": "Korean", "body_type": "athletic", "height": "average height",
-        "fitness_level": "athletic", "muscle_definition": "defined", "hair_color": "near black",
+        "fitness_level": "athletic", "hair_color": "near black",
         "hair_length": "long", "hair_style": "French braid", "skin_tone": "light medium",
         "outfit_style": "athletic", "expression": "determined", "location": "mountain overlook",
         "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "intense",
@@ -1161,7 +1166,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Boxer": {
         "gender": "Male", "ethnicity": "Cuban", "body_type": "athletic", "height": "tall",
-        "fitness_level": "muscular", "muscle_definition": "very muscular", "hair_color": "jet black",
+        "fitness_level": "muscular", "hair_color": "jet black",
         "hair_length": "very short", "skin_tone": "warm brown", "outfit_style": "athletic",
         "expression": "intense gaze", "location": "local gym weight room",
         "lighting": "dramatic chiaroscuro side lighting", "shot_type": "cowboy shot from mid-thigh up",
@@ -1184,7 +1189,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
 
     # --- More themed (costume via _COSTUMES) -------------------------------
     "Superhero": {
-        "body_type": "athletic", "fitness_level": "very fit", "muscle_definition": "defined",
+        "body_type": "athletic", "fitness_level": "very fit",
         "outfit_style": "athletic", "expression": "confident", "location": "rooftop terrace at dusk",
         "lighting": "rim lighting from setting sun", "shot_type": "low angle looking up",
         "mood": "confident",
@@ -1231,7 +1236,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Roman Centurion": {
         "gender": "Male", "ethnicity": "Italian", "body_type": "athletic", "height": "tall",
-        "fitness_level": "very fit", "muscle_definition": "very muscular", "facial_hair": "stubble",
+        "fitness_level": "very fit", "facial_hair": "stubble",
         "hair_color": "dark brown", "hair_length": "very short", "skin_tone": "olive",
         "outfit_style": "athletic", "expression": "stern", "location": "crumbling stone ruin",
         "lighting": "harsh overhead midday sun", "shot_type": "cowboy shot from mid-thigh up",
@@ -1270,7 +1275,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # --- Sports / performers (costume via _COSTUMES) -----------------------
     "Pro Wrestler": {
         "gender": "Male", "ethnicity": "Samoan", "body_type": "athletic", "height": "tall",
-        "fitness_level": "muscular", "muscle_definition": "very muscular",
+        "fitness_level": "muscular",
         "hair_color": "jet black", "hair_length": "shoulder length", "hair_texture": "wavy",
         "hair_style": "worn down", "skin_tone": "warm tan", "outfit_style": "athletic",
         "expression": "intense gaze", "location": "high school gymnasium",
@@ -1279,7 +1284,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Luchador": {
         "gender": "Male", "ethnicity": "Mexican", "body_type": "athletic", "height": "average height",
-        "fitness_level": "very fit", "muscle_definition": "very muscular",
+        "fitness_level": "very fit",
         "hair_color": "jet black", "hair_length": "very short", "hair_style": "natural and unstyled",
         "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
         "location": "high school gymnasium", "lighting": "dramatic single overhead spotlight",
@@ -1287,7 +1292,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Swim Instructor": {
         "gender": "Female", "ethnicity": "Hawaiian", "body_type": "athletic", "height": "average height",
-        "fitness_level": "very fit", "muscle_definition": "defined",
+        "fitness_level": "very fit",
         "hair_color": "dark brown", "hair_length": "long", "hair_style": "high ponytail",
         "skin_tone": "golden tan", "outfit_style": "athletic", "expression": "warm smile",
         "location": "indoor swimming pool", "lighting": "high key bright even lighting",
@@ -1428,7 +1433,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Prehistoric Hunter": {
         "gender": "Male", "ethnicity": "Mongolian", "body_type": "athletic", "height": "average height",
-        "fitness_level": "very fit", "muscle_definition": "defined", "facial_hair": "full beard",
+        "fitness_level": "very fit", "facial_hair": "full beard",
         "hair_color": "dark brown", "hair_length": "shoulder length", "hair_texture": "coily",
         "hair_style": "loose braids", "skin_tone": "warm tan", "complexion": "ruddy",
         "outfit_style": "edgy alternative", "expression": "stern",
@@ -1439,7 +1444,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # Everyday / sports (v0.28.0) -- gender-neutral unless strongly coded
     "Tennis Player": {
         "ethnicity": "Brazilian", "body_type": "athletic", "height": "tall",
-        "fitness_level": "very fit", "muscle_definition": "defined",
+        "fitness_level": "very fit",
         "hair_color": "dark brown", "hair_length": "shoulder length", "hair_style": "high ponytail",
         "skin_tone": "warm tan", "outfit_style": "athletic", "accessories": "no accessories",
         "expression": "determined", "location": "sunny city park",
@@ -1447,7 +1452,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Gymnast": {
         "ethnicity": "Korean", "body_type": "lean", "height": "petite",
-        "fitness_level": "very fit", "muscle_definition": "defined",
+        "fitness_level": "very fit",
         "hair_color": "jet black", "hair_length": "shoulder length", "hair_style": "high ponytail",
         "skin_tone": "light", "outfit_style": "athletic", "accessories": "no accessories",
         "expression": "determined", "location": "high school gymnasium",

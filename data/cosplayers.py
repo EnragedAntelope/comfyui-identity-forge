@@ -731,9 +731,9 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a form-fitting bodysuit of overlapping leaves and vines, an even, smooth coat "
                    "of vivid green body paint covering her skin from head to toe including the "
-                   "face, with tiny leaves entwined in the hair",
+                   "face, with bold red lips and tiny leaves entwined in the hair",
         "signature": {"hair_color": "bright red", "hair_length": "waist length",
-                      "hair_style": "worn down", "eye_color": "green", "lip_color": "red"},
+                      "hair_style": "worn down", "eye_color": "green"},
         "physique": {"body_type": "voluptuous", "height": "tall"},
     },
     "Catwoman": {

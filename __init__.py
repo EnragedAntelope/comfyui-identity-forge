@@ -2,7 +2,7 @@
 
 Exposes seven nodes:
 
-* ``IdentityForge`` — a 70+ field character description randomizer with a
+* ``IdentityForge`` — a 65+ field character description randomizer with a
   constraint engine and dual prose/JSON output.
 * ``IdentityForgeArchetype`` — themed presets that seed IdentityForge.
 * ``IdentityForgeCosplayer`` — fictional-character cosplay presets that seed

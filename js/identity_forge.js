@@ -10,7 +10,7 @@ import { app } from "../../scripts/app.js";
  * works headless):
  *   - Master buttons: set every field to "Random", or lock every field to a
  *     concrete random value.
- *   - Collapsible group sections so 70+ widgets stay manageable.
+ *   - Collapsible group sections so 60+ widgets stay manageable.
  *   - Gender pool-swapping: changing the gender toggle restricts the
  *     gender-divergent dropdowns and resets any now-invalid lock to "Random".
  *
@@ -65,10 +65,6 @@ const FIELD_TO_GROUP = {
   "lighting": "Setting & Shot",
   "shot_type": "Setting & Shot",
   "forehead": "Face",
-  "eye_size": "Face",
-  "eyelid_type": "Face",
-  "lip_color": "Face",
-  "teeth_visibility": "Face",
   "smile_type": "Face",
   "freckles_density": "Face",
   "complexion": "Face",
@@ -76,7 +72,6 @@ const FIELD_TO_GROUP = {
   "neck_length": "Body",
   "posture": "Body",
   "fitness_level": "Body",
-  "muscle_definition": "Body",
   "hair_part": "Hair",
   "hair_highlights": "Hair",
   "eyebrow_makeup": "Makeup",

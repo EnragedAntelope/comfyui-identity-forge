@@ -121,7 +121,6 @@ class GenderTests(unittest.TestCase):
     _MALE_FORBIDDEN = {
         "makeup_style": None,  # must be "no makeup" (bare-faced)
         "lips_makeup": None,   # cleared by the no-makeup cascade
-        "lip_color": {"coral", "berry", "red", "mauve", "plum"},
         "nails": {"red polish", "pink polish", "coral polish", "mauve polish",
                   "french manicure", "stiletto nails", "coffin nails", "almond nails",
                   "chrome nails", "gel nails", "colorful nail art"},
@@ -129,14 +128,15 @@ class GenderTests(unittest.TestCase):
                      "pearl studs", "large bold gold hoops", "clip-on pearl earrings"},
         "necklace": {"pearl necklace", "pearl strand", "choker", "velvet choker",
                      "statement necklace", "collar necklace", "locket necklace"},
-        "hair_style": {"space buns", "pigtails", "updo", "French twist",
+        "hair_style": {"space buns", "pigtails", "high pigtails", "low pigtails",
+                       "curled pigtails", "updo", "French twist",
                        "crown braid", "fishtail braid", "half up half down"},
         "hair_length": {"chin length bob", "waist length", "hip length"},
         "hair_highlights": {"subtle balayage", "face framing", "ombre", "sombre"},
         "eyebrows": {"thin and arched", "pencil thin", "feathered",
                      "well defined and arched", "bold statement brows", "laminated brows"},
         "lips": {"bow-shaped", "heart-shaped", "petite and defined"},
-        "eye_size": {"doe-like"},
+        "eye_shape": {"doe-like"},
         "bust": {"large"},
     }
 
@@ -247,12 +247,14 @@ class ConstraintTests(unittest.TestCase):
             _, js = generate_character(seed, "Female", {"outfit_style": "athletic"})
             self.assertEqual(json.loads(js)["Clothing"].get("bag"), "no bag")
 
-    def test_fitness_muscle_coherence(self):
+    def test_body_fitness_coherence(self):
+        # fitness_level is the sole conditioning axis (muscle_definition was merged
+        # out); a plus-size silhouette never rolls an athletic/muscular fitness level.
         for seed in range(60):
-            _, js = generate_character(seed, "Male", {"fitness_level": "sedentary"})
+            _, js = generate_character(seed, "Male", {"body_type": "plus size"})
             self.assertNotIn(
-                json.loads(js)["Body"]["muscle_definition"],
-                {"defined", "cut", "very muscular"},
+                json.loads(js)["Body"]["fitness_level"],
+                {"athletic", "muscular"},
             )
 
     def test_locked_field_not_overwritten_by_constraint(self):
@@ -1407,16 +1409,17 @@ class SuppressionLockSurvivalTests(unittest.TestCase):
 
 
 class BodyPaintLipColorTests(unittest.TestCase):
-    """Body-paint suppression forces ``makeup_style`` off, but a structured
-    ``lip_color`` (Face group) survives -- so Poison Ivy keeps her red lips."""
+    """Body-paint suppression forces ``makeup_style`` off. The ``lip_color`` field was
+    removed (it duplicated ``lips_makeup``), so Poison Ivy's red lips now live in her
+    costume prose, which survives the body-paint makeup suppression."""
 
     def test_poison_ivy_keeps_red_lips_on_green_body(self):
         locked, label, cf, ch = _node_locked(build_cosplayer_json("Poison Ivy", 0, "Costume only"))
         for seed in range(20):
-            _, js = generate_character(seed, "Female", locked, cosplay_label=label,
-                                       covers_face=cf, covers_hair=ch)
+            text, js = generate_character(seed, "Female", locked, cosplay_label=label,
+                                          covers_face=cf, covers_hair=ch)
             doc = json.loads(js)
-            self.assertEqual(doc.get("Face", {}).get("lip_color"), "red", f"seed {seed}")
+            self.assertIn("red lips", text, f"seed {seed}")
             # The green body-paint coat anchors skin_tone to the paint colour (so the
             # face reads green), not a leaked human tone.
             self.assertEqual(doc.get("Body", {}).get("skin_tone"), "vivid green", f"seed {seed}")

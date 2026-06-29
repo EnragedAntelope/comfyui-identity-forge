@@ -130,6 +130,17 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 
 ---
 
+## Troubleshooting
+
+- **A `NoneType` error (or a missing/blank widget) after updating.** The node's fields and
+  options are built when the node is created, so an existing node on a saved graph can hold a
+  stale widget after an update changes the available options. **Reload the node** — delete it
+  and drop a fresh Identity Forge in, or reload the workflow (browser refresh) — and the error
+  clears. Your locked values for fields that still exist are preserved; only removed/renamed
+  options need re-picking.
+
+---
+
 ## Learn more
 
 - [docs/usage.md](docs/usage.md) — controls, how locking works, constraints, custom options
