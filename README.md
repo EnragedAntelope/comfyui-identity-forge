@@ -66,6 +66,7 @@ Built on the ComfyUI **V3 API** (`comfy_api.latest`). Category: `conditioning/ch
   </tr>
 </table>
 
+
 ---
 
 ## Install
@@ -77,7 +78,7 @@ cd ComfyUI/custom_nodes
 git clone https://github.com/EnragedAntelope/comfyui-identity-forge
 ```
 
-Or install via **ComfyUI Manager** (search *Identity Forge*, once published).
+Or install via **ComfyUI Manager** (search *Identity Forge*).
 
 ---
 
