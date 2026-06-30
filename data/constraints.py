@@ -212,16 +212,29 @@ for _style in _NATURAL_MAKEUP:
         "excludes_field": "lashes", "excludes_values": list(_HEAVY_LASHES),
         "reason": f"'{_style}' excludes false/heavy lashes"})
 
-# Expression drives the mouth/smile state (keeps the smile coherent). smile_type is
-# the single mouth field now -- teeth_visibility was merged out -- so only it is steered.
+# Expression drives the mouth/smile state so the rendered smile_type never
+# contradicts the face (smile_type is the single mouth field now -- teeth_visibility
+# was merged out). Three buckets: a closed non-smiling mouth, a closed-lip soft
+# smile, and an open toothy grin. Expressions left out of all three are genuinely
+# ambiguous (playful, smirking, surprised, coy, ...) and keep a free smile_type draw.
 _CLOSED_EXPRESSIONS = ["neutral", "serious", "stern", "intense gaze",
-                       "pensive and thoughtful", "contemplative", "sultry"]
-_OPEN_EXPRESSIONS = ["wide toothy grin", "laughing", "candid mid-laugh"]
+                       "pensive and thoughtful", "contemplative", "sultry",
+                       "serene", "determined", "calm and composed", "at ease",
+                       "steely", "focused", "brooding", "melancholic",
+                       "lost in thought", "wistful", "skeptical"]
+_SOFT_SMILE_EXPRESSIONS = ["subtle soft smile", "warm smile", "bright smile",
+                           "gentle smile"]
+_OPEN_EXPRESSIONS = ["wide toothy grin", "laughing", "candid mid-laugh", "beaming"]
 for _expr in _CLOSED_EXPRESSIONS:
     CONSTRAINT_RULES.append({
         "type": "requirement", "field": "expression", "value": _expr,
         "requires_field": "smile_type", "requires_value": "closed mouth",
         "reason": f"a {_expr} expression is not a smile"})
+for _expr in _SOFT_SMILE_EXPRESSIONS:
+    CONSTRAINT_RULES.append({
+        "type": "requirement", "field": "expression", "value": _expr,
+        "requires_field": "smile_type", "requires_value": "soft smile",
+        "reason": f"a {_expr} is a gentle closed-lip smile"})
 for _expr in _OPEN_EXPRESSIONS:
     CONSTRAINT_RULES.append({
         "type": "requirement", "field": "expression", "value": _expr,

@@ -387,6 +387,31 @@ def _gender_permits(field_def: dict, gender: str, value: str) -> bool:
     return value in female or value in male  # "Any" — union of both pools
 
 
+def _gender_from_locks(locked: dict[str, str]) -> str | None:
+    """Infer a concrete gender from anatomically gender-specific locks.
+
+    Used to resolve a "Any" gender widget into a coherent man/woman: an explicit
+    lock on a single-gender anatomical field (``facial_hair`` beard -> Male, a
+    feminine ``bust`` -> Female) decides the gender so the user's choice is honored
+    instead of coin-flipped away. Cosmetic/stylable fields are deliberately ignored
+    (they are gender-flexible). Returns ``"Female"``/``"Male"`` when exactly one
+    gender is implied, else ``None`` (nothing implied, or contradictory locks).
+    """
+    implied: set[str] = set()
+    for field in ("facial_hair", "bust"):
+        value = locked.get(field)
+        if not value or value in ("Random", "None") or _is_absent(value):
+            continue
+        field_def = FIELD_DEFINITIONS[field]
+        in_female = value in field_def["female_options"]
+        in_male = value in field_def["male_options"]
+        if in_male and not in_female:
+            implied.add("Male")
+        elif in_female and not in_male:
+            implied.add("Female")
+    return implied.pop() if len(implied) == 1 else None
+
+
 def _bias_skin_tone(pool: list[str], ethnicity: str | None, rng: random.Random) -> list[str]:
     """Optionally narrow the skin-tone pool to the ethnicity's plausible band.
 
@@ -720,6 +745,17 @@ def _format_prose(
     if g("eyebrows"):
         brows = g("eyebrows")
         features.append(brows if "brow" in brows else f"{brows} eyebrows")
+    if g("smile_type"):
+        # Mouth/smile state (kept coherent with expression by constraints.py). Named
+        # smiles read as-is; the bare modifiers (asymmetric / broad / subtle dimpled)
+        # qualify "smile"; "closed mouth" voices the no-smile state.
+        smile = g("smile_type")
+        if smile == "closed mouth":
+            features.append("a closed mouth")
+        elif smile in ("soft smile", "toothy grin"):
+            features.append(_an(smile))
+        else:
+            features.append(_an(f"{smile} smile"))
     if features:
         sentences.append(f"{subj} {has} " + _join(features))
 
@@ -1082,6 +1118,15 @@ def generate_character(
         and value != "Random"
         and (name not in _HIDDEN_FIELDS or name in _PRESET_HIDDEN_FIELDS)
     }
+    # "Any" gender resolves to a concrete man or woman per seed so the person is
+    # coherent: the gender gate and randomizer below then draw from a single
+    # gender's pools (no beard on a bust, no "they/them" mix). An anatomically
+    # gender-specific *lock* (a beard, a feminine bust) decides the gender so the
+    # explicit choice is honored; otherwise it is an unbiased 50/50 coin-flip. The
+    # deliberate full-mix "anything goes" mode -- both pools unioned, neutral
+    # pronouns -- is preserved only when the user also sets wardrobe to "Any".
+    if gender == "Any" and wardrobe != "Any":
+        gender = _gender_from_locks(locked_clean) or rng.choice(["Female", "Male"])
 
     # The gender gate must hold for *injected* locks too. An archetype emits
     # look-defining fields (incl. facial_hair) and its own gender; when the
@@ -1385,17 +1430,21 @@ if _COMFY_AVAILABLE:
                     tooltip="Steers gender-specific presentation and pronouns: "
                             "'Male' keeps the random fill masculine (no makeup, "
                             "polish, feminine jewellery or hairstyles), 'Female' "
-                            "allows them, 'Any' mixes. Locked / archetype / cosplayer "
-                            "values are always respected. 'Any' defers to a connected "
-                            "archetype's gender.",
+                            "allows them. 'Any' rolls a coherent man OR woman each "
+                            "run (set wardrobe to 'Any' to instead unlock every "
+                            "mixed-gender combination). Locked / archetype / "
+                            "cosplayer values are always respected; 'Any' defers to "
+                            "a connected archetype's gender.",
                 ),
                 io.Combo.Input(
                     "wardrobe",
                     options=["Match gender", "Feminine", "Masculine", "Any"],
                     default="Match gender",
                     tooltip="Which outfit wardrobe to draw from. 'Match gender' keeps "
-                            "outfits typical for the chosen gender; the others let you "
-                            "mix wardrobes (e.g. a man in feminine outfits).",
+                            "outfits typical for the chosen gender; 'Feminine' / "
+                            "'Masculine' force a wardrobe (e.g. a man in feminine "
+                            "outfits). 'Any' mixes outfits -- and, when gender is also "
+                            "'Any', unlocks fully mixed-gender features too.",
                 ),
                 io.Combo.Input(
                     "hair_color_scope",

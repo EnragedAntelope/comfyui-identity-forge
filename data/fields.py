@@ -232,6 +232,16 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['no makeup', 'no makeup', 'barely there natural makeup', 'soft natural makeup', 'fresh-faced dewy look', 'classic no-makeup makeup'],
         "optional": False
     }),
+    # Makeup widgets are ordered top-to-bottom of the face: makeup_style (the
+    # umbrella) -> brows -> eyes -> cheeks (contour/highlight/blush) -> lips ->
+    # overall skin finish. The prose order is independent (hard-coded in
+    # _format_prose), so this ordering is a UI nicety with no output effect.
+    ("eyebrow_makeup", {
+        "group": 'Makeup',
+        "female_options": ['none', 'filled in', 'feathered', 'bold sculpted', 'laminated look', 'tinted'],
+        "male_options": ['none', 'filled in', 'feathered', 'bold sculpted', 'laminated look', 'tinted'],
+        "optional": False
+    }),
     ("eye_makeup", {
         "group": 'Makeup',
         "female_options": ['no eyeshadow', 'neutral matte', 'warm earth tones', 'cool browns and taupes', 'rosy mauve', 'copper and bronze', 'warm bronze', 'smoky gray', 'smoky black', 'deep navy', 'colorful bold eyeshadow', 'glittery', 'cut crease', 'floating liner look'],
@@ -250,16 +260,28 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['natural bare', 'natural mascara', 'volumizing mascara', 'lengthening mascara', 'bold thick mascara', 'wispy false lashes', 'dramatic falsies', 'lash extension look'],
         "optional": False
     }),
-    ("lips_makeup", {
+    ("contour", {
         "group": 'Makeup',
-        "female_options": ['bare natural lips', 'tinted lip balm', 'nude lipstick', 'MLBB lipstick', 'coral', 'pink', 'classic red', 'deep red', 'berry', 'plum', 'mauve', 'brown nude', 'dark brown', 'glossy clear', 'high shine gloss', 'ombre lip'],
-        "male_options": ['bare natural lips', 'tinted lip balm', 'nude lipstick', 'MLBB lipstick', 'coral', 'pink', 'classic red', 'deep red', 'berry', 'plum', 'mauve', 'brown nude', 'dark brown', 'glossy clear', 'high shine gloss', 'ombre lip'],
+        "female_options": ['none', 'subtle', 'medium', 'heavy', 'nose contour', 'jawline contour'],
+        "male_options": ['none', 'subtle', 'medium', 'heavy', 'nose contour', 'jawline contour'],
+        "optional": False
+    }),
+    ("highlight", {
+        "group": 'Makeup',
+        "female_options": ['none', 'subtle glow', 'dewy high points', 'strobing', 'glitter highlight', 'inner corner'],
+        "male_options": ['none', 'subtle glow', 'dewy high points', 'strobing', 'glitter highlight', 'inner corner'],
         "optional": False
     }),
     ("blush", {
         "group": 'Makeup',
         "female_options": ['no blush', 'barely there flush', 'soft pink blush', 'peach blush', 'coral blush', 'rosy blush', 'warm terra cotta', 'bronzed sun-kissed', 'light draping blush', 'heavy editorial blush', 'monochromatic blush and eyeshadow'],
         "male_options": ['no blush', 'barely there flush', 'soft pink blush', 'peach blush', 'coral blush', 'rosy blush', 'warm terra cotta', 'bronzed sun-kissed', 'light draping blush', 'heavy editorial blush', 'monochromatic blush and eyeshadow'],
+        "optional": False
+    }),
+    ("lips_makeup", {
+        "group": 'Makeup',
+        "female_options": ['bare natural lips', 'tinted lip balm', 'nude lipstick', 'MLBB lipstick', 'coral', 'pink', 'classic red', 'deep red', 'berry', 'plum', 'mauve', 'brown nude', 'dark brown', 'glossy clear', 'high shine gloss', 'ombre lip'],
+        "male_options": ['bare natural lips', 'tinted lip balm', 'nude lipstick', 'MLBB lipstick', 'coral', 'pink', 'classic red', 'deep red', 'berry', 'plum', 'mauve', 'brown nude', 'dark brown', 'glossy clear', 'high shine gloss', 'ombre lip'],
         "optional": False
     }),
     ("skin_finish", {
@@ -392,24 +414,6 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "group": 'Hair',
         "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights'],
         "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights'],
-        "optional": False
-    }),
-    ("eyebrow_makeup", {
-        "group": 'Makeup',
-        "female_options": ['none', 'filled in', 'feathered', 'bold sculpted', 'laminated look', 'tinted'],
-        "male_options": ['none', 'filled in', 'feathered', 'bold sculpted', 'laminated look', 'tinted'],
-        "optional": False
-    }),
-    ("contour", {
-        "group": 'Makeup',
-        "female_options": ['none', 'subtle', 'medium', 'heavy', 'nose contour', 'jawline contour'],
-        "male_options": ['none', 'subtle', 'medium', 'heavy', 'nose contour', 'jawline contour'],
-        "optional": False
-    }),
-    ("highlight", {
-        "group": 'Makeup',
-        "female_options": ['none', 'subtle glow', 'dewy high points', 'strobing', 'glitter highlight', 'inner corner'],
-        "male_options": ['none', 'subtle glow', 'dewy high points', 'strobing', 'glitter highlight', 'inner corner'],
         "optional": False
     }),
     ("rings", {

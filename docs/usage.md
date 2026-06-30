@@ -12,8 +12,8 @@ The widgets at the top of Identity Forge steer the whole character:
 | Control | Default | Effect |
 | --- | --- | --- |
 | `seed` | randomize | Reproducibility. Auto-randomizes each run; set to *fixed* to repeat. Not written to the JSON. |
-| `gender` | Any | Pronouns + gender-specific presentation (no beards on women; no random makeup, nail polish, feminine jewellery or hairstyles on men). `Any` deliberately mixes both, and defers to a connected preset's gender when set to `Any`. |
-| `wardrobe` | Match gender | Outfit wardrobe. `Feminine`/`Masculine`/`Any` deliberately mix (e.g. a man in feminine outfits). |
+| `gender` | Any | Pronouns + gender-specific presentation (no beards on women; no random makeup, nail polish, feminine jewellery or hairstyles on men). `Any` **rolls a coherent man OR woman each run** (a 50/50 coin-flip; an anatomical lock like a beard decides it), so features stay self-consistent. Defers to a connected preset's gender. To instead unlock fully mixed-gender output, set `wardrobe` to `Any` (see below). |
+| `wardrobe` | Match gender | Outfit wardrobe. `Match gender` follows the (rolled) gender; `Feminine`/`Masculine` force a wardrobe (e.g. a man in feminine outfits). `Any` mixes outfits — and, when `gender` is also `Any`, restores the fully mixed-gender "anything goes" mode (both feature pools unioned, neutral *they/them* pronouns). |
 | `hair_color_scope` | Natural only | Keeps random hair realistic; `Full spectrum` allows fantasy colours. |
 | `accessory_density` | Balanced | How often bags/jewellery/accessories appear: `None` (bare), `Minimal`, `Balanced`, `Maximal`. Drop it for clean portraits without locking fields by hand. |
 | `location_setting` | Any indoor/outdoor | Restrict the random scene. `Any indoor/outdoor` picks any real location but never a studio; `Indoor`/`Outdoor` narrow to real scenes; `Studio / solid backdrop` forces a plain, easily-maskable background (seamless grey, solid white, solid black, or chroma-key green) plus clean studio light. A locked location wins. |
@@ -53,7 +53,13 @@ incompatible value, re-randomizes it within the `Female` pool, and logs a notice
 `Male` also applies **masculine presentation defaults** to the *random* fill: no makeup, nail
 polish, feminine jewellery, lip colour or hairstyles. These govern randomization only — a value
 you lock yourself, or one carried by a preset's signature, is respected (so a man cosplaying a
-pigtailed character keeps the pigtails). Choose `gender: Any` to mix presentations freely.
+pigtailed character keeps the pigtails).
+
+`Any` resolves to a concrete man or woman per seed (so the whole character is coherent — no beard
+beside a feminine bust), then applies that gender's rules above. A strongly gendered lock decides
+the coin-flip (locking a beard yields a man); otherwise it is an even 50/50. For deliberately
+mixed-gender output, set `wardrobe: Any` together with `gender: Any` — that keeps both feature
+pools unioned and uses neutral *they/them* pronouns.
 
 ## Custom options
 

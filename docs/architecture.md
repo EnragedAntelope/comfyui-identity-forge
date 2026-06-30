@@ -251,6 +251,16 @@ creature loader copies only the standard slots).
 
 ## Gotchas cheat-sheet
 
+- **`gender == "Any"` resolves to a concrete `Female`/`Male` per seed** (first rng draw in
+  `generate_character`) so the person is coherent — the gender gate and randomizer then draw from
+  one pool, no beard beside a feminine bust. An anatomical lock decides it (`_gender_from_locks`:
+  a beard -> Male, a feminine-only `bust` -> Female) so explicit choices are honored; otherwise an
+  even 50/50. The old unioned androgynous mode (both pools mixed, *they/them* pronouns,
+  `_meta.gender` stays `"Any"`) is preserved **only** when `wardrobe == "Any"`, the explicit
+  "anything goes" escape hatch.
+- **`smile_type` is the mouth/smile field and IS rendered** (in `_format_prose` face features);
+  `constraints.py` buckets every `expression` into closed / soft-smile / open so the mouth never
+  contradicts the face. (It was dead — resolved but unrendered — before 0.33.)
 - Duplicate `COSPLAYERS` / `CREATURES` keys silently override — the last wins.
 - `signature`/`physique` values are gender-gated downstream; prefer unisex fields for crossplay.
 - A locked physique doesn't constrain `fitness`/`muscle` (known loose coherence).

@@ -104,10 +104,37 @@ class GenderTests(unittest.TestCase):
             self.assertNotIn("beard", prose, f"seed {seed}")
 
     def test_any_gender_keeps_locked_beard(self):
-        # The gate is gender-specific: under "Any", facial hair stays valid and a
-        # locked beard must survive (Any's pool is the union of both genders).
-        _, js = generate_character(1, "Any", {"facial_hair": "full beard"})
-        self.assertEqual(json.loads(js)["Hair"]["facial_hair"], "full beard")
+        # "Any" resolves to a concrete gender, but an anatomical lock decides it: a
+        # locked beard implies Male (via _gender_from_locks), so the explicit choice
+        # is honored and survives the gender gate.
+        for seed in range(20):
+            _, js = generate_character(seed, "Any", {"facial_hair": "full beard"})
+            self.assertEqual(json.loads(js)["Hair"]["facial_hair"], "full beard",
+                             f"seed {seed}")
+
+    # Female-only bust values (a masculine character must never carry one).
+    _FEMALE_BUST = {"very small", "small", "modest", "medium", "full",
+                    "very large", "generously proportioned"}
+
+    def test_any_resolves_to_one_coherent_gender(self):
+        # gender "Any" + a real wardrobe rolls a concrete man OR woman, never the
+        # mixed "they/them" union: meta gender is concrete and a beard never lands
+        # on a feminine bust (the woman-with-a-mustache bug).
+        for seed in range(80):
+            _, js = generate_character(seed, "Any", {}, wardrobe="Match gender")
+            doc = json.loads(js)
+            self.assertIn(doc["_meta"]["gender"], {"Female", "Male"}, f"seed {seed}")
+            facial = doc.get("Hair", {}).get("facial_hair", "")
+            bust = doc.get("Body", {}).get("bust", "")
+            if facial and "shaven" not in facial:  # a real beard/moustache => male
+                self.assertNotIn(bust, self._FEMALE_BUST,
+                                 f"seed {seed}: {facial!r} with {bust!r}")
+
+    def test_any_with_any_wardrobe_still_mixes(self):
+        # The deliberate full-mix escape hatch: gender "Any" + wardrobe "Any" keeps
+        # the unioned androgynous mode ("They" pronouns, meta gender stays "Any").
+        _, js = generate_character(7, "Any", {}, wardrobe="Any")
+        self.assertEqual(json.loads(js)["_meta"]["gender"], "Any")
 
     def test_male_makeup_leans_natural(self):
         for seed in range(40):
@@ -1605,11 +1632,13 @@ class FieldHygieneTests(unittest.TestCase):
 
 
 class GrammarAgreementTests(unittest.TestCase):
-    """The 'Any' gender uses plural 'They' and must take plural verbs."""
+    """The androgynous full-mix mode (gender 'Any' + wardrobe 'Any') uses plural
+    'They' and must take plural verbs. (Plain 'Any' now coin-flips to he/she.)"""
 
     def test_they_takes_plural_wear(self):
         prose, _ = generate_character(
-            7, "Any", {"outfit_style": "casual", "makeup_style": "soft glam"}
+            7, "Any", {"outfit_style": "casual", "makeup_style": "soft glam"},
+            wardrobe="Any",
         )
         self.assertNotIn("They wears", prose)
         self.assertIn("They wear", prose)
@@ -1618,6 +1647,24 @@ class GrammarAgreementTests(unittest.TestCase):
         for gender in ("Female", "Male"):
             prose, _ = generate_character(7, gender, {"outfit_style": "casual"})
             self.assertNotIn(" wear ", prose)  # no plural verb for She/He
+
+
+class SmileTypeRenderTests(unittest.TestCase):
+    """smile_type (formerly a dead field) now renders and stays coherent with the
+    expression that steers it via constraints.py."""
+
+    def test_open_expression_renders_toothy_grin(self):
+        prose, _ = generate_character(3, "Female", {"expression": "laughing"})
+        self.assertIn("toothy grin", prose)
+
+    def test_closed_expression_renders_closed_mouth(self):
+        prose, _ = generate_character(3, "Female", {"expression": "serious"})
+        self.assertIn("closed mouth", prose)
+        self.assertNotIn("grin", prose)
+
+    def test_soft_smile_expression_renders_soft_smile(self):
+        prose, _ = generate_character(3, "Female", {"expression": "warm smile"})
+        self.assertIn("soft smile", prose)
 
 
 class FieldFamilyPickTests(unittest.TestCase):
