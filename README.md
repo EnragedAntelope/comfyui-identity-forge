@@ -49,23 +49,58 @@ Built on the ComfyUI **V3 API** (`comfy_api.latest`). Category: `conditioning/ch
 <img width="320" alt="Creatures" src="https://github.com/user-attachments/assets/65b0cbfa-6e93-47de-bf39-8d497c9dfb47" />
 
 
-**Sample outputs** (each image embeds the test workflow — drag one into ComfyUI to load it):
+**Sample outputs**:
+Identity Forge:
+<img width="1728" height="2304" alt="krea2unstable_00018_" src="https://github.com/user-attachments/assets/5c6d404d-8cb8-4466-9575-21783c6f2287" />
+<img width="1728" height="2304" alt="krea2turbo_ID_00010_" src="https://github.com/user-attachments/assets/82d0bb40-d3c6-47c9-83f1-6f33aa7e9260" />
+<img width="1728" height="2304" alt="krea2turbo_ID_00009_" src="https://github.com/user-attachments/assets/9755ef20-0429-4d64-949f-2826a83cc2e7" />
+<img width="1728" height="2304" alt="krea2turbo_04470_" src="https://github.com/user-attachments/assets/15d61d28-d79a-4ad0-b17f-7346b83ab56c" />
+<img width="1728" height="2304" alt="krea2turbo_04440_" src="https://github.com/user-attachments/assets/00172e67-12f7-4518-b08f-663afce2a363" />
 
-<table>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/26f0ec17-35dd-40e1-a036-21a7de81a0cd" alt="sample output" width="190" /></td>
-    <td><img src="https://github.com/user-attachments/assets/ebb55a64-6694-4285-bb92-13cba5745709" alt="sample output" width="190" /></td>
-    <td><img src="https://github.com/user-attachments/assets/d7107faf-498d-41e2-8b7c-dce5c6c0f503" alt="sample output" width="190" /></td>
-    <td><img src="https://github.com/user-attachments/assets/5794b2d8-a0ce-41f4-b02f-731cb3f85992" alt="sample output" width="190" /></td>
-  </tr>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/16805e63-77b1-4334-9f25-5f9f30877929" alt="sample output" width="190" /></td>
-    <td><img src="https://github.com/user-attachments/assets/7ae12729-d7f6-4ea8-aea3-e7b769c87e59" alt="sample output" width="190" /></td>
-    <td><img src="https://github.com/user-attachments/assets/1ab4f93a-ce8b-43c0-a587-308db8475344" alt="sample output" width="190" /></td>
-    <td><img src="https://github.com/user-attachments/assets/4db343ea-1c57-43a8-b5e8-d530416cb780" alt="sample output" width="190" /></td>
-  </tr>
-</table>
 
+Archetypes:
+<img width="1728" height="2304" alt="krea2turbo_04279_" src="https://github.com/user-attachments/assets/8bc9809d-c0be-4edd-b60c-cd8ac84d9f05" />
+<img width="1728" height="2304" alt="krea2turbo_04178_" src="https://github.com/user-attachments/assets/d48eddbb-97a8-4e61-ab11-de41d4ef386c" />
+<img width="1728" height="2304" alt="krea2turbo_04155_" src="https://github.com/user-attachments/assets/7ce1a556-dc01-454b-ac7e-0646815ecddc" />
+<img width="1728" height="2304" alt="krea2turbo_00024_" src="https://github.com/user-attachments/assets/a75a9f6f-3db1-4e08-b219-249a029a2aba" />
+<img width="1728" height="2304" alt="krea2turbo_00023_" src="https://github.com/user-attachments/assets/90857fdd-7d17-4e36-aa4d-15e42a1a5424" />
+<img width="1728" height="2304" alt="krea2turbo_00020_" src="https://github.com/user-attachments/assets/9fa83b75-2028-4362-b67b-4459810fd2d6" />
+<img width="1728" height="2304" alt="krea2unstable_00010_" src="https://github.com/user-attachments/assets/6a25443a-e040-44f4-8d48-33a4118ab55b" />
+<img width="1728" height="2304" alt="krea2unstable_00009_" src="https://github.com/user-attachments/assets/c0d28e5e-094b-413e-babc-d88d03fc539c" />
+<img width="1728" height="2304" alt="krea2turbo_04469_" src="https://github.com/user-attachments/assets/6526567f-c660-4be3-b426-0a7c80438405" />
+<img width="1728" height="2304" alt="krea2turbo_04467_" src="https://github.com/user-attachments/assets/9132bccc-9f3b-49f9-9968-a7510048f2f8" />
+<img width="1728" height="2304" alt="krea2turbo_04465_" src="https://github.com/user-attachments/assets/9a2acf90-ef21-4acc-9161-b132b9245130" />
+<img width="1728" height="2304" alt="krea2turbo_04462_" src="https://github.com/user-attachments/assets/33bd47f1-1789-473f-b041-4b1af0332146" />
+<img width="1728" height="2304" alt="krea2turbo_04436_" src="https://github.com/user-attachments/assets/757f60c8-8ebc-42f8-a3d8-9d2b79abae57" />
+<img width="1728" height="2304" alt="krea2turbo_04280_" src="https://github.com/user-attachments/assets/1ffecfc2-b2c7-4ff2-aa95-a998e798283a" />
+
+Cosplayers:
+<img width="1728" height="2304" alt="krea2turbo_03474_" src="https://github.com/user-attachments/assets/62c88ab8-52d3-4798-a8e2-b9aa47be82c9" />
+<img width="1728" height="2304" alt="krea2turbo_03268_" src="https://github.com/user-attachments/assets/286001ec-b6ff-43aa-be11-4e8adbcc5c82" />
+<img width="1728" height="2304" alt="krea2turbo_00311_" src="https://github.com/user-attachments/assets/0661c12c-5e6f-47a9-9315-0435e3950c61" />
+<img width="1728" height="2304" alt="krea2turbo_00269_" src="https://github.com/user-attachments/assets/a88405b4-0e94-4092-886a-550b49a59c1a" />
+<img width="1728" height="2304" alt="krea2turbo_00250_" src="https://github.com/user-attachments/assets/5ebb67c2-ce9c-4099-a1a4-8fcc91dbad81" />
+<img width="1728" height="2304" alt="krea2turbo_00202_" src="https://github.com/user-attachments/assets/3ee5c9bf-1c76-4161-a6b7-f0dbfc889a78" />
+<img width="1728" height="2304" alt="krea2turbo_cosp_00018_" src="https://github.com/user-attachments/assets/1018c740-86f9-4da4-88f1-de2b8615bb53" />
+<img width="1728" height="2304" alt="krea2turbo_04430_" src="https://github.com/user-attachments/assets/0c26529d-e39e-4696-a674-39efe2681f9d" />
+<img width="1728" height="2304" alt="krea2turbo_04328_" src="https://github.com/user-attachments/assets/3d91ddf8-5a41-4ec7-995e-b6cae00628fc" />
+<img width="1728" height="2304" alt="krea2turbo_04323_" src="https://github.com/user-attachments/assets/2b0fd5c6-08e8-4a2a-bfb9-e829823d7c13" />
+<img width="1728" height="2304" alt="krea2turbo_03938_" src="https://github.com/user-attachments/assets/5eb24c4f-4812-4d3e-953a-147aec5db6d5" />
+
+Creatures:
+<img width="1728" height="2304" alt="krea2turbo_00019_" src="https://github.com/user-attachments/assets/42802824-755a-4a7d-aebf-2b2c4c9183e2" />
+<img width="1728" height="2304" alt="krea2turbo_00017_" src="https://github.com/user-attachments/assets/32267bfd-0b15-4312-be08-9b378f7783a9" />
+<img width="1728" height="2304" alt="krea2turbo_00015_" src="https://github.com/user-attachments/assets/c4236750-a597-4680-b1a1-5a610b2b172a" />
+<img width="1728" height="2304" alt="krea2turbo_00011_" src="https://github.com/user-attachments/assets/08d138c7-c05f-436c-ba65-c4d9768f7cef" />
+<img width="1728" height="2304" alt="krea2turbo_04387_" src="https://github.com/user-attachments/assets/f1f30601-754b-4fcd-b44f-15314f0804c7" />
+<img width="1728" height="2304" alt="krea2turbo_04375_" src="https://github.com/user-attachments/assets/6b58cce8-eec8-46a8-bb8a-893a35cd7d72" />
+<img width="1728" height="2304" alt="krea2turbo_04359_" src="https://github.com/user-attachments/assets/a0ab604d-7aaa-482b-af7c-3020ba9eac38" />
+<img width="1728" height="2304" alt="krea2turbo_04226_" src="https://github.com/user-attachments/assets/de7237f7-3989-409a-939c-1cd607965aa8" />
+<img width="1728" height="2304" alt="krea2turbo_04120_" src="https://github.com/user-attachments/assets/e9b96ae3-e795-4cee-a6da-8c39789dde74" />
+<img width="1728" height="2304" alt="krea2turbo_04012_" src="https://github.com/user-attachments/assets/d4a1714d-72ec-40d1-bc01-f5be5b019d1e" />
+<img width="1728" height="2304" alt="krea2turbo_03657_" src="https://github.com/user-attachments/assets/0eac2c2a-e93a-422d-99a6-b870a13242ae" />
+<img width="1728" height="2304" alt="krea2turbo_03528_" src="https://github.com/user-attachments/assets/41ffb934-702d-4299-8fdf-f260a3836ec2" />
+<img width="1728" height="2304" alt="krea2turbo_02228_" src="https://github.com/user-attachments/assets/0ba4e7a2-b897-4d8b-9132-2eca3e3262f7" />
 
 ---
 
