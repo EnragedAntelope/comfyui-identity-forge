@@ -159,8 +159,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # freckles_density field (no double-sourcing); skin-finish words live in
         # complexion. The 'no notable marks' token is the absent value driven by
         # accessory_density via _EXTRA_ABSENCE, so most faces carry no mark.
-        "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
-        "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'dimples when smiling', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
+        # "small scar through eyebrow" was "dimples when smiling" pre-0.36:
+        # dimples are owned by smile_type ("subtle dimpled") and the pair read
+        # as a tautology when both landed in one output.
+        "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'small scar through eyebrow', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
+        "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'small scar through eyebrow', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
         "optional": True
     }),
     ("freckles_density", {
@@ -460,8 +463,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("mood", {
         "group": 'Setting & Shot',
-        "female_options": ['cheerful', 'melancholic', 'mysterious', 'confident', 'dreamy', 'tense', 'serene', 'playful', 'intense', 'joyful', 'lighthearted', 'somber', 'brooding', 'peaceful', 'fierce', 'triumphant', 'enigmatic', 'moody'],
-        "male_options": ['cheerful', 'melancholic', 'mysterious', 'confident', 'dreamy', 'tense', 'serene', 'playful', 'intense', 'joyful', 'lighthearted', 'somber', 'brooding', 'peaceful', 'fierce', 'triumphant', 'enigmatic', 'moody'],
+        # Mood is the scene's tone; expression is the face. The two randomize
+        # independently, so their vocabularies must not overlap (0.36 renames:
+        # playful->carefree, melancholic->sorrowful, confident->self-assured,
+        # serene->tranquil, brooding->grim). test_engine enforces disjointness.
+        "female_options": ['cheerful', 'sorrowful', 'mysterious', 'self-assured', 'dreamy', 'tense', 'tranquil', 'carefree', 'intense', 'joyful', 'lighthearted', 'somber', 'grim', 'peaceful', 'fierce', 'triumphant', 'enigmatic', 'moody'],
+        "male_options": ['cheerful', 'sorrowful', 'mysterious', 'self-assured', 'dreamy', 'tense', 'tranquil', 'carefree', 'intense', 'joyful', 'lighthearted', 'somber', 'grim', 'peaceful', 'fierce', 'triumphant', 'enigmatic', 'moody'],
         "optional": False
     }),
     ("pose", {
@@ -540,10 +547,13 @@ EXPRESSION_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 ])
 
 MOOD_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("positive", {"weight": 2, "variants": ['cheerful', 'playful', 'joyful', 'lighthearted']}),
-    ("heavy", {"weight": 2, "variants": ['melancholic', 'tense', 'somber', 'brooding']}),
-    ("calm", {"weight": 2, "variants": ['dreamy', 'serene', 'peaceful']}),
-    ("bold", {"weight": 2, "variants": ['confident', 'intense', 'fierce', 'triumphant']}),
+    # 0.36 renames (mood vocabulary must stay disjoint from expression's — the
+    # two randomize independently): playful->carefree, melancholic->sorrowful,
+    # confident->self-assured, serene->tranquil, brooding->grim.
+    ("positive", {"weight": 2, "variants": ['cheerful', 'carefree', 'joyful', 'lighthearted']}),
+    ("heavy", {"weight": 2, "variants": ['sorrowful', 'tense', 'somber', 'grim']}),
+    ("calm", {"weight": 2, "variants": ['dreamy', 'tranquil', 'peaceful']}),
+    ("bold", {"weight": 2, "variants": ['self-assured', 'intense', 'fierce', 'triumphant']}),
     ("enigmatic", {"weight": 1, "variants": ['mysterious', 'enigmatic', 'moody']}),
 ])
 

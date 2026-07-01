@@ -212,6 +212,15 @@ for _style in _NATURAL_MAKEUP:
         "excludes_field": "lashes", "excludes_values": list(_HEAVY_LASHES),
         "reason": f"'{_style}' excludes false/heavy lashes"})
 
+# "fresh-faced dewy look" names its own finish: a matte skin_finish contradicts
+# it, and "dewy skin" doubles the word in one sentence. The luminous/glass/
+# natural finishes remain compatible.
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "makeup_style", "value": "fresh-faced dewy look",
+    "excludes_field": "skin_finish",
+    "excludes_values": ["matte finish", "full coverage matte", "dewy skin"],
+    "reason": "dewy makeup style conflicts with matte finishes and doubles 'dewy skin'"})
+
 # Expression drives the mouth/smile state so the rendered smile_type never
 # contradicts the face (smile_type is the single mouth field now -- teeth_visibility
 # was merged out). Three buckets: a closed non-smiling mouth, a closed-lip soft

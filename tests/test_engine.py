@@ -290,6 +290,31 @@ class ConstraintTests(unittest.TestCase):
         )
         self.assertEqual(json.loads(js)["Makeup"]["eye_makeup"], "smoky black")
 
+    def test_dewy_makeup_style_excludes_matte_and_doubled_dewy_finish(self):
+        for seed in range(60):
+            _, js = generate_character(
+                seed, "Female", {"makeup_style": "fresh-faced dewy look"})
+            self.assertNotIn(
+                json.loads(js)["Makeup"].get("skin_finish"),
+                {"matte finish", "full coverage matte", "dewy skin"},
+            )
+
+    def test_mood_and_expression_vocabularies_do_not_collide(self):
+        # mood "playful" was renamed "carefree" in 0.36 because expression owns
+        # "playful"; the two randomize independently, so a shared word could
+        # double in one output ("a playful expression ... a playful mood").
+        expr = set(FIELD_DEFINITIONS["expression"]["female_options"])
+        mood = set(FIELD_DEFINITIONS["mood"]["female_options"])
+        self.assertFalse(expr & mood,
+                         f"expression/mood share options: {expr & mood}")
+        self.assertIn("carefree", mood)
+
+    def test_skin_details_does_not_duplicate_smile_type_dimples(self):
+        # "dimples when smiling" was reworded in 0.36: smile_type's
+        # "subtle dimpled" owns the dimple concept.
+        for opt in FIELD_DEFINITIONS["skin_details"]["female_options"]:
+            self.assertNotIn("dimple", opt)
+
 
 class OutputFormatTests(unittest.TestCase):
     def test_locked_value_preserved(self):

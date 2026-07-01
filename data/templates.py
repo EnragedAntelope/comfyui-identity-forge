@@ -137,7 +137,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "factory floor",
         "lighting": "warm incandescent lamp glow",
         "shot_type": "low angle looking up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Human Knight": {
         "gender": "Male",
@@ -201,28 +201,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "dusty second-hand thrift store",
         "lighting": "soft window light from the side",
         "shot_type": "three-quarter angle facing left",
-        "mood": "playful",
-    },
-    "Orc Warrior": {
-        "gender": "Male",
-        "ethnicity": "Mongolian",
-        "body_type": "athletic",
-        "height": "very tall",
-        "fitness_level": "very fit",
-        "facial_hair": "mutton chops",
-        "hair_color": "jet black",
-        "hair_length": "very short",
-        "hair_texture": "coily",
-        "hair_style": "natural and unstyled",
-        "skin_tone": "olive",
-        "complexion": "ruddy",
-        "outfit_style": "streetwear",
-        "accessories": "no accessories",
-        "expression": "intense gaze",
-        "location": "parking garage",
-        "lighting": "neon sign glow in multiple colors",
-        "shot_type": "low angle looking up",
-        "mood": "intense",
+        "mood": "carefree",
     },
     "Fairy Princess": {
         "gender": "Female",
@@ -311,7 +290,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "small chapel interior",
         "lighting": "light through stained glass casting colors",
         "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     # Modern / jobs
     "Corporate Executive": {
@@ -334,7 +313,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "corner executive office",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Graduate": {
         "age": "22",
@@ -380,7 +359,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "doctor's examination room",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     "Firefighter": {
         "gender": "Male",
@@ -400,7 +379,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "warehouse interior",
         "lighting": "harsh overhead midday sun",
         "shot_type": "full body shot",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Teacher": {
         "gender": "Female",
@@ -457,7 +436,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "sleek modern kitchen with marble countertops",
         "lighting": "warm incandescent lamp glow",
         "shot_type": "medium shot from waist up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Librarian": {
         "gender": "Female",
@@ -475,7 +454,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "public library with tall bookshelves",
         "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     "Athlete": {
         "gender": "Female",
@@ -494,7 +473,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "local gym weight room",
         "lighting": "harsh overhead midday sun",
         "shot_type": "full body shot",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Musician": {
         "ethnicity": "Korean",
@@ -547,7 +526,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "airport departure gate",
         "lighting": "soft morning light",
         "shot_type": "medium shot from waist up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Scientist": {
         "gender": "Female",
@@ -565,7 +544,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "location": "university lecture hall",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     "Farmer": {
         "gender": "Male",
@@ -620,7 +599,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "no bag", "accessories": "no accessories",
         "expression": "determined", "location": "grand cathedral interior",
         "lighting": "light through stained glass casting colors",
-        "shot_type": "full body shot", "mood": "confident",
+        "shot_type": "full body shot", "mood": "self-assured",
     },
     "Forest Druid": {
         "ethnicity": "Irish", "body_type": "lean", "height": "average height",
@@ -643,7 +622,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "no bag", "accessories": "no accessories",
         "expression": "serene", "location": "small chapel interior",
         "lighting": "soft window light from the side",
-        "shot_type": "full body shot", "mood": "serene",
+        "shot_type": "full body shot", "mood": "tranquil",
     },
     "Berserker Barbarian": {
         "gender": "Male", "ethnicity": "Norwegian", "body_type": "athletic", "height": "very tall",
@@ -703,7 +682,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "no bag", "accessories": "no accessories",
         "expression": "smirking", "location": "dimly lit cocktail lounge",
         "lighting": "warm candlelight",
-        "shot_type": "cowboy shot from mid-thigh up", "mood": "playful",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "carefree",
     },
     "Stealth Ninja": {
         "ethnicity": "Japanese", "body_type": "lean", "height": "average height",
@@ -726,7 +705,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "no bag", "accessories": "no accessories",
         "expression": "slightly bashful", "location": "dark moody Victorian parlor",
         "lighting": "warm incandescent lamp glow",
-        "shot_type": "full body shot", "mood": "playful",
+        "shot_type": "full body shot", "mood": "carefree",
     },
     "Cheerleader": {
         "gender": "Female", "ethnicity": "English", "body_type": "athletic", "height": "average height",
@@ -750,7 +729,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "beaded evening clutch", "accessories": "no accessories",
         "expression": "flirtatious", "location": "speakeasy-style basement bar",
         "lighting": "warm string lights bokeh background",
-        "shot_type": "medium shot from waist up", "mood": "playful",
+        "shot_type": "medium shot from waist up", "mood": "carefree",
     },
     "Wild West Gunslinger": {
         "gender": "Male", "ethnicity": "Mexican", "body_type": "lean", "height": "tall",
@@ -803,7 +782,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "piercings": "nose stud", "outfit_style": "edgy alternative",
         "expression": "confident", "location": "tattoo parlor",
         "lighting": "single neon light from one side",
-        "shot_type": "medium close-up from chest up", "mood": "confident",
+        "shot_type": "medium close-up from chest up", "mood": "self-assured",
     },
 
     # --- Lean costume archetypes (costume comes from _COSTUMES; body/face left
@@ -825,7 +804,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "messy bun", "outfit_style": "vintage retro",
         "expression": "determined", "location": "home garage workshop",
         "lighting": "warm incandescent lamp glow",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Cyberpunk Netrunner": {
         "hair_color": "electric blue", "hair_style": "slicked back",
@@ -891,7 +870,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "half up half down", "makeup_style": "soft glam",
         "outfit_style": "evening formal", "expression": "confident",
         "location": "museum gallery with white walls", "lighting": "soft window light from the side",
-        "shot_type": "close-up portrait", "mood": "serene",
+        "shot_type": "close-up portrait", "mood": "tranquil",
     },
     "Pop Star": {
         "gender": "Female", "hair_color": "platinum blonde", "hair_style": "high ponytail",
@@ -917,7 +896,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "natural and unstyled", "outfit_style": "athletic",
         "expression": "determined", "location": "server room with blinking lights",
         "lighting": "cool LED overhead lighting",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Angelic Being": {
         "gender": "Female", "hair_color": "platinum blonde", "hair_length": "long",
@@ -931,7 +910,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "gender": "Female", "makeup_style": "no makeup", "hair_style": "sleek bun",
         "outfit_style": "business formal", "expression": "serene",
         "location": "small chapel interior", "lighting": "soft window light from the side",
-        "shot_type": "medium close-up from chest up", "mood": "serene",
+        "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Valkyrie": {
         "gender": "Female", "ethnicity": "Norwegian", "body_type": "athletic",
@@ -954,7 +933,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "worn down", "makeup_style": "bold glam",
         "outfit_style": "edgy alternative", "expression": "flirtatious",
         "location": "dimly lit cocktail lounge", "lighting": "warm candlelight",
-        "shot_type": "full body shot", "mood": "playful",
+        "shot_type": "full body shot", "mood": "carefree",
     },
 
     # --- More modern professions (costume from _COSTUMES where apt) --------
@@ -968,19 +947,19 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "low ponytail", "outfit_style": "business formal",
         "expression": "stern", "location": "courtroom",
         "lighting": "soft window light from the side",
-        "shot_type": "medium shot from waist up", "mood": "serene",
+        "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Bartender": {
         "hair_style": "slicked back", "outfit_style": "smart casual",
         "expression": "confident", "location": "dimly lit cocktail lounge",
         "lighting": "warm string lights bokeh background",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "News Anchor": {
         "hair_style": "freshly blown out", "makeup_style": "full glam",
         "outfit_style": "business formal", "expression": "confident",
         "location": "photography studio with backdrop", "lighting": "soft studio three-point lighting",
-        "shot_type": "medium close-up from chest up", "mood": "confident",
+        "shot_type": "medium close-up from chest up", "mood": "self-assured",
     },
     "Orchestra Conductor": {
         "hair_style": "windswept", "outfit_style": "evening formal",
@@ -998,7 +977,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "sleek bun", "outfit_style": "business formal",
         "expression": "subtle soft smile", "location": "wine bar with exposed brick",
         "lighting": "warm incandescent lamp glow",
-        "shot_type": "medium close-up from chest up", "mood": "serene",
+        "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Glassblower": {
         "outfit_style": "casual", "expression": "determined",
@@ -1022,7 +1001,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "facial_hair": "short beard", "skin_tone": "fair", "outfit_style": "vintage retro",
         "expression": "determined", "location": "home garage workshop",
         "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Sorcerer": {
         "gender": "Male", "ethnicity": "Italian", "body_type": "lean", "height": "tall",
@@ -1069,14 +1048,14 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_length": "very short", "skin_tone": "medium olive", "outfit_style": "casual",
         "expression": "confident", "location": "factory floor",
         "lighting": "harsh overhead midday sun", "shot_type": "medium shot from waist up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Electrician": {
         "gender": "Male", "ethnicity": "Irish", "body_type": "average", "height": "average height",
         "hair_color": "warm brown", "hair_length": "very short", "skin_tone": "fair",
         "outfit_style": "casual", "accessories": "no accessories", "expression": "serious",
         "location": "home garage workshop", "lighting": "harsh fluorescent lighting",
-        "shot_type": "medium shot from waist up", "mood": "serene",
+        "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Photographer": {
         "ethnicity": "Japanese", "body_type": "slim", "height": "average height",
@@ -1092,7 +1071,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_length": "long", "hair_style": "high ponytail", "skin_tone": "warm tan",
         "outfit_style": "athletic", "expression": "confident", "location": "local gym weight room",
         "lighting": "high key bright even lighting", "shot_type": "full body shot",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Lifeguard": {
         "gender": "Male", "ethnicity": "English", "body_type": "athletic",
@@ -1107,7 +1086,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "jet black", "hair_length": "long", "hair_style": "low ponytail",
         "skin_tone": "warm tan", "outfit_style": "casual", "accessories": "wide brim sun hat",
         "expression": "warm smile", "location": "forest trail", "lighting": "dappled sunlight through forest canopy",
-        "shot_type": "medium shot from waist up", "mood": "serene",
+        "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Marine Biologist": {
         "gender": "Female", "ethnicity": "Filipino",
@@ -1115,7 +1094,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_length": "shoulder length", "hair_style": "low ponytail", "skin_tone": "warm tan",
         "outfit_style": "casual", "expression": "curious", "location": "rocky coastal cliff",
         "lighting": "overcast diffused daylight", "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     "Archaeologist": {
         "gender": "Female", "ethnicity": "English", "body_type": "fit", "height": "average height",
@@ -1123,7 +1102,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "skin_tone": "tan", "outfit_style": "casual", "accessories": "wide brim sun hat",
         "expression": "determined", "location": "crumbling stone ruin",
         "lighting": "golden hour sunlight", "shot_type": "cowboy shot from mid-thigh up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Software Developer": {
         "ethnicity": "Indian", "body_type": "slim", "height": "average height",
@@ -1131,7 +1110,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "loungewear", "accessories": "no accessories",
         "expression": "pensive and thoughtful", "location": "co-working space",
         "lighting": "cool LED overhead lighting", "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     "Lumberjack": {
         "gender": "Male", "ethnicity": "Norwegian", "body_type": "stocky",
@@ -1139,7 +1118,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "auburn", "hair_length": "very short", "skin_tone": "fair", "complexion": "ruddy",
         "outfit_style": "casual", "expression": "confident", "location": "snowy pine forest",
         "lighting": "overcast diffused daylight", "shot_type": "cowboy shot from mid-thigh up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
 
     # --- Hobbies -----------------------------------------------------------
@@ -1156,7 +1135,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "jet black", "hair_length": "very short", "skin_tone": "light medium",
         "outfit_style": "streetwear", "accessories": "baseball cap", "expression": "smirking",
         "location": "urban alley with graffiti", "lighting": "harsh overhead midday sun",
-        "shot_type": "full body shot", "mood": "playful",
+        "shot_type": "full body shot", "mood": "carefree",
     },
     "Rock Climber": {
         "gender": "Female", "ethnicity": "Korean", "body_type": "athletic", "height": "average height",
@@ -1170,7 +1149,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "fitness_level": "very fit", "hair_color": "dark brown", "hair_length": "very short",
         "skin_tone": "tan", "outfit_style": "athletic", "expression": "determined",
         "location": "country dirt road", "lighting": "golden hour sunlight",
-        "shot_type": "cowboy shot from mid-thigh up", "mood": "confident",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "self-assured",
     },
     "Boxer": {
         "gender": "Male", "ethnicity": "Cuban", "body_type": "athletic", "height": "tall",
@@ -1185,7 +1164,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "fitness_level": "athletic", "hair_color": "near black", "hair_length": "very long",
         "hair_style": "messy bun", "skin_tone": "medium", "outfit_style": "athletic",
         "expression": "serene", "location": "yoga studio with wood floors",
-        "lighting": "soft morning light", "shot_type": "full body shot", "mood": "serene",
+        "lighting": "soft morning light", "shot_type": "full body shot", "mood": "tranquil",
     },
     "DJ": {
         "ethnicity": "Nigerian", "body_type": "average", "height": "average height",
@@ -1200,7 +1179,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "body_type": "athletic", "fitness_level": "very fit",
         "outfit_style": "athletic", "expression": "confident", "location": "rooftop terrace at dusk",
         "lighting": "rim lighting from setting sun", "shot_type": "low angle looking up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "Supervillain": {
         "outfit_style": "evening formal", "expression": "smirking",
@@ -1219,7 +1198,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Court Jester": {
         "outfit_style": "edgy alternative", "makeup_style": "club makeup", "expression": "playful",
         "location": "castle courtyard", "lighting": "warm string lights bokeh background",
-        "shot_type": "full body shot", "mood": "playful",
+        "shot_type": "full body shot", "mood": "carefree",
     },
     "Egyptian Pharaoh": {
         "ethnicity": "Egyptian", "body_type": "lean", "skin_tone": "caramel",
@@ -1233,7 +1212,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "jet black", "hair_style": "updo", "skin_tone": "porcelain",
         "lips_makeup": "classic red", "outfit_style": "evening formal", "expression": "serene",
         "location": "cherry blossom grove", "lighting": "soft window light from the side",
-        "shot_type": "medium close-up from chest up", "mood": "serene",
+        "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Greek Goddess": {
         "gender": "Female", "ethnicity": "Greek", "body_type": "hourglass", "height": "tall",
@@ -1270,7 +1249,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "skin_tone": "warm tan", "complexion": "ruddy", "outfit_style": "vintage retro",
         "expression": "confident", "location": "harbor dock at sunrise",
         "lighting": "soft morning light", "shot_type": "medium shot from waist up",
-        "mood": "serene",
+        "mood": "tranquil",
     },
     "Wasteland Survivor": {
         "ethnicity": "Greek", "body_type": "lean", "height": "average height",
@@ -1296,7 +1275,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "jet black", "hair_length": "very short", "hair_style": "natural and unstyled",
         "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
         "location": "high school gymnasium", "lighting": "dramatic single overhead spotlight",
-        "shot_type": "full body shot", "mood": "confident",
+        "shot_type": "full body shot", "mood": "self-assured",
     },
     "Swim Instructor": {
         "gender": "Female", "ethnicity": "Hawaiian", "body_type": "athletic", "height": "average height",
@@ -1311,7 +1290,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "dark brown", "hair_length": "very short", "hair_style": "natural and unstyled",
         "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
         "location": "parking garage", "lighting": "harsh fluorescent lighting",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Flamenco Dancer": {
         "gender": "Female", "ethnicity": "Spanish", "body_type": "curvy", "height": "average height",
@@ -1336,7 +1315,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "dark brown", "hair_length": "very short", "hair_style": "slicked back",
         "outfit_style": "evening formal", "expression": "confident",
         "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
-        "shot_type": "full body shot", "mood": "playful",
+        "shot_type": "full body shot", "mood": "carefree",
     },
 
     # --- Time periods / eras (fixed-look presets; costume via _COSTUMES) ---
@@ -1351,7 +1330,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "vintage retro", "earrings": "no earrings", "necklace": "no necklace",
         "expression": "confident",
         "location": "speakeasy-style basement bar", "lighting": "warm string lights bokeh background",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "1950s Greaser": {
         "gender": "Male", "ethnicity": "English", "body_type": "athletic", "height": "average height",
@@ -1360,7 +1339,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "vintage retro", "earrings": "no earrings", "necklace": "no necklace",
         "expression": "smirking",
         "location": "small-town family diner", "lighting": "warm incandescent lamp glow",
-        "shot_type": "medium shot from waist up", "mood": "playful",
+        "shot_type": "medium shot from waist up", "mood": "carefree",
     },
     "1960s Mod": {
         "gender": "Female", "ethnicity": "English", "body_type": "slim", "height": "average height",
@@ -1368,7 +1347,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "blunt bangs", "skin_tone": "fair", "makeup_style": "mod 1960s eye makeup",
         "eyeliner": "dramatic winged", "lashes": "dramatic falsies", "outfit_style": "vintage retro",
         "expression": "playful", "location": "luxury retail boutique",
-        "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "playful",
+        "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "carefree",
     },
     "1980s Pop Icon": {
         "gender": "Female", "ethnicity": "Puerto Rican", "body_type": "slim", "height": "average height",
@@ -1377,7 +1356,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "makeup_style": "club makeup", "eye_makeup": "colorful bold eyeshadow",
         "outfit_style": "edgy alternative", "expression": "confident",
         "location": "neon-lit nightclub", "lighting": "neon sign glow in multiple colors",
-        "shot_type": "medium shot from waist up", "mood": "playful",
+        "shot_type": "medium shot from waist up", "mood": "carefree",
     },
     "1990s Grunge": {
         "gender": "Male", "ethnicity": "English", "body_type": "lean", "height": "tall",
@@ -1385,7 +1364,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_texture": "slightly wavy", "hair_style": "natural and unstyled", "skin_tone": "fair",
         "outfit_style": "edgy alternative", "expression": "relaxed",
         "location": "indie record store", "lighting": "overcast diffused daylight",
-        "shot_type": "medium shot from waist up", "mood": "melancholic",
+        "shot_type": "medium shot from waist up", "mood": "sorrowful",
     },
     "1950s Sock Hop": {
         "gender": "Female", "ethnicity": "English", "body_type": "slim", "height": "average height",
@@ -1409,14 +1388,14 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "makeup_style": "gothic dark makeup", "eyeliner": "smudged kohl", "lips_makeup": "deep red",
         "outfit_style": "edgy alternative", "expression": "serious",
         "location": "dimly lit cocktail lounge", "lighting": "low key moody single light source",
-        "shot_type": "medium shot from waist up", "mood": "melancholic",
+        "shot_type": "medium shot from waist up", "mood": "sorrowful",
     },
     "1980s Preppy": {
         "body_type": "athletic", "height": "average height", "hair_color": "golden blonde",
         "hair_length": "ear length", "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
         "skin_tone": "fair", "outfit_style": "preppy", "expression": "confident",
         "location": "university lecture hall", "lighting": "high key bright even lighting",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "1980s New Wave": {
         "body_type": "slim", "height": "average height", "hair_color": "platinum blonde",
@@ -1424,7 +1403,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "skin_tone": "pale", "eyeliner": "dramatic winged", "outfit_style": "edgy alternative",
         "expression": "confident", "location": "neon-lit nightclub",
         "lighting": "neon sign glow in multiple colors", "shot_type": "medium shot from waist up",
-        "mood": "playful",
+        "mood": "carefree",
     },
     "Victorian Lady": {
         "gender": "Female", "ethnicity": "English", "body_type": "hourglass", "height": "average height",
@@ -1439,7 +1418,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "dark brown", "hair_length": "very short", "hair_texture": "loosely curled",
         "hair_style": "natural and unstyled", "skin_tone": "olive", "outfit_style": "evening formal",
         "expression": "stern", "location": "outdoor amphitheater",
-        "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "serene",
+        "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "tranquil",
     },
     "Prehistoric Hunter": {
         "gender": "Male", "ethnicity": "Mongolian", "body_type": "athletic", "height": "average height",
@@ -1458,7 +1437,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "dark brown", "hair_length": "shoulder length", "hair_style": "high ponytail",
         "skin_tone": "warm tan", "outfit_style": "athletic", "accessories": "no accessories",
         "expression": "determined", "location": "sunny city park",
-        "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "confident",
+        "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "self-assured",
     },
     "Gymnast": {
         "ethnicity": "Korean", "body_type": "lean", "height": "petite",
@@ -1489,7 +1468,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "light chestnut", "hair_length": "very short", "skin_tone": "fair",
         "outfit_style": "casual", "accessories": "no accessories", "expression": "confident",
         "location": "suburban basement", "lighting": "harsh fluorescent lighting",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Retail Cashier": {
         "ethnicity": "Colombian", "body_type": "average", "height": "average height",
@@ -1504,14 +1483,14 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": "jet black", "hair_length": "very short", "skin_tone": "tan",
         "complexion": "ruddy", "outfit_style": "vintage retro", "accessories": "no accessories",
         "expression": "confident", "location": "country dirt road", "lighting": "golden hour sunlight",
-        "shot_type": "cowboy shot from mid-thigh up", "mood": "serene",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "tranquil",
     },
     "Navy Sailor": {
         "ethnicity": "Scottish", "body_type": "fit", "height": "average height",
         "fitness_level": "very fit", "hair_color": "dark brown", "hair_length": "very short",
         "skin_tone": "light medium", "outfit_style": "smart casual", "accessories": "no accessories",
         "expression": "confident", "location": "harbor dock at sunrise", "lighting": "soft morning light",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Pin-up Model": {
         "gender": "Female", "ethnicity": "Kenyan", "body_type": "voluptuous", "height": "average height",
@@ -1519,7 +1498,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "half up half down", "skin_tone": "dark brown", "makeup_style": "full glam",
         "outfit_style": "vintage retro", "expression": "flirtatious", "location": "retro diner-style kitchen",
         "lighting": "warm string lights bokeh background", "shot_type": "medium shot from waist up",
-        "mood": "playful",
+        "mood": "carefree",
     },
     "Streamer": {
         "ethnicity": "Indian", "body_type": "slim", "height": "average height",
@@ -1527,7 +1506,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "skin_tone": "medium", "outfit_style": "streetwear", "accessories": "no accessories",
         "expression": "playful", "location": "co-working space",
         "lighting": "neon sign glow in multiple colors", "shot_type": "medium close-up from chest up",
-        "mood": "playful",
+        "mood": "carefree",
     },
 
     # --- More crafts, trades, fields & personas ---------------------------
@@ -1540,12 +1519,12 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Beekeeper": {
         "outfit_style": "casual", "expression": "relaxed",
         "location": "flower field in bloom", "lighting": "golden hour sunlight",
-        "shot_type": "medium shot from waist up", "mood": "serene",
+        "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Carpenter": {
         "outfit_style": "casual", "expression": "focused",
         "location": "woodworking workshop", "lighting": "warm incandescent lamp glow",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Welder": {
         "outfit_style": "casual", "expression": "determined",
@@ -1555,7 +1534,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Falconer": {
         "outfit_style": "smart casual", "expression": "calm and composed",
         "location": "misty moor", "lighting": "overcast diffused daylight",
-        "shot_type": "cowboy shot from mid-thigh up", "mood": "serene",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "tranquil",
     },
     "Cartographer": {
         "outfit_style": "vintage retro", "expression": "contemplative",
@@ -1575,12 +1554,12 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Jeweler": {
         "outfit_style": "business casual", "expression": "focused",
         "location": "luxury retail boutique", "lighting": "soft studio three-point lighting",
-        "shot_type": "medium close-up from chest up", "mood": "serene",
+        "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Watchmaker": {
         "outfit_style": "business casual", "expression": "focused",
         "location": "cluttered antique shop", "lighting": "warm incandescent lamp glow",
-        "shot_type": "close-up portrait", "mood": "serene",
+        "shot_type": "close-up portrait", "mood": "tranquil",
     },
     "Potter": {
         "outfit_style": "casual", "expression": "at ease",
@@ -1590,7 +1569,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Tailor": {
         "outfit_style": "smart casual", "expression": "subtle soft smile",
         "location": "luxury retail boutique", "lighting": "soft window light from the side",
-        "shot_type": "medium shot from waist up", "mood": "serene",
+        "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Calligrapher": {
         "outfit_style": "smart casual", "expression": "lost in thought",
@@ -1600,7 +1579,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Stonemason": {
         "outfit_style": "casual", "expression": "steely",
         "location": "crumbling stone ruin", "lighting": "harsh overhead midday sun",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Winemaker": {
         "outfit_style": "casual", "expression": "warm smile",
@@ -1620,7 +1599,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Trapeze Artist": {
         "body_type": "athletic", "outfit_style": "athletic", "expression": "bright smile",
         "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
-        "shot_type": "full body shot", "mood": "playful",
+        "shot_type": "full body shot", "mood": "carefree",
     },
     "Deep Sea Diver": {
         "outfit_style": "athletic", "expression": "determined",
@@ -1666,7 +1645,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_description": "an open-collar wide-lapel patterned shirt unbuttoned at the chest, a fitted {earth_tone} leisure suit jacket, flared trousers, and stacked-heel boots",
         "expression": "confident", "location": "dimly lit cocktail lounge",
         "lighting": "warm string lights bokeh background", "shot_type": "medium shot from waist up",
-        "mood": "confident",
+        "mood": "self-assured",
     },
     "1940s Factory Worker": {
         "gender": "Female", "ethnicity": "English", "body_type": "fit", "height": "average height",
@@ -1747,7 +1726,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "beaded evening clutch", "outfit_style": "evening formal", "accessories": "no accessories",
         "outfit_description": "a floor-length bias-cut {jewel_tone} satin gown with a plunging back and elbow-length silk gloves",
         "expression": "sultry", "location": "art gallery opening night",
-        "lighting": "dramatic single overhead spotlight", "shot_type": "medium shot from waist up", "mood": "confident",
+        "lighting": "dramatic single overhead spotlight", "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Classic Hollywood Leading Man": {
         "gender": "Male", "ethnicity": "Italian", "body_type": "athletic", "height": "tall",
@@ -1757,7 +1736,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "earrings": "no earrings", "necklace": "no necklace",
         "outfit_description": "a sharply tailored {dark_color} tuxedo with satin lapels, a crisp white dress shirt, a black bow tie, and a white pocket square",
         "expression": "confident", "location": "art gallery opening night",
-        "lighting": "dramatic chiaroscuro side lighting", "shot_type": "medium shot from waist up", "mood": "confident",
+        "lighting": "dramatic chiaroscuro side lighting", "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Backyard Country Casual": {
         "gender": "Female",
@@ -1814,7 +1793,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "blush": "coral blush", "outfit_style": "athletic", "accessories": "no accessories",
                 "outfit_description": "a high-cut {neon} spandex leotard over shiny footless tights, slouchy legwarmers bunched at the ankles, and white high-top sneakers",
                 "expression": "bright smile", "location": "dance studio with mirrors",
-                "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "playful",
+                "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "carefree",
             },
             "Male": {
                 "ethnicity": "English", "body_type": "athletic", "height": "tall",
@@ -1824,7 +1803,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "accessories": "no accessories",
                 "outfit_description": "a tight sleeveless tank top, {neon}-striped spandex shorts over footless tights, slouchy legwarmers, and white high-top sneakers",
                 "expression": "confident", "location": "local gym weight room",
-                "lighting": "high key bright even lighting", "shot_type": "medium shot from waist up", "mood": "playful",
+                "lighting": "high key bright even lighting", "shot_type": "medium shot from waist up", "mood": "carefree",
             },
         },
     },
@@ -1858,7 +1837,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "small quilted chain bag", "outfit_style": "streetwear", "accessories": "no accessories",
         "outfit_description": "a velour tracksuit with a bedazzled logo, a cropped camisole, and oversized rhinestone sunglasses pushed up on the head",
         "expression": "confident", "location": "luxury retail boutique",
-        "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "playful",
+        "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "carefree",
     },
     "Metrosexual": {
         "gender": "Male", "ethnicity": "Italian", "body_type": "fit", "height": "tall",
@@ -1868,7 +1847,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "smart casual", "accessories": "no accessories",
         "outfit_description": "a fitted designer button-down shirt with the top buttons open, slim tailored chinos, a sleek leather belt, and polished suede loafers",
         "expression": "confident", "location": "upscale urban cafe", "lighting": "soft window light from the side",
-        "shot_type": "medium shot from waist up", "mood": "confident",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Indie Sleaze": {
         "body_type": "lean", "hair_color": "near black", "hair_length": "shoulder length",
@@ -1917,7 +1896,6 @@ _COSTUMES: dict[str, str] = {
     "Human Knight": "polished {metal} plate armor over a {color} tabard with a chainmail collar",
     "Dark Sorceress": "flowing {dark_color} robes of {fabric} with a {metal} circlet and {gem} accents",
     "Halfling Rogue": "a patched {earth_tone} traveling cloak over a {fabric} vest with a worn leather belt",
-    "Orc Warrior": "crude {fur} hides and {metal} bracers strapped over a bare muscular chest",
     "Fairy Princess": "a {pastel} fairy gown of shimmering {sheer_fabric} with iridescent gossamer wings and a {flower} crown",
     "Vampire Noble": "an aristocratic {dark_color} {fabric} frock coat with a high collar and a {gem} cravat pin",
     "Werewolf Hunter": "a weathered {earth_tone} long coat over leather armor with {metal} buckles and a fur collar",

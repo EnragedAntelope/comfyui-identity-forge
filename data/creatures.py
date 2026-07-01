@@ -1320,6 +1320,18 @@ CREATURES: dict[str, dict] = {
         "legs_feet": "squat powerful legs",
         "extras": "patches of moss and lichen growing on the skin",
     },
+    "orc": {
+        "class": "Monsters", "palette": "moss green",
+        "palette_pool": ["moss green", "grey-green", "ash grey", "olive drab",
+                         "dark forest green", "muddy umber"],
+        "head": "a heavy-jawed brutish head with jutting lower tusks and a broad flat nose",
+        "eyes": "fierce deep-set amber eyes",
+        "integument": "tough weathered hide crossed with old battle scars",
+        "arms": "hugely muscled arms",
+        "hands": "broad thick-nailed hands",
+        "legs_feet": "thick powerful legs",
+        "extras": "notched ears and crude bone jewelry",
+    },
 
     # --- Aliens (expansion) ----------------------------------------------
     "cephalopod alien": {
