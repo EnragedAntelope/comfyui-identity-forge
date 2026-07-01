@@ -74,12 +74,52 @@ def _is_essential(field: str) -> bool:
     return FIELD_DEFINITIONS.get(field, {}).get("group") in _ESSENTIAL_GROUPS
 
 
+def _fill_look_costume(look: "dict[str, Any]", rng: "random.Random") -> None:
+    """Resolve a look's ``outfit_description`` in place.
+
+    A list value is a set of alternative costume templates — one is seed-picked
+    (uniformly, so no template is overweighted) *immediately before* its slots
+    are filled, keeping each costume's draws adjacent and deterministic.
+    """
+    outfit = look.get("outfit_description")
+    if isinstance(outfit, list):
+        outfit = rng.choice(outfit)
+    if outfit is not None:
+        look["outfit_description"] = fill_costume(outfit, rng)
+
+
+def _resolve_list_values(look: "dict[str, Any]", rng: "random.Random") -> None:
+    """Seed-pick every remaining list value in ``look``, in place.
+
+    An archetype field may hold a list of curated alternatives (e.g. three
+    coherent hair colours); a uniform pick keeps the look while varying the
+    detail, with no distribution bias by construction. Runs on the *unfiltered*
+    look so the draw count is identical across lock levels (Essentials/Full
+    parity for a given seed). Empty lists are dropped (defensive: built-ins are
+    validator-checked, user_options.json entries are not).
+    """
+    for field, value in list(look.items()):
+        if isinstance(value, list):
+            if value:
+                look[field] = rng.choice(value)
+            else:
+                del look[field]
+
+
 def build_archetype_json(archetype: str, seed: int = 0, lock_level: str = _ESSENTIALS) -> str:
     """Return the archetype preset as a grouped JSON string.
 
     ``archetype`` may be a name, ``"None"`` (→ ``"{}"``), or ``"Random"`` (a
     seeded random pick). Costume placeholders are filled from the seed. In
     ``"Essentials"`` mode only look-defining fields are emitted.
+
+    Any field value may be a ``list`` of alternatives — one is seed-picked so a
+    single archetype yields a curated range of looks. Draw order (append-only,
+    so existing seeds keep their picks when data merely *adds* lists): random
+    archetype pick → base costume template pick + slot fills → each variant's
+    costume template pick + slot fills → one scalar list pass (base fields in
+    template order, then Female/Male variants). Emitted values are always
+    strings; ``gender`` must never be a list (validator-enforced).
     """
     rng = random.Random(seed)
 
@@ -96,23 +136,31 @@ def build_archetype_json(archetype: str, seed: int = 0, lock_level: str = _ESSEN
     variants = preset.pop("variants", None)
 
     # Fill costume slots (e.g. "{color}") with seeded picks.
-    if "outfit_description" in preset:
-        preset["outfit_description"] = fill_costume(preset["outfit_description"], rng)
+    _fill_look_costume(preset, rng)
 
-    filtered_variants: "dict[str, dict[str, str]]" = {}
+    resolved_variants: "dict[str, dict[str, Any]]" = {}
     if isinstance(variants, dict):
         for variant_gender, look in variants.items():
             if variant_gender not in ("Female", "Male") or not isinstance(look, dict):
                 continue
             look = dict(look)
-            if "outfit_description" in look:
-                look["outfit_description"] = fill_costume(look["outfit_description"], rng)
-            if lock_level == _ESSENTIALS:
-                look = {f: v for f, v in look.items() if _is_essential(f)}
-            filtered_variants[variant_gender] = look
+            _fill_look_costume(look, rng)
+            resolved_variants[variant_gender] = look
 
+    # Scalar list picks happen in one pass after every costume fill and before
+    # the Essentials filter, so switching lock level never shifts the draws.
+    _resolve_list_values(preset, rng)
+    for variant_gender in ("Female", "Male"):
+        if variant_gender in resolved_variants:
+            _resolve_list_values(resolved_variants[variant_gender], rng)
+
+    filtered_variants: "dict[str, dict[str, Any]]" = resolved_variants
     if lock_level == _ESSENTIALS:
         preset = {f: v for f, v in preset.items() if _is_essential(f)}
+        filtered_variants = {
+            variant_gender: {f: v for f, v in look.items() if _is_essential(f)}
+            for variant_gender, look in resolved_variants.items()
+        }
 
     document: "OrderedDict[str, Any]" = OrderedDict()
     meta: "OrderedDict[str, Any]" = OrderedDict([

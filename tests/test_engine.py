@@ -441,6 +441,98 @@ class ArchetypeTests(unittest.TestCase):
                 self.assertNotIn("gender", look, f"{name}/{vgender}")
                 self.assertEqual(set(look) - valid, set(), f"{name}/{vgender}")
 
+    def test_list_values_resolve_to_one_alternative(self):
+        # A field value may be a curated list; the node seed-picks one so a
+        # single archetype yields a range of coherent looks.
+        synthetic = {
+            "gender": "Female",
+            "hair_color": ["raven black", "jet black", "espresso"],
+            "outfit_description": "a {color} shift dress",
+        }
+        ARCHETYPES["__ListTest__"] = synthetic
+        try:
+            picks = set()
+            for seed in range(40):
+                doc = json.loads(build_archetype_json("__ListTest__", seed))
+                value = doc["Hair"]["hair_color"]
+                self.assertIn(value, synthetic["hair_color"])
+                picks.add(value)
+            self.assertEqual(picks, set(synthetic["hair_color"]))  # all reachable
+            self.assertEqual(  # deterministic per seed
+                build_archetype_json("__ListTest__", 11),
+                build_archetype_json("__ListTest__", 11),
+            )
+        finally:
+            del ARCHETYPES["__ListTest__"]
+
+    def test_trailing_list_field_does_not_shift_costume_fill(self):
+        # Scalar list picks draw AFTER all costume fills: adding a list field to
+        # an archetype must not change which costume colours a seed produces.
+        base = {"gender": "Female", "outfit_description": "a {color} shift dress"}
+        with_list = dict(base, hair_color=["raven black", "espresso"])
+        for seed in range(15):
+            ARCHETYPES["__ListTest__"] = dict(base)
+            try:
+                before = json.loads(build_archetype_json("__ListTest__", seed))
+                ARCHETYPES["__ListTest__"] = dict(with_list)
+                after = json.loads(build_archetype_json("__ListTest__", seed))
+            finally:
+                del ARCHETYPES["__ListTest__"]
+            self.assertEqual(
+                before["Clothing"]["outfit_description"],
+                after["Clothing"]["outfit_description"],
+                f"seed {seed}",
+            )
+
+    def test_list_picks_match_across_lock_levels(self):
+        # The scalar pass runs on the unfiltered look, so Essentials and Full
+        # preset agree on every pick for a given seed.
+        ARCHETYPES["__ListTest__"] = {
+            "gender": "Female",
+            "hair_color": ["raven black", "jet black", "espresso"],
+            "skin_tone": ["porcelain", "pale"],  # non-essential (Body)
+            "outfit_description": "a {color} shift dress",
+        }
+        try:
+            for seed in range(15):
+                ess = json.loads(build_archetype_json("__ListTest__", seed, "Essentials"))
+                full = json.loads(build_archetype_json("__ListTest__", seed, "Full preset"))
+                self.assertEqual(ess["Hair"]["hair_color"], full["Hair"]["hair_color"])
+                self.assertEqual(
+                    ess["Clothing"]["outfit_description"],
+                    full["Clothing"]["outfit_description"],
+                )
+        finally:
+            del ARCHETYPES["__ListTest__"]
+
+    def test_outfit_description_list_picks_one_template(self):
+        templates = ["a {color} shift dress", "a {color} wrap blouse with tailored trousers"]
+        ARCHETYPES["__ListTest__"] = {"gender": "Female", "outfit_description": list(templates)}
+        try:
+            seen = set()
+            for seed in range(40):
+                outfit = json.loads(build_archetype_json("__ListTest__", seed))["Clothing"]["outfit_description"]
+                self.assertNotIn("{", outfit)
+                seen.add("dress" if "dress" in outfit else "blouse")
+            self.assertEqual(seen, {"dress", "blouse"})
+        finally:
+            del ARCHETYPES["__ListTest__"]
+
+    def test_list_inside_variants_resolves(self):
+        ARCHETYPES["__ListTest__"] = {
+            "gender": "Female",
+            "variants": {
+                "Female": {"hair_color": ["raven black", "espresso"]},
+                "Male": {"hair_color": ["ash brown", "jet black"]},
+            },
+        }
+        try:
+            meta = json.loads(build_archetype_json("__ListTest__", 4))["_meta"]
+            self.assertIn(meta["variants"]["Female"]["hair_color"], ["raven black", "espresso"])
+            self.assertIn(meta["variants"]["Male"]["hair_color"], ["ash brown", "jet black"])
+        finally:
+            del ARCHETYPES["__ListTest__"]
+
     def test_gender_variants_resolve_per_gender(self):
         # A merged archetype renders its female look on the female override and its
         # male look on the male override — one selection, two coherent looks.

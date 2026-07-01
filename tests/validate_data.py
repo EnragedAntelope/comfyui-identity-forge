@@ -157,11 +157,26 @@ def validate() -> list[str]:
                 if where != "base":
                     errors.append(f"archetype '{name}' {where}: 'gender' belongs on the base, not a variant")
                 elif value not in ("Female", "Male", "Any"):
+                    # A list gender would corrupt _meta.gender and the coin-flip.
                     errors.append(f"archetype '{name}': bad gender {value!r}")
                 continue
             if field not in FIELD_DEFINITIONS:
                 errors.append(f"archetype '{name}' {where}: unknown field {field!r}")
-            elif field not in _FREEFORM_FIELDS and value not in _options(field):
+                continue
+            # A list value is a curated set of alternatives the Archetype node
+            # seed-picks from; each element must be valid on its own.
+            if isinstance(value, list):
+                if len(value) < 2:
+                    errors.append(f"archetype '{name}' {where}: {field} list needs >= 2 alternatives")
+                if len(value) != len(set(map(str, value))):
+                    errors.append(f"archetype '{name}' {where}: {field} list has duplicates")
+                for element in value:
+                    if not isinstance(element, str) or not element:
+                        errors.append(f"archetype '{name}' {where}: {field} list element {element!r} must be a non-empty string")
+                    elif field not in _FREEFORM_FIELDS and element not in _options(field):
+                        errors.append(f"archetype '{name}' {where}: {field}={element!r} is not a valid option")
+                continue
+            if field not in _FREEFORM_FIELDS and value not in _options(field):
                 errors.append(f"archetype '{name}' {where}: {field}={value!r} is not a valid option")
 
     for name, template in ARCHETYPES.items():
@@ -187,9 +202,11 @@ def validate() -> list[str]:
                      for look in (template.get("variants") or {}).values()
                      if isinstance(look, dict)]
         for costume in costumes:
-            for slot in re.findall(r"\{(\w+)\}", costume):
-                if slot not in COSTUME_SLOTS:
-                    errors.append(f"archetype '{name}': costume references unknown slot {{{slot}}}")
+            # outfit_description may be a list of alternative templates.
+            for text in (costume if isinstance(costume, list) else [costume]):
+                for slot in re.findall(r"\{(\w+)\}", text):
+                    if slot not in COSTUME_SLOTS:
+                        errors.append(f"archetype '{name}': costume references unknown slot {{{slot}}}")
 
     # --- cosplayers: costume/signature/physique validity -------------
     if len(COSPLAYERS) < 50:
