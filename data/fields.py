@@ -271,8 +271,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("highlight", {
         "group": 'Makeup',
-        "female_options": ['none', 'subtle glow', 'dewy high points', 'strobing', 'glitter highlight', 'inner corner'],
-        "male_options": ['none', 'subtle glow', 'dewy high points', 'strobing', 'glitter highlight', 'inner corner'],
+        # "glistening high points" was "dewy high points" pre-0.41: "dewy" is
+        # already owned by makeup_style ("fresh-faced dewy look") and
+        # skin_finish ("dewy skin"), and the word doubled in one sentence.
+        "female_options": ['none', 'subtle glow', 'glistening high points', 'strobing', 'glitter highlight', 'inner corner'],
+        "male_options": ['none', 'subtle glow', 'glistening high points', 'strobing', 'glitter highlight', 'inner corner'],
         "optional": False
     }),
     ("blush", {

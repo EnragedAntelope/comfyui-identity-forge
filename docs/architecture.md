@@ -74,6 +74,8 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   field's top-level distribution never shifts — the safe way to enlarge a flat field without biasing
   randomization. Because each weight equals the family's original size, the pick reproduces a flat
   uniform draw until new variants are added. Registered fields: `hair_style` (`HAIR_STYLE_FAMILIES`),
+  `hair_color` (shade neighbourhoods; its `vivid` family is exactly the set the "Natural only"
+  scope filters, so the pick stays uniform under both scopes — keep new fashion shades in `vivid`),
   `expression`, `mood`, `pose`, `lighting`, `location` (each `<FIELD>_FAMILIES` in `data/fields.py`).
   The picker intersects each family's variants with `pool` and drops empty families, so upstream
   filtering still composes — e.g. the `location_setting` Indoor/Outdoor/Studio scope, or a hair-length
@@ -261,6 +263,19 @@ creature loader copies only the standard slots).
   even 50/50. The old unioned androgynous mode (both pools mixed, *they/them* pronouns,
   `_meta.gender` stays `"Any"`) is preserved **only** when `wardrobe == "Any"`, the explicit
   "anything goes" escape hatch.
+- **Archetype list values (0.37+).** Any archetype (or variant) field value may be a `list[str]`
+  of curated alternatives — `build_archetype_json` seed-picks one uniformly (no bias by
+  construction), so one archetype yields a range of looks. An `outfit_description` list picks an
+  alternative costume template before its slots fill. Draw order is append-only for seed
+  stability: archetype pick → base costume template pick + slot fills → variant costume picks +
+  fills → ONE scalar list pass (base fields in template order, then Female/Male variants) before
+  the Essentials filter, so lock level never shifts draws. `gender` may never be a list; every
+  element must be a real field option; the validator enforces len ≥ 2, no dups. The 0.39 sweep
+  widened 150 hair/eye locks to shade-family lists (the original shade leads each list);
+  hair_style/location/lighting locks deliberately stay fixed (look/scene-defining).
+- **Mood and expression vocabularies are disjoint** (0.36+, test-enforced): they randomize
+  independently, so a shared word ("playful") could double in one output. When adding options to
+  either field, pick words the other doesn't use (mood is the scene's tone, expression the face).
 - **Per-gender archetype variants** — an archetype may carry a `variants: {"Female": {...},
   "Male": {...}}` block so *one* selection yields two coherent looks (a 1980s Aerobics leotard vs
   the male tank/shorts). The base dict holds only shared fields + a soft `gender` lean (e.g.
