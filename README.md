@@ -209,10 +209,9 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 
 - **A `NoneType` error (or a missing/blank widget) after updating.** A node's fields are built when
   it is created, so a node on a saved graph can hold a stale widget after an update changes the
-  options. **Reload the node** — delete and re-add it, or refresh the browser — and the error
-  clears. Locked values for fields that still exist are preserved; only removed/renamed options
-  need re-picking.
-
+  options. **Recreate the node** - or delete and re-add it -  and the error clears. You may have to
+  reselect any locked values after recreation (but it's worth it, because that means improvement!).
+  
 ---
 
 ## Learn more
