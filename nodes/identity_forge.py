@@ -882,8 +882,13 @@ def _format_prose(
         hair_extra.append(g("facial_hair"))
     if g("hair_accessory"):
         acc = g("hair_accessory")
-        # Plural pieces ("decorative hair pins") and "... in/over hair" phrases read
-        # naturally bare; singular pieces take an article.
+        # "... in/over hair" values are placement phrases; voice them with the
+        # possessive ("tied in her hair") so they don't read as a bare "tied in
+        # hair" stacked against the hair sentence. Option values stay untouched
+        # (they are locked by archetypes/cosplayers) -- render-layer only.
+        acc = re.sub(r"\b(in|over) hair$", rf"\1 {poss.lower()} hair", acc)
+        # Plural pieces ("decorative hair pins") read naturally bare; singular
+        # pieces take an article.
         hair_extra.append(acc if acc.endswith("s") else _an(acc))
     if hair_extra:
         sentences.append(f"{subj} {has} " + _join(hair_extra))

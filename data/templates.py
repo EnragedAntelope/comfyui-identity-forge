@@ -2087,7 +2087,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "accessories": "no accessories",
         "outfit_description": [
             "a sharply tailored {jewel_tone} three-piece suit with a contrasting silk pocket square, a crisp white shirt, a bold patterned tie, a tilted fedora, and gleaming two-tone leather brogues",
-            "an immaculately pressed {color} double-breasted suit with wide peak lapels, a silk cravat, bright socks flashing above mirror-polished shoes, and a matching fedora",
+            "an immaculately pressed {color} double-breasted suit with wide peak lapels, a silk cravat, bright socks showing above mirror-polished shoes, and a matching fedora",
             "a boldly clashing ensemble of a {jewel_tone} blazer over {pastel} trousers, a patterned silk waistcoat, a polka-dot bow tie, and polished wingtip shoes",
         ],
         "expression": "beaming", "location": "tree-lined boulevard",
@@ -2120,7 +2120,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "hair_texture": "wavy", "hair_style": "natural and unstyled", "skin_tone": "fair",
                 "outfit_style": "vintage retro", "accessories": "no accessories",
                 "outfit_description": [
-                    "a pleated {color} tartan kilt with a leather sporran, a tweed jacket over a matching waistcoat, thick wool knee socks with garter flashes, and ghillie brogues",
+                    "a pleated {color} tartan kilt with a leather sporran, a tweed jacket over a matching waistcoat, thick wool knee socks with colored garter tabs, and ghillie brogues",
                     "full Highland dress: a {dark_color} tartan kilt, a black Argyll jacket with silver buttons over a white shirt and bow tie, a horsehair sporran, and polished ghillie brogues",
                 ],
                 "expression": "confident", "location": "misty moor",

@@ -363,6 +363,17 @@ class OutputFormatTests(unittest.TestCase):
         for present in ("emerald", "side braid", "natural and unstyled", "barely there"):
             self.assertFalse(_is_absent(present))
 
+    def test_hair_accessory_placement_gets_possessive(self):
+        # "... tied in hair" option values are voiced with the possessive at
+        # the render layer ("tied in her hair") — never the bare "in hair".
+        cases = (("Female", "satin ribbon tied in hair", "tied in her hair"),
+                 ("Male", "bandana tied over hair", "over his hair"))
+        for gender, acc, expected in cases:
+            prose, _ = generate_character(42, gender, {"hair_accessory": acc})
+            self.assertIn(expected, prose)
+            self.assertNotIn("tied in hair", prose)
+            self.assertNotIn("tied over hair", prose)
+
     def test_grammar_no_they_is(self):
         prose, _ = generate_character(11, "Any", {})
         self.assertNotIn("They is", prose)
