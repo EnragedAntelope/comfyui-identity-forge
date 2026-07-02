@@ -33,6 +33,8 @@
   },
   "_comment_cosplayers": "'cosplayers' adds characters to the Cosplayer node. 'costume' (worn items only, no held weapons) is required; 'franchise' and 'gender' (Female/Male, used only for Random scoping) are optional; 'signature' (applied in both modes) and 'physique' (Full character only) are {field: value} maps of valid options. Add gender:Male entries to populate 'Random - male'. Keep text plain ASCII (no em dashes or smart quotes).",
   "_comment_mask": "For a fully masked head set 'covers_face': true AND put the head covering in a separate 'mask' string (kept OUT of 'costume'). covers_face hides the randomized face/hair; the mask is appended to the costume by default but kept apart so the node's 'Unmask (show face)' toggle can drop it and reveal the random head. Omit both when the face is visible.",
+  "_comment_required": "Only 'costume' is required in a cosplayer entry. Everything else is optional — copy an example below, rename it, and keep just the keys you need.",
+  "_comment_advanced": "Optional advanced flags (all default off; only add one when it is true): 'covers_body': true = a full hard suit/armor hides bare skin, so jewelry/nails are suppressed. 'covers_hair': true = a hood/cowl hides the hair while the face shows. 'bald': true = fully hairless head (also clears facial hair). 'body_paint': true = the skin itself is painted as the costume; optionally add 'skin': 'warm green' to name the paint color when it is not obvious from the costume text.",
   "cosplayers": {
     "Custom Hero (My OC)": {
       "franchise": "Original",
@@ -45,8 +47,17 @@
       "franchise": "Original",
       "gender": "Male",
       "covers_face": true,
+      "covers_body": true,
       "costume": "a matte-black armored bodysuit with a hooded cape",
       "mask": "a full black face helmet with narrow glowing eye slits"
+    },
+    "Painted Warrior (My OC)": {
+      "franchise": "Original",
+      "gender": "Female",
+      "costume": "tribal leather wraps with bone ornaments over deep green painted skin",
+      "body_paint": true,
+      "skin": "deep green",
+      "bald": true
     }
   },
   "_comment_creatures": "'creatures' adds forms to the Creature node. Required: 'class' (Mammals, Birds, Reptiles & Amphibians, Insects & Arachnids, Marine Life, Monsters, Aliens, Mythic & Fantasy, Plant & Fungal), 'palette' (default integument colour) and the core slots head/eyes/integument. Optional slots: arms, hands, legs_feet, tail, wings, extras. Leave the colour OUT of 'integument' (palette adds it). Slot text is free-form prose; keep it plain ASCII. A name matching a built-in overrides it.",

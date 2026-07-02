@@ -229,8 +229,9 @@ Add private entries via `user_options.json` (see *Custom options* in
 [issue](https://github.com/EnragedAntelope/comfyui-identity-forge/issues) / PR proposing new
 cosplayers, archetypes, outfit styles, creatures or fields to fold into the built-in set. For
 cosplayers, a costume description (worn items only) and the franchise are enough to start; mark
-`covers_face` + `mask` if the head is fully covered, and state baldness in the costume rather than
-locking a hair length.
+`covers_face` + `mask` if the head is fully covered. The advanced flags (`covers_body`,
+`covers_hair`, `bald`, `body_paint` + `skin`) also work in custom entries — see the commented
+examples in [user_options.example.json](user_options.example.json).
 
 ## Development
 

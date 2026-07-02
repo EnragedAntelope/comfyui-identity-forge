@@ -259,8 +259,10 @@ User additions are first-class (0.46.1):
   lighting, location) sit outside every family; `_pick_family_weighted` draws them via an
   implicit leftover family weighted by its size, so they are reachable at the flat per-value
   share (previously they appeared in the widget but could never randomize).
-- The cosplayer loader follows the built-in schema: optional `mask` / `prop` / `eyes` keys are
-  **omitted** when unused, never stored as `""`.
+- The cosplayer loader follows the built-in schema: optional `mask` / `prop` / `eyes` / `skin`
+  keys are **omitted** when unused, never stored as `""`; the advanced bool flags
+  (`covers_body`, `covers_hair`, `bald`, `body_paint`) are copied only when explicitly `true`
+  (0.47.0), mirroring built-ins which never carry a `False` flag.
 - A custom value used inside a user archetype should also be listed under `fields` so it is a
   real option (the shipped example demonstrates this with Sky Pirate).
 

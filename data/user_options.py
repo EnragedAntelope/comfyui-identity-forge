@@ -83,6 +83,15 @@ Reload the node / restart ComfyUI to apply. Notes:
   can drop the mask and reveal the random head under the suit. Omit both
   ``covers_face`` and ``mask`` whenever the face is visible (an open cowl, body
   paint, a domino mask).
+* **Advanced cosplayer flags (all optional).** ``"covers_body": true`` — a full
+  hard suit/armour hides bare skin, so worn jewellery/nails are suppressed
+  (independent of the mask). ``"covers_hair": true`` — a hood/cowl encloses the
+  scalp while the face shows, so randomized hair is dropped. ``"bald": true`` —
+  a fully hairless head (also clears facial hair). ``"body_paint": true`` — the
+  character's skin *is* the costume colour (e.g. painted aliens); add an
+  optional ``"skin": "warm green"`` string to name the paint colour explicitly
+  when it isn't obvious from the costume text. Only ``costume`` is required;
+  every other key can simply be left out.
 
 The file is parsed as plain JSON — no code is executed.
 """
@@ -326,8 +335,12 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
     ``covers_face`` to ``False`` (set ``True`` for a fully masked head, and put the
     head covering in ``mask`` — see the module docstring), an optional ``prop``
     (a signature held item, emitted only when the Cosplayer node's prop toggle is
-    on), and ``signature`` / ``physique`` to empty maps. A user entry whose name
-    matches a built-in overrides it. Returns the number of characters added.
+    on), and ``signature`` / ``physique`` to empty maps. The advanced flags
+    ``covers_body`` / ``covers_hair`` / ``bald`` / ``body_paint`` (bools) and
+    ``skin`` (body-paint colour text) are honoured when present and omitted
+    otherwise, matching the built-in schema — see the module docstring for what
+    each does. A user entry whose name matches a built-in overrides it. Returns
+    the number of characters added.
     """
     path = path or USER_OPTIONS_PATH
     added = 0
@@ -350,10 +363,15 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
         # Optional free-text keys follow the built-in schema: OMITTED when unused,
         # never stored as "" (validate_data treats an empty string as an error and
         # a present-but-empty 'mask' as a mask/covers_face mismatch).
-        for optional_key in ("mask", "prop", "eyes"):
+        for optional_key in ("mask", "prop", "eyes", "skin"):
             value = entry.get(optional_key)
             if isinstance(value, str) and value:
                 record[optional_key] = value
+        # Advanced bool flags, likewise omitted unless explicitly true so user
+        # records mirror the built-in shape (built-ins never carry a False flag).
+        for flag in ("covers_body", "covers_hair", "bald", "body_paint"):
+            if entry.get(flag) is True:
+                record[flag] = True
         cosplayers[name] = record
         added += 1
     if added:

@@ -2081,6 +2081,37 @@ class UserOptionsIntegrationTests(unittest.TestCase):
         self.assertEqual(masked["prop"], "a staff")
         self.assertEqual(masked["eyes"], "glowing white")
 
+    def test_user_cosplayer_advanced_flags(self):
+        # covers_body/covers_hair/bald/body_paint copied only when literally
+        # true; skin rides the optional free-text keys. Anything else omitted
+        # so user records mirror the built-in shape (no False flags stored).
+        import tempfile
+        from data.user_options import apply_user_cosplayers
+        doc = {"cosplayers": {
+            "Painted OC": {"costume": "tribal wraps over green painted skin",
+                           "body_paint": True, "skin": "deep green",
+                           "bald": True},
+            "Armored OC": {"costume": "a full chrome exo-suit",
+                           "covers_body": True, "covers_hair": True},
+            "Sloppy OC": {"costume": "a red jacket", "body_paint": False,
+                          "bald": "yes", "covers_body": 1, "skin": ""},
+        }}
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "user_options.json"
+            f.write_text(json.dumps(doc), encoding="utf-8")
+            store: dict = {}
+            self.assertEqual(apply_user_cosplayers(store, path=f), 3)
+        painted = store["Painted OC"]
+        self.assertIs(painted["body_paint"], True)
+        self.assertIs(painted["bald"], True)
+        self.assertEqual(painted["skin"], "deep green")
+        armored = store["Armored OC"]
+        self.assertIs(armored["covers_body"], True)
+        self.assertIs(armored["covers_hair"], True)
+        sloppy = store["Sloppy OC"]  # falsy/non-bool/empty values all omitted
+        for key in ("body_paint", "bald", "covers_body", "covers_hair", "skin"):
+            self.assertNotIn(key, sloppy)
+
     def test_loader_records_added_values_in_registry(self):
         import copy
         import tempfile
@@ -2133,7 +2164,7 @@ class UserOptionsIntegrationTests(unittest.TestCase):
             outfits = copy.deepcopy(OUTFIT_DESCRIPTIONS)
             self.assertGreater(apply_user_options(fd, outfits, path=example), 0)
             self.assertEqual(apply_user_archetypes({}, path=example), 1)
-            self.assertEqual(apply_user_cosplayers({}, path=example), 2)
+            self.assertEqual(apply_user_cosplayers({}, path=example), 3)
             self.assertEqual(apply_user_creatures({}, path=example), 1)
             # every archetype value in the example is a valid post-merge option
             doc = json.loads(example.read_text(encoding="utf-8"))

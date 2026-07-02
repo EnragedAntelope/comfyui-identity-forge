@@ -90,8 +90,13 @@ optional sections:
   `{field: value}` maps. An optional `"prop"` string adds a signature held item; an optional
   free-text `"eyes"` string sets a canonical non-standard eye colour (e.g. `"crimson"`). A
   `gender: "Male"` entry is how you populate the `Random — male` pick. For a fully masked head set
-  `"covers_face": true` **and** put the head covering in a separate `"mask"` string. For a bald
-  character, state it in `costume` and do not lock a hair length.
+  `"covers_face": true` **and** put the head covering in a separate `"mask"` string. The advanced
+  flags work too, each optional and off by default: `"covers_body": true` (full hard suit — hides
+  bare skin, suppresses jewellery/nails), `"covers_hair": true` (hood/cowl hides the hair while
+  the face shows), `"bald": true` (fully hairless head), `"body_paint": true` (the skin itself is
+  the costume colour; add `"skin": "warm green"` to name the paint colour when it isn't obvious
+  from the costume text). See the worked examples in
+  [user_options.example.json](../user_options.example.json).
 - **`creatures`** adds forms to the Creature node. `class` (one of the nine classes), `palette`
   and the three core slots `head` / `eyes` / `integument` are required; the rest are optional.
 
