@@ -22,6 +22,7 @@ from nodes.identity_forge import (
     merge_preset_documents,
     resolve_locked_fields,
     _pick_family_weighted,
+    _randomize_fields,
     _is_absent,
     _parse_archetype_json,
     _CONTROL_FIELDS,
@@ -1882,6 +1883,152 @@ class FieldFamilyPickTests(unittest.TestCase):
         mean = 20000 / len(pool)
         self.assertTrue(all(c > 0 for c in counts.values()))
         self.assertTrue(max(counts.values()) < mean * 3)
+
+
+class HatSuppressionTests(unittest.TestCase):
+    """An outfit that already includes headwear (top hat, helmet, hood) must not
+    stack a second hat from the randomized ``accessories`` field. Non-hat
+    accessories still show; an explicit user lock is respected."""
+
+    HAT_VALUES = {"wide brim sun hat", "baseball cap", "beret", "woven hat"}
+
+    def _accessories(self, js):
+        return json.loads(js).get("Clothing", {}).get("accessories")
+
+    def test_hat_costume_suppresses_hat_accessories(self):
+        costume = "a ringmaster's red tailcoat with a black top hat and striped trousers"
+        for seed in range(80):
+            _, js = generate_character(seed, "Male", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            self.assertNotIn(self._accessories(js), self.HAT_VALUES, f"seed {seed}")
+
+    def test_helmet_costume_also_suppresses(self):
+        costume = "a scuffed racing suit with a mirrored full-face helmet under one arm"
+        for seed in range(40):
+            _, js = generate_character(seed, "Female", {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            self.assertNotIn(self._accessories(js), self.HAT_VALUES, f"seed {seed}")
+
+    def test_hatless_costume_keeps_hats_reachable(self):
+        costume = "a flowing red sundress with strappy sandals"
+        seen_hat = any(
+            self._accessories(generate_character(
+                s, "Female", {"outfit_description": costume},
+                accessory_density="Maximal")[1]) in self.HAT_VALUES
+            for s in range(200)
+        )
+        self.assertTrue(seen_hat)
+
+    def test_locked_hat_accessory_survives(self):
+        # An explicit user lock beats the suppression (deliberate double hat).
+        costume = "a ringmaster's red tailcoat with a black top hat and striped trousers"
+        _, js = generate_character(5, "Female",
+                                   {"outfit_description": costume,
+                                    "accessories": "beret"})
+        self.assertEqual(self._accessories(js), "beret")
+
+    def test_non_hat_accessories_still_appear_with_hat_costume(self):
+        costume = "a ringmaster's red tailcoat with a black top hat and striped trousers"
+        seen_other = any(
+            (self._accessories(generate_character(
+                s, "Male", {"outfit_description": costume},
+                accessory_density="Maximal")[1]) or "") not in ("", "None")
+            for s in range(80)
+        )
+        self.assertTrue(seen_other)
+
+
+class MaleMakeupWeightTests(unittest.TestCase):
+    """The male makeup_style pool leans 2x toward 'no makeup' via the explicit
+    ``male_weights`` mechanism (never a duplicated pool entry). The female draw
+    stays flat-uniform."""
+
+    def _distribution(self, gender, draws=3000):
+        counts: dict[str, int] = {}
+        for seed in range(draws):
+            resolved = _randomize_fields(
+                {}, gender, "Any color", "Balanced", "Any indoor/outdoor",
+                random.Random(seed))
+            value = resolved["makeup_style"]
+            counts[value] = counts.get(value, 0) + 1
+        return counts, draws
+
+    def test_male_pool_has_no_duplicates_but_carries_weight(self):
+        meta = FIELD_DEFINITIONS["makeup_style"]
+        pool = meta["male_options"]
+        self.assertEqual(len(pool), len(set(pool)))
+        self.assertEqual(meta.get("male_weights"), {"no makeup": 2})
+
+    def test_male_draw_leans_toward_no_makeup(self):
+        counts, draws = self._distribution("Male")
+        pool = FIELD_DEFINITIONS["makeup_style"]["male_options"]
+        # weight 2 out of (len-1)+2 total: expected share for 'no makeup'.
+        expected = 2 / (len(pool) + 1)
+        share = counts.get("no makeup", 0) / draws
+        self.assertGreater(share, expected * 0.8)
+        self.assertLess(share, expected * 1.2)
+        for value in pool:  # every option stays reachable
+            self.assertGreater(counts.get(value, 0), 0, value)
+
+    def test_female_draw_stays_flat(self):
+        counts, draws = self._distribution("Female")
+        pool = FIELD_DEFINITIONS["makeup_style"]["female_options"]
+        flat = 1 / len(pool)
+        share = counts.get("no makeup", 0) / draws
+        self.assertLess(share, flat * 1.6)  # no hidden lean on the female pool
+
+
+class PhysiqueCoherenceTests(unittest.TestCase):
+    """body_type <-> fitness_level exclusions: contradictory extremes can't be
+    rolled together, while explicit locks still win."""
+
+    def _body(self, js):
+        return json.loads(js).get("Body", {})
+
+    def test_athletic_build_never_sedentary(self):
+        for seed in range(80):
+            _, js = generate_character(seed, "Female", {"body_type": "athletic"})
+            self.assertNotEqual(self._body(js).get("fitness_level"), "sedentary",
+                                f"seed {seed}")
+
+    def test_voluptuous_build_never_muscular(self):
+        for seed in range(80):
+            _, js = generate_character(seed, "Female", {"body_type": "voluptuous"})
+            self.assertNotEqual(self._body(js).get("fitness_level"), "muscular",
+                                f"seed {seed}")
+
+    def test_locked_contradiction_survives(self):
+        # A deliberate user lock on both fields beats the constraint (warn+keep).
+        _, js = generate_character(
+            7, "Female", {"body_type": "voluptuous", "fitness_level": "muscular"})
+        body = self._body(js)
+        self.assertEqual(body.get("body_type"), "voluptuous")
+        self.assertEqual(body.get("fitness_level"), "muscular")
+
+
+class ValidatorGuardTests(unittest.TestCase):
+    """The AST duplicate-key guard catches a re-added roster name (the class of
+    bug where a later literal entry silently overrides the earlier one)."""
+
+    def test_detects_duplicate_literal_key(self):
+        import tempfile
+        from tests.validate_data import _duplicate_literal_keys
+        source = 'ROSTER: dict = {\n    "A": 1,\n    "B": 2,\n    "A": 3,\n}\n'
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "roster.py"
+            path.write_text(source, encoding="utf-8")
+            self.assertEqual(_duplicate_literal_keys(path, "ROSTER"), ["A"])
+            self.assertEqual(_duplicate_literal_keys(path, "MISSING"), [])
+
+    def test_live_rosters_have_no_duplicate_keys(self):
+        from tests.validate_data import _duplicate_literal_keys
+        for filename, dict_name in (
+            ("data/cosplayers.py", "COSPLAYERS"),
+            ("data/creatures.py", "CREATURES"),
+            ("data/templates.py", "ARCHETYPES"),
+        ):
+            self.assertEqual(
+                _duplicate_literal_keys(ROOT / filename, dict_name), [], filename)
 
 
 if __name__ == "__main__":

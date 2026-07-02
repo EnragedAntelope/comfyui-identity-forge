@@ -11,7 +11,8 @@ data/        cosplayers.py · creatures.py · fields.py · templates.py (archety
 nodes/       identity_forge.py (engine + main node) · identity_forge_cosplayer.py
              · identity_forge_creature.py · identity_forge_archetype.py
              · identity_forge_modifier.py · identity_forge_vault_{save,load}.py
-js/          identity_forge.js · identity_forge_creature.js  (ComfyUI frontend extensions)
+js/          identity_forge.js · identity_forge_creature.js · identity_forge_vault.js
+             (ComfyUI frontend extensions)
 tests/       validate_data.py (static integrity) · test_engine.py · test_creature.py
              · test_vault.py · preview_cosplayer.py
 docs/        usage.md · cosplayer-notes.md · creature-notes.md · architecture.md (this file)
@@ -83,6 +84,12 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   checks **every** `FIELD_FAMILIES` entry partitions its field's options exactly. New `hair_style`
   variants must also be slotted into the relevant `data/constraints.py` length lists
   (`_LONG_HAIR_STYLES`, the pixie exclusion) so they're culled on short hair like their siblings.
+- **Per-value draw weights (`male_weights`).** A field definition may carry a
+  `"male_weights": {value: int}` map to lean the *male* random draw (currently only
+  `makeup_style` leans 2x toward `no makeup` so a random man is bare-faced more often).
+  Missing values weigh 1; the engine uses one `rng.choices` call so the RNG stream shape
+  matches a flat pick. Never duplicate a value inside an options list to weight it — the
+  validator rejects duplicates and checks every weight key is a real option.
 
 ## cosplayers.py — characters as a worn look
 
@@ -288,9 +295,14 @@ creature loader copies only the standard slots).
 - **`smile_type` is the mouth/smile field and IS rendered** (in `_format_prose` face features);
   `constraints.py` buckets every `expression` into closed / soft-smile / open so the mouth never
   contradicts the face. (It was dead — resolved but unrendered — before 0.33.)
-- Duplicate `COSPLAYERS` / `CREATURES` keys silently override — the last wins.
+- Duplicate `COSPLAYERS` / `CREATURES` / `ARCHETYPES` keys silently override — the last
+  wins. `validate_data` now AST-scans the roster literals and fails on a duplicate key,
+  and rejects duplicated values inside any field option pool (a hidden 2x draw weight).
 - `signature`/`physique` values are gender-gated downstream; prefer unisex fields for crossplay.
-- A locked physique doesn't constrain `fitness`/`muscle` (known loose coherence).
+- Physique↔fitness coherence is soft (0.46+): exclusion rules cull only the outright
+  contradictions (soft-curved/plus-size builds never roll `muscular`; athletic/toned/fit
+  builds never roll `sedentary`). Mid-range pairings randomize freely; locks on both
+  fields still win.
 - **A downstream Full-preset Archetype overrides a chained Cosplayer's costume/skin.** Presets
   merge with the *downstream* node winning field-by-field (`merge_preset_documents`), so
   `Cosplayer -> Archetype (Full preset) -> IdentityForge` lets the archetype's `outfit_description`
@@ -305,8 +317,12 @@ creature loader copies only the standard slots).
   seed still reproduces exactly, and identical output keeps expensive downstream nodes cached.
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
-- The roster is large (~890 cosplayers, ~170 creatures): always grep the current keys before
-  adding to avoid silent overrides.
+- The roster is large (~895 cosplayers, ~169 creatures): always grep the current keys before
+  adding to avoid silent overrides (the validator's duplicate-key scan backstops this).
+- An outfit whose prose already includes headwear (hat/helmet/hood/crown…, `_HAT_RE`)
+  suppresses a hat-valued random `accessories` draw so two hats never stack; non-hat
+  accessories still show and an explicit lock wins. Keep `_HAT_ACCESSORY_VALUES` in sync
+  with the hat entries of the `accessories` pool.
 - Gloved/gauntleted costumes suppress randomized `nails`/`rings` in the engine (`_GLOVE_RE`);
   a **full hard shell** (robot/droid/powered-armour/full-plate/exoskeleton, detected by
   `_FULL_COVER_RE` or the cosplayer `covers_body` flag) drops the whole **Jewelry & Nails**

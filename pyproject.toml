@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-identity-forge"
-version = "0.45.0"
+version = "0.46.0"
 description = "A character creator and person generator for ComfyUI: a wildcard-style character randomizer with a constraint engine, themed archetype presets, a large fictional-character cosplay library (with optional signature props), a creature/monster/alien form layer with slot-by-slot hybridization, per-element style modifiers, a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
 license = { text = "MIT" }
 readme = "README.md"

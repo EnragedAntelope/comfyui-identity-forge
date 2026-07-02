@@ -233,8 +233,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "female_options": ['no makeup', 'barely there natural makeup', 'soft natural makeup', 'fresh-faced dewy look', 'classic no-makeup makeup', 'soft everyday glam', 'soft glam', 'full glam', 'bold glam', 'heavy glam', 'editorial makeup', 'vintage 1950s pin-up makeup', 'mod 1960s eye makeup', 'gothic dark makeup', 'club makeup'],
         # Male randomization leans natural so a random man is not painted in full
         # glam by default; the full range stays on the widget (via the female
-        # pool union) for "Any"/manual stylized looks.
-        "male_options": ['no makeup', 'no makeup', 'barely there natural makeup', 'soft natural makeup', 'fresh-faced dewy look', 'classic no-makeup makeup'],
+        # pool union) for "Any"/manual stylized looks. The lean is the explicit
+        # male_weights entry below (a 2x draw weight on 'no makeup'), consumed by
+        # the engine's flat pick — never duplicate a value in an options list to
+        # weight it (the validator rejects duplicates).
+        "male_options": ['no makeup', 'barely there natural makeup', 'soft natural makeup', 'fresh-faced dewy look', 'classic no-makeup makeup'],
+        "male_weights": {'no makeup': 2},
         "optional": False
     }),
     # Makeup widgets are ordered top-to-bottom of the face: makeup_style (the

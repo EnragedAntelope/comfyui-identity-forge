@@ -185,6 +185,29 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "exclusion", "field": "body_type", "value": "plump",
      "excludes_field": "fitness_level", "excludes_values": ["athletic", "muscular"],
      "reason": "a plump build reads as soft, not athletic"},
+    # Soft-curved silhouettes contradict heavy muscle mass (but stay compatible
+    # with "athletic"/"very fit" — strong curvy bodies exist; only the extreme
+    # is excluded). Conversely, a build *named* for conditioning can't be
+    # sedentary. These govern only the random fill: locked values (cosplayer
+    # physique, archetype, user) win with a warning, as with every rule here.
+    {"type": "exclusion", "field": "body_type", "value": "softly curved",
+     "excludes_field": "fitness_level", "excludes_values": ["muscular"],
+     "reason": "a softly curved build reads as soft, not heavily muscled"},
+    {"type": "exclusion", "field": "body_type", "value": "full figured",
+     "excludes_field": "fitness_level", "excludes_values": ["muscular"],
+     "reason": "a full-figured build reads as soft, not heavily muscled"},
+    {"type": "exclusion", "field": "body_type", "value": "voluptuous",
+     "excludes_field": "fitness_level", "excludes_values": ["muscular"],
+     "reason": "a voluptuous build reads as soft, not heavily muscled"},
+    {"type": "exclusion", "field": "body_type", "value": "athletic",
+     "excludes_field": "fitness_level", "excludes_values": ["sedentary"],
+     "reason": "an athletic build implies regular training"},
+    {"type": "exclusion", "field": "body_type", "value": "toned",
+     "excludes_field": "fitness_level", "excludes_values": ["sedentary"],
+     "reason": "a toned build implies regular training"},
+    {"type": "exclusion", "field": "body_type", "value": "fit",
+     "excludes_field": "fitness_level", "excludes_values": ["sedentary"],
+     "reason": "a fit build implies regular training"},
 ]
 
 

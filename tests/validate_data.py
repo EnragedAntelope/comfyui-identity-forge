@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+import ast
 import re
 
 from data.fields import (
@@ -49,6 +50,33 @@ def _options(field: str) -> set[str]:
     return set(meta.get("female_options", [])) | set(meta.get("male_options", []))
 
 
+def _duplicate_literal_keys(source_path: Path, dict_name: str) -> list[str]:
+    """Duplicate string keys in the literal ``dict_name = {...}`` of a source file.
+
+    Roster dicts are plain literals, so a re-added name silently overrides the
+    earlier entry at import (the duplicate "Kang the Conqueror" bug — one of the
+    two costumes was dead data). The runtime dict can't reveal this; the AST can.
+    """
+    tree = ast.parse(source_path.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            names = [t.id for t in node.targets if isinstance(t, ast.Name)]
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            names = [node.target.id]
+        else:
+            continue
+        if dict_name in names and isinstance(node.value, ast.Dict):
+            seen: set[str] = set()
+            dups: list[str] = []
+            for key in node.value.keys:
+                if isinstance(key, ast.Constant) and isinstance(key.value, str):
+                    if key.value in seen:
+                        dups.append(key.value)
+                    seen.add(key.value)
+            return dups
+    return []
+
+
 def validate() -> list[str]:
     """Return a list of error strings; empty means the data layer is valid."""
     errors: list[str] = []
@@ -71,6 +99,28 @@ def validate() -> list[str]:
         for sentinel in ("Random", "None"):
             if sentinel in meta.get("female_options", []) or sentinel in meta.get("male_options", []):
                 errors.append(f"{name}: option pool contains reserved sentinel '{sentinel}'")
+        # A duplicated pool value silently double-weights that draw. Weighting is
+        # legitimate but must be the explicit "male_weights" mechanism, never a
+        # duplicate entry (which also can't be seen in the widget or audited).
+        for pool_key in ("female_options", "male_options"):
+            pool = meta.get(pool_key, [])
+            if len(pool) != len(set(pool)):
+                dups = sorted({v for v in pool if pool.count(v) > 1})
+                errors.append(f"{name}: duplicate values in {pool_key}: {dups}")
+        # male_weights leans the male random draw; every key must be a real male
+        # option (a typo would silently weight nothing).
+        for weight_key, pool_key in (("male_weights", "male_options"),):
+            weights = meta.get(weight_key)
+            if weights is None:
+                continue
+            if not isinstance(weights, dict) or not weights:
+                errors.append(f"{name}: {weight_key} must be a non-empty dict")
+                continue
+            for value, weight in weights.items():
+                if value not in meta.get(pool_key, []):
+                    errors.append(f"{name}: {weight_key} key {value!r} not in {pool_key}")
+                if not isinstance(weight, int) or weight <= 0:
+                    errors.append(f"{name}: {weight_key}[{value!r}] must be a positive int")
 
     for control in ("gender", "hair_color_scope"):
         if not FIELD_DEFINITIONS.get(control, {}).get("control"):
@@ -207,6 +257,17 @@ def validate() -> list[str]:
                 for slot in re.findall(r"\{(\w+)\}", text):
                     if slot not in COSTUME_SLOTS:
                         errors.append(f"archetype '{name}': costume references unknown slot {{{slot}}}")
+
+    # --- roster dicts: no duplicate literal keys (AST-level) ----------
+    for filename, dict_name in (
+        ("data/cosplayers.py", "COSPLAYERS"),
+        ("data/creatures.py", "CREATURES"),
+        ("data/templates.py", "ARCHETYPES"),
+    ):
+        dups = _duplicate_literal_keys(ROOT / filename, dict_name)
+        for dup in dups:
+            errors.append(f"{filename}: duplicate {dict_name} key {dup!r} "
+                          f"(later entry silently overrides the earlier one)")
 
     # --- cosplayers: costume/signature/physique validity -------------
     if len(COSPLAYERS) < 50:

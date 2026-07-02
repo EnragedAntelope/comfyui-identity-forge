@@ -78,10 +78,12 @@ franchise falls back to a default so a new entry still scopes sensibly.
    gender. Crossplay requires explicitly setting `gender` to `Male`/`Female`. This
    mirrors how archetypes behave.
 
-3. **Full-character coherence is loose.** A locked physique (e.g. `slender`) can
-   still randomize `fitness`/`muscle` to something like `very muscular`. There is
-   no constraint tying those together; this predates the cosplayer node and
-   affects locked body types generally.
+3. **Full-character coherence is soft, not exact.** `fitness_level` still
+   randomizes alongside a locked physique, but since 0.46 exclusion rules cull
+   the outright contradictions (a soft-curved / plus-size build never rolls
+   `muscular`; an `athletic`/`toned`/`fit` build never rolls `sedentary`).
+   Mid-range pairings stay free on purpose — only extremes are constrained,
+   and explicit locks on both fields still win (warn + keep).
 
 4. **Hair under partial headpieces.** For characters whose head is *partly* covered
    (montrals, a circlet, an open cowl) but whose face shows, hair still randomizes

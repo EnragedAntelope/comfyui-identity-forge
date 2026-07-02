@@ -192,6 +192,24 @@ _ABSENCE_EXACT: frozenset[str] = frozenset({
 _GLOVE_RE = re.compile(r"\b(?:glove|gauntlet|mitten)s?\b", re.IGNORECASE)
 _FINGERLESS_RE = re.compile(r"fingerless", re.IGNORECASE)
 
+#: An outfit that already includes headwear (a top hat, a helmet, a hood) can't
+#: also wear a randomized hat from the ``accessories`` field — "a top hat …
+#: accessorized with wide brim sun hat" stacks two hats (the reported quirk).
+#: When the resolved outfit_description reads as headwear, the engine drops a
+#: hat-valued ``accessories`` draw (non-hat accessories — sunglasses, belts,
+#: scarves — still show; an explicit user lock is respected, as with gloves).
+#: ``_HAT_ACCESSORY_VALUES`` mirrors the hat entries of the ``accessories``
+#: pool in ``data/fields.py`` — keep the two in sync when editing that field.
+_HAT_RE = re.compile(
+    r"\b(?:hat|cap|beret|hood(?:ed)?|helm(?:et)?|cowl|crown|tiara|beanie|fedora|"
+    r"turban|headdress|headpiece|headscarf|bonnet|sombrero|circlet|diadem|veil|"
+    r"visor)s?\b",
+    re.IGNORECASE,
+)
+_HAT_ACCESSORY_VALUES: frozenset[str] = frozenset({
+    "wide brim sun hat", "baseball cap", "beret", "woven hat",
+})
+
 #: Costume phrases that mean the whole body is encased in a hard shell — a robot /
 #: droid / powered armour / full plate / exoskeleton / carapace — so there is no
 #: bare skin for worn jewellery or nails to sit on. Detected on the resolved
@@ -509,7 +527,17 @@ def _randomize_fields(
             # these (none are density-gated), so seeds stay stable for the field.
             resolved[field_name] = _pick_family_weighted(field_name, pool, rng)
         elif pool:
-            resolved[field_name] = rng.choice(pool)
+            # A field may carry a "male_weights" map ({value: draw_weight}) to
+            # lean the male random draw without duplicating pool entries
+            # (makeup_style leans 2x toward 'no makeup'). Missing values weigh 1;
+            # a single rng.choices call keeps the RNG stream shape identical to
+            # rng.choice. Female and "Any"-union draws stay flat-uniform.
+            male_weights = field_def.get("male_weights") if gender == "Male" else None
+            if male_weights:
+                weights = [male_weights.get(value, 1) for value in pool]
+                resolved[field_name] = rng.choices(pool, weights=weights)[0]
+            else:
+                resolved[field_name] = rng.choice(pool)
         elif field_def["optional"]:
             resolved[field_name] = "None"
         else:  # non-optional field with an empty pool — fall back to raw list
@@ -1244,6 +1272,16 @@ def generate_character(
         for field in ("nails", "rings"):
             if field not in locked_clean:
                 resolved.pop(field, None)
+
+    # An outfit that already includes headwear can't stack a second hat from the
+    # randomized ``accessories`` field ("a top hat … accessorized with wide brim
+    # sun hat"). Drop a hat-valued draw when the outfit reads as headwear — this
+    # covers cosplayer costumes, archetype outfits and random outfits alike, and
+    # costs no RNG. Non-hat accessories still show; a user lock is respected.
+    if (_HAT_RE.search(outfit_text)
+            and resolved.get("accessories") in _HAT_ACCESSORY_VALUES
+            and "accessories" not in locked_clean):
+        resolved.pop("accessories", None)
 
     # A full hard shell -- robot / droid / powered armour / full plate / exoskeleton
     # -- leaves no bare skin for worn jewellery or nails, so a randomized necklace,

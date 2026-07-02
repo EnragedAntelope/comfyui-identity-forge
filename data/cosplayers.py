@@ -4033,7 +4033,7 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a skinless crimson skull-like face",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
-    "Kang the Conqueror": {
+    "Kang the Conqueror (Classic)": {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
