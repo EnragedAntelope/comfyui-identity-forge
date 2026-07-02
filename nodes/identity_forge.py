@@ -483,6 +483,16 @@ def _pick_family_weighted(field_name: str, pool: list[str], rng: random.Random) 
         for fam in field_families.values()
     ]
     families = [(weight, variants) for weight, variants in families if variants]
+    # Pool values outside every family are user_options.json additions (shipped
+    # options always partition exactly — validator-enforced). Give them an
+    # implicit leftover family weighted by its size: each such value then draws
+    # at exactly the flat 1-in-N share the frozen family weights reproduce, so
+    # user additions are reachable without disturbing the built-in distribution.
+    # With no user file the leftover is empty and this is a no-op.
+    covered = {v for fam in field_families.values() for v in fam["variants"]}
+    leftover = [v for v in pool if v not in covered]
+    if leftover:
+        families.append((len(leftover), leftover))
     if not families:
         return rng.choice(pool)
     chosen = rng.choices(families, weights=[weight for weight, _ in families])[0]

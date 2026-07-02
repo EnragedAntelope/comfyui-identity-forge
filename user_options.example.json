@@ -5,8 +5,8 @@
     "ethnicity": ["Atlantean", "Martian colonist"],
     "hair_color": ["galaxy swirl", "holographic"],
     "eye_color": ["glowing gold"],
-    "location": ["a floating sky temple", "a derelict space station"],
-    "expression": ["smug", "awestruck"]
+    "location": ["a floating sky temple", "a derelict space station", "an airship deck"],
+    "expression": ["smug", "awestruck", "mischievous smile"]
   },
   "_comment_outfits": "'outfits' adds whole new outfit_style choices WITH their garment text (the proper way to extend outfit_style). Buckets: unisex (always eligible) plus female/male (picked by the wardrobe control). Any subset is fine; a style with no usable text is skipped.",
   "outfits": {
@@ -19,7 +19,7 @@
       "unisex": ["weathered plate armor over chainmail with a tattered cloak and steel gauntlets"]
     }
   },
-  "_comment_archetypes": "'archetypes' adds presets to the Archetype node. Same {field: value} shape as the built-ins; outfit_description may use {slot} placeholders (color, fabric, metal, gem, fur, flower, ...). A name matching a built-in overrides it. Run 'python tests/validate_data.py' to check your field values.",
+  "_comment_archetypes": "'archetypes' adds presets to the Archetype node. Same {field: value} shape as the built-ins; outfit_description may use {slot} placeholders (color, fabric, metal, gem, fur, flower, ...). A name matching a built-in overrides it. A custom value used here (like Sky Pirate's expression/location below) should also be listed under 'fields' above so it becomes a real option. Run 'python tests/validate_data.py' to check your field values.",
   "archetypes": {
     "Sky Pirate": {
       "gender": "Female",

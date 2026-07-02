@@ -249,6 +249,21 @@ free-form prose (own render path — not validated against human fields). Rules:
 entries override built-ins of the same name. `palette_pool` is a built-in-only key (the user
 creature loader copies only the standard slots).
 
+User additions are first-class (0.46.1):
+
+- The loader records what it added (`USER_ADDED_FIELD_VALUES` / `USER_ADDED_OUTFIT_STYLES`);
+  `validate_data` subtracts those from its strict shipped-data checks (family partitions,
+  expected outfit-style set, bucket/variety floors), so a valid user file never fails validation
+  while shipped-data drift is still caught.
+- User values on a **family-weighted field** (hair_style, hair_color, expression, mood, pose,
+  lighting, location) sit outside every family; `_pick_family_weighted` draws them via an
+  implicit leftover family weighted by its size, so they are reachable at the flat per-value
+  share (previously they appeared in the widget but could never randomize).
+- The cosplayer loader follows the built-in schema: optional `mask` / `prop` / `eyes` keys are
+  **omitted** when unused, never stored as `""`.
+- A custom value used inside a user archetype should also be listed under `fields` so it is a
+  real option (the shipped example demonstrates this with Sky Pirate).
+
 ## Validation, tests, versioning
 
 - `python tests/validate_data.py` — value integrity: every signature/physique/constraint/

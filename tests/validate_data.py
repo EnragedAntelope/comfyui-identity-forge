@@ -28,6 +28,7 @@ from data.constraints import CONSTRAINT_RULES
 from data.templates import ARCHETYPES, COSTUME_SLOTS
 from data.cosplayers import COSPLAYERS
 from data.creatures import CREATURES, CREATURE_CLASSES, CREATURE_SLOTS
+from data.user_options import USER_ADDED_FIELD_VALUES, USER_ADDED_OUTFIT_STYLES
 
 _EXPECTED_GROUPS = {
     "Demographics", "Body", "Face", "Hair", "Makeup",
@@ -142,7 +143,10 @@ def validate() -> list[str]:
             family_variants.extend(meta.get("variants", []))
         if len(family_variants) != len(set(family_variants)):
             errors.append(f"{field_name} FIELD_FAMILIES: duplicate variant across families")
-        field_options = _options(field_name)
+        # user_options.json additions live outside every family by design (the
+        # engine draws them via the implicit leftover family) — exempt them so a
+        # user's extensions don't read as shipped-data drift.
+        field_options = _options(field_name) - USER_ADDED_FIELD_VALUES.get(field_name, set())
         if set(family_variants) != field_options:
             missing = sorted(field_options - set(family_variants))
             extra = sorted(set(family_variants) - field_options)
@@ -152,11 +156,18 @@ def validate() -> list[str]:
             )
 
     # --- outfit descriptions (gendered buckets) ----------------------
-    if set(OUTFIT_DESCRIPTIONS) != _EXPECTED_OUTFIT_STYLES:
-        errors.append(f"OUTFIT_DESCRIPTIONS keys mismatch: {sorted(OUTFIT_DESCRIPTIONS)}")
+    # User-registered styles (user_options.json "outfits" section) are exempt
+    # from the shipped-set equality and the variety/bucket floors: the loader
+    # already guarantees a user style carries at least one usable garment string,
+    # and any missing bucket simply falls back to unisex at pick time.
+    shipped_styles = set(OUTFIT_DESCRIPTIONS) - USER_ADDED_OUTFIT_STYLES
+    if shipped_styles != _EXPECTED_OUTFIT_STYLES:
+        errors.append(f"OUTFIT_DESCRIPTIONS keys mismatch: {sorted(shipped_styles)}")
     if set(OUTFIT_DESCRIPTIONS) != set(FIELD_DEFINITIONS.get("outfit_style", {}).get("female_options", [])):
         errors.append("OUTFIT_DESCRIPTIONS keys do not match outfit_style options")
     for style, buckets in OUTFIT_DESCRIPTIONS.items():
+        if style in USER_ADDED_OUTFIT_STYLES:
+            continue
         if set(buckets) < {"female", "male", "unisex"}:
             errors.append(f"outfit style '{style}': missing female/male/unisex buckets")
             continue

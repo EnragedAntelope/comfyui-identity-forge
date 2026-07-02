@@ -2031,5 +2031,125 @@ class ValidatorGuardTests(unittest.TestCase):
                 _duplicate_literal_keys(ROOT / filename, dict_name), [], filename)
 
 
+class UserOptionsIntegrationTests(unittest.TestCase):
+    """user_options.json additions must be first-class: reachable by the random
+    draw on family-weighted fields, shaped like built-ins in the cosplayer store,
+    and exempt from the shipped-data strictness in validate_data."""
+
+    def test_user_value_on_family_field_is_reachable(self):
+        # A value outside every family (a user addition) draws via the implicit
+        # leftover family at roughly the flat 1-in-(N+1) share.
+        pool = list(FIELD_DEFINITIONS["expression"]["female_options"]) + ["smug"]
+        rng = random.Random(11)
+        draws = 30000
+        hits = sum(_pick_family_weighted("expression", pool, rng) == "smug"
+                   for _ in range(draws))
+        # The leftover family weighs its size (1) against the frozen family
+        # weights, so the exact design share is 1/(sum_of_frozen_weights + 1).
+        total_weight = sum(f["weight"] for f in FIELD_FAMILIES["expression"].values())
+        expected = draws / (total_weight + 1)
+        self.assertGreater(hits, expected * 0.75)
+        self.assertLess(hits, expected * 1.25)
+
+    def test_no_leftover_means_identical_families_path(self):
+        # Without user additions the leftover family is empty: every built-in
+        # option partitions into a family, so behavior is unchanged.
+        pool = list(FIELD_DEFINITIONS["expression"]["female_options"])
+        rng = random.Random(12)
+        for _ in range(500):
+            self.assertIn(_pick_family_weighted("expression", pool, rng), pool)
+
+    def test_user_cosplayer_omits_empty_optional_keys(self):
+        import tempfile
+        from data.user_options import apply_user_cosplayers
+        doc = {"cosplayers": {
+            "Plain OC": {"costume": "a red jacket"},
+            "Masked OC": {"costume": "a black suit", "covers_face": True,
+                          "mask": "a chrome helmet", "prop": "a staff",
+                          "eyes": "glowing white"},
+        }}
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "user_options.json"
+            f.write_text(json.dumps(doc), encoding="utf-8")
+            store: dict = {}
+            self.assertEqual(apply_user_cosplayers(store, path=f), 2)
+        plain = store["Plain OC"]
+        for key in ("mask", "prop", "eyes"):
+            self.assertNotIn(key, plain)  # omitted, never ""
+        masked = store["Masked OC"]
+        self.assertEqual(masked["mask"], "a chrome helmet")
+        self.assertEqual(masked["prop"], "a staff")
+        self.assertEqual(masked["eyes"], "glowing white")
+
+    def test_loader_records_added_values_in_registry(self):
+        import copy
+        import tempfile
+        from data.user_options import (apply_user_options,
+                                       USER_ADDED_FIELD_VALUES,
+                                       USER_ADDED_OUTFIT_STYLES)
+        doc = {"fields": {"expression": ["definitely-a-test-expression"]},
+               "outfits": {"test-style-xyz": {"unisex": ["a test garment"]}}}
+        fd = copy.deepcopy(dict(FIELD_DEFINITIONS))
+        outfits: dict = {}
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                f = Path(d) / "user_options.json"
+                f.write_text(json.dumps(doc), encoding="utf-8")
+                apply_user_options(fd, outfits, path=f)
+            self.assertIn("definitely-a-test-expression",
+                          USER_ADDED_FIELD_VALUES.get("expression", set()))
+            self.assertIn("test-style-xyz", USER_ADDED_OUTFIT_STYLES)
+        finally:
+            USER_ADDED_FIELD_VALUES.get("expression", set()).discard(
+                "definitely-a-test-expression")
+            USER_ADDED_OUTFIT_STYLES.discard("test-style-xyz")
+
+    def test_validate_exempts_registered_user_values(self):
+        # Inject a user-style addition into the live expression pool + registry;
+        # validate() must stay clean (family partition check exempts it).
+        from data.user_options import USER_ADDED_FIELD_VALUES
+        pool = FIELD_DEFINITIONS["expression"]["female_options"]
+        value = "definitely-a-test-expression"
+        pool.append(value)
+        USER_ADDED_FIELD_VALUES.setdefault("expression", set()).add(value)
+        try:
+            self.assertEqual(validate(), [])
+        finally:
+            pool.remove(value)
+            USER_ADDED_FIELD_VALUES["expression"].discard(value)
+
+    def test_example_file_loads_through_every_section(self):
+        import copy
+        from data.user_options import (apply_user_options, apply_user_archetypes,
+                                       apply_user_cosplayers, apply_user_creatures,
+                                       USER_ADDED_FIELD_VALUES,
+                                       USER_ADDED_OUTFIT_STYLES)
+        from data.fields import OUTFIT_DESCRIPTIONS
+        example = ROOT / "user_options.example.json"
+        before_fields = {k: set(v) for k, v in USER_ADDED_FIELD_VALUES.items()}
+        before_styles = set(USER_ADDED_OUTFIT_STYLES)
+        try:
+            fd = copy.deepcopy(dict(FIELD_DEFINITIONS))
+            outfits = copy.deepcopy(OUTFIT_DESCRIPTIONS)
+            self.assertGreater(apply_user_options(fd, outfits, path=example), 0)
+            self.assertEqual(apply_user_archetypes({}, path=example), 1)
+            self.assertEqual(apply_user_cosplayers({}, path=example), 2)
+            self.assertEqual(apply_user_creatures({}, path=example), 1)
+            # every archetype value in the example is a valid post-merge option
+            doc = json.loads(example.read_text(encoding="utf-8"))
+            for field, value in doc["archetypes"]["Sky Pirate"].items():
+                if field in ("gender", "outfit_description"):
+                    continue
+                opts = set(fd[field]["female_options"]) | set(fd[field]["male_options"])
+                self.assertIn(value, opts, f"Sky Pirate {field}")
+        finally:  # the registries are global -- restore
+            for k in list(USER_ADDED_FIELD_VALUES):
+                USER_ADDED_FIELD_VALUES[k] = before_fields.get(k, set())
+                if not USER_ADDED_FIELD_VALUES[k]:
+                    del USER_ADDED_FIELD_VALUES[k]
+            USER_ADDED_OUTFIT_STYLES.clear()
+            USER_ADDED_OUTFIT_STYLES.update(before_styles)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

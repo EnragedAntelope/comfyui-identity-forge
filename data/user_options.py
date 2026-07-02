@@ -106,6 +106,16 @@ _NOT_EXTENDABLE: frozenset[str] = frozenset({
 #: Garment buckets an ``outfits`` entry may define.
 _OUTFIT_BUCKETS: tuple[str, ...] = ("unisex", "female", "male")
 
+#: What the user file added, recorded as it merges: {field: {values}} and the set
+#: of brand-new outfit styles. ``tests/validate_data.py`` subtracts these from its
+#: strict shipped-data checks (family partitions, expected outfit-style sets) so a
+#: user's perfectly legitimate additions don't read as data-integrity failures,
+#: while drift in the *shipped* data is still caught. The engine also uses the
+#: family-partition property: values outside every family (i.e. user additions)
+#: are drawn via an implicit leftover family in ``_pick_family_weighted``.
+USER_ADDED_FIELD_VALUES: dict[str, set[str]] = {}
+USER_ADDED_OUTFIT_STYLES: set[str] = set()
+
 
 def _clean_strings(values: Any) -> list[str]:
     """Return the usable, sentinel-free strings from a JSON list (else [])."""
@@ -130,6 +140,7 @@ def _apply_fields(
                 for value in values:
                     if value not in pool:
                         pool.append(value)
+                        USER_ADDED_FIELD_VALUES.setdefault(name, set()).add(value)
                         added += 1
     return added
 
@@ -154,6 +165,8 @@ def _apply_outfits(
         if not any(cleaned.values()):  # nothing usable — skip the dangling key
             continue
 
+        if style not in outfit_descriptions:
+            USER_ADDED_OUTFIT_STYLES.add(style)
         target = outfit_descriptions.setdefault(style, {})
         for bucket, values in cleaned.items():
             if not values:
@@ -326,20 +339,22 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
             continue  # costume is what drives the look; an entry without it is useless
         gender = entry.get("gender")
         franchise = entry.get("franchise")
-        mask = entry.get("mask")
-        prop = entry.get("prop")
-        eyes = entry.get("eyes")
-        cosplayers[name] = {
+        record: dict[str, Any] = {
             "franchise": franchise if isinstance(franchise, str) else "",
             "gender": gender if gender in ("Female", "Male") else "Female",
             "covers_face": bool(entry.get("covers_face", False)),
             "costume": costume,
-            "mask": mask if isinstance(mask, str) else "",
-            "prop": prop if isinstance(prop, str) else "",
-            "eyes": eyes if isinstance(eyes, str) else "",
             "signature": _clean_field_map(entry.get("signature")),
             "physique": _clean_field_map(entry.get("physique")),
         }
+        # Optional free-text keys follow the built-in schema: OMITTED when unused,
+        # never stored as "" (validate_data treats an empty string as an error and
+        # a present-but-empty 'mask' as a mask/covers_face mismatch).
+        for optional_key in ("mask", "prop", "eyes"):
+            value = entry.get(optional_key)
+            if isinstance(value, str) and value:
+                record[optional_key] = value
+        cosplayers[name] = record
         added += 1
     if added:
         print(f"[IdentityForge] Loaded {added} custom cosplayer(s) from {path.name}.")
