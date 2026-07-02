@@ -305,7 +305,7 @@ creature loader copies only the standard slots).
   seed still reproduces exactly, and identical output keeps expensive downstream nodes cached.
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
-- The roster is large (~840 cosplayers, ~130 creatures): always grep the current keys before
+- The roster is large (~870 cosplayers, ~170 creatures): always grep the current keys before
   adding to avoid silent overrides.
 - Gloved/gauntleted costumes suppress randomized `nails`/`rings` in the engine (`_GLOVE_RE`);
   a **full hard shell** (robot/droid/powered-armour/full-plate/exoskeleton, detected by
