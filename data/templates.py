@@ -663,16 +663,40 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "mysterious",
     },
     "Battle Bard": {
-        "gender": "Female", "ethnicity": "Welsh", "body_type": "curvy", "height": "average height",
-        "eye_color": ["emerald", "bright green", "green"], "hair_color": ["copper", "auburn", "bright red"], "hair_length": "mid back",
-        "hair_texture": "beachy waves", "hair_style": "half up half down", "skin_tone": "fair",
-        "freckles_density": "moderate", "makeup_style": "soft glam",
-        "outfit_style": "bohemian",
-        "outfit_description": "embroidered velvet doublet over a ruffled blouse with a feathered cap and a lute on a strap",
-        "bag": "no bag", "accessories": "no accessories",
-        "expression": "playful", "location": "speakeasy-style basement bar",
-        "lighting": "warm string lights bokeh background",
-        "shot_type": "medium shot from waist up", "mood": "cheerful",
+        # Soft Female preference; costume lives in the variants (not _COSTUMES).
+        "gender": "Female",
+        "variants": {
+            "Female": {
+                "ethnicity": "Welsh", "body_type": "curvy", "height": "average height",
+                "eye_color": ["emerald", "bright green", "green"], "hair_color": ["copper", "auburn", "bright red"], "hair_length": "mid back",
+                "hair_texture": "beachy waves", "hair_style": "half up half down", "skin_tone": "fair",
+                "freckles_density": "moderate", "makeup_style": "soft glam",
+                "outfit_style": "bohemian",
+                "outfit_description": [
+                    "an embroidered {color} velvet doublet over a ruffled blouse with a feathered cap and a lute on a strap",
+                    "a laced {color} velvet vest over a billowing blouse with a feathered cap and a lute on a strap",
+                ],
+                "bag": "no bag", "accessories": "no accessories",
+                "expression": "playful", "location": "speakeasy-style basement bar",
+                "lighting": "warm string lights bokeh background",
+                "shot_type": "medium shot from waist up", "mood": "cheerful",
+            },
+            "Male": {
+                "ethnicity": "Welsh", "body_type": "lean", "height": "average height",
+                "eye_color": ["emerald", "bright green", "green"], "hair_color": ["copper", "auburn", "bright red"], "hair_length": "ear length",
+                "hair_texture": "wavy", "hair_style": "natural and unstyled", "skin_tone": "fair",
+                "freckles_density": "moderate", "facial_hair": "stubble",
+                "outfit_style": "bohemian",
+                "outfit_description": [
+                    "an embroidered {color} velvet doublet over a billowing shirt with a feathered cap and a lute on a strap",
+                    "a laced {color} leather jerkin over a loose linen shirt with a feathered cap and a lute on a strap",
+                ],
+                "bag": "no bag", "accessories": "no accessories",
+                "expression": "playful", "location": "speakeasy-style basement bar",
+                "lighting": "warm string lights bokeh background",
+                "shot_type": "medium shot from waist up", "mood": "cheerful",
+            },
+        },
     },
 
     # --- Costume / themed -------------------------------------------------
@@ -746,15 +770,34 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "cowboy shot from mid-thigh up", "mood": "tense",
     },
     "Noir Detective": {
-        "gender": "Male", "ethnicity": "Irish", "body_type": "average", "height": "tall",
-        "facial_hair": "five o'clock shadow", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short",
-        "hair_texture": "sleek straight", "hair_style": "slicked back", "skin_tone": "fair",
-        "outfit_style": "business casual",
-        "outfit_description": "a rumpled tan trench coat over a wrinkled shirt and loosened tie with a felt fedora",
-        "bag": "no bag", "accessories": "no accessories",
-        "expression": "serious", "location": "police station bullpen",
-        "lighting": "light through venetian blinds casting stripes",
-        "shot_type": "close-up portrait", "mood": "mysterious",
+        # Soft Male preference; costume lives in the variants (not _COSTUMES) so
+        # the Female pick gets a period skirt suit instead of the loosened tie.
+        "gender": "Male",
+        "variants": {
+            "Male": {
+                "ethnicity": "Irish", "body_type": "average", "height": "tall",
+                "facial_hair": "five o'clock shadow", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short",
+                "hair_texture": "sleek straight", "hair_style": "slicked back", "skin_tone": "fair",
+                "outfit_style": "business casual",
+                "outfit_description": "a rumpled {earth_tone} trench coat over a wrinkled shirt and loosened tie with a felt fedora",
+                "bag": "no bag", "accessories": "no accessories",
+                "expression": "serious", "location": "police station bullpen",
+                "lighting": "light through venetian blinds casting stripes",
+                "shot_type": "close-up portrait", "mood": "mysterious",
+            },
+            "Female": {
+                "ethnicity": "Irish", "body_type": "average", "height": "average height",
+                "hair_color": ["auburn", "dark brown", "near black"], "hair_length": "shoulder length",
+                "hair_texture": "loosely curled", "hair_style": "worn down", "skin_tone": "fair",
+                "makeup_style": "vintage 1950s pin-up makeup", "lips_makeup": "classic red",
+                "outfit_style": "business casual",
+                "outfit_description": "a belted {earth_tone} trench coat over a 1940s skirt suit with seamed stockings and a small tilted felt hat",
+                "bag": "no bag", "accessories": "no accessories",
+                "expression": "serious", "location": "police station bullpen",
+                "lighting": "light through venetian blinds casting stripes",
+                "shot_type": "close-up portrait", "mood": "mysterious",
+            },
+        },
     },
     "ER Nurse": {
         "ethnicity": "Filipino", "body_type": "average", "height": "average height",
@@ -791,17 +834,52 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # --- Lean costume archetypes (costume comes from _COSTUMES; body/face left
     #     to randomize so each run is a different person in the same getup) ----
     "Stage Magician": {
-        "gender": "Male", "facial_hair": "short beard", "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short", "hair_style": "slicked back",
-        "outfit_style": "business formal", "expression": "smirking",
-        "location": "concert hall backstage", "lighting": "stage spotlight from above",
-        "shot_type": "medium shot from waist up", "mood": "mysterious",
+        # Soft Male preference; costume lives in the variants (not _COSTUMES) so
+        # each gender gets its own coherent stage look.
+        "gender": "Male",
+        "variants": {
+            "Male": {
+                "facial_hair": "short beard", "hair_color": ["jet black", "raven black", "near black"],
+                "hair_length": "very short", "hair_style": "slicked back",
+                "outfit_style": "business formal",
+                "outfit_description": "a sharp {dark_color} tailcoat with a {color} satin waistcoat, white gloves, and a top hat",
+                "expression": "smirking",
+                "location": "concert hall backstage", "lighting": "stage spotlight from above",
+                "shot_type": "medium shot from waist up", "mood": "mysterious",
+            },
+            "Female": {
+                "hair_color": ["jet black", "raven black", "near black"],
+                "hair_length": "long", "hair_style": "low ponytail",
+                "makeup_style": "bold glam", "lips_makeup": "classic red",
+                "outfit_style": "business formal",
+                "outfit_description": "a fitted {dark_color} tailcoat with a {color} satin waistcoat, white gloves, and a top hat",
+                "expression": "smirking",
+                "location": "concert hall backstage", "lighting": "stage spotlight from above",
+                "shot_type": "medium shot from waist up", "mood": "mysterious",
+            },
+        },
     },
     "Masquerade Guest": {
-        "gender": "Female", "hair_style": "updo", "makeup_style": "bold glam",
-        "outfit_style": "evening formal", "expression": "flirtatious",
-        "location": "grand hotel suite", "lighting": "warm candlelight",
-        "shot_type": "medium close-up from chest up", "mood": "mysterious",
+        # Soft Female preference; costume lives in the variants (not _COSTUMES).
+        "gender": "Female",
+        "variants": {
+            "Female": {
+                "hair_style": "updo", "makeup_style": "bold glam",
+                "outfit_style": "evening formal",
+                "outfit_description": "an opulent {jewel_tone} {fabric} ball gown with {accent} and an ornate feathered mask",
+                "expression": "flirtatious",
+                "location": "grand hotel suite", "lighting": "warm candlelight",
+                "shot_type": "medium close-up from chest up", "mood": "mysterious",
+            },
+            "Male": {
+                "hair_style": "slicked back", "facial_hair": "clean shaven",
+                "outfit_style": "evening formal",
+                "outfit_description": "a {dark_color} velvet tailcoat with a {jewel_tone} brocade waistcoat, white gloves, and an ornate {metal} filigree half-mask",
+                "expression": "smirking",
+                "location": "grand hotel suite", "lighting": "warm candlelight",
+                "shot_type": "medium close-up from chest up", "mood": "mysterious",
+            },
+        },
     },
     "Steampunk Inventor": {
         "hair_style": "messy bun", "outfit_style": "vintage retro",
@@ -849,11 +927,28 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium close-up from chest up", "mood": "mysterious",
     },
     "Fortune Teller": {
-        "gender": "Female", "ethnicity": "Romani", "hair_color": ["dark brown", "medium brown", "near black"],
-        "hair_length": "very long", "hair_style": "loose braids", "makeup_style": "bold glam",
-        "outfit_style": "bohemian", "expression": "sultry",
-        "location": "dimly lit cocktail lounge", "lighting": "warm candlelight",
-        "shot_type": "medium close-up from chest up", "mood": "mysterious",
+        # Soft Female preference; costume lives in the variants (not _COSTUMES).
+        "gender": "Female",
+        "variants": {
+            "Female": {
+                "ethnicity": "Romani", "hair_color": ["dark brown", "medium brown", "near black"],
+                "hair_length": "very long", "hair_style": "loose braids", "makeup_style": "bold glam",
+                "outfit_style": "bohemian",
+                "outfit_description": "layered {jewel_tone} shawls and skirts with jangling {metal} coins, bangles, and a headscarf",
+                "expression": "sultry",
+                "location": "dimly lit cocktail lounge", "lighting": "warm candlelight",
+                "shot_type": "medium close-up from chest up", "mood": "mysterious",
+            },
+            "Male": {
+                "ethnicity": "Romani", "hair_color": ["dark brown", "medium brown", "near black"],
+                "hair_length": "shoulder length", "hair_style": "worn down", "facial_hair": "short beard",
+                "outfit_style": "bohemian",
+                "outfit_description": "a {jewel_tone} patterned vest over a loose open-collared shirt with a wide sash, {metal} rings and pendants, and a knotted headscarf",
+                "expression": "smirking",
+                "location": "dimly lit cocktail lounge", "lighting": "warm candlelight",
+                "shot_type": "medium close-up from chest up", "mood": "mysterious",
+            },
+        },
     },
     "Disco Diva": {
         "gender": "Female", "hair_color": ["jet black", "raven black", "near black"], "hair_style": "afro",
@@ -1116,12 +1211,31 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "tranquil",
     },
     "Lumberjack": {
-        "gender": "Male", "ethnicity": "Norwegian", "body_type": "stocky",
-        "height": "tall", "fitness_level": "very fit", "facial_hair": "full beard",
-        "hair_color": ["auburn", "copper", "deep red"], "hair_length": "very short", "skin_tone": "fair", "complexion": "ruddy",
-        "outfit_style": "casual", "expression": "confident", "location": "snowy pine forest",
-        "lighting": "overcast diffused daylight", "shot_type": "cowboy shot from mid-thigh up",
-        "mood": "self-assured",
+        # Soft Male preference; costume lives in the variants (not _COSTUMES).
+        "gender": "Male",
+        "variants": {
+            "Male": {
+                "ethnicity": "Norwegian", "body_type": "stocky",
+                "height": "tall", "fitness_level": "very fit", "facial_hair": "full beard",
+                "hair_color": ["auburn", "copper", "deep red"], "hair_length": "very short", "skin_tone": "fair", "complexion": "ruddy",
+                "outfit_style": "casual",
+                "outfit_description": "a {color} checked flannel shirt with suspenders, work trousers, and heavy boots",
+                "expression": "confident", "location": "snowy pine forest",
+                "lighting": "overcast diffused daylight", "shot_type": "cowboy shot from mid-thigh up",
+                "mood": "self-assured",
+            },
+            "Female": {
+                "ethnicity": "Norwegian", "body_type": "fit",
+                "height": "tall", "fitness_level": "athletic",
+                "hair_color": ["auburn", "copper", "strawberry blonde"], "hair_length": "long",
+                "hair_texture": "wavy", "hair_style": "side braid", "skin_tone": "fair",
+                "outfit_style": "casual",
+                "outfit_description": "a {color} checked flannel shirt tucked into high-waisted work trousers with suspenders and heavy boots",
+                "expression": "confident", "location": "snowy pine forest",
+                "lighting": "overcast diffused daylight", "shot_type": "cowboy shot from mid-thigh up",
+                "mood": "self-assured",
+            },
+        },
     },
 
     # --- Hobbies -----------------------------------------------------------
@@ -1191,12 +1305,28 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "intense",
     },
     "Mad Scientist": {
-        "gender": "Male", "ethnicity": "German", "body_type": "slim", "height": "tall",
-        "hair_color": ["white", "silver", "salt and pepper"], "hair_length": "ear length", "hair_texture": "fine and wispy",
-        "hair_style": "windswept", "skin_tone": "pale", "outfit_style": "business casual",
-        "expression": "surprised", "location": "server room with blinking lights",
-        "lighting": "harsh fluorescent lighting", "shot_type": "medium shot from waist up",
-        "mood": "tense",
+        # Soft Male preference; costume lives in the variants (not _COSTUMES).
+        "gender": "Male",
+        "variants": {
+            "Male": {
+                "ethnicity": "German", "body_type": "slim", "height": "tall",
+                "hair_color": ["white", "silver", "salt and pepper"], "hair_length": "ear length", "hair_texture": "fine and wispy",
+                "hair_style": "windswept", "skin_tone": "pale", "outfit_style": "business casual",
+                "outfit_description": "a stained white lab coat over a waistcoat with rubber gloves and cracked goggles",
+                "expression": "surprised", "location": "server room with blinking lights",
+                "lighting": "harsh fluorescent lighting", "shot_type": "medium shot from waist up",
+                "mood": "tense",
+            },
+            "Female": {
+                "ethnicity": "German", "body_type": "slim", "height": "average height",
+                "hair_color": ["white", "silver", "salt and pepper"], "hair_length": "shoulder length", "hair_texture": "fine and wispy",
+                "hair_style": "messy bun", "skin_tone": "pale", "outfit_style": "business casual",
+                "outfit_description": "a stained white lab coat over a high-collared blouse with rubber gloves and cracked goggles",
+                "expression": "surprised", "location": "server room with blinking lights",
+                "lighting": "harsh fluorescent lighting", "shot_type": "medium shot from waist up",
+                "mood": "tense",
+            },
+        },
     },
     "Court Jester": {
         "outfit_style": "edgy alternative", "makeup_style": "club makeup", "expression": "playful",
@@ -1296,12 +1426,31 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Flamenco Dancer": {
-        "gender": "Female", "ethnicity": "Spanish", "body_type": "curvy", "height": "average height",
-        "hair_color": ["jet black", "raven black", "near black"], "hair_length": "long", "hair_texture": "sleek straight",
-        "hair_style": "sleek bun", "skin_tone": "olive", "makeup_style": "bold glam",
-        "lips_makeup": "classic red", "outfit_style": "evening formal", "expression": "intense gaze",
-        "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
-        "shot_type": "full body shot", "mood": "intense",
+        # Soft Female preference; costume lives in the variants (not _COSTUMES)
+        # so the Male pick gets an authentic bailaor look, not the dress.
+        "gender": "Female",
+        "variants": {
+            "Female": {
+                "ethnicity": "Spanish", "body_type": "curvy", "height": "average height",
+                "hair_color": ["jet black", "raven black", "near black"], "hair_length": "long", "hair_texture": "sleek straight",
+                "hair_style": "sleek bun", "skin_tone": "olive", "makeup_style": "bold glam",
+                "lips_makeup": "classic red", "outfit_style": "evening formal",
+                "outfit_description": "a ruffled {jewel_tone} flamenco dress with a fringed shawl and a flower tucked in the hair",
+                "expression": "intense gaze",
+                "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
+                "shot_type": "full body shot", "mood": "intense",
+            },
+            "Male": {
+                "ethnicity": "Spanish", "body_type": "lean", "height": "tall",
+                "facial_hair": "clean shaven",
+                "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short", "hair_texture": "sleek straight",
+                "hair_style": "slicked back", "skin_tone": "olive", "outfit_style": "evening formal",
+                "outfit_description": "high-waisted black flamenco trousers with a short fitted {dark_color} bolero jacket over a white ruffled shirt, a wide {jewel_tone} waist sash, and heeled flamenco boots",
+                "expression": "intense gaze",
+                "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
+                "shot_type": "full body shot", "mood": "intense",
+            },
+        },
     },
     "Drag Performer": {
         "gender": "Female", "body_type": "curvy", "height": "tall",
@@ -1668,14 +1817,34 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "triumphant",
     },
     "1940s Swing Dancer": {
-        "gender": "Male", "ethnicity": "Italian", "body_type": "lean", "height": "average height",
-        "facial_hair": "clean shaven", "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "very short",
-        "hair_texture": "sleek straight", "hair_style": "slicked back", "skin_tone": "light medium",
-        "outfit_style": "vintage retro", "accessories": "no accessories",
-        "earrings": "no earrings", "necklace": "no necklace",
-        "outfit_description": "a crisp white dress shirt with the sleeves rolled up, suspenders over high-waisted pleated trousers, a loosened tie, and two-tone leather shoes",
-        "expression": "confident", "location": "speakeasy-style basement bar",
-        "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up", "mood": "lighthearted",
+        # Soft Male preference: the original male look; the gender widget picks
+        # the variant, so Female gets a period swing dress instead of the tie.
+        "gender": "Male",
+        "variants": {
+            "Male": {
+                "ethnicity": "Italian", "body_type": "lean", "height": "average height",
+                "facial_hair": "clean shaven", "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "very short",
+                "hair_texture": "sleek straight", "hair_style": "slicked back", "skin_tone": "light medium",
+                "outfit_style": "vintage retro", "accessories": "no accessories",
+                "earrings": "no earrings", "necklace": "no necklace",
+                "outfit_description": "a crisp white dress shirt with the sleeves rolled up, suspenders over high-waisted pleated trousers, a loosened tie, and two-tone leather shoes",
+                "expression": "confident", "location": "speakeasy-style basement bar",
+                "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up", "mood": "lighthearted",
+            },
+            "Female": {
+                "ethnicity": "Italian", "body_type": "slender", "height": "average height",
+                "hair_color": ["near black", "dark brown", "auburn"], "hair_length": "shoulder length",
+                "hair_texture": "loosely curled", "hair_style": ["updo", "half up half down"],
+                "skin_tone": "light medium", "makeup_style": "vintage 1950s pin-up makeup", "lips_makeup": "classic red",
+                "outfit_style": "vintage retro", "accessories": "no accessories",
+                "outfit_description": [
+                    "a knee-length polka-dot swing dress with a full circle skirt and short puffed sleeves, seamed stockings, and low-heeled two-tone dance shoes",
+                    "a fitted short-sleeve blouse tucked into a high-waisted knee-length circle skirt, seamed stockings, ankle socks, and flat leather dance shoes",
+                ],
+                "expression": "bright smile", "location": "speakeasy-style basement bar",
+                "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up", "mood": "lighthearted",
+            },
+        },
     },
     "Game-Day Fan": {
         # Soft Female preference: gender "Any" resolves to the female look; the main
@@ -2255,8 +2424,6 @@ _COSTUMES: dict[str, str] = {
     "Berserker Barbarian": "{fur} hides and a leather harness with {metal} bracers over a bare muscular chest",
     "Necromancer": "tattered {dark_color} robes with bone clasps, {accent}, and a deep hooded cowl",
     "Arcane Wizard": "{jewel_tone} robes embroidered with silver stars and a tall wide-brimmed pointed hat",
-    "Battle Bard": ["an embroidered {color} velvet doublet over a ruffled blouse with a feathered cap and a lute on a strap",
-     "a laced {color} velvet vest over a billowing blouse with a feathered cap and a lute on a strap"],
     "Swashbuckling Pirate": ["a weathered {earth_tone} leather coat over a loose linen shirt, a {color} sash, and a tricorn hat",
      "a {color} brocade captain's coat over a ruffled linen shirt, a leather baldric, and a tricorn hat"],
     "Stealth Ninja": "matte {dark_color} shinobi garb with a face wrap, hood, and split-toe tabi boots",
@@ -2265,9 +2432,6 @@ _COSTUMES: dict[str, str] = {
     "Roaring Flapper": ["a {color} beaded fringe flapper dress with a feathered headband and long satin gloves",
      "a {color} drop-waist sequined flapper dress with a jeweled headband and a feather boa"],
     "Wild West Gunslinger": "a fringed {earth_tone} western shirt with a leather duster, denim, chaps, and a worn cowboy hat",
-    "Noir Detective": "a rumpled {earth_tone} trench coat over a wrinkled shirt and loosened tie with a felt fedora",
-    "Stage Magician": "a sharp {dark_color} tailcoat with a {color} satin waistcoat, white gloves, and a top hat",
-    "Masquerade Guest": "an opulent {jewel_tone} {fabric} ball gown with {accent} and an ornate feathered mask",
     "Steampunk Inventor": "a {earth_tone} brocade waistcoat with brass goggles, a {metal} pocket watch, and a leather tool belt",
     "Cyberpunk Netrunner": ["a {dark_color} techwear jacket with {color} LED trim, utility straps, and a sleek visor",
      "a {dark_color} techwear longcoat with {color} circuit-line trim, utility straps, and a sleek visor"],
@@ -2276,7 +2440,6 @@ _COSTUMES: dict[str, str] = {
     "Viking Shieldmaiden": "a {color} wool tunic with a {fur} cloak, {metal} brooches, and leather bracers",
     "Samurai": "layered lacquered armor in {dark_color} and {metal} with a {color} sash and a horned helm",
     "Cabaret Witch": "a {dark_color} {fabric} gown with a wide pointed hat, {accent}, and a fitted corset bodice",
-    "Fortune Teller": "layered {jewel_tone} shawls and skirts with jangling {metal} coins, bangles, and a headscarf",
     "Disco Diva": ["a shimmering {color} sequined jumpsuit with a plunging neckline and platform heels",
      "a shimmering {color} halter disco dress with a flowing hem and platform heels"],
     "Punk Rocker": "a studded {dark_color} leather jacket over a torn band tee with tartan and combat boots",
@@ -2308,12 +2471,10 @@ _COSTUMES: dict[str, str] = {
     "Construction Worker": "a hi-vis {color} safety vest over a work shirt, a tool belt, and a hard hat",
     "Lifeguard": "{color} lifeguard board shorts with a whistle on a lanyard and a rescue can",
     "Park Ranger": "an {earth_tone} ranger uniform with a brimmed campaign hat, a badge, and a utility belt",
-    "Lumberjack": "a {color} checked flannel shirt with suspenders, work trousers, and heavy boots",
     "Surfer": "a {color} wetsuit peeled to the waist over board shorts",
     "Boxer": "satin {color} boxing trunks with a championship belt, taped wrists, and laced boxing boots",
     "Superhero": "a sleek {color} superhero bodysuit with a bold chest emblem, a flowing cape, and gloves and boots",
     "Supervillain": "a dramatic {dark_color} costume with {metal} armor accents, a high collar, and a long cape",
-    "Mad Scientist": "a stained white lab coat over a waistcoat with rubber gloves and cracked goggles",
     "Court Jester": "a motley {jewel_tone} and {color} jester costume with a belled three-point hat, a ruffled collar, and curled shoes",
     "Egyptian Pharaoh": "a pleated white-and-{metal} royal kilt with a broad jeweled collar, a striped nemes headdress, and gold arm cuffs",
     "Geisha": "an elaborate {jewel_tone} silk kimono with a wide obi sash and ornate hair combs, with a white-painted face and red lips",
@@ -2327,7 +2488,6 @@ _COSTUMES: dict[str, str] = {
     "Luchador": "a {color} lucha libre singlet with contrasting trim, lace-up boots, and a brightly colored lucha mask held at the side",
     "Swim Instructor": "a {color} one-piece training swimsuit with a whistle on a lanyard and a poolside towel over one shoulder",
     "Race Car Driver": "a {color} fire-resistant racing suit with sponsor patches and a helmet held under one arm",
-    "Flamenco Dancer": "a ruffled {jewel_tone} flamenco dress with a fringed shawl and a flower tucked in the hair",
     "Drag Performer": "a dazzling {jewel_tone} sequined gown with dramatic feathers, statement jewelry, and towering heels",
     "Ringmaster": "a {color} tailcoat with gold braid and epaulettes, a white shirt, jodhpurs, tall boots, and a top hat",
     "Roaring Twenties Gent": "a {dark_color} pinstripe three-piece suit with a silk tie, a pocket square, two-tone spectator shoes, and a felt fedora",
@@ -2356,6 +2516,13 @@ _COSTUMES: dict[str, str] = {
 }
 for _name, _costume in _COSTUMES.items():
     if _name in ARCHETYPES:
+        # Archetypes converted to gender variants carry their costume inside
+        # each variant block instead; a _COSTUMES entry would put a second,
+        # gender-blind costume on the base, so keep converted names out of here.
+        assert "variants" not in ARCHETYPES[_name], (
+            f"_COSTUMES entry for '{_name}' conflicts with its variants block; "
+            "move the costume into the variants instead"
+        )
         ARCHETYPES[_name]["outfit_description"] = _costume
 
 

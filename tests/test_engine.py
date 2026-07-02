@@ -1843,7 +1843,11 @@ class FieldFamilyPickTests(unittest.TestCase):
             variants = [v for fam in families.values() for v in fam["variants"]]
             self.assertEqual(len(variants), len(set(variants)),
                              f"{field}: duplicate variant across families")
-            opts = set(FIELD_DEFINITIONS[field]["female_options"])
+            # Union of both gender pools: families must cover every option any
+            # gender can draw (options may be gender-scoped, e.g. 'comb over'
+            # is male-only), and the picker intersects with the live pool.
+            opts = (set(FIELD_DEFINITIONS[field]["female_options"])
+                    | set(FIELD_DEFINITIONS[field]["male_options"]))
             self.assertEqual(set(variants), opts, f"{field}: families != options")
 
     def test_pick_returns_in_pool_value(self):

@@ -1419,11 +1419,12 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "slim", "height": "petite", "skin_tone": "light medium"},
     },
-    "Ms. Marvel": {
+    "Ms. Marvel (Kamala Khan)": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a blue and red costume with a gold lightning-bolt emblem, a red scarf, "
-                   "a domino mask, red gloves, and blue boots",
+        "costume": "a blue tunic-style costume with a gold lightning-bolt emblem, a long red "
+                   "scarf trailing from the neck, a small blue domino mask, red gloves, blue "
+                   "leggings, and blue boots",
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_texture": "wavy", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "petite", "skin_tone": "caramel"},
@@ -4844,7 +4845,9 @@ COSPLAYERS: dict[str, dict] = {
     "Kitty Pryde": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a blue-and-gold X-Men uniform",
+        "costume": "a royal blue bodysuit with golden shoulder-and-chest panels, a golden "
+                   "X-buckle belt, golden gloves, blue boots, and a small golden X emblem "
+                   "at the collar",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
                       "hair_texture": "wavy", "eye_color": "dark brown"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
@@ -8516,6 +8519,234 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "near black", "hair_length": "shoulder length",
                       "hair_texture": "wavy", "eye_color": "dark brown"},
         "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- 0.45 classic comics: Justice Society of America -------------------
+    "Doctor Fate": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a deep blue bodysuit with a wide golden belt, golden boots, golden "
+                   "gauntlets, a golden amulet on a short chain at the collar, and a "
+                   "flowing golden cape",
+        "mask": "a gleaming full-face golden helm with narrow eye slits",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Hourman": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black bodysuit with a golden hourglass emblem on the chest, a black "
+                   "hood-style cowl leaving the face exposed, a yellow cape, yellow gloves, "
+                   "a yellow belt, and a miniature hourglass hanging from a chain around the neck",
+        "signature": {"eye_color": "medium brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "The Spectre": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a deep green hooded cloak clasped at the shoulders, green trunks, green "
+                   "gloves, and green boots, over an even, smooth coat of chalk white body paint",
+        "eyes": "solid glowing white pupil-less",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Sandman (Wesley Dodds)": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a green double-breasted 1930s suit with a purple cape, purple gloves, "
+                   "and a matching green fedora",
+        "mask": "a WWI-style gas mask with round glass lenses and a hanging filter canister",
+        "physique": {"body_type": "average", "height": "average height"},
+        "prop": "a brass gas gun shaped like an oversized pistol",
+    },
+    "Jay Garrick": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a red long-sleeved shirt with a golden lightning-bolt emblem, blue "
+                   "trousers, red boots with small golden wings at the ankles, and a "
+                   "polished silver WWI-style helmet with golden wings at the temples",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Wildcat": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a matte black full-body cat suit with a slim yellow belt and black boots",
+        "mask": "a black cat cowl with pointed ears and short whiskers",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Starman (Ted Knight)": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a crimson bodysuit with a large golden star emblem on the chest, a "
+                   "golden belt, green gloves, green boots, and a green finned helmet "
+                   "leaving the face exposed",
+        "signature": {"eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slender golden gravity rod glowing with starlight at the tip",
+    },
+    "Doctor Mid-Nite": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a crimson bodysuit with a black crescent-moon emblem on the chest, "
+                   "green gloves, green boots, a long black cape with a high collar, and "
+                   "round black blackout goggles",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Stargirl": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a royal blue sleeveless costume scattered with small white stars and a "
+                   "large white star emblem on the chest, a red belt, red fingerless gloves, "
+                   "and a slim golden headband",
+        "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a golden cosmic staff crackling with starlight energy",
+    },
+    "Liberty Belle": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a fitted royal blue jacket and matching trousers with a golden "
+                   "liberty-bell belt buckle, red gloves, and red boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_texture": "loosely curled", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Phantom Lady (Dee Tyler)": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a strapless yellow one-piece costume with a deep neckline, a flowing "
+                   "green cape clasped at the shoulders, green opera gloves, and green "
+                   "thigh-high boots",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- 0.45 classic comics: Legion of Super-Heroes ------------------------
+    "Saturn Girl": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a form-fitting red-and-white bodysuit with a golden ringed-planet "
+                   "emblem on the chest, white gloves, white boots, and a golden Legion "
+                   "flight ring",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Lightning Lad": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a blue-and-white bodysuit with a golden lightning-bolt emblem across "
+                   "the chest, white gloves, white boots, and a golden Legion flight ring",
+        "signature": {"hair_color": "copper", "hair_length": "very short",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Cosmic Boy": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a magenta-and-black bodysuit with a silver magno-disc emblem on the "
+                   "chest, black gloves, black boots, and a golden Legion flight ring",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Brainiac 5": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a form-fitting purple-and-black jumpsuit with a white belt, white "
+                   "boots, and a golden Legion flight ring, over an even, smooth coat of "
+                   "green body paint",
+        "signature": {"hair_color": "golden blonde", "hair_length": "ear length"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+
+    # --- 0.45 classic comics: Mad Hatters, Marvel, MHA, golden age ----------
+    "Mad Hatter (Alice in Wonderland)": {
+        "franchise": "Alice in Wonderland",
+        "gender": "Male",
+        "costume": "an oversized emerald-green top hat with a '10/6' card tucked in the "
+                   "band, a mismatched Victorian tailcoat over a patterned waistcoat, a "
+                   "large polka-dot bow tie, and striped trousers",
+        "physique": {"body_type": "slim", "height": "short"},
+    },
+    "Mad Hatter (Jervis Tetch)": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a green Victorian frock coat over a patterned waistcoat, a large blue "
+                   "bow tie, striped trousers, white gloves, and an oversized green top hat "
+                   "with a '10/6' card in the band",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "very short"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "pale"},
+    },
+    "Ms. Marvel (Carol Danvers)": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a black leotard with a golden lightning-bolt emblem, a red sash "
+                   "knotted at the waist, black opera gloves, black thigh-high boots, and "
+                   "a black domino mask",
+        "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Ms. Marvel (Sharon Ventura)": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a navy blue leotard with a golden lightning-bolt emblem, a red sash "
+                   "knotted at the waist, blue opera gloves, blue thigh-high boots, and a "
+                   "blue domino mask",
+        "signature": {"hair_color": "warm brown", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "medium brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Momo Yaoyorozu": {
+        "franchise": "My Hero Academia",
+        "gender": "Female",
+        "costume": "a sleeveless crimson leotard with a deep plunging neckline, a golden "
+                   "utility belt with a small red tome at the hip, and matching crimson boots",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "high ponytail", "eye_color": "dark brown"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "light"},
+    },
+    "The Spirit": {
+        "franchise": "Comics",
+        "gender": "Male",
+        "costume": "a blue suit and matching blue fedora with a red necktie, a white "
+                   "shirt, black leather gloves, and a small blue domino mask",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "medium brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Zatara": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a black tuxedo tailcoat with a white waistcoat, a white bow tie, "
+                   "white gloves, and a black top hat",
+        "signature": {"facial_hair": "mustache", "hair_color": "near black",
+                      "hair_length": "very short"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "The Phantom": {
+        "franchise": "Comics",
+        "gender": "Male",
+        "costume": "a skin-tight purple bodysuit with a matching purple hood, a black "
+                   "domino mask, black-and-white diagonally striped trunks, a black belt "
+                   "with a silver skull buckle and twin holsters, and black boots",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "The Atom (Ray Palmer)": {
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a blue bodysuit with red gloves, red boots, a red-and-blue torso "
+                   "panel, and a blue belt",
+        "mask": "a red-and-blue cowl with a white atomic-symbol emblem on the forehead",
+        "physique": {"body_type": "lean", "height": "short"},
     },
 }
 
