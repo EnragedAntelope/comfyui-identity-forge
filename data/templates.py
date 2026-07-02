@@ -1772,7 +1772,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Safari Guide": {
         "outfit_style": "casual", "expression": "confident",
-        "location": "open meadow", "lighting": "harsh overhead midday sun",
+        "location": "golden savanna with acacia trees", "lighting": "harsh overhead midday sun",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
     "Toymaker": {
@@ -2513,6 +2513,43 @@ _COSTUMES: dict[str, str] = {
     "Navy Sailor": "a crisp white naval uniform with a {dark_color} neckerchief, brass buttons, and a sailor's cap",
     "Pin-up Model": "a {color} polka-dot halter swing dress cinched at the waist with a petticoat and peep-toe heels",
     "Streamer": "a {color} oversized graphic hoodie with a gaming headset around the neck over a plain tee",
+    # Round 3 (0.48.0): occupation archetypes whose concept lives in the uniform.
+    # Without a lock these rendered a random generic outfit from their
+    # outfit_style bucket -- the archetype name never reaches the prompt.
+    "Barista": "a {earth_tone} canvas cafe apron over a rolled-sleeve shirt with a name tag and a bar towel tucked at the waist",
+    "Doctor": "a white doctor's coat over {color} scrubs with a stethoscope around the neck and an ID badge",
+    "Firefighter": "tan firefighter turnout gear with neon-yellow reflective stripes, red suspenders, a radio clipped to the chest, and a fire helmet held at the side",
+    "Police Officer": "a navy police uniform shirt with a badge, shoulder radio, and duty belt, and a peaked service cap",
+    "Chef": "a double-breasted white chef's jacket with {color} piping, a bistro apron, houndstooth trousers, and a tall white toque",
+    "Pilot": "a {dark_color} airline captain's uniform with four gold cuff stripes, wing insignia over the pocket, a tie, and a peaked cap",
+    "Scientist": "a white lab coat with pens in the breast pocket over {menswear_color} smart clothing, with safety glasses and a laminated ID badge",
+    "Farmer": "a {color} plaid work shirt under denim bib overalls with leather work gloves tucked in a pocket and a straw hat",
+    "Mechanic": "grease-smudged {dark_color} mechanic coveralls with an embroidered name patch, a shop rag hanging from the pocket, and heavy boots",
+    "Tattoo Artist": "a fitted black tee showing full-sleeve tattoos, a {dark_color} half-apron, black nitrile gloves, and ripped jeans",
+    "Bartender": "a rolled-sleeve white shirt under a {dark_color} waistcoat with a bar towel over the shoulder and a cocktail shaker in hand",
+    "Electrician": "a {color} work shirt under a hi-vis vest with a tool belt hung with pliers and wire strippers, work jeans, and safety glasses",
+    "Marine Biologist": "a {color} field jacket over quick-dry khakis with a dive watch, rubber deck boots, and a specimen kit slung at the hip",
+    "Archaeologist": "a sun-faded khaki field shirt with rolled sleeves, cargo trousers, a brimmed explorer hat, and a brush and trowel at the belt",
+    "Cyclist": "a fitted {team_color} cycling jersey with matching bib shorts, fingerless gloves, a sleek road helmet, and clip-in cycling shoes",
+    "Beekeeper": "a white beekeeping suit with the veiled hood thrown back, long leather gloves, and a bee smoker held at the side",
+    "Carpenter": "a {color} flannel shirt under a canvas tool apron with a carpenter's pencil behind the ear, work jeans, and steel-toe boots",
+    "Welder": "a heavy leather welding jacket with gauntlet gloves, a welding helmet flipped up, and flame-scorched work trousers",
+    "Falconer": "a waxed {earth_tone} field jacket with a thick leather falconry gauntlet on one forearm, a game bag, and a flat cap",
+    "Paramedic": "a navy EMS uniform shirt with reflective piping and shoulder patches, a radio clipped to the chest, cargo trousers, and blue nitrile gloves",
+    "Train Conductor": "a {dark_color} conductor's uniform with brass buttons, a waistcoat crossed by a pocket-watch chain, and a peaked conductor's cap",
+    "Jeweler": "a {dark_color} waistcoat over a crisp shirt with a jeweler's loupe on a neck chain and a soft polishing cloth in hand",
+    "Watchmaker": "a {earth_tone} work apron over a shirt and tie with a magnifying loupe strapped over one eye and fine tweezers in hand",
+    "Potter": "a clay-smudged canvas apron over a rolled-sleeve {color} linen shirt with clay-dusted forearms",
+    "Tailor": "a fitted {menswear_color} waistcoat over a crisp shirt with a measuring tape draped around the neck and a pincushion at the wrist",
+    "Stonemason": "a dusty leather work apron over a rough {earth_tone} shirt with heavy gloves and a mallet and chisel at the belt",
+    "Winemaker": "a {earth_tone} quilted vest over a checked shirt with dark trousers, leather boots, and a stemmed tasting glass in hand",
+    "Desert Nomad": "flowing layered {earth_tone} desert robes with a wrapped head scarf trailing loose ends, a braided belt, and worn leather sandals",
+    "Tribal Shaman": "layered hide and woven-cloth garments with a feathered mantle, bone-and-bead necklaces, and a carved staff",
+    "Trapeze Artist": "a shimmering {jewel_tone} sequined leotard with sheer sleeves, tights, and wrapped wrist guards",
+    "Deep Sea Diver": "a vintage brass-and-canvas deep-sea diving suit with a bolted chest plate, weighted boots, and the brass helmet held under one arm",
+    "Arctic Explorer": "a heavy {color} expedition parka with a fur-lined hood, insulated snow trousers, thick mittens clipped to the sleeves, and snow goggles pushed up",
+    "Safari Guide": "a khaki safari shirt with rolled sleeves and epaulettes, cargo shorts, a wide-brim bush hat, a woven belt, and binoculars on a neck strap",
+    "Toymaker": "a {color} corduroy waistcoat over a rolled-sleeve shirt, a leather work apron dusted with wood shavings, and round spectacles",
 }
 for _name, _costume in _COSTUMES.items():
     if _name in ARCHETYPES:
