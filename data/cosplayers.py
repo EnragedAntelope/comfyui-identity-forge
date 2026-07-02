@@ -8276,6 +8276,247 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "a great two-handed claymore",
     },
+
+    # === Mascots (more) ===================================================
+    "Ronald McDonald": {
+        "franchise": "McDonald's",
+        "gender": "Male",
+        "costume": "a bright yellow jumpsuit with a red-and-white striped long-sleeve "
+                   "undershirt, oversized red shoes, a red bow tie, and a wide red-and-yellow "
+                   "striped belt, with white clown face paint and a wide painted red smile",
+        "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
+                      "hair_texture": "curly", "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Hamburglar": {
+        "franchise": "McDonald's",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a black-and-white striped one-piece suit with a red-lined black cape "
+                   "and a wide yellow belt buckle",
+        "mask": "a wide-brimmed black hat pulled low over a black domino mask and an "
+                "upturned coat collar",
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Grimace": {
+        "franchise": "McDonald's",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full rounded mascot suit, no bare skin
+        "costume": "a huge rounded fuzzy purple mascot body with short stubby arms and legs",
+        "mask": "a rounded fuzzy purple mascot head with two small black dot eyes and a wide grin",
+        "physique": {"body_type": "chubby", "height": "very tall"},
+    },
+    "Wendy": {
+        "franchise": "Wendy's",
+        "gender": "Female",
+        "costume": "a blue-and-white striped dress with a white apron, a red bandana-style collar",
+        "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
+                      "hair_texture": "curly", "hair_style": "high pigtails", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "petite", "skin_tone": "fair"},
+    },
+    "Kool-Aid Man": {
+        "franchise": "Kool-Aid",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # giant glass pitcher shell, no bare skin
+        "costume": "a giant smiling glass pitcher body filled with bright red liquid",
+        "mask": "the pitcher's own molded glass face with a huge painted grin",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Michelin Man": {
+        "franchise": "Michelin",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # stacked rubber-ring mascot suit, no bare skin
+        "costume": "a body built from stacked white rubber tire rings from neck to feet",
+        "mask": "a smooth white rubber ring-stacked head with small dark eyes and a friendly grin",
+        "physique": {"body_type": "plus size", "height": "tall"},
+    },
+    "Big Boy": {
+        "franchise": "Big Boy",
+        "gender": "Male",
+        "costume": "red-and-white checkered overalls over a white short-sleeve shirt",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "top knot", "eye_color": "dark brown"},
+        "physique": {"body_type": "chubby", "height": "short", "skin_tone": "fair"},
+        "prop": "a platter stacked with a double-decker hamburger",
+    },
+
+    # === More fictional-character gaps (2026 sweep) =======================
+    "Shrek": {
+        "franchise": "Shrek",
+        "gender": "Male",
+        "bald": True,
+        "costume": "an even, smooth coat of green ogre skin, a brown vest over a rough "
+                   "cream peasant shirt, and brown trousers",
+        "eyes": "brown",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Robin": {
+        "franchise": "DC",
+        "gender": "Male",
+        "costume": "a red tunic with a yellow R chest emblem, green shorts, gloves and "
+                   "boots, and a yellow-lined black cape",
+        "signature": {"hair_color": "jet black", "hair_length": "very short", "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Gollum": {
+        "franchise": "The Lord of the Rings",
+        "gender": "Male",
+        "bald": True,
+        "costume": "an even, smooth coat of clammy pale grey skin stretched over a gaunt, "
+                   "emaciated frame, and a tattered loincloth",
+        "eyes": "pale luminous",
+        "physique": {"body_type": "very slim", "height": "short"},
+    },
+    "Bilbo Baggins": {
+        "franchise": "The Lord of the Rings",
+        "gender": "Male",
+        "costume": "a brown waistcoat over a cream shirt with a velvet coat, and bare "
+                   "hairy feet",
+        "signature": {"hair_color": "medium brown", "hair_length": "ear length",
+                      "hair_texture": "curly", "eye_color": "bright blue"},
+        "physique": {"body_type": "chubby", "height": "very petite", "skin_tone": "fair"},
+    },
+    "Genos": {
+        "franchise": "One Punch Man",
+        "gender": "Male",
+        "covers_body": True,  # cyborg body from the neck down, no bare skin for jewellery
+        "costume": "a sleek black metal cyborg body with vented forearms and exposed "
+                   "joint mechanisms, worn under a black sleeveless top",
+        "eyes": "glowing amber",
+        "signature": {"hair_color": "golden blonde", "hair_length": "short pixie"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Samwise Gamgee": {
+        "franchise": "The Lord of the Rings",
+        "gender": "Male",
+        "costume": "a green waistcoat over a tan shirt with a brown travel cloak, and bare "
+                   "hairy feet",
+        "signature": {"hair_color": "medium brown", "hair_length": "ear length",
+                      "hair_texture": "curly", "eye_color": "medium brown"},
+        "physique": {"body_type": "stocky", "height": "very petite", "skin_tone": "fair"},
+    },
+    "Majin Buu": {
+        "franchise": "Dragon Ball",
+        "gender": "Male",
+        "bald": True,
+        "costume": "an even, smooth coat of pale pink rubbery skin, a black-and-yellow vest "
+                   "with white baggy trousers and a Majin-symbol belt",
+        "eyes": "small black",
+        "physique": {"body_type": "plump", "height": "average height"},
+    },
+    "Yondu": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "bald": True,
+        "costume": "an even, smooth coat of blue skin, a red crest-shaped fin implant set "
+                   "into the scalp, and a weathered red leather Ravager coat over dark "
+                   "tactical gear",
+        "eyes": "pale blue",
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a silver yaka arrow",
+    },
+    "Buffy Summers": {
+        "franchise": "Buffy the Vampire Slayer",
+        "gender": "Female",
+        "costume": "a fitted tank top under a leather jacket, tight jeans, and practical boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_texture": "loosely wavy", "eye_color": "green"},
+        "physique": {"body_type": "petite and slim", "height": "average height", "skin_tone": "fair"},
+        "prop": "a wooden stake",
+    },
+    "Ellie Williams": {
+        "franchise": "The Last of Us",
+        "gender": "Female",
+        "costume": "a worn red t-shirt under a grey hoodie, dark jeans, and scuffed sneakers, "
+                   "with a backpack",
+        "signature": {"hair_color": "light chestnut", "hair_length": "shoulder length",
+                      "hair_texture": "slightly wavy", "eye_color": "green"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Commander Shepard": {
+        "franchise": "Mass Effect",
+        "gender": "Female",
+        "covers_body": True,  # full hardsuit armour shell, no bare skin for jewellery
+        "costume": "a dark grey N7 hardsuit with red-and-white arm and chest stripes and "
+                   "armored plating",
+        "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
+                      "hair_texture": "slightly wavy", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Princess Bubblegum": {
+        "franchise": "Adventure Time",
+        "gender": "Female",
+        "costume": "an even, smooth coat of pale pink skin, a fitted pink gown with a "
+                   "modest neckline, and a small gold crown",
+        "eyes": "pink",
+        "signature": {"hair_color": "baby pink", "hair_length": "very long"},
+        "physique": {"body_type": "slender", "height": "average height"},
+    },
+    "Yoruichi": {
+        "franchise": "Bleach",
+        "gender": "Female",
+        "costume": "a fitted orange tank top with a black stand-up collar, black fingerless "
+                   "gloves, and black form-fitting pants",
+        "signature": {"hair_color": "deep purple", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "hair_style": "high ponytail",
+                      "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "dark brown"},
+    },
+    "Videl": {
+        "franchise": "Dragon Ball",
+        "gender": "Female",
+        "costume": "a white sleeveless top with a blue collar, dark blue biker shorts under "
+                   "a short skirt, and white boots",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Garnet": {
+        "franchise": "Steven Universe",
+        "gender": "Female",
+        "costume": "an even, smooth coat of reddish-maroon and purplish-blue fused skin, "
+                   "a form-fitting bodysuit in maroon, dark red, black, and purple with "
+                   "shoulder pads, and a dark visor covering the eyes",
+        "signature": {"hair_color": "near black", "hair_style": "afro", "hair_texture": "coily"},
+        "physique": {"body_type": "curvy", "height": "tall"},
+    },
+    "Ozymandias": {
+        "franchise": "Watchmen",
+        "gender": "Male",
+        "costume": "a purple-and-gold armored costume with a high collar and a stylized "
+                   "gold motif, and gold gauntlets and boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "ear length", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "The Comedian": {
+        "franchise": "Watchmen",
+        "gender": "Male",
+        "costume": "black leather armor with studded shoulders, a yellow smiley-face button, "
+                   "and a bandolier of ammunition",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "fair"},
+        "prop": "a lit cigar",
+    },
+    "Nite Owl": {
+        "franchise": "Watchmen",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a brown-and-grey armored owl suit with a cape",
+        "mask": "a brown cowl with large round goggle lenses",
+        "physique": {"body_type": "average", "height": "average height"},
+    },
+    "Silk Spectre": {
+        "franchise": "Watchmen",
+        "gender": "Female",
+        "costume": "a yellow-and-black latex bodysuit with a stylized collar, a black "
+                   "domino mask, and yellow boots",
+        "signature": {"hair_color": "near black", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
+    },
 }
 
 
@@ -8311,7 +8552,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Horizon", "Hitman", "Hellblade", "Doom", "Portal", "Silent Hill", "Darkstalkers",
         "The King of Fighters", "Bayonetta", "Divinity: Original Sin", "World of Warcraft",
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
-        "Sega", "Namco", "BioShock",
+        "Sega", "Namco", "BioShock", "The Last of Us",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -8325,7 +8566,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Scooby-Doo", "Who Framed Roger Rabbit", "Mistress of the Dark", "Xena: Warrior Princess",
         "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",
-        "Attack of the 50 Foot Woman",
+        "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
+        "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy",
     ),
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
@@ -8334,6 +8576,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fathom", "Chaos! Comics", "Comics", "Betty Boop", "The Flintstones", "The Jetsons",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
+        "Steven Universe",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {
