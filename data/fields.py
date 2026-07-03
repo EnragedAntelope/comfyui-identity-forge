@@ -180,8 +180,13 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("hair_length", {
         "group": 'Hair',
+        # 'bald' is male-only (like hair_style's 'comb over'): a random bald
+        # woman reads as an unintended costume/illness cue, while bald men are
+        # everyday. The engine treats a resolved 'bald' as scalp-only: it drops
+        # the other scalp-hair fields (colour/texture/style/part/highlights/
+        # accessory) and voices "his head is bald" (facial hair may remain).
         "female_options": ['buzzed very short', 'very short', 'short pixie', 'ear length', 'chin length bob', 'jaw length', 'shoulder length', 'slightly past shoulders', 'mid back', 'lower back', 'long', 'very long', 'waist length', 'hip length'],
-        "male_options": ['buzzed very short', 'very short', 'short pixie', 'ear length', 'chin length bob', 'jaw length', 'shoulder length', 'slightly past shoulders', 'mid back', 'lower back', 'long', 'very long', 'waist length', 'hip length'],
+        "male_options": ['bald', 'buzzed very short', 'very short', 'short pixie', 'ear length', 'chin length bob', 'jaw length', 'shoulder length', 'slightly past shoulders', 'mid back', 'lower back', 'long', 'very long', 'waist length', 'hip length'],
         "optional": False
     }),
     ("hair_texture", {
@@ -194,8 +199,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "group": 'Hair',
         # 'comb over' is deliberately male-only: T2I models read it as a
         # balding-male cue, which ages/masculinizes random female characters.
+        # 'mullet' is male-only for the same pool-hygiene reason: T2I models
+        # render the term as the masculine 80s cut, which reads as a costume
+        # gag on a random female character (archetypes can still curate it).
         "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail'],
-        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over'],
+        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet'],
         "optional": False
     }),
     ("hair_color_scope", {
@@ -525,7 +533,7 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
 #: only the within-family split changes as variants are added. The union of all
 #: ``variants`` must equal the ``hair_style`` options exactly (checked in tests).
 HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("loose", {"weight": 6, "variants": ['worn down', 'slicked back', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'comb over']}),
+    ("loose", {"weight": 6, "variants": ['worn down', 'slicked back', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'comb over', 'mullet']}),
     ("half-up", {"weight": 1, "variants": ['half up half down']}),
     ("ponytail", {"weight": 2, "variants": ['high ponytail', 'low ponytail', 'side ponytail', 'braided ponytail']}),
     ("bun", {"weight": 5, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'updo', 'French twist', 'ballerina bun']}),

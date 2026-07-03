@@ -151,6 +151,16 @@ _CONCEALED_BODY_GROUPS: frozenset[str] = frozenset({"Jewelry & Nails"})
 #: visible, so only the Hair group goes.
 _CONCEALED_HAIR_GROUPS: frozenset[str] = frozenset({"Hair"})
 
+#: Scalp-hair fields dropped when ``hair_length`` resolves to "bald" — there is no
+#: hair for a colour/texture/style/part/highlight/accessory to describe, so any of
+#: them would only contradict the bald head. ``hair_length`` itself stays (it is
+#: what voices the bald head) and ``facial_hair`` stays (bald + beard is natural).
+#: Mirrors the Cosplayer node's ``_BALD_SUPPRESS`` for costume-declared bald heads.
+_BALD_SCALP_FIELDS: tuple[str, ...] = (
+    "hair_color", "hair_texture", "hair_style", "hair_part",
+    "hair_highlights", "hair_accessory",
+)
+
 #: Body-group skin fields dropped when a character is BOTH fully masked
 #: (``covers_face``) AND a full hard shell (``covers_body`` / ``_FULL_COVER_RE``):
 #: the being is entirely encased, so a randomized human ``skin_tone`` would render as
@@ -387,6 +397,12 @@ def _build_option_pool(
         natural = set(field_def.get("natural_hair_colors", base))
         base = [c for c in base if c in natural]
 
+    # An already-present hair_style (a lock — styles randomize after lengths)
+    # implies scalp hair exists, so never draw a bald head under it: the bald
+    # scrub spares locked styles, which would leave "bald ... high ponytail".
+    if field_name == "hair_length" and resolved.get("hair_style"):
+        base = [v for v in base if v != "bald"]
+
     if field_name == "location":
         setting = resolved.get("location_setting", "Any indoor/outdoor")
         if setting == "Studio / solid backdrop":
@@ -604,6 +620,28 @@ def _apply_constraints(
                 if resolved.get(target) not in excluded:
                     continue
                 if target in locked:
+                    # Contrapositive repair: the locked target keeps its value, so
+                    # re-roll the randomized *trigger* away from every value that
+                    # excludes it (a locked "sleek bun" re-rolls a random "buzzed
+                    # very short" length). Only a real, unlocked, non-control
+                    # trigger can move; otherwise (both locked, or a gender /
+                    # scope trigger) fall back to warn-and-keep as before.
+                    trigger = rule["field"]
+                    trig_def = FIELD_DEFINITIONS.get(trigger)
+                    if (trig_def is not None and trigger not in locked
+                            and not trig_def.get("control")):
+                        conflicting = {
+                            r["value"] for r in CONSTRAINT_RULES
+                            if r["type"] == "exclusion" and r["field"] == trigger
+                            and r["excludes_field"] == target
+                            and resolved[target] in set(r["excludes_values"])
+                        }
+                        pool = [v for v in _build_option_pool(trigger, trig_def, gender, resolved)
+                                if v not in conflicting]
+                        if pool:
+                            resolved[trigger] = rng.choice(pool)
+                            changed = True
+                            continue
                     warn(target, f"'{rule['field']}={rule['value']}' conflicts with "
                                  f"locked '{target}={resolved[target]}'; keeping lock.")
                     continue
@@ -863,7 +901,13 @@ def _format_prose(
         sentences.append(f"{poss} skin shows " + _join(skin))
 
     # --- Hair -----------------------------------------------------------
-    hair_desc = _words(g("hair_length"), g("hair_texture"), g("hair_color"))
+    # "bald" is a head state, not a hair description — voice it as its own
+    # sentence ("his head is bald", never "his hair is bald"). The engine has
+    # already dropped the other scalp-hair fields for a bald head.
+    if g("hair_length") == "bald":
+        sentences.append(f"{poss} head is bald")
+    hair_desc = ("" if g("hair_length") == "bald"
+                 else _words(g("hair_length"), g("hair_texture"), g("hair_color")))
     if hair_desc:
         s = f"{poss} hair is {hair_desc}"
         if g("hair_style"):
@@ -879,7 +923,10 @@ def _format_prose(
         hl = g("hair_highlights")
         hair_extra.append(hl if "highlight" in hl else f"{hl} highlights")
     if g("facial_hair"):
-        hair_extra.append(g("facial_hair"))
+        fh = g("facial_hair")
+        # Mass/plural values ("stubble", "mutton chops") read naturally bare;
+        # the singular pieces ("full beard", "mustache") take an article.
+        hair_extra.append(fh if fh in ("stubble", "mutton chops") else _an(fh))
     if g("hair_accessory"):
         acc = g("hair_accessory")
         # "... in/over hair" values are placement phrases; voice them with the
@@ -1348,6 +1395,16 @@ def generate_character(
     if covers_hair:
         for field in list(resolved):
             if FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_HAIR_GROUPS:
+                resolved.pop(field, None)
+
+    # A "bald" hair_length (locked or randomly drawn from the male pool) is
+    # scalp-only: drop the randomized scalp-hair fields so no "bald wavy auburn
+    # hair, high ponytail" contradiction renders. An explicitly locked scalp
+    # field survives with the usual locked-wins semantics (like constraints).
+    # facial_hair is untouched either way (bald + beard is natural).
+    if resolved.get("hair_length") == "bald":
+        for field in _BALD_SCALP_FIELDS:
+            if field not in locked_clean:
                 resolved.pop(field, None)
 
     # A creature form suppresses the human fields it replaces — generalizing the

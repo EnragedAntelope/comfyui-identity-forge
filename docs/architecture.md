@@ -297,6 +297,16 @@ User additions are first-class (0.46.1):
   element must be a real field option; the validator enforces len ≥ 2, no dups. The 0.39 sweep
   widened 150 hair/eye locks to shade-family lists (the original shade leads each list);
   hair_style/location/lighting locks deliberately stay fixed (look/scene-defining).
+- **Bald heads (0.50+).** `hair_length` has a male-only `"bald"` option (comb-over precedent).
+  When it resolves — locked or randomly drawn — the engine drops the *randomized* scalp-hair
+  fields (colour/texture/style/part/highlights/accessory; locked ones survive, locked-wins) and
+  prose voices "his head is bald"; `facial_hair` is untouched. `_build_option_pool` never draws
+  `bald` under an already-locked `hair_style`. Mirrors the Cosplayer `_BALD_SUPPRESS` mechanism.
+- **Contrapositive constraint repair (0.50+).** When an exclusion rule's *target* is locked to an
+  excluded value (a locked "sleek bun" against a randomly drawn "buzzed very short" length), the
+  engine re-rolls the randomized *trigger* away from every conflicting trigger value instead of
+  warning and leaving the incoherent pair. Both-locked contradictions and control-field triggers
+  (gender, scope) still warn-and-keep.
 - **Mood and expression vocabularies are disjoint** (0.36+, test-enforced): they randomize
   independently, so a shared word ("playful") could double in one output. When adding options to
   either field, pick words the other doesn't use (mood is the scene's tone, expression the face).

@@ -255,6 +255,91 @@ class HairScopeTests(unittest.TestCase):
         self.assertEqual(json.loads(js)["_meta"]["hair_color_scope"], "Natural only")
 
 
+class BaldHairLengthTests(unittest.TestCase):
+    """A "bald" hair_length is scalp-only: the other scalp-hair fields are
+    dropped (no "bald wavy auburn hair" contradiction), prose voices the head,
+    and the option lives in the male pool only (comb-over precedent)."""
+
+    _SCALP = ("hair_color", "hair_texture", "hair_style", "hair_part",
+              "hair_highlights", "hair_accessory")
+
+    def test_bald_lock_drops_scalp_fields_keeps_facial_hair_possible(self):
+        for seed in range(20):
+            prose, js = generate_character(seed, "Male", {"hair_length": "bald"})
+            hair = json.loads(js).get("Hair", {})
+            self.assertEqual(hair.get("hair_length"), "bald")
+            for field in self._SCALP:
+                self.assertNotIn(field, hair, f"{field} survived a bald head (seed {seed})")
+            self.assertIn("head is bald", prose)
+            self.assertNotIn("hair is bald", prose)
+
+    def test_bald_is_male_pool_only(self):
+        self.assertIn("bald", FIELD_DEFINITIONS["hair_length"]["male_options"])
+        self.assertNotIn("bald", FIELD_DEFINITIONS["hair_length"]["female_options"])
+        # A random female draw can never produce it.
+        for seed in range(60):
+            _, js = generate_character(seed, "Female", {})
+            self.assertNotEqual(json.loads(js)["Hair"].get("hair_length"), "bald")
+
+    def test_random_male_can_draw_bald_and_it_scrubs(self):
+        drew_bald = False
+        for seed in range(300):
+            _, js = generate_character(seed, "Male", {})
+            hair = json.loads(js).get("Hair", {})
+            if hair.get("hair_length") == "bald":
+                drew_bald = True
+                for field in self._SCALP:
+                    self.assertNotIn(field, hair)
+        self.assertTrue(drew_bald, "no random male drew 'bald' in 300 seeds")
+
+
+class MulletHairStyleTests(unittest.TestCase):
+    """'mullet' is a male-only hair_style gated by hair length (needs back length)."""
+
+    def test_mullet_is_male_pool_only(self):
+        self.assertIn("mullet", FIELD_DEFINITIONS["hair_style"]["male_options"])
+        self.assertNotIn("mullet", FIELD_DEFINITIONS["hair_style"]["female_options"])
+
+    def test_mullet_excluded_for_short_lengths(self):
+        for length in ("buzzed very short", "very short", "short pixie"):
+            for seed in range(40):
+                _, js = generate_character(seed, "Male", {"hair_length": length})
+                self.assertNotEqual(
+                    json.loads(js)["Hair"].get("hair_style"), "mullet",
+                    f"mullet drawn under '{length}' (seed {seed})")
+
+
+class ContrapositiveConstraintTests(unittest.TestCase):
+    """A locked exclusion *target* re-rolls the randomized *trigger* instead of
+    leaving an incoherent pair behind a warning (a locked "sleek bun" must never
+    sit on a randomly drawn buzz cut, and a locked style never on a bald head)."""
+
+    def test_locked_long_style_rerolls_short_random_length(self):
+        # Expected exclusions mirror the forward rules: buns are pixie-friendly,
+        # ponytails/mullets are not; "bald" never coexists with a locked style.
+        cases = {
+            "sleek bun": ("Female", {"buzzed very short", "very short", "bald"}),
+            "high ponytail": ("Female", {"buzzed very short", "very short", "short pixie", "bald"}),
+            "mullet": ("Male", {"buzzed very short", "very short", "short pixie", "bald"}),
+        }
+        for style, (gender, blocked) in cases.items():
+            for seed in range(60):
+                _, js = generate_character(seed, gender, {"hair_style": style})
+                hair = json.loads(js)["Hair"]
+                self.assertEqual(hair.get("hair_style"), style)
+                self.assertNotIn(
+                    hair.get("hair_length"), blocked,
+                    f"'{style}' locked but length drew '{hair.get('hair_length')}' (seed {seed})")
+
+    def test_both_locked_still_warns_and_keeps(self):
+        # A user locking a genuine contradiction keeps both values (lock wins).
+        _, js = generate_character(
+            5, "Female", {"hair_style": "sleek bun", "hair_length": "buzzed very short"})
+        hair = json.loads(js)["Hair"]
+        self.assertEqual(hair.get("hair_style"), "sleek bun")
+        self.assertEqual(hair.get("hair_length"), "buzzed very short")
+
+
 class ConstraintTests(unittest.TestCase):
     def test_requirement_no_makeup_zeroes_subfields(self):
         _, js = generate_character(7, "Female", {"makeup_style": "no makeup"})
