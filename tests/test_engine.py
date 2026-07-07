@@ -1524,6 +1524,23 @@ class CoversBodyTests(unittest.TestCase):
                                        covers_body=True, accessory_density="Maximal")
             self.assertFalse(self._has_jewelry(js), f"seed {seed}")
 
+    def test_covers_body_flag_suppresses_accessories_and_bag(self):
+        # Worn/carried extras (sunglasses, belts, a rattan bag) can't sit on a full
+        # mascot suit / armour shell -- the sunglasses-on-Michelin-Man bug.
+        for seed in range(30):
+            _, js = generate_character(seed, "Male", {"outfit_description": "a plain robe"},
+                                       covers_body=True, accessory_density="Maximal")
+            clothing = json.loads(js).get("Clothing", {})
+            self.assertNotIn("accessories", clothing, f"seed {seed}")
+            self.assertNotIn("bag", clothing, f"seed {seed}")
+
+    def test_locked_accessories_survive_covers_body(self):
+        # An explicit user lock still wins over the shell suppression.
+        _, js = generate_character(2, "Male", {"outfit_description": "a plain robe",
+                                               "accessories": "aviator sunglasses"},
+                                   covers_body=True)
+        self.assertEqual(json.loads(js)["Clothing"]["accessories"], "aviator sunglasses")
+
     def test_ordinary_costume_keeps_jewelry(self):
         # A normal outfit (no hard shell) leaves the jewellery group reachable.
         costume = "a flowing red sundress with strappy sandals"

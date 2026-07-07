@@ -144,6 +144,13 @@ _CONCEALED_FACE_FIELDS: frozenset[str] = frozenset({"earrings", "piercings"})
 #: and the silhouette has a height/build).
 _CONCEALED_BODY_GROUPS: frozenset[str] = frozenset({"Jewelry & Nails"})
 
+#: Individual fields dropped alongside ``_CONCEALED_BODY_GROUPS`` for a full shell:
+#: ``accessories`` and ``bag`` (Clothing group) are worn/carried *on* the person —
+#: sunglasses, a belt, a rattan bag — so a randomized draw would only render on top
+#: of a mascot suit / armour shell (the sunglasses-on-Michelin-Man bug). The rest of
+#: the Clothing group stays (the costume itself lives there via outfit_description).
+_CONCEALED_BODY_FIELDS: frozenset[str] = frozenset({"accessories", "bag"})
+
 #: Field groups suppressed when a cosplayer sets ``covers_hair`` — a hood / cowl /
 #: helmet-liner (or alien head-tails) fully encloses the scalp while the face still
 #: shows, so a randomized "Her hair is ..." line would only contradict the covering.
@@ -1355,7 +1362,8 @@ def generate_character(
     full_shell = covers_body or bool(_FULL_COVER_RE.search(outfit_text))
     if full_shell:
         for field in list(resolved):
-            if (FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_BODY_GROUPS
+            if ((FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_BODY_GROUPS
+                    or field in _CONCEALED_BODY_FIELDS)
                     and field not in locked_clean):
                 resolved.pop(field, None)
 

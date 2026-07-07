@@ -182,7 +182,9 @@ Conventions (keep the data coherent):
   finger details drop.)
 - **Full hard shell (`covers_body`):** a robot / droid / powered-armour / full-plate /
   exoskeleton body has no bare skin for worn jewellery, so the engine drops the whole
-  **Jewelry & Nails** group. It auto-detects from the costume prose (`_FULL_COVER_RE` —
+  **Jewelry & Nails** group, plus the Clothing-group `accessories` and `bag` fields
+  (`_CONCEALED_BODY_FIELDS`) — sunglasses / belts / a carried bag would render on top of a
+  mascot suit or armour shell (the sunglasses-on-Michelin-Man bug, 0.51+). It auto-detects from the costume prose (`_FULL_COVER_RE` —
   `robot`, `droid`, `exoskeleton`, `plate armor`, `armored bodysuit`, …) and also honours an
   explicit `covers_body: True` entry key for cases the prose doesn't spell out (Nebula,
   Man-At-Arms). Independent of `covers_face` (a face mask doesn't imply a covered body, and a
@@ -353,8 +355,9 @@ User additions are first-class (0.46.1):
 - Gloved/gauntleted costumes suppress randomized `nails`/`rings` in the engine (`_GLOVE_RE`);
   a **full hard shell** (robot/droid/powered-armour/full-plate/exoskeleton, detected by
   `_FULL_COVER_RE` or the cosplayer `covers_body` flag) drops the whole **Jewelry & Nails**
-  group so an all-armour cosplayer (RoboCop, Iron Man, Cylon) reports no stray necklace. Both
-  respect explicit user locks. The shell rule also fires on full-plate **archetypes** (Human
+  group plus the `accessories`/`bag` fields (`_CONCEALED_BODY_FIELDS`, 0.51+) so an all-armour
+  or full-suit cosplayer (RoboCop, Iron Man, Michelin Man) reports no stray necklace,
+  sunglasses, or carried bag. Both respect explicit user locks. The shell rule also fires on full-plate **archetypes** (Human
   Knight, Holy Paladin).
 - Adding options to a **flat** field shifts its distribution; prefer the density-gated
   `_EXTRA_ABSENCE` fields (variety changes, frequency doesn't). New feminine-coded values on a

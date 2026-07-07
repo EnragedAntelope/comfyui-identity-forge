@@ -7858,6 +7858,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Disney",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,  # full black-furred mouse suit, no bare skin
         "costume": "red shorts with two white buttons, white gloves, and big yellow "
                    "shoes, on a small round mouse frame",
         "mask": "a black mouse head with two large round ears, a peach face, and cheerful "
@@ -8345,6 +8346,134 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "chubby", "height": "short", "skin_tone": "fair"},
         "prop": "a platter stacked with a double-decker hamburger",
     },
+    "Mr. Peanut": {
+        "franchise": "Planters",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full peanut-shell mascot suit, no bare skin
+        "costume": "a tan peanut-shell mascot body with slender black arms and legs, "
+                   "a black top hat, white gloves, and white spats over black shoes",
+        "mask": "a smooth tan peanut-shell head with a single monocle over one eye "
+                "and a cheerful smile",
+        "physique": {"body_type": "slim", "height": "tall"},
+        "prop": "a black wooden cane",
+    },
+    "Colonel Sanders": {
+        "franchise": "KFC",
+        "gender": "Male",
+        "costume": "a white double-breasted suit over a white shirt with a black "
+                   "western string tie, and black-framed glasses",
+        "signature": {"hair_color": "white", "hair_length": "very short",
+                      "hair_texture": "sleek straight", "facial_hair": "goatee",
+                      "eye_color": "medium brown"},
+        "physique": {"body_type": "stocky", "height": "average height", "skin_tone": "fair"},
+    },
+    "Jolly Green Giant": {
+        "franchise": "Green Giant",
+        "gender": "Male",
+        "costume": "a short toga made of woven green leaves, with an even, smooth "
+                   "coat of rich green body paint covering his face and entire body",
+        "signature": {"hair_color": "emerald green", "hair_length": "very short",
+                      "hair_texture": "wavy", "hair_style": "slicked back"},
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Pillsbury Doughboy": {
+        "franchise": "Pillsbury",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # plump smooth dough mascot suit, no bare skin
+        "costume": "a plump, smooth white dough mascot body with a small white "
+                   "chef's scarf at the neck",
+        "mask": "a rounded smooth white dough head under a white chef's hat, with "
+                "blue dot eyes and a soft bashful giggle of a smile",
+        "physique": {"body_type": "chubby", "height": "short"},
+    },
+    "Mr. Clean": {
+        "franchise": "Mr. Clean",
+        "gender": "Male",
+        "bald": True,
+        "costume": "a crisp fitted white t-shirt and white trousers, with a single "
+                   "gold hoop earring and a clean-shaven bald head",
+        # The gleaming bald head IS the look: no random hat/sunglasses draw on top.
+        "signature": {"eyebrows": "thick and straight", "eye_color": "bright blue",
+                      "accessories": "no accessories"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Cap'n Crunch": {
+        "franchise": "Cap'n Crunch",
+        "gender": "Male",
+        "covers_hair": True,  # large bicorne hat fully covers the scalp; face shows
+        "costume": "a blue Napoleonic naval coat with gold epaulettes and gold "
+                   "buttons over white trousers, a large blue bicorne hat with a "
+                   "gold 'C' emblem, and bushy white eyebrows",
+        "physique": {"body_type": "stocky", "height": "short", "skin_tone": "fair"},
+    },
+    "Tony the Tiger": {
+        "franchise": "Kellogg's",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full tiger mascot suit, no bare skin
+        "costume": "a full orange tiger mascot suit with black stripes and a white "
+                   "belly, with a red bandana-style neckerchief tied at the throat",
+        "mask": "an orange tiger mascot head with black stripes, a white muzzle, "
+                "and a wide confident grin",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Chester Cheetah": {
+        "franchise": "Cheetos",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full cheetah mascot suit, no bare skin
+        "costume": "a full orange spotted cheetah mascot suit with a long slim "
+                   "tail and white high-top sneakers",
+        "mask": "a sleek orange cheetah mascot head wearing dark wraparound "
+                "sunglasses, with a sly toothy grin",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Count Chocula": {
+        "franchise": "General Mills",
+        "gender": "Male",
+        "costume": "a chocolate-brown vampire tailcoat over a lighter brown vest, "
+                   "a high-collared cape lined in tan, and a large round 'C' medallion "
+                   "on a chain",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "dark brown"},
+        "physique": {"body_type": "very slim", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Energizer Bunny": {
+        "franchise": "Energizer",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full plush bunny mascot suit, no bare skin
+        "costume": "a pink plush bunny mascot body with a large battery strapped "
+                   "to its back and blue-and-white sandals",
+        "mask": "a pink plush bunny mascot head with tall upright ears and cool "
+                "blue sunglasses",
+        "physique": {"body_type": "slim", "height": "short"},
+        "prop": "a large blue-and-white bass drum with a mallet",
+    },
+    "Geico Gecko": {
+        "franchise": "Geico",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full gecko mascot suit, no bare skin
+        "costume": "a full bright green gecko mascot suit with a long curved tail "
+                   "and a pale green belly",
+        "mask": "a smooth bright green gecko mascot head with large friendly eyes "
+                "and a wide easygoing smile",
+        "physique": {"body_type": "slim", "height": "short"},
+    },
+    "Duolingo Owl": {
+        "franchise": "Duolingo",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,  # full round owl mascot suit, no bare skin
+        "costume": "a round bright green owl mascot body with darker green wings "
+                   "and orange feet",
+        "mask": "a round bright green owl mascot head with huge white-ringed "
+                "cartoon eyes and a small orange beak",
+        "physique": {"body_type": "chubby", "height": "short"},
+    },
 
     # === More fictional-character gaps (2026 sweep) =======================
     "Shrek": {
@@ -8798,7 +8927,9 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
-        "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy",
+        "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy", "Planters",
+        "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",
+        "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo",
     ),
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
