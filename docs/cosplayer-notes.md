@@ -138,14 +138,16 @@ locking a short cut like `"buzzed very short"` makes the character render *with*
 simply randomize and read as absent. A clean-shaven `facial_hair` lock is fine and
 keeps the male randomizer from adding a beard.
 
-For a **non-natural skin colour** (green, blue, chrome, …), word it as
-`"an even, smooth coat of <colour> body paint"` rather than `"all-over <colour>
-body paint"` — the "even, smooth coat" wording renders as a uniform colour instead
-of the patchy/streaked paint many models produce. Keep the word "paint" (in
-Costume-only mode the person underneath randomizes and their skin tone is spoken,
-so the colour reads as paint *over* that skin, not a contradiction). Textured
-surfaces (scales, fur) use `"an even, all-over coat of …"` and keep their texture
-word; patterns/markings/plating follow as `"… with <pattern>"`.
+For a **non-natural skin colour** (green, blue, chrome, …), word it skin-native:
+`"smooth, flawless <colour> skin"` — never as "body paint" or "dye". Live A/B
+testing (0.52) showed paint/dye wording makes models render a streaky applied
+coat *over* a human skin tone, while describing it as the character's own skin
+renders one uniform colour (the builder suppresses the randomized human skin
+underneath either way). Textured surfaces (scales, craggy rock, pebbled hide)
+use `"uniform, all-over <colour> <material>"` and keep their texture word;
+patterns/markings/plating follow as `"… with <pattern>"`. Fur/feather/flame/ice
+entries may keep the older `"an even, all-over coat of …"` wording — all three
+markers are auto-detected.
 
 Contributions are welcome, too: if you'd rather a character ship in the built-in
 set than live in your own `user_options.json`, open an issue or PR suggesting it.

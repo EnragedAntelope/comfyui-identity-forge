@@ -191,8 +191,13 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("hair_texture", {
         "group": 'Hair',
-        "female_options": ['pin straight', 'sleek straight', 'slightly wavy', 'loosely wavy', 'wavy', 'beachy waves', 'loosely curled', 'softly curled', 'curly', 'tightly curled', 'coily', 'kinky coily', 'fine and wispy', 'thick and voluminous'],
-        "male_options": ['pin straight', 'sleek straight', 'slightly wavy', 'loosely wavy', 'wavy', 'beachy waves', 'loosely curled', 'softly curled', 'curly', 'tightly curled', 'coily', 'kinky coily', 'fine and wispy', 'thick and voluminous'],
+        # 'silky and glossy' is the luxurious salon-shine look (silken straight
+        # hair catching the light); 'sleek straight' stays the plainer
+        # styled-straight without the lustre cue. Adjectival like 'fine and
+        # wispy' so it reads clean in the inline "{length} {texture} {color}"
+        # hair sentence.
+        "female_options": ['pin straight', 'sleek straight', 'silky and glossy', 'slightly wavy', 'loosely wavy', 'wavy', 'beachy waves', 'loosely curled', 'softly curled', 'curly', 'tightly curled', 'coily', 'kinky coily', 'fine and wispy', 'thick and voluminous'],
+        "male_options": ['pin straight', 'sleek straight', 'silky and glossy', 'slightly wavy', 'loosely wavy', 'wavy', 'beachy waves', 'loosely curled', 'softly curled', 'curly', 'tightly curled', 'coily', 'kinky coily', 'fine and wispy', 'thick and voluminous'],
         "optional": False
     }),
     ("hair_style", {

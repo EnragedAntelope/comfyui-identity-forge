@@ -1327,21 +1327,27 @@ class SetAllFieldsTests(unittest.TestCase):
 
 
 class BodyPaintPhrasingTests(unittest.TestCase):
-    """Non-natural skin reads as a single even coat, not patchy 'all-over' paint."""
+    """Full-body colour is skin-native (0.52 A/B verdict): "smooth, flawless <colour>
+    skin" / "uniform, all-over <colour> <material>". "body paint"/"dye" wording made
+    t2i models render a streaky coat OVER a human tone, so it was swept out."""
 
-    def test_she_hulk_uses_even_coat(self):
+    def test_she_hulk_uses_skin_native_phrasing(self):
         costume = COSPLAYERS["She-Hulk"]["costume"]
-        self.assertIn("an even, smooth coat of rich green body paint", costume)
-        self.assertNotIn("all-over", costume)
+        self.assertIn("smooth, flawless rich green skin", costume)
+        self.assertNotIn("paint", costume)
 
-    def test_body_paint_entries_avoid_bare_all_over(self):
-        # "all-over" may survive only inside the textured "an even, all-over coat"
-        # wording (scales/fur); a bare "all-over <colour> body paint" is the old,
-        # patchy phrasing and must be gone.
+    def test_no_full_body_paint_wording_remains(self):
+        # "body paint" renders as a streaky applied layer; full-body colour must be
+        # phrased as the character's own skin. Partial face/war paint is fine.
         for name, entry in COSPLAYERS.items():
-            costume = entry["costume"]
-            if "body paint" in costume and "all-over" in costume:
-                self.assertIn("an even, all-over coat", costume, name)
+            self.assertNotIn("body paint", entry["costume"], name)
+
+    def test_skin_native_markers_are_detected_as_body_paint(self):
+        # Both new canonical markers must trigger the builder's skin suppression.
+        from nodes.identity_forge_cosplayer import _BODY_PAINT_RE
+        self.assertTrue(_BODY_PAINT_RE.search("smooth, flawless rich green skin"))
+        self.assertTrue(_BODY_PAINT_RE.search("uniform, all-over craggy orange rock-like skin"))
+        self.assertTrue(_BODY_PAINT_RE.search("an even, all-over coat of blue fur"))
 
 
 class ModifierTests(unittest.TestCase):
@@ -1753,13 +1759,13 @@ class SkinColorAnchorTests(unittest.TestCase):
         self.assertIn("icy pale-blue skin", prose)
 
     def test_prose_does_not_double_skin_noun(self):
-        # Mystique's anchor already ends in "scaled-skin": the guard must not append
-        # another " skin".
+        # Mystique's anchor is "dark blue scaled": the demographics guard appends
+        # exactly one " skin", never two.
         locked, label, cf, ch = _node_locked(build_cosplayer_json("Mystique", 0, "Costume only"))
         prose, _ = generate_character(0, "Female", locked, cosplay_label=label,
                                       covers_face=cf, covers_hair=ch)
-        self.assertIn("scaled-skin", prose)
-        self.assertNotIn("scaled-skin skin", prose)
+        self.assertIn("dark blue scaled skin", prose)
+        self.assertNotIn("skin skin", prose)
 
     def test_survives_set_all_none(self):
         # The anchor is a wired value, so the "set all to none" reset keeps it.

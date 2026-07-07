@@ -96,14 +96,22 @@ _SCOPE_ANY = "Any"
 
 #: A face-visible character whose colour covers the whole body (and therefore the
 #: face) — She-Hulk's green, Mystique's blue, a Nightsister's chalk-white — is
-#: written with the canonical "an even … coat of <colour> …" phrasing (see the
-#: cosplayer conventions in docs/architecture.md). When that paint/skin/fur coat
-#: is present the engine must NOT also randomize a human skin tone, complexion,
-#: skin marks, or skin-toned makeup underneath: those describe a natural-coloured
-#: face that t2i models then render *under* the paint, leaving the face pale while
-#: the body is coloured. This regex detects the marker so the contradicting fields
-#: can be locked absent (the costume's own colour becomes the only skin descriptor).
-_BODY_PAINT_RE = re.compile(r"\ban even\b.*?\bcoat of\b", re.IGNORECASE)
+#: written with a canonical skin-native phrasing: "smooth, flawless <colour> skin"
+#: for even colour, or "uniform, all-over <colour> <material>" when the surface is
+#: textured (scaled/craggy/pebbled…). Live A/B testing (0.52) showed skin-native
+#: wording renders a uniform colour, while "body paint"/"dye" wording made models
+#: layer a streaky coat OVER a human tone — so the paint word was swept out. The
+#: older "an even … coat of <colour> …" anchor is still recognised (fur/feather/
+#: flame entries and user_options presets may use it). When any marker is present
+#: the engine must NOT also randomize a human skin tone, complexion, skin marks, or
+#: skin-toned makeup underneath: those describe a natural-coloured face that t2i
+#: models then render *under* the colour, leaving the face pale while the body is
+#: coloured. This regex detects the marker so the contradicting fields can be
+#: locked absent (the costume's own colour becomes the only skin descriptor).
+_BODY_PAINT_RE = re.compile(
+    r"\ban even\b.*?\bcoat of\b|\bsmooth, flawless\b|\buniform, all-over\b",
+    re.IGNORECASE,
+)
 
 #: Skin / makeup fields force-locked absent for body-paint characters, each mapped
 #: to the absent token the engine expects. ``makeup_style`` is locked to "no makeup"
@@ -147,9 +155,11 @@ def _is_body_paint(entry: dict, costume: str) -> bool:
 #: clause is the only mention, so t2i routinely defaults the high-attention *face* to
 #: a human tone (the Poison Ivy white-face / TMNT pale-face bug). Re-injecting the
 #: colour ("...and vivid green skin") anchors face + body. Captures the words between
-#: "coat of" and the material noun: "an even, smooth coat of <vivid green> body paint".
+#: the canonical marker and the material noun: "smooth, flawless <rich green> skin",
+#: "uniform, all-over <dark blue scaled> skin", or the legacy
+#: "an even, smooth coat of <vivid green> body paint".
 _BODY_PAINT_COLOR_RE = re.compile(
-    r"\bcoat of\s+(.+?)\s+"
+    r"\b(?:coat of|smooth, flawless|uniform, all-over)\s+(.+?)\s+"
     r"(?:body\s+paint|skin|fur|scales?|hide|carapace|exoskeleton|plating|paint|coat)\b",
     re.IGNORECASE,
 )

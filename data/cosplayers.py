@@ -50,13 +50,14 @@ Curation rules (so the data stays coherent with the engine):
   orange skin, montrals, antennae, wings, scales) live in ``costume`` as worn
   cosplay elements, and ``skin_tone`` is left out so the person underneath
   randomizes.
-* **Body paint reads as a single even coat.** A solid non-natural skin colour is
-  worded ``"an even, smooth coat of <colour> body paint"`` (drop "all-over") so
-  text-to-image models render it uniform instead of patchy/streaked. Keep "paint"
-  (it layers over the randomized skin without contradicting the spoken skin tone).
-  Where the surface has an intrinsic texture/pattern, anchor on the same even coat
-  and append it: scales/fur use ``"an even, all-over coat of …"`` and keep
-  "scaled-skin" / "fur"; markings, tattoos and plating follow as ``"… with <pattern>"``.
+* **Non-natural skin colour is skin-native (0.52 A/B verdict).** A solid colour is
+  worded ``"smooth, flawless <colour> skin"`` — never "body paint"/"dye", which
+  live testing showed t2i models render as a streaky coat OVER a human tone.
+  Textured surfaces (scaled/craggy/pebbled/rubbery…) use
+  ``"uniform, all-over <colour> <material>"`` and keep the texture word;
+  markings, tattoos and plating follow as ``"… with <pattern>"``. Fur / feathers /
+  flame / ice / hard plating keep the legacy ``"an even, all-over coat of …"``
+  wording. All three markers auto-trigger the builder's skin suppression.
 * **Full masks/helmets** (Spider-Man, a Mandalorian helmet, a ninja hood) set
   ``"covers_face": True`` so IdentityForge drops the randomized face, hair and
   makeup that would otherwise be described fighting the mask. Omit it whenever
@@ -349,9 +350,9 @@ COSPLAYERS: dict[str, dict] = {
     "Widowmaker": {
         "franchise": "Overwatch",
         "gender": "Female",
-        "costume": "a form-fitting dark purple bodysuit with technological enhancements, "
-                   "a high collar, integrated armor, a visor, stealth boots, and "
-                   "an even, smooth coat of blue-violet body paint",
+        "costume": "a form-fitting dark purple bodysuit with technological enhancements, a high "
+                   "collar, integrated armor, a visor, stealth boots, and smooth, flawless "
+                   "blue-violet skin",
         "eyes": "glowing yellow",
         "signature": {"hair_color": "raven black", "hair_length": "long",
                       "hair_style": "low ponytail"},
@@ -394,9 +395,9 @@ COSPLAYERS: dict[str, dict] = {
     "Ahsoka Tano": {
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "an even coat of orange body paint with white Togruta facial markings, a blue-and-"
-                   "white striped montral-and-lekku headpiece, a practical grey-and-blue "
-                   "tunic with leggings, and armored pieces",
+        "costume": "a practical grey-and-blue tunic with leggings and armored pieces, a "
+                   "blue-and-white striped montral-and-lekku headpiece, and smooth, flawless "
+                   "orange skin with white Togruta facial markings",
         "signature": {},
         "physique": {"body_type": "athletic", "height": "average height"},
         "prop": "a pair of ignited lightsabers, a long white energy blade in one "
@@ -671,8 +672,8 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "bald": True,
         "covers_face": True,
-        "costume": "only torn cargo shorts, with an even, all-over coat of grey-and-white "
-                   "shark skin and a dorsal fin down the back, on a huge muscular frame",
+        "costume": "only torn cargo shorts, with uniform, all-over grey-and-white shark skin and "
+                   "a dorsal fin down the back, on a huge muscular frame",
         "mask": "a massive great-white shark head with rows of jagged teeth and small "
                 "solid black eyes",
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -701,8 +702,8 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "bald": True,
         "covers_face": True,
-        "costume": "a minimal warrior harness with gold trim, over an even, all-over "
-                   "coat of pink-red alien skin, on a towering muscular frame",
+        "costume": "a minimal warrior harness with gold trim, over smooth, flawless pink-red "
+                   "alien skin, on a towering muscular frame",
         "mask": "a pink-red alien face with a large third eye set in the forehead, a "
                 "tall white finned crest over the head, and glowing red eyes",
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -729,9 +730,9 @@ COSPLAYERS: dict[str, dict] = {
     "Poison Ivy": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a form-fitting bodysuit of overlapping leaves and vines, an even, smooth coat "
-                   "of vivid green body paint covering her skin from head to toe including the "
-                   "face, with bold red lips and tiny leaves entwined in the hair",
+        "costume": "a form-fitting bodysuit of overlapping leaves and vines, smooth, flawless "
+                   "vivid green skin from head to toe including the face, with bold red lips "
+                   "and tiny leaves entwined in the hair",
         "signature": {"hair_color": "bright red", "hair_length": "waist length",
                       "hair_style": "worn down", "eye_color": "green"},
         "physique": {"body_type": "voluptuous", "height": "tall"},
@@ -768,8 +769,8 @@ COSPLAYERS: dict[str, dict] = {
     "Starfire": {
         "franchise": "DC (Teen Titans)",
         "gender": "Female",
-        "costume": "a purple crop top, a purple miniskirt, purple thigh-high boots, "
-                   "silver arm guards, and an even, smooth coat of warm golden-orange body paint",
+        "costume": "a purple crop top, a purple miniskirt, purple thigh-high boots, silver arm "
+                   "guards, and smooth, flawless warm golden-orange skin",
         "eyes": "solid glowing green",
         "signature": {"hair_color": "bright red", "hair_length": "hip length",
                       "hair_style": "worn down"},
@@ -808,8 +809,8 @@ COSPLAYERS: dict[str, dict] = {
     "Mystique": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "an even, all-over coat of dark blue scaled-skin body paint with natural "
-                   "scale coverage",
+        "costume": "nothing but uniform, all-over dark blue scaled skin with natural scale "
+                   "coverage",
         "eyes": "solid yellow",
         "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
                       "hair_style": "slicked back"},
@@ -1047,8 +1048,8 @@ COSPLAYERS: dict[str, dict] = {
     "She-Hulk": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a purple-and-white athletic leotard, with an even, smooth coat of rich green body "
-                   "paint covering her face and entire body",
+        "costume": "a purple-and-white athletic leotard, with smooth, flawless rich green skin "
+                   "covering her face and entire body",
         "signature": {"hair_color": "emerald green", "hair_length": "slightly past shoulders",
                       "hair_texture": "loosely wavy", "eye_color": "emerald"},
         "physique": {"body_type": "athletic", "height": "very tall"},
@@ -1104,8 +1105,8 @@ COSPLAYERS: dict[str, dict] = {
     "Gamora": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "tactical dark leather armor in black and deep teal with a long coat, "
-                   "fitted pants, boots, an even, smooth coat of green body paint, and magenta hair tips",
+        "costume": "tactical dark leather armor in black and deep teal with a long coat, fitted "
+                   "pants, boots, smooth, flawless green skin, and magenta hair tips",
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height"},
@@ -1115,9 +1116,9 @@ COSPLAYERS: dict[str, dict] = {
         "covers_body": True,  # fully armoured cybernetic combat suit, no bare skin
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a fitted dark combat suit with armored segments, boots, gauntlets, "
-                   "an even, smooth coat of blue metallic body paint with intricate plating, and purple "
-                   "biomechanical lines over a shaved head",
+        "costume": "a fitted dark combat suit with armored segments, boots, gauntlets, smooth, "
+                   "flawless blue metallic skin with intricate plating, and purple biomechanical "
+                   "lines over a shaved head",
         "signature": {},
         "physique": {"body_type": "lean", "height": "average height"},
     },
@@ -1222,8 +1223,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "a practical brown and orange flight suit with a utility belt, brown "
-                   "boots, an even, smooth coat of green Twi'lek body paint, and two long head-tails (lekku)",
+        "costume": "a practical brown and orange flight suit with a utility belt, brown boots, "
+                   "smooth, flawless green Twi'lek skin, and two long head-tails (lekku)",
         "signature": {"eye_color": "green"},
         "physique": {"body_type": "slender", "height": "average height"},
     },
@@ -1270,8 +1271,8 @@ COSPLAYERS: dict[str, dict] = {
     "Ursula": {
         "franchise": "The Little Mermaid",
         "gender": "Female",
-        "costume": "a black strapless dress, golden shell earrings, a nautilus necklace, "
-                   "a white bouffant wig, an even, smooth coat of purple-gray body paint, and eight large purple "
+        "costume": "a black strapless dress, golden shell earrings, a nautilus necklace, a white "
+                   "bouffant wig, smooth, flawless purple-gray skin, and eight large purple "
                    "octopus tentacles",
         "signature": {},
         "physique": {"body_type": "voluptuous", "height": "statuesque"},
@@ -1289,8 +1290,8 @@ COSPLAYERS: dict[str, dict] = {
     "Marceline the Vampire Queen": {
         "franchise": "Adventure Time",
         "gender": "Female",
-        "costume": "a grey tank top, ripped jeans, sturdy boots, and an even, smooth coat of pale greyish-blue "
-                   "body paint with two small neck bite marks",
+        "costume": "a grey tank top, ripped jeans, sturdy boots, and smooth, flawless pale "
+                   "greyish-blue skin with two small neck bite marks",
         "signature": {"hair_color": "jet black", "hair_length": "hip length",
                       "hair_style": "worn down"},
         "physique": {"body_type": "slim", "height": "tall"},
@@ -1486,8 +1487,8 @@ COSPLAYERS: dict[str, dict] = {
     "Cheetah": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "an even, all-over coat of golden spotted cheetah-fur body paint, pointed "
-                   "ears, sharp fangs, and a spotted bikini-style outfit",
+        "costume": "a spotted bikini-style outfit, with smooth, flawless golden spotted cheetah "
+                   "fur, pointed ears, and sharp fangs",
         "eyes": "green with vertical cat-slit pupils",
         "signature": {"hair_color": "warm brown", "hair_length": "long",
                       "hair_style": "worn down"},
@@ -1517,8 +1518,8 @@ COSPLAYERS: dict[str, dict] = {
     "Smurfette": {
         "franchise": "The Smurfs",
         "gender": "Female",
-        "costume": "a white dress and white high-heeled shoes, with an even, smooth coat of light blue "
-                   "Smurf skin body paint",
+        "costume": "a white dress and white high-heeled shoes, with smooth, flawless light blue "
+                   "Smurf skin",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "petite and slim", "height": "very petite"},
@@ -1527,9 +1528,9 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Mass Effect",
         "gender": "Female",
-        "costume": "a white and blue sleeveless top with a high collar, dark fitted "
-                   "pants, and practical boots, with an even coat of light blue Asari skin body "
-                   "paint and a smooth cartilage head crest",
+        "costume": "a white and blue sleeveless top with a high collar, dark fitted pants, and "
+                   "practical boots, with smooth, flawless light blue Asari skin and a smooth "
+                   "cartilage head crest",
         "signature": {"eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height"},
     },
@@ -1598,7 +1599,7 @@ COSPLAYERS: dict[str, dict] = {
     "Hulk": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "only torn purple trousers, with an even, smooth coat of rich green body paint over "
+        "costume": "only torn purple trousers, with smooth, flawless rich green skin over "
                    "enormous muscles",
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "eye_color": "green"},
@@ -1666,8 +1667,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "gold and blue armored battle plate, blue greaves, and the golden "
-                   "Infinity Gauntlet, with an even coat of deeply ridged purple body paint",
+        "costume": "gold and blue armored battle plate, blue greaves, and the golden Infinity "
+                   "Gauntlet, with uniform, all-over deeply ridged purple skin",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Venom": {
@@ -1728,8 +1729,8 @@ COSPLAYERS: dict[str, dict] = {
     "Nightcrawler": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a red and black bodysuit, with an even, velvety coat of indigo-blue body "
-                   "paint, pointed ears, and a long spaded tail",
+        "costume": "a red and black bodysuit, with smooth, flawless indigo-blue skin, pointed "
+                   "ears, and a long spaded tail",
         "signature": {"hair_color": "jet black", "hair_length": "very short"},
         "physique": {"body_type": "lean", "height": "average height"},
     },
@@ -1737,8 +1738,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a seamless mirror-chrome silver bodysuit with an even, smooth coat of reflective "
-                   "silver body paint",
+        "costume": "a seamless mirror-chrome silver bodysuit with smooth, flawless reflective "
+                   "silver skin",
         "mask": "a featureless chrome head with blank silver eyes",
         "physique": {"body_type": "lean", "height": "tall"},
         "prop": "a sleek mirror-chrome cosmic surfboard, held upright at his side",
@@ -1920,9 +1921,9 @@ COSPLAYERS: dict[str, dict] = {
     "Joker": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a purple tailcoat suit with a green vest and a yellow shirt, an even, smooth coat of "
-                   "chalk-white skin body paint, a wide carved red grin, and slicked-back "
-                   "bright green hair",
+        "costume": "a purple tailcoat suit with a green vest and a yellow shirt, smooth, "
+                   "flawless chalk-white skin, a wide carved red grin, and slicked-back bright "
+                   "green hair",
         "signature": {"hair_color": "emerald green", "hair_length": "jaw length",
                       "hair_style": "slicked back"},
         "physique": {"body_type": "lean", "height": "tall"},
@@ -1957,8 +1958,8 @@ COSPLAYERS: dict[str, dict] = {
     "Martian Manhunter": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a blue cape held by crossed straps over a bare chest, blue trunks, and "
-                   "blue boots, with an even, smooth coat of green body paint and a bald green head",
+        "costume": "a blue cape held by crossed straps over a bare chest, blue trunks, and blue "
+                   "boots, with smooth, flawless green skin and a bald green head",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
 
@@ -2067,9 +2068,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "black hooded robes, with an even coat of blood-red body paint patterned with "
-                   "intricate black tattoos and a crown of short black horns ringing the "
-                   "head",
+        "costume": "black hooded robes, with smooth, flawless blood-red skin patterned with "
+                   "intricate black tattoos and a crown of short black horns ringing the head",
         "physique": {"body_type": "lean", "height": "average height"},
         "prop": "an ignited double-bladed lightsaber, a long silver staff hilt "
                 "with a red energy blade burning at each end",
@@ -2254,8 +2254,8 @@ COSPLAYERS: dict[str, dict] = {
     "Blanka": {
         "franchise": "Street Fighter",
         "gender": "Male",
-        "costume": "torn brown shorts and ankle manacles, with an even, smooth coat of bright green skin "
-                   "body paint, wild orange hair and mane, and sharp teeth",
+        "costume": "torn brown shorts and ankle manacles, with smooth, flawless bright green "
+                   "skin, wild orange hair and mane, and sharp teeth",
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Dhalsim": {
@@ -2350,7 +2350,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Mortal Kombat",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a green and black ninja uniform with an even coat of green scaled skin body paint and "
+        "costume": "green and black ninja garb with uniform, all-over green scaled skin and "
                    "clawed hands",
         "mask": "a green and black ninja mask",
         "physique": {"body_type": "lean", "height": "average height"},
@@ -2612,8 +2612,8 @@ COSPLAYERS: dict[str, dict] = {
     "Kratos": {
         "franchise": "God of War",
         "gender": "Male",
-        "costume": "a leather harness and bracers over a bare chest, with an even, smooth coat of ash-grey pale "
-                   "skin body paint and a bold red tattoo across the torso and one eye",
+        "costume": "a leather harness and bracers over a bare chest, with smooth, flawless "
+                   "ash-grey pale skin and a bold red tattoo across the torso and one eye",
         "signature": {"hair_length": "buzzed very short", "facial_hair": "full beard",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "very tall"},
@@ -2643,8 +2643,8 @@ COSPLAYERS: dict[str, dict] = {
     "Doctor Manhattan": {
         "franchise": "Watchmen",
         "gender": "Male",
-        "costume": "a hydrogen-atom symbol glowing on the forehead, with an even, smooth coat of glowing "
-                   "blue body paint, a clean-shaven bald head, and blank white eyes",
+        "costume": "a hydrogen-atom symbol glowing on the forehead, with smooth, flawless "
+                   "glowing blue skin, a clean-shaven bald head, and blank white eyes",
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "Rorschach": {
@@ -3011,8 +3011,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Dragon Ball",
         "gender": "Male",
-        "costume": "a smooth white-and-purple bio-armor carapace over an even, smooth "
-                   "coat of white body paint with purple plated sections, and a long tail",
+        "costume": "a smooth white-and-purple bio-armor carapace over smooth, flawless white "
+                   "skin with purple plated sections, and a long tail",
         "eyes": "crimson",
         "signature": {},
         "physique": {"body_type": "slim", "height": "short"},
@@ -3823,8 +3823,8 @@ COSPLAYERS: dict[str, dict] = {
     "Midna": {
         "franchise": "The Legend of Zelda",
         "gender": "Female",
-        "costume": "an even, all-over coat of black-and-teal Twili skin with glowing "
-                   "turquoise patterns, and an ornate stone helmet-crown",
+        "costume": "an ornate stone helmet-crown, with uniform, all-over black-and-teal Twili "
+                   "skin and glowing turquoise patterns",
         "signature": {"hair_color": "orange", "hair_length": "long"},
         "physique": {"body_type": "slim", "height": "petite"},
     },
@@ -3919,8 +3919,8 @@ COSPLAYERS: dict[str, dict] = {
     "Hades": {
         "franchise": "Disney",
         "gender": "Male",
-        "costume": "a charcoal-grey toga over an even, smooth coat of blue-grey skin, "
-                   "with a crown of blue flame for hair",
+        "costume": "a charcoal-grey toga over smooth, flawless blue-grey skin, with a crown of "
+                   "blue flame for hair",
         "signature": {"eye_color": "amber"},
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -3985,8 +3985,8 @@ COSPLAYERS: dict[str, dict] = {
     "The Thing": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "blue trunks, and an even, all-over coat of craggy orange rock-like "
-                   "skin with a heavy brow and a bald rocky head",
+        "costume": "blue trunks, and uniform, all-over craggy orange rock-like skin with a heavy "
+                   "brow and a bald rocky head",
         "signature": {"eye_color": "bright blue"},
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4054,9 +4054,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "bald": True,
-        "costume": "torn dark trousers, with an even, all-over coat of green-grey scaly "
-                   "reptilian skin, ridged bony plates over the brow and spine, pointed "
-                   "finned ears, and a gaunt monstrous face, on a towering muscular frame",
+        "costume": "torn dark trousers, with uniform, all-over green-grey scaly reptilian skin, "
+                   "ridged bony plates over the brow and spine, pointed finned ears, and a gaunt "
+                   "monstrous face, on a towering muscular frame",
         "eyes": "pale green",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4099,8 +4099,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "heavy blue-and-grey techno-organic armor with cabling, over an even, "
-                   "all-over coat of blue-grey skin, on a towering frame",
+        "costume": "heavy blue-and-grey techno-organic armor with cabling, over smooth, flawless "
+                   "blue-grey skin, on a towering frame",
         "signature": {"eye_color": "bright blue"},
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4115,11 +4115,11 @@ COSPLAYERS: dict[str, dict] = {
     "Titania": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a purple-and-white sleeveless high-cut costume with white gloves and "
-                   "boots, over an even, smooth coat of orange-toned skin, with a strong jaw "
-                   "and bold features on a powerfully muscular frame - towering and gigantic, "
-                   "vastly larger than everything around her, dwarfing the entire scene with "
-                   "an overwhelming sense of scale",
+        "costume": "a purple-and-white sleeveless high-cut costume with white gloves and boots, "
+                   "over smooth, flawless orange-toned skin, with a strong jaw and bold features "
+                   "on a powerfully muscular frame - towering and gigantic, vastly larger than "
+                   "everything around her, dwarfing the entire scene with an overwhelming sense "
+                   "of scale",
         "eyes": "green",
         "signature": {"hair_color": "deep red", "hair_length": "very long",
                       "hair_texture": "wavy"},
@@ -4178,9 +4178,9 @@ COSPLAYERS: dict[str, dict] = {
     "Sinestro": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a black-and-yellow Sinestro Corps uniform with a yellow lantern "
-                   "emblem and a glowing yellow power ring worn on the finger, over an "
-                   "even, smooth coat of red skin, with a thin black mustache",
+        "costume": "a black-and-yellow Sinestro Corps uniform with a yellow lantern emblem and a "
+                   "glowing yellow power ring worn on the finger, over smooth, flawless red "
+                   "skin, with a thin black mustache",
         "signature": {"facial_hair": "mustache", "eye_color": "amber"},
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -4188,10 +4188,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "a black-and-green Green Lantern uniform with a circular lantern "
-                   "emblem and a glowing green power ring worn on the finger, over an "
-                   "even, all-over coat of pink-grey ridged Bolovaxian skin, with a heavy "
-                   "tusked underbite and small pointed ears, on a massive muscular frame",
+        "costume": "a black-and-green Green Lantern uniform with a circular lantern emblem and a "
+                   "glowing green power ring worn on the finger, over an even, all-over coat of "
+                   "pink-grey ridged Bolovaxian skin, with a heavy tusked underbite and small "
+                   "pointed ears, on a massive muscular frame",
         "eyes": "solid pink",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4199,10 +4199,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "a black-and-green Green Lantern uniform with a circular lantern "
-                   "emblem and a glowing green power ring worn on the finger, over an "
-                   "even, all-over coat of orange Xudarian skin, with a tall red fin-like "
-                   "crest running over the head and a small beaked mouth",
+        "costume": "a black-and-green Green Lantern uniform with a circular lantern emblem and a "
+                   "glowing green power ring worn on the finger, over smooth, flawless orange "
+                   "Xudarian skin, with a tall red fin-like crest running over the head and a "
+                   "small beaked mouth",
         "eyes": "large solid black",
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -4210,10 +4210,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "a black-and-green Green Lantern uniform on a gaunt four-armed frame, "
-                   "with a circular lantern emblem and a glowing green power ring worn on "
-                   "the finger, over an even, all-over coat of orange-brown alien skin, "
-                   "with a long elongated head and a thin slit mouth",
+        "costume": "a black-and-green Green Lantern uniform on a gaunt four-armed frame, with a "
+                   "circular lantern emblem and a glowing green power ring worn on the finger, "
+                   "over smooth, flawless orange-brown alien skin, with a long elongated head "
+                   "and a thin slit mouth",
         "eyes": "narrow yellow",
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -4232,9 +4232,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "a red-and-black Red Lantern uniform with a clawed red lantern emblem "
-                   "and a glowing red power ring worn on the finger, over an even, all-over "
-                   "coat of deep-red skin with bony ridges, on a towering muscular frame",
+        "costume": "a red-and-black Red Lantern uniform with a clawed red lantern emblem and a "
+                   "glowing red power ring worn on the finger, over smooth, flawless deep-red "
+                   "skin with bony ridges, on a towering muscular frame",
         "eyes": "burning red",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4242,17 +4242,17 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "tattered orange Agent Orange robes with a glowing orange power ring "
-                   "worn on the finger, over an even, all-over coat of leathery orange "
-                   "skin, with a gaunt hunched frame, pointed ears, and a wide jagged grin",
+        "costume": "tattered orange Agent Orange robes with a glowing orange power ring worn on "
+                   "the finger, over uniform, all-over leathery orange skin, with a gaunt "
+                   "hunched frame, pointed ears, and a wide jagged grin",
         "eyes": "glowing orange",
         "physique": {"body_type": "lean", "height": "average height"},
     },
     "Brainiac": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a pink Coluan harness over an even, smooth coat of green metallic "
-                   "skin, with a clean-shaven bald head studded with control nodes",
+        "costume": "a pink Coluan harness over smooth, flawless green metallic skin, with a "
+                   "clean-shaven bald head studded with control nodes",
         "signature": {"facial_hair": "clean shaven", "eye_color": "bright green"},
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -4275,8 +4275,8 @@ COSPLAYERS: dict[str, dict] = {
     "Lobo": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "black biker leathers with chains and spikes over an even, smooth "
-                   "coat of chalk-white skin, on a massive muscular frame",
+        "costume": "black biker leathers with chains and spikes over smooth, flawless "
+                   "chalk-white skin, on a massive muscular frame",
         "eyes": "red on black sclera",
         "signature": {"hair_color": "jet black", "hair_length": "long"},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -4418,9 +4418,8 @@ COSPLAYERS: dict[str, dict] = {
     "Hellboy": {
         "franchise": "Hellboy",
         "gender": "Male",
-        "costume": "a brown trench coat over a belt of pouches, an even, smooth coat of "
-                   "brick-red skin, two filed-down horn stumps on the forehead, and a "
-                   "massive stone right hand",
+        "costume": "a brown trench coat over a belt of pouches, smooth, flawless brick-red skin, "
+                   "two filed-down horn stumps on the forehead, and a massive stone right hand",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "amber"},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -4491,8 +4490,8 @@ COSPLAYERS: dict[str, dict] = {
     "Lae'zel": {
         "franchise": "Baldur's Gate 3",
         "gender": "Female",
-        "costume": "spiked Githyanki plate armor over an even, all-over coat of pale "
-                   "green mottled skin, with tightly drawn-back hair",
+        "costume": "spiked Githyanki plate armor over uniform, all-over pale green mottled skin, "
+                   "with tightly drawn-back hair",
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "hair_style": "top knot"},
         "physique": {"body_type": "athletic", "height": "tall"},
@@ -4689,8 +4688,8 @@ COSPLAYERS: dict[str, dict] = {
     "Lord Voldemort": {
         "franchise": "Harry Potter",
         "gender": "Male",
-        "costume": "long flowing black robes over an even, smooth coat of chalk-white "
-                   "skin, with a clean-shaven bald head and flat snake-like slits for a nose",
+        "costume": "long flowing black robes over smooth, flawless chalk-white skin, with a "
+                   "clean-shaven bald head and flat snake-like slits for a nose",
         "eyes": "crimson with vertical slit pupils",
         "signature": {"facial_hair": "clean shaven"},
         "physique": {"body_type": "lean", "height": "tall"},
@@ -4755,9 +4754,9 @@ COSPLAYERS: dict[str, dict] = {
     "Cad Bane": {
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "a long duster coat and a wide-brimmed hat over an even, smooth coat "
-                   "of blue skin, with a clean-shaven bald blue head, breathing tubes "
-                   "running to the cheeks, and twin blaster holsters",
+        "costume": "a long duster coat and a wide-brimmed hat over smooth, flawless blue skin, "
+                   "with a clean-shaven bald blue head, breathing tubes running to the cheeks, "
+                   "and twin blaster holsters",
         "eyes": "glowing red",
         "signature": {"facial_hair": "clean shaven"},
         "physique": {"body_type": "lean", "height": "tall"},
@@ -4765,8 +4764,8 @@ COSPLAYERS: dict[str, dict] = {
     "Grand Admiral Thrawn": {
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "a crisp white Imperial Grand Admiral's uniform over an even, smooth "
-                   "coat of blue skin",
+        "costume": "a crisp white Imperial Grand Admiral's uniform over smooth, flawless blue "
+                   "skin",
         "eyes": "glowing red",
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "hair_style": "slicked back"},
@@ -4836,8 +4835,8 @@ COSPLAYERS: dict[str, dict] = {
     "Colossus": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "red-and-yellow trunks over an even, smooth coat of polished chrome "
-                   "steel skin on a huge muscular frame",
+        "costume": "red-and-yellow trunks over smooth, flawless polished chrome steel skin on a "
+                   "huge muscular frame",
         "eyes": "steel-grey",
         "signature": {"hair_color": "jet black", "hair_length": "very short"},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -4885,8 +4884,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a yellow cape and green-and-gold accents over an even, smooth coat of "
-                   "deep red android skin, with a glowing yellow gem set in the forehead",
+        "costume": "a yellow cape and green-and-gold accents over smooth, flawless deep red "
+                   "android skin, with a glowing yellow gem set in the forehead",
         "eyes": "glowing white",
         "signature": {},
         "physique": {"body_type": "athletic", "height": "tall"},
@@ -4930,8 +4929,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "grey trousers over a bare muscular torso, with an even, all-over coat "
-                   "of grey skin covered in raised dark-red ritual tattoo scars",
+        "costume": "grey trousers over a bare muscular torso, with smooth, flawless grey skin "
+                   "covered in raised dark-red ritual tattoo scars",
         "signature": {"facial_hair": "clean shaven"},
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -4950,8 +4949,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "an even, all-over coat of brown wooden bark skin with mossy patches "
-                   "and faint glowing seams, on a towering tree-like frame with branching limbs",
+        "costume": "nothing but uniform, all-over brown wooden bark skin with mossy patches and "
+                   "faint glowing seams, on a towering tree-like frame with branching limbs",
         "eyes": "glowing amber",
         "signature": {},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -4959,8 +4958,8 @@ COSPLAYERS: dict[str, dict] = {
     "Mantis": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a black-and-green high-collared outfit over an even, smooth coat of "
-                   "pale green skin, with two thin antennae rising from the forehead",
+        "costume": "a black-and-green high-collared outfit over smooth, flawless pale green "
+                   "skin, with two thin antennae rising from the forehead",
         "eyes": "solid black",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_texture": "sleek straight"},
@@ -4972,8 +4971,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "DC",
         "gender": "Male",
-        "costume": "heavy blue-and-grey Apokoliptian armor over an even, smooth coat of "
-                   "grey craggy stone-like skin, on a towering, monstrously powerful frame",
+        "costume": "heavy blue-and-grey Apokoliptian armor over uniform, all-over grey craggy "
+                   "stone-like skin, on a towering, monstrously powerful frame",
         "eyes": "glowing red Omega energy",
         "signature": {},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -4990,8 +4989,8 @@ COSPLAYERS: dict[str, dict] = {
     "Fire": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a green costume wreathed head to toe in green flame, over an even, "
-                   "smooth coat of glowing green skin",
+        "costume": "a green costume wreathed head to toe in green flame, over smooth, flawless "
+                   "glowing green skin",
         "eyes": "glowing green",
         "signature": {},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -5007,8 +5006,8 @@ COSPLAYERS: dict[str, dict] = {
     "Beast Boy": {
         "franchise": "DC (Teen Titans)",
         "gender": "Male",
-        "costume": "a black-and-purple uniform over an even, smooth coat of green skin, "
-                   "with pointed ears and small fangs",
+        "costume": "a black-and-purple uniform over smooth, flawless green skin, with pointed "
+                   "ears and small fangs",
         "eyes": "green",
         "signature": {"hair_color": "emerald green", "hair_length": "very short"},
         "physique": {"body_type": "slim", "height": "average height"},
@@ -5130,8 +5129,8 @@ COSPLAYERS: dict[str, dict] = {
     "Mister Sinister": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a black bodysuit with a high jagged collar and a long cape, over an "
-                   "even, smooth coat of chalk-white skin, with a red diamond gem on the forehead",
+        "costume": "a black bodysuit with a high jagged collar and a long cape, over smooth, "
+                   "flawless chalk-white skin, with a red diamond gem on the forehead",
         "eyes": "glowing red",
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_style": "slicked back"},
@@ -5185,8 +5184,8 @@ COSPLAYERS: dict[str, dict] = {
     "Bizarro": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a tattered inside-out Superman costume with a reversed black-and-grey "
-                   "'S', over an even, smooth coat of chalk-white cracked stone-like skin",
+        "costume": "a tattered inside-out Superman costume with a reversed black-and-grey 'S', "
+                   "over uniform, all-over chalk-white cracked stone-like skin",
         "eyes": "icy blue",
         "signature": {"hair_color": "jet black", "hair_length": "very short"},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -5195,8 +5194,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Female",
         "costume": "a black bodysuit with tattered, ragged edges and silver mystical symbols, "
-                   "an even, smooth coat of ashen gray-white body paint marked with bold black "
-                   "patterns tracing across the face and body, and a torn flowing cape",
+                   "smooth, flawless ashen gray-white skin marked with bold black patterns "
+                   "tracing across the face and body, and a torn flowing cape",
         "eyes": "glowing white in hollow blackened sockets",
         "signature": {"hair_color": "white", "hair_length": "very long",
                       "hair_texture": "thick and voluminous"},
@@ -5279,8 +5278,8 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Thundercats",
         "gender": "Male",
-        "costume": "a black headdress and a crimson cape with golden arm bands, over an "
-                   "even, smooth coat of grey-blue skin on a powerful demonic frame",
+        "costume": "a black headdress and a crimson cape with golden arm bands, over smooth, "
+                   "flawless grey-blue skin on a powerful demonic frame",
         "eyes": "glowing red",
         "signature": {},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -5330,8 +5329,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "TMNT",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
-                   "plastron and a domed shell on the back, and brown elbow and knee pads",
+        "costume": "brown elbow and knee pads, with uniform, all-over green pebbled turtle skin, "
+                   "a tan plastron, and a domed shell on the back",
         "mask": "a green pebbled turtle face with a beak-like mouth, dark brown eyes, "
                 "and a blue bandana tied across the eyes",
         "signature": {},
@@ -5343,8 +5342,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "TMNT",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
-                   "plastron and a domed shell on the back, and brown elbow and knee pads",
+        "costume": "brown elbow and knee pads, with uniform, all-over green pebbled turtle skin, "
+                   "a tan plastron, and a domed shell on the back",
         "mask": "a green pebbled turtle face with a beak-like mouth, dark brown eyes, "
                 "and a red bandana tied across the eyes",
         "signature": {},
@@ -5356,8 +5355,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "TMNT",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
-                   "plastron and a domed shell on the back, and brown elbow and knee pads",
+        "costume": "brown elbow and knee pads, with uniform, all-over green pebbled turtle skin, "
+                   "a tan plastron, and a domed shell on the back",
         "mask": "a green pebbled turtle face with a beak-like mouth, dark brown eyes, "
                 "and a purple bandana tied across the eyes",
         "signature": {},
@@ -5369,8 +5368,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "TMNT",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an even, all-over coat of green pebbled turtle skin with a tan "
-                   "plastron and a domed shell on the back, and brown elbow and knee pads",
+        "costume": "brown elbow and knee pads, with uniform, all-over green pebbled turtle skin, "
+                   "a tan plastron, and a domed shell on the back",
         "mask": "a green pebbled turtle face with a beak-like mouth, dark brown eyes, "
                 "and an orange bandana tied across the eyes",
         "signature": {},
@@ -5539,10 +5538,10 @@ COSPLAYERS: dict[str, dict] = {
     "Arisia Rrab": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a white-and-green Green Lantern uniform with a cropped top, a bright "
-                   "green miniskirt, and matching gloves and boots, with a glowing green "
-                   "Lantern emblem on the chest, and a glowing green power ring worn on "
-                   "the finger, over an even, smooth coat of warm yellow-green body paint",
+        "costume": "a white-and-green Green Lantern uniform with a cropped top, a bright green "
+                   "miniskirt, and matching gloves and boots, with a glowing green Lantern "
+                   "emblem on the chest, and a glowing green power ring worn on the finger, over "
+                   "smooth, flawless warm yellow-green skin",
         "eyes": "vivid green",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_texture": "loosely wavy"},
@@ -5561,9 +5560,9 @@ COSPLAYERS: dict[str, dict] = {
     "Blackfire": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a revealing black-and-purple outfit with a black top, purple shorts, "
-                   "black thigh-high boots, and silver armor pieces, over an even, smooth "
-                   "coat of golden-orange body paint",
+        "costume": "a revealing black-and-purple outfit with a black top, purple shorts, black "
+                   "thigh-high boots, and silver armor pieces, over smooth, flawless "
+                   "golden-orange skin",
         "eyes": "glowing purple",
         "signature": {"hair_color": "jet black", "hair_length": "very long"},
         "physique": {"body_type": "slender", "height": "very tall"},
@@ -5573,7 +5572,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "simple dark clothing that seems to blur and shift like a reflection, "
                    "blood-red lips, bare feet, and an aura of floating broken-mirror shards, "
-                   "over an even, smooth coat of pale mirror-bright skin",
+                   "over smooth, flawless pale mirror-bright skin",
         "eyes": "dark and hollow",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_style": "worn down"},
@@ -5621,8 +5620,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Female",
         "costume": "form-fitting technological armor in metallic purples and blacks with "
-                   "integrated alien weaponry and a ridged hairless skull, over an even, "
-                   "smooth coat of purple-grey body paint",
+                   "integrated alien weaponry and a ridged hairless skull, over smooth, flawless "
+                   "purple-grey skin",
         "eyes": "glowing yellow",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
@@ -5663,8 +5662,8 @@ COSPLAYERS: dict[str, dict] = {
     "Jade (Jennifer-Lynn Hayden)": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a sleeveless green-and-black costume with a Green Lantern emblem and "
-                   "black boots, over an even, smooth coat of luminous green body paint",
+        "costume": "a sleeveless green-and-black costume with a Green Lantern emblem and black "
+                   "boots, over smooth, flawless luminous green skin",
         "eyes": "glowing green",
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_texture": "loosely wavy"},
@@ -5696,10 +5695,10 @@ COSPLAYERS: dict[str, dict] = {
     "Katma Tui": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "the green-and-black Green Lantern Corps uniform with a white waist band "
-                   "and chest emblem, white forearm-length gloves, green knee-high boots, "
-                   "a green domino mask, and a glowing green power ring worn on the index "
-                   "finger, over an even, smooth coat of smooth purple body paint",
+        "costume": "the green-and-black Green Lantern Corps uniform with a white waist band and "
+                   "chest emblem, white forearm-length gloves, green knee-high boots, a green "
+                   "domino mask, and a glowing green power ring worn on the index finger, over "
+                   "smooth, flawless smooth purple skin",
         "eyes": "vivid emerald green",
         "signature": {"hair_color": "jet black", "hair_length": "mid back",
                       "hair_texture": "sleek straight"},
@@ -5708,8 +5707,8 @@ COSPLAYERS: dict[str, dict] = {
     "Killer Frost": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a form-fitting icy costume with crystalline armor pieces and ice "
-                   "boots, over an even, all-over coat of pale blue frost-rimed skin",
+        "costume": "a form-fitting icy costume with crystalline armor pieces and ice boots, over "
+                   "uniform, all-over pale blue frost-rimed skin",
         "signature": {"hair_color": "white", "hair_length": "long", "hair_style": "slicked back",
                       "eye_color": "ice blue"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -5717,10 +5716,9 @@ COSPLAYERS: dict[str, dict] = {
     "Livewire": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a form-fitting bodysuit that looks woven from crackling electrical "
-                   "energy with lightning patterns and sparking boots, hair standing up in "
-                   "jagged bolts of white electricity, over an even, smooth coat of pale "
-                   "blue body paint",
+        "costume": "a form-fitting bodysuit that looks woven from crackling electrical energy "
+                   "with lightning patterns and sparking boots, hair standing up in jagged bolts "
+                   "of white electricity, over smooth, flawless pale blue skin",
         "eyes": "electric blue",
         "signature": {"hair_color": "white", "hair_length": "short pixie", "hair_style": "windswept"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -5728,9 +5726,9 @@ COSPLAYERS: dict[str, dict] = {
     "Lyssa Drak": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a black bikini-style outfit with thin straps and yellow-gold accents "
-                   "along the edges, and a long flowing black cloak, over an even, smooth "
-                   "coat of light blue body paint",
+        "costume": "a black bikini-style outfit with thin straps and yellow-gold accents along "
+                   "the edges, and a long flowing black cloak, over smooth, flawless light blue "
+                   "skin",
         "eyes": "glowing yellow",
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_texture": "sleek straight"},
@@ -5770,8 +5768,8 @@ COSPLAYERS: dict[str, dict] = {
     "Miss Martian": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a form-fitting white bodysuit with red accents, a blue cape, and red "
-                   "boots, over an even, smooth coat of green body paint",
+        "costume": "a form-fitting white bodysuit with red accents, a blue cape, and red boots, "
+                   "over smooth, flawless green skin",
         "eyes": "solid red",
         "signature": {"hair_color": "bright red", "hair_length": "long"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -5849,9 +5847,9 @@ COSPLAYERS: dict[str, dict] = {
     "Thorn": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a costume made entirely of living vines, leaves, and thorns that shift "
-                   "and grow, with bare feet trailing root-like tendrils, over an even, "
-                   "all-over coat of pale green leaf-veined skin",
+        "costume": "a costume made entirely of living vines, leaves, and thorns that shift and "
+                   "grow, with bare feet trailing root-like tendrils, over uniform, all-over "
+                   "pale green leaf-veined skin",
         "eyes": "vivid leaf green",
         "signature": {"hair_color": "emerald green", "hair_length": "very long",
                       "hair_texture": "wavy"},
@@ -5893,19 +5891,19 @@ COSPLAYERS: dict[str, dict] = {
     "Binary": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a body of brilliant golden-white stellar energy with hair transformed "
-                   "into flowing solar flames, constellation-like energy patterns across "
-                   "the form, and a radiant aura of cosmic fire, over an even, smooth coat "
-                   "of glowing golden-white body paint",
+        "costume": "a body of brilliant golden-white stellar energy with hair transformed into "
+                   "flowing solar flames, constellation-like energy patterns across the form, "
+                   "and a radiant aura of cosmic fire, over smooth, flawless glowing "
+                   "golden-white skin",
         "eyes": "burning starlight",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Blackheart": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a minimal black costume with hellish design elements, clawed hands and "
-                   "feet, small horns on the forehead, dark demonic markings, and an aura "
-                   "of dark energy, over an even, smooth coat of dark grey demon skin",
+        "costume": "a minimal black costume with hellish design elements, clawed hands and feet, "
+                   "small horns on the forehead, dark demonic markings, and an aura of dark "
+                   "energy, over smooth, flawless dark grey demon skin",
         "eyes": "burning red",
         "signature": {"hair_color": "jet black", "hair_length": "very long"},
         "physique": {"body_type": "slender", "height": "very tall"},
@@ -5914,8 +5912,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a sleek black-and-purple tactical suit with light boots, sharp facial "
-                   "markings, and a faint teleportation shimmer, over an even, smooth coat "
-                   "of vibrant magenta body paint",
+                   "markings, and a faint teleportation shimmer, over smooth, flawless vibrant "
+                   "magenta skin",
         "eyes": "glowing green",
         "signature": {"hair_color": "magenta", "hair_length": "short pixie"},
         "physique": {"body_type": "lean", "height": "average height"},
@@ -5952,9 +5950,9 @@ COSPLAYERS: dict[str, dict] = {
     "Magic": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "revealing metallic bikini-style armor pieces, thigh-high boots, and a "
-                   "cape with demonic and mystical designs, over an even, smooth coat of "
-                   "blue demon-form body paint",
+        "costume": "revealing metallic bikini-style armor pieces, thigh-high boots, and a cape "
+                   "with demonic and mystical designs, over smooth, flawless blue demon-form "
+                   "skin",
         "signature": {"hair_color": "golden blonde", "hair_length": "very long",
                       "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
@@ -5981,9 +5979,9 @@ COSPLAYERS: dict[str, dict] = {
     "Mistress Death": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a tattered dark cosmic shroud draping the frame like living darkness, "
-                   "with a cold silent aura that seems to bend light, over an even, smooth "
-                   "coat of pale bone-white skin",
+        "costume": "a tattered dark cosmic shroud draping the frame like living darkness, with a "
+                   "cold silent aura that seems to bend light, over smooth, flawless pale "
+                   "bone-white skin",
         "eyes": "hollow void-black",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_style": "worn down"},
@@ -6024,9 +6022,8 @@ COSPLAYERS: dict[str, dict] = {
     "Nova (Frankie Raye)": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a costume of living cosmic energy with flame patterns, fire-trail "
-                   "boots, and golden flame for hair, over an even, smooth coat of glowing "
-                   "golden energy body paint",
+        "costume": "a costume of living cosmic energy with flame patterns, fire-trail boots, and "
+                   "golden flame for hair, over smooth, flawless glowing golden energy skin",
         "eyes": "burning cosmic fire",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
@@ -6115,10 +6112,9 @@ COSPLAYERS: dict[str, dict] = {
     "Astarte": {
         "franchise": "Divinity: Original Sin",
         "gender": "Female",
-        "costume": "gossamer divine robes woven of shimmering iridescent blues and "
-                   "violets and soft starlight, with silver constellation markings, on a "
-                   "celestial six-foot goddess frame, over an even, smooth coat of "
-                   "moon-pale body paint",
+        "costume": "gossamer divine robes woven of shimmering iridescent blues and violets and "
+                   "soft starlight, with silver constellation markings, on a celestial six-foot "
+                   "goddess frame, over smooth, flawless moon-pale skin",
         "eyes": "swirling nebula",
         "signature": {"hair_color": "platinum white", "hair_length": "very long",
                       "hair_texture": "loosely wavy"},
@@ -6127,11 +6123,11 @@ COSPLAYERS: dict[str, dict] = {
     "Cetrion": {
         "franchise": "Mortal Kombat",
         "gender": "Female",
-        "costume": "flowing robes formed of earth, water, air, and light, nature-inspired "
-                   "armor pieces, leg wrappings of living root and vine, and a crown of "
-                   "living branches and crystals, on a towering seven-foot elemental-goddess "
-                   "frame, over an even, smooth coat of pale luminescent skin marked with "
-                   "glowing elemental sigils",
+        "costume": "flowing robes formed of earth, water, air, and light, nature-inspired armor "
+                   "pieces, leg wrappings of living root and vine, and a crown of living "
+                   "branches and crystals, on a towering seven-foot elemental-goddess frame, "
+                   "over smooth, flawless pale luminescent skin marked with glowing elemental "
+                   "sigils",
         "eyes": "glowing blue-white",
         "signature": {"hair_color": "platinum white", "hair_length": "very long",
                       "hair_texture": "wavy"},
@@ -6140,9 +6136,9 @@ COSPLAYERS: dict[str, dict] = {
     "Cortana": {
         "franchise": "Halo",
         "gender": "Female",
-        "costume": "a slender luminous holographic body of flowing code and light in blue "
-                   "and purple, with short swept-back hair blending into the form, over an "
-                   "even, smooth coat of translucent blue holographic body paint",
+        "costume": "a slender luminous holographic body of flowing code and light in blue and "
+                   "purple, with short swept-back hair blending into the form, over smooth, "
+                   "flawless translucent blue holographic skin",
         "eyes": "glowing blue",
         "signature": {"hair_color": "navy blue", "hair_length": "short pixie",
                       "hair_style": "slicked back"},
@@ -6170,10 +6166,9 @@ COSPLAYERS: dict[str, dict] = {
     "Evelynn": {
         "franchise": "League of Legends",
         "gender": "Female",
-        "costume": "a skin-hugging bodysuit of shadow-lace and velvet, claw-like horns "
-                   "framing the face, shimmering lashes, and scythe-like tendrils "
-                   "slithering behind, over an even, smooth coat of iridescent "
-                   "obsidian-black body paint",
+        "costume": "a skin-hugging bodysuit of shadow-lace and velvet, claw-like horns framing "
+                   "the face, shimmering lashes, and scythe-like tendrils slithering behind, "
+                   "over smooth, flawless iridescent obsidian-black skin",
         "eyes": "hot pink",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_style": "worn down"},
@@ -6259,18 +6254,18 @@ COSPLAYERS: dict[str, dict] = {
     "Sarah Kerrigan": {
         "franchise": "StarCraft",
         "gender": "Female",
-        "costume": "a bio-organic exoskeleton of purple, brown, and bone-white carapace "
-                   "with large segmented insectoid wings and long tendril-like dreadlocks, "
-                   "over an even, all-over coat of purplish carapace skin",
+        "costume": "a bio-organic exoskeleton of purple, brown, and bone-white carapace with "
+                   "large segmented insectoid wings and long tendril-like dreadlocks, over "
+                   "uniform, all-over purplish carapace skin",
         "eyes": "glowing orange",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Sheeva": {
         "franchise": "Mortal Kombat",
         "gender": "Female",
-        "costume": "minimal practical red-and-brown bikini-style warrior attire with "
-                   "armored bracers and greaves, a dark topknot, and four powerful arms, "
-                   "over an even, smooth coat of red Shokan skin",
+        "costume": "minimal practical red-and-brown bikini-style warrior attire with armored "
+                   "bracers and greaves, a dark topknot, and four powerful arms, over smooth, "
+                   "flawless red Shokan skin",
         "eyes": "glowing orange",
         "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "top knot"},
         "physique": {"body_type": "athletic", "height": "very tall"},
@@ -6278,19 +6273,18 @@ COSPLAYERS: dict[str, dict] = {
     "SHODAN": {
         "franchise": "System Shock",
         "gender": "Female",
-        "costume": "a glitching spectral humanoid silhouette with fractal skin of "
-                   "streaming data and jagged synthetic contours that pulse and flicker, "
-                   "over an even, smooth coat of green-tinged data-stream body paint",
+        "costume": "a glitching spectral humanoid silhouette with fractal skin of streaming data "
+                   "and jagged synthetic contours that pulse and flicker, over smooth, flawless "
+                   "green-tinged data-stream skin",
         "eyes": "glowing green",
         "physique": {"body_type": "slender", "height": "tall"},
     },
     "Sylvanas Windrunner": {
         "franchise": "World of Warcraft",
         "gender": "Female",
-        "costume": "midnight-purple armor with skull motifs and gothic elements, an "
-                   "arrow-filled quiver across the back, a tattered crimson cloak with a "
-                   "deep trailing hood, and silver tribal markings, over an even, smooth "
-                   "coat of pale blue-grey undead skin",
+        "costume": "midnight-purple armor with skull motifs and gothic elements, an arrow-filled "
+                   "quiver across the back, a tattered crimson cloak with a deep trailing hood, "
+                   "and silver tribal markings, over smooth, flawless pale blue-grey undead skin",
         "eyes": "glowing red",
         "signature": {"hair_color": "white", "hair_length": "very long", "hair_style": "worn down"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -6308,9 +6302,9 @@ COSPLAYERS: dict[str, dict] = {
     "Tyrande Whisperwind": {
         "franchise": "World of Warcraft",
         "gender": "Female",
-        "costume": "ornate elven robes and light armor in white, silver, and purple with "
-                   "moon symbols, feathers, and intricate patterns, over an even, smooth "
-                   "coat of pale lavender body paint",
+        "costume": "ornate elven robes and light armor in white, silver, and purple with moon "
+                   "symbols, feathers, and intricate patterns, over smooth, flawless pale "
+                   "lavender skin",
         "eyes": "glowing silver",
         "signature": {"hair_color": "teal", "hair_length": "very long"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -6415,10 +6409,10 @@ COSPLAYERS: dict[str, dict] = {
     "Abbey Bominable": {
         "franchise": "Monster High",
         "gender": "Female",
-        "costume": "white fur-trimmed clothing with snowflake patterns, ice-crystal "
-                   "accessories in blue, purple, and pink tones, small tusks at the lower "
-                   "lip, and long white hair streaked with pink, purple, and blue, over an "
-                   "even, smooth coat of light icy-blue body paint",
+        "costume": "white fur-trimmed clothing with snowflake patterns, ice-crystal accessories "
+                   "in blue, purple, and pink tones, small tusks at the lower lip, and long "
+                   "white hair streaked with pink, purple, and blue, over smooth, flawless light "
+                   "icy-blue skin",
         "eyes": "light purple",
         "signature": {"hair_color": "white", "hair_length": "very long"},
         "physique": {"body_type": "stocky", "height": "tall"},
@@ -6428,8 +6422,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "preppy-punk fashion in plaid, black, white, and yellow, with visible "
                    "stitches on the limbs and neck, small neck bolts, and long black hair "
-                   "streaked with white sections, over an even, smooth coat of pale "
-                   "mint-green body paint",
+                   "streaked with white sections, over smooth, flawless pale mint-green skin",
         "eyes": "one blue and one green",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_texture": "sleek straight"},
@@ -6447,9 +6440,9 @@ COSPLAYERS: dict[str, dict] = {
     "Lady Death": {
         "franchise": "Chaos! Comics",
         "gender": "Female",
-        "costume": "minimal black-and-silver armor with skull motifs and bone accessories, "
-                   "black thigh-high studded boots, a flowing dark cape, and ornate skull "
-                   "jewelry and crown, over an even, smooth coat of deathly-white skin",
+        "costume": "minimal black-and-silver armor with skull motifs and bone accessories, black "
+                   "thigh-high studded boots, a flowing dark cape, and ornate skull jewelry and "
+                   "crown, over smooth, flawless deathly-white skin",
         "eyes": "glowing pale white",
         "signature": {"hair_color": "white", "hair_length": "waist length",
                       "hair_texture": "loosely wavy"},
@@ -6458,8 +6451,8 @@ COSPLAYERS: dict[str, dict] = {
     "Shana the She-Devil": {
         "franchise": "Comics",
         "gender": "Female",
-        "costume": "a minimal red barbarian bikini-style top and brief bottom, leather "
-                   "boots and bracers, and fire-red battle-flung hair, over an even coat of "
+        "costume": "a minimal red barbarian bikini-style top and brief bottom, leather boots and "
+                   "bracers, and fire-red battle-flung hair, over smooth, flawless "
                    "sun-and-battle-bronzed skin",
         "signature": {"hair_color": "bright red", "hair_length": "very long",
                       "hair_texture": "thick and voluminous", "eye_color": "green"},
@@ -6469,9 +6462,9 @@ COSPLAYERS: dict[str, dict] = {
     "Lunatica": {
         "franchise": "Comics",
         "gender": "Female",
-        "costume": "black leather straps and armored pieces, clawed gauntlets, and heavy "
-                   "boots, with wild red hair, over an even, smooth coat of pale lavender "
-                   "skin with darker markings",
+        "costume": "black leather straps and armored pieces, clawed gauntlets, and heavy boots, "
+                   "with wild red hair, over smooth, flawless pale lavender skin with darker "
+                   "markings",
         "eyes": "yellow reptilian slit",
         "signature": {"hair_color": "bright red", "hair_length": "very long",
                       "hair_texture": "thick and voluminous"},
@@ -6518,18 +6511,17 @@ COSPLAYERS: dict[str, dict] = {
     "Lisa Simpson": {
         "franchise": "The Simpsons",
         "gender": "Female",
-        "costume": "a red sleeveless dress reaching the knees, red shoes, a pearl "
-                   "necklace, and tall spiky pointed hair, over an even, smooth coat of "
-                   "bright yellow body paint",
+        "costume": "a red sleeveless dress reaching the knees, red shoes, a pearl necklace, and "
+                   "tall spiky pointed hair, over smooth, flawless bright yellow skin",
         "signature": {"hair_color": "yellow", "hair_length": "short pixie"},
         "physique": {"body_type": "petite and slim", "height": "very petite"},
     },
     "Marge Simpson": {
         "franchise": "The Simpsons",
         "gender": "Female",
-        "costume": "a strapless green dress reaching the ankles, red low-heeled shoes, a "
-                   "pearl necklace, and an extremely tall blue beehive of hair, over an "
-                   "even, smooth coat of bright yellow body paint",
+        "costume": "a strapless green dress reaching the ankles, red low-heeled shoes, a pearl "
+                   "necklace, and an extremely tall blue beehive of hair, over smooth, flawless "
+                   "bright yellow skin",
         "signature": {"hair_color": "electric blue", "hair_length": "very long",
                       "hair_style": "updo"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -6616,10 +6608,10 @@ COSPLAYERS: dict[str, dict] = {
     "White Queen (Alice in Wonderland)": {
         "franchise": "Alice in Wonderland",
         "gender": "Female",
-        "costume": "a flowing white gown with intricate baroque patterns, white gloves "
-                   "past the elbows, white flowers and ornaments in an elaborate period "
-                   "updo, pale lip color, and a powdered ghostly-pale complexion, over an "
-                   "even, smooth coat of chalk-white skin",
+        "costume": "a flowing white gown with intricate baroque patterns, white gloves past the "
+                   "elbows, white flowers and ornaments in an elaborate period updo, pale lip "
+                   "color, and a powdered ghostly-pale complexion, over smooth, flawless "
+                   "chalk-white skin",
         "signature": {"hair_color": "platinum blonde", "hair_length": "very long",
                       "hair_style": "updo", "eye_color": "pale blue"},
         "physique": {"body_type": "slender", "height": "tall"},
@@ -6774,9 +6766,8 @@ COSPLAYERS: dict[str, dict] = {
     "Sandman": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a green-and-brown horizontal-striped shirt and brown trousers, over "
-                   "an even, all-over coat of yellow-tan sand skin, with one arm morphed "
-                   "into a giant sand hammer",
+        "costume": "a green-and-brown horizontal-striped shirt and brown trousers, over uniform, "
+                   "all-over yellow-tan sand skin, with one arm morphed into a giant sand hammer",
         "signature": {"hair_color": "warm brown", "hair_length": "very short",
                       "eye_color": "medium brown"},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -6832,9 +6823,9 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a red tunic with a cape and a high collar, over an even, all-over "
-                   "coat of yellow scaled skin, with pointed ears, small horns, a fanged "
-                   "grin, and flames at the hands",
+        "costume": "a red tunic with a cape and a high collar, over uniform, all-over yellow "
+                   "scaled skin, with pointed ears, small horns, a fanged grin, and flames at "
+                   "the hands",
         "eyes": "red",
         "signature": {},
         "physique": {"body_type": "athletic", "height": "tall"},
@@ -6882,9 +6873,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Hellboy",
         "gender": "Male",
         "covers_face": True,
-        "costume": "trunks and a breathing harness, over an even, all-over coat of "
-                   "blue-green scaled skin, with red feathery gills at the neck and webbed "
-                   "three-fingered hands",
+        "costume": "trunks and a breathing harness, over uniform, all-over blue-green scaled "
+                   "skin, with red feathery gills at the neck and webbed three-fingered hands",
         "mask": "a smooth blue-green amphibian face with a finned head, red feathery "
                 "gill frills, and large solid black eyes",
         "signature": {},
@@ -6941,8 +6931,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a ragged leather vest and trousers, over an even, all-over coat of "
-                   "orange amphibian skin",
+        "costume": "a ragged leather vest and trousers, over smooth, flawless orange amphibian "
+                   "skin",
         "mask": "a long orange Gungan face with floppy ear-flaps, yellow eyes on long "
                 "stalks, and a duck-billed snout",
         "signature": {},
@@ -7304,9 +7294,9 @@ COSPLAYERS: dict[str, dict] = {
     "Aurra Sing": {
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "a form-fitting dark spacer's jumpsuit with bandoliers, an even, smooth "
-                   "coat of chalk-white body paint over gaunt limbs, and a bald scalp trailing "
-                   "a single long thin braid with a slender antenna probe",
+        "costume": "a form-fitting dark spacer's jumpsuit with bandoliers, smooth, flawless "
+                   "chalk-white skin over gaunt limbs, and a bald scalp trailing a single long "
+                   "thin braid with a slender antenna probe",
         "eyes": "pale with red rims",
         "signature": {},
         "physique": {"body_type": "very slim", "height": "very tall"},
@@ -7315,9 +7305,9 @@ COSPLAYERS: dict[str, dict] = {
     "Dathomirian": {
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "tattered dark Nightsister robes and leather wraps, with an even, smooth "
-                   "coat of ashen gray-white body paint marked by jagged black clan tattoos "
-                   "across the face and arms",
+        "costume": "tattered dark Nightsister robes and leather wraps, with smooth, flawless "
+                   "ashen gray-white skin marked by jagged black clan tattoos across the face "
+                   "and arms",
         "eyes": "pale yellow",
         "signature": {"hair_color": "near black", "hair_length": "long",
                       "hair_texture": "loosely wavy"},
@@ -7326,9 +7316,9 @@ COSPLAYERS: dict[str, dict] = {
     "Asajj Ventress": {
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "a form-fitting dark layered robe with leather straps, an even, smooth "
-                   "coat of chalk-white body paint over a bald head, and faint dark Nightsister "
-                   "markings tracing the scalp and brow",
+        "costume": "a form-fitting dark layered robe with leather straps, smooth, flawless "
+                   "chalk-white skin over a bald head, and faint dark Nightsister markings "
+                   "tracing the scalp and brow",
         "eyes": "pale ice-blue",
         "signature": {},
         "physique": {"body_type": "lean", "height": "tall"},
@@ -7544,9 +7534,9 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "sleek black Inquisitor armor and robes, over an even, smooth coat of "
-                   "ashen gray Pau'an skin etched with thin red ritual markings across a "
-                   "gaunt hairless face",
+        "costume": "sleek black Inquisitor armor and robes, over smooth, flawless ashen gray "
+                   "Pau'an skin etched with thin red ritual markings across a gaunt hairless "
+                   "face",
         "eyes": "pale yellow sunken",
         "signature": {},
         "physique": {"body_type": "lean", "height": "tall"},
@@ -7753,8 +7743,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Nintendo",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an even, all-over coat of green dinosaur skin with a cream belly, a "
-                   "spiny orange back-ridge, a red saddle-shell, and orange boots",
+        "costume": "orange boots, with uniform, all-over green dinosaur skin, a cream belly, a "
+                   "spiny orange back-ridge, and a red saddle-shell",
         "mask": "a round green dinosaur head with big friendly eyes and a wide snout",
         "physique": {"body_type": "stocky", "height": "average height"},
     },
@@ -7887,9 +7877,9 @@ COSPLAYERS: dict[str, dict] = {
     "Genie": {
         "franchise": "Aladdin",
         "gender": "Male",
-        "costume": "golden wrist cuffs and a black topknot on a bald head, over an even, "
-                   "smooth coat of bright blue skin, with a wispy blue tail instead of "
-                   "legs on a large floating muscular frame",
+        "costume": "golden wrist cuffs and a black topknot on a bald head, over smooth, flawless "
+                   "bright blue skin, with a wispy blue tail instead of legs on a large floating "
+                   "muscular frame",
         "signature": {"facial_hair": "goatee", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
@@ -8000,8 +7990,8 @@ COSPLAYERS: dict[str, dict] = {
     "Homer Simpson": {
         "franchise": "The Simpsons",
         "gender": "Male",
-        "costume": "a white short-sleeved shirt and blue trousers, over an even, smooth "
-                   "coat of yellow skin, with a bald head bearing two stray top hairs",
+        "costume": "a white short-sleeved shirt and blue trousers, over smooth, flawless yellow "
+                   "skin, with a bald head bearing two stray top hairs",
         "eyes": "large round white",
         "signature": {"facial_hair": "five o'clock shadow"},
         "physique": {"body_type": "plus size", "height": "average height"},
@@ -8010,7 +8000,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The Simpsons",
         "gender": "Male",
         "costume": "an orange short-sleeved t-shirt, blue shorts, and blue sneakers, over "
-                   "an even, smooth coat of yellow skin, with spiky yellow hair",
+                   "smooth, flawless yellow skin, with spiky yellow hair",
         "eyes": "large round white",
         "signature": {"hair_color": "yellow", "hair_length": "very short"},
         "physique": {"body_type": "slim", "height": "petite"},
@@ -8160,7 +8150,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Dr. Seuss",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an even, smooth coat of grey elephant skin on a large frame",
+        "costume": "nothing but uniform, all-over grey elephant skin on a large frame",
         "mask": "a grey elephant head with oversized floppy ears, a long trunk, and kind "
                 "round eyes",
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -8225,9 +8215,9 @@ COSPLAYERS: dict[str, dict] = {
     "Frankenstein's Monster": {
         "franchise": "Movie",
         "gender": "Male",
-        "costume": "an ill-fitting dark suit and heavy elevated boots, over an even, "
-                   "smooth coat of pale green-grey skin, with a flat-topped head, stitched "
-                   "scars, and two neck bolts",
+        "costume": "an ill-fitting dark suit and heavy elevated boots, over smooth, flawless "
+                   "pale green-grey skin, with a flat-topped head, stitched scars, and two neck "
+                   "bolts",
         "eyes": "dark and sunken",
         "signature": {},
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -8371,8 +8361,10 @@ COSPLAYERS: dict[str, dict] = {
     "Jolly Green Giant": {
         "franchise": "Green Giant",
         "gender": "Male",
-        "costume": "a short toga made of woven green leaves, with an even, smooth "
-                   "coat of rich green body paint covering his face and entire body",
+        "costume": "a short toga made of woven green leaves, with smooth, flawless rich green "
+                   "skin covering his face and entire body, on a towering, building-high giant "
+                   "frame vastly larger than everything around him, dwarfing the scene with an "
+                   "overwhelming sense of scale",
         "signature": {"hair_color": "emerald green", "hair_length": "very short",
                       "hair_texture": "wavy", "hair_style": "slicked back"},
         "physique": {"body_type": "athletic", "height": "very tall"},
@@ -8480,8 +8472,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Shrek",
         "gender": "Male",
         "bald": True,
-        "costume": "an even, smooth coat of green ogre skin, a brown vest over a rough "
-                   "cream peasant shirt, and brown trousers",
+        "costume": "a brown vest over a rough cream peasant shirt and brown trousers, with "
+                   "smooth, flawless green ogre skin",
         "eyes": "brown",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -8497,8 +8489,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The Lord of the Rings",
         "gender": "Male",
         "bald": True,
-        "costume": "an even, smooth coat of clammy pale grey skin stretched over a gaunt, "
-                   "emaciated frame, and a tattered loincloth",
+        "costume": "a tattered loincloth, with uniform, all-over clammy pale grey skin stretched "
+                   "over a gaunt, emaciated frame",
         "eyes": "pale luminous",
         "physique": {"body_type": "very slim", "height": "short"},
     },
@@ -8534,8 +8526,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Dragon Ball",
         "gender": "Male",
         "bald": True,
-        "costume": "an even, smooth coat of pale pink rubbery skin, a black-and-yellow vest "
-                   "with white baggy trousers and a Majin-symbol belt",
+        "costume": "a black-and-yellow vest with white baggy trousers and a Majin-symbol belt, "
+                   "with uniform, all-over pale pink rubbery skin",
         "eyes": "small black",
         "physique": {"body_type": "plump", "height": "average height"},
     },
@@ -8543,9 +8535,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "bald": True,
-        "costume": "an even, smooth coat of blue skin, a red crest-shaped fin implant set "
-                   "into the scalp, and a weathered red leather Ravager coat over dark "
-                   "tactical gear",
+        "costume": "a weathered red leather Ravager coat over dark tactical gear, with smooth, "
+                   "flawless blue skin and a red crest-shaped fin implant set into the scalp",
         "eyes": "pale blue",
         "physique": {"body_type": "lean", "height": "tall"},
         "prop": "a silver yaka arrow",
@@ -8581,8 +8572,8 @@ COSPLAYERS: dict[str, dict] = {
     "Princess Bubblegum": {
         "franchise": "Adventure Time",
         "gender": "Female",
-        "costume": "an even, smooth coat of pale pink skin, a fitted pink gown with a "
-                   "modest neckline, and a small gold crown",
+        "costume": "a fitted pink gown with a modest neckline and a small gold crown, with "
+                   "smooth, flawless pale pink skin",
         "eyes": "pink",
         "signature": {"hair_color": "baby pink", "hair_length": "very long"},
         "physique": {"body_type": "slender", "height": "average height"},
@@ -8609,9 +8600,9 @@ COSPLAYERS: dict[str, dict] = {
     "Garnet": {
         "franchise": "Steven Universe",
         "gender": "Female",
-        "costume": "an even, smooth coat of reddish-maroon and purplish-blue fused skin, "
-                   "a form-fitting bodysuit in maroon, dark red, black, and purple with "
-                   "shoulder pads, and a dark visor covering the eyes",
+        "costume": "a form-fitting bodysuit in maroon, dark red, black, and purple with shoulder "
+                   "pads, smooth, flawless reddish-maroon and purplish-blue fused skin, and a "
+                   "dark visor covering the eyes",
         "signature": {"hair_color": "near black", "hair_style": "afro", "hair_texture": "coily"},
         "physique": {"body_type": "curvy", "height": "tall"},
     },
@@ -8674,7 +8665,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "costume": "a deep green hooded cloak clasped at the shoulders, green trunks, green "
-                   "gloves, and green boots, over an even, smooth coat of chalk white body paint",
+                   "gloves, and green boots, over smooth, flawless chalk white skin",
         "eyes": "solid glowing white pupil-less",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
@@ -8788,9 +8779,8 @@ COSPLAYERS: dict[str, dict] = {
     "Brainiac 5": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a form-fitting purple-and-black jumpsuit with a white belt, white "
-                   "boots, and a golden Legion flight ring, over an even, smooth coat of "
-                   "green body paint",
+        "costume": "a form-fitting purple-and-black jumpsuit with a white belt, white boots, and "
+                   "a golden Legion flight ring, over smooth, flawless green skin",
         "signature": {"hair_color": "golden blonde", "hair_length": "ear length"},
         "physique": {"body_type": "slim", "height": "average height"},
     },

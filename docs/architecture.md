@@ -112,9 +112,13 @@ Conventions (keep the data coherent):
   builder auto-detects it and locks the scalp-hair (and, for "clean-shaven", facial-hair) fields
   absent (see the Bald / Clean-shaven notes below). Do **not** lock a `hair_length`/`hair_style`
   (locking `buzzed very short` renders a buzz cut — the Mace Windu bug).
-- **Non-human skin / body paint:** word as `"an even, smooth coat of <colour> body paint"`
-  (textured: `"an even, all-over coat of …"` + keep the texture word); leave `skin_tone` out so
-  the person underneath randomizes. The builder **auto-detects this `an even … coat of …` marker**
+- **Non-human skin colour is skin-native (0.52+):** word as `"smooth, flawless <colour> skin"`
+  (textured: `"uniform, all-over <colour> <material>"` — scaled/craggy/pebbled keep their texture
+  word); leave `skin_tone` out so the person underneath randomizes. Live A/B testing showed
+  "body paint" / "dye" wording makes t2i models render a streaky coat OVER a human tone, while
+  skin-native wording renders one uniform colour — the paint word was swept out in 0.52. Fur /
+  feather / flame / ice / plating entries keep the legacy `"an even … coat of …"` wording (still
+  recognised). The builder **auto-detects all three markers**
   (face-visible entries only) and force-locks `skin_tone`, `complexion`, `skin_details`,
   `freckles_density`, `makeup_style` (→ `no makeup`, which cascades every cosmetic sub-field
   absent), and the skin-toned makeup (`blush`, `skin_finish`, `contour`, `highlight`)
@@ -130,10 +134,11 @@ Conventions (keep the data coherent):
   prose with no skin colour ("…with a slim build and tall."), so t2i routinely defaults the
   high-attention **face** to a human tone (the Poison Ivy white-face / TMNT pale-face bug). After
   suppression the builder **re-injects the paint colour into `skin_tone`** so the lead sentence
-  anchors it ("…tall, **and vivid green skin**"). The colour is auto-derived from the
-  `"coat of <colour> <material>"` clause (`_BODY_PAINT_COLOR_RE` → `_body_paint_skin_color`); an
+  anchors it ("…tall, **and vivid green skin**"). The colour is auto-derived from the canonical
+  clause — `"smooth, flawless <colour> skin"`, `"uniform, all-over <colour> <material>"`, or the
+  legacy `"coat of <colour> <material>"` (`_BODY_PAINT_COLOR_RE` → `_body_paint_skin_color`); an
   explicit free-text **`skin` entry key** wins for phrasings the regex misses (`ice`, `chitin`,
-  `tattoos`, no-"coat of" prose) or where a cleaner word reads better — it mirrors the `eyes`
+  `tattoos`, marker-free prose) or where a cleaner word reads better — it mirrors the `eyes`
   override and is voiced verbatim. The anchor is a *wired value*, so it survives both look-levels
   and "set all to none". The demographics formatter (`_format_…`) guards the trailing `" skin"`
   when the value already ends in a skin/fur/scale/hide word ("dark blue scaled-skin"). For a

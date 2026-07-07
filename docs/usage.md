@@ -94,8 +94,11 @@ optional sections:
   flags work too, each optional and off by default: `"covers_body": true` (full hard suit — hides
   bare skin, suppresses jewellery/nails), `"covers_hair": true` (hood/cowl hides the hair while
   the face shows), `"bald": true` (fully hairless head), `"body_paint": true` (the skin itself is
-  the costume colour; add `"skin": "warm green"` to name the paint colour when it isn't obvious
-  from the costume text). See the worked examples in
+  the costume colour; add `"skin": "warm green"` to name the colour when it isn't obvious from
+  the costume text). Word a full-body colour skin-native — `"smooth, flawless <colour> skin"` —
+  not as "body paint"/"dye", which t2i models render as a streaky coat over a human tone; the
+  skin-native marker is auto-detected, so the flag is only needed for other phrasings. See the
+  worked examples in
   [user_options.example.json](../user_options.example.json).
 - **`creatures`** adds forms to the Creature node. `class` (one of the nine classes), `palette`
   and the three core slots `head` / `eyes` / `integument` are required; the rest are optional.
