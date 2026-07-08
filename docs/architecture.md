@@ -84,12 +84,18 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   checks **every** `FIELD_FAMILIES` entry partitions its field's options exactly. New `hair_style`
   variants must also be slotted into the relevant `data/constraints.py` length lists
   (`_LONG_HAIR_STYLES`, the pixie exclusion) so they're culled on short hair like their siblings.
-- **Per-value draw weights (`male_weights`).** A field definition may carry a
-  `"male_weights": {value: int}` map to lean the *male* random draw (currently only
-  `makeup_style` leans 2x toward `no makeup` so a random man is bare-faced more often).
-  Missing values weigh 1; the engine uses one `rng.choices` call so the RNG stream shape
-  matches a flat pick. Never duplicate a value inside an options list to weight it — the
-  validator rejects duplicates and checks every weight key is a real option.
+- **Per-value draw weights (`weights` / `male_weights`).** A field definition may carry two
+  draw-weight maps consumed by the shared `_weighted_choice(field_def, pool, gender, rng)` helper.
+  `"weights": {value: number}` biases the draw for **every** gender; `"male_weights": {value: number}`
+  is a **male-only overlay** that wins on key collision. Weights may be **floats**, so a single value
+  can sit *below* its peers' implicit weight of 1 — this is how a value is made rare without touching
+  the others (`eyebrows` weights `bleached` at `0.2` ≈ 2%; `hair_texture` male-weights `silky and glossy`
+  at `0.3` so salon-shine hair is rare on random men but still lockable; `makeup_style` still leans men
+  `2×` toward `no makeup`). Missing values weigh 1; the engine uses one `rng.choices` call so the RNG
+  stream shape matches a flat pick. `_weighted_choice` is used by both the initial random fill **and**
+  the constraint engine's exclusion re-picks, so a down-weighted value stays rare even after a
+  masculine-trim (or other exclusion) re-roll. Never duplicate a value inside an options list to weight
+  it — the validator rejects duplicates and checks every weight key is a real option (positive number).
 
 ## cosplayers.py — characters as a worn look
 
@@ -208,8 +214,12 @@ Conventions (keep the data coherent):
   skull): use the `covers_face` + `mask` mechanism (head described in `mask`) so no random
   hair/face contradicts the effect, and keep the `an even … coat of …` body-paint phrasing in
   `costume` so the Body-group `skin_tone` is suppressed too (see body-paint note above).
-- **Extreme-size characters** (Giganta, Titania, Giant-Man): put the scale in `costume` prose
-  ("towering 50-foot stature, …") — there is no size field for humans.
+- **Extreme-size characters** (giants Giganta, Titania, Giant-Man, The BFG, Stay Puft; tiny Tinker
+  Bell, Wasp, Smurfette, The Atom, Yoda, Grogu): put the scale in `costume` prose ("towering,
+  building-high giant frame …", "shrunk to a tiny insect-sized scale …") — there is no size field
+  for humans. Critically, `physique.height` only renders in **Full-character** mode, but `costume`
+  renders in **both** modes, so scale MUST live in the costume string or a costume-only cosplay of a
+  giant/tiny character loses its defining trait.
 - **Plain ASCII only** in names and text (no em/en dashes, smart quotes, accents — e.g. use
   `Padme`, `Eowyn`). Tokenizers mangle the rest. Names are dict keys: a duplicate **silently
   overrides** — grep before adding.
@@ -314,6 +324,11 @@ User additions are first-class (0.46.1):
   engine re-rolls the randomized *trigger* away from every conflicting trigger value instead of
   warning and leaving the incoherent pair. Both-locked contradictions and control-field triggers
   (gender, scope) still warn-and-keep.
+- **Texture↔style coherence (0.53+).** Only `afro` and `twist-out` are physically texture-bound
+  (the style *is* the coil pattern), so `constraints.py` excludes them when a straight/wavy
+  `hair_texture` is drawn (`_NON_COILED_TEXTURES` × `_TEXTURE_BOUND_STYLES`). Braids, locs, cornrows
+  and bantu knots read fine on any texture and stay unpaired. A preset that locks `afro`/`twist-out`
+  is repaired by the contrapositive rule above (the random texture re-rolls toward a coiled value).
 - **Mood and expression vocabularies are disjoint** (0.36+, test-enforced): they randomize
   independently, so a shared word ("playful") could double in one output. When adding options to
   either field, pick words the other doesn't use (mood is the scene's tone, expression the face).

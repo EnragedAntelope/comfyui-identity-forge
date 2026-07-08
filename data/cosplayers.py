@@ -542,6 +542,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a blue tunic with white trim and Water Tribe designs, blue pants, "
                    "brown boots, blue arm guards, and a white undershirt",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "silky and glossy",
                       "hair_style": "loose braids", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "olive"},
     },
@@ -890,6 +891,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a blue bodice with puffy yellow sleeves, a yellow ankle-length "
                    "skirt, a red cape, a white collar and cuffs, and brown shoes",
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_texture": "silky and glossy",
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "porcelain"},
     },
@@ -900,6 +902,7 @@ COSPLAYERS: dict[str, dict] = {
                    "gold jewelry on the arms and neck, a jeweled headband, and gold "
                    "slippers",
         "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_texture": "silky and glossy",
                       "hair_style": "low ponytail", "eye_color": "dark brown"},
         "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "warm tan"},
     },
@@ -909,6 +912,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a traditional Chinese red wrap-style top with gold trim, matching "
                    "red pants, black boots, a red waist sash, and subtle armor pieces",
         "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "silky and glossy",
                       "hair_style": "low ponytail", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "short", "skin_tone": "warm tan",
                      "ethnicity": "Chinese"},
@@ -958,6 +962,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a tan fringed buckskin dress reaching mid-thigh with geometric "
                    "patterns, a turquoise necklace, and brown moccasins",
         "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_texture": "silky and glossy",
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "bronze"},
     },
@@ -1031,7 +1036,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a form-fitting floor-length black gown with trailing sleeves and a "
                    "subtle cobweb motif",
         "signature": {"hair_color": "jet black", "hair_length": "waist length",
-                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
+                      "hair_texture": "silky and glossy", "eye_color": "dark brown"},
         "physique": {"body_type": "hourglass", "height": "statuesque", "skin_tone": "porcelain"},
     },
     "Wednesday Addams": {
@@ -1040,6 +1045,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a simple black dress with a white collar and cuffs, black stockings, "
                    "and black shoes",
         "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "silky and glossy",
                       "hair_style": "pigtails", "eye_color": "dark brown"},
         "physique": {"body_type": "slim", "height": "petite", "skin_tone": "very pale"},
     },
@@ -1135,7 +1141,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a form-fitting yellow and black insect-themed costume with functional "
-                   "wings, matching boots, and an antennae headpiece",
+                   "wings, matching boots, and an antennae headpiece, shrunk to a tiny "
+                   "insect-sized scale beside a towering everyday object",
         "signature": {"hair_color": "warm brown", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "medium brown"},
         "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "fair"},
@@ -1236,6 +1243,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "bright red", "hair_length": "long",
                       "hair_style": "low ponytail"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "an ignited lightsaber with a glowing magenta-purple blade",
     },
 
     # --- More Disney / animation -----------------------------------------
@@ -1243,7 +1251,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Peter Pan",
         "gender": "Female",
         "costume": "a strapless green leaf dress, tiny green slippers, translucent "
-                   "iridescent fairy wings, and a dusting of pixie dust",
+                   "iridescent fairy wings, and a dusting of pixie dust, shown at a "
+                   "tiny palm-sized fairy scale beside towering everyday objects",
         "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
                       "hair_style": "messy bun", "eye_color": "bright blue"},
         "physique": {"body_type": "petite and slim", "height": "very petite",
@@ -1519,7 +1528,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The Smurfs",
         "gender": "Female",
         "costume": "a white dress and white high-heeled shoes, with smooth, flawless light blue "
-                   "Smurf skin",
+                   "Smurf skin, on a tiny three-apples-high figure dwarfed by towering everyday objects",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "petite and slim", "height": "very petite"},
@@ -2009,7 +2018,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "a simple brown Jedi robe, with green wrinkled skin, very large pointed "
-                   "ears, and sparse white hair",
+                   "ears, and sparse white hair, on a tiny figure barely two feet tall",
         "signature": {"eye_color": "green"},
         "physique": {"body_type": "slim", "height": "very petite"},
         "prop": "a small ignited lightsaber with a short green energy blade and a "
@@ -6989,7 +6998,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "a loose tan woven robe, with smooth green skin, very large pointed "
-                   "ears, and a few wisps of fine white hair",
+                   "ears, and a few wisps of fine white hair, on a tiny figure barely knee-high",
         "eyes": "enormous dark glossy",
         "signature": {},
         "physique": {"body_type": "slim", "height": "very petite"},
@@ -8863,9 +8872,214 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_face": True,
         "costume": "a blue bodysuit with red gloves, red boots, a red-and-blue torso "
-                   "panel, and a blue belt",
+                   "panel, and a blue belt, shrunk to a tiny atom-sized scale beside a "
+                   "towering everyday object",
         "mask": "a red-and-blue cowl with a white atomic-symbol emblem on the forehead",
         "physique": {"body_type": "lean", "height": "short"},
+    },
+
+    # --- Expansion wave (v0.53.0): broadly recognizable icons ------------
+    # Non-natural skin uses the "smooth, flawless <colour> skin" / "uniform,
+    # all-over <colour> fur" marker so the engine suppresses the random human
+    # tone and anchors the colour (see identity_forge_cosplayer._BODY_PAINT_RE);
+    # skin_tone is then omitted from physique. Giants state scale in the costume
+    # so it renders in cosplay-only mode too. Full mascot suits set covers_face
+    # (+ mask) and covers_body.
+    "Oompa Loompa": {
+        "franchise": "Charlie and the Chocolate Factory",
+        "gender": "Male",
+        "costume": "brown lederhosen-style dungaree shorts with suspenders over a white "
+                   "long-sleeve shirt, knee-high white socks, and smooth, flawless bright "
+                   "orange skin",
+        "signature": {"hair_color": "emerald green", "hair_length": "very short",
+                      "hair_style": "slicked back"},
+        "physique": {"body_type": "stocky", "height": "very petite"},
+    },
+    "Willy Wonka": {
+        "franchise": "Charlie and the Chocolate Factory",
+        "gender": "Male",
+        "costume": "a deep plum velvet tailcoat over a tan paisley waistcoat, a brown-gold "
+                   "top hat, a lilac bow tie, checked trousers, and tan gloves",
+        "signature": {"hair_color": "light chestnut", "hair_length": "ear length",
+                      "hair_texture": "wavy", "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+        "prop": "a gold-topped walking cane",
+    },
+    "The BFG": {
+        "franchise": "The BFG",
+        "gender": "Male",
+        "costume": "a long dark waistcoat over a collarless shirt, a knotted red neckerchief, "
+                   "rough patched trousers, and a long leather coat, with enormous ears, on a "
+                   "towering, building-high giant frame that dwarfs everything around him",
+        "signature": {"hair_color": "silver", "hair_length": "short pixie",
+                      "hair_texture": "fine and wispy", "eye_color": "pale blue"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Fantastic Mr Fox": {
+        "franchise": "Fantastic Mr Fox",
+        "gender": "Male",
+        "covers_hair": True,
+        "costume": "a tan corduroy suit with a matching necktie, over uniform, all-over "
+                   "russet-orange fur, with a pointed fox snout, upright ears, and a bushy tail",
+        "signature": {"eye_color": "amber"},
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Goldilocks": {
+        "franchise": "Fairy Tales",
+        "gender": "Female",
+        "costume": "a pale blue dress with puffed sleeves, a white pinafore apron, white "
+                   "stockings, and black buckled shoes",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_texture": "curly", "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "fair"},
+    },
+    "Pinocchio": {
+        "franchise": "Pinocchio",
+        "gender": "Male",
+        "costume": "red dungaree shorts with suspenders, a short yellow jacket, a yellow "
+                   "peaked hat with a small red feather, a large blue bow, white gloves, and "
+                   "a long wooden nose",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "petite and slim", "height": "very petite", "skin_tone": "light"},
+    },
+    "Jack Frost": {
+        "franchise": "Rise of the Guardians",
+        "gender": "Male",
+        "costume": "a frost-blue hooded sweatshirt laced at the collar with white crystalline "
+                   "frost patterns, tan trousers cropped at the calf, and bare feet",
+        "signature": {"hair_color": "white", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "hair_style": "windswept", "eye_color": "ice blue"},
+        "physique": {"body_type": "lean", "height": "slightly above average height", "skin_tone": "very pale"},
+        "prop": "a curved wooden shepherd's-crook staff glazed with frost",
+    },
+    "Gingerbread Man": {
+        "franchise": "Fairy Tales",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a plump brown gingerbread-cookie body with white piped-icing swirls "
+                   "trimming the arms and legs and two round red gumdrop buttons",
+        "mask": "a round brown gingerbread head with white piped-icing eyes and a wide smiling icing mouth",
+        "physique": {"body_type": "chubby", "height": "average height"},
+    },
+    "Baba Yaga": {
+        "franchise": "Folklore",
+        "gender": "Female",
+        "costume": "layered ragged dark peasant robes, a knotted headscarf, a tattered woolen "
+                   "shawl, and a string of bone-and-bead amulets",
+        "signature": {"hair_color": "silver", "hair_length": "long",
+                      "hair_texture": "fine and wispy", "hair_style": "natural and unstyled", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "short", "skin_tone": "pale"},
+        "prop": "a gnarled wooden broom",
+    },
+    "Bride of Frankenstein": {
+        "franchise": "Movie",
+        "gender": "Female",
+        "costume": "a long flowing white burial gown with trailing gauze wrappings, over "
+                   "smooth, flawless pale grey skin, with faint stitched neck scars and dramatic "
+                   "white lightning streaks framing a tall conical beehive",
+        "eyes": "pale and sunken",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "hair_style": "updo"},
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Samara": {
+        "franchise": "The Ring",
+        "gender": "Female",
+        "costume": "a dirty, water-soaked pale dress, with long, stringy wet black hair hanging "
+                   "down over the face",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "pin straight", "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "very pale"},
+    },
+    "Ghostbuster": {
+        "franchise": "Ghostbusters",
+        "gender": "Male",
+        "costume": "a tan jumpsuit with a name patch and a no-ghost shoulder emblem, a bulky "
+                   "proton pack with a neutrona wand strapped across the back, utility straps, "
+                   "and black boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short", "eye_color": "dark brown"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "light"},
+    },
+    "Stay Puft Marshmallow Man": {
+        "franchise": "Ghostbusters",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a giant, puffy, pillowy white marshmallow body wearing a little blue-and-red "
+                   "sailor's neckerchief, on a towering, skyscraper-high giant frame looming over "
+                   "the city",
+        "mask": "a big round white marshmallow head with a cheerful painted smile under a small white sailor cap",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Roger Rabbit": {
+        "franchise": "Who Framed Roger Rabbit",
+        "gender": "Male",
+        "covers_hair": True,
+        "costume": "red dungaree overalls with two large yellow buttons, a blue-and-yellow "
+                   "polka-dot bow tie, yellow gloves, and tall floppy rabbit ears, over uniform, "
+                   "all-over soft white fur",
+        "signature": {"eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Popeye": {
+        "franchise": "Popeye",
+        "gender": "Male",
+        "costume": "a black long-sleeve sailor shirt with a red collar, blue trousers, a white "
+                   "sailor cap, brown boots, and a blue anchor tattoo on one enormously oversized "
+                   "forearm",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "blue-gray"},
+        "physique": {"body_type": "stocky", "height": "short", "skin_tone": "tan"},
+        "prop": "a corncob pipe",
+    },
+    "Olive Oyl": {
+        "franchise": "Popeye",
+        "gender": "Female",
+        "costume": "a fitted red long-sleeve top, a long black skirt, and big black boots on very "
+                   "long, thin limbs",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "sleek straight", "hair_style": "chignon", "eye_color": "dark brown"},
+        "physique": {"body_type": "very slim", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Johnny Bravo": {
+        "franchise": "Johnny Bravo",
+        "gender": "Male",
+        "costume": "a snug black t-shirt, blue jeans, black boots, and black sunglasses on an "
+                   "exaggeratedly muscular, barrel-chested build",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "medium brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
+    },
+    "Crash Bandicoot": {
+        "franchise": "Crash Bandicoot",
+        "gender": "Male",
+        "costume": "blue denim shorts, red sneakers, and brown fingerless gloves, over uniform, "
+                   "all-over bright orange fur with a pale belly",
+        "signature": {"hair_color": "orange", "hair_length": "very short",
+                      "hair_style": "windswept", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "short"},
+    },
+    "Sackboy": {
+        "franchise": "LittleBigPlanet",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a small, stout knitted brown burlap body with a zipper up the front and "
+                   "visible stitched seams, on a compact doll-sized figure",
+        "mask": "a round brown knitted head with stitched button eyes and a small zipper mouth set in a friendly expression",
+        "physique": {"body_type": "stocky", "height": "very petite"},
+    },
+    "Edward Scissorhands": {
+        "franchise": "Edward Scissorhands",
+        "gender": "Male",
+        "costume": "a black buckled leather bodysuit covered in straps, buckles, and zippers, "
+                   "over pale skin criss-crossed with faint scars, with hands made of long, sharp "
+                   "scissor blades",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_texture": "thick and voluminous", "hair_style": "tousled bedhead", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
     },
 }
 
@@ -8902,12 +9116,13 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Horizon", "Hitman", "Hellblade", "Doom", "Portal", "Silent Hill", "Darkstalkers",
         "The King of Fighters", "Bayonetta", "Divinity: Original Sin", "World of Warcraft",
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
-        "Sega", "Namco", "BioShock", "The Last of Us",
+        "Sega", "Namco", "BioShock", "The Last of Us", "Crash Bandicoot", "LittleBigPlanet",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
         "Anne of Green Gables", "Pippi Longstocking", "The Wizard of Oz", "Fairy Tales",
         "Literature", "Folklore", "Legend", "Dr. Seuss", "Winnie the Pooh",
+        "Charlie and the Chocolate Factory", "The BFG", "Fantastic Mr Fox",
     ),
     "Movies & TV": (
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
@@ -8917,6 +9132,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
+        "Rise of the Guardians", "The Ring", "Ghostbusters", "Edward Scissorhands",
         "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy", "Planters",
         "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",
         "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo",
@@ -8928,7 +9144,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fathom", "Chaos! Comics", "Comics", "Betty Boop", "The Flintstones", "The Jetsons",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
-        "Steven Universe",
+        "Steven Universe", "Popeye", "Johnny Bravo",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

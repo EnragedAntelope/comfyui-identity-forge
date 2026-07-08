@@ -522,6 +522,31 @@ def _pick_family_weighted(field_name: str, pool: list[str], rng: random.Random) 
     return rng.choice(chosen[1])
 
 
+def _weighted_choice(
+    field_def: dict, pool: list[str], gender: str, rng: random.Random
+) -> str:
+    """Pick from ``pool`` honoring a field's draw-weight maps.
+
+    A field may carry draw-weight maps ({value: weight}) to lean the random draw
+    without duplicating pool entries (the validator rejects duplicates). Two maps
+    compose: ``weights`` applies to every gender (e.g. bleached eyebrows are rare
+    for all), ``male_weights`` is a male-only overlay that wins on key collision
+    (e.g. men lean toward 'no makeup' and away from silky-glossy hair). Weights may
+    be floats so a single value can sit below its peers' implicit weight of 1.
+    Missing values weigh 1; a single ``rng.choices`` call keeps the RNG stream
+    shape identical to ``rng.choice``. Unweighted fields stay flat-uniform. Used by
+    both the initial random fill and the constraint engine's re-picks so a
+    down-weighted value stays rare even after an exclusion re-roll.
+    """
+    weights_map = field_def.get("weights")
+    male_weights = field_def.get("male_weights") if gender == "Male" else None
+    if weights_map or male_weights:
+        combined = {**(weights_map or {}), **(male_weights or {})}
+        weights = [combined.get(value, 1) for value in pool]
+        return rng.choices(pool, weights=weights)[0]
+    return rng.choice(pool)
+
+
 def _randomize_fields(
     locked: dict[str, str],
     gender: str,
@@ -560,17 +585,7 @@ def _randomize_fields(
             # these (none are density-gated), so seeds stay stable for the field.
             resolved[field_name] = _pick_family_weighted(field_name, pool, rng)
         elif pool:
-            # A field may carry a "male_weights" map ({value: draw_weight}) to
-            # lean the male random draw without duplicating pool entries
-            # (makeup_style leans 2x toward 'no makeup'). Missing values weigh 1;
-            # a single rng.choices call keeps the RNG stream shape identical to
-            # rng.choice. Female and "Any"-union draws stay flat-uniform.
-            male_weights = field_def.get("male_weights") if gender == "Male" else None
-            if male_weights:
-                weights = [male_weights.get(value, 1) for value in pool]
-                resolved[field_name] = rng.choices(pool, weights=weights)[0]
-            else:
-                resolved[field_name] = rng.choice(pool)
+            resolved[field_name] = _weighted_choice(field_def, pool, gender, rng)
         elif field_def["optional"]:
             resolved[field_name] = "None"
         else:  # non-optional field with an empty pool — fall back to raw list
@@ -646,7 +661,7 @@ def _apply_constraints(
                         pool = [v for v in _build_option_pool(trigger, trig_def, gender, resolved)
                                 if v not in conflicting]
                         if pool:
-                            resolved[trigger] = rng.choice(pool)
+                            resolved[trigger] = _weighted_choice(trig_def, pool, gender, rng)
                             changed = True
                             continue
                     warn(target, f"'{rule['field']}={rule['value']}' conflicts with "
@@ -658,7 +673,7 @@ def _apply_constraints(
                 pool = [v for v in _build_option_pool(target, field_def, gender, resolved)
                         if v not in excluded]
                 if pool:
-                    resolved[target] = rng.choice(pool)
+                    resolved[target] = _weighted_choice(field_def, pool, gender, rng)
                     changed = True
                 elif field_def["optional"]:
                     resolved[target] = "None"

@@ -296,6 +296,25 @@ for _style in _NO_PART_STYLES:
         "requires_field": "hair_part", "requires_value": "no part",
         "reason": f"a {_style} style shows no visible parting"})
 
+# Hair texture gates the two styles that physically require coiled hair. An afro
+# or twist-out on pin-straight/silky/wavy hair is a visible contradiction (the
+# style IS the texture). Only these two styles are truly texture-bound — braids,
+# locs, cornrows and bantu knots read fine on any texture, so they stay unpaired.
+# Keyed on texture (the physical constraint) like the hair_length gate above:
+# when a straight/wavy texture is drawn, afro/twist-out leave the style pool. If a
+# preset instead LOCKS afro/twist-out, the engine's contrapositive repair re-rolls
+# the randomized texture toward a coiled value, so an afro archetype stays coherent.
+_TEXTURE_BOUND_STYLES = ["afro", "twist-out"]
+_NON_COILED_TEXTURES = [
+    "pin straight", "sleek straight", "silky and glossy", "slightly wavy",
+    "loosely wavy", "wavy", "beachy waves",
+]
+for _texture in _NON_COILED_TEXTURES:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": _TEXTURE_BOUND_STYLES,
+        "reason": f"{_texture} hair cannot form an afro or twist-out"})
+
 # Masculine presentation defaults (gender == "Male").
 # Many fields (nails, lip colour, jewellery, hairstyle) share one option pool
 # across genders, so the random fill would otherwise hand a male character

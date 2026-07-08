@@ -108,9 +108,15 @@ def validate() -> list[str]:
             if len(pool) != len(set(pool)):
                 dups = sorted({v for v in pool if pool.count(v) > 1})
                 errors.append(f"{name}: duplicate values in {pool_key}: {dups}")
-        # male_weights leans the male random draw; every key must be a real male
-        # option (a typo would silently weight nothing).
-        for weight_key, pool_key in (("male_weights", "male_options"),):
+        # Draw-weight maps lean the random draw; every key must be a real option
+        # (a typo would silently weight nothing). "weights" applies to both pools
+        # (all-gender rarity); "male_weights" is the male-only overlay. Weights
+        # may be floats so a value can be down-weighted below its peers' implicit
+        # weight of 1 (e.g. rare bleached eyebrows, rare silky-glossy male hair).
+        for weight_key, pool_keys in (
+            ("weights", ("female_options", "male_options")),
+            ("male_weights", ("male_options",)),
+        ):
             weights = meta.get(weight_key)
             if weights is None:
                 continue
@@ -118,10 +124,14 @@ def validate() -> list[str]:
                 errors.append(f"{name}: {weight_key} must be a non-empty dict")
                 continue
             for value, weight in weights.items():
-                if value not in meta.get(pool_key, []):
-                    errors.append(f"{name}: {weight_key} key {value!r} not in {pool_key}")
-                if not isinstance(weight, int) or weight <= 0:
-                    errors.append(f"{name}: {weight_key}[{value!r}] must be a positive int")
+                if not any(value in meta.get(pk, []) for pk in pool_keys):
+                    errors.append(
+                        f"{name}: {weight_key} key {value!r} not in "
+                        f"{' or '.join(pool_keys)}")
+                if isinstance(weight, bool) or not isinstance(weight, (int, float)) \
+                        or weight <= 0:
+                    errors.append(
+                        f"{name}: {weight_key}[{value!r}] must be a positive number")
 
     for control in ("gender", "hair_color_scope"):
         if not FIELD_DEFINITIONS.get(control, {}).get("control"):

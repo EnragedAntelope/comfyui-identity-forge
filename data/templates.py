@@ -2222,7 +2222,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "gender": "Female", "ethnicity": "Indian", "age": ["22", "25", "28", "30"],
         "body_type": "hourglass", "height": "average height",
         "hair_color": ["jet black", "near black", "dark brown"], "hair_length": "very long",
-        "hair_texture": "thick and voluminous", "hair_style": "worn down",
+        "hair_texture": ["thick and voluminous", "silky and glossy"], "hair_style": "worn down",
         "skin_tone": ["caramel", "warm tan", "brown"], "makeup_style": "bold glam",
         "eyeliner": "smudged kohl", "lips_makeup": "deep red",
         "earrings": "long drop earrings", "necklace": "statement necklace", "bracelet": "bangle stack",

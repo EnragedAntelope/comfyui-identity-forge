@@ -91,6 +91,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "group": 'Face',
         "female_options": ['thin and arched', 'thin and straight', 'pencil thin', 'barely there', 'natural full', 'thick and straight', 'thick and arched', 'bushy', 'well defined and arched', 'bleached'],
         "male_options": ['thin and arched', 'thin and straight', 'pencil thin', 'barely there', 'natural full', 'thick and straight', 'thick and arched', 'bushy', 'well defined and arched', 'bleached'],
+        # 'bleached' brows read as "missing/invisible" to T2I models often enough
+        # that a flat 1-in-10 draw is too frequent, so an all-gender draw-weight
+        # trims it to ~2% (0.2 vs the implicit 1 of every other option). It stays
+        # fully selectable in the widget and lockable by presets that want it.
+        "weights": {'bleached': 0.2},
         "optional": False
     }),
     ("eye_color", {
@@ -198,6 +203,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # hair sentence.
         "female_options": ['pin straight', 'sleek straight', 'silky and glossy', 'slightly wavy', 'loosely wavy', 'wavy', 'beachy waves', 'loosely curled', 'softly curled', 'curly', 'tightly curled', 'coily', 'kinky coily', 'fine and wispy', 'thick and voluminous'],
         "male_options": ['pin straight', 'sleek straight', 'silky and glossy', 'slightly wavy', 'loosely wavy', 'wavy', 'beachy waves', 'loosely curled', 'softly curled', 'curly', 'tightly curled', 'coily', 'kinky coily', 'fine and wispy', 'thick and voluminous'],
+        # 'silky and glossy' is the luxurious salon-shine look. It stays in the
+        # male pool (legit for K-pop idol / Bollywood hero / bishonen / glam looks
+        # and lockable by such archetypes) but reads feminine as a random default
+        # on rugged male subjects, so a male-only draw-weight makes it rare on
+        # random men (0.3 vs the implicit 1). Female and "Any" draws are unchanged.
+        "male_weights": {'silky and glossy': 0.3},
         "optional": False
     }),
     ("hair_style", {

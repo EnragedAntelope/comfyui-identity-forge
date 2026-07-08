@@ -2097,6 +2097,88 @@ class MaleMakeupWeightTests(unittest.TestCase):
         self.assertLess(share, flat * 1.6)  # no hidden lean on the female pool
 
 
+class DrawWeightRarityTests(unittest.TestCase):
+    """The generalized draw-weight maps down-weight a single value below its peers.
+    ``weights`` biases every gender; ``male_weights`` is a male-only overlay. Float
+    weights let a value sit below the implicit 1 (bleached eyebrows, silky male hair)."""
+
+    def _share(self, field, value, gender, draws=4000):
+        hits = 0
+        for seed in range(draws):
+            resolved = _randomize_fields(
+                {}, gender, "Any color", "Balanced", "Any indoor/outdoor",
+                random.Random(seed))
+            if resolved.get(field) == value:
+                hits += 1
+        return hits / draws
+
+    def test_bleached_eyebrows_rare_for_all_genders(self):
+        self.assertEqual(FIELD_DEFINITIONS["eyebrows"].get("weights"), {"bleached": 0.2})
+        flat = 1 / len(FIELD_DEFINITIONS["eyebrows"]["female_options"])  # old 1/10
+        for gender in ("Female", "Male"):
+            share = self._share("eyebrows", "bleached", gender)
+            self.assertLess(share, flat * 0.5, gender)   # well under the old 10%
+            self.assertGreater(share, 0.0, gender)       # still reachable/lockable
+
+    def test_bleached_stays_rare_for_males_through_constraint_repick(self):
+        # Regression guard: the male brow-trim re-rolls ~1/3 of males; the exclusion
+        # re-pick must honor the weight map (via _weighted_choice) or bleached would
+        # creep back up toward the flat rate for men.
+        hits = 0
+        for seed in range(4000):
+            _, js = generate_character(seed, "Male", {})
+            flat = {}
+            for v in json.loads(js).values():
+                if isinstance(v, dict):
+                    flat.update(v)
+            if flat.get("eyebrows") == "bleached":
+                hits += 1
+        self.assertLess(hits / 4000, 0.05)  # ~3%, comfortably under the old 10%
+
+    def test_silky_glossy_rare_for_males_only(self):
+        self.assertEqual(
+            FIELD_DEFINITIONS["hair_texture"].get("male_weights"),
+            {"silky and glossy": 0.3})
+        female = self._share("hair_texture", "silky and glossy", "Female")
+        male = self._share("hair_texture", "silky and glossy", "Male")
+        flat = 1 / len(FIELD_DEFINITIONS["hair_texture"]["female_options"])
+        self.assertGreater(female, flat * 0.7)   # unchanged for women (~1/15)
+        self.assertLess(male, female * 0.6)       # meaningfully rarer for men
+        self.assertGreater(male, 0.0)             # still lockable/reachable
+
+
+class TextureStyleCoherenceTests(unittest.TestCase):
+    """afro / twist-out are the only texture-bound styles; a straight or wavy
+    hair_texture must never pair with them (constraints.py 0.53)."""
+
+    _NON_COILED = {
+        "pin straight", "sleek straight", "silky and glossy", "slightly wavy",
+        "loosely wavy", "wavy", "beachy waves",
+    }
+
+    def test_afro_twistout_never_on_straight_or_wavy(self):
+        for gender in ("Female", "Male"):
+            for seed in range(600):
+                _, js = generate_character(seed, gender, {}, hair_color_scope="Full spectrum")
+                flat = {}
+                for v in json.loads(js).values():
+                    if isinstance(v, dict):
+                        flat.update(v)
+                if flat.get("hair_style") in ("afro", "twist-out"):
+                    self.assertNotIn(flat.get("hair_texture"), self._NON_COILED,
+                                     f"{gender} seed pairing")
+
+    def test_locked_afro_repairs_texture_to_coiled(self):
+        # A preset that locks afro must not leave a random straight texture beside it.
+        for seed in range(200):
+            _, js = generate_character(seed, "Female", {"hair_style": "afro"})
+            flat = {}
+            for v in json.loads(js).values():
+                if isinstance(v, dict):
+                    flat.update(v)
+            self.assertNotIn(flat.get("hair_texture"), self._NON_COILED, seed)
+
+
 class PhysiqueCoherenceTests(unittest.TestCase):
     """body_type <-> fitness_level exclusions: contradictory extremes can't be
     rolled together, while explicit locks still win."""
