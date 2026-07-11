@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import random
+import re
 import sys
 import unittest
 
@@ -2405,20 +2406,23 @@ class SizeScaleSuppressionTests(unittest.TestCase):
                                    include_prop=False, random_scope="Any")
         return json.loads(raw)
 
-    def test_giant_cosplayer_locks_height_absent(self):
-        """``size_scale: "giant"`` must lock ``height`` to "None" so the engine
-        omits it from the prose (the costume prose already carries the scale)."""
+    def test_giant_cosplayer_locks_height_to_scale_prose(self):
+        """``size_scale: "giant"`` must lock ``height`` to the entry's authored
+        ``scale_prose`` so the scale renders in the lead sentence (the costume
+        prose reinforces it later)."""
         doc = self._doc(self._GIANT)
         body = doc.get("Body", {})
-        self.assertEqual(body.get("height"), "None",
-                         f"{self._GIANT} height should be None, got {body.get('height')!r}")
+        expected = COSPLAYERS[self._GIANT]["scale_prose"]
+        self.assertEqual(body.get("height"), expected,
+                         f"{self._GIANT} height should be {expected!r}, got {body.get('height')!r}")
 
-    def test_tiny_cosplayer_locks_height_absent(self):
-        """``size_scale: "tiny"`` must also lock ``height`` to "None"."""
+    def test_tiny_cosplayer_locks_height_to_scale_prose(self):
+        """``size_scale: "tiny"`` must also lock ``height`` to the scale_prose."""
         doc = self._doc(self._TINY)
         body = doc.get("Body", {})
-        self.assertEqual(body.get("height"), "None",
-                         f"{self._TINY} height should be None, got {body.get('height')!r}")
+        expected = COSPLAYERS[self._TINY]["scale_prose"]
+        self.assertEqual(body.get("height"), expected,
+                         f"{self._TINY} height should be {expected!r}, got {body.get('height')!r}")
 
     def test_neutral_cosplayer_keeps_height(self):
         """A cosplayer without ``size_scale`` must NOT have its height touched
@@ -2459,15 +2463,15 @@ class SizeScaleSuppressionTests(unittest.TestCase):
         identity; the rest of the physique is the randomizable person)."""
         doc = self._doc(self._GIANT, look_level="Full character")
         body = doc.get("Body", {})
-        self.assertEqual(body.get("height"), "None")
+        self.assertEqual(body.get("height"), COSPLAYERS[self._GIANT]["scale_prose"])
         # body_type and skin_tone must still be present (Giganta's full physique)
         self.assertIn("body_type", body, "body_type must survive size-scale suppression")
         self.assertIn("skin_tone", body, "skin_tone must survive size-scale suppression")
 
-    def test_engine_output_omits_height_for_giant(self):
+    def test_engine_output_renders_scale_prose_for_giant(self):
         """End-to-end: the engine's prose must NOT contain the character's
-        original ``physique.height`` (e.g. "very tall" for Giganta) when
-        ``size_scale`` is set -- the scale lives in the costume prose only."""
+        original ``physique.height`` (e.g. "very tall" for Giganta) and MUST
+        contain the authored ``scale_prose`` in its place."""
         from nodes.identity_forge import generate_character
         archetype_str = build_cosplayer_json(self._GIANT, seed=42,
                                              look_level="Full character",
@@ -2483,15 +2487,18 @@ class SizeScaleSuppressionTests(unittest.TestCase):
             covers_body=parsed.get("_covers_body", False),
             covers_hair=parsed.get("_covers_hair", False),
         )
-        # Giganta's pre-existing physique.height was "very tall" -- the
-        # builder suppresses it, so it must NOT appear in the prose.
+        # Giganta's pre-existing physique.height was "very tall" -- the builder
+        # replaces it with scale_prose, so the original must NOT appear and the
+        # authored scale MUST.
         self.assertNotIn("very tall", prose,
                          f"Engine prose for {self._GIANT} leaked physique.height: {prose[:200]}")
+        self.assertIn(COSPLAYERS[self._GIANT]["scale_prose"], prose,
+                      f"Engine prose for {self._GIANT} missing scale_prose: {prose[:200]}")
 
     def test_all_size_scaled_cosplayers_have_valid_size_value(self):
         """Cross-check: every cosplayer that declares ``size_scale`` must use a
-        recognized value (currently ``"giant"`` or ``"tiny"``) so the builder's
-        suppression logic never encounters an unknown token."""
+        recognized value ("giant"/"tiny") AND carry a non-empty ``scale_prose``
+        the builder can lock into the height slot."""
         valid = {"giant", "tiny"}
         for name, entry in COSPLAYERS.items():
             scale = entry.get("size_scale")
@@ -2499,10 +2506,38 @@ class SizeScaleSuppressionTests(unittest.TestCase):
                 self.assertIn(scale, valid,
                                f"{name!r} has unknown size_scale {scale!r}; "
                                f"expected one of {valid}")
-        # And the count must match what the plan promised (31).
+                prose = entry.get("scale_prose")
+                self.assertTrue(isinstance(prose, str) and prose,
+                                f"{name!r} declares size_scale but has no scale_prose")
+        # And the count must match the roster plan (31 + Papa Smurf = 32).
         scaled = [n for n, e in COSPLAYERS.items() if e.get("size_scale")]
-        self.assertGreaterEqual(len(scaled), 31,
-                                f"Expected >= 31 size-scaled cosplayers, got {len(scaled)}")
+        self.assertGreaterEqual(len(scaled), 32,
+                                f"Expected >= 32 size-scaled cosplayers, got {len(scaled)}")
+
+    def test_scale_text_is_self_contained(self):
+        """No size-scaled character's costume/scale_prose may name a reference
+        object ("beside a towering everyday object", "three apples high") --
+        T2I models render the named object next to the character."""
+        banned = (r"beside (a|the)\b", r"everyday objects?", r"apples high",
+                  r"\binsect[- ]sized", r"\bant[- ]sized", r"\bdoll[- ]sized",
+                  r"\bpalm[- ]sized", r"\bdwarfing", r"next to (a|the)\b")
+        for name, entry in COSPLAYERS.items():
+            if not entry.get("size_scale"):
+                continue
+            combined = f"{entry.get('costume', '')} {entry.get('scale_prose', '')}".lower()
+            for pattern in banned:
+                self.assertIsNone(re.search(pattern, combined),
+                                  f"{name!r} scale text matches comparison pattern {pattern!r}")
+
+    def test_papa_smurf_and_gargamel_present(self):
+        """Papa Smurf is a size-scaled tiny; Gargamel is a regular-sized human
+        (canonically NOT giant or tiny) -- guard both rosters."""
+        papa = COSPLAYERS["Papa Smurf"]
+        self.assertEqual(papa.get("size_scale"), "tiny")
+        self.assertTrue(papa.get("scale_prose"))
+        gargamel = COSPLAYERS["Gargamel"]
+        self.assertNotIn("size_scale", gargamel)
+        self.assertNotIn("scale_prose", gargamel)
 
 
 if __name__ == "__main__":

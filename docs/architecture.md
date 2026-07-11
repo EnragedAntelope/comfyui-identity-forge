@@ -214,12 +214,20 @@ Conventions (keep the data coherent):
   skull): use the `covers_face` + `mask` mechanism (head described in `mask`) so no random
   hair/face contradicts the effect, and keep the `an even … coat of …` body-paint phrasing in
   `costume` so the Body-group `skin_tone` is suppressed too (see body-paint note above).
-- **Extreme-size characters** (giants Giganta, Titania, Giant-Man, The BFG, Stay Puft; tiny Tinker
-  Bell, Wasp, Smurfette, The Atom, Yoda, Grogu): put the scale in `costume` prose ("towering,
-  building-high giant frame …", "shrunk to a tiny insect-sized scale …") — there is no size field
-  for humans. Critically, `physique.height` only renders in **Full-character** mode, but `costume`
-  renders in **both** modes, so scale MUST live in the costume string or a costume-only cosplay of a
-  giant/tiny character loses its defining trait.
+- **Extreme-size characters** (giants Giganta, Titania, Giant-Man, The BFG, Stay Puft, Hulk…; tiny
+  Tinker Bell, Wasp, Smurfette, The Atom, Yoda, Papa Smurf): set `size_scale` (`"giant"`/`"tiny"`)
+  **plus** a hand-authored `scale_prose` phrase — the builder locks `scale_prose` into the `height`
+  slot (override=True, beats any `physique.height`), so the scale renders in the **lead sentence**
+  in both look levels ("… with an athletic build, colossal and fifty feet tall, and warm tan
+  skin"). This works because `height`'s gender pools are identical, so the gender gate passes free
+  text — the same route as the body-paint `skin_tone` anchor. Repeat/reinforce the scale at the end
+  of the `costume` prose too. Wording must be **self-contained**: strong scale tokens ("colossal",
+  "giantess", "hulking", "fifty feet tall"; "tiny", "fairy-sized", "barely an inch tall") and NEVER
+  a reference object ("beside a towering everyday object", "three apples high", "insect-sized") —
+  T2I models render the named object next to the character. The validator enforces the
+  size_scale↔scale_prose pairing and rejects comparison-object phrases. Tier the language: Hulk is
+  enormously-tall-hulking, NOT building-scale; Galactus/Giganta are colossal; Yoda is two-feet-short,
+  NOT fairy-scale.
 - **Plain ASCII only** in names and text (no em/en dashes, smart quotes, accents — e.g. use
   `Padme`, `Eowyn`). Tokenizers mangle the rest. Names are dict keys: a duplicate **silently
   overrides** — grep before adding.

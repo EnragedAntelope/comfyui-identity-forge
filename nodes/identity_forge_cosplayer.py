@@ -203,11 +203,14 @@ _BALD_SUPPRESS: dict[str, str] = {
 _CLEAN_SHAVEN_RE = re.compile(r"clean[ -]?shaven", re.IGNORECASE)
 _CLEAN_SHAVEN_SUPPRESS: dict[str, str] = {"facial_hair": "clean shaven"}
 
-#: Size-scale suppression: when the entry carries a ``size_scale`` key (e.g. "giant"
-#: or "tiny") the costume prose ALREADY describes the scale; the engine must NOT
-#: inject a contradictory ``physique.height``. ``override=True`` beats any
-#: ``physique.height`` the entry may carry.
-_SIZE_SCALE_SUPPRESS: dict[str, str] = {"height": "None"}
+# Size-scale entries ("giant"/"tiny") pair with a hand-authored ``scale_prose``
+# phrase that REPLACES the human ``height`` value (applied in build_cosplayer_json).
+# ``height``'s gender pools are identical, so the engine's gender gate passes any
+# free text and the lead sentence renders it verbatim ("… with an athletic build,
+# colossal and fifty feet tall, and warm tan skin") — the same free-text-lock route
+# the body-paint skin_tone anchor uses. Early placement is deliberate: T2I models
+# weight lead tokens, so the scale lands up front and the costume prose reinforces
+# it later.
 
 
 def _is_bald(entry: dict, costume: str) -> bool:
@@ -380,11 +383,12 @@ def build_cosplayer_json(
             _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
     if _CLEAN_SHAVEN_RE.search(costume):
         _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
-    # Size-scale: costume prose already describes the scale; suppress the engine's
-    # normal height rendering so it doesn't contradict (e.g. "very tall" beside
-    # "skyscraper-high giantess"). override=True beats any physique.height lock.
+    # Size-scale: replace the human height with the entry's authored scale_prose so
+    # the scale reads in the lead sentence (strongest T2I position) instead of a
+    # contradictory "very tall"/"petite". override=True beats any physique.height
+    # lock. Validator guarantees scale_prose accompanies size_scale.
     if entry.get("size_scale"):
-        _apply_suppress(document, _SIZE_SCALE_SUPPRESS, override=True)
+        _apply_suppress(document, {"height": entry["scale_prose"]}, override=True)
     return json.dumps(document, indent=2)
 
 

@@ -331,6 +331,29 @@ def validate() -> list[str]:
         if skin and (entry.get("signature", {}).get("skin_tone")
                      or entry.get("physique", {}).get("skin_tone")):
             errors.append(f"cosplayer '{name}': set either 'skin' or skin_tone, not both")
+        # Size-scale characters: ``size_scale`` flags the tier and MUST pair with a
+        # hand-authored ``scale_prose`` (free text the builder locks into the height
+        # slot so the scale reads in the lead sentence). Both texts must be
+        # self-contained: naming a reference object ("beside a towering everyday
+        # object", "three apples high", "insect-sized") makes T2I models render
+        # that object next to the character.
+        size_scale = entry.get("size_scale")
+        scale_prose = entry.get("scale_prose")
+        if size_scale is not None and size_scale not in ("giant", "tiny"):
+            errors.append(f"cosplayer '{name}': size_scale must be 'giant' or 'tiny', got {size_scale!r}")
+        if size_scale and (not isinstance(scale_prose, str) or not scale_prose):
+            errors.append(f"cosplayer '{name}': size_scale requires a non-empty 'scale_prose'")
+        if scale_prose is not None and not size_scale:
+            errors.append(f"cosplayer '{name}': scale_prose is only allowed with size_scale")
+        if size_scale:
+            combined = f"{entry.get('costume', '')} {scale_prose or ''}".lower()
+            for banned in (r"beside (a|the)\b", r"everyday objects?", r"apples high",
+                           r"\binsect[- ]sized", r"\bant[- ]sized", r"\bdoll[- ]sized",
+                           r"\bpalm[- ]sized", r"\bdwarfing", r"next to (a|the)\b"):
+                if re.search(banned, combined):
+                    errors.append(
+                        f"cosplayer '{name}': scale text matches comparison-object "
+                        f"pattern {banned!r} (must be self-contained)")
         # signature is applied in both modes; physique only in Full character.
         # Every key must be a real field and every value a valid option for it.
         for section in ("signature", "physique"):
