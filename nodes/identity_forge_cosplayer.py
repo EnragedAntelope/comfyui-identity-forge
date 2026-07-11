@@ -40,10 +40,10 @@ without ComfyUI.
 """
 from __future__ import annotations
 
+from collections import OrderedDict
 import json
 import random
 import re
-from collections import OrderedDict
 from typing import Any
 
 # Dual import: package-relative inside ComfyUI, absolute when run standalone.
@@ -203,6 +203,12 @@ _BALD_SUPPRESS: dict[str, str] = {
 _CLEAN_SHAVEN_RE = re.compile(r"clean[ -]?shaven", re.IGNORECASE)
 _CLEAN_SHAVEN_SUPPRESS: dict[str, str] = {"facial_hair": "clean shaven"}
 
+#: Size-scale suppression: when the entry carries a ``size_scale`` key (e.g. "giant"
+#: or "tiny") the costume prose ALREADY describes the scale; the engine must NOT
+#: inject a contradictory ``physique.height``. ``override=True`` beats any
+#: ``physique.height`` the entry may carry.
+_SIZE_SCALE_SUPPRESS: dict[str, str] = {"height": "None"}
+
 
 def _is_bald(entry: dict, costume: str) -> bool:
     """Whether the costume describes a bald head (so scalp hair must be hidden)."""
@@ -327,6 +333,9 @@ def build_cosplayer_json(
         ("covers_body", covers_body),
         ("covers_hair", covers_hair),
     ])
+    size_scale = entry.get("size_scale", "")
+    if size_scale:
+        document["_meta"]["size_scale"] = size_scale
     document.update(group_fields(fields))
     # When an eye-colour override is in play, lock eye_shape to absent so the override
     # reads clean downstream ("crimson eyes", not "crimson deep-set eyes"). Injected
@@ -371,6 +380,11 @@ def build_cosplayer_json(
             _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
     if _CLEAN_SHAVEN_RE.search(costume):
         _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
+    # Size-scale: costume prose already describes the scale; suppress the engine's
+    # normal height rendering so it doesn't contradict (e.g. "very tall" beside
+    # "skyscraper-high giantess"). override=True beats any physique.height lock.
+    if entry.get("size_scale"):
+        _apply_suppress(document, _SIZE_SCALE_SUPPRESS, override=True)
     return json.dumps(document, indent=2)
 
 

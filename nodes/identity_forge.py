@@ -19,10 +19,10 @@ Design notes
 """
 from __future__ import annotations
 
+from collections import OrderedDict
 import json
 import random
 import re
-from collections import OrderedDict
 from typing import Any
 
 # Dual import: package-relative inside ComfyUI (avoids polluting sys.path with

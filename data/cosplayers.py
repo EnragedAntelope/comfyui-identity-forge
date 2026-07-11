@@ -674,9 +674,10 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "covers_face": True,
         "costume": "only torn cargo shorts, with uniform, all-over grey-and-white shark skin and "
-                   "a dorsal fin down the back, on a huge muscular frame",
+                   "a dorsal fin down the back, on an enormously tall hulking figure of immense proportions",
         "mask": "a massive great-white shark head with rows of jagged teeth and small "
                 "solid black eyes",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Polka-Dot Man": {
@@ -704,9 +705,10 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "covers_face": True,
         "costume": "a minimal warrior harness with gold trim, over smooth, flawless pink-red "
-                   "alien skin, on a towering muscular frame",
+                   "alien skin, on a towering figure of overwhelming size and proportion",
         "mask": "a pink-red alien face with a large third eye set in the forehead, a "
                 "tall white finned crest over the head, and glowing red eyes",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Starro": {
@@ -1055,9 +1057,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a purple-and-white athletic leotard, with smooth, flawless rich green skin "
-                   "covering her face and entire body",
+                   "covering her face and entire body, on an enormously tall figure of immense towering proportions",
         "signature": {"hair_color": "emerald green", "hair_length": "slightly past shoulders",
                       "hair_texture": "loosely wavy", "eye_color": "emerald"},
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Captain Marvel": {
@@ -1141,10 +1144,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a form-fitting yellow and black insect-themed costume with functional "
-                   "wings, matching boots, and an antennae headpiece, shrunk to a tiny "
-                   "insect-sized scale beside a towering everyday object",
+                   "wings, matching boots, and an antennae headpiece, on a figure shrunk to impossibly "
+                   "tiny miniature proportions",
         "signature": {"hair_color": "warm brown", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "medium brown"},
+        "size_scale": "tiny",
         "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "fair"},
     },
     "Elektra": {
@@ -1251,10 +1255,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Peter Pan",
         "gender": "Female",
         "costume": "a strapless green leaf dress, tiny green slippers, translucent "
-                   "iridescent fairy wings, and a dusting of pixie dust, shown at a "
-                   "tiny palm-sized fairy scale beside towering everyday objects",
+                   "iridescent fairy wings, and a dusting of pixie dust, on a fairy-sized figure of "
+                   "miniature proportions",
         "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
                       "hair_style": "messy bun", "eye_color": "bright blue"},
+        "size_scale": "tiny",
         "physique": {"body_type": "petite and slim", "height": "very petite",
                      "skin_tone": "golden tan"},
     },
@@ -1528,9 +1533,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The Smurfs",
         "gender": "Female",
         "costume": "a white dress and white high-heeled shoes, with smooth, flawless light blue "
-                   "Smurf skin, on a tiny three-apples-high figure dwarfed by towering everyday objects",
+                   "Smurf skin, on a tiny diminutive figure of miniature proportions",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright blue"},
+        "size_scale": "tiny",
         "physique": {"body_type": "petite and slim", "height": "very petite"},
     },
     "Liara T'Soni": {
@@ -1609,9 +1615,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "only torn purple trousers, with smooth, flawless rich green skin over "
-                   "enormous muscles",
+                   "enormous muscles, on an enormously tall hulking figure of immense towering proportions",
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "eye_color": "green"},
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Wolverine": {
@@ -1677,16 +1684,19 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "gold and blue armored battle plate, blue greaves, and the golden Infinity "
-                   "Gauntlet, with uniform, all-over deeply ridged purple skin",
+                   "Gauntlet, with uniform, all-over deeply ridged purple skin, on an enormously "
+                   "tall figure of immense towering proportions",
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Venom": {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a hulking glossy pitch-black symbiote bodysuit with a white spider "
-                   "emblem across the chest and clawed hands",
+        "costume": "a hulking glossy pitch-black symbiote bodysuit on an imposingly large figure of "
+                   "immense proportions, with a white spider emblem across the chest and clawed hands",
         "mask": "a featureless symbiote head with huge jagged white eye patches",
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Daredevil": {
@@ -2018,8 +2028,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "a simple brown Jedi robe, with green wrinkled skin, very large pointed "
-                   "ears, and sparse white hair, on a tiny figure barely two feet tall",
+                   "ears, and sparse white hair, on a diminutive small-statured figure of notably short height",
         "signature": {"eye_color": "green"},
+        "size_scale": "tiny",
         "physique": {"body_type": "slim", "height": "very petite"},
         "prop": "a small ignited lightsaber with a short green energy blade and a "
                 "stubby silver hilt",
@@ -3650,10 +3661,11 @@ COSPLAYERS: dict[str, dict] = {
     "Zarya": {
         "franchise": "Overwatch",
         "gender": "Female",
-        "costume": "a teal-and-pink armored bodysuit on a towering, hugely muscular "
-                   "frame, with a glowing particle-cannon harness",
+        "costume": "a teal-and-pink armored bodysuit on a towering heavily muscled figure of immense "
+                   "proportions, with a glowing particle-cannon harness",
         "signature": {"hair_color": "hot pink", "hair_length": "very short",
                       "eye_color": "bright blue"},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
     },
     "Sombra": {
@@ -3705,9 +3717,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Overwatch",
         "gender": "Male",
         "covers_face": True,
-        "costume": "an enormous suit of blue crusader power armor on a towering frame, "
-                   "with a rocket-hammer",
+        "costume": "an enormous suit of blue crusader power armor on a towering figure of immense armored "
+                   "proportions, with a rocket-hammer",
         "mask": "a heavy blue crusader helmet with a barred visor",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Ana": {
@@ -4030,8 +4043,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "an immaculate white three-piece suit with a diamond-topped cane, on "
-                   "a towering, immensely heavy frame, and a clean-shaven bald head",
+                   "an imposingly large figure of immense mass and towering stature, and a clean-shaven bald head",
         "signature": {"facial_hair": "clean shaven", "eye_color": "blue-gray"},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
     },
     "Red Skull": {
@@ -4065,8 +4079,9 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "costume": "torn dark trousers, with uniform, all-over green-grey scaly reptilian skin, "
                    "ridged bony plates over the brow and spine, pointed finned ears, and a gaunt "
-                   "monstrous face, on a towering muscular frame",
+                   "monstrous face, on an imposingly large hulking figure of towering stature",
         "eyes": "pale green",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Pyro": {
@@ -4100,8 +4115,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "bulky crimson-and-brown armor over an enormous, towering muscular frame",
+        "costume": "bulky crimson-and-brown armor over an enormously tall imposing figure of immense proportions",
         "mask": "a huge rounded crimson helmet with narrow eye-slits",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Apocalypse": {
@@ -4109,16 +4125,18 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "heavy blue-and-grey techno-organic armor with cabling, over smooth, flawless "
-                   "blue-grey skin, on a towering frame",
+                   "blue-grey skin, on a towering figure of overwhelming size and power",
         "signature": {"eye_color": "bright blue"},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Galactus": {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "massive purple-and-blue cosmic armor on a planet-sized, colossal frame",
+        "costume": "massive purple-and-blue cosmic armor on a planet-sized figure of cosmic colossal scale",
         "mask": "a towering horned purple cosmic helmet",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Titania": {
@@ -4126,12 +4144,11 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a purple-and-white sleeveless high-cut costume with white gloves and boots, "
                    "over smooth, flawless orange-toned skin, with a strong jaw and bold features "
-                   "on a powerfully muscular frame - towering and gigantic, vastly larger than "
-                   "everything around her, dwarfing the entire scene with an overwhelming sense "
-                   "of scale",
+                   "on a powerfully muscular frame - towering and gigantic with overwhelming scale and proportion",
         "eyes": "green",
         "signature": {"hair_color": "deep red", "hair_length": "very long",
                       "hair_texture": "wavy"},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
 
@@ -4243,8 +4260,9 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "costume": "a red-and-black Red Lantern uniform with a clawed red lantern emblem and a "
                    "glowing red power ring worn on the finger, over smooth, flawless deep-red "
-                   "skin with bony ridges, on a towering muscular frame",
+                   "skin with bony ridges, on a towering figure of overwhelming size",
         "eyes": "burning red",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Larfleeze": {
@@ -4285,27 +4303,30 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "costume": "black biker leathers with chains and spikes over smooth, flawless "
-                   "chalk-white skin, on a massive muscular frame",
+                   "chalk-white skin, on an enormously tall hulking figure of imposing stature",
         "eyes": "red on black sclera",
         "signature": {"hair_color": "jet black", "hair_length": "long"},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Giganta": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a torn leopard-print one-shoulder dress, scaled up to a towering, "
-                   "skyscraper-high fifty-foot giantess looming over the scene",
+        "costume": "a torn leopard-print one-shoulder dress, scaled up to a colossal "
+                   "fifty-foot-tall figure of overwhelmingly gigantic scale and proportion",
         "signature": {"hair_color": "deep red", "hair_length": "very long",
                       "eye_color": "green"},
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "warm tan"},
     },
     "Giant-Man": {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a red-and-blue size-changing suit grown to a towering, building-high "
-                   "giant scale",
+        "costume": "a red-and-blue size-changing suit grown to a colossal building-high "
+                   "figure of overwhelming gigantic scale",
         "mask": "a red domed helmet with antennae and a silver faceplate",
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
 
@@ -4314,10 +4335,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Predator",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a towering hulking frame with mottled reptilian skin, a fishnet "
+        "costume": "a towering hulking figure of immense alien proportions with mottled reptilian skin, a fishnet "
                    "mesh underlayer, segmented armor, wrist blades, and long dreadlock-like "
                    "tendrils, with a shoulder plasma cannon",
         "mask": "a scarred bio-metal hunter's mask with twin laser sights",
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "RoboCop": {
@@ -4904,8 +4926,9 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_face": True,
         "costume": "a red-and-silver size-changing suit with utility straps, shrunk to a "
-                   "tiny scale beside a towering everyday object",
+                   "figure of impossibly tiny miniature proportions",
         "mask": "a red-and-silver helmet with round antennae and a dark visor",
+        "size_scale": "tiny",
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Hawkeye": {
@@ -4959,9 +4982,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "costume": "nothing but uniform, all-over brown wooden bark skin with mossy patches and "
-                   "faint glowing seams, on a towering tree-like frame with branching limbs",
+                   "faint glowing seams, on a towering figure of immense tree-like proportions",
         "eyes": "glowing amber",
         "signature": {},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Mantis": {
@@ -4981,9 +5005,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "costume": "heavy blue-and-grey Apokoliptian armor over uniform, all-over grey craggy "
-                   "stone-like skin, on a towering, monstrously powerful frame",
+                   "stone-like skin, on an enormously tall figure of immense towering proportions",
         "eyes": "glowing red Omega energy",
         "signature": {},
+        "size_scale": "giant",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Firestorm": {
@@ -5064,10 +5089,11 @@ COSPLAYERS: dict[str, dict] = {
     "The Atom": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a red-and-blue size-changing bodysuit, shrunk to a tiny atom-sized "
-                   "scale beside a towering everyday object",
+        "costume": "a red-and-blue size-changing bodysuit, shrunk to a figure of impossibly "
+                   "tiny miniature proportions",
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "eye_color": "dark brown"},
+        "size_scale": "tiny",
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
     "Plastic Man": {
@@ -6697,11 +6723,11 @@ COSPLAYERS: dict[str, dict] = {
     "The 50 Foot Woman": {
         "franchise": "Attack of the 50 Foot Woman",
         "gender": "Female",
-        "costume": "a torn white dress stretched over a colossal fifty-foot frame that "
-                   "towers over buildings and dwarfs everything in the scene, with normal "
-                   "human coloring despite the giant size",
+        "costume": "a torn white dress stretched over a colossal fifty-foot-tall figure of "
+                   "overwhelmingly gigantic scale, with normal human coloring",
         "signature": {"hair_color": "golden blonde", "hair_length": "very long",
                       "hair_texture": "loosely wavy", "eye_color": "bright blue"},
+        "size_scale": "giant",
         "physique": {"body_type": "curvy", "height": "very tall", "skin_tone": "fair"},
     },
 
@@ -8371,11 +8397,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Green Giant",
         "gender": "Male",
         "costume": "a short toga made of woven green leaves, with smooth, flawless rich green "
-                   "skin covering his face and entire body, on a towering, building-high giant "
-                   "frame vastly larger than everything around him, dwarfing the scene with an "
-                   "overwhelming sense of scale",
+                   "skin covering his face and entire body, on a towering figure of impossible "
+                   "gigantic scale and proportion",
         "signature": {"hair_color": "emerald green", "hair_length": "very short",
                       "hair_texture": "wavy", "hair_style": "slicked back"},
+        "size_scale": "giant",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Pillsbury Doughboy": {
@@ -8910,9 +8936,10 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a long dark waistcoat over a collarless shirt, a knotted red neckerchief, "
                    "rough patched trousers, and a long leather coat, with enormous ears, on a "
-                   "towering, building-high giant frame that dwarfs everything around him",
+                   "colossal towering figure of impossible gigantic scale and proportion",
         "signature": {"hair_color": "silver", "hair_length": "short pixie",
                       "hair_texture": "fine and wispy", "eye_color": "pale blue"},
+        "size_scale": "giant",
         "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "fair"},
     },
     "Fantastic Mr Fox": {
@@ -9008,9 +9035,9 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "covers_body": True,
         "costume": "a giant, puffy, pillowy white marshmallow body wearing a little blue-and-red "
-                   "sailor's neckerchief, on a towering, skyscraper-high giant frame looming over "
-                   "the city",
+                   "sailor's neckerchief, on a colossal towering figure of overwhelming gigantic scale",
         "mask": "a big round white marshmallow head with a cheerful painted smile under a small white sailor cap",
+        "size_scale": "giant",
         "physique": {"body_type": "plus size", "height": "very tall"},
     },
     "Roger Rabbit": {

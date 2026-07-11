@@ -7,10 +7,10 @@ Pure-stdlib ``unittest`` so it runs without ComfyUI installed:
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import random
 import sys
 import unittest
-from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -2381,6 +2381,128 @@ class UserOptionsIntegrationTests(unittest.TestCase):
                     del USER_ADDED_FIELD_VALUES[k]
             USER_ADDED_OUTFIT_STYLES.clear()
             USER_ADDED_OUTFIT_STYLES.update(before_styles)
+
+class SizeScaleSuppressionTests(unittest.TestCase):
+    """Verify ``size_scale`` on a cosplayer entry suppresses the engine's height
+    rendering and surfaces in ``_meta`` for downstream consumers.
+
+    The builder is responsible for both: locking ``height`` to "None" so the
+    engine drops it from prose and JSON, and writing ``size_scale`` into
+    ``_meta`` so the IdentityForge node can detect and present the scale. The
+    engine does NOT inject any size language itself -- the costume prose
+    carries the scale.
+    """
+
+    # A giant (colossal) and a tiny character to cover both branches.
+    _GIANT = "Giganta"
+    _TINY = "Tinker Bell"
+    _NEUTRAL = "Spider-Man"  # no size_scale; height must be left alone
+
+    def _doc(self, name, look_level="Full character"):
+        """Run the cosplayer builder and return the parsed JSON document."""
+        raw = build_cosplayer_json(name, seed=42, look_level=look_level,
+                                   mask_mode=_MASK_DEFAULT,
+                                   include_prop=False, random_scope="Any")
+        return json.loads(raw)
+
+    def test_giant_cosplayer_locks_height_absent(self):
+        """``size_scale: "giant"`` must lock ``height`` to "None" so the engine
+        omits it from the prose (the costume prose already carries the scale)."""
+        doc = self._doc(self._GIANT)
+        body = doc.get("Body", {})
+        self.assertEqual(body.get("height"), "None",
+                         f"{self._GIANT} height should be None, got {body.get('height')!r}")
+
+    def test_tiny_cosplayer_locks_height_absent(self):
+        """``size_scale: "tiny"`` must also lock ``height`` to "None"."""
+        doc = self._doc(self._TINY)
+        body = doc.get("Body", {})
+        self.assertEqual(body.get("height"), "None",
+                         f"{self._TINY} height should be None, got {body.get('height')!r}")
+
+    def test_neutral_cosplayer_keeps_height(self):
+        """A cosplayer without ``size_scale`` must NOT have its height touched
+        (regression guard -- suppression must not leak to other characters)."""
+        doc = self._doc(self._NEUTRAL)
+        body = doc.get("Body", {})
+        # Spider-Man's covers_face suppresses some fields but height is Body-group
+        # and not covered, so it stays. The exact value is randomized -- just
+        # assert it's NOT the absent sentinel and NOT the locked "None".
+        height = body.get("height")
+        self.assertNotIn(height, (None, "None"),
+                         f"{self._NEUTRAL} height should be a real value, got {height!r}")
+
+    def test_giant_metadata_records_size_scale(self):
+        """The ``_meta.size_scale`` key must be set when the entry declares it."""
+        doc = self._doc(self._GIANT)
+        meta = doc.get("_meta", {})
+        self.assertEqual(meta.get("size_scale"), "giant",
+                         f"{self._GIANT} _meta.size_scale should be 'giant'")
+
+    def test_tiny_metadata_records_size_scale(self):
+        """Same for the tiny character."""
+        doc = self._doc(self._TINY)
+        meta = doc.get("_meta", {})
+        self.assertEqual(meta.get("size_scale"), "tiny",
+                         f"{self._TINY} _meta.size_scale should be 'tiny'")
+
+    def test_neutral_metadata_omits_size_scale(self):
+        """A cosplayer without ``size_scale`` must NOT carry the key in ``_meta``."""
+        doc = self._doc(self._NEUTRAL)
+        meta = doc.get("_meta", {})
+        self.assertNotIn("size_scale", meta,
+                         f"{self._NEUTRAL} should not have _meta.size_scale")
+
+    def test_giant_full_character_keeps_other_physique(self):
+        """Full-character mode with ``size_scale`` suppresses only height --
+        body_type, skin_tone and signature fields survive (size is the
+        identity; the rest of the physique is the randomizable person)."""
+        doc = self._doc(self._GIANT, look_level="Full character")
+        body = doc.get("Body", {})
+        self.assertEqual(body.get("height"), "None")
+        # body_type and skin_tone must still be present (Giganta's full physique)
+        self.assertIn("body_type", body, "body_type must survive size-scale suppression")
+        self.assertIn("skin_tone", body, "skin_tone must survive size-scale suppression")
+
+    def test_engine_output_omits_height_for_giant(self):
+        """End-to-end: the engine's prose must NOT contain the character's
+        original ``physique.height`` (e.g. "very tall" for Giganta) when
+        ``size_scale`` is set -- the scale lives in the costume prose only."""
+        from nodes.identity_forge import generate_character
+        archetype_str = build_cosplayer_json(self._GIANT, seed=42,
+                                             look_level="Full character",
+                                             mask_mode=_MASK_DEFAULT,
+                                             include_prop=False, random_scope="Any")
+        parsed = _parse_archetype_json(archetype_str)
+        locked = {k: v for k, v in parsed.items()
+                  if k not in ("__cosplay_label__", "_meta")}
+        prose, _ = generate_character(
+            seed=42, gender="Any", locked=locked,
+            cosplay_label=parsed.get("__cosplay_label__"),
+            covers_face=parsed.get("_covers_face", False),
+            covers_body=parsed.get("_covers_body", False),
+            covers_hair=parsed.get("_covers_hair", False),
+        )
+        # Giganta's pre-existing physique.height was "very tall" -- the
+        # builder suppresses it, so it must NOT appear in the prose.
+        self.assertNotIn("very tall", prose,
+                         f"Engine prose for {self._GIANT} leaked physique.height: {prose[:200]}")
+
+    def test_all_size_scaled_cosplayers_have_valid_size_value(self):
+        """Cross-check: every cosplayer that declares ``size_scale`` must use a
+        recognized value (currently ``"giant"`` or ``"tiny"``) so the builder's
+        suppression logic never encounters an unknown token."""
+        valid = {"giant", "tiny"}
+        for name, entry in COSPLAYERS.items():
+            scale = entry.get("size_scale")
+            if scale is not None:
+                self.assertIn(scale, valid,
+                               f"{name!r} has unknown size_scale {scale!r}; "
+                               f"expected one of {valid}")
+        # And the count must match what the plan promised (31).
+        scaled = [n for n, e in COSPLAYERS.items() if e.get("size_scale")]
+        self.assertGreaterEqual(len(scaled), 31,
+                                f"Expected >= 31 size-scaled cosplayers, got {len(scaled)}")
 
 
 if __name__ == "__main__":
