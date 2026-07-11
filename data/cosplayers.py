@@ -2692,6 +2692,8 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "towering red and blue metallic armor plating with a windshield chest",
         "mask": "a metallic head with two crest antennae, a faceplate, and glowing blue eyes",
+        "size_scale": "giant",
+        "scale_prose": "colossal and over thirty feet tall",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Spawn": {
@@ -3138,6 +3140,8 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a towering suit of ornate gray steel armor with a spiked crest and "
                    "a glowing red alchemic seal on one shoulder",
         "mask": "a horned steel helmet with a dark hollow visor and glowing eye-lights",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and broad",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Roy Mustang": {
@@ -4386,6 +4390,8 @@ COSPLAYERS: dict[str, dict] = {
                    "torso, articulated limbs, and clawed armored gauntlets",
         "mask": "a featureless chrome helmeted head with a single horizontal red "
                 "eye-slit scanning side to side",
+        "size_scale": "giant",
+        "scale_prose": "strikingly tall and imposing",
     },
     "The Terminator": {
         "franchise": "The Terminator",
@@ -4655,6 +4661,8 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "towering jet-black plate armor with spiked pauldrons and a "
                    "spiked gauntlet bearing the One Ring",
         "mask": "a spiked black war helm with a narrow burning eye-slit",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and towering",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Galadriel": {
@@ -5170,6 +5178,8 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "a towering chrome-and-silver robotic body of articulated plating",
         "mask": "a polished silver robotic face with glowing red eyes and a grim metal mouth",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and imposing",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Kang the Conqueror": {
@@ -5465,6 +5475,8 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a towering grey-and-silver robotic body of tank-like plating with an "
                    "arm cannon",
         "mask": "a silver robotic face with a black helmet crest and glowing red eyes",
+        "size_scale": "giant",
+        "scale_prose": "colossal and over thirty feet tall",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Bumblebee": {
@@ -6194,6 +6206,8 @@ COSPLAYERS: dict[str, dict] = {
         "eyes": "glowing blue-white",
         "signature": {"hair_color": "platinum white", "hair_length": "very long",
                       "hair_texture": "wavy"},
+        "size_scale": "giant",
+        "scale_prose": "towering and seven feet tall",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Cortana": {
@@ -6311,6 +6325,8 @@ COSPLAYERS: dict[str, dict] = {
                    "seven-foot cosmic-guardian frame",
         "signature": {"hair_color": "platinum blonde", "hair_length": "waist length",
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "size_scale": "giant",
+        "scale_prose": "towering and seven feet tall",
         "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "pale"},
         "prop": "a star-topped wand trailing cosmic sparkles",
     },
@@ -6465,6 +6481,8 @@ COSPLAYERS: dict[str, dict] = {
                    "grey chevron arrowheads, tiny arms, and small clawed feet",
         "mask": "a huge round grey Totoro head with wide round eyes, small pointed ears, "
                 "and a wide fanged grin",
+        "size_scale": "giant",
+        "scale_prose": "enormously large and rotund",
         "physique": {"body_type": "plump", "height": "very tall"},
     },
 
@@ -6861,6 +6879,8 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a thick grey rhino-hide armor suit with plated forearms, on a "
                    "towering massively muscled frame",
         "mask": "a grey rhino helmet with a single horn",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and massive",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Electro": {
@@ -6881,6 +6901,8 @@ COSPLAYERS: dict[str, dict] = {
                    "vines and roots and leaves and fungus sprouting from the shoulders",
         "eyes": "glowing red",
         "signature": {},
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Etrigan the Demon": {
@@ -7598,6 +7620,8 @@ COSPLAYERS: dict[str, dict] = {
                    "Lasat body with heavy muscled arms",
         "mask": "a Lasat face covered in purple-gray fur with bold dark stripes, prominent "
                 "sideburns, a heavy brow, and small pointed tusks",
+        "size_scale": "giant",
+        "scale_prose": "strikingly tall and imposing",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Grand Inquisitor": {
@@ -7809,6 +7833,8 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "an even, all-over coat of brown gorilla fur on a towering muscular "
                    "frame, with a red necktie bearing yellow DK initials",
         "mask": "a brown gorilla face with small dark eyes",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Yoshi": {
@@ -7880,6 +7906,8 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a riveted bronze deep-sea diving suit on a towering hulking frame, "
                    "with a massive arm-mounted drill",
         "mask": "a round brass porthole diving helmet with glowing yellow portholes",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
 
@@ -8421,6 +8449,8 @@ COSPLAYERS: dict[str, dict] = {
         "covers_body": True,  # giant glass pitcher shell, no bare skin
         "costume": "a giant smiling glass pitcher body filled with bright red liquid",
         "mask": "the pitcher's own molded glass face with a huge painted grin",
+        "size_scale": "giant",
+        "scale_prose": "enormously large and towering",
         "physique": {"body_type": "plus size", "height": "very tall"},
     },
     "Michelin Man": {
