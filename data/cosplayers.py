@@ -785,6 +785,9 @@ COSPLAYERS: dict[str, dict] = {
             # Batman Returns crudely-stitched black vinyl look.
             "a glossy black vinyl catsuit roughly stitched together with white thread, a "
             "stitched cat-eared cowl, and vivid red lips",
+            # 1940s Golden-Age debut look: slinky emerald evening gown with a long green cape.
+            "a slinky floor-length emerald-green evening gown with a deep plunging neckline, "
+            "long green satin gloves, and a long flowing green hooded cape",
         ],
         "signature": {"hair_color": "near black", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "green"},
@@ -9345,10 +9348,18 @@ COSPLAYERS: dict[str, dict] = {
     "Big Bertha": {
         "franchise": "Marvel",
         "gender": "Female",
-        # FLAGGED (uncertain leotard colour): her defining trait is the massive heavyset build.
-        "costume": "a bright high-cut superhero leotard with a wide belt and boots, worn on an "
-                   "enormously large, powerfully heavyset and muscular body of towering height and "
-                   "immense girth",
+        # Ashley Crawford -- immense heavyset build (7'4", 750 lbs), canary-yellow leotard, yellow
+        # elbow gloves and knee-high boots, and a black domino mask. The domino leaves the face
+        # visible (so no covers_face); a mask-less variant in costumes[] makes it effectively
+        # removable per seed (see worklog -- the Unmask toggle is only for full-face coverings).
+        "costume": "a canary-yellow high-cut superhero leotard with a wide belt, matching yellow "
+                   "elbow-length gloves and knee-high boots, and a black domino mask, worn on an "
+                   "enormously large, powerfully heavyset body of towering height and immense girth",
+        "costumes": [
+            "a canary-yellow high-cut superhero leotard with a wide belt, matching yellow "
+            "elbow-length gloves and knee-high boots, worn on an enormously large, powerfully "
+            "heavyset body of towering height and immense girth",
+        ],
         "signature": {"hair_color": "strawberry blonde", "hair_length": "long",
                       "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
         "physique": {"body_type": "plus size", "height": "very tall", "skin_tone": "fair"},
@@ -9356,13 +9367,15 @@ COSPLAYERS: dict[str, dict] = {
     "Lascivious": {
         "franchise": "Marvel",
         "gender": "Female",
-        # FLAGGED (uncertain singlet colour): confirmed signature is the torn black fishnet
-        # sleeve, very pale goth skin, and long black hair.
-        "costume": "a dark form-fitting wrestler's singlet with one arm sheathed in a torn black "
-                   "fishnet sleeve, over strikingly pale skin",
+        # Femizon wrestler (6'2", muscular). Red halter top + high-cut bottoms with black trim,
+        # a torn black fishnet single sleeve on the right arm, tall black over-the-knee wrestling
+        # boots, over very pale skin; blue eyes that flare fiery red when her powers are active.
+        "costume": "a revealing two-piece wrestler's uniform -- a vivid red halter top and high-cut "
+                   "bottoms with black trim, the right arm sheathed in a torn black fishnet sleeve, "
+                   "and tall black over-the-knee wrestling boots, over strikingly pale skin",
         "signature": {"hair_color": "raven black", "hair_length": "very long",
-                      "hair_texture": "sleek straight"},
-        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "very pale"},
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "very pale"},
     },
     "Brandish": {
         "franchise": "Fairy Tail",
@@ -9425,14 +9438,16 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Riptide": {
-        "franchise": "Marvel",
-        # FLAGGED (uncertain costume colours): confirmed greyish-white hair, blue eyes,
-        # tall lean build, bone-shuriken motif.
-        "gender": "Male",
-        "costume": "a dark form-fitting bodysuit with a high collar and bandoliers strung with "
-                   "sharp bone shuriken and spikes",
-        "signature": {"hair_color": "white", "hair_length": "short pixie", "eye_color": "bright blue"},
-        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "franchise": "Youngblood",
+        # Image/Youngblood aquatic superheroine (reclassified 0.58 per user's supplied description;
+        # the prior entry was Marvel's male Marauder of the same name). Hair colour unspecified by
+        # the source -> teal to match the aqua theme.
+        "gender": "Female",
+        "costume": "a bright aqua-marine and white skintight bodysuit with a light-blue and teal "
+                   "wave motif, matching gloves and boots",
+        "signature": {"hair_color": "teal", "hair_length": "long", "hair_texture": "loosely wavy",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Avengelyne": {
         "franchise": "Image",
@@ -9446,11 +9461,12 @@ COSPLAYERS: dict[str, dict] = {
     },
     "Cyblade": {
         "franchise": "Top Cow",
-        # FLAGGED (uncertain costume colours): confirmed long black hair, blue eyes,
-        # lithe toned build, glowing energy blades from the fists.
+        # Cyberforce operative. Metallic purple skintight bodysuit with segmented armor plating,
+        # bare arms/head, thigh-high boots; twin psionic energy blades from the fingertips.
         "gender": "Female",
-        "costume": "a dark form-fitting combat bodysuit, with crackling blades of blue-white "
-                   "electromagnetic energy projecting from around the fists",
+        "costume": "a metallic purple skintight bodysuit with segmented silver armor plating over "
+                   "the torso, hips and legs, bare arms, and thigh-high metallic boots, with "
+                   "crackling blades of pink-and-blue psionic energy extending from the fingertips",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
         "physique": {"body_type": "toned", "height": "tall", "skin_tone": "fair"},
@@ -9496,35 +9512,37 @@ COSPLAYERS: dict[str, dict] = {
     },
     "Suprema": {
         "franchise": "Youngblood",
-        # FLAGGED (uncertain costume detail): confirmed white hair, blue eyes, Supreme-family look.
+        # Sally Crane -- Supreme's sister, classic silver-age look. White ponytail, deep-blue and
+        # white suit, long thick yellow gloves, red boots, red chest emblem, flowing red hooded cape.
         "gender": "Female",
-        "costume": "a white-and-red caped superhero costume with a red chest emblem, red gloves "
-                   "and boots, and a flowing red cape",
-        "signature": {"hair_color": "white", "hair_length": "long",
+        "costume": "a deep-blue-and-white superhero suit with a red chest emblem, long thick yellow "
+                   "gloves, red boots, and a flowing red cape attached to a sculpted hood framing "
+                   "the face",
+        "signature": {"hair_color": "white", "hair_length": "long", "hair_style": "high ponytail",
                       "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Lady Supreme": {
         "franchise": "Image",
-        # FLAGGED (uncertain costume): daughter of Supreme and Glory; best-effort Supreme-family look.
+        # Probe -- daughter of Supreme and Glory. 6'5" statuesque, long black hair, blue eyes,
+        # royal-blue bodysuit with a red V-neck chevron, red gauntlets/boots and a wide red belt.
         "gender": "Female",
-        "costume": "a form-fitting white-and-red costume with gold trim, armored accents, and a "
-                   "short cape",
-        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+        "costume": "a form-fitting royal-blue bodysuit with a red V-neck cutout framing a red "
+                   "chevron across the chest, red wrist gauntlets, a wide red belt, and tall red boots",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "physique": {"body_type": "voluptuous", "height": "statuesque", "skin_tone": "fair"},
     },
     "Diva": {
         "franchise": "WildStorm",
-        # FLAGGED (UNVERIFIED APPEARANCE): could not confirm this obscure Stormwatch/Strykeforce
-        # character's look from available sources -- this is a generic best-effort placeholder.
-        # User should supply a reference image or confirm removal.
+        # Alessandra Firmi -- retro-pop UN superheroine. Chalk-white skin, floor-length hair
+        # (capped at hip length by the field; the extreme length reads in the costume prose).
         "gender": "Female",
-        "costume": "a sleek modern superheroine bodysuit with armored panel accents and knee-high "
-                   "boots",
-        "signature": {"hair_color": "dark brown", "hair_length": "long",
+        "costume": "a sleek form-fitting purple-and-violet bodysuit with long matching gloves and "
+                   "high thigh-high boots, worn with extremely long hair cascading past the knees",
+        "signature": {"hair_color": "white blonde", "hair_length": "hip length",
                       "hair_texture": "sleek straight"},
-        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "very pale"},
     },
 
     # === v0.57.0 expansion: Star Trek (named + species looks) =============
@@ -9617,6 +9635,342 @@ COSPLAYERS: dict[str, dict] = {
         "bald": True,
         "physique": {"body_type": "athletic", "height": "tall"},
     },
+
+    # === v0.58.0 expansion: Soul Calibur =================================
+    "Taki": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a skin-tight bright red ninja bodysuit with a high collar, a red headband, "
+                   "and light demon-hunter armor plates at the shoulders and hips",
+        "signature": {"hair_color": "near black", "hair_length": "short pixie",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a pair of ninja kodachi short-swords, one blade glowing faintly, held one in each hand",
+    },
+    "Ivy Valentine": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a revealing purple leather corset with a deep plunging neckline, matching "
+                   "purple thigh-high boots, long gloves, and an ornate armored gauntlet on one arm",
+        "signature": {"hair_color": "silver", "hair_length": "chin length bob",
+                      "hair_style": "slicked back", "eye_color": "bright blue"},
+        "physique": {"body_type": "voluptuous", "height": "statuesque", "skin_tone": "fair"},
+        "prop": "a segmented snake sword -- a whip-like blade of linked steel plates that extends "
+                "and coils like a living serpent",
+    },
+    "Sophitia Alexandra": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a short white-and-blue Grecian battle dress with gold trim and a fitted "
+                   "bodice, armored greaves, and strapped leather sandals",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
+        "prop": "a short sword and a round bronze Greek shield",
+    },
+    "Cassandra Alexandra": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a short blue-and-white Grecian outfit with a layered skirt, shoulder armor, "
+                   "and armored gauntlets and greaves",
+        "signature": {"hair_color": "golden blonde", "hair_length": "chin length bob",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a short sword and a round metal shield",
+    },
+    "Heishiro Mitsurugi": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "dark red samurai garb with a bare muscular chest, a wide sash, loose hakama "
+                   "trousers, and a cloth headband",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "top knot", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a katana with a long single-edged blade",
+    },
+    "Siegfried Schtauffen": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "a full suit of heavy silver plate armor with a blue tabard, ornate pauldrons, "
+                   "and gauntleted hands",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+        "prop": "a massive two-handed zweihander greatsword",
+    },
+    "Yoshimitsu": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "bizarre ornate samurai armor in clashing bright colours with jagged asymmetric "
+                   "plating and mechanical prosthetic limbs",
+        "mask": "an ornate demonic Noh-style mask resembling a grinning skull",
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "an unusual katana with a jagged, irregular blade",
+    },
+    "Voldo": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "bald": True,
+        "covers_face": True,
+        "costume": "a garish purple leather bondage harness of straps, buckles and metal spikes "
+                   "that leaves much of the body bare",
+        "mask": "a head bound entirely in tight leather straps covering the eyes and mouth, "
+                "topped with a spiked metal cage",
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "pale"},
+        "prop": "a pair of clawed katar punching daggers, one strapped to each hand",
+    },
+    "Seong Mi-na": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a blue-and-white Korean-inspired outfit with a sleeveless top, a short pleated "
+                   "skirt over fitted leggings, and armored boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "long", "hair_style": "high ponytail",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+        "prop": "a guandao -- a long wooden staff tipped with a broad curved blade",
+    },
+    "Cervantes de Leon": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "a weathered ghost-pirate captain's long coat with a plumed tricorn hat, a wide "
+                   "sash, high boots, and a bushy white beard",
+        "signature": {"hair_color": "white", "hair_length": "short pixie", "eye_color": "pale blue"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "very pale"},
+        "prop": "twin pirate longswords, one with a flintlock pistol built into the hilt",
+    },
+    "Xianghua": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a red-and-pink Chinese silk outfit with a short skirt, a sash, and soft boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
+                      "hair_style": "pigtails", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "short", "skin_tone": "light"},
+        "prop": "a jian -- a slender straight double-edged Chinese sword",
+    },
+    "Kilik": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "loose white monk's trousers with a red sash, cloth arm wraps, and a bare "
+                   "muscular chest",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "low ponytail",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+        "prop": "a long wooden bo staff",
+    },
+    "Maxi": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "a flashy open sleeveless vest baring a muscular chest, loose sashed trousers, "
+                   "and fingerless gloves",
+        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
+                      "hair_style": "slicked back", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+        "prop": "a pair of nunchaku",
+    },
+    "Astaroth": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "bald": True,
+        "costume": "a minimal warrior harness with heavy armor plating at the shoulders and waist, "
+                   "over an immense hulking body of smooth, flawless ashen-grey skin marked with "
+                   "dark ritual glyphs",
+        "eyes": "glowing red",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "a colossal double-bladed battle axe",
+    },
+    "Rock Adams": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "rugged fur-trimmed tribal garb and a loincloth with a great bear pelt draped "
+                   "over the shoulders, a bear's head worn as a hood, and a thick beard",
+        "signature": {"hair_color": "dark brown", "hair_length": "short pixie", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "tan"},
+        "prop": "an enormous stone-headed club",
+    },
+    "Li Long": {
+        "franchise": "Soul Calibur",
+        "gender": "Male",
+        "costume": "a dark blue-and-black Chinese assassin's outfit with a fitted tunic, a sash, "
+                   "and soft boots",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "low ponytail",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "light"},
+        "prop": "a pair of nunchaku",
+    },
+
+    # === v0.58.0 expansion: Street Fighter ==============================
+    "E. Honda": {
+        "franchise": "Street Fighter",
+        "gender": "Male",
+        "costume": "a dark blue sumo mawashi loincloth over a massive bare heavyset body, with "
+                   "red kabuki face paint around the eyes and a stiff oiled topknot",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "top knot", "eye_color": "dark brown"},
+        "physique": {"body_type": "plus size", "height": "tall", "skin_tone": "fair"},
+    },
+    "Poison": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a black police-style peak cap with a chain band, a skimpy white midriff-baring "
+                   "tank top, cut-off denim short-shorts with a studded belt, and high-heeled boots",
+        "signature": {"hair_color": "hot pink", "hair_length": "long", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slim leather riding crop",
+    },
+    "Rainbow Mika": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a blue-and-white wrestling leotard with ruffled trim and blue hearts across "
+                   "the bust, a blue wrestling eye-mask, white stockings, and blue-and-white "
+                   "wrestling boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long", "hair_style": "space buns",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair"},
+    },
+    "Maki Genryusai": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a sleeveless red combat leotard with a white collar, fingerless gloves, shin "
+                   "guards, and a red headband",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long", "hair_style": "high ponytail",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a wooden tonfa baton",
+    },
+    "Elena": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a minimal white tribal outfit with colourful beaded jewelry, painted markings, "
+                   "arm and ankle bands, and bare feet",
+        "signature": {"hair_color": "white", "hair_length": "short pixie", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Crimson Viper": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a fitted dark-blue business suit -- a tailored blazer and pencil skirt with a "
+                   "necktie -- over battle gauntlets and armored boots, with sunglasses pushed up "
+                   "on the head",
+        "signature": {"hair_color": "auburn", "hair_length": "long", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Laura Matsuda": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a green-and-yellow Brazilian outfit with a knotted bikini top, loose yellow "
+                   "harem trousers, fingerless gloves, and a single shoulder guard",
+        "signature": {"hair_color": "dark brown", "hair_length": "long", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "brown"},
+    },
+    "Menat": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a dark purple short-sleeved leotard with gold and neon-blue accents and a "
+                   "purple sash looping over both shoulders to leave the navel bare",
+        "costumes": [
+            # Halloween mummy-wrap costume (user-requested).
+            "a revealing white mummified wrap-suit of linen bandages linking from the lower back "
+            "up along the arms, dark high-thigh stockings, and a traditional gold Egyptian headdress",
+        ],
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "tan"},
+        "prop": "a floating crystal-ball orb of glowing soul power",
+    },
+    "Kimberly Jackson": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a modern black-and-yellow ninja outfit with an orange scarf, fingerless gloves, "
+                   "a backpack of spray-paint cans, and high-top sneakers",
+        "signature": {"hair_color": "purple", "hair_length": "short pixie", "hair_style": "space buns",
+                      "hair_texture": "coily", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "brown"},
+        "prop": "a spray-paint can in one hand and a kunai in the other",
+    },
+    "AKI": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "an open-backed black snakeskin cheongsam with red trim and skintight black "
+                   "trousers, and slim metal gauntlets with a curved claw on each finger coated in "
+                   "green poison",
+        "eyes": "cardinal red",
+        "signature": {"hair_color": "white", "hair_length": "short pixie", "hair_style": "updo"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Lily": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a blue-and-white poncho with red and green tribal designs, a beaded necklace, "
+                   "white feathered earrings, a tribal headband, torn pink shorts, and brown boots "
+                   "with white tassels",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "high pigtails",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "short", "skin_tone": "tan"},
+        "prop": "a pair of feathered ball-headed war clubs, one in each hand",
+    },
+    "Marisa": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "golden Greco-Roman gladiator armor -- a bronze cuirass, a pteruges skirt of "
+                   "leather straps, armored gauntlets and greaves, and sandals -- over a towering, "
+                   "powerfully muscular frame",
+        "signature": {"hair_color": "auburn", "hair_length": "very long", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Manon": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        "costume": "a royal-blue competition singlet with red, white and blue streaks and torso "
+                   "cutouts, a white judo gi worn open over it with turquoise trim and a black "
+                   "belt, and blue footguards",
+        "signature": {"hair_color": "baby pink", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # === v0.58.0 expansion: Mortal Kombat ===============================
+    "Cassie Cage": {
+        "franchise": "Mortal Kombat",
+        "gender": "Female",
+        "costume": "a blue tactical special-forces outfit with a fitted vest, fingerless gloves, "
+                   "dog tags, aviator sunglasses, and combat boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_style": "low ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Tanya": {
+        "franchise": "Mortal Kombat",
+        "gender": "Female",
+        "costume": "a yellow-and-black Edenian outfit with an ornate midriff-baring top, a "
+                   "gold-panelled skirt, black tights with gold accents, gold bracelets, and "
+                   "low-heeled boots",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "low ponytail",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "brown"},
+        "prop": "a pair of kobu jutsu -- bladed tonfa with a secondary kama blade, one in each hand",
+    },
+    "Frost": {
+        "franchise": "Mortal Kombat",
+        "gender": "Female",
+        "costume": "a blue-and-silver cybernetic Lin Kuei bodysuit with armored plating and "
+                   "glowing ice-blue accents, one arm and part of the head replaced by chrome "
+                   "cybernetics forming a crown of ice spikes",
+        "signature": {"hair_color": "white", "hair_length": "short pixie", "eye_color": "ice blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "very pale"},
+    },
+    "Goro": {
+        "franchise": "Mortal Kombat",
+        "gender": "Male",
+        "costume": "a simple warrior's loincloth and spiked metal bracers over an immense hulking "
+                   "body with four powerful muscular arms and smooth, flawless bronze Shokan skin",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "top knot",
+                      "eye_color": "dark brown"},
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
 }
 
 
@@ -9646,7 +10000,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     "Video Games": (
         "Final Fantasy", "Final Fantasy VII", "Final Fantasy X", "Final Fantasy XV",
         "Final Fantasy XIII", "Final Fantasy VI", "NieR: Automata", "Street Fighter",
-        "Mortal Kombat", "Tekken", "Overwatch", "League of Legends", "Arcane", "Genshin Impact",
+        "Mortal Kombat", "Soul Calibur", "Tekken", "Overwatch", "League of Legends", "Arcane",
+        "Genshin Impact",
         "The Legend of Zelda", "The Legend of Zelda: Breath of the Wild", "Nintendo",
         "Super Mario", "Metroid", "Resident Evil", "Tomb Raider", "Mass Effect", "Halo",
         "Metal Gear", "God of War", "Kingdom Hearts", "Baldur's Gate 3", "The Witcher",

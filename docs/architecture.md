@@ -15,8 +15,23 @@ js/          identity_forge.js · identity_forge_creature.js · identity_forge_v
              (ComfyUI frontend extensions)
 tests/       validate_data.py (static integrity) · test_engine.py · test_creature.py
              · test_vault.py · preview_cosplayer.py
+scripts/     generate_reference_docs.py (regenerates docs/reference/*.md)
 docs/        usage.md · cosplayer-notes.md · creature-notes.md · architecture.md (this file)
+             · reference/ (GENERATED indexes — see below)
 ```
+
+### Generated reference indexes (`docs/reference/`)
+
+`docs/reference/cosplayers.md`, `creatures.md`, and `archetypes.md` are a **generated**,
+human-readable catalogue of the full roster (names + compact flags — source gender, size
+scale, masked, alt-costume count, signature prop), so the data can be reviewed without
+opening the large data modules. They are produced by `scripts/generate_reference_docs.py`
+and hold no source-of-truth data.
+
+**Keep them in sync:** after adding or changing entries in `data/cosplayers.py`,
+`data/creatures.py`, or `data/templates.py`, run `python scripts/generate_reference_docs.py`
+and commit the refreshed files. `--check` regenerates in memory and exits non-zero if the
+committed docs are stale (suitable for CI / a pre-commit guard).
 
 Pack is **V3 API** (`comfy_api.latest`), category `conditioning/character`, **zero deps**,
 fully offline. The engine half of every node is a pure function importable without ComfyUI

@@ -50,14 +50,14 @@ from typing import Any
 try:
     from ..data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
-        get_cosplayer_names_by_gender, get_cosplayer_categories,
+        get_cosplayer_categories,
     )
     from ..data.fields import FIELD_DEFINITIONS
     from .identity_forge import group_fields, merge_preset_documents
 except ImportError:  # pragma: no cover — standalone/test context
     from data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
-        get_cosplayer_names_by_gender, get_cosplayer_categories,
+        get_cosplayer_categories,
     )
     from data.fields import FIELD_DEFINITIONS
     from nodes.identity_forge import group_fields, merge_preset_documents
