@@ -427,18 +427,18 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "the white Geonosis battle outfit with a form-fitting white top, "
                    "white pants, a utility belt, and beige boots",
+        "costumes": [
+            # Naboo throne-room regalia (near-black updo + ceremonial face paint).
+            {
+                "costume": "an opulent floor-length Naboo throne-room gown of deep crimson "
+                           "and gold brocade with enormous flared sleeves, ceremonial chalk-white "
+                           "face paint with a red lower-lip mark and red dots on each cheek, and a "
+                           "towering golden fan-shaped headdress with hanging gold ornaments",
+                "signature": {"hair_color": "near black", "hair_length": "very long",
+                              "hair_style": "updo", "eye_color": "warm hazel"},
+            },
+        ],
         "signature": {"hair_color": "warm brown", "hair_length": "long",
-                      "hair_style": "updo", "eye_color": "warm hazel"},
-        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
-    },
-    "Padme Amidala (Regal Outfit)": {
-        "franchise": "Star Wars",
-        "gender": "Female",
-        "costume": "an opulent floor-length Naboo throne-room gown of deep crimson "
-                   "and gold brocade with enormous flared sleeves, ceremonial chalk-white "
-                   "face paint with a red lower-lip mark and red dots on each cheek, and a "
-                   "towering golden fan-shaped headdress with hanging gold ornaments",
-        "signature": {"hair_color": "near black", "hair_length": "very long",
                       "hair_style": "updo", "eye_color": "warm hazel"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
@@ -606,11 +606,15 @@ COSPLAYERS: dict[str, dict] = {
                    "pale powdered whitish face and high blonde pigtails dip-dyed pink at "
                    "the tips on one side and blue on the other",
         "costumes": [
-            # Classic Animated-Series jester: the two-pointed hood covers the hair (overlay).
-            {"costume": "a red-and-black diamond-harlequin full bodysuit with a white ruffled "
-                        "jester collar and a two-pointed red-and-black hood, white greasepaint "
-                        "face, and a black domino mask around the eyes",
-             "covers_hair": True},
+            # Classic harlequin jester: the two-pointed hood covers the hair; mallet prop.
+            {"costume": "a red-and-black harlequin jester catsuit split down the middle, a "
+                        "white ruffled collar, a two-pointed red-and-black jester hood with "
+                        "small bells framing the face, a black domino eye mask, a chalk-white "
+                        "painted face with a wide red-lipped grin, white gloves, and pointed "
+                        "jester boots",
+             "covers_hair": True,
+             "prop": "an oversized wooden carnival mallet with a rounded head, slung over "
+                     "one shoulder"},
             # Comics 'red-and-black' corset look.
             "a red-and-black corset with a ruffled tutu skirt, red-and-black fishnet stockings, "
             "fingerless gloves and a small jester collar, with high pigtails tipped red on one "
@@ -624,20 +628,6 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
         "prop": "a wooden baseball bat covered in colorful spray-painted graffiti, "
                 "resting on one shoulder",
-    },
-    "Harley Quinn (Classic Jester)": {
-        "franchise": "DC",
-        "gender": "Female",
-        "costume": "a red-and-black harlequin jester catsuit split down the middle, a "
-                   "white ruffled collar, a two-pointed red-and-black jester hood with "
-                   "small bells framing the face, a black domino eye mask, a chalk-white "
-                   "painted face with a wide red-lipped grin, white gloves, and pointed "
-                   "jester boots",
-        "signature": {"lips_makeup": "classic red", "expression": "wide toothy grin"},
-        "covers_hair": True,  # two-pointed jester hood fully encloses the scalp; face shows
-        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
-        "prop": "an oversized cartoonish wooden mallet with a rounded head, slung over "
-                "one shoulder",
     },
     "Deadshot": {
         "franchise": "DC",
@@ -1114,6 +1104,17 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a red, blue, and gold Kree flight suit with a gold eight-pointed "
                    "starburst chest emblem, red gloves, and red boots",
+        "costumes": [
+            # Classic Ms. Marvel identity (black lightning-bolt leotard, red sash, domino mask).
+            {
+                "costume": "a black leotard with a golden lightning-bolt emblem, a red sash "
+                           "knotted at the waist, black opera gloves, black thigh-high boots, "
+                           "and a black domino mask",
+                "signature": {"hair_color": "golden blonde",
+                              "hair_length": "slightly past shoulders",
+                              "hair_style": "worn down", "eye_color": "bright blue"},
+            },
+        ],
         "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
                       "hair_style": "worn down", "eye_color": "medium brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
@@ -1225,6 +1226,17 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a blue crop top with the Superman S-shield, a red miniskirt, a red "
                    "cape, and red mid-thigh boots",
+        "costumes": [
+            # Animated-series look (white crop top, sleek straight hair).
+            {
+                "costume": "a white cropped top with a red-and-yellow 'S' shield, a short blue "
+                           "skirt, red boots, and a flowing red cape",
+                "signature": {"hair_color": "golden blonde",
+                              "hair_length": "slightly past shoulders",
+                              "hair_style": "worn down", "hair_texture": "sleek straight",
+                              "eye_color": "bright blue"},
+            },
+        ],
         "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -3930,7 +3942,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "warm tan"},
     },
     "Megara": {
-        "franchise": "Disney",
+        "franchise": "Hercules",
         "gender": "Female",
         "costume": "a lavender one-shoulder Grecian gown with a purple sash",
         "signature": {"hair_color": "auburn", "hair_length": "very long",
@@ -3947,7 +3959,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "caramel"},
     },
     "Jane Porter": {
-        "franchise": "Disney",
+        "franchise": "Tarzan",
         "gender": "Female",
         "costume": "a yellow Victorian skirt and a white blouse with a high collar",
         "signature": {"hair_color": "warm brown", "hair_length": "shoulder length",
@@ -3955,7 +3967,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
     "Aladdin": {
-        "franchise": "Disney",
+        "franchise": "Aladdin",
         "gender": "Male",
         "costume": "a sleeveless purple vest over a bare chest, baggy white trousers, a "
                    "red fez, and a long red sash",
@@ -3964,7 +3976,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "warm tan"},
     },
     "Hercules": {
-        "franchise": "Disney",
+        "franchise": "Hercules",
         "gender": "Male",
         "costume": "a Grecian armor skirt and sandals with gold bracers over a bare "
                    "muscular chest, and a blue cape",
@@ -3973,10 +3985,10 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "light"},
     },
     "Maui": {
-        "franchise": "Disney",
+        "franchise": "Moana",
         "gender": "Male",
         "costume": "a leaf skirt over a huge frame covered in an even, all-over coat of "
-                   "animated dark tribal tattoos, with a bone hook",
+                   "bold dark tribal tattoos, with a bone hook",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
                       "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
         # 'tattoos' isn't a material the colour-anchor regex catches, and the tattoo
@@ -3998,7 +4010,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a golden cobra-headed staff with red gem eyes",
     },
     "Hades": {
-        "franchise": "Disney",
+        "franchise": "Hercules",
         "gender": "Male",
         "costume": "a charcoal-grey toga over smooth, flawless blue-grey skin, with a crown of "
                    "blue flame for hair",
@@ -4006,7 +4018,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "Gaston": {
-        "franchise": "Disney",
+        "franchise": "Beauty and the Beast",
         "gender": "Male",
         "costume": "a red tunic with a wide black collar, yellow gloves, brown boots, "
                    "and a small red cape, on a hugely broad frame",
@@ -4114,15 +4126,6 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "a green military uniform under a long black leather coat",
         "mask": "a skinless crimson skull-like face",
-        "physique": {"body_type": "athletic", "height": "tall"},
-    },
-    "Kang the Conqueror (Classic)": {
-        "franchise": "Marvel",
-        "gender": "Male",
-        "covers_face": True,
-        "costume": "a green-and-purple armored battle suit with a high collar, layered "
-                   "plating, and gauntlets",
-        "mask": "a purple full-face mask under a green helmet",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Baron Zemo": {
@@ -5183,6 +5186,16 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a red-and-blue size-changing bodysuit, shrunk to a figure of impossibly "
                    "tiny miniature proportions",
+        "costumes": [
+            # Masked cowl look (Ray Palmer): full atomic-symbol cowl hides the face.
+            {
+                "costume": "a blue bodysuit with red gloves, red boots, a red-and-blue torso "
+                           "panel, and a blue belt, shrunk to a figure of impossibly tiny "
+                           "miniature proportions",
+                "covers_face": True,
+                "mask": "a red-and-blue cowl with a white atomic-symbol emblem on the forehead",
+            },
+        ],
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "eye_color": "dark brown"},
         "size_scale": "tiny",
@@ -5245,6 +5258,14 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "a green-and-purple armored conqueror's costume with a high collar and cape",
         "mask": "a blue full-face mask under a green hood",
+        "costumes": [
+            # Classic battle-armor look (layered plating, gauntlets, green helmet).
+            {
+                "costume": "a green-and-purple armored battle suit with a high collar, layered "
+                           "plating, and gauntlets",
+                "mask": "a purple full-face mask under a green helmet",
+            },
+        ],
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Taskmaster": {
@@ -5952,18 +5973,17 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a deep red form-fitting gown with a high slit, gold mystical jewelry, "
                    "bare arms, and elegant heels",
+        "costumes": [
+            # Legion of Doom look (dark violet gown, deep purple hair).
+            {
+                "costume": "a dark violet form-fitting gown with a high slit, black-and-gold "
+                           "arcane jewelry, bare arms, and elegant dark heels",
+                "signature": {"hair_color": "deep purple", "hair_length": "very long",
+                              "hair_texture": "loosely wavy"},
+            },
+        ],
         "eyes": "glowing pale blue",
         "signature": {"hair_color": "platinum blonde", "hair_length": "very long",
-                      "hair_texture": "loosely wavy"},
-        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain"},
-    },
-    "Tala (Legion of Doom)": {
-        "franchise": "DC",
-        "gender": "Female",
-        "costume": "a dark violet form-fitting gown with a high slit, black-and-gold "
-                   "arcane jewelry, bare arms, and elegant dark heels",
-        "eyes": "glowing pale blue",
-        "signature": {"hair_color": "deep purple", "hair_length": "very long",
                       "hair_texture": "loosely wavy"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain"},
     },
@@ -6476,16 +6496,6 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "softly curled", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
-    "Supergirl (DCAU)": {
-        "franchise": "DC",
-        "gender": "Female",
-        "costume": "a white cropped top with a red-and-yellow 'S' shield, a short blue "
-                   "skirt, red boots, and a flowing red cape",
-        "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
-                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
-        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
-    },
-
     # === Anime & Manga (more) ============================================
     "Homura Akemi (Devil)": {
         "franchise": "Madoka Magica",
@@ -6776,7 +6786,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a parrot-headed umbrella and a bottomless carpet bag",
     },
     "Wendy Darling": {
-        "franchise": "Disney",
+        "franchise": "Peter Pan",
         "gender": "Female",
         "costume": "a light blue floor-length nightgown with long sleeves, a slightly "
                    "ruffled neckline, a darker blue waist sash, and a blue hair ribbon",
@@ -8656,7 +8666,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a round bright green owl mascot body with darker green wings "
                    "and orange feet",
         "mask": "a round bright green owl mascot head with huge white-ringed "
-                "cartoon eyes and a small orange beak",
+                "round eyes and a small orange beak",
         "physique": {"body_type": "chubby", "height": "short"},
     },
 
@@ -8996,16 +9006,6 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dirty blonde", "hair_length": "very short"},
         "physique": {"body_type": "slim", "height": "short", "skin_tone": "pale"},
     },
-    "Ms. Marvel (Carol Danvers)": {
-        "franchise": "Marvel",
-        "gender": "Female",
-        "costume": "a black leotard with a golden lightning-bolt emblem, a red sash "
-                   "knotted at the waist, black opera gloves, black thigh-high boots, and "
-                   "a black domino mask",
-        "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
-                      "hair_style": "worn down", "eye_color": "bright blue"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
-    },
     "Ms. Marvel (Sharon Ventura)": {
         "franchise": "Marvel",
         "gender": "Female",
@@ -9050,18 +9050,6 @@ COSPLAYERS: dict[str, dict] = {
                    "domino mask, black-and-white diagonally striped trunks, a black belt "
                    "with a silver skull buckle and twin holsters, and black boots",
         "physique": {"body_type": "athletic", "height": "very tall"},
-    },
-    "The Atom (Ray Palmer)": {
-        "franchise": "DC",
-        "gender": "Male",
-        "covers_face": True,
-        "costume": "a blue bodysuit with red gloves, red boots, a red-and-blue torso "
-                   "panel, and a blue belt, shrunk to a figure of impossibly tiny "
-                   "miniature proportions",
-        "mask": "a red-and-blue cowl with a white atomic-symbol emblem on the forehead",
-        "size_scale": "tiny",
-        "scale_prose": "shrunk to less than an inch tall",
-        "physique": {"body_type": "lean", "height": "short"},
     },
 
     # --- Expansion wave (v0.53.0): broadly recognizable icons ------------
@@ -9971,6 +9959,510 @@ COSPLAYERS: dict[str, dict] = {
         "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
+
+    # === v0.59.0 expansion: Futurama / Invincible / Hellboy / Oz / Addams /
+    #     Alice / Beauty and the Beast / MOTU / TMNT / Folklore / Darkstalkers ==
+
+    # --- Futurama (Leela already present) --------------------------------
+    "Bender": {
+        "franchise": "Futurama",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a boxy riveted grey metal robot body, a rounded barrel torso with a small "
+                   "hinged chest cabinet, jointed segmented metal arms and legs, and pincer hands",
+        "mask": "a polished grey metal cylinder head with a domed top, a bent spring antenna, "
+                "a pair of half-dome eyes on short stalks, and a horizontal slot mouth",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Zoidberg": {
+        "franchise": "Futurama",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a reddish-pink crustacean alien body with a rounded exoskeletal torso, "
+                   "spindly limbs, and large pink lobster-like claws for hands",
+        "mask": "a reddish-pink crustacean head with small black bead eyes on short stalks "
+                "and a cluster of soft tentacle mouth-feelers where the mouth would be",
+        "physique": {"body_type": "average", "height": "average height"},
+    },
+    "Fry": {
+        "franchise": "Futurama",
+        "gender": "Male",
+        "costume": "a red zip-up jacket over a white T-shirt, blue jeans, and dark sneakers",
+        "signature": {"hair_color": "orange", "hair_length": "very short",
+                      "hair_style": "tousled bedhead", "eye_color": "medium brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light"},
+    },
+
+    # --- Invincible (Invincible / Omni-Man already present) ---------------
+    "Atom Eve": {
+        "franchise": "Invincible",
+        "gender": "Female",
+        "costume": "a pink-and-white form-fitting bodysuit with a white central panel and "
+                   "pink gloves and boots, surrounded by a faint glow of pink energy",
+        "signature": {"hair_color": "hot pink", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Allen the Alien": {
+        "franchise": "Invincible",
+        "gender": "Male",
+        "costume": "a heavily muscled orange-skinned alien with a broad heavy brow and a "
+                   "smooth hairless head, in a sleeveless dark blue uniform, over smooth, "
+                   "flawless orange skin",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Rex Splode": {
+        "franchise": "Invincible",
+        "gender": "Male",
+        "costume": "a green-and-orange armored bodysuit with a segmented chestplate and "
+                   "gauntlets, and protective goggles pushed up on the forehead",
+        "signature": {"hair_color": "orange", "hair_length": "very short",
+                      "hair_style": "windswept", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+    },
+    "Dupli-Kate": {
+        "franchise": "Invincible",
+        "gender": "Female",
+        "costume": "a navy-and-white bodysuit with a high collar and a stylized white "
+                   "emblem on the chest, with white gloves and boots",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "light"},
+    },
+    "Anissa": {
+        "franchise": "Invincible",
+        "gender": "Female",
+        "costume": "a form-fitting light purple and white bodysuit with a high collar and "
+                   "white panels, on a statuesque, powerfully built frame",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "voluptuous", "height": "very tall", "skin_tone": "light"},
+    },
+    "Battle Beast": {
+        "franchise": "Invincible",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a colossal lion-like beast covered in an even, all-over coat of shaggy "
+                   "white fur, wearing spiked steel shoulder armor, armored gauntlets, and a "
+                   "wide studded belt",
+        "mask": "a snarling white-furred feline beast head with a heavy mane, bared fangs, "
+                "and small fierce eyes",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "a massive double-bladed battle axe with a long steel haft",
+    },
+
+    # --- Hellboy (Hellboy / Abe Sapien already present) ------------------
+    "Liz Sherman": {
+        "franchise": "Hellboy",
+        "gender": "Female",
+        "costume": "a fitted dark BPRD field jacket over a black top and utility trousers "
+                   "with a holster belt, her whole body wreathed in dancing blue flames",
+        "signature": {"hair_color": "dark brown", "hair_length": "short pixie",
+                      "hair_style": "tousled bedhead", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Masters of the Universe (He-Man etc. already present) -----------
+    "Ram-Man": {
+        "franchise": "Masters of the Universe",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "bulky red plate armor over a broad, heavily muscled frame, with green "
+                   "trunks and boots, thick armored gauntlets, and spring-loaded armored legs",
+        "mask": "a riveted red dome helmet with a narrow horizontal eye-slit visor",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+
+    # --- TMNT (turtles / Splinter's students already present) ------------
+    "Splinter": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an elderly upright rat covered in an even, all-over coat of brown-grey "
+                   "fur, wearing a tattered brown robe sashed at the waist, with a long "
+                   "naked tail",
+        "mask": "an aged rat head with a long whiskered snout, large rounded ears, and "
+                "small dark eyes",
+        "physique": {"body_type": "slender", "height": "short"},
+        "prop": "a polished wooden walking staff",
+    },
+
+    # --- Alice in Wonderland (Alice / Mad Hatter / White Queen present) --
+    "Queen of Hearts": {
+        "franchise": "Alice in Wonderland",
+        "gender": "Female",
+        "costume": "an oversized red, black, and gold royal gown patterned with hearts, a "
+                   "high white collar, a small gold crown, and a black-and-gold cloak",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "sleek bun", "eye_color": "dark brown"},
+        "physique": {"body_type": "plus size", "height": "short", "skin_tone": "fair"},
+        "prop": "a gold heart-topped scepter",
+    },
+    "Cheshire Cat": {
+        "franchise": "Alice in Wonderland",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a plump grinning cat covered in an even, all-over coat of magenta-pink "
+                   "fur banded with broad purple stripes, with a long striped tail",
+        "mask": "a wide grinning cat head with an enormous toothy smile, large bright "
+                "yellow eyes, and pink-and-purple striped fur",
+        "physique": {"body_type": "chubby", "height": "average height"},
+    },
+
+    # --- Beauty and the Beast (Belle / Gaston already present) -----------
+    "Beast (Beauty and the Beast)": {
+        "franchise": "Beauty and the Beast",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a towering beast with a hulking frame covered in an even, all-over coat "
+                   "of shaggy brown fur, wearing a royal blue tailcoat with gold trim over a "
+                   "bare chest, a flowing gold-lined cape, and torn dark breeches",
+        "mask": "a fearsome beast head blending curved buffalo horns, a lion's mane, a "
+                "boar's tusked snout, and deep blue eyes",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+
+    # --- Folklore (Santa / Baba Yaga / Robin Hood already present) -------
+    "Krampus": {
+        "franchise": "Folklore",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a towering horned demon covered in an even, all-over coat of shaggy "
+                   "black fur, with a bare muscular chest, cloven-hoofed goat legs, clawed "
+                   "hands, and heavy iron chains draped across the shoulders",
+        "mask": "a fearsome goat-demon head with long curved black horns, glowing eyes, "
+                "bared fangs, and a long lolling red tongue",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "a bundle of birch switches bound with rusty rattling chains",
+    },
+
+    # --- The Wizard of Oz (Dorothy already present) ----------------------
+    "Cowardly Lion": {
+        "franchise": "The Wizard of Oz",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an upright lion covered in an even, all-over coat of tawny golden fur "
+                   "with a full shaggy mane and a long tufted tail",
+        "mask": "a lion's face with a broad muzzle, expressive downturned brows, and a "
+                "small pink bow tied in the mane atop the head",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Tin Man": {
+        "franchise": "The Wizard of Oz",
+        "gender": "Male",
+        "costume": "a riveted silver metal suit with articulated joints and a heart-shaped "
+                   "bolt on the chest, and a tin funnel worn as a hat, over uniform, "
+                   "all-over silver metal skin",
+        "eyes": "pale silver-grey",
+        "signature": {"facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a woodcutter's axe with a long wooden handle",
+    },
+    "Scarecrow (Wizard of Oz)": {
+        "franchise": "The Wizard of Oz",
+        "gender": "Male",
+        "costume": "a patched brown farmhand's suit stuffed with straw that pokes out at the "
+                   "cuffs, collar, and seams, rope-tied at the wrists and waist, and a floppy "
+                   "wide-brimmed pointed hat with straw tufts poking out beneath it",
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
+    },
+    "Wicked Witch of the West": {
+        "franchise": "The Wizard of Oz",
+        "gender": "Female",
+        "costume": "a long flowing black robe with a high collar and a tall wide-brimmed "
+                   "pointed black hat, over smooth, flawless green skin, with a long hooked "
+                   "nose and pointed chin",
+        "eyes": "yellow",
+        "physique": {"body_type": "slim", "height": "tall"},
+        "prop": "a worn straw broomstick",
+    },
+
+    # --- The Addams Family (Morticia / Wednesday already present) --------
+    "Gomez Addams": {
+        "franchise": "The Addams Family",
+        "gender": "Male",
+        "costume": "a double-breasted black pinstripe suit with a wide lapel and a "
+                   "pocket square",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "mustache",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+        "prop": "a smoldering cigar",
+    },
+    "Lurch": {
+        "franchise": "The Addams Family",
+        "gender": "Male",
+        "costume": "a black butler's tailcoat with a white shirt and black tie, on a gaunt, "
+                   "heavy-browed, towering frame",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "dark gray"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "very pale"},
+    },
+    "Cousin Itt": {
+        "franchise": "The Addams Family",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a short figure entirely draped from head to floor in a cascade of long "
+                   "silky ash-brown hair, completely hiding the face and body",
+        "mask": "a smooth curtain of floor-length hair fully covering the head, topped with "
+                "a small black bowler hat and a pair of round dark sunglasses",
+        "physique": {"body_type": "average", "height": "short"},
+    },
+    "Uncle Fester": {
+        "franchise": "The Addams Family",
+        "gender": "Male",
+        "costume": "a heavy full-length black overcoat over a matching tunic, on a "
+                   "round-shouldered frame, with deep dark circles around sunken eyes "
+                   "and a bald head",
+        "signature": {"hair_length": "bald", "facial_hair": "clean shaven",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "plump", "height": "average height", "skin_tone": "very pale"},
+    },
+
+    # --- Darkstalkers (Morrigan / Lilith already present) ----------------
+    "Demitri Maximoff": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "costume": "an ornate dark red and black nobleman's outfit with a high-collared "
+                   "black cape lined in crimson, a ruffled cravat, and tall boots",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "worn down"},
+        "eyes": "crimson",
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "pale"},
+    },
+    "Felicia": {
+        "franchise": "Darkstalkers",
+        "gender": "Female",
+        "costume": "a catgirl whose body is covered by patches of white fur arranged like a "
+                   "brief bikini across the chest and hips, with white cat ears, a long white "
+                   "tail, and clawed hands and feet",
+        "signature": {"hair_color": "electric blue", "hair_length": "very long",
+                      "hair_style": "worn down", "hair_texture": "thick and voluminous",
+                      "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Jon Talbain": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a lean muscular werewolf covered in an even, all-over coat of blue-grey "
+                   "fur, wearing torn red martial-arts trousers, brown wrist bracers, and a "
+                   "red headband, with clawed hands and feet",
+        "mask": "a snarling wolf head with pointed ears, bared fangs, and fierce eyes",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a pair of hardwood nunchaku joined by a short chain",
+    },
+    "Anakaris": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a towering ancient Egyptian pharaoh mummy wrapped in aged linen bandages, "
+                   "with a broad gold collar, gold arm bands, and a royal blue-and-gold striped "
+                   "nemes headdress",
+        "mask": "a gaunt bandage-wrapped pharaoh's face beneath a blue-and-gold nemes "
+                "headdress with a golden cobra at the brow",
+        "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "Victor von Gerdenheim": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "costume": "a hulking Frankenstein's-monster giant in heavy work overalls and thick "
+                   "boots, with a crude stitched-together body, iron neck bolts, and mismatched "
+                   "riveted metal patches, over uniform, all-over grey-green stitched skin",
+        "eyes": "mismatched, one yellow and one pale",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Lord Raptor": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "costume": "a gaunt undead rock-and-roll zombie with a skeletal torso, exposed ribs, "
+                   "tattered black trousers, spiked bracers, and jagged bone blades jutting "
+                   "from the arms, over uniform, all-over pallid grey decayed skin",
+        "signature": {"hair_color": "lime green", "hair_length": "short pixie",
+                      "hair_style": "windswept"},
+        "eyes": "hollow glowing yellow",
+        "physique": {"body_type": "very slim", "height": "tall"},
+    },
+    "Bishamon": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a suit of ornate cursed samurai armor in black, red, and gold with "
+                   "layered lacquered plates, broad flared shoulder guards, and a tattered "
+                   "war-cloak",
+        "mask": "a horned red-and-gold hannya demon war-helmet with a snarling fanged "
+                "grimace fully hiding the face",
+        "physique": {"body_type": "stocky", "height": "tall"},
+        "prop": "a long cursed katana with an ornate guard",
+    },
+    "Rikuo": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a merman with a lithe body covered in uniform, all-over teal-green fish "
+                   "scales, with translucent fins along the arms and back, webbed clawed "
+                   "hands, and gill slits at the neck",
+        "mask": "a fish-like head with large lidless eyes, a finned crest, gill flaps, and "
+                "a wide fanged mouth",
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Sasquatch": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a massive yeti covered head to toe in an even, all-over coat of shaggy "
+                   "snow-white fur, with huge arms, broad shoulders, and large clawed feet",
+        "mask": "a broad ape-like white-furred face with a wide flat nose, round dark eyes, "
+                "and a fanged grin",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Pyron": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a towering cosmic entity whose whole body is made of living golden-orange "
+                   "flame, with a segmented obsidian-and-gold armored shell over the shoulders "
+                   "and chest and a glowing gemstone set in the forehead, over an even, "
+                   "all-over coat of blazing golden fire",
+        "mask": "a featureless flaming golden head crowned with cosmic fire and a single "
+                "glowing gem at the brow",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Huitzil": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a colossal ancient Aztec war-automaton built of carved stone and tarnished "
+                   "bronze, with a broad angular torso covered in glyph carvings, blocky limbs, "
+                   "and jointed clawed hands",
+        "mask": "a carved stone-and-bronze idol head with a stern angular face, a feathered "
+                "crest, and glowing eyes",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Hsien-Ko": {
+        "franchise": "Darkstalkers",
+        "gender": "Female",
+        "costume": "a turquoise Qing-dynasty robe with wide sleeves and gold trim, a matching "
+                   "cap, and a yellow paper ofuda talisman hanging over the brow from the cap",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "low pigtails", "eye_color": "amber"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "pale"},
+        "prop": "a pair of enormous curved steel claw-blades extending from the sleeves",
+    },
+    "Donovan Baine": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "costume": "a tall monster hunter in a long dark travel coat over bare muscular arms "
+                   "wrapped in prayer beads, with loose trousers, boots, and a red sash",
+        "signature": {"hair_color": "white", "hair_length": "long",
+                      "hair_style": "worn down", "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "light"},
+        "prop": "a massive slab-bladed greatsword hung with paper talismans",
+    },
+    "Jedah Dohma": {
+        "franchise": "Darkstalkers",
+        "gender": "Male",
+        "costume": "an imposing demon lord in dark red and pink biomechanical armor with "
+                   "curved blade-like protrusions, a high spiked collar, and a segmented crown, "
+                   "with clawed hands, over smooth, flawless ashen-grey skin",
+        "eyes": "glowing gold",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Baby Bonnie Hood (B.B. Hood)": {
+        "franchise": "Darkstalkers",
+        "gender": "Female",
+        "costume": "a bright red hooded riding cloak over a blue frontier dress with a white "
+                   "apron, white knee socks, and brown buckled shoes",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "fair"},
+        "prop": "a large wicker picnic basket with a red-checked lining",
+    },
+    "Q-Bee": {
+        "franchise": "Darkstalkers",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a slender insectoid bee-demoness with a body of uniform, all-over black "
+                   "and amber-yellow chitin, a pair of translucent buzzing wings, a small "
+                   "stinger at the base of the spine, and oversized clawed gauntlets",
+        "mask": "a smooth insectoid bee head with large round faceted eyes and a pair of "
+                "twitching antennae",
+        "physique": {"body_type": "slender", "height": "short"},
+    },
+
+    # --- Disney/Pixar sub-franchise additions (Tarzan / Frozen / Toy Story) &
+    #     Pirates of the Caribbean ------------------------------------------
+    "Tarzan": {
+        "franchise": "Tarzan",
+        "gender": "Male",
+        "costume": "a brown animal-hide loincloth, barefoot, on a lean muscular frame "
+                   "streaked with dirt",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_style": "worn down", "hair_texture": "thick and voluminous",
+                      "eye_color": "hazel"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan"},
+    },
+    "Olaf": {
+        "franchise": "Frozen",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a small round snowman built of three white snow lumps, with skinny bare "
+                   "twig arms, three lumps of coal down the front, and stubby snow feet",
+        "mask": "a round snowman head with a big toothy smile, two coal eyes under bushy "
+                "brows, a long orange carrot nose, and three short twigs sprouting on top",
+        "physique": {"body_type": "chubby", "height": "short"},
+    },
+    "Jessie": {
+        "franchise": "Toy Story",
+        "gender": "Female",
+        "costume": "a yellow long-sleeve cowgirl shirt with red-and-white trim, blue jeans "
+                   "with white cow-print chaps, a red bandana, brown-and-white cowboy boots, "
+                   "and a red cowboy hat",
+        "signature": {"hair_color": "bright red", "hair_length": "very long",
+                      "hair_style": "braided ponytail", "eye_color": "green"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Davy Jones": {
+        "franchise": "Pirates of the Caribbean",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a weathered sea-captain's long coat crusted with barnacles and coral "
+                   "over a tentacled body, with a large crab-claw left hand and a tricorn hat",
+        "mask": "an octopus-like head with a writhing beard of thick tentacles, deep-set "
+                "eyes, and mottled blue-grey skin",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
 }
 
 
@@ -9993,7 +10485,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     "Disney": (
         "Disney", "The Little Mermaid", "Sleeping Beauty", "Frozen", "Snow White", "Tangled",
         "Pocahontas", "Mulan", "Moana", "The Princess and the Frog", "Peter Pan", "Cinderella",
-        "Beauty and the Beast", "Aladdin", "Brave", "Alice in Wonderland", "101 Dalmatians",
+        "Beauty and the Beast", "Aladdin", "Hercules", "Tarzan", "Brave",
+        "Alice in Wonderland", "101 Dalmatians",
         "Big Hero 6", "The Incredibles", "Zootopia", "Star vs. the Forces of Evil",
         "Toy Story", "Lilo and Stitch", "Pinocchio",
     ),

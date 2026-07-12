@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**993 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1030 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (121)
 
@@ -203,7 +203,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (99)
+## Comics & Cartoons (111)
 
 ### Adventure Time
 
@@ -255,7 +255,10 @@
 
 ### Futurama
 
+- **Bender** (M, masked)
+- **Fry** (M)
 - **Leela** (F)
+- **Zoidberg** (M, masked)
 
 ### G.I. Joe
 
@@ -268,6 +271,7 @@
 
 - **Abe Sapien** (M, masked)
 - **Hellboy** (M)
+- **Liz Sherman** (F)
 
 ### Image
 
@@ -278,8 +282,14 @@
 
 ### Invincible
 
+- **Allen the Alien** (M, giant)
+- **Anissa** (F)
+- **Atom Eve** (F)
+- **Battle Beast** (M, giant, masked, prop)
+- **Dupli-Kate** (F)
 - **Invincible** (M)
 - **Omni-Man** (M)
+- **Rex Splode** (M)
 
 ### Jem and the Holograms
 
@@ -301,6 +311,7 @@
 - **He-Man** (M, prop)
 - **Man-At-Arms** (M)
 - **Orko** (M, masked)
+- **Ram-Man** (M, masked)
 - **She-Ra** (F, prop)
 - **Skeletor** (M, masked, prop)
 - **Sorceress** (F, prop)
@@ -343,6 +354,7 @@
 - **Michelangelo** (M, masked, prop)
 - **Raphael** (M, masked, prop)
 - **Shredder** (M, masked)
+- **Splinter** (M, masked, prop)
 
 ### The Flintstones
 
@@ -415,7 +427,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (153)
+## DC (149)
 
 ### DC
 
@@ -474,7 +486,6 @@
 - **Gypsy** (F)
 - **Hal Jordan** (M)
 - **Harley Quinn** (F, +2 alt, prop)
-- **Harley Quinn (Classic Jester)** (F, prop)
 - **Hawkgirl** (F)
 - **Hawkman** (M, masked, prop)
 - **Hippolyta** (F)
@@ -538,15 +549,12 @@
 - **Starro** (M, masked)
 - **Starro Spore** (F, masked)
 - **Static Shock** (M)
-- **Supergirl** (F)
-- **Supergirl (DCAU)** (F)
+- **Supergirl** (F, +1 alt)
 - **Superman** (M)
 - **Swamp Thing** (M, giant)
-- **Tala** (F)
-- **Tala (Legion of Doom)** (F)
+- **Tala** (F, +1 alt)
 - **Talia al Ghul** (F)
-- **The Atom** (M, tiny)
-- **The Atom (Ray Palmer)** (M, tiny, masked)
+- **The Atom** (M, tiny, +1 alt)
 - **The Flash** (M, masked)
 - **The Penguin** (M, prop)
 - **The Riddler** (M, prop)
@@ -585,7 +593,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (57)
+## Disney (63)
 
 ### 101 Dalmatians
 
@@ -593,18 +601,23 @@
 
 ### Aladdin
 
+- **Aladdin** (M)
 - **Genie** (M)
 - **Jasmine** (F)
 
 ### Alice in Wonderland
 
 - **Alice** (F)
+- **Cheshire Cat** (M, masked)
 - **Mad Hatter (Alice in Wonderland)** (M)
+- **Queen of Hearts** (F, prop)
 - **White Queen (Alice in Wonderland)** (F)
 
 ### Beauty and the Beast
 
+- **Beast (Beauty and the Beast)** (M, masked)
 - **Belle** (F)
+- **Gaston** (M)
 
 ### Big Hero 6
 
@@ -621,31 +634,30 @@
 
 ### Disney
 
-- **Aladdin** (M)
 - **Captain Hook** (M)
 - **Donald Duck** (M, masked)
 - **Dr. Facilier** (M)
 - **Esmeralda** (F)
 - **Frollo** (M)
-- **Gaston** (M)
 - **Goofy** (M, masked)
-- **Hades** (M)
-- **Hercules** (M)
 - **Jafar** (M, prop)
-- **Jane Porter** (F)
 - **Kida** (F)
 - **Kim Possible** (F)
 - **Mary Poppins** (F, prop)
-- **Maui** (M, prop)
-- **Megara** (F)
 - **Mickey Mouse** (M, masked)
 - **Minnie Mouse** (F)
-- **Wendy Darling** (F)
 
 ### Frozen
 
 - **Anna** (F)
 - **Elsa** (F)
+- **Olaf** (M, masked)
+
+### Hercules
+
+- **Hades** (M)
+- **Hercules** (M)
+- **Megara** (F)
 
 ### Lilo and Stitch
 
@@ -653,6 +665,7 @@
 
 ### Moana
 
+- **Maui** (M, prop)
 - **Moana** (F)
 
 ### Mulan
@@ -663,6 +676,7 @@
 
 - **Peter Pan** (M, prop)
 - **Tinker Bell** (F, tiny)
+- **Wendy Darling** (F)
 
 ### Pinocchio
 
@@ -690,6 +704,11 @@
 
 - **Rapunzel** (F)
 
+### Tarzan
+
+- **Jane Porter** (F)
+- **Tarzan** (M)
+
 ### The Incredibles
 
 - **Dash** (M)
@@ -710,13 +729,14 @@
 ### Toy Story
 
 - **Buzz Lightyear** (M)
+- **Jessie** (F)
 - **Woody** (M)
 
 ### Zootopia
 
 - **Judy Hopps** (F)
 
-## Fantasy & Literature (49)
+## Fantasy & Literature (54)
 
 ### Anne of Green Gables
 
@@ -746,6 +766,7 @@
 ### Folklore
 
 - **Baba Yaga** (F, prop)
+- **Krampus** (M, masked, prop)
 - **Robin Hood** (M, prop)
 - **Santa Claus** (M, prop)
 
@@ -806,7 +827,11 @@
 
 ### The Wizard of Oz
 
+- **Cowardly Lion** (M, masked)
 - **Dorothy Gale** (F, prop)
+- **Scarecrow (Wizard of Oz)** (M)
+- **Tin Man** (M, prop)
+- **Wicked Witch of the West** (F, prop)
 
 ### Winnie the Pooh
 
@@ -815,7 +840,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked)
 
-## Marvel (140)
+## Marvel (138)
 
 ### Marvel
 
@@ -842,7 +867,7 @@
 - **Cable** (M, prop)
 - **Captain America** (M, prop)
 - **Captain Carter** (F, prop)
-- **Captain Marvel** (F)
+- **Captain Marvel** (F, +1 alt)
 - **Carnage** (M, masked)
 - **Colossus** (M)
 - **Crystal** (F)
@@ -879,8 +904,7 @@
 - **Jean Grey** (F)
 - **Jubilee** (F)
 - **Juggernaut** (M, giant, masked)
-- **Kang the Conqueror** (M, masked)
-- **Kang the Conqueror (Classic)** (M, masked)
+- **Kang the Conqueror** (M, masked, +1 alt)
 - **Kingpin** (M, giant)
 - **Kitty Pryde** (F)
 - **Kraven the Hunter** (M, prop)
@@ -901,7 +925,6 @@
 - **Moon Knight** (M, masked, prop)
 - **Moonstone** (F)
 - **Morgan le Fay** (F)
-- **Ms. Marvel (Carol Danvers)** (F)
 - **Ms. Marvel (Kamala Khan)** (F)
 - **Ms. Marvel (Sharon Ventura)** (F)
 - **Mysterio** (M, masked)
@@ -960,7 +983,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (82)
+## Movies & TV (87)
 
 ### A Nightmare on Elm Street
 
@@ -1111,6 +1134,7 @@
 
 ### Pirates of the Caribbean
 
+- **Davy Jones** (M, masked)
 - **Jack Sparrow** (M)
 
 ### Planters
@@ -1164,7 +1188,11 @@
 
 ### The Addams Family
 
+- **Cousin Itt** (M, masked)
+- **Gomez Addams** (M, prop)
+- **Lurch** (M)
 - **Morticia Addams** (F)
+- **Uncle Fester** (M)
 - **Wednesday Addams** (F)
 
 ### The Ring
@@ -1197,7 +1225,7 @@
 
 - **Xena** (F, prop)
 
-## Star Wars (109)
+## Star Wars (108)
 
 ### Star Wars
 
@@ -1278,8 +1306,7 @@
 - **Nute Gunray** (M, masked)
 - **Obi-Wan Kenobi** (M, prop)
 - **Obi-Wan Kenobi (Force Ghost)** (M)
-- **Padme Amidala** (F)
-- **Padme Amidala (Regal Outfit)** (F)
+- **Padme Amidala** (F, +1 alt)
 - **Plo Koon** (M, masked, prop)
 - **Poe Dameron** (M)
 - **Ponda Baba** (M, masked)
@@ -1311,7 +1338,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (183)
+## Video Games (199)
 
 ### ARMS
 
@@ -1345,8 +1372,24 @@
 
 ### Darkstalkers
 
+- **Anakaris** (M, masked)
+- **Baby Bonnie Hood (B.B. Hood)** (F, prop)
+- **Bishamon** (M, masked, prop)
+- **Demitri Maximoff** (M)
+- **Donovan Baine** (M, prop)
+- **Felicia** (F)
+- **Hsien-Ko** (F, prop)
+- **Huitzil** (M, giant, masked)
+- **Jedah Dohma** (M)
+- **Jon Talbain** (M, masked, prop)
 - **Lilith Aensland** (F)
+- **Lord Raptor** (M)
 - **Morrigan Aensland** (F)
+- **Pyron** (M, giant, masked)
+- **Q-Bee** (F, masked)
+- **Rikuo** (M, masked)
+- **Sasquatch** (M, giant, masked)
+- **Victor von Gerdenheim** (M, giant)
 
 ### Divinity: Original Sin
 
