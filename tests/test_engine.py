@@ -38,6 +38,7 @@ from nodes.identity_forge import (
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
+    _pick_look, _resolve_character, _SPECIAL_SCOPES,
 )
 from nodes.identity_forge_modifier import build_modifier_json, _parse_modifier_text
 from data.templates import ARCHETYPES
@@ -2538,6 +2539,110 @@ class SizeScaleSuppressionTests(unittest.TestCase):
         gargamel = COSPLAYERS["Gargamel"]
         self.assertNotIn("size_scale", gargamel)
         self.assertNotIn("scale_prose", gargamel)
+
+
+class AltCostumeTests(unittest.TestCase):
+    """The ``costumes`` alternate-look list: rng-picked per seed, string or dict
+    overlay, shared keys (size/physique) stable across looks."""
+
+    _BASE = {
+        "franchise": "Test", "gender": "Female",
+        "costume": "the primary look",
+        "size_scale": "giant", "scale_prose": "colossal and fifty feet tall",
+        "physique": {"body_type": "athletic"},
+    }
+
+    def test_no_costumes_returns_entry_unchanged_and_consumes_no_rng(self):
+        entry = dict(self._BASE)
+        rng = random.Random(7)
+        state_before = rng.getstate()
+        self.assertIs(_pick_look(entry, rng), entry)
+        self.assertEqual(rng.getstate(), state_before,
+                         "single-costume entry must not consume RNG (seed stability)")
+
+    def test_string_alternate_can_be_selected(self):
+        entry = dict(self._BASE, costumes=["the alternate look"])
+        seen = {_pick_look(entry, random.Random(s))["costume"] for s in range(30)}
+        self.assertEqual(seen, {"the primary look", "the alternate look"})
+
+    def test_alternate_pick_is_deterministic_per_seed(self):
+        entry = dict(self._BASE, costumes=["look B", "look C"])
+        self.assertEqual(_pick_look(entry, random.Random(3))["costume"],
+                         _pick_look(entry, random.Random(3))["costume"])
+
+    def test_shared_keys_survive_every_costume(self):
+        entry = dict(self._BASE, costumes=["alt one", {"costume": "alt two"}])
+        for s in range(20):
+            look = _pick_look(entry, random.Random(s))
+            self.assertEqual(look["size_scale"], "giant")
+            self.assertEqual(look["scale_prose"], "colossal and fifty feet tall")
+            self.assertEqual(look["physique"], {"body_type": "athletic"})
+            self.assertNotIn("costumes", look, "resolved look must not carry the raw list")
+
+    def test_dict_overlay_overrides_only_its_keys(self):
+        entry = dict(self._BASE, signature={"hair_color": "deep red"},
+                     costumes=[{"costume": "caped look", "signature": {"hair_color": "jet black"}}])
+        # Find a seed that selects the overlay.
+        for s in range(30):
+            look = _pick_look(entry, random.Random(s))
+            if look["costume"] == "caped look":
+                self.assertEqual(look["signature"], {"hair_color": "jet black"})
+                break
+        else:
+            self.fail("overlay costume was never selected across 30 seeds")
+
+    def test_end_to_end_giant_alt_costume_keeps_scale(self):
+        """A real build over an entry with alternates must keep the giant scale_prose
+        in the height slot regardless of which costume rolled."""
+        entry = dict(self._BASE, costumes=["alt look"])
+        COSPLAYERS["__AltTest__"] = entry
+        try:
+            for s in range(12):
+                doc = json.loads(build_cosplayer_json("__AltTest__", s, "Full character"))
+                body = doc.get("Body", {})
+                self.assertEqual(body.get("height"), "colossal and fifty feet tall")
+        finally:
+            del COSPLAYERS["__AltTest__"]
+
+
+class SpecialRandomScopeTests(unittest.TestCase):
+    """The attribute-based random scopes (Giant/Tiny/Non-human/Masked)."""
+
+    def _pick(self, scope, seeds=40):
+        names = set()
+        for s in range(seeds):
+            name = _resolve_character("Random — any", random.Random(s), scope)
+            if name is not None:
+                names.add(name)
+        return names
+
+    def test_scopes_are_registered(self):
+        self.assertEqual(set(_SPECIAL_SCOPES),
+                         {"Giant characters", "Tiny characters",
+                          "Non-human / colored", "Masked"})
+
+    def test_giant_scope_only_returns_giants(self):
+        for name in self._pick("Giant characters"):
+            self.assertEqual(COSPLAYERS[name].get("size_scale"), "giant",
+                             f"{name} is not a giant but was picked under the Giant scope")
+
+    def test_tiny_scope_only_returns_tinies(self):
+        picked = self._pick("Tiny characters")
+        self.assertTrue(picked, "Tiny scope produced no characters")
+        for name in picked:
+            self.assertEqual(COSPLAYERS[name].get("size_scale"), "tiny")
+
+    def test_masked_scope_only_returns_masked(self):
+        for name in self._pick("Masked"):
+            self.assertTrue(COSPLAYERS[name].get("covers_face"),
+                            f"{name} is not masked but was picked under the Masked scope")
+
+    def test_nonhuman_scope_predicate_holds(self):
+        predicate = _SPECIAL_SCOPES["Non-human / colored"]
+        picked = self._pick("Non-human / colored")
+        self.assertTrue(picked, "Non-human scope produced no characters")
+        for name in picked:
+            self.assertTrue(predicate(COSPLAYERS[name]))
 
 
 if __name__ == "__main__":

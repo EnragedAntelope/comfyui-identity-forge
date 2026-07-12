@@ -28,6 +28,16 @@ Schema per entry (keyed by character name)::
 
 Curation rules (so the data stays coherent with the engine):
 
+* **Alternate costumes (optional).** A character with more than one iconic look may
+  carry a ``"costumes"`` list of *extra* alternates on top of the canonical
+  ``costume`` (which stays required). Each item is either a plain costume string or a
+  dict overlay that may set ``costume`` (required in the dict) plus any of
+  ``signature``/``mask``/``covers_face``/``covers_body``/``covers_hair``/``prop``/
+  ``body_paint``/``skin``/``eyes`` for that look only. The Cosplayer node rng-picks one
+  look per seed, so a specific OR Random pick rotates costumes without adding a second
+  dropdown entry (bias-free). ``size_scale``/``scale_prose``/``physique`` stay at entry
+  level, so a giant keeps its scale across every costume. Prefer a plain string unless
+  a look genuinely changes hair/mask/colour.
 * **Worn, not held.** ``costume`` lists only *worn* items — clothing, footwear,
   gloves, masks/cowls, headwear, hair bows, jewellery, belts, empty holsters,
   body paint, markings, capes. Held / wielded props (swords, staves, bows, guns,
@@ -595,6 +605,17 @@ COSPLAYERS: dict[str, dict] = {
                    "studded choker, fingerless gloves and studded accessories, with a "
                    "pale powdered whitish face and high blonde pigtails dip-dyed pink at "
                    "the tips on one side and blue on the other",
+        "costumes": [
+            # Classic Animated-Series jester: the two-pointed hood covers the hair (overlay).
+            {"costume": "a red-and-black diamond-harlequin full bodysuit with a white ruffled "
+                        "jester collar and a two-pointed red-and-black hood, white greasepaint "
+                        "face, and a black domino mask around the eyes",
+             "covers_hair": True},
+            # Comics 'red-and-black' corset look.
+            "a red-and-black corset with a ruffled tutu skirt, red-and-black fishnet stockings, "
+            "fingerless gloves and a small jester collar, with high pigtails tipped red on one "
+            "side and black on the other",
+        ],
         "signature": {"hair_color": "platinum blonde", "hair_length": "shoulder length",
                       "hair_style": "pigtails", "eye_color": "bright blue",
                       "makeup_style": "club makeup", "eye_makeup": "colorful bold eyeshadow",
@@ -738,6 +759,16 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a form-fitting bodysuit of overlapping leaves and vines, smooth, flawless "
                    "vivid green skin from head to toe including the face, with bold red lips "
                    "and tiny leaves entwined in the hair",
+        # Alternates keep the iconic green body-paint (all popular Ivy looks are green) and
+        # only vary the outfit; the phrase "smooth, flawless vivid green skin" is retained
+        # verbatim so the body-paint anchor colour stays "vivid green" across every look.
+        "costumes": [
+            "a strapless leotard of overlapping green leaves with a high leafy collar and "
+            "leafy cuffs, over smooth, flawless vivid green skin, with bold red lips and small "
+            "leaves woven through the hair",
+            "a bodysuit woven from living leaves and curling vines, over smooth, flawless "
+            "vivid green skin, with bold red lips and leaves entwined in the hair",
+        ],
         "signature": {"hair_color": "bright red", "hair_length": "waist length",
                       "hair_style": "worn down", "eye_color": "green"},
         "physique": {"body_type": "voluptuous", "height": "tall"},
@@ -747,6 +778,14 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a tight black leather catsuit with a pointed cat-eared cowl, a "
                    "utility belt, and black thigh-high heeled boots",
+        "costumes": [
+            # 1990s comics purple suit (Jim Balent era).
+            "a skin-tight purple catsuit with a long trailing tail, a black domino mask, "
+            "clawed black gloves, and thigh-high black heeled boots",
+            # Batman Returns crudely-stitched black vinyl look.
+            "a glossy black vinyl catsuit roughly stitched together with white thread, a "
+            "stitched cat-eared cowl, and vivid red lips",
+        ],
         "signature": {"hair_color": "near black", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "green"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "olive"},
@@ -4167,6 +4206,13 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a purple-and-white sleeveless high-cut costume with white gloves and boots, "
                    "over smooth, flawless orange-toned skin, with a strong jaw and bold features "
                    "on a powerfully muscular frame - towering and gigantic with overwhelming scale and proportion",
+        "costumes": [
+            "a purple sleeveless wrestling bodysuit with jagged spiked shoulder pieces and a "
+            "purple mask with hair flowing out the top, on a powerfully muscular frame - "
+            "towering and gigantic with overwhelming scale",
+            "a high-cut purple leotard with white trim, white gloves and thigh-high white boots, "
+            "on a powerfully muscular frame - towering and gigantic with overwhelming scale",
+        ],
         "eyes": "green",
         "signature": {"hair_color": "deep red", "hair_length": "very long",
                       "hair_texture": "wavy"},
@@ -4339,6 +4385,14 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a torn leopard-print one-shoulder dress, scaled up to the colossal body "
                    "of a fifty-foot giantess of overwhelmingly gigantic scale",
+        "costumes": [
+            # The Justice League animated 'refined' look the user asked for.
+            "a short pink dress cinched with a wide gold belt, gold hoop earrings and a gold "
+            "bracelet, scaled up to the colossal body of a fifty-foot giantess",
+            # The classic Villainy Inc / Super Friends leopard two-piece.
+            "a leopard-skin bra and loincloth two-piece with large gold bangles at the wrists "
+            "and ankles, barefoot, scaled up to the colossal body of a fifty-foot giantess",
+        ],
         "signature": {"hair_color": "deep red", "hair_length": "very long",
                       "eye_color": "green"},
         "size_scale": "giant",
@@ -9213,6 +9267,356 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "thick and voluminous", "hair_style": "tousled bedhead", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
     },
+
+    # === v0.57.0 expansion: size-themed characters =======================
+    "Mt. Lady": {
+        "franchise": "My Hero Academia",
+        "gender": "Female",
+        "costume": "a skin-tight purple and pale-tan bodysuit accented with orange stripes and "
+                   "three orange diamond markings below the chest, purple gloves with orange cuffs, "
+                   "and thigh-high boots cut in a deep V, scaled up to a towering giantess, "
+                   "with a purple domino mask topped by two curved horn-like protrusions",
+        "eyes": "violet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "thick and voluminous", "hair_style": "worn down"},
+        "size_scale": "giant",
+        "scale_prose": "colossal and towering sixty feet tall",
+        "physique": {"body_type": "hourglass", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Diane": {
+        "franchise": "The Seven Deadly Sins",
+        "gender": "Female",
+        "costume": "a short-sleeved orange one-piece suit, knee-high boots laced with five crossed "
+                   "cords, and fingerless blue-grey leather gauntlets studded with steel, scaled up "
+                   "to a towering giantess of the Giant Clan",
+        "costumes": [
+            # FLAGGED (uncertain colour/detail): later 'green' Giant-training look.
+            "a sleeveless green two-piece of wrapped cloth in the style of the ancient Giants, "
+            "with bindings across the chest and a short wrapped skirt, and knee-laced boots, "
+            "scaled up to a towering giantess",
+            # FLAGGED (uncertain): later 'pink' dress look.
+            "a short pink-and-white dress with a fitted bodice and a flared skirt worn over "
+            "knee-high boots, scaled up to a towering giantess",
+        ],
+        "eyes": "violet",
+        "signature": {"hair_color": "medium brown", "hair_length": "very long",
+                      "hair_style": "high pigtails"},
+        "size_scale": "giant",
+        "scale_prose": "colossal and thirty feet tall",
+        "physique": {"body_type": "voluptuous", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Ginormica": {
+        "franchise": "Monsters vs. Aliens",
+        "gender": "Female",
+        "costume": "a sleek light-blue agent jumpsuit with orange side stripes and orange pockets, "
+                   "a black belt with a silver buckle, and grey sneakers with orange stripes, "
+                   "grown to the height of a towering giantess",
+        "signature": {"hair_color": "platinum white", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "size_scale": "giant",
+        "scale_prose": "colossal and fifty feet tall",
+        "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Shirahoshi": {
+        "franchise": "One Piece",
+        "gender": "Female",
+        "costume": "a cleavage-baring yellow halter top covered in pearls with a wide raised collar "
+                   "strap, clam-shell earrings, and belly chains with a cloth panel hanging in front, "
+                   "below the waist a very long light-red and pink striped mermaid tail in place of "
+                   "legs, all on the scale of an enormous giant mermaid",
+        "signature": {"hair_color": "baby pink", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "hair_style": "blunt bangs",
+                      "eye_color": "bright blue"},
+        "size_scale": "giant",
+        "scale_prose": "colossal and forty feet tall",
+        "physique": {"body_type": "hourglass", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Stature": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a red and black form-fitting costume with metallic silver trim, a flared collar, "
+                   "collared gloves, and a red domino mask, grown by size-changing particles to a "
+                   "towering giantess",
+        "signature": {"hair_color": "warm brown", "hair_length": "long", "eye_color": "bright blue"},
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and towering",
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Big Bertha": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # FLAGGED (uncertain leotard colour): her defining trait is the massive heavyset build.
+        "costume": "a bright high-cut superhero leotard with a wide belt and boots, worn on an "
+                   "enormously large, powerfully heavyset and muscular body of towering height and "
+                   "immense girth",
+        "signature": {"hair_color": "strawberry blonde", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
+        "physique": {"body_type": "plus size", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Lascivious": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # FLAGGED (uncertain singlet colour): confirmed signature is the torn black fishnet
+        # sleeve, very pale goth skin, and long black hair.
+        "costume": "a dark form-fitting wrestler's singlet with one arm sheathed in a torn black "
+                   "fishnet sleeve, over strikingly pale skin",
+        "signature": {"hair_color": "raven black", "hair_length": "very long",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Brandish": {
+        "franchise": "Fairy Tail",
+        "gender": "Female",
+        "costume": "a gold bikini under a long golden coat patterned with purple indented flowers "
+                   "and trimmed with a purple fur collar, two purple cross-shaped ornaments set at "
+                   "the sides of the head like horns, and silver cross earrings, with a purple "
+                   "cross-shaped Empire tattoo on the outer right thigh",
+        "costumes": [
+            # FLAGGED (uncertain): the 'green high-slit skirt' look.
+            "a revealing green outfit with a cropped top and a flowing floor-length skirt slit high "
+            "to the hip, and silver cross earrings, exposing a purple cross-shaped Empire tattoo on "
+            "the outer right thigh",
+        ],
+        "eyes": "green",
+        "signature": {"hair_color": "emerald green", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs"},
+        "physique": {"body_type": "voluptuous", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # === v0.57.0 expansion: Inhumans + Marvel/DC + indie heroines =========
+    "Enchantress": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a green skin-tight Asgardian corset top that bares the shoulders, a matching "
+                   "green mini skirt, long green arm sleeves looped over the middle fingers, and a "
+                   "green tiara",
+        "signature": {"hair_color": "golden blonde", "hair_length": "hip length",
+                      "hair_texture": "thick and voluminous", "eye_color": "bright green"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Enchantress (Suicide Squad)": {
+        "franchise": "DC",
+        "gender": "Female",
+        "costume": "a ragged strapless dark bandeau and dark shorts, a crescent-moon headpiece, a "
+                   "metal necklace, metal armbands trailing loose chains, and a metal belt, over "
+                   "pale ashen skin covered in dark mystical tattoo markings",
+        "signature": {"hair_color": "near black", "hair_length": "very long",
+                      "hair_texture": "wavy", "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Medusa": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a one-piece violet bodysuit with black accents and a black crown-like tiara, "
+                   "and an immense mane of prehensile deep-red hair that flows several times her "
+                   "own body length and moves like living tendrils",
+        "signature": {"hair_color": "deep red", "hair_length": "hip length",
+                      "hair_texture": "thick and voluminous", "eye_color": "bright green"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Black Bolt": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a black full-body suit marked with a silver tuning-fork emblem spreading from "
+                   "the chest, black gloves and boots, and a slim antenna device mounted at the "
+                   "center of the forehead",
+        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
+                      "hair_texture": "sleek straight", "eye_color": "steel blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Riptide": {
+        "franchise": "Marvel",
+        # FLAGGED (uncertain costume colours): confirmed greyish-white hair, blue eyes,
+        # tall lean build, bone-shuriken motif.
+        "gender": "Male",
+        "costume": "a dark form-fitting bodysuit with a high collar and bandoliers strung with "
+                   "sharp bone shuriken and spikes",
+        "signature": {"hair_color": "white", "hair_length": "short pixie", "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Avengelyne": {
+        "franchise": "Image",
+        "gender": "Female",
+        "costume": "a green-and-gold metallic battle bikini-armor with a jeweled centerpiece, "
+                   "thigh-high armored boots, and a pair of large white feathered angel wings",
+        "signature": {"hair_color": "deep red", "hair_length": "waist length",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+        "prop": "a long silver double-edged broadsword with a winged crossguard",
+    },
+    "Cyblade": {
+        "franchise": "Top Cow",
+        # FLAGGED (uncertain costume colours): confirmed long black hair, blue eyes,
+        # lithe toned build, glowing energy blades from the fists.
+        "gender": "Female",
+        "costume": "a dark form-fitting combat bodysuit, with crackling blades of blue-white "
+                   "electromagnetic energy projecting from around the fists",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "toned", "height": "tall", "skin_tone": "fair"},
+    },
+    "Sara Pezzini": {
+        "franchise": "Witchblade",
+        "gender": "Female",
+        "costume": "asymmetrical organic silver Witchblade armor, both metallic and living, that "
+                   "spirals out from a bladed gauntlet on the right arm to sheathe the body in "
+                   "little more than sharp curved plates and a bladed bikini, over fair skin",
+        "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                      "hair_texture": "curly", "eye_color": "deep blue"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
+    },
+    "Glory": {
+        "franchise": "Image",
+        "gender": "Female",
+        "costume": "form-fitting red-and-gold Amazonian armor with a golden bustier, armored "
+                   "gauntlets and greaves, and a red loincloth skirt",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "fair"},
+    },
+    "Aphrodite IX": {
+        "franchise": "Top Cow",
+        "gender": "Female",
+        "costume": "a form-fitting dark bodysuit ringed with ammunition belts, thigh-high "
+                   "lug-soled boots, kelly-green makeup with an oversized green patch over one "
+                   "cheek",
+        "signature": {"hair_color": "emerald green", "hair_length": "long",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a very large single-edged combat knife",
+    },
+    "Vogue": {
+        "franchise": "Youngblood",
+        "gender": "Female",
+        "costume": "a sleek purple-and-white bodysuit with a high collar, over smooth, flawless "
+                   "purple-and-chalk-white skin",
+        "signature": {"hair_color": "purple", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "toned", "height": "tall"},
+    },
+    "Suprema": {
+        "franchise": "Youngblood",
+        # FLAGGED (uncertain costume detail): confirmed white hair, blue eyes, Supreme-family look.
+        "gender": "Female",
+        "costume": "a white-and-red caped superhero costume with a red chest emblem, red gloves "
+                   "and boots, and a flowing red cape",
+        "signature": {"hair_color": "white", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Lady Supreme": {
+        "franchise": "Image",
+        # FLAGGED (uncertain costume): daughter of Supreme and Glory; best-effort Supreme-family look.
+        "gender": "Female",
+        "costume": "a form-fitting white-and-red costume with gold trim, armored accents, and a "
+                   "short cape",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Diva": {
+        "franchise": "WildStorm",
+        # FLAGGED (UNVERIFIED APPEARANCE): could not confirm this obscure Stormwatch/Strykeforce
+        # character's look from available sources -- this is a generic best-effort placeholder.
+        # User should supply a reference image or confirm removal.
+        "gender": "Female",
+        "costume": "a sleek modern superheroine bodysuit with armored panel accents and knee-high "
+                   "boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # === v0.57.0 expansion: Star Trek (named + species looks) =============
+    # Species entries render the non-human features (skin colour, antennae, ridges,
+    # ears) as worn cosplay elements; the person underneath still randomizes.
+    "Seven of Nine": {
+        "franchise": "Star Trek",
+        "gender": "Female",
+        "costume": "a sleek form-fitting silver-grey biosuit, with a curved silver Borg ocular "
+                   "implant arching over the left eyebrow and a small metallic implant on the "
+                   "cheek and hand",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_texture": "sleek straight", "hair_style": "sleek bun"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Gowron": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "heavy ornate Klingon armor with a metal baldric sash and layered leather and "
+                   "metal plating, a pronounced ridged Klingon forehead, and famously wide, "
+                   "intense bulging eyes",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "brown"},
+    },
+    "Andorian": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "a fitted Andorian uniform with quilted panels, over smooth, flawless blue "
+                   "skin, with a pair of pale antennae rising and curving from the top of the "
+                   "forehead and stark white hair",
+        "signature": {"hair_color": "white", "hair_length": "ear length",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Ferengi": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "an ornate layered Ferengi tunic of rich brocade fabrics, over smooth, "
+                   "flawless orange-tan skin, with an enormous bald wrinkled cranium, huge "
+                   "fan-like lobed ears, a broad upturned nose, and small sharp teeth",
+        "bald": True,  # fully hairless head (also clears facial hair -> no stray beard)
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "Tellarite": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "a heavy padded Tellarite uniform on a short, broad, powerfully stocky frame, "
+                   "with a coarse pig-like snout, deep-set eyes, small tusks, and a shaggy coat "
+                   "of thick facial and body hair",
+        "signature": {"hair_color": "dark brown", "hair_length": "short pixie",
+                      "hair_texture": "coily"},
+        "physique": {"body_type": "stocky", "height": "short", "skin_tone": "tan"},
+    },
+    "Vulcan": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "a crisp Vulcan robe with clean geometric lines, sharply upswept pointed ears, "
+                   "and severe upswept eyebrows under a blunt straight-fringed bowl haircut",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_texture": "sleek straight", "hair_style": "blunt bangs",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "olive"},
+    },
+    "Klingon": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "spiked Klingon battle armor with a metal baldric sash and heavy leather "
+                   "plating, a deeply ridged Klingon forehead and brow, and a long thick beard",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "brown"},
+    },
+    "Cardassian": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "an armored grey Cardassian uniform with a segmented chestplate, over smooth, "
+                   "flawless grey scaled skin, with a spoon-shaped ridge in the center of the "
+                   "forehead, thick cobra-like neck ridges, and slicked-back black hair",
+        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
+                      "hair_texture": "sleek straight", "hair_style": "slicked back"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Borg Drone": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "a black Borg exo-suit studded with cybernetic tubes, cabling, and metal "
+                   "plating, over smooth, flawless ashen-grey skin, with a red laser ocular "
+                   "implant over one eye and a bulky mechanical prosthetic assimilating one arm",
+        "bald": True,
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
 }
 
 
@@ -9227,6 +9631,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Anime",
+        "Fairy Tail", "The Seven Deadly Sins",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
@@ -9265,6 +9670,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
         "Rise of the Guardians", "The Ring", "Ghostbusters", "Edward Scissorhands",
+        "Monsters vs. Aliens",
         "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy", "Planters",
         "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",
         "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo",
@@ -9274,6 +9680,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Invincible", "Image", "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
         "The Smurfs", "Adventure Time", "Thundercats", "G.I. Joe", "TMNT", "Monster High",
         "Fathom", "Chaos! Comics", "Comics", "Betty Boop", "The Flintstones", "The Jetsons",
+        "Top Cow", "Witchblade", "Youngblood", "WildStorm",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
         "Steven Universe", "Popeye", "Johnny Bravo",

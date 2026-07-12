@@ -51,6 +51,31 @@ def _options(field: str) -> set[str]:
     return set(meta.get("female_options", [])) | set(meta.get("male_options", []))
 
 
+#: Keys an alternate costume (``costumes`` list) overlay may carry. Mirrors
+#: ``nodes.identity_forge_cosplayer._LOOK_OVERRIDE_KEYS`` (kept in sync by hand; the
+#: test module intentionally has no import-time dependency on the node layer).
+_LOOK_OVERRIDE_KEYS = frozenset({
+    "costume", "signature", "mask", "covers_face", "covers_body",
+    "covers_hair", "prop", "body_paint", "skin", "eyes",
+})
+
+
+def _validate_field_map(name: str, section: str, mapping: dict) -> list[str]:
+    """Validate a signature/physique map: real fields, valid options, no free-form."""
+    errs: list[str] = []
+    for field, value in mapping.items():
+        if field in _FREEFORM_FIELDS or field in ("gender", "hair_color_scope"):
+            errs.append(f"cosplayer '{name}': {section}.{field} is not allowed here")
+        elif field not in FIELD_DEFINITIONS:
+            errs.append(f"cosplayer '{name}': {section} unknown field {field!r}")
+        elif field == "age":
+            if value not in _options("age"):
+                errs.append(f"cosplayer '{name}': age={value!r} is not a valid option")
+        elif value not in _options(field):
+            errs.append(f"cosplayer '{name}': {section}.{field}={value!r} is not a valid option")
+    return errs
+
+
 def _duplicate_literal_keys(source_path: Path, dict_name: str) -> list[str]:
     """Duplicate string keys in the literal ``dict_name = {...}`` of a source file.
 
@@ -357,16 +382,46 @@ def validate() -> list[str]:
         # signature is applied in both modes; physique only in Full character.
         # Every key must be a real field and every value a valid option for it.
         for section in ("signature", "physique"):
-            for field, value in entry.get(section, {}).items():
-                if field in _FREEFORM_FIELDS or field in ("gender", "hair_color_scope"):
-                    errors.append(f"cosplayer '{name}': {section}.{field} is not allowed here")
-                elif field not in FIELD_DEFINITIONS:
-                    errors.append(f"cosplayer '{name}': {section} unknown field {field!r}")
-                elif field == "age":
-                    if value not in _options("age"):
-                        errors.append(f"cosplayer '{name}': age={value!r} is not a valid option")
-                elif value not in _options(field):
-                    errors.append(f"cosplayer '{name}': {section}.{field}={value!r} is not a valid option")
+            errors += _validate_field_map(name, section, entry.get(section, {}))
+
+        # Optional ``costumes`` alternate-look list: each item is a plain costume
+        # string or a dict overlay of _LOOK_OVERRIDE_KEYS. The node rng-picks one look
+        # per seed on top of the canonical ``costume`` (which stays required above).
+        costumes = entry.get("costumes")
+        if costumes is not None:
+            if not isinstance(costumes, list) or not costumes:
+                errors.append(f"cosplayer '{name}': 'costumes' must be a non-empty list")
+            else:
+                for i, alt in enumerate(costumes):
+                    where = f"costumes[{i}]"
+                    if isinstance(alt, str):
+                        if not alt:
+                            errors.append(f"cosplayer '{name}': {where} is an empty string")
+                        continue
+                    if not isinstance(alt, dict):
+                        errors.append(f"cosplayer '{name}': {where} must be a string or dict")
+                        continue
+                    bad_keys = set(alt) - _LOOK_OVERRIDE_KEYS
+                    if bad_keys:
+                        errors.append(f"cosplayer '{name}': {where} has non-overridable "
+                                      f"keys {sorted(bad_keys)}")
+                    if not (isinstance(alt.get("costume"), str) and alt.get("costume")):
+                        errors.append(f"cosplayer '{name}': {where} needs a non-empty 'costume'")
+                    # Free-text string overrides must be non-empty strings if present.
+                    for key in ("mask", "prop", "skin", "eyes"):
+                        if key in alt and not (isinstance(alt[key], str) and alt[key]):
+                            errors.append(f"cosplayer '{name}': {where}.{key} must be a non-empty string")
+                    if "signature" in alt:
+                        errors += _validate_field_map(name, f"{where}.signature", alt["signature"])
+                    # Mask coherence for the effective look: covering the face needs a
+                    # mask string (from the overlay or falling back to the entry); a mask
+                    # without a covered face is meaningless.
+                    eff_covers = alt.get("covers_face", entry.get("covers_face"))
+                    eff_mask = alt.get("mask", entry.get("mask"))
+                    if eff_covers and not eff_mask:
+                        errors.append(f"cosplayer '{name}': {where} covers the face but has no 'mask'")
+                    if "mask" in alt and not alt.get("covers_face", entry.get("covers_face")):
+                        errors.append(f"cosplayer '{name}': {where}.mask set but the look does not cover the face")
 
     # --- creatures: structure + class coverage -----------------------
     # Slot text is free-form prose (rendered by the species path, not the human

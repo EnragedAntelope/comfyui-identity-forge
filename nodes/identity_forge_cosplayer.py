@@ -94,6 +94,41 @@ _PROP_ON = "Include signature prop"
 #: Random-scope sentinel: no franchise/category limit on the Random picks.
 _SCOPE_ANY = "Any"
 
+#: Special Random scopes that filter the pool by a character *attribute* instead of
+#: its franchise category. They are offered ahead of the franchise categories in the
+#: node's ``random_scope`` dropdown and combine with the gender scope. Each maps to a
+#: predicate over a cosplayer entry. "Non-human / colored" reuses the body-paint
+#: detector (an all-over non-natural skin/fur/scale colour) plus the explicit
+#: ``skin``/``body_paint`` overrides; "Masked" keys off ``covers_face``. Kept in the
+#: node (not the data layer) so ``get_cosplayer_names`` stays a pure franchise filter.
+def _scope_is_giant(entry: dict) -> bool:
+    return entry.get("size_scale") == "giant"
+
+
+def _scope_is_tiny(entry: dict) -> bool:
+    return entry.get("size_scale") == "tiny"
+
+
+def _scope_is_masked(entry: dict) -> bool:
+    return bool(entry.get("covers_face"))
+
+
+def _scope_is_nonhuman(entry: dict) -> bool:
+    override = entry.get("body_paint")
+    if override is not None:
+        return bool(override)
+    if entry.get("skin"):
+        return True
+    return bool(_BODY_PAINT_RE.search(entry.get("costume", "")))
+
+
+_SPECIAL_SCOPES: "dict[str, Any]" = {
+    "Giant characters": _scope_is_giant,
+    "Tiny characters": _scope_is_tiny,
+    "Non-human / colored": _scope_is_nonhuman,
+    "Masked": _scope_is_masked,
+}
+
 #: A face-visible character whose colour covers the whole body (and therefore the
 #: face) — She-Hulk's green, Mystique's blue, a Nightsister's chalk-white — is
 #: written with a canonical skin-native phrasing: "smooth, flawless <colour> skin"
@@ -213,6 +248,48 @@ _CLEAN_SHAVEN_SUPPRESS: dict[str, str] = {"facial_hair": "clean shaven"}
 # it later.
 
 
+#: Per-look keys an alternate costume may override (everything else stays shared at
+#: entry level). Deliberately excludes ``size_scale``/``scale_prose``/``physique``/
+#: ``franchise``/``gender`` so a giant stays giant (and the same person-underneath) no
+#: matter which costume is rolled -- the alternates vary only the *worn look*.
+_LOOK_OVERRIDE_KEYS = (
+    "costume", "signature", "mask", "covers_face", "covers_body",
+    "covers_hair", "prop", "body_paint", "skin", "eyes",
+)
+
+
+def _pick_look(entry: dict, rng: random.Random) -> dict:
+    """Return ``entry`` with one costume from its ``costumes`` pool applied.
+
+    An entry may carry an optional ``costumes`` list of *alternate looks*, each a
+    plain costume string or a dict overlay of :data:`_LOOK_OVERRIDE_KEYS`. The pool is
+    the canonical ``costume`` followed by those alternates; one is ``rng``-picked per
+    seed, so a specific OR Random character rotates looks deterministically. Shared
+    keys (size_scale, physique, franchise, gender) are never per-look, so scale and
+    the person underneath are stable across costumes.
+
+    Returns ``entry`` unchanged (and consumes no RNG) when there are no alternates, so
+    the 900+ single-costume entries reproduce their existing seeds exactly.
+    """
+    alternates = entry.get("costumes")
+    if not alternates:
+        return entry
+    pool: list[dict] = [{"costume": entry["costume"]}]
+    pool += [alt if isinstance(alt, dict) else {"costume": alt} for alt in alternates]
+    chosen = rng.choice(pool)
+    merged = dict(entry)
+    merged.pop("costumes", None)
+    # Overlay only the keys the chosen look actually sets; absent keys fall back to the
+    # entry-level value already in ``merged`` (a plain-string alternate sets only
+    # ``costume``). A face-visible alternate of a masked character sets
+    # ``covers_face: False``; the stale entry-level ``mask`` is then ignored downstream
+    # because the mask clause is only attached when ``covers_face`` is truthy.
+    for key in _LOOK_OVERRIDE_KEYS:
+        if key in chosen:
+            merged[key] = chosen[key]
+    return merged
+
+
 def _is_bald(entry: dict, costume: str) -> bool:
     """Whether the costume describes a bald head (so scalp hair must be hidden)."""
     override = entry.get("bald")
@@ -249,8 +326,15 @@ def _resolve_character(
     """
     if character in _RANDOM_POOLS:
         gender = _RANDOM_POOLS[character]
-        pool = get_cosplayer_names(gender=gender, category=category)
-        if not pool:  # empty (gender, category) combo -> fall back to the full gender pool
+        predicate = _SPECIAL_SCOPES.get(category)
+        if predicate is not None:
+            # Attribute scope (Giant/Tiny/Non-human/Masked): filter the gender pool
+            # by the predicate instead of by franchise category.
+            pool = [n for n in get_cosplayer_names(gender=gender)
+                    if predicate(get_cosplayer(n))]
+        else:
+            pool = get_cosplayer_names(gender=gender, category=category)
+        if not pool:  # empty (gender, scope) combo -> fall back to the full gender pool
             pool = get_cosplayer_names(gender=gender)
         if not pool:
             print(f"[IdentityForgeCosplayer] No characters available for '{character}'.")
@@ -287,14 +371,18 @@ def build_cosplayer_json(
     "holding …". It is a no-op for characters without a ``prop``.
 
     ``random_scope`` (default ``"Any"``) limits the ``"Random — …"`` picks to one
-    franchise/category; it is ignored when a specific character is selected.
+    franchise/category, or to one of the attribute scopes (Giant / Tiny / Non-human /
+    Masked); it is ignored when a specific character is selected.
     """
     rng = random.Random(seed)
     name = _resolve_character(character, rng, random_scope)
     if name is None:
         return "{}"
 
-    entry = get_cosplayer(name)
+    # Resolve the character, then roll one of its costumes (a no-op for the common
+    # single-costume entry). Rebinding ``entry`` to the merged look means every read
+    # below transparently sees the chosen costume and its per-look overrides.
+    entry = _pick_look(get_cosplayer(name), rng)
 
     covers = bool(entry.get("covers_face", False))
     # A full hard suit / armour / robot shell / exoskeleton hides the body's skin,
@@ -421,12 +509,13 @@ if _COMFY_AVAILABLE:
                     ),
                     io.Combo.Input(
                         "random_scope",
-                        options=[_SCOPE_ANY] + get_cosplayer_categories(),
+                        options=[_SCOPE_ANY] + list(_SPECIAL_SCOPES) + get_cosplayer_categories(),
                         default=_SCOPE_ANY,
-                        tooltip="Limits the 'Random — …' picks to one franchise/category "
-                                "(e.g. only Anime & Manga, only Marvel). 'Any' = no limit. "
-                                "Combines with the gender scope; no effect when a specific "
-                                "character is picked.",
+                        tooltip="Limits the 'Random — …' picks. Attribute scopes come "
+                                "first (Giant / Tiny characters, Non-human / colored, "
+                                "Masked), then one franchise/category (only Anime & Manga, "
+                                "only Marvel, …). 'Any' = no limit. Combines with the gender "
+                                "scope; no effect when a specific character is picked.",
                     ),
                     io.Combo.Input(
                         "look_level",
