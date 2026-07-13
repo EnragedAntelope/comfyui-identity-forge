@@ -301,6 +301,65 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a pair of folding paper fans painted with red flowers, one open "
                 "in each hand",
     },
+    "Kyo Kusanagi": {
+        "franchise": "The King of Fighters",
+        "gender": "Male",
+        "costume": "a white sleeveless shirt with a red and blue school jacket tied around the "
+                   "waist, dark jeans and fingerless gloves, with small flames flickering at one "
+                   "hand",
+        "signature": {"hair_color": "dark brown", "hair_length": "short pixie",
+                      "hair_style": "windswept", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+    },
+    "Iori Yagami": {
+        "franchise": "The King of Fighters",
+        "gender": "Male",
+        "costume": "a menacing black outfit with a long crescent-hemmed coat, red straps and "
+                   "buckles, and pointed boots, his long crimson hair falling across the right eye",
+        "signature": {"hair_color": "bright red", "hair_length": "long",
+                      "hair_style": "worn down", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Leona Heidern": {
+        "franchise": "The King of Fighters",
+        "gender": "Female",
+        "costume": "a blue sleeveless military bodysuit with a wide belt, fingerless gloves and "
+                   "tall combat boots, with a blue headband",
+        "signature": {"hair_color": "navy blue", "hair_length": "waist length",
+                      "hair_style": "braided ponytail", "eye_color": "ice blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Athena Asamiya": {
+        "franchise": "The King of Fighters",
+        "gender": "Female",
+        "costume": "a bright pop-idol stage costume - a pink and white dress with puffed sleeves, "
+                   "ruffled trim and a bow, worn with matching boots and a headband",
+        "signature": {"hair_color": "purple", "hair_length": "very long",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "light"},
+    },
+    "K'": {
+        "franchise": "The King of Fighters",
+        "gender": "Male",
+        "costume": "a cool black leather jacket over a fitted top, dark jeans and boots, with a "
+                   "single red fingerless glove and dark wraparound sunglasses",
+        "signature": {"hair_color": "silver", "hair_length": "very short",
+                      "hair_style": "windswept", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
+    },
+    "Terry Bogard": {
+        "franchise": "The King of Fighters",
+        "gender": "Male",
+        "costume": "a red sleeveless jacket with white stripes over a white shirt, blue jeans, red "
+                   "fingerless gloves and sneakers, topped with an iconic red and white baseball cap",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "bright blue",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+    },
     "Kitana": {
         "franchise": "Mortal Kombat",
         "gender": "Female",
@@ -3716,6 +3775,74 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "low ponytail", "eye_color": "ice blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
+    "Heihachi Mishima": {
+        "franchise": "Tekken",
+        "gender": "Male",
+        "costume": "a bare-chested elderly martial-arts master in a red and gold silk fighting "
+                   "robe worn open, with wide dark hakama trousers and a black obi; his black hair "
+                   "is swept up into two tall pointed flame-like spikes above a bald crown, and he "
+                   "has thick gray eyebrows and a broad gray mustache",
+        "signature": {"eye_color": "dark brown", "facial_hair": "mustache"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "light medium"},
+    },
+    "King": {
+        "franchise": "Tekken",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a muscular pro-wrestler's outfit - a white and gold wrestling singlet with a "
+                   "championship belt, wrist tape, kneepads and lace-up boots",
+        "mask": "a full jaguar-head wrestling mask with sculpted feline features, whiskers and "
+                "pointed ears covering the entire head",
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "warm tan"},
+    },
+    "Paul Phoenix": {
+        "franchise": "Tekken",
+        "gender": "Male",
+        "costume": "a red judo-style fighting gi worn open over a bare chest with a black belt and "
+                   "matching red trousers, his blond hair sculpted into a tall gravity-defying "
+                   "flat-top pompadour",
+        "signature": {"hair_color": "golden blonde", "eye_color": "bright blue",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Hwoarang": {
+        "franchise": "Tekken",
+        "gender": "Male",
+        "costume": "a taekwondo fighter's outfit - a sleeveless black and orange top with a red "
+                   "muffler scarf, loose dobok trousers and taped feet, with fingerless gloves",
+        "signature": {"hair_color": "copper", "hair_length": "short pixie",
+                      "hair_style": "windswept", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+    },
+    "Ling Xiaoyu": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        "costume": "a bright Chinese-style outfit - a sleeveless yellow and pink mandarin top with "
+                   "a short skirt, wrist ribbons and soft flat shoes, cheerful and youthful",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "high pigtails", "eye_color": "dark brown"},
+        "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "light"},
+    },
+    "Asuka Kazama": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        "costume": "a blue and white happi-style jacket worn open over a fitted bodysuit, with "
+                   "denim shorts, a single fingerless glove and taped ankles",
+        "signature": {"hair_color": "medium brown", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+    },
+    "Lili": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        "costume": "an elegant white gothic-lolita dress with black lace frills, ribbons and a red "
+                   "rose at the chest, worn with lace gloves and tall white heeled boots",
+        "signature": {"hair_color": "light blonde", "hair_length": "very long",
+                      "hair_style": "worn down", "hair_texture": "loosely wavy",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
 
     # --- Overwatch (more) ------------------------------------------------
     "Symmetra": {
@@ -3933,7 +4060,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Disney heroes (more) --------------------------------------------
     "Esmeralda": {
-        "franchise": "Disney",
+        "franchise": "The Hunchback of Notre Dame",
         "gender": "Female",
         "costume": "a white off-shoulder blouse, a teal corset, a purple-sashed skirt, "
                    "gold hoop earrings, and a gold coin armband",
@@ -3950,7 +4077,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
     },
     "Kida": {
-        "franchise": "Disney",
+        "franchise": "Atlantis: The Lost Empire",
         "gender": "Female",
         "costume": "a teal bandeau and loincloth with gold armbands and anklets, a "
                    "crystal pendant, and blue tribal face markings",
@@ -4000,7 +4127,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Disney villains (more) ------------------------------------------
     "Jafar": {
-        "franchise": "Disney",
+        "franchise": "Aladdin",
         "gender": "Male",
         "costume": "a black-and-red robe with a tall striped collar, a horned headpiece, "
                    "and a thin curled beard",
@@ -4027,7 +4154,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "light"},
     },
     "Captain Hook": {
-        "franchise": "Disney",
+        "franchise": "Peter Pan",
         "gender": "Male",
         "costume": "a red captain's coat with lace cuffs, a large plumed hat, thigh "
                    "boots, a curled mustache, and a polished steel hook for the left hand",
@@ -4036,7 +4163,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
     },
     "Frollo": {
-        "franchise": "Disney",
+        "franchise": "The Hunchback of Notre Dame",
         "gender": "Male",
         "costume": "long purple-and-black judge's robes with a red-lined cape and a "
                    "rounded black-and-purple hat",
@@ -4045,7 +4172,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "very pale"},
     },
     "Dr. Facilier": {
-        "franchise": "Disney",
+        "franchise": "The Princess and the Frog",
         "gender": "Male",
         "costume": "a purple tailcoat with a red-and-black waistcoat, a feathered top "
                    "hat, a skull cane, and a thin pencil mustache",
@@ -6767,7 +6894,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # === Disney (more) ===================================================
     "Minnie Mouse": {
-        "franchise": "Disney",
+        "franchise": "Mickey Mouse & Friends",
         "gender": "Female",
         "costume": "large round black mouse ears, a big yellow bow, a yellow puffy-sleeved "
                    "dress with a flowing skirt, yellow heeled shoes, and white gloves, over "
@@ -6776,7 +6903,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "petite and slim", "height": "very petite"},
     },
     "Mary Poppins": {
-        "franchise": "Disney",
+        "franchise": "Mary Poppins",
         "gender": "Female",
         "costume": "a tailored Edwardian navy coat over a high-necked white blouse, a "
                    "smart hat adorned with flowers, white gloves, and ankle boots",
@@ -6795,7 +6922,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "fair"},
     },
     "Kim Possible": {
-        "franchise": "Disney",
+        "franchise": "Kim Possible",
         "gender": "Female",
         "costume": "a black crop top showing the midriff, dark green cargo pants with "
                    "pockets, black fingerless gloves, and black boots",
@@ -7775,22 +7902,28 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a humanoid coppery medical-droid body with a transparent chest panel "
-                   "and exposed neck cabling",
-        "mask": "a smooth coppery medical-droid face with a fixed expression and softly "
-                "glowing eyes",
+        "covers_body": True,
+        "costume": "a humanoid gunmetal blue-gray medical-droid body about 1.5 meters tall with "
+                   "smooth seamless plating, a translucent torso sheath revealing intricate "
+                   "hydraulic systems, fluid lines and computer components inside, multi-jointed "
+                   "hydraulic legs, and articulated arms ending in delicate servogrip pincers",
+        "mask": "a smooth gunmetal medical-droid head on a slender rotating neck segment, with "
+                "multiwave visual sensors and a calm fixed expression",
         "physique": {"body_type": "slim", "height": "average height"},
     },
     "4-LOM": {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a humanoid charcoal-gray protocol-droid body with jointed limbs and a "
-                   "slung bandolier of gear",
-        "mask": "an insectoid protocol-droid face with large round bulbous photoreceptors "
-                "and segmented metal mandibles",
+        "covers_body": True,
+        "costume": "a slender humanoid protocol-droid chassis about 1.6 meters tall in weathered "
+                   "gray metal covered in rust, grime and scratches, with jointed 3PO-style limbs, "
+                   "small tags and markings on the torso, and a slung bandolier of bounty-hunter "
+                   "gear",
+        "mask": "a rust-colored insectoid fly-like droid head with large glossy multifaceted "
+                "red-orange compound photoreceptors and segmented metal mandibles",
         "physique": {"body_type": "slim", "height": "tall"},
-        "prop": "a blaster rifle",
+        "prop": "a long blaster rifle held across the body",
     },
     "Porg": {
         "franchise": "Star Wars",
@@ -8012,7 +8145,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Disney / Pixar (more) -------------------------------------------
     "Mickey Mouse": {
-        "franchise": "Disney",
+        "franchise": "Mickey Mouse & Friends",
         "gender": "Male",
         "covers_face": True,
         "covers_body": True,  # full black-furred mouse suit, no bare skin
@@ -8023,7 +8156,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "short"},
     },
     "Donald Duck": {
-        "franchise": "Disney",
+        "franchise": "Mickey Mouse & Friends",
         "gender": "Male",
         "covers_face": True,
         "costume": "a blue sailor shirt and a blue sailor cap with a red bow, over an "
@@ -8033,7 +8166,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "short"},
     },
     "Goofy": {
-        "franchise": "Disney",
+        "franchise": "Mickey Mouse & Friends",
         "gender": "Male",
         "covers_face": True,
         "costume": "an orange turtleneck under a black vest, blue trousers, a tall green "
@@ -10008,9 +10141,17 @@ COSPLAYERS: dict[str, dict] = {
     "Allen the Alien": {
         "franchise": "Invincible",
         "gender": "Male",
-        "costume": "a heavily muscled orange-skinned alien with a broad heavy brow and a "
-                   "smooth hairless head, in a sleeveless dark blue uniform, over smooth, "
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a light green compression t-shirt over a white bodysuit with matching light "
+                   "green cuffs at the wrists, a prominent belt buckle bearing the Coalition of "
+                   "Planets emblem, custom iron gloves with small wrist screens, and custom boots, "
+                   "worn over a heavily muscled body with unusual three-fingered hands (a thumb and "
+                   "two thick fused digits) and three thick toes on each foot; his skin is smooth, "
                    "flawless orange skin",
+        "mask": "a large hairless cyclopean head with a single big eye - a white sclera around a "
+                "tiny horizontal rectangular pupil - set beneath a heavy protruding brow, with a "
+                "blocky shape, a heavy chin, and small pointed ears, all in smooth orange skin",
         "size_scale": "giant",
         "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -10522,32 +10663,56 @@ COSPLAYERS: dict[str, dict] = {
     "Rumi": {
         "franchise": "KPop Demon Hunters",
         "gender": "Female",
-        "costume": "a sleek modern K-pop stage outfit - a cropped studded bomber jacket over a "
-                   "coordinated crop top, high-waisted pants and heeled boots in violet and "
-                   "black, with faint iridescent patterned markings tracing one arm",
-        "signature": {"hair_color": "deep purple", "hair_length": "very long",
-                      "hair_texture": "pin straight"},
-        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light"},
+        "costume": "an edgy streetwear K-pop stage outfit - a cropped bright yellow bomber jacket "
+                   "with black-trimmed collar, cuffs and zipper, bold graphic patches, and a black "
+                   "spiked pad on the left shoulder, worn over a white mockneck crop top with two "
+                   "layered necklaces, high-waisted dark indigo denim shorts, a hot pink belt with "
+                   "a small lilac norigae charm, and black calf-high platform boots with red "
+                   "stripes; her thick dragon-style braid is tied with a golden silk daenggi ribbon, "
+                   "and glowing purple eldritch-pattern markings trace her arms",
+        "signature": {"hair_color": "purple", "hair_length": "hip length",
+                      "hair_style": "braided ponytail", "hair_texture": "pin straight",
+                      "eye_color": "dark brown", "eye_shape": "monolid", "face_shape": "oval"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+        "prop": "an ornate art-deco Korean saingeom sword with a slender midnight-purple blade "
+                "etched with glowing wave and constellation patterns, a heart-shaped siren-pink "
+                "guard bearing a crest, and a faux-leather handle wrapped with purple tassels",
     },
     "Mira": {
         "franchise": "KPop Demon Hunters",
         "gender": "Female",
-        "costume": "an edgy K-pop stage ensemble - an asymmetric leather-trimmed jacket over a "
-                   "corset top with layered chain accents, fingerless gloves and knee-high boots "
-                   "in black and hot pink, with bold smoky eye makeup",
-        "signature": {"hair_color": "hot pink", "hair_length": "very long",
-                      "hair_style": "braided ponytail", "eye_color": "dark brown"},
+        "costume": "an edgy K-pop stage outfit - a black short-sleeve crop top printed with blue "
+                   "Honmoon waves and the hot-pink words WON'T MISS, a black choker with a silver "
+                   "seashell charm and a silver chain epaulette on the right shoulder, a "
+                   "high-waisted saffron-yellow denim miniskirt with a white belt chain and a "
+                   "crimson angular norigae charm at the hip, thigh-high black boots with crimson "
+                   "knee shading and a four-point white star at each cuff, black keyhole fingerless "
+                   "gloves, and small triangular chained dangle earrings, with a bold smoky eye",
+        "signature": {"hair_color": "hot pink", "hair_length": "hip length",
+                      "hair_style": "pigtails", "eye_color": "dark brown",
+                      "eye_shape": "monolid", "face_shape": "narrow and angular"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "light medium"},
+        "prop": "a long curved gok-do glaive - a large translucent blade with a glowing blue hue "
+                "etched with wavy Honmoon patterns and two small golden bells at its base, mounted "
+                "on a long segmented golden pole with spiral engravings and a golden pommel",
     },
     "Zoey": {
         "franchise": "KPop Demon Hunters",
         "gender": "Female",
-        "costume": "a playful K-pop stage outfit - a pleated skirt, cropped hoodie and oversized "
-                   "varsity bomber with chunky sneakers in pink, orange and white, framed by "
-                   "blunt micro-bangs with light freckles across the nose",
+        "costume": "a streetwear K-pop stage outfit - a teal halter top with black leather straps, "
+                   "silver zippers and a pink lotus print on one side, high-waisted purple-black "
+                   "parachute pants with geometric yellow-and-black panels, dual teal hip straps "
+                   "and a yellow norigae charm at the left hip, and chunky yellow-and-black high-top "
+                   "sneakers; she wears silver double-hoop earrings, a gold wrist bracelet and black "
+                   "rings, with blunt micro-bangs and side fringe framing her face and light "
+                   "freckles across the nose",
         "signature": {"hair_color": "near black", "hair_length": "long",
-                      "hair_style": "space buns", "eye_color": "light brown"},
+                      "hair_style": "space buns", "eye_color": "light brown",
+                      "eye_shape": "monolid", "face_shape": "round"},
         "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "light"},
+        "prop": "six ceremonial shin-kal spirit blades, three held in each hand, their translucent "
+                "blue-glowing blades etched with flowing white Honmoon patterns and set into small "
+                "delicate golden hilts, each with a gem-like centerpiece and a gold filigree tassel",
     },
 
     "Moogle": {
@@ -10741,6 +10906,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Alice in Wonderland", "101 Dalmatians",
         "Big Hero 6", "The Incredibles", "Zootopia", "Star vs. the Forces of Evil",
         "Toy Story", "Lilo and Stitch", "Pinocchio",
+        "The Hunchback of Notre Dame", "Atlantis: The Lost Empire", "Mary Poppins",
+        "Kim Possible", "Mickey Mouse & Friends",
     ),
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",

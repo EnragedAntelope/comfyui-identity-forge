@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1054 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1067 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (126)
 
@@ -287,7 +287,7 @@
 
 ### Invincible
 
-- **Allen the Alien** (M, giant)
+- **Allen the Alien** (M, giant, masked)
 - **Anissa** (F)
 - **Atom Eve** (F)
 - **Battle Beast** (M, giant, masked, prop)
@@ -608,6 +608,7 @@
 
 - **Aladdin** (M)
 - **Genie** (M)
+- **Jafar** (M, prop)
 - **Jasmine** (F)
 
 ### Alice in Wonderland
@@ -617,6 +618,10 @@
 - **Mad Hatter (Alice in Wonderland)** (M)
 - **Queen of Hearts** (F, prop)
 - **White Queen (Alice in Wonderland)** (F)
+
+### Atlantis: The Lost Empire
+
+- **Kida** (F)
 
 ### Beauty and the Beast
 
@@ -637,21 +642,6 @@
 
 - **Cinderella** (F)
 
-### Disney
-
-- **Captain Hook** (M)
-- **Donald Duck** (M, masked)
-- **Dr. Facilier** (M)
-- **Esmeralda** (F)
-- **Frollo** (M)
-- **Goofy** (M, masked)
-- **Jafar** (M, prop)
-- **Kida** (F)
-- **Kim Possible** (F)
-- **Mary Poppins** (F, prop)
-- **Mickey Mouse** (M, masked)
-- **Minnie Mouse** (F)
-
 ### Frozen
 
 - **Anna** (F)
@@ -664,9 +654,24 @@
 - **Hercules** (M)
 - **Megara** (F)
 
+### Kim Possible
+
+- **Kim Possible** (F)
+
 ### Lilo and Stitch
 
 - **Stitch** (M, masked)
+
+### Mary Poppins
+
+- **Mary Poppins** (F, prop)
+
+### Mickey Mouse & Friends
+
+- **Donald Duck** (M, masked)
+- **Goofy** (M, masked)
+- **Mickey Mouse** (M, masked)
+- **Minnie Mouse** (F)
 
 ### Moana
 
@@ -679,6 +684,7 @@
 
 ### Peter Pan
 
+- **Captain Hook** (M)
 - **Peter Pan** (M, prop)
 - **Tinker Bell** (F, tiny)
 - **Wendy Darling** (F)
@@ -714,6 +720,11 @@
 - **Jane Porter** (F)
 - **Tarzan** (M)
 
+### The Hunchback of Notre Dame
+
+- **Esmeralda** (F)
+- **Frollo** (M)
+
 ### The Incredibles
 
 - **Dash** (M)
@@ -729,6 +740,7 @@
 
 ### The Princess and the Frog
 
+- **Dr. Facilier** (M)
 - **Tiana** (F)
 
 ### Toy Story
@@ -1090,9 +1102,9 @@
 
 ### KPop Demon Hunters
 
-- **Mira** (F)
-- **Rumi** (F)
-- **Zoey** (F)
+- **Mira** (F, prop)
+- **Rumi** (F, prop)
+- **Zoey** (F, prop)
 
 ### Kellogg's
 
@@ -1349,7 +1361,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (215)
+## Video Games (228)
 
 ### ARMS
 
@@ -1675,13 +1687,26 @@
 
 ### Tekken
 
+- **Asuka Kazama** (F)
+- **Heihachi Mishima** (M)
+- **Hwoarang** (M)
 - **Jin Kazama** (M)
 - **Kazuya Mishima** (M)
+- **King** (M, masked)
+- **Lili** (F)
+- **Ling Xiaoyu** (F)
 - **Nina Williams** (F)
+- **Paul Phoenix** (M)
 
 ### The King of Fighters
 
+- **Athena Asamiya** (F)
+- **Iori Yagami** (M)
+- **K'** (M)
+- **Kyo Kusanagi** (M)
+- **Leona Heidern** (F)
 - **Mai Shiranui** (F, prop)
+- **Terry Bogard** (M)
 
 ### The Last of Us
 

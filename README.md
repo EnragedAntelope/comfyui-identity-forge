@@ -4,7 +4,9 @@
 believable person; queue again for a brand-new one. Identity Forge turns menu choices into clean
 natural-language prose (for CLIP Text Encode) plus a structured JSON record — with a constraint
 engine that keeps every result sensible: no beard on the buzz-cut, no handbag with the gym kit,
-no Irish ancestry rendered in ebony skin. Lock the few traits you care about, let the rest roll.
+and skin tone that stays plausible for the chosen ancestry in either direction — no Irish
+subject in ebony skin, no West African subject in porcelain. Lock the few traits you care about,
+let the rest roll.
 
 **Why you'll like it**
 
