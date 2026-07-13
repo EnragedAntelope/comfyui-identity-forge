@@ -1024,7 +1024,8 @@ class LocationAndPoseTests(unittest.TestCase):
 
 class UserOptionsTests(unittest.TestCase):
     def test_merges_valid_and_rejects_protected(self):
-        import copy, json as _json, tempfile
+        import json as _json
+        import tempfile
         from pathlib import Path
         from data.user_options import apply_user_options
         fd = {k: {"female_options": list(v["female_options"]),
@@ -1053,7 +1054,8 @@ class UserOptionsTests(unittest.TestCase):
             self.assertEqual(apply_user_options({}, path=f), 0)
 
     def test_outfits_section_registers_style_and_text(self):
-        import json as _json, tempfile
+        import json as _json
+        import tempfile
         from pathlib import Path
         from data.user_options import apply_user_options
         fd = {"outfit_style": {"female_options": ["casual"], "male_options": ["casual"]}}
@@ -1077,7 +1079,8 @@ class UserOptionsTests(unittest.TestCase):
 
     def test_outfits_ignored_without_descriptions_map(self):
         # Called the old way (no OUTFIT_DESCRIPTIONS), the outfits section is a no-op.
-        import json as _json, tempfile
+        import json as _json
+        import tempfile
         from pathlib import Path
         from data.user_options import apply_user_options
         fd = {"outfit_style": {"female_options": ["casual"], "male_options": ["casual"]}}
@@ -1092,7 +1095,8 @@ class UserPresetExtensionTests(unittest.TestCase):
     """user_options.json 'archetypes' / 'cosplayers' sections (survive git pull)."""
 
     def _write(self, payload):
-        import json as _json, tempfile
+        import json as _json
+        import tempfile
         from pathlib import Path
         d = tempfile.mkdtemp()
         f = Path(d) / "user_options.json"
@@ -1136,7 +1140,6 @@ class UserPresetExtensionTests(unittest.TestCase):
 
     def test_cosplayer_male_entry_populates_random_male_scope(self):
         from data.user_options import apply_user_cosplayers
-        from data.cosplayers import get_cosplayer_names_by_gender
         store = {}
         f = self._write({"cosplayers": {
             "Geralt": {"gender": "Male", "costume": "studded leather armor with twin scabbards"},
@@ -1773,7 +1776,8 @@ class SkinColorAnchorTests(unittest.TestCase):
         # The anchor is a wired value, so the "set all to none" reset keeps it.
         flat = _parse_archetype_json(build_cosplayer_json("Poison Ivy", 0, "Full character"))
         label = flat.pop(_COSPLAY_LABEL_KEY, None)
-        cf = bool(flat.pop(_COVERS_FACE_KEY, None)); ch = bool(flat.pop(_COVERS_HAIR_KEY, None))
+        cf = bool(flat.pop(_COVERS_FACE_KEY, None))
+        ch = bool(flat.pop(_COVERS_HAIR_KEY, None))
         flat.pop(_COVERS_BODY_KEY, None)
         archetype_locked = {k: v for k, v in flat.items()
                             if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS and v != "Random"}
@@ -1804,7 +1808,8 @@ class FaceColorReinforcementTests(unittest.TestCase):
         # still described (green eyes, red lips) so the colour is restated on it.
         flat = _parse_archetype_json(build_cosplayer_json("Poison Ivy", 0, "Full character"))
         label = flat.pop(_COSPLAY_LABEL_KEY, None)
-        cf = bool(flat.pop(_COVERS_FACE_KEY, None)); ch = bool(flat.pop(_COVERS_HAIR_KEY, None))
+        cf = bool(flat.pop(_COVERS_FACE_KEY, None))
+        ch = bool(flat.pop(_COVERS_HAIR_KEY, None))
         flat.pop(_COVERS_BODY_KEY, None)
         archetype_locked = {k: v for k, v in flat.items()
                             if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS and v != "Random"}

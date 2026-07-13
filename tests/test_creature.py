@@ -19,13 +19,12 @@ from data.creatures import (
     CREATURES, CREATURE_CLASSES, get_creature, get_creature_names_by_class,
 )
 from nodes.identity_forge_creature import (
-    build_creature_json, _NONE, _RANDOM_ANY, _FOLLOW, _RANDOM_SLOT,
+    build_creature_json, _NONE, _RANDOM_ANY, _RANDOM_SLOT,
     _FORM_LABEL_ANTHRO, _FORM_LABEL_FERAL, _FORM_LABEL_SUBTLE, _FORM_LABEL_RANDOM,
 )
 from nodes.identity_forge import (
     generate_character, merge_preset_documents, _parse_archetype_json,
-    _SPECIES_KEY, _SPECIES_GROUP, _COSPLAY_LABEL_KEY, _GROUP_ORDER,
-    _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE,
+    _SPECIES_KEY, _SPECIES_GROUP, _COSPLAY_LABEL_KEY, _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE,
 )
 from nodes.identity_forge_cosplayer import build_cosplayer_json
 from data.cosplayers import get_cosplayer_names

@@ -31,13 +31,13 @@ from typing import Any
 try:
     from .identity_forge import merge_preset_documents
     from .identity_forge_vault_save import (
-        _CHARACTER_FILE, _META_FILE, _PROMPT_FILE, _entry_dir, _unique_dir,
+        _CHARACTER_FILE, _META_FILE, _PROMPT_FILE, _entry_dir,
         _source_label, sanitize_name,
     )
 except ImportError:  # pragma: no cover — standalone/test context
     from nodes.identity_forge import merge_preset_documents
     from nodes.identity_forge_vault_save import (
-        _CHARACTER_FILE, _META_FILE, _PROMPT_FILE, _entry_dir, _unique_dir,
+        _CHARACTER_FILE, _META_FILE, _PROMPT_FILE, _entry_dir,
         _source_label, sanitize_name,
     )
 

@@ -100,7 +100,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
     },
     "Aerith Gainsborough": {
-        "franchise": "Final Fantasy VII",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "a long pink button-up dress with a fitted bodice and short puffed "
                    "sleeves, a red bolero jacket, a pink hair ribbon, brown gloves, and "
@@ -110,7 +110,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "short", "skin_tone": "fair"},
     },
     "Tifa Lockhart": {
-        "franchise": "Final Fantasy VII",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "a black sleeveless crop top, a short black miniskirt with suspenders, "
                    "black mid-calf combat boots, brown leather gloves, and a pink arm ribbon",
@@ -119,7 +119,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "short", "skin_tone": "fair"},
     },
     "Yuffie Kisaragi": {
-        "franchise": "Final Fantasy VII",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "a green sleeveless top and shorts ensemble, brown arm guards and leg "
                    "protectors, a green headband, and brown climbing boots",
@@ -128,7 +128,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "petite", "skin_tone": "fair"},
     },
     "Lightning": {
-        "franchise": "Final Fantasy XIII",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "a modified Guardian Corps uniform in white and brown with a white "
                    "half-cape, brown leather armor pieces, and tall brown boots",
@@ -137,7 +137,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
     "Yuna": {
-        "franchise": "Final Fantasy X",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "ornate white and blue summoner robes with intricate patterns, white "
                    "boots, prayer beads, and ceremonial ornaments",
@@ -455,7 +455,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Nintendo / Zelda -------------------------------------------------
     "Zelda": {
-        "franchise": "The Legend of Zelda: Breath of the Wild",
+        "franchise": "The Legend of Zelda",
         "gender": "Female",
         "costume": "a blue ceremonial dress with intricate gold embroidery, a white "
                    "underdress, a brown corset-style belt, brown boots, and a blue cape",
@@ -2594,7 +2594,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Nintendo (male) --------------------------------------------------
     "Mario": {
-        "franchise": "Nintendo",
+        "franchise": "Super Mario",
         "gender": "Male",
         "costume": "blue overalls over a red shirt, white gloves, brown boots, a red cap "
                    "with a white circle and red M, and a thick brown mustache",
@@ -2603,7 +2603,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "short", "skin_tone": "fair"},
     },
     "Luigi": {
-        "franchise": "Nintendo",
+        "franchise": "Super Mario",
         "gender": "Male",
         "costume": "blue overalls over a green shirt, white gloves, brown boots, a green "
                    "cap with a white circle and green L, and a thin brown mustache",
@@ -2612,7 +2612,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
     },
     "Link": {
-        "franchise": "Nintendo",
+        "franchise": "The Legend of Zelda",
         "gender": "Male",
         "costume": "a green belted tunic over a white undershirt, a long green pointed "
                    "cap, brown boots and gauntlets, pointed elf ears, and a kite shield "
@@ -2624,7 +2624,7 @@ COSPLAYERS: dict[str, dict] = {
                 "crossguard",
     },
     "Ganondorf": {
-        "franchise": "Nintendo",
+        "franchise": "The Legend of Zelda",
         "gender": "Male",
         "costume": "a black and gold tunic with armor and a jewel on the forehead, with "
                    "long flame-red hair pulled back and dark green-grey skin",
@@ -3853,7 +3853,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Final Fantasy / Kingdom Hearts / Zelda (more) -------------------
     "Noctis": {
-        "franchise": "Final Fantasy XV",
+        "franchise": "Final Fantasy",
         "gender": "Male",
         "costume": "an all-black outfit with a fitted jacket, skull-print shirt, and "
                    "many buckles",
@@ -3862,7 +3862,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
     },
     "Terra Branford": {
-        "franchise": "Final Fantasy VI",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "a red leotard with a yellow cape, red boots, and gold armlets",
         "signature": {"hair_color": "mint green", "hair_length": "very long",
@@ -3870,7 +3870,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
     "Rikku": {
-        "franchise": "Final Fantasy X",
+        "franchise": "Final Fantasy",
         "gender": "Female",
         "costume": "a green bikini top, a tan pleated skirt, an orange scarf, and a "
                    "yellow-and-green arm glove",
@@ -7884,7 +7884,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "short"},
     },
     "Bowser": {
-        "franchise": "Nintendo",
+        "franchise": "Super Mario",
         "gender": "Male",
         "covers_face": True,
         "costume": "a green-and-tan spiked turtle shell, a spiked black collar and arm "
@@ -7894,7 +7894,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Donkey Kong": {
-        "franchise": "Nintendo",
+        "franchise": "Donkey Kong",
         "gender": "Male",
         "covers_face": True,
         "costume": "an even, all-over coat of brown gorilla fur on a towering muscular "
@@ -7905,7 +7905,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Yoshi": {
-        "franchise": "Nintendo",
+        "franchise": "Super Mario",
         "gender": "Male",
         "covers_face": True,
         "costume": "orange boots, with uniform, all-over green dinosaur skin, a cream belly, a "
@@ -7914,7 +7914,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "average height"},
     },
     "Toad": {
-        "franchise": "Nintendo",
+        "franchise": "Super Mario",
         "gender": "Male",
         "costume": "a large white mushroom cap with red spots, a blue vest with a white "
                    "collar, and white trousers",
@@ -7922,7 +7922,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "petite", "skin_tone": "fair"},
     },
     "Wario": {
-        "franchise": "Nintendo",
+        "franchise": "Super Mario",
         "gender": "Male",
         "costume": "a yellow cap with a blue W, a yellow shirt, and purple overalls, with "
                    "a big pink nose and a zigzag scowl",
@@ -7931,7 +7931,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "short", "skin_tone": "fair"},
     },
     "Kirby": {
-        "franchise": "Nintendo",
+        "franchise": "Kirby",
         "gender": "Male",
         "covers_face": True,
         "costume": "a small round pink ball-shaped body with stubby arms and red "
@@ -7940,7 +7940,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "plump", "height": "very petite"},
     },
     "Fox McCloud": {
-        "franchise": "Nintendo",
+        "franchise": "Star Fox",
         "gender": "Male",
         "covers_face": True,
         "costume": "a white-and-green flight jacket with a red neckerchief and a wrist "
@@ -7950,7 +7950,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a compact blaster pistol",
     },
     "Captain Falcon": {
-        "franchise": "Nintendo",
+        "franchise": "F-Zero",
         "gender": "Male",
         "covers_face": True,
         "costume": "a blue racing bodysuit with shoulder pads, a yellow scarf, and "
@@ -10463,6 +10463,258 @@ COSPLAYERS: dict[str, dict] = {
                 "eyes, and mottled blue-grey skin",
         "physique": {"body_type": "stocky", "height": "tall"},
     },
+
+    # === v0.60.0 expansion: Ghibli / KPop Demon Hunters / Final Fantasy / Mass Effect ===
+    "Kiki": {
+        "franchise": "Studio Ghibli",
+        "gender": "Female",
+        "costume": "a plain long-sleeved dark indigo dress cinched at the waist, a large red "
+                   "hair bow, and simple red flat shoes",
+        "signature": {"hair_color": "near black", "hair_length": "ear length",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+        "prop": "a well-worn wooden broom with a thick bundle of straw bristles",
+    },
+    "Porco Rosso": {
+        "franchise": "Studio Ghibli",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a tan linen suit worn under a red-brown leather flight jacket, with a "
+                   "white silk scarf",
+        "mask": "the head of a pig with a broad pink snout, bristled cheeks and a stubbled "
+                "jaw, wearing a brown leather aviator cap and round goggles pushed up on the brow",
+        "physique": {"body_type": "stocky", "height": "average height"},
+    },
+    "No-Face": {
+        "franchise": "Studio Ghibli",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a tall, translucent black spectral form like a hooded wraith, near-formless "
+                   "below with faint pale grey hand-shapes at its sides",
+        "mask": "a smooth oval white mask with faint pale-purple markings, two narrow dark "
+                "eye-slits, and a small closed mouth",
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Baron Humbert von Gikkingen": {
+        "franchise": "Studio Ghibli",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a cream three-piece Victorian suit with a green cravat and a gold "
+                   "pocket-watch chain, over a slender fur-covered feline body with a long tail "
+                   "and small white-gloved paws",
+        "mask": "an amber-and-cream cat's head with large green eyes, upright ears and a white "
+                "muzzle, topped with a black top hat",
+        "physique": {"body_type": "slender", "height": "average height"},
+        "prop": "a slim black walking cane with a rounded silver handle",
+    },
+    "Kaguya": {
+        "franchise": "Studio Ghibli",
+        "gender": "Female",
+        "costume": "a many-layered Heian-era court kimono (juni-hitoe) in cascading shades of "
+                   "white, red, and gold, with long trailing sleeves and hem",
+        "signature": {"hair_color": "near black", "hair_length": "hip length",
+                      "hair_texture": "pin straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
+    },
+
+    "Rumi": {
+        "franchise": "KPop Demon Hunters",
+        "gender": "Female",
+        "costume": "a sleek modern K-pop stage outfit - a cropped studded bomber jacket over a "
+                   "coordinated crop top, high-waisted pants and heeled boots in violet and "
+                   "black, with faint iridescent patterned markings tracing one arm",
+        "signature": {"hair_color": "deep purple", "hair_length": "very long",
+                      "hair_texture": "pin straight"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light"},
+    },
+    "Mira": {
+        "franchise": "KPop Demon Hunters",
+        "gender": "Female",
+        "costume": "an edgy K-pop stage ensemble - an asymmetric leather-trimmed jacket over a "
+                   "corset top with layered chain accents, fingerless gloves and knee-high boots "
+                   "in black and hot pink, with bold smoky eye makeup",
+        "signature": {"hair_color": "hot pink", "hair_length": "very long",
+                      "hair_style": "braided ponytail", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Zoey": {
+        "franchise": "KPop Demon Hunters",
+        "gender": "Female",
+        "costume": "a playful K-pop stage outfit - a pleated skirt, cropped hoodie and oversized "
+                   "varsity bomber with chunky sneakers in pink, orange and white, framed by "
+                   "blunt micro-bangs with light freckles across the nose",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "space buns", "eye_color": "light brown"},
+        "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "light"},
+    },
+
+    "Moogle": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a small round body covered in an even, all-over coat of cream-white fur, "
+                   "with a plump belly, tiny bat-like wings, and stubby paws",
+        "mask": "a round white moogle head with small dark round eyes, a tiny pink nose, and a "
+                "single slim antenna topped with a bright red pom-pom",
+        "physique": {"body_type": "plump", "height": "short"},
+    },
+    "Vivi Ornitier": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a patched steel-blue overcoat with a bright green collar, oversized brown "
+                   "gloves and boots, and a tall wide-brimmed pointed wizard's hat",
+        "mask": "a face lost in deep shadow beneath the hat brim, showing nothing but two round "
+                "glowing yellow eyes",
+        "physique": {"body_type": "petite and slim", "height": "short"},
+    },
+    "Celes Chere": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a form-fitting teal-green bodysuit with gold trim, a flowing yellow "
+                   "half-cape, brown belts, and tall boots",
+        "signature": {"hair_color": "light blonde", "hair_length": "very long",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Kefka Palazzo": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "costume": "a garish multicolored jester's motley in red, yellow, green and blue with a "
+                   "ruffled collar and cuffs, gaudy beaded necklaces, feathers, and full "
+                   "white-and-red clown face paint",
+        "signature": {"hair_color": "light blonde", "hair_length": "long",
+                      "hair_style": "high ponytail"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "pale"},
+    },
+    "Ultros": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "the body of a large purple octopus, a bulbous mantle above many long, "
+                   "curling, suckered tentacles in shades of magenta and violet",
+        "mask": "a purple octopus head with a wide toothy smirking mouth, two big round eyes, "
+                "and a bulging domed mantle",
+        "physique": {"body_type": "plump"},
+    },
+    "Barret Wallace": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "costume": "a green utility vest over a bare muscular chest, camo cargo pants, heavy "
+                   "boots, dog tags, round dark sunglasses, and a gatling-gun prosthetic in "
+                   "place of the right forearm",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "facial_hair": "full beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Rydia": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a slinky pale-green two-piece outfit with a long trailing sash, a yellow "
+                   "ribbon choker, arm wraps, and tall boots",
+        "signature": {"hair_color": "emerald green", "hair_length": "very long",
+                      "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Kain Highwind": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a full suit of blue-and-lavender dragoon plate armor with layered pauldrons, "
+                   "a flowing cape, and spikes at the shoulders and knees",
+        "mask": "a horned dragoon helmet fully enclosing the head, with a narrow visor slit and "
+                "two long curved horns sweeping back",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a long steel lance with a leaf-shaped blade",
+    },
+    "Rosa Farrell": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a white hooded mage's robe with red trim and a red tabard, a golden circlet, "
+                   "and long gloves",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Tellah": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "costume": "long flowing sage's robes in faded blue and brown with a wide sash and worn "
+                   "traveling boots",
+        "signature": {"hair_color": "white", "hair_length": "long", "facial_hair": "full beard",
+                      "age": "70", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Cecil Harvey": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "costume": "a suit of gleaming silver-white paladin plate armor with a horned open-faced "
+                   "helm, a light cape, and gauntlets",
+        "signature": {"hair_color": "silver", "hair_length": "long", "hair_texture": "pin straight",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    "Garrus Vakarian": {
+        "franchise": "Mass Effect",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a suit of blue-and-silver armored plating over a lean turian body with a "
+                   "carapace-like hide, three-taloned hands, and spurred lower legs",
+        "mask": "an avian turian head with a hooked metallic face, two mandibles framing the "
+                "mouth, blue clan face-paint markings, and a glowing blue targeting visor over "
+                "one eye",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Tali'Zorah": {
+        "franchise": "Mass Effect",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a full sealed grey-and-purple environmental suit with a hooded veil, "
+                   "geometric fabric patterns, a chest lamp, and three-fingered gloves",
+        "mask": "a curved helmet faceplate of dark tinted glass showing only two faintly glowing "
+                "pale eyes, framed by a purple hood",
+        "physique": {"body_type": "slender", "height": "average height"},
+    },
+    "Urdnot Wrex": {
+        "franchise": "Mass Effect",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "bulky battle-worn red krogan armor over an enormous hunched reptilian body "
+                   "with thick brown-red hide plates and a domed back hump",
+        "mask": "a broad reptilian krogan head with a heavy bony crest, deep-set red eyes, "
+                "leathery brown hide, and old battle scars across the plates",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Mordin Solus": {
+        "franchise": "Mass Effect",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a fitted grey-and-red scientist's armor over a lean, wiry salarian frame with "
+                   "long thin limbs and mottled greenish-tan skin",
+        "mask": "an elongated amphibian salarian head with two short blunt horns, wide dark eyes, "
+                "thin lips, and speckled green-and-tan skin",
+        "physique": {"body_type": "very slim", "height": "tall"},
+    },
+    "Jack (Mass Effect)": {
+        "franchise": "Mass Effect",
+        "gender": "Female",
+        "bald": True,
+        "costume": "a bare torso crossed by two leather straps, heavy cargo pants with buckled "
+                   "belts, and dense black tribal tattoos covering the shaved bald head, face, "
+                   "neck, and arms",
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
 }
 
 
@@ -10491,12 +10743,11 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Toy Story", "Lilo and Stitch", "Pinocchio",
     ),
     "Video Games": (
-        "Final Fantasy", "Final Fantasy VII", "Final Fantasy X", "Final Fantasy XV",
-        "Final Fantasy XIII", "Final Fantasy VI", "NieR: Automata", "Street Fighter",
+        "Final Fantasy", "NieR: Automata", "Street Fighter",
         "Mortal Kombat", "Soul Calibur", "Tekken", "Overwatch", "League of Legends", "Arcane",
         "Genshin Impact",
-        "The Legend of Zelda", "The Legend of Zelda: Breath of the Wild", "Nintendo",
-        "Super Mario", "Metroid", "Resident Evil", "Tomb Raider", "Mass Effect", "Halo",
+        "The Legend of Zelda", "Super Mario", "Star Fox", "F-Zero", "Kirby", "Donkey Kong",
+        "Metroid", "Resident Evil", "Tomb Raider", "Mass Effect", "Halo",
         "Metal Gear", "God of War", "Kingdom Hearts", "Baldur's Gate 3", "The Witcher",
         "Horizon", "Hitman", "Hellblade", "Doom", "Portal", "Silent Hill", "Darkstalkers",
         "The King of Fighters", "Bayonetta", "Divinity: Original Sin", "World of Warcraft",
@@ -10513,6 +10764,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
         "Judge Dredd", "Mad Max",
         "Escape from New York", "Pirates of the Caribbean", "Movie", "The Addams Family",
+        "KPop Demon Hunters",
         "Scooby-Doo", "Who Framed Roger Rabbit", "Mistress of the Dark", "Xena: Warrior Princess",
         "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",

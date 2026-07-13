@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1030 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1054 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (121)
+## Anime & Manga (126)
 
 ### Anime
 
@@ -192,6 +192,11 @@
 
 ### Studio Ghibli
 
+- **Baron Humbert von Gikkingen** (M, masked, prop)
+- **Kaguya** (F)
+- **Kiki** (F, prop)
+- **No-Face** (M, masked)
+- **Porco Rosso** (M, masked)
 - **Princess Mononoke** (F, prop)
 - **Totoro** (M, giant, masked)
 
@@ -983,7 +988,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (87)
+## Movies & TV (90)
 
 ### A Nightmare on Elm Street
 
@@ -1082,6 +1087,12 @@
 ### KFC
 
 - **Colonel Sanders** (M)
+
+### KPop Demon Hunters
+
+- **Mira** (F)
+- **Rumi** (F)
+- **Zoey** (F)
 
 ### Kellogg's
 
@@ -1338,7 +1349,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (199)
+## Video Games (215)
 
 ### ARMS
 
@@ -1395,6 +1406,10 @@
 
 - **Astarte** (F)
 
+### Donkey Kong
+
+- **Donkey Kong** (M, giant, masked)
+
 ### Doom
 
 - **Doom Slayer** (M, masked)
@@ -1403,38 +1418,38 @@
 
 - **Morrigan (Dragon Age)** (F)
 
+### F-Zero
+
+- **Captain Falcon** (M, masked)
+
 ### Final Fantasy
 
+- **Aerith Gainsborough** (F)
 - **Auron** (M)
+- **Barret Wallace** (M)
+- **Cecil Harvey** (M)
+- **Celes Chere** (F)
 - **Cloud Strife** (M, prop)
+- **Kain Highwind** (M, masked, prop)
+- **Kefka Palazzo** (M)
+- **Lightning** (F)
+- **Moogle** (M, masked)
+- **Noctis** (M)
+- **Rikku** (F)
+- **Rosa Farrell** (F)
+- **Rydia** (F)
 - **Sephiroth** (M, prop)
 - **Squall** (M, prop)
-- **Tidus** (M)
-- **Vincent Valentine** (M)
-- **Zidane** (M)
-
-### Final Fantasy VI
-
+- **Tellah** (M)
 - **Terra Branford** (F)
-
-### Final Fantasy VII
-
-- **Aerith Gainsborough** (F)
+- **Tidus** (M)
 - **Tifa Lockhart** (F)
+- **Ultros** (M, masked)
+- **Vincent Valentine** (M)
+- **Vivi Ornitier** (M, masked)
 - **Yuffie Kisaragi** (F)
-
-### Final Fantasy X
-
-- **Rikku** (F)
 - **Yuna** (F)
-
-### Final Fantasy XIII
-
-- **Lightning** (F)
-
-### Final Fantasy XV
-
-- **Noctis** (M)
+- **Zidane** (M)
 
 ### Genshin Impact
 
@@ -1475,6 +1490,10 @@
 - **Riku** (M)
 - **Sora** (M, prop)
 
+### Kirby
+
+- **Kirby** (M, masked)
+
 ### League of Legends
 
 - **Ahri** (F)
@@ -1491,8 +1510,13 @@
 ### Mass Effect
 
 - **Commander Shepard** (F)
+- **Garrus Vakarian** (M, masked)
+- **Jack (Mass Effect)** (F)
 - **Liara T'Soni** (F)
 - **Miranda Lawson** (F)
+- **Mordin Solus** (M, masked)
+- **Tali'Zorah** (F, masked)
+- **Urdnot Wrex** (M, masked)
 
 ### Metal Gear
 
@@ -1537,21 +1561,6 @@
 ### NieR: Automata
 
 - **2B** (F)
-
-### Nintendo
-
-- **Bowser** (M, masked)
-- **Captain Falcon** (M, masked)
-- **Donkey Kong** (M, giant, masked)
-- **Fox McCloud** (M, masked, prop)
-- **Ganondorf** (M)
-- **Kirby** (M, masked)
-- **Link** (M, prop)
-- **Luigi** (M)
-- **Mario** (M)
-- **Toad** (M)
-- **Wario** (M)
-- **Yoshi** (M, masked)
 
 ### Overwatch
 
@@ -1610,6 +1619,10 @@
 - **Xianghua** (F, prop)
 - **Yoshimitsu** (M, masked, prop)
 
+### Star Fox
+
+- **Fox McCloud** (M, masked, prop)
+
 ### StarCraft
 
 - **Sarah Kerrigan** (F)
@@ -1646,9 +1659,15 @@
 
 ### Super Mario
 
+- **Bowser** (M, masked)
 - **Daisy** (F)
+- **Luigi** (M)
+- **Mario** (M)
 - **Princess Peach** (F)
 - **Rosalina** (F, giant, prop)
+- **Toad** (M)
+- **Wario** (M)
+- **Yoshi** (M, masked)
 
 ### System Shock
 
@@ -1670,12 +1689,11 @@
 
 ### The Legend of Zelda
 
+- **Ganondorf** (M)
+- **Link** (M, prop)
 - **Midna** (F)
 - **Sheik** (F)
 - **Urbosa** (F)
-
-### The Legend of Zelda: Breath of the Wild
-
 - **Zelda** (F)
 
 ### The Witcher
