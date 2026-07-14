@@ -98,6 +98,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "platinum blonde", "hair_length": "chin length bob",
                       "hair_style": "blunt bangs"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
+        "prop": "a slender white katana with a straight guard, held point-down",
     },
     "Aerith Gainsborough": {
         "franchise": "Final Fantasy",
@@ -182,6 +183,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "golden blonde", "hair_length": "hip length",
                       "hair_style": "space buns", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "porcelain"},
+        "prop": "the Moon Stick, a golden wand topped with a crescent moon and a red gem",
     },
     "Hatsune Miku": {
         "franchise": "Vocaloid",
@@ -1495,6 +1497,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "raven black", "hair_length": "hip length",
                       "hair_style": "updo", "eye_color": "blue-gray"},
         "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "fair"},
+        "prop": "four ornate long-barreled handguns, one in each hand",
     },
     "Morrigan Aensland": {
         "franchise": "Darkstalkers",
@@ -2752,6 +2755,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "white", "hair_length": "shoulder length",
                       "hair_style": "low ponytail", "facial_hair": "stubble"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a drawn silver longsword, the blade etched with runes",
     },
     "Kratos": {
         "franchise": "God of War",
@@ -2877,6 +2881,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "shoulder length",
                       "facial_hair": "full beard", "eye_color": "golden brown"},
         "physique": {"body_type": "stocky", "height": "average height", "skin_tone": "light"},
+        "prop": "a small porcelain teacup of freshly steeped tea",
     },
     "Suki": {
         "franchise": "Avatar: The Last Airbender",
@@ -7015,7 +7020,8 @@ COSPLAYERS: dict[str, dict] = {
     "Luke Cage": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a yellow open-collar shirt with a silver chain-link belt",
+        "costume": "a yellow open-collar shirt with a silver chain-link belt, a silver "
+                   "tiara-style headband, and heavy steel wristbands",
         "signature": {"hair_color": "near black", "hair_length": "buzzed very short",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
@@ -7997,9 +8003,10 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Anime / classic toons (Speed Racer) -----------------
     "Speed Racer": {
-        "franchise": "Anime",
+        "franchise": "Speed Racer",
         "gender": "Male",
-        "costume": "a white racing shirt with a red scarf and a yellow M scarf-pin",
+        "costume": "a white short-sleeved racing shirt with a red neckerchief and a yellow "
+                   "'M' scarf-pin, blue jeans, white driving gloves, and white shoes",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
@@ -8315,6 +8322,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "electric blue", "hair_length": "very short",
                       "eye_color": "pale blue"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale"},
+        "prop": "a boxy silver portal gun with a glowing green barrel",
     },
     "Morty Smith": {
         "franchise": "Rick and Morty",
@@ -10880,6 +10888,131 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"eye_color": "dark brown"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
+
+    # === The Boys (Amazon series) ========================================
+    "Homelander": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "costume": "a navy blue supersuit with white shoulders and red gauntlets, a golden "
+                   "eagle crest emblazoned across the chest, white gloves, red boots, and a "
+                   "long American-flag cape - red and white stripes with a blue star field on "
+                   "the underside",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "facial_hair": "clean shaven", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Starlight": {
+        "franchise": "The Boys",
+        "gender": "Female",
+        "costume": "a white and gold supersuit with a bare midriff, gold piping and a starburst "
+                   "emblem, a short white skirt, a slim gold tiara-style crown, and white "
+                   "knee-high heeled boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "toned", "height": "average height", "skin_tone": "fair"},
+    },
+    "Soldier Boy": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "costume": "an olive-green armored super-soldier uniform with a silver star on the "
+                   "chest, a chainmail underlayer, red-brown leather gloves and boots, a "
+                   "utility harness, and a green domed helmet with a single star",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "full beard", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "The Deep": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "costume": "a teal and blue-green scaled supersuit with silver trim and matching "
+                   "gloves, a high collar, and visible gills slitted along each side of the ribs",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "clean shaven", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+    },
+    "A-Train": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "costume": "a sleek blue and white speedster supersuit with reflective silver armor "
+                   "panels, aerodynamic red accent lines, an 'A' emblem on the belt, and a "
+                   "streamlined visor",
+        "costumes": [
+            "a performative red, yellow, and green speedster supersuit with kente-cloth accent "
+            "panels, gold trim, and a matching visor",
+        ],
+        "signature": {"hair_color": "near black", "hair_length": "buzzed very short",
+                      "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "dark brown"},
+    },
+    "Queen Maeve": {
+        "franchise": "The Boys",
+        "gender": "Female",
+        "costume": "a bronze and copper armored bustier and battle skirt with silver trim, a "
+                   "corset breastplate, bracer gauntlets, and knee-high armored boots",
+        "signature": {"hair_color": "auburn", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a straight double-edged short sword with a wrapped leather grip",
+    },
+    "Black Noir": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "an all-black armored tactical bodysuit with segmented plating, a utility "
+                   "belt, and a hooded cape",
+        "mask": "a featureless matte-black full-face mask with faint stitched seams and no "
+                "visible eyes",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a black tactical katana with a matte grip",
+    },
+    "Firecracker": {
+        "franchise": "The Boys",
+        "gender": "Female",
+        "costume": "a red, white, and blue star-spangled supersuit with a corseted bodice, a "
+                   "leather ammunition bandolier across the chest, fingerless gloves, star-motif "
+                   "bracers, and towering heeled boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
+        "prop": "a nickel-plated semi-automatic pistol",
+    },
+    "Billy Butcher": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "costume": "a long black leather trench coat over a dark graphic t-shirt, dark jeans, "
+                   "and heavy boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "steel blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Mother's Milk": {
+        "franchise": "The Boys",
+        "gender": "Male",
+        "costume": "a fitted dark henley under a practical charcoal utility jacket, cargo "
+                   "trousers, and lace-up boots",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "goatee", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Crimson Countess": {
+        "franchise": "The Boys",
+        "gender": "Female",
+        "costume": "a dark crimson bodysuit with a black body harness and forearm sleeves, "
+                   "thigh-high crimson boots, a flowing red cape, and a shiny red domino mask "
+                   "over the eyes",
+        "signature": {"hair_color": "bright red", "hair_length": "long",
+                      "eye_color": "green"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "fair"},
+    },
+    "Sister Sage": {
+        "franchise": "The Boys",
+        "gender": "Female",
+        "costume": "a bronze and gold structured suit with rich warm patterned panels, gold "
+                   "armbands, gold hoop earrings, and small round circular glasses",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "average", "height": "short", "skin_tone": "brown"},
+    },
 }
 
 
@@ -10893,7 +11026,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "My Hero Academia", "JoJo's Bizarre Adventure", "Fullmetal Alchemist", "Death Note",
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
-        "Pokemon", "Madoka Magica", "Studio Ghibli", "Anime",
+        "Pokemon", "Madoka Magica", "Studio Ghibli", "Anime", "Speed Racer",
         "Fairy Tail", "The Seven Deadly Sins",
     ),
     "Marvel": ("Marvel",),
@@ -10937,7 +11070,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
         "Rise of the Guardians", "The Ring", "Ghostbusters", "Edward Scissorhands",
-        "Monsters vs. Aliens",
+        "Monsters vs. Aliens", "The Boys", "Braveheart", "V for Vendetta",
         "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy", "Planters",
         "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",
         "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo",

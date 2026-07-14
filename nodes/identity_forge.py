@@ -693,6 +693,15 @@ def _apply_constraints(
                 if resolved.get(target) == required:
                     continue
                 if target in locked:
+                    # An absence-requiring rule (e.g. "no makeup" wants
+                    # eye_makeup="no eyeshadow") is already satisfied when the lock
+                    # holds a *different but equally absent* value ("None"): both
+                    # render nothing, so warning is pure noise. Stay silent for that
+                    # case; only a lock that holds a real, present value (e.g.
+                    # lips_makeup="classic red" vs. "bare natural lips") is a genuine
+                    # contradiction worth surfacing.
+                    if _is_absent(required) and _is_absent(resolved.get(target)):
+                        continue
                     warn(target, f"'{rule['field']}={rule['value']}' wants "
                                  f"'{target}={required}' but '{target}' is locked to "
                                  f"'{resolved.get(target)}'; keeping lock.")

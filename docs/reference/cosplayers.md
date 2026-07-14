@@ -3,13 +3,9 @@
 
 # Cosplayer reference
 
-**1067 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1079 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (126)
-
-### Anime
-
-- **Speed Racer** (M)
 
 ### Attack on Titan
 
@@ -186,9 +182,13 @@
 - **Sailor Jupiter** (F)
 - **Sailor Mars** (F)
 - **Sailor Mercury** (F)
-- **Sailor Moon** (F)
+- **Sailor Moon** (F, prop)
 - **Sailor Venus** (F)
 - **Tuxedo Mask** (M, prop)
+
+### Speed Racer
+
+- **Speed Racer** (M)
 
 ### Studio Ghibli
 
@@ -221,7 +221,7 @@
 
 - **Aang** (M, prop)
 - **Azula** (F)
-- **Iroh** (M)
+- **Iroh** (M, prop)
 - **Katara** (F)
 - **Sokka** (M, prop)
 - **Suki** (F)
@@ -345,7 +345,7 @@
 ### Rick and Morty
 
 - **Morty Smith** (M)
-- **Rick Sanchez** (M)
+- **Rick Sanchez** (M, prop)
 
 ### Steven Universe
 
@@ -1000,7 +1000,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (90)
+## Movies & TV (102)
 
 ### A Nightmare on Elm Street
 
@@ -1218,6 +1218,21 @@
 - **Uncle Fester** (M)
 - **Wednesday Addams** (F)
 
+### The Boys
+
+- **A-Train** (M, +1 alt)
+- **Billy Butcher** (M)
+- **Black Noir** (M, masked, prop)
+- **Crimson Countess** (F)
+- **Firecracker** (F, prop)
+- **Homelander** (M)
+- **Mother's Milk** (M)
+- **Queen Maeve** (F, prop)
+- **Sister Sage** (F)
+- **Soldier Boy** (M)
+- **Starlight** (F)
+- **The Deep** (M)
+
 ### The Ring
 
 - **Samara** (F)
@@ -1379,7 +1394,7 @@
 
 ### Bayonetta
 
-- **Bayonetta** (F)
+- **Bayonetta** (F, prop)
 
 ### BioShock
 
@@ -1572,7 +1587,7 @@
 
 ### NieR: Automata
 
-- **2B** (F)
+- **2B** (F, prop)
 
 ### Overwatch
 
@@ -1724,7 +1739,7 @@
 ### The Witcher
 
 - **Ciri** (F)
-- **Geralt of Rivia** (M)
+- **Geralt of Rivia** (M, prop)
 - **Triss Merigold** (F)
 - **Yennefer of Vengerberg** (F)
 

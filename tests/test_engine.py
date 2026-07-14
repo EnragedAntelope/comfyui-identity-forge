@@ -351,6 +351,34 @@ class ConstraintTests(unittest.TestCase):
         self.assertEqual(mk["lashes"], "natural bare")
         self.assertEqual(mk["blush"], "no blush")
 
+    def test_absence_equivalent_lock_is_silent(self):
+        # A "no makeup" requirement wants eye_makeup="no eyeshadow" etc.; a field
+        # already locked to the equally-absent "None" satisfies that with no need to
+        # nag the console. But a lock holding a *real* value (classic red lips) is a
+        # genuine contradiction that must still warn.
+        import random as _random
+        from nodes.identity_forge import _apply_constraints
+        resolved = {
+            "makeup_style": "no makeup",
+            "eye_makeup": "None", "eyeliner": "None", "lashes": "None",
+            "eyebrow_makeup": "None", "lips_makeup": "classic red",
+        }
+        locked = {"makeup_style", "eye_makeup", "eyeliner", "lashes",
+                  "eyebrow_makeup", "lips_makeup"}
+        warnings = _apply_constraints(
+            resolved, "Female", locked, _random.Random(0), presentation="Feminine")
+        joined = "\n".join(warnings)
+        # The four absent-vs-absent locks stay quiet...
+        for field in ("eye_makeup", "eyeliner", "lashes", "eyebrow_makeup"):
+            self.assertNotIn(f"'{field}=", joined,
+                             f"absence-equivalent lock on {field} should be silent")
+        # ...but the real contradiction (red lips vs. no makeup) is surfaced.
+        self.assertIn("lips_makeup", joined)
+        self.assertIn("classic red", joined)
+        # Every lock is still honoured regardless of whether it warned.
+        self.assertEqual(resolved["eye_makeup"], "None")
+        self.assertEqual(resolved["lips_makeup"], "classic red")
+
     def test_exclusion_buzzed_hair_blocks_braids(self):
         long_styles = {"side braid", "French braid", "updo", "French twist", "high ponytail"}
         for seed in range(60):
