@@ -78,7 +78,11 @@ _AUTO = "Auto"
 _RANDOM_PALETTE = "Random"
 _FINISHES = ["matte", "glossy", "iridescent", "slimy", "bioluminescent",
              "translucent", "metallic", "wet", "fuzzy", "furred", "scaled", "plated",
-             "feathered", "mossy", "icy", "spiny", "leathery"]
+             "feathered", "mossy", "icy", "spiny", "leathery",
+             # 0.67.0 additions (manual-only overrides; Auto never selects a finish,
+             # so these widen creative range without touching any randomization).
+             "crystalline", "chitinous", "velvety", "molten", "gelatinous",
+             "bark-like", "pearlescent", "waxy"]
 _PALETTES = ["emerald", "crimson", "sapphire blue", "royal violet", "gold", "obsidian black",
              "bone white", "ash grey", "blood red", "electric blue", "toxic green",
              "iridescent", "chrome", "deep purple", "amber", "teal", "rose pink",

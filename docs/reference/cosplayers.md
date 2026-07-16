@@ -497,7 +497,7 @@
 - **Guy Gardner** (M)
 - **Gypsy** (F)
 - **Hal Jordan** (M)
-- **Harley Quinn** (F, +2 alt, prop)
+- **Harley Quinn** (F, +4 alt, prop)
 - **Hawkgirl** (F)
 - **Hawkman** (M, masked, prop)
 - **Hippolyta** (F)

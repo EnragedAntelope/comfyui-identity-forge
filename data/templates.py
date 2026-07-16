@@ -808,13 +808,24 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "ER Nurse": {
         "ethnicity": "Filipino", "body_type": "average", "height": "average height",
         "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "shoulder length", "hair_texture": "sleek straight",
-        "hair_style": "low ponytail", "skin_tone": "warm tan", "makeup_style": "soft natural makeup",
+        "hair_style": "low ponytail", "skin_tone": "warm tan",
         "outfit_style": "loungewear",
         "outfit_description": "teal medical scrubs with a lanyard ID badge and a stethoscope around the neck",
         "bag": "no bag", "accessories": "no accessories",
         "expression": "warm smile", "location": "hospital room",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
+        # Unisex archetype (no gender lock). makeup_style is the ONLY per-gender
+        # difference, so it lives in a costume-less variants block rather than a
+        # base lock: women wear the curated soft look; men stay bare-faced. A base
+        # makeup_style lock would override the male-default "no makeup" cascade and
+        # paint a male nurse in randomized eyeshadow + lipstick (0.67.0 fix). The
+        # five-look costume rotation stays on the base via _COSTUMES — the variants
+        # define no outfit_description, so there is no competing costume source.
+        "variants": {
+            "Female": {"makeup_style": "soft natural makeup"},
+            "Male": {"makeup_style": "no makeup"},
+        },
     },
     "Flight Attendant": {
         "gender": "Female", "ethnicity": "Korean", "body_type": "slim", "height": "tall",
@@ -2841,6 +2852,254 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": ["stage spotlight from above", "high key bright even lighting"],
         "shot_type": "full body shot", "mood": ["radiant", "triumphant"],
     },
+
+    # --- 0.67.0 additions -------------------------------------------------
+    # Lean unisex professions (costume via _COSTUMES). Deliberately NO
+    # makeup_style lock: leaving it unlocked lets the male-default "no makeup"
+    # cascade run, so a male render stays bare-faced (the ER Nurse lesson), while
+    # a female render randomizes an appropriate look — the same convention the
+    # other lean professions (Surgeon, Judge, Sommelier, ...) already follow.
+    "Butler": {
+        "accessories": "no accessories", "bag": "no bag",
+        "hair_style": ["slicked back", "sleek bun"], "outfit_style": "business formal",
+        "expression": ["neutral", "calm and composed"],
+        "location": ["formal dining room with chandelier", "grand hotel suite"],
+        "lighting": "warm incandescent lamp glow",
+        "shot_type": "medium shot from waist up", "mood": "tranquil",
+    },
+    "Trial Lawyer": {
+        "accessories": "no accessories", "bag": "no bag",
+        "hair_style": ["slicked back", "sleek bun", "low ponytail"], "outfit_style": "business formal",
+        "expression": ["confident", "determined"], "location": "courtroom",
+        "lighting": "soft window light from the side",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
+    },
+    "Coal Miner": {
+        "accessories": "no accessories", "bag": "no bag", "outfit_style": "casual", "complexion": "ruddy",
+        "expression": ["determined", "serious"],
+        "location": ["warehouse interior", "factory floor"],
+        "lighting": "low key moody single light source",
+        "shot_type": "medium shot from waist up", "mood": "grim",
+    },
+    "Butcher": {
+        "accessories": "no accessories", "bag": "no bag", "outfit_style": "casual",
+        "expression": ["confident", "warm smile"],
+        "location": ["upscale grocery market deli counter", "farmers market indoor stall"],
+        "lighting": "cool LED overhead lighting",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
+    },
+    # Lean unisex historical / sport / performer.
+    "Musketeer": {
+        "accessories": "no accessories", "bag": "no bag",
+        "hair_length": ["long", "shoulder length"], "hair_texture": ["loosely curled", "wavy"],
+        "outfit_style": "vintage retro", "expression": ["confident", "smirking"],
+        "location": ["castle courtyard", "cobblestone old-town street"],
+        "lighting": "late afternoon warm sunlight",
+        "shot_type": "full body shot", "mood": "self-assured",
+    },
+    "Medieval Peasant": {
+        "accessories": "no accessories", "bag": "no bag", "outfit_style": "casual",
+        "expression": ["neutral", "warm smile"],
+        "location": ["castle courtyard", "country dirt road"],
+        "lighting": "overcast diffused daylight",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "nostalgic",
+    },
+    "Fencer": {
+        "accessories": "no accessories", "bag": "no bag", "outfit_style": "athletic",
+        "expression": ["focused", "determined"],
+        "location": ["high school gymnasium", "dance studio with mirrors"],
+        "lighting": "high key bright even lighting",
+        "shot_type": "full body shot", "mood": "intense",
+    },
+    "Alpine Skier": {
+        "accessories": "no accessories", "bag": "no bag", "outfit_style": "athletic",
+        "expression": ["bright smile", "confident"],
+        "location": ["snowy pine forest", "mountain overlook"],
+        "lighting": "snow-reflected daylight",
+        "shot_type": "full body shot with environment visible", "mood": "carefree",
+    },
+    "Rapper": {
+        "accessories": "no accessories", "bag": "no bag", "outfit_style": "streetwear",
+        "expression": ["confident", "intense gaze"],
+        "location": ["recording studio", "urban alley with graffiti"],
+        "lighting": ["neon sign glow in multiple colors", "low key moody single light source"],
+        "shot_type": "medium close-up from chest up", "mood": "self-assured",
+    },
+    # Per-gender variants (each carries its own coherent costume). A makeup_style
+    # lock inside a Female variant is safe — it is gender-scoped, so it never
+    # reaches a male render (unlike a base lock, which would; see ER Nurse).
+    "Genie": {
+        "accessories": "no accessories", "bag": "no bag", "gender": "Female",
+        "variants": {
+            "Female": {
+                "ethnicity": ["Egyptian", "Lebanese", "Iranian"], "body_type": "curvy",
+                "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very long",
+                "hair_texture": "wavy", "hair_style": "worn down", "makeup_style": "bold glam", "lips_makeup": "berry",
+                "outfit_style": "edgy alternative",
+                "outfit_description": "a jeweled {jewel_tone} silk bedlah with a beaded bra top, sheer harem trousers, broad gold arm cuffs, and a circlet set with a teardrop gem",
+                "expression": "flirtatious", "location": "grand hotel suite",
+                "lighting": "warm lantern light", "shot_type": "full body shot", "mood": "enigmatic",
+            },
+            "Male": {
+                "ethnicity": ["Egyptian", "Lebanese", "Iranian"], "body_type": "athletic", "fitness_level": "muscular",
+                "facial_hair": "short beard", "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short",
+                "outfit_style": "edgy alternative",
+                "outfit_description": "an open {jewel_tone} silk vest over a bare chest, billowing harem trousers cinched with a gold sash, broad gold arm cuffs, and a jeweled turban",
+                "expression": "confident", "location": "grand hotel suite",
+                "lighting": "warm lantern light", "shot_type": "full body shot", "mood": "enigmatic",
+            },
+        },
+    },
+    "Cottagecore": {
+        "gender": "Female",
+        "variants": {
+            "Female": {
+                "body_type": ["softly curved", "average"], "hair_length": ["long", "very long"],
+                "hair_texture": ["loosely wavy", "softly curled"], "hair_style": ["loose braids", "half up half down"],
+                "hair_accessory": "flower crown", "makeup_style": "fresh-faced dewy look",
+                "outfit_style": "bohemian", "accessories": "no accessories", "bag": "no bag",
+                "outfit_description": [
+                    "a {pastel} prairie dress with a scalloped lace collar, puffed sleeves, and a tied pinafore apron, carrying a woven basket of wildflowers",
+                    "a floral cotton milkmaid dress with a laced bodice and billowing sleeves, worn with a wide straw sun hat",
+                ],
+                "expression": ["gentle smile", "serene"],
+                "location": ["flower field in bloom", "sunlit vineyard"],
+                "lighting": "golden hour sunlight", "shot_type": "full body shot with environment visible", "mood": "dreamy",
+            },
+            "Male": {
+                "body_type": ["lean", "average"], "facial_hair": "stubble", "hair_length": ["ear length", "short pixie"],
+                "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
+                "outfit_style": "bohemian", "accessories": "no accessories", "bag": "no bag",
+                "outfit_description": [
+                    "a loose {earth_tone} linen shirt with rolled sleeves, suspenders over cuffed trousers, and a woven straw hat, carrying a basket of foraged herbs",
+                    "a knitted vest over an open-collar linen shirt, patched work trousers, and scuffed leather boots",
+                ],
+                "expression": ["gentle smile", "at ease"],
+                "location": ["flower field in bloom", "sunlit vineyard"],
+                "lighting": "golden hour sunlight", "shot_type": "full body shot with environment visible", "mood": "dreamy",
+            },
+        },
+    },
+    "Dark Academia": {
+        "variants": {
+            "Female": {
+                "hair_color": ["dark brown", "near black", "chestnut"], "hair_length": ["shoulder length", "long"],
+                "hair_texture": "loosely wavy", "hair_style": ["low ponytail", "half up half down"],
+                "makeup_style": "classic no-makeup makeup", "outfit_style": "preppy",
+                "accessories": "no accessories", "bag": "no bag",
+                "outfit_description": [
+                    "a {dark_color} tweed blazer over a white shirt and knit vest, a pleated wool skirt, opaque tights, and leather oxford shoes, a stack of old books under one arm",
+                    "a fine-knit turtleneck under a herringbone overcoat, tailored trousers, and brogues, a worn leather satchel over the shoulder",
+                ],
+                "expression": ["pensive and thoughtful", "contemplative"],
+                "location": ["university library reading room", "public library with tall bookshelves"],
+                "lighting": "soft window light from the side", "shot_type": "medium shot from waist up", "mood": "nostalgic",
+            },
+            "Male": {
+                "facial_hair": ["stubble", "clean shaven"], "hair_color": ["dark brown", "near black", "chestnut"],
+                "hair_length": ["ear length", "short pixie"], "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
+                "outfit_style": "preppy", "accessories": "no accessories", "bag": "no bag",
+                "outfit_description": [
+                    "a {dark_color} tweed blazer with elbow patches over a knit vest and tie, tailored trousers, and leather oxford shoes, a stack of old books under one arm",
+                    "a herringbone overcoat over a fine-knit turtleneck, wool trousers, and brogues, a worn leather satchel over the shoulder",
+                ],
+                "expression": ["pensive and thoughtful", "contemplative"],
+                "location": ["university library reading room", "public library with tall bookshelves"],
+                "lighting": "soft window light from the side", "shot_type": "medium shot from waist up", "mood": "nostalgic",
+            },
+        },
+    },
+    "E-Girl / E-Boy": {
+        "bag": "no bag",
+        "variants": {
+            "Female": {
+                "hair_color": ["hot pink", "electric blue", "magenta", "black with colored tips"], "hair_length": ["long", "shoulder length"],
+                "hair_texture": "sleek straight", "hair_style": ["space buns", "pigtails"], "hair_accessory": "small hair clip",
+                "makeup_style": "club makeup", "eye_makeup": "colorful bold eyeshadow", "piercings": "labret stud",
+                "outfit_style": "edgy alternative", "accessories": "no accessories",
+                "outfit_description": [
+                    "a black cropped tee over a {color} long-sleeve striped shirt, a plaid mini skirt, fishnet tights, and chunky platform boots, with a layered chain choker",
+                    "an oversized {color} graphic hoodie, a black pleated skirt, striped arm warmers, and platform sneakers",
+                ],
+                "expression": ["playful", "coy"],
+                "location": ["neon-lit nightclub", "graffiti-covered skate park"],
+                "lighting": "purple and teal neon wash", "shot_type": "medium close-up from chest up", "mood": "moody",
+            },
+            "Male": {
+                "hair_color": ["black with colored tips", "electric blue", "magenta"], "hair_length": ["ear length", "chin length bob"],
+                "hair_texture": "sleek straight", "hair_style": ["curtain bangs", "worn down"], "piercings": "labret stud",
+                "outfit_style": "edgy alternative", "accessories": "no accessories",
+                "outfit_description": [
+                    "a {color} long-sleeve striped shirt under a black graphic tee, black skinny jeans with a chain belt, and chunky platform boots, with a layered chain choker",
+                    "an oversized {color} graphic hoodie over layered tees, black cargo pants, and high-top skate shoes",
+                ],
+                "expression": ["playful", "smirking"],
+                "location": ["neon-lit nightclub", "graffiti-covered skate park"],
+                "lighting": "purple and teal neon wash", "shot_type": "medium close-up from chest up", "mood": "moody",
+            },
+        },
+    },
+    "Country Star": {
+        "bag": "no bag",
+        "variants": {
+            "Female": {
+                "hair_color": ["golden blonde", "light chestnut", "auburn"], "hair_length": ["long", "very long"],
+                "hair_texture": ["beachy waves", "loosely curled"], "hair_style": "worn down",
+                "makeup_style": "soft glam", "lips_makeup": "nude lipstick",
+                "outfit_style": "vintage retro", "accessories": "no accessories",
+                "outfit_description": [
+                    "a fringed {color} suede jacket over a denim shirt tied at the waist, high-waisted jeans, a tooled leather belt, and embroidered cowboy boots",
+                    "a {pastel} floral sundress with a fringed shawl, a concho belt, and worn cowboy boots, holding an acoustic guitar",
+                ],
+                "expression": ["bright smile", "warm smile"],
+                "location": ["outdoor amphitheater", "rooftop bar at night"],
+                "lighting": "warm string lights bokeh background", "shot_type": "full body shot", "mood": "cheerful",
+            },
+            "Male": {
+                "facial_hair": ["short beard", "stubble"], "hair_color": ["medium brown", "dark brown", "light chestnut"],
+                "hair_length": ["short pixie", "ear length"], "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
+                "outfit_style": "vintage retro", "accessories": "no accessories",
+                "outfit_description": [
+                    "a pearl-snap {color} western shirt with embroidered yokes, bootcut jeans, a tooled leather belt with a big buckle, a felt cowboy hat, and worn boots",
+                    "a {earth_tone} suede jacket with fringe over a plaid shirt, dark denim, a wide belt buckle, and a straw cowboy hat, holding an acoustic guitar",
+                ],
+                "expression": ["confident", "warm smile"],
+                "location": ["outdoor amphitheater", "rooftop bar at night"],
+                "lighting": "warm string lights bokeh background", "shot_type": "full body shot", "mood": "cheerful",
+            },
+        },
+    },
+    "Regency Aristocrat": {
+        "bag": "no bag",
+        "gender": "Female",
+        "variants": {
+            "Female": {
+                "ethnicity": "English", "body_type": ["slim", "hourglass"], "hair_color": ["light chestnut", "chestnut", "warm brown"],
+                "hair_length": ["long", "very long"], "hair_texture": "softly curled", "hair_style": "updo", "hair_accessory": "jeweled hair comb",
+                "skin_tone": "porcelain", "makeup_style": "soft natural makeup",
+                "outfit_style": "evening formal", "accessories": "no accessories", "bag": "no bag",
+                "outfit_description": [
+                    "a high-waisted empire-line {pastel} muslin gown with a satin sash, short puffed sleeves, and long silk gloves, carrying a beaded reticule",
+                    "a {jewel_tone} silk regency gown with delicate lace trim, an empire waist, elbow-length gloves, and a feathered hair ornament",
+                ],
+                "expression": ["serene", "subtle soft smile"],
+                "location": ["formal dining room with chandelier", "castle courtyard"],
+                "lighting": "warm candlelight", "shot_type": "full body shot", "mood": "tranquil",
+            },
+            "Male": {
+                "ethnicity": "English", "body_type": ["lean", "average"], "facial_hair": "clean shaven",
+                "hair_color": ["dark brown", "chestnut", "medium brown"], "hair_length": "ear length", "hair_texture": "loosely curled",
+                "hair_style": "natural and unstyled", "outfit_style": "evening formal", "accessories": "no accessories",
+                "outfit_description": [
+                    "a tailored {dark_color} tailcoat over an embroidered {color} waistcoat, a high starched cravat, buff breeches, and tall polished Hessian boots",
+                    "a fitted bottle-green riding coat with brass buttons over a patterned waistcoat, a knotted cravat, fawn breeches, and gleaming top boots",
+                ],
+                "expression": ["confident", "subtle soft smile"],
+                "location": ["formal dining room with chandelier", "castle courtyard"],
+                "lighting": "warm candlelight", "shot_type": "full body shot", "mood": "tranquil",
+            },
+        },
+    },
 }
 
 
@@ -3106,15 +3365,29 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a rumpled vintage graphic tee under a {dark_color} moto jacket with skinny jeans and battered canvas sneakers, styled with a careless thrifted look",
      "an oversized thrifted blazer over a slogan tee with tight {color} jeans and scuffed loafers, layered with a haphazard second-hand look",
      "a metallic {color} disco bodysuit under a cropped denim jacket with opaque tights and beat-up ankle boots"],
+    # --- 0.67.0 additions (lean unisex archetypes) ---
+    "Butler": "a formal black tailcoat over a white wing-collar shirt with a {dark_color} waistcoat, a black bow tie, pressed trousers, and white cotton gloves",
+    "Trial Lawyer": "a tailored {dark_color} suit over a crisp white shirt with a {color} tie, a leather portfolio tucked under one arm, and polished oxford shoes",
+    "Coal Miner": "grimy {earth_tone} coveralls streaked with coal dust, a battered hard hat with a headlamp, heavy canvas gloves, and steel-toe boots, the face smudged with soot",
+    "Butcher": "a heavy white butcher's apron streaked from the day's work over a rolled-sleeve shirt, a {color} neckerchief, and a straw boater hat",
+    "Musketeer": "a {color} tabard bearing a white cross over a leather doublet, a plumed wide-brimmed cavalier hat, a baldric across the chest, tall cuffed boots, and a rapier sheathed at the hip",
+    "Medieval Peasant": "a homespun {earth_tone} tunic cinched with a rope belt over patched wool leggings, a simple linen coif, and worn leather ankle boots",
+    "Fencer": "a white fencing jacket with a plastron and a metallic lame over-vest, white breeches and long socks, a wire-mesh mask tucked under one arm, and a slender epee in hand",
+    "Alpine Skier": "a sleek {color} insulated ski suit with a competitor's bib, reflective goggles pushed up on the forehead, padded gloves, and ski poles in hand",
+    "Rapper": "an oversized {color} graphic hoodie under a puffer vest, baggy jeans, box-fresh high-top sneakers, layered gold chains, and a snapback cap",
 }
 for _name, _costume in _COSTUMES.items():
     if _name in ARCHETYPES:
-        # Archetypes converted to gender variants carry their costume inside
-        # each variant block instead; a _COSTUMES entry would put a second,
-        # gender-blind costume on the base, so keep converted names out of here.
-        assert "variants" not in ARCHETYPES[_name], (
-            f"_COSTUMES entry for '{_name}' conflicts with its variants block; "
-            "move the costume into the variants instead"
+        # A _COSTUMES entry supplies the base (gender-blind) costume. That only
+        # conflicts with a variant that carries its OWN costume — two competing
+        # costume sources. A *costume-less* variants block (e.g. ER Nurse, whose
+        # sole per-gender difference is makeup) is fine: the unisex _COSTUMES
+        # costume stays the single source and the variant just tweaks a
+        # non-costume field. So reject only variants that define outfit_description.
+        _variant_blocks = ARCHETYPES[_name].get("variants") or {}
+        assert not any("outfit_description" in _v for _v in _variant_blocks.values()), (
+            f"_COSTUMES entry for '{_name}' conflicts with a variant that defines its "
+            "own costume; move the costume into the variants or drop the _COSTUMES entry"
         )
         ARCHETYPES[_name]["outfit_description"] = _costume
 

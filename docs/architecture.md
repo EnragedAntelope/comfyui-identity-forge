@@ -104,7 +104,7 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   *Grammar:* the prose renders `"{subject} is {pose}."`, so every value has to complete that
   frame — a present participle (`standing naturally`), a past participle (`perched on the edge
   of a seat`), or a preposition introducing a noun (`in a confident power pose`). **Never a bare
-  noun phrase**: three values shipped for years reading "She is arms relaxed at the sides."
+  noun phrase**: three values had shipped since the field was added, reading "She is arms relaxed at the sides."
   They were reworded in place at 0.66.0 (same slot, same family weight, zero bias impact).
   `PoseGrammarTests` pins the rule; a new past-participle opener must be added to its allowlist,
   which is deliberate friction.

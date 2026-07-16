@@ -326,6 +326,42 @@ def _apply_suppress(
             bucket[field_name] = absent
 
 
+#: (character, scope) combos whose pool size has already been announced this
+#: session, so the info line below prints at most once per combo (not per seed).
+_SCOPE_NOTICE_SEEN: set[tuple[str, str]] = set()
+
+
+def _announce_scope(
+    character: str, category: str, gender: str | None, count: int, fell_back: bool
+) -> None:
+    """Print a one-time console note of the in-scope pool size for a Random combo.
+
+    A franchise/attribute scope narrows the Random pool. A *small* pool (e.g.
+    ``Masked`` + ``female`` = 7) then repeats characters across seeds, which reads
+    like the scope was ignored even though it is working. Printing the pool size
+    once per (character, scope) combo makes the scope legible without spamming the
+    console every generation.
+
+    If a (gender, scope) combo is ever *empty* the pick silently falls back to the
+    full gender pool — unreachable with the shipped roster (the smallest combo is
+    7), but a ``user_options.json`` addition could create it, so the fallback warns
+    loudly instead of quietly handing back an out-of-scope character.
+    """
+    key = (character, category)
+    if key in _SCOPE_NOTICE_SEEN:
+        return
+    _SCOPE_NOTICE_SEEN.add(key)
+    gender_word = gender.lower() if gender else "any-gender"
+    if fell_back:
+        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}' matched no "
+              f"characters; falling back to the full {gender_word} pool "
+              f"({count} characters). The result will be OUT OF SCOPE.")
+    else:
+        plural = "s" if count != 1 else ""
+        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}': "
+              f"{count} character{plural} in scope.")
+
+
 def _resolve_character(
     character: str, rng: random.Random, category: str = _SCOPE_ANY
 ) -> str | None:
@@ -338,6 +374,7 @@ def _resolve_character(
     """
     if character in _RANDOM_POOLS:
         gender = _RANDOM_POOLS[character]
+        scoped = category != _SCOPE_ANY
         predicate = _SPECIAL_SCOPES.get(category)
         if predicate is not None:
             # Attribute scope (Giant/Tiny/Non-human/Masked): filter the gender pool
@@ -346,11 +383,15 @@ def _resolve_character(
                     if predicate(get_cosplayer(n))]
         else:
             pool = get_cosplayer_names(gender=gender, category=category)
+        fell_back = False
         if not pool:  # empty (gender, scope) combo -> fall back to the full gender pool
+            fell_back = scoped
             pool = get_cosplayer_names(gender=gender)
         if not pool:
             print(f"[IdentityForgeCosplayer] No characters available for '{character}'.")
             return None
+        if scoped:
+            _announce_scope(character, category, gender, len(pool), fell_back)
         return rng.choice(pool)
     if character == _NONE or character not in COSPLAYERS:
         return None

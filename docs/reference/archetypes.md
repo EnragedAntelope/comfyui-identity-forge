@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**209 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**224 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -26,6 +26,7 @@
 - **1990s Goth** -- edgy alternative
 - **1990s Grunge** [Male] -- edgy alternative
 - **Alchemist** -- vintage retro
+- **Alpine Skier** -- athletic
 - **Ancient Roman Patrician** [Male] -- evening formal
 - **Angelic Being** [Female] -- evening formal
 - **Arcane Wizard** [Male] -- bohemian
@@ -52,6 +53,8 @@
 - **Bosozoku** [Male] -- edgy alternative
 - **Boxer** [Male] -- athletic
 - **Bridal Portrait** [Female] -- evening formal
+- **Butcher** -- casual
+- **Butler** -- business formal
 - **Cabaret Witch** [Female] -- evening formal
 - **Calligrapher** -- smart casual
 - **Carpenter** -- casual
@@ -62,12 +65,16 @@
 - **Circus Clown** [Any]
 - **Classic Hollywood Leading Man** [Male] -- evening formal
 - **Classic Hollywood Starlet** [Female] -- evening formal
+- **Coal Miner** -- casual
 - **Construction Worker** [Male] -- casual
 - **Corporate Executive** [Female] -- business formal
+- **Cottagecore** [Female]
+- **Country Star**
 - **Court Jester** -- edgy alternative
 - **Cyberpunk Netrunner** -- streetwear
 - **Cyclist** [Male] -- athletic
 - **DJ** -- streetwear
+- **Dark Academia**
 - **Dark Sorceress** [Female] -- evening formal
 - **Deep Sea Diver** -- athletic
 - **Desert Nomad** -- bohemian
@@ -76,6 +83,7 @@
 - **Drag Performer** [Female] -- evening formal
 - **Dwarven Blacksmith** [Male] -- edgy alternative
 - **Día de los Muertos** [Female]
+- **E-Girl / E-Boy**
 - **ER Nurse** -- loungewear
 - **Egyptian Pharaoh** -- evening formal
 - **Electrician** [Male] -- casual
@@ -84,6 +92,7 @@
 - **Fairy Princess** [Female] -- evening formal
 - **Falconer** -- smart casual
 - **Farmer** [Male] -- casual
+- **Fencer** -- athletic
 - **Figure Skater** [Any]
 - **Firefighter** [Male] -- athletic
 - **Flamenco Dancer** [Female]
@@ -95,6 +104,7 @@
 - **Game-Day Fan** [Female]
 - **Gaucho** [Male] -- vintage retro
 - **Geisha** [Female] -- evening formal
+- **Genie** [Female]
 - **Gibson Girl** [Female] -- vintage retro
 - **Gladiator** [Male] -- athletic
 - **Glassblower** -- casual
@@ -126,9 +136,11 @@
 - **Masquerade Guest** [Female]
 - **McBling Socialite** [Female] -- streetwear
 - **Mechanic** [Male] -- edgy alternative
+- **Medieval Peasant** -- casual
 - **Metrosexual** [Male] -- smart casual
 - **Mime** -- edgy alternative
 - **Musician** -- streetwear
+- **Musketeer** -- vintage retro
 - **Navy Sailor** -- smart casual
 - **Necromancer** -- edgy alternative
 - **News Anchor** -- business formal
@@ -155,6 +167,8 @@
 - **Punk Rocker** -- edgy alternative
 - **Race Car Driver** [Male] -- athletic
 - **Rancher** -- vintage retro
+- **Rapper** -- streetwear
+- **Regency Aristocrat** [Female]
 - **Renaissance Noble** -- evening formal
 - **Retail Cashier** -- smart casual
 - **Ringmaster** -- evening formal
@@ -196,6 +210,7 @@
 - **Toymaker** -- vintage retro
 - **Train Conductor** -- business casual
 - **Trapeze Artist** -- athletic
+- **Trial Lawyer** -- business formal
 - **Tribal Shaman** -- bohemian
 - **Trucker** -- casual
 - **Valkyrie** [Female] -- edgy alternative

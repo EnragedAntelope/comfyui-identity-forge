@@ -686,6 +686,32 @@ COSPLAYERS: dict[str, dict] = {
             "a red-and-black corset with a ruffled tutu skirt, red-and-black fishnet stockings, "
             "fingerless gloves and a small jester collar, with high pigtails tipped red on one "
             "side and black on the other",
+            # Arkham Asylum (2009): red-and-black harlequin-split nurse-corset dress, a
+            # little cap and a domino mask (face visible, so no covers_face); hair is
+            # worn LOOSE here (the pigtails arrived in Arkham City), so this overlay
+            # restates the whole signature - an overlay signature REPLACES the base one.
+            {"costume": "a red-and-black harlequin-split nurse's corset dress with a plunging zip, "
+                        "a little white nurse's cap with a red cross, a name badge, red-and-white "
+                        "striped stockings, white gloves, and thigh-high boots, with a black domino "
+                        "mask and dark hair worn loose past the shoulders",
+             "signature": {"hair_color": "near black", "hair_length": "shoulder length",
+                           "hair_style": "worn down", "eye_color": "bright blue",
+                           "makeup_style": "club makeup", "eye_makeup": "smoky black",
+                           "eyeliner": "dramatic winged", "lashes": "dramatic falsies",
+                           "lips_makeup": "deep red", "expression": "wide toothy grin"},
+             # Harlequin mallet fits the split jester-nurse look far better than the
+             # base graffiti bat (which is the later Suicide Squad prop).
+             "prop": "an oversized wooden carnival mallet with a rounded head, slung over "
+                     "one shoulder"},
+            # Arkham City (2011): quilted red-and-black leather corset with studded straps,
+            # a black white-laced skirt, blonde pigtails tipped red/black, candy-striped bat.
+            # Keeps the base signature (pigtails + blonde + makeup all fit), so only the
+            # costume and the prop are overridden.
+            {"costume": "a quilted red-and-black leather corset with studded leather straps across "
+                        "the midriff, a short black skirt trimmed with white lace, fingerless "
+                        "gloves, and heavy buckled boots, with high blonde pigtails dyed red on one "
+                        "side and black on the other",
+             "prop": "a candy-striped red-and-white baseball bat resting on one shoulder"},
         ],
         "signature": {"hair_color": "platinum blonde", "hair_length": "shoulder length",
                       "hair_style": "pigtails", "eye_color": "bright blue",

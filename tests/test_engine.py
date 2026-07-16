@@ -37,7 +37,7 @@ from nodes.identity_forge import (
 )
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
-    _MODIFIERS_KEY,
+    _MODIFIERS_KEY, _VARIANTS_KEY,
 )
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
@@ -223,6 +223,105 @@ class GenderTests(unittest.TestCase):
             flat = {k: v for g in json.loads(js).values() if isinstance(g, dict)
                     for k, v in g.items()}
             self.assertEqual(flat.get(field), value, field)
+
+
+class ERNurseGenderMakeupTests(unittest.TestCase):
+    """0.67.0: ER Nurse is a unisex archetype whose only per-gender difference is
+    makeup. It carries a costume-less ``variants`` block (Female -> soft natural
+    makeup, Male -> no makeup) so a female nurse is made up while a male nurse stays
+    bare-faced -- without a base makeup_style lock that would paint a man (the bug
+    this fixed). The costume rotation stays on the base via _COSTUMES."""
+
+    def _render(self, seed, gender):
+        flat = _parse_archetype_json(build_archetype_json("ER Nurse", seed, "Essentials"))
+        gv = flat.pop(_VARIANTS_KEY, None)
+        return generate_character(seed, gender, flat, gender_variants=gv)
+
+    def test_female_nurse_wears_soft_natural_makeup(self):
+        for seed in range(20):
+            _, js = self._render(seed, "Female")
+            self.assertEqual(json.loads(js)["Makeup"]["makeup_style"],
+                             "soft natural makeup", f"seed {seed}")
+
+    def test_male_nurse_is_bare_faced(self):
+        # The male variant locks makeup_style="no makeup", which cascades to clear
+        # every cosmetic sub-field. No eyeshadow/lipstick lands on a male nurse.
+        for seed in range(20):
+            prose, js = self._render(seed, "Male")
+            self.assertEqual(json.loads(js)["Makeup"]["makeup_style"], "no makeup",
+                             f"seed {seed}")
+            low = prose.lower()
+            for phrase in ("eyeshadow", "eyeliner", "mascara", "lipstick"):
+                self.assertNotIn(phrase, low, f"'{phrase}' on male nurse seed {seed}")
+
+    def test_costume_still_rotates_for_both_genders(self):
+        # The five-look _COSTUMES rotation survives the variants block (variants
+        # define no outfit_description, so the base costume is the single source).
+        for gender in ("Female", "Male"):
+            looks = {json.loads(self._render(s, gender)[1])["Clothing"]["outfit_description"]
+                     for s in range(40)}
+            self.assertGreater(len(looks), 1, f"{gender} costume did not vary")
+
+
+class ScopeAnnounceTests(unittest.TestCase):
+    """0.67.0: a scoped Random pick prints its in-scope pool size once per combo so
+    small pools (Masked+female=7) read as intentional, and warns loudly if a combo
+    ever falls back to the full gender pool (unreachable with the shipped roster)."""
+
+    def test_announce_is_once_per_combo(self):
+        import nodes.identity_forge_cosplayer as cn
+        cn._SCOPE_NOTICE_SEEN.clear()
+        cn._announce_scope("Random - female", "Masked", "Female", 7, False)
+        cn._announce_scope("Random - female", "Masked", "Female", 7, False)
+        self.assertIn(("Random - female", "Masked"), cn._SCOPE_NOTICE_SEEN)
+        self.assertEqual(len(cn._SCOPE_NOTICE_SEEN), 1)
+
+    def test_empty_scope_falls_back_and_flags(self):
+        # Force an empty (gender, scope) combo via a stubbed roster: the resolver
+        # must still return a name (from the full gender pool), not None.
+        import nodes.identity_forge_cosplayer as cn
+        real = cn.get_cosplayer_names
+        calls = {"n": 0}
+
+        def fake_names(gender=None, category=cn._SCOPE_ANY):
+            # First call (scoped) is empty; the fallback (gender-only) returns a name.
+            calls["n"] += 1
+            return [] if calls["n"] == 1 else ["Zatanna"]
+
+        cn._SCOPE_NOTICE_SEEN.clear()
+        cn.get_cosplayer_names = fake_names
+        try:
+            name = cn._resolve_character(cn._RANDOM_FEMALE, random.Random(0), "Masked")
+        finally:
+            cn.get_cosplayer_names = real
+        self.assertEqual(name, "Zatanna")  # fell back to the full gender pool
+
+    def test_unscoped_pick_announces_nothing(self):
+        import nodes.identity_forge_cosplayer as cn
+        cn._SCOPE_NOTICE_SEEN.clear()
+        cn._resolve_character(cn._RANDOM_ANY, random.Random(0), cn._SCOPE_ANY)
+        self.assertEqual(len(cn._SCOPE_NOTICE_SEEN), 0)
+
+
+class HarleyArkhamLooksTests(unittest.TestCase):
+    """0.67.0: Harley Quinn gained the two missing Arkham game looks as costumes[]
+    alternates (Asylum nurse-corset, City studded-leather corset)."""
+
+    def test_harley_has_five_distinct_looks(self):
+        looks = {json.loads(build_cosplayer_json("Harley Quinn", s, "Costume only"))
+                 ["Clothing"]["outfit_description"] for s in range(60)}
+        self.assertGreaterEqual(len(looks), 4)
+
+    def test_arkham_looks_reachable(self):
+        seen = set()
+        for s in range(80):
+            c = json.loads(build_cosplayer_json("Harley Quinn", s, "Costume only")
+                           )["Clothing"]["outfit_description"].lower()
+            if "nurse's corset" in c:
+                seen.add("asylum")
+            if "quilted red-and-black leather corset" in c:
+                seen.add("city")
+        self.assertEqual(seen, {"asylum", "city"})
 
 
 class ControlFieldTests(unittest.TestCase):
