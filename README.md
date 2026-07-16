@@ -200,6 +200,10 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   light instead (e.g. `harsh desert sun`) and the *location* re-rolls to somewhere that light can
   exist. Most locations are interiors, so random daylight is uncommon by design — set
   `location_setting: Outdoor` when you want sunny, golden-hour looks.
+- **Fully-encased cosplays skip ethnicity.** A character with no visible skin or face left
+  (Iron Giant, Ultraman, a droid) no longer mentions the cosplayer's ethnicity — with nothing
+  human left showing, the mention only risked nudging the render toward a stray human trait. A
+  face-visible or partially-covered cosplay still describes the person underneath as usual.
 - **Gender & crossplay.** The *person's* gender is the Identity Forge `gender` widget (independent
   of a character's). `Any` rolls a **coherent man or woman each run**; pair it with `wardrobe: Any`
   to unlock fully mixed-gender output. Locked / archetype / cosplayer values are always respected.

@@ -168,13 +168,19 @@ _BALD_SCALP_FIELDS: tuple[str, ...] = (
     "hair_highlights", "hair_accessory",
 )
 
-#: Body-group skin fields dropped when a character is BOTH fully masked
+#: Body/Demographics fields dropped when a character is BOTH fully masked
 #: (``covers_face``) AND a full hard shell (``covers_body`` / ``_FULL_COVER_RE``):
 #: the being is entirely encased, so a randomized human ``skin_tone`` would render as
 #: a stray patch of bare skin under the armour/droid plating (Iron Man, 2-1B, 4-LOM).
 #: ``covers_face`` already drops the other skin fields (complexion / skin_details /
 #: freckles are Face group; skin_finish is Makeup); only ``skin_tone`` (Body) leaks.
-_CONCEALED_SHELL_SKIN_FIELDS: frozenset[str] = frozenset({"skin_tone"})
+#: ``ethnicity`` (Demographics) joins it as of 0.65.0: it describes the cosplayer under
+#: the costume, which is a deliberate design elsewhere (see the Cosplayer node's
+#: "Costume only" tooltip), but on an entirely-encased character (Iron Giant, Ultraman,
+#: Salacious Crumb, 2-1B, ...) mentioning it only risks biasing the render toward a
+#: visible human trait with nothing left to attach it to. An explicit user lock on
+#: either field is respected, same as every other suppression in this module.
+_CONCEALED_SHELL_SKIN_FIELDS: frozenset[str] = frozenset({"skin_tone", "ethnicity"})
 
 #: Control fields: read from their toggle, never randomized, never described.
 _CONTROL_FIELDS: frozenset[str] = frozenset(
@@ -1413,7 +1419,9 @@ def generate_character(
     # encased: a randomized human skin_tone would render as a stray patch of bare
     # skin under the armour/droid plating (Iron Man, 2-1B). covers_face already drops
     # the Face/Makeup skin fields; only the Body-group skin_tone leaks, so drop it
-    # here. An explicit user skin_tone lock is respected, as elsewhere.
+    # here. ethnicity (Demographics) joins it: with no visible skin or face left,
+    # mentioning it only risks nudging the render toward a human trait that has
+    # nothing to attach to. An explicit user lock on either field is respected.
     if covers_face and full_shell:
         for field in _CONCEALED_SHELL_SKIN_FIELDS:
             if field not in locked_clean:

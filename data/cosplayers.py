@@ -10929,15 +10929,23 @@ COSPLAYERS: dict[str, dict] = {
     },
 
     "Moogle": {
+        # Canon height varies across FF titles (a stubby ~1ft field-guide critter in
+        # some, a ~3ft shop-clerk companion in others -- FFIX/FFXIV's depiction, the
+        # most widely recognized, sizes them roughly waist-high on a human). User
+        # steer: "should be pretty short" -> TINY tier at the upper end of that range,
+        # rather than the merely-short-human "height": "short" this entry carried before.
         "franchise": "Final Fantasy",
         "gender": "Male",
         "covers_face": True,
         "covers_body": True,
         "costume": "a small round body covered in an even, all-over coat of cream-white fur, "
-                   "with a plump belly, tiny bat-like wings, and stubby paws",
+                   "with a plump belly, tiny bat-like wings, and stubby paws, on a tiny figure "
+                   "just under three feet tall",
         "mask": "a round white moogle head with small dark round eyes, a tiny pink nose, and a "
                 "single slim antenna topped with a bright red pom-pom",
-        "physique": {"body_type": "plump", "height": "short"},
+        "size_scale": "tiny",
+        "scale_prose": "tiny and just under three feet tall",
+        "physique": {"body_type": "plump", "height": "very petite"},
     },
     "Vivi Ornitier": {
         "franchise": "Final Fantasy",

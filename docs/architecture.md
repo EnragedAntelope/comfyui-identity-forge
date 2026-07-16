@@ -139,6 +139,18 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   8-variant `neon` family its full weight over 2–3 survivors. Expect the *marginal* distribution
   to look daylight-poor (~11% vs ~37% before): 116 of 165 locations are indoor, and daylight
   previously landed on them incoherently. Set `location_setting = "Outdoor"` for sunny looks.
+  **This is a deliberate trade, revisit only if `LIGHTING_FAMILIES` weights are ever rebased.**
+  `constraints.py`'s `_VOID_BACKDROPS` (0.65.0) is just `sorted(STUDIO_BACKDROPS)` now that the
+  module imports `fields.py` anyway — it used to hand-duplicate the four strings.
+- **`lighting`'s `studio` family is lighting-only, not camera framing (0.65.0).** The former
+  `'Dutch angle with hard shadows'` value mixed a pure camera concept (frame tilt) into a
+  lighting field — the same class of wart the 0.63.0 shot_type camera-only doctrine would have
+  caught if it lived there. Reworded to `'harsh angled spotlight casting long hard shadows'`
+  (light direction, not camera framing) **in the same slot at the same family weight** — zero
+  bias impact, no pool/weight change to either field. `shot_type` already has its own,
+  unaffected `'slight Dutch angle'` camera-tilt option; migrating the lighting value there
+  instead was considered and rejected because it would have changed `shot_type`'s own pool and
+  weights, the exact risk flagged when this wart was first noticed.
 - **Constraint re-picks go through `_repick`, not `_weighted_choice` directly (0.64.0).** A
   re-pick must draw the way the *initial fill* would. `_repick(field_name, field_def, pool, gender,
   rng)` routes `FIELD_FAMILIES` fields to `_pick_family_weighted` and everything else to
@@ -283,7 +295,15 @@ Conventions (keep the data coherent):
   covered body may still show the face). Body/demographics stay (the silhouette has a build).
   **Fully encased** (`covers_face` **and** a full shell): the body's `skin_tone` is dropped too —
   the only Body-group skin field `covers_face` doesn't already hide — so a masked droid/armour
-  (Iron Man, 2-1B) reports no stray human skin tone under the plating.
+  (Iron Man, 2-1B) reports no stray human skin tone under the plating. **0.65.0: `ethnicity`
+  (Demographics) joins this same gate.** It describes the cosplayer *underneath* the costume,
+  which is deliberate elsewhere in the schema (see the Cosplayer node's "Costume only" tooltip —
+  body/face/ethnicity randomize freely by design when only the costume is locked), but on an
+  entirely-encased character there is no visible skin or face left to attach it to, so mentioning
+  it (e.g. "a 45-year-old Kazakh man") only risks nudging the render toward a stray human trait.
+  Iron Giant, Ultraman, and Salacious Crumb are the characters that surfaced this. Both fields
+  share `_CONCEALED_SHELL_SKIN_FIELDS` in `nodes/identity_forge.py`; an explicit user lock on
+  either is respected, same as every other suppression here.
   **`_FULL_COVER_RE` only knows hard shells** — it has no idea about fur, feathers, scales, flame
   or bark, so an *animal* body needs the explicit `covers_body: True` or it gets a randomized tote
   bag and a smart watch. 0.64.0 audited this against rendered output and set the flag on 53 entries
@@ -321,7 +341,11 @@ Conventions (keep the data coherent):
   T2I models render the named object next to the character. The validator enforces the
   size_scale↔scale_prose pairing and rejects comparison-object phrases. Tier the language: Hulk is
   enormously-tall-hulking, NOT building-scale; Galactus/Giganta are colossal; Yoda is two-feet-short,
-  NOT fairy-scale.
+  NOT fairy-scale. **Moogle resolved in 0.65.0** (`"tiny"` / "just under three feet tall") — canon
+  height genuinely varies across FF titles (a ~1ft field critter in some, a ~3ft companion in
+  others), so previous revisions deferred it; the user's "should be pretty short" steer settled it
+  at the upper end of the tiny tier rather than leaving the pre-existing `height: "short"`
+  (short-*human* reading) unresolved.
 - **Plain ASCII only** in names and text (no em/en dashes, smart quotes, accents — e.g. use
   `Padme`, `Eowyn`). Tokenizers mangle the rest. Names are dict keys: a duplicate **silently
   overrides** — grep before adding.

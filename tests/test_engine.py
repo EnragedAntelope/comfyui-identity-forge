@@ -1798,6 +1798,44 @@ class ShellSkinToneTests(unittest.TestCase):
             self.assertNotIn("skin_tone", json.loads(js).get("Body", {}), f"seed {seed}")
 
 
+class ShellEthnicityTests(unittest.TestCase):
+    """A fully-encased character (covers_face + full hard shell) shows no
+    human ethnicity — nothing left to attach it to under the shell."""
+
+    def test_masked_droid_drops_ethnicity(self):
+        costume = "a humanoid coppery medical-droid body with a transparent chest panel"
+        for seed in range(30):
+            _, js = generate_character(seed, "Male", {"outfit_description": costume},
+                                       covers_face=True)
+            self.assertNotIn("ethnicity", json.loads(js).get("Demographics", {}), f"seed {seed}")
+
+    def test_masked_only_keeps_ethnicity(self):
+        # covers_face without a hard shell still describes the person's ethnicity.
+        seen = any("ethnicity" in json.loads(generate_character(
+                       s, "Male", {"outfit_description": "a plain cloth tunic"},
+                       covers_face=True)[1]).get("Demographics", {})
+                   for s in range(20))
+        self.assertTrue(seen)
+
+    def test_locked_ethnicity_survives_shell(self):
+        costume = "a towering humanoid war robot sheathed in chrome armor plating"
+        _, js = generate_character(1, "Male",
+                                   {"outfit_description": costume, "ethnicity": "Japanese"},
+                                   covers_face=True)
+        self.assertEqual(json.loads(js)["Demographics"]["ethnicity"], "Japanese")
+
+    def test_2_1b_end_to_end_has_no_ethnicity(self):
+        flat = _parse_archetype_json(build_cosplayer_json("2-1B Droid", 0))
+        flat.pop(_COSPLAY_LABEL_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        for seed in range(15):
+            _, js = generate_character(seed, "Male", locked, covers_face=covers_face,
+                                       covers_body=covers_body)
+            self.assertNotIn("ethnicity", json.loads(js).get("Demographics", {}), f"seed {seed}")
+
+
 def _node_locked(doc, **widgets):
     """Reproduce IdentityForge.execute's locked-field build from a preset doc.
 

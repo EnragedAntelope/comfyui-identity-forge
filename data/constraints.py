@@ -406,10 +406,11 @@ for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
 #
 # "photography studio with backdrop" is deliberately absent: it is a real room
 # (stands, lights, sweep) and reads fine in an establishing or environment shot.
-_VOID_BACKDROPS: list[str] = [
-    "seamless grey studio backdrop", "solid white studio backdrop",
-    "solid black studio backdrop", "chroma-key green screen backdrop",
-]
+#
+# 0.65.0: this used to hand-duplicate the four backdrop strings; now that the
+# module imports fields.py anyway, reuse STUDIO_BACKDROPS directly so the two
+# lists can't drift on a future backdrop addition.
+_VOID_BACKDROPS: list[str] = sorted(STUDIO_BACKDROPS)
 _ENVIRONMENT_SHOTS: list[str] = [
     "extreme wide establishing shot", "full body shot with environment visible",
 ]

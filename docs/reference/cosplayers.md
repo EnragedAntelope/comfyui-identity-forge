@@ -1493,7 +1493,7 @@
 - **Kain Highwind** (M, masked, prop)
 - **Kefka Palazzo** (M)
 - **Lightning** (F, prop)
-- **Moogle** (M, masked)
+- **Moogle** (M, tiny, masked)
 - **Noctis** (M)
 - **Rikku** (F)
 - **Rosa Farrell** (F)
