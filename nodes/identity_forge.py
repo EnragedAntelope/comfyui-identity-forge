@@ -249,15 +249,20 @@ _FULL_COVER_RE = re.compile(
     re.IGNORECASE,
 )
 
-#: Random "modern carry item" extras dropped when a specific costume is provided
+#: Random accessory "extras" dropped when a specific costume is provided
 #: (``outfit_description`` locked by an archetype / cosplayer / a user-typed outfit).
-#: A styled costume is a complete, intentional look; a random tote or a wristwatch
-#: bolted on top reads as anachronistic or just noise (a designer bag on a samurai,
-#: a watch on a caped hero). Explicit locks are respected, and a plain no-costume run
-#: keeps them (a random modern person may carry a bag / wear a watch). Kept narrow:
-#: only the two clear "carry / anachronism" extras -- jewellery and accessories are
-#: more often part of a coherent look and are handled by the shell / hat rules.
-_COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({"bag", "watch_type"})
+#: A styled costume is a complete, intentional look; a random tote, a wristwatch, a
+#: scrunchie or a pair of sunglasses bolted on top reads as anachronistic or just
+#: noise (a designer bag on a samurai, a watch on a caped hero, a claw clip on a
+#: knight). Explicit locks are respected -- a look that authored a signature scarf
+#: (Parisian Chic), flower crown (Cottagecore) or hair comb (Regency) keeps it -- and
+#: a plain no-costume run keeps them all (a random modern person may carry/wear them).
+#: Jewellery/nails are NOT here: they sit on the body and are governed by the shell
+#: rule (a full shell drops the whole Jewelry & Nails group), and a character may
+#: coherently wear earrings or a ring over a costume.
+_COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
+    "bag", "watch_type", "hair_accessory", "accessories",
+})
 
 #: Garments with neither pockets nor a collar -- swimwear, a leotard / bodysuit, a
 #: gown, a toga. The two ``GARMENT_DEPENDENT_POSES`` ("hands in pockets", "touching
@@ -1492,11 +1497,14 @@ def generate_character(
         resolved.pop("accessories", None)
 
     # A provided costume (archetype / cosplayer / a user-typed outfit) is a complete,
-    # intentional look, so the engine should not bolt a random *modern carry item* onto
-    # it — a designer tote on a samurai, a wristwatch on a caped hero (anachronistic or
-    # just noise). When an outfit_description was locked, drop the random bag and watch
-    # unless the look explicitly set them. A plain no-costume run has no locked outfit,
-    # so a random modern person still gets them. Costs no RNG; respects explicit locks.
+    # intentional look, so the engine should not bolt a random accessory *extra* onto
+    # it — a designer tote or wristwatch on a samurai, a scrunchie or sunglasses on a
+    # knight (anachronistic or just noise). When an outfit_description was locked, drop
+    # the random bag / watch / hair accessory / accessory unless the look explicitly set
+    # one (an authored scarf, flower crown or hair comb survives). A plain no-costume run
+    # has no locked outfit, so a random modern person still gets them. No RNG; respects
+    # explicit locks. (The hat-stacking rule above still guards plain runs whose auto
+    # outfit rolls headwear; jewellery stays, governed by the full-shell rule below.)
     if "outfit_description" in locked_clean:
         for field in _COSTUME_SUPPRESSED_EXTRAS:
             if field not in locked_clean:

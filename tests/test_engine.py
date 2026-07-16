@@ -264,36 +264,43 @@ class ERNurseGenderMakeupTests(unittest.TestCase):
 
 
 class CostumeExtraSuppressionTests(unittest.TestCase):
-    """0.67.0: a provided costume (outfit_description locked) drops the random modern
-    carry items -- bag, watch -- so a samurai never gets a designer tote and a caped
-    hero never a wristwatch. A plain no-costume run still gets them; explicit locks win."""
+    """0.67/0.68: a provided costume (outfit_description locked) drops the random
+    accessory extras -- bag, watch, hair accessory, accessories -- so a samurai never
+    gets a designer tote, wristwatch, scrunchie or sunglasses. A plain no-costume run
+    still gets them; an explicitly authored extra (scarf, flower crown) survives."""
+
+    _EXTRAS = {"bag": "no bag", "watch_type": "none",
+               "hair_accessory": "no hair accessory", "accessories": "no accessories"}
 
     def _flat(self, js):
         d = json.loads(js)
         return {k: v for g in d.values() if isinstance(g, dict) for k, v in g.items()}
 
-    def test_locked_costume_drops_bag_and_watch(self):
+    def test_locked_costume_drops_all_extras(self):
         locked = {"outfit_description": "lacquered samurai armor with a horned kabuto helmet"}
         for seed in range(60):
             f = self._flat(generate_character(seed, "Male", locked)[1])
-            self.assertIn(f.get("bag", "no bag"), ("no bag", None), f"seed {seed}")
-            self.assertIn(f.get("watch_type", "none"), ("none", None), f"seed {seed}")
+            for field, absent in self._EXTRAS.items():
+                self.assertIn(f.get(field, absent), (absent, None), f"{field} seed {seed}")
 
-    def test_plain_run_still_allows_bag_and_watch(self):
-        # No costume provided -> a random modern person may carry a bag / wear a watch.
-        bags = watches = 0
+    def test_plain_run_still_allows_extras(self):
+        # No costume provided -> a random modern person may carry/wear them.
+        hits = {field: 0 for field in self._EXTRAS}
         for seed in range(200):
             f = self._flat(generate_character(seed, "Female", {})[1])
-            bags += f.get("bag", "no bag") != "no bag"
-            watches += f.get("watch_type", "none") != "none"
-        self.assertGreater(bags, 0)
-        self.assertGreater(watches, 0)
+            for field, absent in self._EXTRAS.items():
+                hits[field] += f.get(field, absent) != absent
+        for field, n in hits.items():
+            self.assertGreater(n, 0, field)
 
-    def test_explicit_bag_lock_is_respected_with_costume(self):
-        locked = {"outfit_description": "a tailored trench coat and jeans",
-                  "bag": "tan leather crossbody"}
-        f = self._flat(generate_character(3, "Female", locked)[1])
-        self.assertEqual(f.get("bag"), "tan leather crossbody")
+    def test_explicit_extra_lock_is_respected_with_costume(self):
+        # An authored signature extra survives the costume suppression.
+        for field, value in (("bag", "tan leather crossbody"),
+                             ("accessories", "silk neck scarf"),
+                             ("hair_accessory", "flower crown")):
+            locked = {"outfit_description": "a tailored trench coat and jeans", field: value}
+            f = self._flat(generate_character(3, "Female", locked)[1])
+            self.assertEqual(f.get(field), value, field)
 
 
 class PocketlessPoseTests(unittest.TestCase):
@@ -2528,9 +2535,10 @@ class FieldFamilyPickTests(unittest.TestCase):
 
 
 class HatSuppressionTests(unittest.TestCase):
-    """An outfit that already includes headwear (top hat, helmet, hood) must not
-    stack a second hat from the randomized ``accessories`` field. Non-hat
-    accessories still show; an explicit user lock is respected."""
+    """The hat-stacking rule: an *auto-generated* outfit that includes headwear must
+    not stack a second hat from the randomized ``accessories`` field. As of 0.68 a
+    LOCKED costume suppresses every random accessory (see CostumeExtraSuppressionTests),
+    so the hat rule now only governs plain runs; an explicit user lock still wins."""
 
     HAT_VALUES = {"wide brim sun hat", "baseball cap", "beret", "woven hat"}
 
@@ -2551,15 +2559,12 @@ class HatSuppressionTests(unittest.TestCase):
                                        accessory_density="Maximal")
             self.assertNotIn(self._accessories(js), self.HAT_VALUES, f"seed {seed}")
 
-    def test_hatless_costume_keeps_hats_reachable(self):
-        costume = "a flowing red sundress with strappy sandals"
-        seen_hat = any(
-            self._accessories(generate_character(
-                s, "Female", {"outfit_description": costume},
-                accessory_density="Maximal")[1]) in self.HAT_VALUES
-            for s in range(200)
-        )
-        self.assertTrue(seen_hat)
+    def test_accessories_reachable_without_a_costume(self):
+        # The costume-extra suppression fires only when an outfit is LOCKED; a plain
+        # run (auto-generated outfit) still reaches the full accessory pool, hats incl.
+        seen = {self._accessories(generate_character(
+            s, "Female", {}, accessory_density="Maximal")[1]) for s in range(200)}
+        self.assertTrue(seen & self.HAT_VALUES)
 
     def test_locked_hat_accessory_survives(self):
         # An explicit user lock beats the suppression (deliberate double hat).
@@ -2569,15 +2574,15 @@ class HatSuppressionTests(unittest.TestCase):
                                     "accessories": "beret"})
         self.assertEqual(self._accessories(js), "beret")
 
-    def test_non_hat_accessories_still_appear_with_hat_costume(self):
+    def test_locked_costume_suppresses_all_accessories(self):
+        # 0.68: a provided costume drops EVERY random accessory (not just a stacked
+        # hat), so no unauthored accessory rides on a styled look.
         costume = "a ringmaster's red tailcoat with a black top hat and striped trousers"
-        seen_other = any(
-            (self._accessories(generate_character(
-                s, "Male", {"outfit_description": costume},
-                accessory_density="Maximal")[1]) or "") not in ("", "None")
-            for s in range(80)
-        )
-        self.assertTrue(seen_other)
+        for s in range(80):
+            self.assertIn(
+                self._accessories(generate_character(
+                    s, "Male", {"outfit_description": costume})[1]),
+                (None, "no accessories"), f"seed {s}")
 
 
 class MaleMakeupWeightTests(unittest.TestCase):
