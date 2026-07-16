@@ -249,6 +249,28 @@ _FULL_COVER_RE = re.compile(
     re.IGNORECASE,
 )
 
+#: Random "modern carry item" extras dropped when a specific costume is provided
+#: (``outfit_description`` locked by an archetype / cosplayer / a user-typed outfit).
+#: A styled costume is a complete, intentional look; a random tote or a wristwatch
+#: bolted on top reads as anachronistic or just noise (a designer bag on a samurai,
+#: a watch on a caped hero). Explicit locks are respected, and a plain no-costume run
+#: keeps them (a random modern person may carry a bag / wear a watch). Kept narrow:
+#: only the two clear "carry / anachronism" extras -- jewellery and accessories are
+#: more often part of a coherent look and are handled by the shell / hat rules.
+_COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({"bag", "watch_type"})
+
+#: Garments with neither pockets nor a collar -- swimwear, a leotard / bodysuit, a
+#: gown, a toga. The two ``GARMENT_DEPENDENT_POSES`` ("hands in pockets", "touching
+#: the collar") assume a shirt or jacket, so they are as unperformable here as under
+#: a full hard shell and get dropped the same way. Conservative: only garments that
+#: clearly lack both (never a "suit"/"shirt"/"dress", which may have pockets).
+_POCKETLESS_GARMENT_RE = re.compile(
+    r"\b(?:swimsuit|swimwear|swim trunks|board shorts|trunks|bikini|monokini|"
+    r"one-piece|speedo|wetsuit|leotard|unitard|bodysuit|catsuit|gown|toga|"
+    r"loincloth|bedlah|tutu)s?\b",
+    re.IGNORECASE,
+)
+
 #: Maximum constraint-propagation passes before giving up (cycle guard).
 _MAX_CONSTRAINT_ITERATIONS: int = 12
 
@@ -585,9 +607,11 @@ def _performable_poses(
     The ``pose`` field is written as a gesture a *person* performs, which quietly
     assumes a person's parts: "running one hand through the hair" needs scalp hair,
     "posing with hands in pockets" and "touching the collar with one hand" need a
-    worn garment. A fully masked / hooded / bald character has no hair to touch, and
-    a full hard shell or non-skin body (fur, plating, flame) has no pockets or
-    collar — the Moogle-with-a-hairstyle-gesture bug.
+    worn garment *with pockets and a collar*. A fully masked / hooded / bald character
+    has no hair to touch; a full hard shell or non-skin body (fur, plating, flame) has
+    no pockets or collar (the Moogle-with-a-hairstyle-gesture bug); and a pocketless,
+    collarless garment — swimwear, a leotard, a gown, a toga — has neither either, so
+    the garment gestures are dropped for it the same way (hands-in-pockets on a bikini).
 
     Reads ``hair_length`` and ``outfit_description`` straight out of ``resolved``
     rather than taking more parameters: ``pose`` is drawn after both (field indices
@@ -610,13 +634,18 @@ def _performable_poses(
         covers_face or covers_hair
         or hair_length == "bald" or _is_absent(hair_length)
     )
-    shelled = covers_body or bool(
-        _FULL_COVER_RE.search(resolved.get("outfit_description") or "")
+    outfit = resolved.get("outfit_description") or ""
+    # A hard shell OR a pocketless/collarless garment (swimwear, leotard, gown, toga)
+    # leaves nothing for the garment gestures to reach for.
+    garmentless = (
+        covers_body
+        or bool(_FULL_COVER_RE.search(outfit))
+        or bool(_POCKETLESS_GARMENT_RE.search(outfit))
     )
     excluded: set[str] = set()
     if hair_hidden:
         excluded |= HAIR_DEPENDENT_POSES
-    if shelled:
+    if garmentless:
         excluded |= GARMENT_DEPENDENT_POSES
     if not excluded:
         return pool
@@ -1461,6 +1490,17 @@ def generate_character(
             and resolved.get("accessories") in _HAT_ACCESSORY_VALUES
             and "accessories" not in locked_clean):
         resolved.pop("accessories", None)
+
+    # A provided costume (archetype / cosplayer / a user-typed outfit) is a complete,
+    # intentional look, so the engine should not bolt a random *modern carry item* onto
+    # it — a designer tote on a samurai, a wristwatch on a caped hero (anachronistic or
+    # just noise). When an outfit_description was locked, drop the random bag and watch
+    # unless the look explicitly set them. A plain no-costume run has no locked outfit,
+    # so a random modern person still gets them. Costs no RNG; respects explicit locks.
+    if "outfit_description" in locked_clean:
+        for field in _COSTUME_SUPPRESSED_EXTRAS:
+            if field not in locked_clean:
+                resolved.pop(field, None)
 
     # A full hard shell -- robot / droid / powered armour / full plate / exoskeleton
     # -- leaves no bare skin for worn jewellery or nails, so a randomized necklace,

@@ -263,6 +263,64 @@ class ERNurseGenderMakeupTests(unittest.TestCase):
             self.assertGreater(len(looks), 1, f"{gender} costume did not vary")
 
 
+class CostumeExtraSuppressionTests(unittest.TestCase):
+    """0.67.0: a provided costume (outfit_description locked) drops the random modern
+    carry items -- bag, watch -- so a samurai never gets a designer tote and a caped
+    hero never a wristwatch. A plain no-costume run still gets them; explicit locks win."""
+
+    def _flat(self, js):
+        d = json.loads(js)
+        return {k: v for g in d.values() if isinstance(g, dict) for k, v in g.items()}
+
+    def test_locked_costume_drops_bag_and_watch(self):
+        locked = {"outfit_description": "lacquered samurai armor with a horned kabuto helmet"}
+        for seed in range(60):
+            f = self._flat(generate_character(seed, "Male", locked)[1])
+            self.assertIn(f.get("bag", "no bag"), ("no bag", None), f"seed {seed}")
+            self.assertIn(f.get("watch_type", "none"), ("none", None), f"seed {seed}")
+
+    def test_plain_run_still_allows_bag_and_watch(self):
+        # No costume provided -> a random modern person may carry a bag / wear a watch.
+        bags = watches = 0
+        for seed in range(200):
+            f = self._flat(generate_character(seed, "Female", {})[1])
+            bags += f.get("bag", "no bag") != "no bag"
+            watches += f.get("watch_type", "none") != "none"
+        self.assertGreater(bags, 0)
+        self.assertGreater(watches, 0)
+
+    def test_explicit_bag_lock_is_respected_with_costume(self):
+        locked = {"outfit_description": "a tailored trench coat and jeans",
+                  "bag": "tan leather crossbody"}
+        f = self._flat(generate_character(3, "Female", locked)[1])
+        self.assertEqual(f.get("bag"), "tan leather crossbody")
+
+
+class PocketlessPoseTests(unittest.TestCase):
+    """0.67.0: swimwear / leotard / gown / toga has no pockets or collar, so the two
+    garment gestures (hands in pockets, touching the collar) are dropped for it -- the
+    same way a full hard shell drops them."""
+
+    _GARMENT = frozenset({"posing with hands in pockets", "touching the collar with one hand"})
+
+    def test_pocketless_outfit_drops_garment_gestures(self):
+        for outfit in ("a sleek one-piece training swimsuit",
+                       "a black dance leotard and tights",
+                       "a flowing Grecian toga",
+                       "an emerald evening gown"):
+            pool = _performable_poses(
+                ["standing naturally", *self._GARMENT], {"outfit_description": outfit},
+                covers_face=False, covers_body=False, covers_hair=False)
+            self.assertFalse(self._GARMENT & set(pool), outfit)
+
+    def test_normal_outfit_keeps_garment_gestures(self):
+        pool = _performable_poses(
+            ["standing naturally", *self._GARMENT],
+            {"outfit_description": "a tailored blazer and trousers with deep pockets"},
+            covers_face=False, covers_body=False, covers_hair=False)
+        self.assertTrue(self._GARMENT & set(pool))
+
+
 class ScopeAnnounceTests(unittest.TestCase):
     """0.67.0: a scoped Random pick prints its in-scope pool size once per combo so
     small pools (Masked+female=7) read as intentional, and warns loudly if a combo
