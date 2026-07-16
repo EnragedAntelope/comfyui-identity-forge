@@ -117,6 +117,39 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   carries no `weights`, so exclusion re-picks stay flat-uniform. Most values leave orientation
   unstated, which text-to-image models render frontally — a retained, intentional bias toward
   facing the camera (only 2 of 26 are true rear views).
+- **`lighting` is bucketed against `location` (0.64.0 doctrine).** `shot_type` solved its
+  location-coherence problem by deleting scene content; **lighting cannot follow it**, because
+  "golden hour sunlight" is inherently outdoors and there is no wording that isn't — and the
+  `daylight` family alone is 14/38 of the field's weight, so purging place-implying values would
+  gut the field. Instead `data/fields.py` defines three buckets beside `OUTDOOR_LOCATIONS`
+  (`OUTDOOR_ONLY_LIGHTING`, `INDOOR_ONLY_LIGHTING`, `VOID_ALLOWED_LIGHTING`), and
+  `data/constraints.py` expands them into **165 generated exclusion rules** — one per location,
+  since `excludes_values` takes a list. Indoor locations are *derived*
+  (`all − OUTDOOR_LOCATIONS − STUDIO_BACKDROPS`), so a new location is bucketed automatically;
+  this is why `constraints.py` imports `fields.py` (no cycle — `fields` imports nothing back).
+  As with the backdrop rule, `location` is the **trigger**: the place stands and the light adapts,
+  while a *locked* light re-rolls the location via contrapositive repair.
+  **Split whole `LIGHTING_FAMILIES` at a time — this is the bias constraint, not a style
+  preference.** `_pick_family_weighted` intersects a family's variants with the pool but keeps the
+  family's **full frozen weight**, so a family reduced to two or three survivors would concentrate
+  its entire share onto them. Bucketing whole families means a filtered family drops out and the
+  rest stay exactly proportional. The seam the data already encodes: the `daylight` family is
+  open-sky light, and **the `window` family IS indoor daylight**. Void backdrops therefore allow
+  the `studio` family and nothing else — admitting a couple of neon/gel values would hand the
+  8-variant `neon` family its full weight over 2–3 survivors. Expect the *marginal* distribution
+  to look daylight-poor (~11% vs ~37% before): 116 of 165 locations are indoor, and daylight
+  previously landed on them incoherently. Set `location_setting = "Outdoor"` for sunny looks.
+- **Constraint re-picks go through `_repick`, not `_weighted_choice` directly (0.64.0).** A
+  re-pick must draw the way the *initial fill* would. `_repick(field_name, field_def, pool, gender,
+  rng)` routes `FIELD_FAMILIES` fields to `_pick_family_weighted` and everything else to
+  `_weighted_choice`. Calling `_weighted_choice` directly is a bug for a family field: it is flat
+  when the field has no `weights` map, so an exclusion silently rebalanced the survivors by raw
+  variant count (it was skewing `neon` by 6.4 points on the filtered indoor lighting pool, and had
+  been quietly doing the same to `hair_style` re-rolls for several releases). Note the engine
+  re-picks **only the rejected value** rather than redrawing the character, so the final marginal
+  is a mixture — `P_init(v)·[v ok] + P_init(reject)·P_repick(v)` — landing within ~2.5pp of the
+  pure conditional, and erring *low* on a filtered family. Making it exact would require
+  full-rejection resampling, which changes the RNG stream shape and therefore every seed. Don't.
 - **Per-value draw weights (`weights` / `male_weights`).** A field definition may carry two
   draw-weight maps consumed by the shared `_weighted_choice(field_def, pool, gender, rng)` helper.
   `"weights": {value: number}` biases the draw for **every** gender; `"male_weights": {value: number}`
@@ -144,6 +177,21 @@ Conventions (keep the data coherent):
 - **Worn, not held.** `costume` lists only worn items and reads after "She/He wears …"
   (lowercase, leading article). Held/wielded props go in the optional `prop` (emitted only when
   the node's prop toggle is on, voiced "holding …").
+- **`prop_costume` — when the signature object is worn (0.64.0).** Some characters *wear* their
+  iconic object: Indiana Jones' bullwhip is coiled on his belt, Zoro's three swords are sheathed
+  at his hip, Kingpin carries his cane. Giving them a `prop` alone renders the object **twice**
+  (0.63.0 caught a real double-whip render, and had to delete 12 props for exactly this reason).
+  Such an entry carries `prop_costume`: *the same look with that object removed*, swapped in only
+  when the prop toggle is on — so the item moves from belt to hand instead of appearing in both
+  places. Default output is unchanged, which makes the key purely additive. **Always diff a new
+  prop against the costume text, and use a substring not a word-boundary match** (`\bwhip\b`
+  misses "bull**whip**"). Some of those 12 are *not* hand items at all and must stay worn with no
+  prop: Cinderella's slippers (feet), Frodo's ring (neck chain), the proton pack (back), Big
+  Daddy's drill (arm-mounted). Zoro shows the ideal shape — his `prop_costume` sheathes **two**
+  swords so the drawn third makes three, not six. Validator: `prop_costume` requires a `prop` and
+  must differ from `costume`. It is in `_LOOK_OVERRIDE_KEYS`, and `_pick_look` **drops** it when an
+  alternate overrides `costume` without supplying its own, since it only ever describes the costume
+  it ships with.
 - **Full masks/helmets:** `covers_face: True` **and** the head covering in a separate `mask`
   string (kept out of `costume`) so the *Unmask* toggle can drop it. IdentityForge then
   suppresses Face/Hair/Makeup (+ earrings/piercings). Omit both when the face shows.
@@ -236,6 +284,19 @@ Conventions (keep the data coherent):
   **Fully encased** (`covers_face` **and** a full shell): the body's `skin_tone` is dropped too —
   the only Body-group skin field `covers_face` doesn't already hide — so a masked droid/armour
   (Iron Man, 2-1B) reports no stray human skin tone under the plating.
+  **`_FULL_COVER_RE` only knows hard shells** — it has no idea about fur, feathers, scales, flame
+  or bark, so an *animal* body needs the explicit `covers_body: True` or it gets a randomized tote
+  bag and a smart watch. 0.64.0 audited this against rendered output and set the flag on 53 entries
+  (Bugs Bunny, the TMNT, Judy Hopps, Groot, Sandman, Tin Man, …). Two lessons for anyone repeating
+  the sweep: **(1) `covers_body` is for a body made of something that is not skin** (fur, feathers,
+  flame, ice, bark, metal, sand, stone, scales, chitin). A humanoid whose *skin* is merely an odd
+  colour or texture still has skin, and worn jewellery is correct on them — Gamora, Poison Ivy,
+  Thanos, Gollum, Midna and Majin Buu are deliberate non-fixes. **(2) The costume prose is a weak
+  detector.** `_BODY_PAINT_RE`'s `smooth, flawless` branch matches coloured *humanoids*, so it
+  over-reports; and entries that describe fur without the canonical "an even, all-over coat of"
+  marker (Pikachu, Eevee, Porg, Loth-Cat) are missed entirely. Audit against **rendered output**,
+  then judge each hit by material. `Maui` is the trap: his "an even, all-over coat of bold dark
+  tribal **tattoos**" is a human body, not a pelt.
 - **Hood / cowl / lekku (`covers_hair`):** a head covering that fully encloses the scalp while the
   **face still shows** (a snug cowl, a jester hood, a Twi'lek's lekku) has no visible hair, so a
   randomized "Her hair is …" line only fights the look. The `covers_hair: True` entry key drops the

@@ -194,6 +194,12 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 - **Every field is `Random` (roll) / a value (lock) / `None` (omit).** Set scene fields
   (`location`, `lighting`, framing) to `None` for a character-only description to splice elsewhere.
 - **`accessory_density`** — drop it to `Minimal`/`None` for clean portraits without locking fields by hand.
+- **The light matches the place.** An indoor location never draws open-sky light and an outdoor one
+  never draws window/ceiling/hearth light, so you won't get a spice-market stall lit by "dappled
+  sunlight through forest canopy". The **location** is what stands: the light adapts to it. Lock a
+  light instead (e.g. `harsh desert sun`) and the *location* re-rolls to somewhere that light can
+  exist. Most locations are interiors, so random daylight is uncommon by design — set
+  `location_setting: Outdoor` when you want sunny, golden-hour looks.
 - **Gender & crossplay.** The *person's* gender is the Identity Forge `gender` widget (independent
   of a character's). `Any` rolls a **coherent man or woman each run**; pair it with `wardrobe: Any`
   to unlock fully mixed-gender output. Locked / archetype / cosplayer values are always respected.

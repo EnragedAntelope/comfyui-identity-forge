@@ -37,6 +37,21 @@ Conventions
 """
 from __future__ import annotations
 
+# The location<->lighting rules below are generated from the option pools and the
+# coherence buckets rather than restating ~166 location strings here, which would
+# drift the moment a location is added. Dual import mirrors nodes/identity_forge.py:
+# package-relative inside ComfyUI, absolute when run standalone for tests.
+try:
+    from .fields import (
+        FIELD_DEFINITIONS, INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS,
+        OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
+    )
+except ImportError:  # pragma: no cover -- standalone/test context
+    from data.fields import (
+        FIELD_DEFINITIONS, INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS,
+        OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
+    )
+
 #: Hair styles that physically require enough length to braid, pin, or tie up.
 _LONG_HAIR_STYLES: list[str] = [
     "side braid", "fishtail braid", "French braid", "dutch braids", "crown braid",
@@ -404,3 +419,52 @@ for _backdrop in _VOID_BACKDROPS:
         "excludes_field": "shot_type", "excludes_values": _ENVIRONMENT_SHOTS,
         "reason": f"a {_backdrop} is a featureless void with no environment to "
                   f"establish or reveal"})
+
+
+# --- Setting: the light has to match where you are ---------------------------
+# shot_type lost this class of incoherence in 0.63.0 by becoming camera-only, but
+# lighting cannot follow: "golden hour sunlight" is inherently outdoors and there
+# is no way to say it that isn't. Without these rules the engine happily produced
+# "indoor spice market stall, under dappled sunlight through forest canopy".
+#
+# Same doctrine as the backdrop rule above: ``location`` is the TRIGGER, so the
+# picked place always stands and the light adapts to it. Locking a light instead
+# hands the engine its contrapositive repair -- the randomized location re-rolls
+# to somewhere that light can exist.
+#
+# The buckets live in data/fields.py next to OUTDOOR_LOCATIONS (which the
+# location_setting control already maintains) and are split along whole
+# LIGHTING_FAMILIES boundaries wherever possible to keep the post-exclusion draw
+# proportional. See the commentary there for why.
+_ALL_LOCATIONS: list[str] = list(FIELD_DEFINITIONS["location"]["female_options"])
+_ALL_LIGHTING: list[str] = list(FIELD_DEFINITIONS["lighting"]["female_options"])
+
+# Void backdrops are indoor, but get the stricter studio-only rule below instead.
+_INDOOR_LOCATIONS: list[str] = [
+    _loc for _loc in _ALL_LOCATIONS
+    if _loc not in OUTDOOR_LOCATIONS and _loc not in STUDIO_BACKDROPS
+]
+_VOID_EXCLUDED_LIGHTING: list[str] = sorted(
+    _light for _light in _ALL_LIGHTING if _light not in VOID_ALLOWED_LIGHTING
+)
+
+for _loc in _INDOOR_LOCATIONS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "lighting", "excludes_values": sorted(OUTDOOR_ONLY_LIGHTING),
+        "reason": f"'{_loc}' is indoors: open-sky light cannot reach it "
+                  f"(indoor daylight is the 'window' family's job)"})
+
+for _loc in sorted(OUTDOOR_LOCATIONS):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "lighting", "excludes_values": sorted(INDOOR_ONLY_LIGHTING),
+        "reason": f"'{_loc}' is outdoors: no window, ceiling fixture, hearth, "
+                  f"or television lights it"})
+
+for _backdrop in _VOID_BACKDROPS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _backdrop,
+        "excludes_field": "lighting", "excludes_values": _VOID_EXCLUDED_LIGHTING,
+        "reason": f"a {_backdrop} is a studio sweep: only studio lighting exists "
+                  f"there, and every other value implies a place"})

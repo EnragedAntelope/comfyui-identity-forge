@@ -1050,6 +1050,118 @@ class LocationAndPoseTests(unittest.TestCase):
             self.assertNotIn("They is ", prose)
 
 
+class LocationLightingCoherenceTests(unittest.TestCase):
+    """0.64.0: the light has to match where you are.
+
+    Before these rules the engine produced "indoor spice market stall, under
+    dappled sunlight through forest canopy".
+    """
+
+    def _pairs(self, n=400, **kwargs):
+        for seed in range(n):
+            _, js = generate_character(seed, "Any", {}, **kwargs)
+            setting = json.loads(js)["Setting & Shot"]
+            yield setting["location"], setting["lighting"]
+
+    def test_indoor_location_never_draws_open_sky_light(self):
+        from data.fields import OUTDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
+        for loc, lig in self._pairs():
+            if loc in OUTDOOR_LOCATIONS or loc in STUDIO_BACKDROPS:
+                continue
+            self.assertNotIn(lig, OUTDOOR_ONLY_LIGHTING, f"{loc!r} lit by {lig!r}")
+
+    def test_outdoor_location_never_draws_interior_light(self):
+        from data.fields import INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS
+        for loc, lig in self._pairs():
+            if loc not in OUTDOOR_LOCATIONS:
+                continue
+            self.assertNotIn(lig, INDOOR_ONLY_LIGHTING, f"{loc!r} lit by {lig!r}")
+
+    def test_void_backdrop_draws_only_studio_lighting(self):
+        from data.fields import VOID_ALLOWED_LIGHTING
+        seen = 0
+        for loc, lig in self._pairs(location_setting="Studio / solid backdrop"):
+            seen += 1
+            self.assertIn(lig, VOID_ALLOWED_LIGHTING, f"{loc!r} lit by {lig!r}")
+        self.assertGreater(seen, 0)
+
+    def test_locked_light_rerolls_the_location_not_the_light(self):
+        """``location`` is the trigger, so a locked light moves the *place*."""
+        from data.fields import OUTDOOR_LOCATIONS
+        for seed in range(40):
+            _, js = generate_character(seed, "Any", {"lighting": "harsh desert sun"})
+            setting = json.loads(js)["Setting & Shot"]
+            self.assertEqual(setting["lighting"], "harsh desert sun")
+            self.assertIn(setting["location"], OUTDOOR_LOCATIONS)
+
+    def test_every_lighting_value_survives_somewhere(self):
+        """No bucket may strand a value with no location that can host it."""
+        from data.fields import (
+            INDOOR_ONLY_LIGHTING, OUTDOOR_ONLY_LIGHTING, VOID_ALLOWED_LIGHTING,
+        )
+        overlap = INDOOR_ONLY_LIGHTING & OUTDOOR_ONLY_LIGHTING
+        self.assertEqual(overlap, frozenset(), f"value both indoor- and outdoor-only: {overlap}")
+        pool = set(FIELD_DEFINITIONS["lighting"]["female_options"])
+        for name, bucket in (("indoor-only", INDOOR_ONLY_LIGHTING),
+                             ("outdoor-only", OUTDOOR_ONLY_LIGHTING),
+                             ("void-allowed", VOID_ALLOWED_LIGHTING)):
+            self.assertTrue(bucket <= pool, f"{name} names a non-option: {bucket - pool}")
+
+
+class RepickDistributionTests(unittest.TestCase):
+    """0.64.0: a constraint re-pick must draw the way the initial fill would.
+
+    Re-picks called ``_weighted_choice`` directly before 0.64.0, which is flat for
+    a field carrying no draw-weight map -- so an exclusion silently discarded
+    FIELD_FAMILIES weighting and rebalanced the survivors by raw variant count.
+    """
+
+    def test_repick_of_family_field_keeps_family_shares(self):
+        from data.fields import LIGHTING_FAMILIES, OUTDOOR_ONLY_LIGHTING
+        from nodes.identity_forge import _repick
+
+        family_of = {v: n for n, f in LIGHTING_FAMILIES.items() for v in f["variants"]}
+        field_def = FIELD_DEFINITIONS["lighting"]
+        pool = [v for v in field_def["female_options"] if v not in OUTDOOR_ONLY_LIGHTING]
+        rng = random.Random(0)
+        counts: dict[str, int] = {}
+        draws = 40000
+        for _ in range(draws):
+            fam = family_of[_repick("lighting", field_def, pool, "Female", rng)]
+            counts[fam] = counts.get(fam, 0) + 1
+
+        # Surviving families keep their frozen weights; each family's share is
+        # its weight over the surviving total, independent of variant count.
+        surviving = {n: f["weight"] for n, f in LIGHTING_FAMILIES.items()
+                     if any(v in pool for v in f["variants"])}
+        total_weight = sum(surviving.values())
+        for name, weight in surviving.items():
+            expected = weight / total_weight
+            actual = counts.get(name, 0) / draws
+            self.assertAlmostEqual(
+                actual, expected, delta=0.015,
+                msg=f"{name}: expected ~{expected:.3f}, got {actual:.3f}")
+
+    def test_repick_of_plain_field_still_honours_draw_weights(self):
+        """A non-family field must keep routing through the draw-weight pick.
+
+        ``eyebrows`` down-weights 'bleached' to 0.2, so a re-roll has to keep it
+        roughly five times rarer than its peers rather than flattening it back.
+        """
+        from nodes.identity_forge import _repick
+
+        field_def = FIELD_DEFINITIONS["eyebrows"]
+        self.assertNotIn("eyebrows", FIELD_FAMILIES)
+        pool = list(field_def["female_options"])
+        rng = random.Random(0)
+        draws = 40000
+        bleached = sum(_repick("eyebrows", field_def, pool, "Female", rng) == "bleached"
+                       for _ in range(draws))
+        # weight 0.2 against (len(pool) - 1) peers at an implicit weight of 1.
+        expected = 0.2 / (0.2 + len(pool) - 1)
+        self.assertAlmostEqual(bleached / draws, expected, delta=0.005)
+
+
 class UserOptionsTests(unittest.TestCase):
     def test_merges_valid_and_rejects_protected(self):
         import json as _json

@@ -30,6 +30,12 @@ carry it in an optional ``prop`` field. The ``props`` widget is **off by default
 the hidden ``held_item`` lock, voiced downstream as "holding …". It is a no-op for
 characters without a ``prop``.
 
+When the signature object is *worn* in the costume rather than held (a bullwhip
+coiled on a belt, swords sheathed at a hip), the entry also carries an optional
+``prop_costume``: the identical look with that object removed. Switching the prop
+on swaps it in, so the item moves from the belt to the hand instead of rendering
+twice. See ``build_cosplayer_json``.
+
 The *person's* gender is chosen on the IdentityForge node, independent of the
 character's, so crossplay (e.g. a man cosplaying a female character) works: the
 downstream gender gate drops any value invalid for the chosen gender. The source
@@ -254,7 +260,7 @@ _CLEAN_SHAVEN_SUPPRESS: dict[str, str] = {"facial_hair": "clean shaven"}
 #: matter which costume is rolled -- the alternates vary only the *worn look*.
 _LOOK_OVERRIDE_KEYS = (
     "costume", "signature", "mask", "covers_face", "covers_body",
-    "covers_hair", "prop", "body_paint", "skin", "eyes",
+    "covers_hair", "prop", "prop_costume", "body_paint", "skin", "eyes",
 )
 
 
@@ -287,6 +293,12 @@ def _pick_look(entry: dict, rng: random.Random) -> dict:
     for key in _LOOK_OVERRIDE_KEYS:
         if key in chosen:
             merged[key] = chosen[key]
+    # ``prop_costume`` is the same look as ``costume`` minus the worn prop, so it is
+    # only ever valid for the costume it ships with. An alternate that changes the
+    # costume without supplying its own drops it rather than pairing the base
+    # entry's prop-less look with a different alternate's costume.
+    if "costume" in chosen and "prop_costume" not in chosen:
+        merged.pop("prop_costume", None)
     return merged
 
 
@@ -368,7 +380,10 @@ def build_cosplayer_json(
 
     ``include_prop`` (default ``False``) adds the character's signature held prop
     (e.g. Thor's hammer) as the hidden ``held_item`` lock, voiced downstream as
-    "holding …". It is a no-op for characters without a ``prop``.
+    "holding …". It is a no-op for characters without a ``prop``. When the entry
+    also defines ``prop_costume`` — the same look with a *worn* signature object
+    removed — that costume is swapped in, so Indiana Jones' whip leaves his belt
+    when it reaches his hand rather than being rendered twice.
 
     ``random_scope`` (default ``"Any"``) limits the ``"Random — …"`` picks to one
     franchise/category, or to one of the attribute scopes (Giant / Tiny / Non-human /
@@ -395,6 +410,15 @@ def build_cosplayer_json(
     unmask = covers and mask_mode == _MASK_OFF
     # The mask clause lives apart from the costume so it can be dropped on unmask.
     costume = entry["costume"]
+    # A character whose signature object is *worn* rather than held (Indiana Jones'
+    # bullwhip is coiled on his belt, Zoro's three swords are sheathed at his hip)
+    # describes it in the costume, so emitting the prop as well renders the object
+    # twice -- 0.63.0 caught a real double-whip render this way. Such an entry may
+    # carry ``prop_costume``: the same look with the object removed, used only when
+    # the prop is switched on, so the item moves from the belt to the hand instead of
+    # appearing in both. Entries without one are unaffected (worn stays worn).
+    if include_prop and entry.get("prop") and entry.get("prop_costume"):
+        costume = entry["prop_costume"]
     if covers and not unmask and entry.get("mask"):
         costume = f"{costume}, {entry['mask']}"
 

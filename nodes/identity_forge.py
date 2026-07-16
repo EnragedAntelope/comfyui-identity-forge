@@ -535,8 +535,8 @@ def _weighted_choice(
     be floats so a single value can sit below its peers' implicit weight of 1.
     Missing values weigh 1; a single ``rng.choices`` call keeps the RNG stream
     shape identical to ``rng.choice``. Unweighted fields stay flat-uniform. Used by
-    both the initial random fill and the constraint engine's re-picks so a
-    down-weighted value stays rare even after an exclusion re-roll.
+    both the initial random fill and (via ``_repick``) the constraint engine's
+    re-picks, so a down-weighted value stays rare even after an exclusion re-roll.
     """
     weights_map = field_def.get("weights")
     male_weights = field_def.get("male_weights") if gender == "Male" else None
@@ -545,6 +545,24 @@ def _weighted_choice(
         weights = [combined.get(value, 1) for value in pool]
         return rng.choices(pool, weights=weights)[0]
     return rng.choice(pool)
+
+
+def _repick(
+    field_name: str, field_def: dict, pool: list[str], gender: str, rng: random.Random
+) -> str:
+    """Draw a replacement value for ``field_name`` from an already-filtered ``pool``.
+
+    Routes to the same picker the initial fill would have used: the two-tier
+    weighted pick for fields registered in :data:`FIELD_FAMILIES`, the draw-weight
+    pick otherwise. Constraint re-picks went straight to ``_weighted_choice``
+    before 0.64.0, which silently dropped family weighting on the way through --
+    a re-rolled hair_style or lighting came out flat-uniform over the survivors
+    instead of keeping each family's share. Both pickers intersect with ``pool``,
+    so any exclusion the caller already applied still holds.
+    """
+    if field_name in FIELD_FAMILIES:
+        return _pick_family_weighted(field_name, pool, rng)
+    return _weighted_choice(field_def, pool, gender, rng)
 
 
 def _randomize_fields(
@@ -661,7 +679,7 @@ def _apply_constraints(
                         pool = [v for v in _build_option_pool(trigger, trig_def, gender, resolved)
                                 if v not in conflicting]
                         if pool:
-                            resolved[trigger] = _weighted_choice(trig_def, pool, gender, rng)
+                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng)
                             changed = True
                             continue
                     warn(target, f"'{rule['field']}={rule['value']}' conflicts with "
@@ -673,7 +691,7 @@ def _apply_constraints(
                 pool = [v for v in _build_option_pool(target, field_def, gender, resolved)
                         if v not in excluded]
                 if pool:
-                    resolved[target] = _weighted_choice(field_def, pool, gender, rng)
+                    resolved[target] = _repick(target, field_def, pool, gender, rng)
                     changed = True
                 elif field_def["optional"]:
                     resolved[target] = "None"

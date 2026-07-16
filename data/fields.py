@@ -830,6 +830,69 @@ STUDIO_BACKDROPS: frozenset[str] = frozenset([
 ])
 
 
+# --- location <-> lighting coherence buckets ---------------------------------
+# Real renders paired "indoor spice market stall" with "dappled sunlight through
+# forest canopy", and "palm-lined promenade" with "warm sunlight streaming
+# through a window". Unlike shot_type -- which 0.63.0 made camera-only, deleting
+# the incoherence at the source -- light quality is genuinely tied to whether you
+# are indoors, so the field cannot be scrubbed of place the way shot_type was.
+# data/constraints.py turns these three buckets into generated exclusion rules.
+#
+# The split follows the seam LIGHTING_FAMILIES already encodes, which is what
+# keeps it bias-clean: the ``daylight`` family is open-sky light and the
+# ``window`` family IS indoor daylight. Bucketing whole families means a filtered
+# family drops out entirely and the remaining families' shares stay exactly
+# proportional, instead of one family keeping its full weight while concentrated
+# onto two or three surviving variants. Only the mixed ``artificial`` and ``neon``
+# families contribute individual values, and each keeps a clear majority of its
+# variants in both directions.
+
+#: Lighting that asserts open sky, weather, or an exterior fixture. Excluded when
+#: the location is indoors -- indoor daylight is what the ``window`` family is for.
+#: The whole ``daylight`` family, plus the two exterior-fixture ``neon`` values.
+OUTDOOR_ONLY_LIGHTING: frozenset[str] = frozenset([
+    'golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light',
+    'harsh overhead midday sun', 'overcast diffused daylight',
+    'hazy overcast winter light', 'blue hour twilight',
+    'pre-dawn darkness with ambient glow', 'dramatic stormy sky light',
+    'sun rays through broken cloud cover', 'dappled sunlight through forest canopy',
+    'direct sunlight from behind camera', 'rim lighting from setting sun',
+    'moonlight with cool blue tones', 'soft overcast golden light',
+    'harsh desert sun', 'snow-reflected daylight',
+    'fog-diffused streetlamp glow', 'reflection off wet pavement',
+])
+
+#: Lighting that asserts a built interior: a window or skylight you are looking
+#: *out* of, a ceiling fixture, a hearth, a television in a room. Excluded when
+#: the location is outdoors. The whole ``window`` family plus four ``artificial``
+#: values; the other five artificial values (candle, lamp, string lights, open
+#: flame, lantern) read fine on a patio or at a campfire and stay available.
+INDOOR_ONLY_LIGHTING: frozenset[str] = frozenset([
+    'soft window light from the side', 'backlit silhouette against bright window',
+    'light through venetian blinds casting stripes',
+    'light through stained glass casting colors',
+    'warm sunlight streaming through a window', 'diffused skylight from above',
+    'cool LED overhead lighting', 'harsh fluorescent lighting',
+    'flickering firelight from a hearth', 'flickering television glow in a dark room',
+])
+
+#: The only lighting a void backdrop may draw: the ``studio`` family, exactly.
+#: A seamless sweep is a studio, so it gets studio light. Restricting to one whole
+#: family is also the bias-safe choice -- admitting a few neon/gel values would
+#: hand the eight-variant ``neon`` family its full weight concentrated onto the
+#: two or three survivors, spiking those individual values far above the studio
+#: ones. Void backdrops are a subset of the indoor bucket; this rule is simply
+#: stricter, and the two rules coexist (the engine cascades to a fixed point).
+VOID_ALLOWED_LIGHTING: frozenset[str] = frozenset([
+    'stage spotlight from above', 'dramatic single overhead spotlight',
+    'soft studio three-point lighting', 'high key bright even lighting',
+    'low key moody single light source', 'dramatic chiaroscuro side lighting',
+    'Dutch angle with hard shadows', 'soft-box style diffused light',
+    'split lighting with deep shadow', 'butterfly beauty lighting',
+    'Rembrandt lighting',
+])
+
+
 # Merge optional user-supplied options (./user_options.json in the pack root).
 # Kept last so it can extend any pool above; fails closed if absent/malformed.
 # OUTFIT_DESCRIPTIONS is passed so the "outfits" section can register new outfit

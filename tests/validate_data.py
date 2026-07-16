@@ -56,7 +56,7 @@ def _options(field: str) -> set[str]:
 #: test module intentionally has no import-time dependency on the node layer).
 _LOOK_OVERRIDE_KEYS = frozenset({
     "costume", "signature", "mask", "covers_face", "covers_body",
-    "covers_hair", "prop", "body_paint", "skin", "eyes",
+    "covers_hair", "prop", "prop_costume", "body_paint", "skin", "eyes",
 })
 
 
@@ -337,6 +337,20 @@ def validate() -> list[str]:
         prop = entry.get("prop")
         if prop is not None and (not isinstance(prop, str) or not prop):
             errors.append(f"cosplayer '{name}': 'prop' must be a non-empty string")
+        # ``prop_costume`` is the costume with a *worn* signature object removed,
+        # swapped in only when the prop toggle is on so the object is not rendered
+        # both on the belt and in the hand. Meaningless without a 'prop', and it must
+        # actually differ from the costume it replaces.
+        prop_costume = entry.get("prop_costume")
+        if prop_costume is not None:
+            if not isinstance(prop_costume, str) or not prop_costume:
+                errors.append(f"cosplayer '{name}': 'prop_costume' must be a non-empty string")
+            elif not prop:
+                errors.append(f"cosplayer '{name}': 'prop_costume' set but no 'prop' to "
+                              f"switch on; it would never be used")
+            elif prop_costume == entry.get("costume"):
+                errors.append(f"cosplayer '{name}': 'prop_costume' is identical to 'costume'; "
+                              f"it must drop the worn object the prop puts in hand")
         # Optional free-text eye-colour override: renders verbatim, intentionally
         # bypassing the eye_color option pool (for canonical red/violet/cat-slit eyes
         # without polluting the main node's believable-people dropdown). If present it
