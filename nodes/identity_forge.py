@@ -31,12 +31,14 @@ try:
     from ..data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
         ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
+        HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
     )
     from ..data.constraints import CONSTRAINT_RULES
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
         ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
+        HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
     )
     from data.constraints import CONSTRAINT_RULES
 
@@ -571,6 +573,56 @@ def _repick(
     return _weighted_choice(field_def, pool, gender, rng)
 
 
+def _performable_poses(
+    pool: list[str],
+    resolved: dict[str, str],
+    covers_face: bool,
+    covers_body: bool,
+    covers_hair: bool,
+) -> list[str]:
+    """Drop poses that reach for something this character does not have.
+
+    The ``pose`` field is written as a gesture a *person* performs, which quietly
+    assumes a person's parts: "running one hand through the hair" needs scalp hair,
+    "posing with hands in pockets" and "touching the collar with one hand" need a
+    worn garment. A fully masked / hooded / bald character has no hair to touch, and
+    a full hard shell or non-skin body (fur, plating, flame) has no pockets or
+    collar — the Moogle-with-a-hairstyle-gesture bug.
+
+    Reads ``hair_length`` and ``outfit_description`` straight out of ``resolved``
+    rather than taking more parameters: ``pose`` is drawn after both (field indices
+    24/46 vs 67), so their final values — locked *or* randomized — are already in
+    hand. That also means an auto-detected shell (a randomly drawn plate-armour
+    outfit) is caught without the caller having to flag it.
+
+    Both bald routes count: the engine's own "bald" ``hair_length``, and the
+    Cosplayer node's ``_BALD_SUPPRESS``, which locks the scalp fields to an *absent*
+    value instead (never to "bald" — that option is male-only and would be
+    gender-gated). Absent hair means no hair is described at all, so a hair gesture
+    is unsupported either way.
+
+    Whole families are removed, never single values, so the remaining families keep
+    their proportional shares (see POSE_FAMILIES). Returns ``pool`` unchanged when
+    nothing applies, and never returns empty.
+    """
+    hair_length = resolved.get("hair_length")
+    hair_hidden = (
+        covers_face or covers_hair
+        or hair_length == "bald" or _is_absent(hair_length)
+    )
+    shelled = covers_body or bool(
+        _FULL_COVER_RE.search(resolved.get("outfit_description") or "")
+    )
+    excluded: set[str] = set()
+    if hair_hidden:
+        excluded |= HAIR_DEPENDENT_POSES
+    if shelled:
+        excluded |= GARMENT_DEPENDENT_POSES
+    if not excluded:
+        return pool
+    return [p for p in pool if p not in excluded] or pool
+
+
 def _randomize_fields(
     locked: dict[str, str],
     gender: str,
@@ -578,11 +630,18 @@ def _randomize_fields(
     accessory_density: str,
     location_setting: str,
     rng: random.Random,
+    covers_face: bool = False,
+    covers_body: bool = False,
+    covers_hair: bool = False,
 ) -> dict[str, str]:
     """Fill every unlocked, non-control field from its option pool.
 
     ``locked`` maps field_name → user-chosen value (already excludes control
     and hidden fields). The returned dict contains every field.
+
+    The ``covers_*`` flags are the cosplayer coverage flags; they only narrow the
+    ``pose`` pool (see :func:`_performable_poses`). Every other suppression they
+    drive happens after the fill, in :func:`generate_character`.
     """
     resolved: dict[str, str] = {
         "gender": gender,
@@ -600,6 +659,8 @@ def _randomize_fields(
         pool = _build_option_pool(field_name, field_def, gender, resolved)
         if field_name == "skin_tone":
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "pose":
+            pool = _performable_poses(pool, resolved, covers_face, covers_body, covers_hair)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
         if forced_absent is not None:
             resolved[field_name] = forced_absent
@@ -1350,7 +1411,8 @@ def generate_character(
               f"'{gender}'; re-randomizing within the {gender} pool.")
 
     resolved = _randomize_fields(
-        locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng
+        locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
+        covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
     )
 
     # Wardrobe presentation gates the masculine-default trims: a man reads Masculine

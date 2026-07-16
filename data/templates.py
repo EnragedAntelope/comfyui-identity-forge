@@ -46,6 +46,11 @@ COSTUME_SLOTS: dict[str, list[str]] = {
                    "crimson", "navy", "scarlet", "teal"],
     "denim_wash": ["light-wash", "medium-wash", "dark-wash", "acid-wash",
                    "faded black", "stonewashed"],
+    # Real medical-scrub colourways. The generic `color` pool carries gold, ivory,
+    # bronze and silver — fine on a ball gown, wrong on a hospital ward — so the
+    # medical archetypes draw from this instead (same rationale as menswear_color).
+    "scrub_color": ["teal", "ceil blue", "navy blue", "hunter green", "wine",
+                    "charcoal grey", "royal blue", "plum", "pewter grey"],
 }
 
 
@@ -2863,7 +2868,23 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Swashbuckling Pirate": ["a weathered {earth_tone} leather coat over a loose linen shirt, a {color} sash, and a tricorn hat",
      "a {color} brocade captain's coat over a ruffled linen shirt, a leather baldric, and a tricorn hat"],
     "Stealth Ninja": "matte {dark_color} shinobi garb with a face wrap, hood, and split-toe tabi boots",
-    "French Maid": "a frilly black-and-white maid dress with a {color} ribbon, lace apron, ruffled headpiece, and stockings",
+    # Six looks across the eras the costume actually has: the modern novelty
+    # black-and-white, the real Victorian domestic servant it descends from, the
+    # Rococo château chambermaid, a 1950s petticoat cut, the Japanese maid-café
+    # reinterpretation, and a gothic-lolita take. Uniform pick, so no era is weighted
+    # over another; every alternate keeps the apron + headpiece silhouette that makes
+    # the archetype readable.
+    "French Maid": ["a frilly black-and-white maid dress with a {color} ribbon, lace apron, ruffled headpiece, and stockings",
+     # Fixed black, not a {dark_color} slot: the real Victorian housemaid wore black
+     # under the white pinafore, and that pool's blood red / oxblood / deep purple
+     # would render a housemaid who never existed.
+     "a floor-length black Victorian housemaid dress with a full white pinafore apron, a starched white mob cap, dark stockings, and buttoned ankle boots",
+     "a {pastel} Rococo chambermaid dress with panniered skirts, a lace-trimmed white apron, a ruffled cap, and silk ribbon lacing across the bodice",
+     # {pastel} not {color} — the generic pool's gold/silver/bronze read as metallic
+     # lame on a cotton petticoat dress.
+     "a {pastel} 1950s-style maid dress with a full petticoat skirt, a scalloped white apron, a ruffled cap, and seamed stockings",
+     "a {pastel} maid cafe dress with a wide flared skirt, a white frilled apron tied in a large bow at the back, a matching frilled headband, and knee-high white socks",
+     "a black gothic maid dress with layered lace trim, a {jewel_tone} corset waist, a white pinafore apron, a lace headpiece, and striped stockings"],
     "Cheerleader": "a pleated cheer uniform in {color} and white with a fitted shell top and pom-poms",
     "Roaring Flapper": ["a {color} beaded fringe flapper dress with a feathered headband and long satin gloves",
      "a {color} drop-waist sequined flapper dress with a jeweled headband and a feather boa"],
@@ -2890,14 +2911,25 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Valkyrie": "{metal} winged-helm armor over a {color} tunic with a {fur} cloak and a round shield",
     "Gothic Doll": "a {dark_color} ruffled gothic doll dress with lace trim, a bonnet, and a {color} bow",
     "Belly Dancer": "a {jewel_tone} beaded bedlah with a coin-trimmed hip scarf and flowing chiffon veils",
-    "Surgeon": ["teal surgical scrubs with a cap, a hanging mask, and gloved hands",
-     "{color} surgical scrubs with a surgical cap, a mask hanging loose around the neck, and a lanyard ID"],
+    # ER Nurse: five looks across the eras and settings the uniform actually spans —
+    # ward scrubs, scrubs under a lab coat, a printed scrub top, full isolation PPE,
+    # and the mid-century white uniform the role is historically pictured in. Every
+    # alternate is deliberately UNISEX: this archetype has no gender lock, so a
+    # gendered garment (a nurse's *dress*) would land on a male subject. The starched
+    # cap + cape look is worded as a "uniform" for the same reason.
+    "ER Nurse": ["{scrub_color} medical scrubs with a lanyard ID badge and a stethoscope around the neck",
+     "{scrub_color} scrubs under an unbuttoned white lab coat with a stethoscope around the neck, an ID badge clipped at the chest, and a penlight in the breast pocket",
+     "a patterned {scrub_color} scrub top over plain scrub trousers with a lanyard ID badge, trauma shears in a pocket, and comfortable clogs",
+     "{scrub_color} scrubs under a disposable yellow isolation gown with a surgical mask pulled down under the chin, a face shield pushed up, and a stethoscope around the neck",
+     "a crisp vintage white nurse's uniform with a starched white cap, a red-lined navy wool cape over the shoulders, and polished white shoes"],
+    "Surgeon": ["{scrub_color} surgical scrubs with a cap, a hanging mask, and gloved hands",
+     "{scrub_color} surgical scrubs with a surgical cap, a mask hanging loose around the neck, and a lanyard ID"],
     "Judge": ["flowing black judicial robes with a high collar over a {color} blouse",
      "flowing black judicial robes with a crisp white jabot collar and a {metal} lapel pin"],
     "News Anchor": "a tailored {color} suit with a pocket square and a subtle lapel mic",
     "Orchestra Conductor": ["a black tailcoat and white tie with a raised baton",
      "an ivory dinner jacket with a black bow tie and a raised baton"],
-    "Veterinarian": ["{color} scrubs under a white coat with a stethoscope and a name badge",
+    "Veterinarian": ["{scrub_color} scrubs under a white coat with a stethoscope and a name badge",
      "a {color} clinic polo with an embroidered paw logo, khakis, and a stethoscope around the neck"],
     "Sommelier": ["a crisp black vest over a white shirt with a tasting cup on a chain",
      "a long {dark_color} bistro apron over a crisp shirt and tie with a tasting cup on a chain"],
@@ -2908,8 +2940,16 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Sorcerer": "{jewel_tone} arcane robes with {metal} sigils, a high collar, and a flowing cape",
     "Alchemist": "a stained {earth_tone} long coat lined with glass vials, a leather satchel, and brass goggles",
     "Witch Hunter": "a {dark_color} long coat with a wide-brimmed hat, {metal} buckles, and a leather bandolier",
-    "Plague Doctor": "a black waxed-leather robe and wide-brimmed hat with a long pale beaked bird mask and gloves",
-    "Soldier": "camouflage combat fatigues with a tactical vest, dog tags, and laced boots",
+    # Kept tight on purpose: the beaked mask, the robe and the wide hat ARE the
+    # archetype, so the alternates vary material, mask weathering and the cane rather
+    # than reinventing the silhouette.
+    "Plague Doctor": ["a black waxed-leather robe and wide-brimmed hat with a long pale beaked bird mask and gloves",
+     "a heavy waxed-canvas plague doctor's robe with a long pale beaked mask, smoked-glass eye lenses, a wide-brimmed hat, and a slim wooden cane",
+     "a floor-length {dark_color} oilcloth plague doctor's coat with a weathered leather beaked mask, dark round eye lenses, heavy gauntlets, and a broad flat hat"],
+    "Soldier": ["camouflage combat fatigues with a tactical vest, dog tags, and laced boots",
+     "camouflage combat fatigues with a plate carrier, a cloth-covered helmet, dog tags, knee pads, and laced boots",
+     "a {earth_tone} field uniform with the sleeves rolled tight, a boonie hat, dog tags, and dust-caked boots",
+     "a formal service dress uniform with brass buttons, ribbon bars over the breast pocket, white gloves, and a peaked cap"],
     "Construction Worker": "a hi-vis {color} safety vest over a work shirt, a tool belt, and a hard hat",
     "Lifeguard": "{color} lifeguard board shorts with a whistle on a lanyard and a rescue can",
     "Park Ranger": "an {earth_tone} ranger uniform with a brimmed campaign hat, a badge, and a utility belt",
@@ -2966,9 +3006,15 @@ _COSTUMES: dict[str, str | list[str]] = {
     # Without a lock these rendered a random generic outfit from their
     # outfit_style bucket -- the archetype name never reaches the prompt.
     "Barista": "a {earth_tone} canvas cafe apron over a rolled-sleeve shirt with a name tag and a bar towel tucked at the waist",
-    "Doctor": "a white doctor's coat over {color} scrubs with a stethoscope around the neck and an ID badge",
-    "Firefighter": "tan firefighter turnout gear with neon-yellow reflective stripes, red suspenders, a radio clipped to the chest, and a fire helmet held at the side",
-    "Police Officer": "a navy police uniform shirt with a badge, shoulder radio, and duty belt, and a peaked service cap",
+    "Doctor": "a white doctor's coat over {scrub_color} scrubs with a stethoscope around the neck and an ID badge",
+    "Firefighter": ["tan firefighter turnout gear with neon-yellow reflective stripes, red suspenders, a radio clipped to the chest, and a fire helmet held at the side",
+     "full tan turnout gear with the coat hanging open over a soot-streaked station tee, an air-tank harness across the shoulders, and a helmet under one arm",
+     "a navy fire-department station uniform with a badge, collar insignia, a radio clipped to the chest, and polished boots",
+     "a wildland firefighter's yellow flame-resistant shirt and green trousers with a hard hat, goggles pushed up, and a fire-shelter pouch on the belt"],
+    "Police Officer": ["a navy police uniform shirt with a badge, shoulder radio, and duty belt, and a peaked service cap",
+     "a dark police tactical uniform with a body-armor vest lettered POLICE across the chest, a loaded duty belt, and a baseball-style patrol cap",
+     "a rumpled detective's shirt and loosened tie under a shoulder holster, with a badge clipped at the belt and sleeves rolled to the forearm",
+     "a motorcycle officer's uniform with breeches, tall polished boots, white gloves, a duty belt, and a white open-face helmet"],
     "Chef": "a double-breasted white chef's jacket with {color} piping, a bistro apron, houndstooth trousers, and a tall white toque",
     "Pilot": "a {dark_color} airline captain's uniform with four gold cuff stripes, wing insignia over the pocket, a tie, and a peaked cap",
     "Scientist": "a white lab coat with pens in the breast pocket over {menswear_color} smart clothing, with safety glasses and a laminated ID badge",
@@ -2978,7 +3024,15 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Bartender": "a rolled-sleeve white shirt under a {dark_color} waistcoat with a bar towel over the shoulder and a cocktail shaker in hand",
     "Electrician": "a {color} work shirt under a hi-vis vest with a tool belt hung with pliers and wire strippers, work jeans, and safety glasses",
     "Marine Biologist": "a {color} field jacket over quick-dry khakis with a dive watch, rubber deck boots, and a specimen kit slung at the hip",
-    "Archaeologist": "a sun-faded khaki field shirt with rolled sleeves, cargo trousers, a brimmed explorer hat, and a brush and trowel at the belt",
+    # The hat lives in this archetype's `accessories` lock ("wide brim sun hat"), so no
+    # alternate here may mention one: the base costume used to say "a brimmed explorer
+    # hat" and rendered the archaeologist wearing two (fixed 0.66.0). Same double-
+    # describe class as the 0.63.0 prop-vs-costume sweep — always diff a costume
+    # against the fields the archetype already locks.
+    "Archaeologist": ["a sun-faded khaki field shirt with rolled sleeves, cargo trousers, and a brush and trowel at the belt",
+     "a dusty {earth_tone} field vest over a rolled-sleeve shirt with cargo trousers, a bandana knotted at the neck, and dirt-caked boots",
+     "a khaki dig outfit with kneepads and work gloves, dust caked to the elbows, and a fine hand brush held over an exposed find",
+     "a linen field shirt with the sleeves rolled past the elbow, canvas trousers, a leather satchel strap across the chest, and a trowel in a belt loop"],
     "Cyclist": "a fitted {team_color} cycling jersey with matching bib shorts, fingerless gloves, a sleek road helmet, and clip-in cycling shoes",
     "Beekeeper": ["a white beekeeping suit with the veiled hood thrown back, long leather gloves, and a bee smoker held at the side",
      "a white beekeeping jacket with the mesh veil zipped down over the face, thick gloves, and a frame of golden honeycomb held up"],
@@ -3026,6 +3080,32 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a {menswear_color} cardigan over a neat shirt with an ink-smudged writing apron and a fine brush pen in hand"],
     "Cartographer": ["an {earth_tone} tweed waistcoat over a rolled-sleeve shirt with brass drafting dividers in hand over an unrolled map",
      "a travel-worn {menswear_color} field jacket with a leather map tube slung across the back and a magnifying glass in hand"],
+    # Round 5 (0.66.0): the last archetypes whose costume was a single fixed string
+    # with no {slot} — the same look on every seed. Alternates keep each concept
+    # readable and add era/colour range. Uniform pick, so no look is weighted over
+    # another. NOTE: none of these may mention a bag (the `bag` field randomizes on
+    # all of them and would render a second one).
+    #
+    # Rosie-the-Riveter era. Her head scarf is NOT in the costume: this archetype
+    # locks `hair_accessory: "thin scarf tied in hair"`, which already voices it — a
+    # bandana here would tie two scarves on one head.
+    "1940s Factory Worker": ["a blue denim button-up work shirt with the sleeves rolled to the elbow and knotted at the waist, over high-waisted work trousers",
+     "a set of oil-streaked {earth_tone} factory coveralls with the sleeves pushed up past the elbow and a worn leather tool belt",
+     "a khaki wartime munitions overall buttoned to the throat with heavy gloves tucked in a hip pocket and sturdy lace-up shoes",
+     "a {color} plaid work shirt tucked into wide-legged denim dungarees with rolled cuffs and scuffed leather boots"],
+    "1970s Boho It-Girl": ["a tan suede fringe vest over a wide-collar floral blouse, high-waisted flared denim jeans, and tall platform sandals",
+     "a floaty {jewel_tone} paisley maxi dress with bell sleeves, a wide tooled-leather belt, and stacked pendant necklaces",
+     "a crocheted {earth_tone} vest over a peasant blouse with embroidered flared jeans and round tinted sunglasses",
+     "a {color} halter jumpsuit with a plunging neckline and wide flared legs, jangling bangles, and cork platform sandals",
+     "an afghan coat of shearling and folk embroidery over a ribbed knit top, denim flares, and knee-high suede boots"],
+    "Emo": ["a fitted band t-shirt under a studded black hoodie, tight black skinny jeans, a chain wallet, and worn canvas high-tops",
+     "a black band tee under an unzipped {dark_color} hoodie with tight black skinny jeans, a studded belt, fingerless gloves, and worn high-tops",
+     "a black-and-{jewel_tone} striped long-sleeve under a graphic band tee, black skinny jeans with a chain wallet, and scuffed skate shoes",
+     "a snug {dark_color} zip hoodie over a studded belt and drainpipe jeans, with checkerboard slip-ons and rubber wristbands stacked up one forearm"],
+    "Indie Sleaze": ["a rumpled vintage graphic tee under a worn leather jacket, tight shiny disco pants, and scuffed ankle boots, styled with a careless thrifted look",
+     "a rumpled vintage graphic tee under a {dark_color} moto jacket with skinny jeans and battered canvas sneakers, styled with a careless thrifted look",
+     "an oversized thrifted blazer over a slogan tee with tight {color} jeans and scuffed loafers, layered with a haphazard second-hand look",
+     "a metallic {color} disco bodysuit under a cropped denim jacket with opaque tights and beat-up ankle boots"],
 }
 for _name, _costume in _COSTUMES.items():
     if _name in ARCHETYPES:

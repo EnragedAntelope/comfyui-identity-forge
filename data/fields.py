@@ -519,9 +519,16 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     ("pose", {
         "group": 'Setting & Shot',
         # Phrased to read after "{subject} is …"; avoid pronouns so gender stays
-        # correct ("a hand", not "their hand").
-        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'arms relaxed at the sides', 'one hand touching the collar', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'hands loosely clasped together', 'tilting the head slightly', 'lifting the chin slightly'],
-        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'arms relaxed at the sides', 'one hand touching the collar', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'hands loosely clasped together', 'tilting the head slightly', 'lifting the chin slightly'],
+        # correct ("a hand", not "their hand"). Every value must be a PARTICIPLE
+        # PHRASE that completes that frame: "standing naturally" -> "She is standing
+        # naturally." A bare noun phrase does not, and three values silently broke
+        # this until 0.66.0 -- "arms relaxed at the sides" rendered "She is arms
+        # relaxed at the sides." They were reworded in place (same slot, same family
+        # weight, zero bias impact) to "standing with arms relaxed at the sides",
+        # "touching the collar with one hand" and "holding both hands loosely
+        # clasped". `PoseGrammarTests` pins the rule for new values.
+        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly'],
+        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly'],
         "optional": True
     }),
     ("held_item", {
@@ -620,14 +627,48 @@ MOOD_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("enigmatic", {"weight": 1, "variants": ['mysterious', 'enigmatic', 'moody']}),
 ])
 
+#: 0.66.0 split the former single `gesture` family (weight 4, 6 variants) into three,
+#: so the engine can drop the gestures a covered character cannot perform — a Moogle
+#: has no hair to run a hand through and no pockets to put hands in. See
+#: HAIR_DEPENDENT_POSES / GARMENT_DEPENDENT_POSES below and the Cosplayer suppression
+#: in nodes/identity_forge.py.
+#:
+#: THE SPLIT IS EXACTLY DISTRIBUTION-NEUTRAL, and that is load-bearing. A family's
+#: weight is its whole share, divided evenly among its variants, so a sub-family must
+#: carry weight PROPORTIONAL TO ITS VARIANT COUNT or the split would silently
+#: re-weight poses. Splitting 6 variants 3/2/1 needs weights 2 / 1.33 / 0.67, so every
+#: family weight here is scaled x3 (a no-op on relative shares) to keep them integers:
+#:   gesture         6/54 x 1/3 = 1/27   (was 4/18 x 1/6 = 1/27)
+#:   gesture_garment 4/54 x 1/2 = 1/27
+#:   gesture_hair    2/54 x 1/1 = 1/27
+#: and e.g. standing 15/54 x 1/7 = 5/126 (was 5/18 x 1/7 = 5/126). Unchanged, value by
+#: value. `PoseFamilyTests` in tests/test_engine.py pins this — do not retune a weight
+#: here without updating that proof.
 POSE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("standing", {"weight": 5, "variants": ['standing naturally', 'standing with arms crossed', 'in a relaxed contrapposto stance', 'in a confident power pose', 'arms relaxed at the sides', 'standing with weight on one leg', 'standing tall with shoulders back']}),
-    ("seated", {"weight": 5, "variants": ['sitting relaxed', 'sitting upright', 'reclining', 'kneeling gracefully', 'crouching low', 'perched on the edge of a seat', 'sitting cross-legged']}),
-    ("leaning", {"weight": 1, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
-    ("motion", {"weight": 1, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward']}),
-    ("gesture", {"weight": 4, "variants": ['posing with a hand on one hip', 'posing with hands in pockets', 'resting chin on one hand', 'one hand touching the collar', 'running one hand through the hair', 'hands loosely clasped together']}),
-    ("looking", {"weight": 2, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly']}),
+    ("standing", {"weight": 15, "variants": ['standing naturally', 'standing with arms crossed', 'in a relaxed contrapposto stance', 'in a confident power pose', 'standing with arms relaxed at the sides', 'standing with weight on one leg', 'standing tall with shoulders back']}),
+    ("seated", {"weight": 15, "variants": ['sitting relaxed', 'sitting upright', 'reclining', 'kneeling gracefully', 'crouching low', 'perched on the edge of a seat', 'sitting cross-legged']}),
+    ("leaning", {"weight": 3, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
+    ("motion", {"weight": 3, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward']}),
+    # Gestures that need only a body: safe for anyone, including a full shell.
+    ("gesture", {"weight": 6, "variants": ['posing with a hand on one hip', 'resting chin on one hand', 'holding both hands loosely clasped']}),
+    # Gestures that reach for a GARMENT — pockets, a collar. Nothing to grab on a
+    # fur body, an armour shell or a droid chassis.
+    ("gesture_garment", {"weight": 4, "variants": ['posing with hands in pockets', 'touching the collar with one hand']}),
+    # Gestures that reach for SCALP HAIR. Nothing to touch under a helmet or on a
+    # bald / masked / hooded head.
+    ("gesture_hair", {"weight": 2, "variants": ['running one hand through the hair']}),
+    ("looking", {"weight": 6, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly']}),
 ])
+
+#: Poses the engine drops when a character has no visible scalp hair (a full mask, a
+#: hood, or a bald head) and no worn garment (a full hard shell / non-skin body).
+#: Derived from POSE_FAMILIES rather than hand-listed so the two cannot drift apart,
+#: and deliberately whole families: dropping *part* of a family would leave its full
+#: weight concentrated on the survivors (the bias trap documented for LIGHTING_FAMILIES
+#: in 0.64.0). Removing a whole family instead leaves every other family's share
+#: proportionally intact.
+HAIR_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["gesture_hair"]["variants"])
+GARMENT_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["gesture_garment"]["variants"])
 
 #: 0.65.0: the `studio` family's former `'Dutch angle with hard shadows'` mixed a pure
 #: camera concept (Dutch angle = frame tilt) into a lighting field -- the same class of

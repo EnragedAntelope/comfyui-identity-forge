@@ -1229,7 +1229,7 @@
 - **Gowron** (M)
 - **Klingon** (M, prop)
 - **Mr. Spock** (M)
-- **Seven of Nine** (F)
+- **Seven of Nine** (F, +3 alt)
 - **Tellarite** (M)
 - **Vulcan** (M)
 - **Worf** (M, prop)

@@ -99,6 +99,38 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   checks **every** `FIELD_FAMILIES` entry partitions its field's options exactly. New `hair_style`
   variants must also be slotted into the relevant `data/constraints.py` length lists
   (`_LONG_HAIR_STYLES`, the pixie exclusion) so they're culled on short hair like their siblings.
+- **`pose` values are participle phrases, and must stay performable (0.66.0 doctrine).**
+  Two separate rules, both learned the hard way.
+  *Grammar:* the prose renders `"{subject} is {pose}."`, so every value has to complete that
+  frame — a present participle (`standing naturally`), a past participle (`perched on the edge
+  of a seat`), or a preposition introducing a noun (`in a confident power pose`). **Never a bare
+  noun phrase**: three values shipped for years reading "She is arms relaxed at the sides."
+  They were reworded in place at 0.66.0 (same slot, same family weight, zero bias impact).
+  `PoseGrammarTests` pins the rule; a new past-participle opener must be added to its allowlist,
+  which is deliberate friction.
+  *Performability:* a pose quietly assumes the subject has the body part it reaches for.
+  `running one hand through the hair` needs scalp hair; `posing with hands in pockets` and
+  `touching the collar with one hand` need a worn garment. A masked/hooded/bald character has
+  neither hair nor, if `covers_body`, pockets — the Moogle-cosplay-does-a-hair-flip bug (~28% of
+  the cosplayer roster was affected, ~1 in 9 of their renders). `_performable_poses` in
+  `nodes/identity_forge.py` narrows the pool; it reads `hair_length` and `outfit_description`
+  straight out of `resolved` (pose is field index 67, they are 24 and 46, so both are already
+  final — which also catches an auto-detected `_FULL_COVER_RE` shell for free) and takes only the
+  `covers_*` flags as parameters. **Both bald routes count**: the engine's own `"bald"`
+  `hair_length` *and* the Cosplayer node's `_BALD_SUPPRESS`, which locks the scalp fields to an
+  *absent* value instead (never `"bald"` — that option is male-only and would be gender-gated).
+  *The split that makes it bias-free:* the old single `gesture` family (weight 4, 6 variants) is
+  now three families, because **dropping part of a family leaves its full weight on the
+  survivors** (the trap documented for `LIGHTING_FAMILIES` at 0.64.0) — only whole families may
+  be excluded. Sub-family weights must be **proportional to variant count** or the split itself
+  re-weights the field; splitting 3/2/1 needs 2/1.33/0.67, so every pose family weight is scaled
+  ×3 to keep integers. Each pose still sits at exactly its old probability (gesture values at
+  1/27, `standing` at 5/126, …), proven analytically by `PoseFamilyTests` and verified by Monte
+  Carlo (worst deviation 0.068pp at N=400k, inside sampling noise). **Seeds drift for `pose`**:
+  the distribution is identical but `rng.choices` sees 8 families instead of 6, so a given seed
+  can land on a different pose. Accepted, same as the 0.64.0 `_repick` fix.
+  `HAIR_DEPENDENT_POSES` / `GARMENT_DEPENDENT_POSES` are derived *from* `POSE_FAMILIES`, never
+  hand-listed, so they cannot drift out of sync.
 - **`shot_type` is camera-only (0.63.0 doctrine).** Every value describes the *camera* —
   distance, height, subject orientation, or lens — and never introduces scene content. Values
   that placed an object or a second person in frame were removed (`shot through a doorway /
@@ -421,8 +453,94 @@ User additions are first-class (0.46.1):
 - **JS regen:** `js/identity_forge.js` embeds `GROUP_ORDER` / `FIELD_TO_GROUP` / `GENDER_POOLS`
   from `data/fields.py`; update it when the field set or the gender-divergent pools change.
 
+## Considered and deferred
+
+Design notes for ideas that were scoped but deliberately not built. Kept so the reasoning
+does not have to be rediscovered — and so a future decision starts from the real numbers.
+
+### Sequential / "cycle through the pool" pick mode (deferred 0.66.0)
+
+**The ask:** let a user walk a scope one character at a time instead of only picking randomly —
+e.g. contact-sheet every Star Wars character, or every Giant.
+
+**The cheap design.** Add a `pick_mode` combo to the Cosplayer node: `Random` (default) /
+`Sequential`. In `Sequential`, `_resolve_character` indexes rather than draws:
+
+```python
+pool = get_cosplayer_names(gender=gender, category=category)   # already sorted, already built
+name = pool[seed % len(pool)]                                  # instead of rng.choice(pool)
+```
+
+The user then sets the **existing** `seed` widget's `control_after_generate` to `increment`, and
+each run advances exactly one character. No new seed/index widget, no new state, and the pool
+construction is untouched — `Sequential` only changes how one value is chosen from it.
+
+**Why it is attractive:** ~15 lines, default `Random` keeps every existing workflow byte-identical
+(non-breaking), and it reuses ComfyUI's built-in increment rather than inventing a control. It
+also turns the four attribute scopes into review tools — "show me all 26 Tiny characters" becomes
+26 runs instead of luck.
+
+**Open questions to settle before building** (these are why it was deferred, not the cost):
+1. **Seed does double duty.** The same seed still drives `_pick_look` (alt costume) and the whole
+   downstream person randomization. So cycling characters also re-rolls the person and the
+   costume alternate on every step — you cannot hold the person fixed and vary only the
+   character, which may be exactly what a contact sheet wants. A separate `index` widget would
+   decouple them, at the cost of a second number widget to explain.
+2. **Pool identity is not stable.** `pool[seed % len(pool)]` shifts *every* index whenever a
+   character is added to that category — and the roster grows most releases. A saved workflow at
+   seed 40 silently means a different character next version. Acceptable for browsing, bad if
+   anyone treats it as a stable reference.
+3. **Interaction with the gender scope** — `Sequential` + `Random — female` is coherent, but
+   `Sequential` + a specific character is a no-op that needs a tooltip.
+
+**Rejected alongside it — franchise scoping.** Same request, different half: scope Random picks by
+franchise rather than the 9 broad categories. Not built because the shape of the data is against
+it: **114 of 224 franchises are singletons**, so most options would return one fixed character
+forever. Thresholding helps but does not fix it (≥5 chars → 45 franchises covering 799 of 1095;
+≥3 → 81 covering 923). Revisit only with a real per-franchise UX (a second dependent combo), not
+by flattening 224 entries into the existing dropdown.
+
+**Related pre-existing UX wart (unfixed).** `_resolve_character` falls back to the **full gender
+pool** when a (gender, scope) combo comes up empty, silently. `Masked` + `Random — female` is only
+7 characters and small combos look like the scope was ignored. A console warning on fallback would
+be the cheap fix.
+
+### Per-character "has skin but wouldn't wear jewellery" (closed 0.66.0 — do not re-flag)
+
+Raised at 0.64.0 and **closed by explicit user decision**: leave it alone entirely.
+
+The 0.64.0 `covers_body` audit deliberately skipped 10 characters (Gollum, Thanos, Midna, Majin
+Buu, Killer Frost, Kilowog, Larfleeze, Lord Raptor, Victor von Gerdenheim) on the rule that
+`covers_body` means *the body is made of something that is not skin* — those are humanoids whose
+skin is merely an odd colour, so jewellery correctly stays reachable and Gollum can draw a charm
+bracelet. The gap was that no key says "has skin, but wouldn't accessorise": `covers_body` would
+be a lie, and `accessory_density` is a global user control, not per-character. A `wears_no_jewelry`
+key was considered and **rejected** — the current behaviour is defensible and the schema stays
+smaller. Do not add it back without a fresh decision.
+
 ## Gotchas cheat-sheet
 
+- **A character rendering in the wrong *medium* (drawn / illustrated / 3D) is almost never a data
+  bug.** Investigated at 0.66.0 for Rydia (FF4), who renders as official art. A scan of **every
+  string value in all 1095 cosplayer entries** for style-biasing words (`anime|animated|cartoon|
+  illustrat*|drawn|chibi|cel-shaded|comic-book|manga|stylized|toon|figurine|render*|painterly|
+  sketch*|2D`) found **20 hits, 19 benign**: `drawn` was always "a bow drawn", `stylized` always
+  described an emblem's design. Only Obi-Wan (Force Ghost)'s "robes **rendered** in a luminous
+  glow" was a plausible 3D trigger, and it was reworded to "suffused with". Rydia's own entry is
+  clean. The cause is **model association with the character name** — same class as the Mt. Lady
+  finding (0.59.0) and not fixable per-character. Note the structural gap behind it: the node
+  emits **no photographic anchor at all** (the prose opens `Cosplaying as X (Franchise): a
+  33-year-old …` and never establishes a medium), so style is entirely the user's to supply
+  downstream. An optional realism-anchor toggle was floated and **not built** — flagged here so
+  the next person measures before assuming the data is at fault.
+- **Diff a new costume string against the fields the archetype already locks.** The 0.63.0 lesson
+  was props double-describing a costume object; the same trap exists for `accessories`,
+  `bag` and `hair_accessory`. Found at 0.66.0: **Archaeologist** wrote "a brimmed explorer hat"
+  into its costume *and* locked `accessories: "wide brim sun hat"` — it rendered two hats for
+  several releases. **1940s Factory Worker** locks `hair_accessory: "thin scarf tied in hair"`, so
+  the obvious Rosie bandana would have tied a second scarf on the same head. `bag` is unlocked on
+  most archetypes, so a costume must never mention one. Whichever field owns the object, the other
+  must stay silent.
 - **`gender == "Any"` resolves to a concrete `Female`/`Male` per seed** (first rng draw in
   `generate_character`) so the person is coherent — the gender gate and randomizer then draw from
   one pool, no beard beside a feminine bust. An anatomical lock decides it (`_gender_from_locks`:

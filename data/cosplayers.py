@@ -7709,7 +7709,10 @@ COSPLAYERS: dict[str, dict] = {
     "Obi-Wan Kenobi (Force Ghost)": {
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "flowing layered Jedi robes rendered in a luminous, translucent pale-blue "
+        # "rendered in" was reworded to "suffused with" in 0.66.0: the surrounding prose
+        # is a costume description, but "rendered" is a strong 3D/CG trigger word in
+        # image models and was the only style-biasing term the whole-dataset scan found.
+        "costume": "flowing layered Jedi robes suffused with a luminous, translucent pale-blue "
                    "glow, the whole figure softly shimmering and faintly transparent with a "
                    "ghostly aura",
         "signature": {"hair_color": "white", "hair_length": "ear length",
@@ -9801,12 +9804,29 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
         "physique": {"body_type": "toned", "height": "tall", "skin_tone": "fair"},
     },
+    # The red, eye-like gem is the artifact's defining feature and was missing until
+    # 0.66.0: dormant it is a large red jewel on top of the bracelet, active it opens
+    # as an eye on the BACK OF THE RIGHT HAND and looks back at the wielder — that the
+    # bracelet's gem and the gauntlet's gem are the same is the origin's plot point,
+    # not set dressing. Razor tendrils are equally iconic and were also absent.
+    # Two deliberate calls:
+    #  * Armour coverage canonically scales with the threat (less against mortals,
+    #    full plate against demons). The bladed-bikini extreme is the Turner-era cover
+    #    convention rather than universal canon — kept, because it is the look the
+    #    character is recognised by and therefore the one a cosplayer builds.
+    #  * eye_color is genuinely contested: the Witchblade wiki says dark blue, Top Cow's
+    #    own wiki says sienna. Keeping deep blue (attested, and it suits the look);
+    #    revisit only with a better source than a wiki disagreement.
+    # NOT canon, do not reintroduce: "scarlet red hair, yellow eyes with black sclera"
+    # is Earth-27, a fan RPG wiki. It surfaces high in searches for this character.
     "Sara Pezzini": {
         "franchise": "Witchblade",
         "gender": "Female",
         "costume": "asymmetrical organic silver Witchblade armor, both metallic and living, that "
                    "spirals out from a bladed gauntlet on the right arm to sheathe the body in "
-                   "little more than sharp curved plates and a bladed bikini, over fair skin",
+                   "little more than sharp curved plates and a bladed bikini, with a large red "
+                   "eye-like gem set into the back of the gauntlet's hand and razor-sharp "
+                   "silver tendrils coiling away from the armor's edges, over fair skin",
         "signature": {"hair_color": "dark brown", "hair_length": "very long",
                       "hair_texture": "curly", "eye_color": "deep blue"},
         "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
@@ -9878,15 +9898,46 @@ COSPLAYERS: dict[str, dict] = {
     # === v0.57.0 expansion: Star Trek (named + species looks) =============
     # Species entries render the non-human features (skin colour, antennae, ridges,
     # ears) as worn cosplay elements; the person underneath still randomizes.
+    # Post-de-assimilation ("The Gift", VOY S4) look: 82% of the Borg hardware is
+    # gone, and what remains is deliberately ASYMMETRIC -- the ocular arch sits over
+    # the LEFT brow, the small implant beside the RIGHT ear, the nanoprobe tracery on
+    # the back of the LEFT hand. (Ex Astris Scientia + Memory Alpha screencap analyses
+    # agree on the sides; one outlier source mirrors the ear implant, most likely from
+    # a flipped publicity still.) There is no separate cheek piece: the right-side
+    # implant sits high on the cheek/temple and is variously called the ear, cheek or
+    # cranial implant. Hair is LONG in a French twist for the whole of S4-S7 -- it only
+    # *reads* as short on screen, which is why it is widely miscaptioned as a short cut.
+    # The biosuits rotate rather than replace from S5 on, which is exactly what
+    # ``costumes`` models: silver (S4 debut, retired as too constricting to move in),
+    # brown (S4E06 "The Raven" onward, the longest-serving), cobalt/grey-blue and
+    # wine/plum (both mid-S5 onward). The implants are constant across every look, so
+    # each alternate restates them.
     "Seven of Nine": {
         "franchise": "Star Trek",
         "gender": "Female",
-        "costume": "a sleek form-fitting silver-grey biosuit, with a curved silver Borg ocular "
-                   "implant arching over the left eyebrow and a small metallic implant on the "
-                   "cheek and hand",
+        "costume": "a sleek form-fitting silver-grey biosuit with a high collar, with a curved "
+                   "silver Borg ocular implant arching over the left eyebrow, a small silver "
+                   "implant set high on the right cheek beside the ear, and fine silver "
+                   "nanoprobe tracery over the back of the left hand",
+        "costumes": [
+            "a form-fitting rich brown biosuit with a low neckline, with a curved silver Borg "
+            "ocular implant arching over the left eyebrow, a small silver implant set high on "
+            "the right cheek beside the ear, and fine silver nanoprobe tracery over the back "
+            "of the left hand",
+            "a form-fitting cobalt blue biosuit with grey sleeves and a low-cut neckline, with "
+            "a curved silver Borg ocular implant arching over the left eyebrow, a small silver "
+            "implant set high on the right cheek beside the ear, and fine silver nanoprobe "
+            "tracery over the back of the left hand",
+            "a form-fitting wine-plum biosuit with a rounded neckline, with a curved silver "
+            "Borg ocular implant arching over the left eyebrow, a small silver implant set "
+            "high on the right cheek beside the ear, and fine silver nanoprobe tracery over "
+            "the back of the left hand",
+        ],
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
-                      "hair_texture": "sleek straight", "hair_style": "sleek bun"},
-        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+                      "hair_texture": "sleek straight", "hair_style": "French twist",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair",
+                     "bust": "large"},
     },
     "Gowron": {
         "franchise": "Star Trek",

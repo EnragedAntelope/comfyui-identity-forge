@@ -17,12 +17,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from data.fields import FIELD_DEFINITIONS, FIELD_FAMILIES
+from data.fields import (
+    FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES,
+    HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
+)
 from nodes.identity_forge import (
     generate_character,
     merge_preset_documents,
     resolve_locked_fields,
     _pick_family_weighted,
+    _performable_poses,
     _randomize_fields,
     _is_absent,
     _parse_archetype_json,
@@ -1644,6 +1648,183 @@ class GloveSuppressionTests(unittest.TestCase):
             other = self._jewelry(json.loads(js)).get("other_jewelry", "")
             self.assertNotIn("ring", other, f"seed {seed}")
             self.assertNotIn("finger", other, f"seed {seed}")
+
+
+class PoseGrammarTests(unittest.TestCase):
+    """Every pose value must complete the "{subject} is …" frame the prose uses.
+
+    Three values silently broke this until 0.66.0 ("She is arms relaxed at the
+    sides."), all by opening with a bare noun. A value is acceptable when it opens
+    with a present participle ("standing naturally"), a past participle ("perched on
+    the edge of a seat"), or a preposition introducing a noun ("in a confident power
+    pose").
+
+    The past-participle set is an explicit allowlist rather than a heuristic: there
+    is no reliable way to tell "perched" (a verb) from "arms" (a noun) by shape, and
+    an explicit list makes adding a pose a deliberate decision instead of a silent
+    one. Adding a new past-participle pose means adding its opening word here.
+    """
+
+    #: Past participles that complete "{subject} is ..." without an -ing form.
+    _PAST_PARTICIPLES = frozenset({"perched"})
+    #: Prepositional openings that introduce a noun phrase.
+    _PREPOSITIONAL = ("in a ",)
+
+    def test_every_pose_completes_the_subject_is_frame(self):
+        for gendered in ("female_options", "male_options"):
+            for pose in FIELD_DEFINITIONS["pose"][gendered]:
+                with self.subTest(pose=pose):
+                    first = pose.split()[0]
+                    ok = (
+                        first.endswith("ing")
+                        or first in self._PAST_PARTICIPLES
+                        or pose.startswith(self._PREPOSITIONAL)
+                    )
+                    self.assertTrue(
+                        ok,
+                        f"pose {pose!r} does not read after '{{subject}} is ...' - a "
+                        f"pose must open with a participle or a preposition, never a "
+                        f"bare noun (see the pose field comment in data/fields.py)",
+                    )
+
+    def test_no_pose_uses_a_gendered_pronoun(self):
+        # The field comment requires "a hand", never "their/his/her hand".
+        for gendered in ("female_options", "male_options"):
+            for pose in FIELD_DEFINITIONS["pose"][gendered]:
+                for pronoun in (" his ", " her ", " their ", " its "):
+                    self.assertNotIn(pronoun, f" {pose} ", f"pose {pose!r}")
+
+
+class PoseFamilyTests(unittest.TestCase):
+    """The 0.66.0 gesture split must not move a single pose's probability.
+
+    Splitting a family re-weights its variants unless each sub-family's weight is
+    proportional to its variant count. This pins the arithmetic against the
+    pre-split baseline so a future weight tweak cannot silently bias the field.
+    """
+
+    #: POSE_FAMILIES exactly as it stood at 0.65.0, before the gesture split.
+    _BASELINE = {
+        "standing": (5, 7), "seated": (5, 7), "leaning": (1, 3), "motion": (1, 3),
+        "gesture": (4, 6), "looking": (2, 4),
+    }
+
+    @staticmethod
+    def _marginals(families):
+        """value -> P(value) for a {name: (weight, variants)} style mapping."""
+        total = sum(weight for weight, _ in families.values())
+        return {
+            value: (weight / total) / len(variants)
+            for weight, variants in families.values()
+            for value in variants
+        }
+
+    def test_split_preserves_every_pose_probability(self):
+        baseline_families = {
+            name: (weight, [f"{name}-{i}" for i in range(count)])
+            for name, (weight, count) in self._BASELINE.items()
+        }
+        baseline = self._marginals(baseline_families)
+        current = self._marginals(
+            {name: (fam["weight"], fam["variants"]) for name, fam in POSE_FAMILIES.items()}
+        )
+        # Same number of poses, and each still carries its old share.
+        self.assertEqual(len(current), len(baseline))
+        # Every pre-split gesture value sat at exactly 1/27; so must all three
+        # sub-families after the split.
+        for family in ("gesture", "gesture_garment", "gesture_hair"):
+            for value in POSE_FAMILIES[family]["variants"]:
+                self.assertAlmostEqual(current[value], 1 / 27, places=12, msg=value)
+        # And the untouched families are byte-for-byte where they were.
+        for family in ("standing", "seated", "leaning", "motion", "looking"):
+            weight, count = self._BASELINE[family]
+            expected = (weight / sum(w for w, _ in self._BASELINE.values())) / count
+            for value in POSE_FAMILIES[family]["variants"]:
+                self.assertAlmostEqual(current[value], expected, places=12, msg=value)
+
+    def test_probabilities_sum_to_one(self):
+        current = self._marginals(
+            {name: (fam["weight"], fam["variants"]) for name, fam in POSE_FAMILIES.items()}
+        )
+        self.assertAlmostEqual(sum(current.values()), 1.0, places=12)
+
+    def test_dependent_pose_sets_are_whole_families(self):
+        # Partial-family exclusion is the documented bias trap: the family keeps its
+        # full weight and concentrates it on the survivors.
+        self.assertEqual(HAIR_DEPENDENT_POSES, frozenset(POSE_FAMILIES["gesture_hair"]["variants"]))
+        self.assertEqual(
+            GARMENT_DEPENDENT_POSES, frozenset(POSE_FAMILIES["gesture_garment"]["variants"])
+        )
+
+    def test_dependent_poses_are_real_field_options(self):
+        options = set(FIELD_DEFINITIONS["pose"]["female_options"])
+        self.assertTrue((HAIR_DEPENDENT_POSES | GARMENT_DEPENDENT_POSES) <= options)
+
+
+class PerformablePoseTests(unittest.TestCase):
+    """A character without hair / a garment never draws a pose that needs one."""
+
+    def _pool(self):
+        return list(FIELD_DEFINITIONS["pose"]["female_options"])
+
+    def test_masked_character_drops_hair_pose(self):
+        got = _performable_poses(self._pool(), {}, True, False, False)
+        self.assertFalse(HAIR_DEPENDENT_POSES & set(got))
+
+    def test_hooded_character_drops_hair_pose(self):
+        got = _performable_poses(self._pool(), {}, False, False, True)
+        self.assertFalse(HAIR_DEPENDENT_POSES & set(got))
+
+    def test_bald_hair_length_drops_hair_pose(self):
+        got = _performable_poses(self._pool(), {"hair_length": "bald"}, False, False, False)
+        self.assertFalse(HAIR_DEPENDENT_POSES & set(got))
+
+    def test_absent_hair_length_drops_hair_pose(self):
+        # The Cosplayer node's bald route locks the scalp fields absent, not "bald".
+        got = _performable_poses(self._pool(), {"hair_length": "None"}, False, False, False)
+        self.assertFalse(HAIR_DEPENDENT_POSES & set(got))
+
+    def test_covers_body_drops_garment_poses(self):
+        got = _performable_poses(
+            self._pool(), {"hair_length": "long"}, False, True, False
+        )
+        self.assertFalse(GARMENT_DEPENDENT_POSES & set(got))
+        # Hair is visible here, so the hair gesture must survive.
+        self.assertTrue(HAIR_DEPENDENT_POSES & set(got))
+
+    def test_auto_detected_shell_drops_garment_poses(self):
+        # A plate-armour outfit is a shell even with no covers_body flag set.
+        resolved = {"hair_length": "long",
+                    "outfit_description": "polished silver plate armor over a white tabard"}
+        got = _performable_poses(self._pool(), resolved, False, False, False)
+        self.assertFalse(GARMENT_DEPENDENT_POSES & set(got))
+
+    def test_ordinary_character_keeps_every_pose(self):
+        resolved = {"hair_length": "long", "outfit_description": "a flowing red sundress"}
+        got = _performable_poses(self._pool(), resolved, False, False, False)
+        self.assertEqual(got, self._pool())
+
+    def test_fully_covered_creature_drops_both(self):
+        got = _performable_poses(self._pool(), {"hair_length": "None"}, True, True, True)
+        self.assertFalse((HAIR_DEPENDENT_POSES | GARMENT_DEPENDENT_POSES) & set(got))
+        self.assertTrue(got, "pool must never be emptied")
+
+    def test_moogle_never_runs_a_hand_through_its_hair(self):
+        # The reported bug, end to end through the real Cosplayer entry.
+        for seed in range(60):
+            flat = _parse_archetype_json(build_cosplayer_json("Moogle", seed))
+            flat.pop(_COSPLAY_LABEL_KEY, None)
+            covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+            covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+            covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+            locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+            prose, _ = generate_character(
+                seed, "Any", locked, covers_face=covers_face, covers_body=covers_body,
+                covers_hair=covers_hair,
+            )
+            self.assertNotIn("through the hair", prose, f"seed {seed}")
+            self.assertNotIn("in pockets", prose, f"seed {seed}")
+            self.assertNotIn("the collar", prose, f"seed {seed}")
 
 
 class CoversBodyTests(unittest.TestCase):
