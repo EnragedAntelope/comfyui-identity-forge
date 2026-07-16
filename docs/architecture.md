@@ -99,6 +99,24 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   checks **every** `FIELD_FAMILIES` entry partitions its field's options exactly. New `hair_style`
   variants must also be slotted into the relevant `data/constraints.py` length lists
   (`_LONG_HAIR_STYLES`, the pixie exclusion) so they're culled on short hair like their siblings.
+- **`shot_type` is camera-only (0.63.0 doctrine).** Every value describes the *camera* —
+  distance, height, subject orientation, or lens — and never introduces scene content. Values
+  that placed an object or a second person in frame were removed (`shot through a doorway /
+  window / foliage`, `reflected in a mirror / shop window`, and `over-the-shoulder perspective`,
+  which in film grammar puts the camera behind *another person's* shoulder and renders an
+  unwanted second figure). **Keep it that way**: a "shot through X" value re-introduces X into
+  every scene it lands in, and is also what forced location↔shot coherence rules. Because the
+  surviving values imply neither indoors nor outdoors, the *only* location rule needed is the
+  void-backdrop pair in `constraints.py` (`_VOID_BACKDROPS` × `_ENVIRONMENT_SHOTS`): a seamless
+  sweep has no environment to establish or reveal. `location` is that rule's **trigger**, not its
+  target, so the picked place always stands and the camera adapts; a *locked* environment shot
+  instead re-rolls the location via the engine's contrapositive repair. Under
+  `location_setting = "Studio / solid backdrop"` the location pool is exactly the four void
+  backdrops, so a locked environment shot has nowhere to move and degrades to warn-and-keep (the
+  lock wins) — expected, not a bug. `shot_type` is deliberately **not** in `FIELD_FAMILIES` and
+  carries no `weights`, so exclusion re-picks stay flat-uniform. Most values leave orientation
+  unstated, which text-to-image models render frontally — a retained, intentional bias toward
+  facing the camera (only 2 of 26 are true rear views).
 - **Per-value draw weights (`weights` / `male_weights`).** A field definition may carry two
   draw-weight maps consumed by the shared `_weighted_choice(field_def, pool, gender, rng)` helper.
   `"weights": {value: number}` biases the draw for **every** gender; `"male_weights": {value: number}`

@@ -109,6 +109,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "light chestnut", "hair_length": "long",
                       "hair_style": "French braid", "eye_color": "bright green"},
         "physique": {"body_type": "slender", "height": "short", "skin_tone": "fair"},
+        "prop": "a woven wicker basket brimming with yellow and white flowers",
     },
     "Tifa Lockhart": {
         "franchise": "Final Fantasy",
@@ -127,6 +128,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "medium brown"},
         "physique": {"body_type": "athletic", "height": "petite", "skin_tone": "fair"},
+        "prop": "an oversized four-pointed folding shuriken",
     },
     "Lightning": {
         "franchise": "Final Fantasy",
@@ -136,6 +138,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "rose gold", "hair_length": "slightly past shoulders",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a gunblade - a slim sword whose hilt is built into a pistol grip",
     },
     "Yuna": {
         "franchise": "Final Fantasy",
@@ -145,6 +148,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "long",
                       "hair_style": "loose braids"},
         "physique": {"body_type": "slender", "height": "short", "skin_tone": "fair"},
+        "prop": "a tall summoner's staff crowned with delicate looping ornaments",
     },
     "Asuka Langley Soryu": {
         "franchise": "Neon Genesis Evangelion",
@@ -428,6 +432,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "raven black", "hair_length": "long",
                       "hair_style": "low ponytail"},
         "physique": {"body_type": "slender", "height": "tall"},
+        "prop": "a long purple sniper rifle with a heavy scope",
     },
     "Pharah": {
         "franchise": "Overwatch",
@@ -460,6 +465,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "electric blue", "hair_length": "hip length",
                       "hair_style": "loose braids"},
         "physique": {"body_type": "very slim", "height": "short", "skin_tone": "pale"},
+        "prop": "an oversized shark-shaped rocket launcher with a toothy painted grin",
     },
 
     # --- Star Wars --------------------------------------------------------
@@ -843,6 +849,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "near black", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "green"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "olive"},
+        "prop": "a long coiled black leather bullwhip",
     },
     "Zatanna Zatara": {
         "franchise": "DC",
@@ -962,6 +969,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "chestnut", "hair_length": "long",
                       "hair_style": "low ponytail", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "an open hardcover book, held in both hands",
     },
     "Aurora": {
         "franchise": "Sleeping Beauty",
@@ -991,6 +999,7 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "silky and glossy",
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "porcelain"},
+        "prop": "a single glossy red apple",
     },
     "Jasmine": {
         "franchise": "Aladdin",
@@ -1032,6 +1041,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "golden blonde", "hair_length": "hip length",
                       "hair_style": "crown braid", "eye_color": "bright green"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
+        "prop": "a heavy cast-iron frying pan",
     },
     "Tiana": {
         "franchise": "The Princess and the Frog",
@@ -1083,6 +1093,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "warm brown", "hair_length": "long",
                       "hair_texture": "thick and voluminous", "eye_color": "warm hazel"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "a stack of heavy leather-bound spellbooks hugged to the chest",
     },
     "Katniss Everdeen": {
         "franchise": "The Hunger Games",
@@ -1430,6 +1441,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "hip length",
                       "hair_style": "worn down"},
         "physique": {"body_type": "slim", "height": "tall"},
+        "prop": "a bass guitar shaped like a battle axe",
     },
     "Daphne Blake": {
         "franchise": "Scooby-Doo",
@@ -1517,6 +1529,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "slightly past shoulders",
                       "hair_style": "low ponytail", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
+        "prop": "a handheld portal device - a white and grey gun-shaped tool with a circular "
+                "emitter ringed in orange and blue light",
     },
 
     # --- Additional Marvel / DC women -------------------------------------
@@ -1601,6 +1615,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_texture": "wavy", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "a chrome handheld microphone",
     },
     "Polaris": {
         "franchise": "Marvel",
@@ -1619,6 +1634,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "raven black", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+        "prop": "a Mega Rod - a long dark metal staff banded with gold and crackling with "
+                "energy at the tip",
     },
     "Cheetah": {
         "franchise": "DC",
@@ -1833,6 +1850,7 @@ COSPLAYERS: dict[str, dict] = {
                    "emblem on the chest",
         "mask": "a small mask with two short devil horns",
         "physique": {"body_type": "lean", "height": "average height"},
+        "prop": "a red billy club with a short cable paid out from its handle",
     },
     "Punisher": {
         "franchise": "Marvel",
@@ -2128,6 +2146,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a DL-44 heavy blaster pistol with a long barrel and a scoped sight",
     },
     "Darth Vader": {
         "franchise": "Star Wars",
@@ -2210,6 +2229,8 @@ COSPLAYERS: dict[str, dict] = {
                    "and a brown half-cape",
         "mask": "a smooth silver T-visor helmet",
         "physique": {"body_type": "athletic", "height": "average height"},
+        "prop": "an Amban phase-pulse blaster - a long rifle with a forked prong at the muzzle "
+                "and a slim scope",
     },
     "Darth Maul": {
         "bald": True,
@@ -2229,6 +2250,8 @@ COSPLAYERS: dict[str, dict] = {
                    "all-over long shaggy brown fur over the body",
         "mask": "a long-muzzled Wookiee face covered in shaggy brown fur",
         "physique": {"body_type": "athletic", "height": "very tall"},
+        "prop": "a bowcaster - a heavy crossbow-shaped blaster with a thick curved limb and a "
+                "worn wooden stock",
     },
     "Emperor Palpatine": {
         "franchise": "Star Wars",
@@ -2282,6 +2305,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "brown"},
+        "prop": "a bat'leth - a broad crescent-shaped Klingon blade with hand grips along its "
+                "inner spine",
     },
 
     # --- Final Fantasy (male) ---------------------------------------------
@@ -2352,6 +2377,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "shoulder length",
                       "hair_style": "low ponytail", "facial_hair": "short beard"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a huge single-edged katana with a bandaged grip, carried one-handed",
     },
 
     # --- Street Fighter (male) --------------------------------------------
@@ -2492,6 +2518,7 @@ COSPLAYERS: dict[str, dict] = {
                    "chest",
         "mask": "a horned skull-faced helmet",
         "physique": {"body_type": "athletic", "height": "very tall"},
+        "prop": "an enormous ornate war hammer with a broad flanged head",
     },
     "Reptile": {
         "franchise": "Mortal Kombat",
@@ -2564,6 +2591,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "silver", "hair_length": "very short",
                       "hair_style": "windswept", "eye_color": "dark gray"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "a small orange paperback book, held open in one hand",
     },
     "Monkey D. Luffy": {
         "franchise": "One Piece",
@@ -2830,6 +2858,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
                       "hair_style": "locs", "facial_hair": "goatee", "eye_color": "dark brown"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "tan"},
+        "prop": "a battered brass compass with a hinged lid",
     },
     "Indiana Jones": {
         "franchise": "Movie",
@@ -3239,6 +3268,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "facial_hair": "goatee", "eye_color": "amber"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "light"},
+        "prop": "a long nodachi in a dark fur-wrapped scabbard",
     },
     "Boa Hancock": {
         "franchise": "One Piece",
@@ -3279,6 +3309,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "light blonde", "hair_length": "very long",
                       "hair_style": "high ponytail", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "a large steel wrench",
     },
     "Riza Hawkeye": {
         "franchise": "Fullmetal Alchemist",
@@ -3410,6 +3441,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "hair_style": "blunt bangs", "eye_color": "deep blue"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a giant red half-scissor blade with a looped handle",
     },
     "Satsuki Kiryuin": {
         "franchise": "Kill la Kill",
@@ -3535,6 +3567,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "warm hazel"},
         "physique": {"body_type": "slim", "height": "short", "skin_tone": "light"},
+        "prop": "a Poke Ball - a palm-sized sphere, red on the top half and white on the "
+                "bottom, split by a black band with a round central button",
     },
     "Misty": {
         "franchise": "Pokemon",
@@ -4072,6 +4106,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "raven black", "hair_length": "very long",
                       "hair_texture": "wavy", "eye_color": "emerald"},
         "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "warm tan"},
+        "prop": "a jingling hand tambourine with bright ribbons",
     },
     "Megara": {
         "franchise": "Hercules",
@@ -4106,6 +4141,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "warm tan"},
+        "prop": "a battered golden oil lamp with a long curved spout",
     },
     "Hercules": {
         "franchise": "Hercules",
@@ -4223,6 +4259,7 @@ COSPLAYERS: dict[str, dict] = {
                    "pumpkin bombs, riding a bat-winged glider",
         "mask": "a leering green goblin mask with pointed ears",
         "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a jack-o'-lantern pumpkin bomb, an orange grinning gourd with a lit fuse",
     },
     "Doctor Octopus": {
         "franchise": "Marvel",
@@ -4368,6 +4405,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "eye_color": "blue-gray"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light"},
+        "prop": "a scarred silver dollar, one face polished bright and the other burned and "
+                "pitted, held ready to flip between the fingers",
     },
     "The Riddler": {
         "franchise": "DC",
@@ -4517,6 +4556,7 @@ COSPLAYERS: dict[str, dict] = {
         "size_scale": "giant",
         "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "a heavy steel hook trailing a length of thick chain",
     },
     "Giganta": {
         "franchise": "DC",
@@ -4676,6 +4716,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "amber"},
         "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "an oversized revolver with an enormous cylinder",
     },
     "He-Man": {
         "franchise": "Masters of the Universe",
@@ -4734,19 +4775,36 @@ COSPLAYERS: dict[str, dict] = {
     "Shadowheart": {
         "franchise": "Baldur's Gate 3",
         "gender": "Female",
-        "costume": "dark studded leather cleric armor bearing a silver teardrop symbol "
-                   "of Shar",
-        "signature": {"hair_color": "near black", "hair_length": "chin length bob",
-                      "eye_color": "green"},
+        # Half-elf cleric of Shar. Canon corrections (0.63.0): the hair is a LONG
+        # ponytail segmented by silver rings (not a chin-length bob), and Shar's
+        # holy symbol is a black disc (not a silver teardrop). The light-green eyes
+        # are speckled yellow, which the eye_color pool cannot express -> free-text
+        # "eyes" override (also locks eye_shape absent, so no stray shape word).
+        "costume": "dark studded leather cleric armor with a silver circlet worn above the "
+                   "fringe displaying the black disc holy symbol of Shar, an argent hairpiece "
+                   "at the base of the ponytail, delicately pointed half-elf ears, and a thin "
+                   "scar running from the nose to the right cheek",
+        "eyes": "light green speckled with yellow",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "low ponytail", "eye_makeup": "smoky black"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
     "Lae'zel": {
         "franchise": "Baldur's Gate 3",
         "gender": "Female",
-        "costume": "spiked Githyanki plate armor over uniform, all-over pale green mottled skin, "
-                   "with tightly drawn-back hair",
-        "signature": {"hair_color": "near black", "hair_length": "very short",
-                      "hair_style": "top knot"},
+        # Githyanki. Canon corrections (0.63.0): the skin is yellowish green (was
+        # "pale green mottled"), and the hair is straight auburn at shoulder length
+        # with a few silver-adorned side braids (was a near-black very-short top
+        # knot). Ochre eyes have no eye_color pool value -> free-text override.
+        # The "uniform, all-over" marker is what auto-triggers the skin-native
+        # suppression of the randomized human skin_tone.
+        "costume": "spiked Githyanki plate armor over uniform, all-over yellowish green skin, "
+                   "with dark markings beneath the eyes and across the cheeks and neck, a "
+                   "flattened nose, long pointed ears ridged along their back edges, and a few "
+                   "silver-adorned braids running along one side of the hair",
+        "eyes": "ochre",
+        "signature": {"hair_color": "auburn", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "hair_texture": "pin straight"},
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Astarion": {
@@ -4975,6 +5033,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dirty blonde", "hair_length": "very long",
                       "hair_texture": "wavy", "eye_color": "pale blue"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+        "prop": "a magazine held open upside-down",
     },
 
     # --- Star Wars (more) ------------------------------------------------
@@ -4986,6 +5045,8 @@ COSPLAYERS: dict[str, dict] = {
                    "exposed organic sac, with four arms and a tattered cape",
         "mask": "a bone-white skull-like cyborg faceplate with narrow reptilian eyes",
         "physique": {"body_type": "lean", "height": "very tall"},
+        "prop": "four lit lightsabers, two blue and two green, fanned out in four splayed "
+                "mechanical hands",
     },
     "Count Dooku": {
         "franchise": "Star Wars",
@@ -6683,6 +6744,7 @@ COSPLAYERS: dict[str, dict] = {
         "size_scale": "giant",
         "scale_prose": "enormously large and rotund",
         "physique": {"body_type": "plump", "height": "very tall"},
+        "prop": "a small closed umbrella held upright in one huge paw",
     },
 
     # === Monster High / indie comics =====================================
@@ -6795,6 +6857,7 @@ COSPLAYERS: dict[str, dict] = {
                    "tall spiky pointed hair, over smooth, flawless bright yellow skin",
         "signature": {"hair_color": "yellow", "hair_length": "short pixie"},
         "physique": {"body_type": "petite and slim", "height": "very petite"},
+        "prop": "a brass baritone saxophone",
     },
     "Marge Simpson": {
         "franchise": "The Simpsons",
@@ -7403,14 +7466,23 @@ COSPLAYERS: dict[str, dict] = {
         # Twi'lek: humanoid face stays visible, but the lekku replace scalp hair
         # (covers_hair) and the pale waxy skin must not be overridden by a random
         # human skin tone (body_paint suppresses the Body skin_tone).
-        "costume": "long dark layered robes, with pale waxy skin and two long tapering "
-                   "head-tails coiling over the shoulders",
-        "eyes": "sunken reddish",
-        "signature": {},
+        # ROTJ look per the 501st Costume Reference Library: every canon hue is
+        # dark/muted, which is why it reads as "layered dark robes" on screen --
+        # a deep blue floor-length inner robe with matching blue fingerless gloves
+        # under a tiered dark brown outer robe, plus a weathered grey chest plate
+        # and bracer. Canon height is 1.8 m -> "average height" (was "tall").
+        "costume": "layered dark robes - a floor-length deep blue inner robe with matching "
+                   "deep blue fingerless gloves beneath a tiered, floor-length dark brown "
+                   "outer robe - with a weathered grey chest plate and matching grey wrist "
+                   "bracer, pale waxy mottled skin, pointed ears, sharp snaggly teeth, long "
+                   "pale pointed claws, and two long tapering head-tails coiling over the "
+                   "shoulders",
+        "eyes": "sunken and glowing reddish pink",
+        "signature": {"posture": "slouched"},
         "covers_hair": True,
         "body_paint": True,
         "skin": "pale waxy",  # no "coat of" clause for the anchor regex to read
-        "physique": {"body_type": "slim", "height": "tall"},
+        "physique": {"body_type": "slim", "height": "average height"},
     },
     "Greedo": {
         "franchise": "Star Wars",
@@ -8304,6 +8376,7 @@ COSPLAYERS: dict[str, dict] = {
         "eyes": "large round white",
         "signature": {"facial_hair": "five o'clock shadow"},
         "physique": {"body_type": "plus size", "height": "average height"},
+        "prop": "a pink-frosted donut covered in rainbow sprinkles",
     },
     "Bart Simpson": {
         "franchise": "The Simpsons",
@@ -8313,6 +8386,7 @@ COSPLAYERS: dict[str, dict] = {
         "eyes": "large round white",
         "signature": {"hair_color": "yellow", "hair_length": "very short"},
         "physique": {"body_type": "slim", "height": "petite"},
+        "prop": "a wooden slingshot with a rubber band",
     },
     "Rick Sanchez": {
         "franchise": "Rick and Morty",
@@ -8510,6 +8584,7 @@ COSPLAYERS: dict[str, dict] = {
                    "all-over coat of golden-yellow fur",
         "mask": "a round golden-yellow bear face with small black eyes",
         "physique": {"body_type": "plump", "height": "short"},
+        "prop": "a round earthenware honey pot",
     },
     "Tigger": {
         "franchise": "Winnie the Pooh",
@@ -9137,6 +9212,7 @@ COSPLAYERS: dict[str, dict] = {
                    "band, a mismatched Victorian tailcoat over a patterned waistcoat, a "
                    "large polka-dot bow tie, and striped trousers",
         "physique": {"body_type": "slim", "height": "short"},
+        "prop": "a delicate porcelain teacup and saucer",
     },
     "Mad Hatter (Jervis Tetch)": {
         "franchise": "DC",
@@ -9509,20 +9585,30 @@ COSPLAYERS: dict[str, dict] = {
     "Brandish": {
         "franchise": "Fairy Tail",
         "gender": "Female",
+        # Canon corrections (0.63.0): the head ornaments are BLUE crosses (were
+        # purple) and the earrings are GOLD (were silver).
+        # size_scale (0.63.0, explicit user decision): Brandish is canonically a
+        # normal-sized woman whose Command T magic resizes matter -- by the roster's
+        # iconic-state doctrine (Giganta/Mt. Lady grow -> giant; Wasp/Atom shrink ->
+        # tiny) she would NOT be flagged. The user asked for her enlarged form to be
+        # the rendered look, so she is flagged giant for every look. size_scale is a
+        # shared key, so this deliberately applies to the alt costume too.
         "costume": "a gold bikini under a long golden coat patterned with purple indented flowers "
-                   "and trimmed with a purple fur collar, two purple cross-shaped ornaments set at "
-                   "the sides of the head like horns, and silver cross earrings, with a purple "
+                   "and trimmed with a purple fur collar, two blue cross-shaped ornaments set at "
+                   "the sides of the head like horns, and gold cross earrings, with a purple "
                    "cross-shaped Empire tattoo on the outer right thigh",
         "costumes": [
             # FLAGGED (uncertain): the 'green high-slit skirt' look.
             "a revealing green outfit with a cropped top and a flowing floor-length skirt slit high "
-            "to the hip, and silver cross earrings, exposing a purple cross-shaped Empire tattoo on "
+            "to the hip, and gold cross earrings, exposing a purple cross-shaped Empire tattoo on "
             "the outer right thigh",
         ],
         "eyes": "green",
+        "size_scale": "giant",
+        "scale_prose": "colossal and fifty feet tall",
         "signature": {"hair_color": "emerald green", "hair_length": "chin length bob",
                       "hair_style": "blunt bangs"},
-        "physique": {"body_type": "voluptuous", "height": "average height", "skin_tone": "fair"},
+        "physique": {"body_type": "voluptuous", "height": "very tall", "skin_tone": "fair"},
     },
 
     # === v0.57.0 expansion: Inhumans + Marvel/DC + indie heroines =========
@@ -9744,6 +9830,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "long",
                       "hair_texture": "wavy", "eye_color": "dark brown"},
         "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "brown"},
+        "prop": "a bat'leth - a broad crescent-shaped Klingon blade with hand grips along its "
+                "inner spine",
     },
     "Cardassian": {
         "franchise": "Star Trek",
@@ -10380,6 +10468,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_length": "bald", "facial_hair": "clean shaven",
                       "eye_color": "pale blue"},
         "physique": {"body_type": "plump", "height": "average height", "skin_tone": "very pale"},
+        "prop": "a glowing incandescent light bulb, lit with no visible power source",
     },
 
     # --- Darkstalkers (Morrigan / Lilith already present) ----------------
@@ -11013,6 +11102,291 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "dark brown"},
         "physique": {"body_type": "average", "height": "short", "skin_tone": "brown"},
     },
+
+    # === v0.63.0 expansion: tiny-scale characters ========================
+    # Every scale_prose here is a concrete measurement, never a comparison object
+    # ("thumb-sized", "mouse-sized"): a t2i model renders the reference object.
+    "Thumbelina": {
+        "franchise": "Fairy Tales",
+        "gender": "Female",
+        # Andersen (1835): "no taller than your thumb", hair that "shone like fine
+        # silk", a dress of petals. Hair COLOUR is deliberately left unlocked --
+        # Andersen never specifies one, so it randomizes.
+        "costume": "a delicate dress made of overlapping flower petals in soft pink and violet, "
+                   "with bare feet, on a tiny figure barely an inch tall",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and barely an inch tall",
+        "signature": {"hair_length": "very long", "hair_texture": "silky and glossy"},
+        "physique": {"body_type": "slim", "height": "very petite", "skin_tone": "fair"},
+    },
+    "Ernie Keebler": {
+        "franchise": "Keebler",
+        "gender": "Male",
+        "costume": "a green suit jacket over a red vest and a white shirt with a yellow tie, "
+                   "yellow trousers, red socks, floppy brown shoes, a red pointed elf hat, and "
+                   "large pointed elf ears, on a tiny figure only a few inches tall",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and only a few inches tall",
+        "signature": {"hair_color": "white", "hair_length": "very short",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "plump", "height": "very petite", "skin_tone": "fair"},
+    },
+    "Captain Olimar": {
+        "franchise": "Pikmin",
+        "gender": "Male",
+        # Hocotatian, 3.9 cm tall suited (~1.5 in). The helmet is TRANSPARENT, so the
+        # face stays visible (no covers_face) -- but it encloses the head, so
+        # covers_hair stops random hair sprouting through it; his canonical three
+        # short hairs ride in the costume prose instead. The suit is clothing, not a
+        # non-human body, so no covers_body (the Black Noir rule, 0.62.0).
+        "costume": "a beige spacesuit with a red life-support backpack and red gloves, a round "
+                   "transparent bubble helmet with a slim antenna tipped by a glowing red beacon "
+                   "light, a large bulbous nose, pointed ears, and three short brown hairs, on a "
+                   "tiny figure barely two inches tall",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and barely two inches tall",
+        "covers_hair": True,
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very petite", "skin_tone": "fair"},
+    },
+    "Arrietty Clock": {
+        "franchise": "Studio Ghibli",
+        "gender": "Female",
+        # The Secret World of Arrietty (2010), roughly four inches tall. The red
+        # clothespin clipped in her hair is the title motif - a thing "borrowed"
+        # from the humans - and doubles as the tie for her ponytail.
+        "costume": "a red dress with a nicked collar and short sleeves, brown ankle boots, and a "
+                   "small red wooden clothespin clipped into the hair as a barrette holding the "
+                   "ponytail, on a tiny figure only a few inches tall",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and only a few inches tall",
+        "signature": {"hair_color": "chestnut", "hair_length": "long",
+                      "hair_style": "low ponytail", "hair_texture": "wavy",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "very petite", "skin_tone": "fair"},
+    },
+    "Crysta": {
+        "franchise": "FernGully",
+        "gender": "Female",
+        # FernGully: The Last Rainforest (1992). Canonical spelling is "Crysta".
+        # Mint-green eyes are outside the eye_color pool -> free-text override.
+        "costume": "a red leaf-like tube top and a short matching red skirt, translucent "
+                   "iridescent fairy wings, and delicately pointed ears, on a tiny fairy-sized "
+                   "figure mere inches tall",
+        "eyes": "mint green",
+        "size_scale": "tiny",
+        "scale_prose": "fairy-sized and mere inches tall",
+        "signature": {"hair_color": "near black", "hair_length": "short pixie",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "slim", "height": "very petite", "skin_tone": "fair"},
+    },
+    "The Great Gazoo": {
+        "franchise": "The Flintstones",
+        "gender": "Male",
+        # Two-foot green alien. Face stays visible (green skin, long nose), so no
+        # covers_face; the helmet encloses the scalp -> covers_hair. The
+        # "smooth, flawless <colour> skin" marker auto-triggers skin-native
+        # suppression of the randomized human skin_tone (no body_paint key needed).
+        "costume": "a green uniform with a matching cape, gloves, and boots, and an oversized "
+                   "green helmet with two slender antennae, with smooth, flawless green skin and "
+                   "a long pointed nose, on a diminutive figure barely two feet tall",
+        "size_scale": "tiny",
+        "scale_prose": "diminutive and barely two feet tall",
+        "covers_hair": True,
+        "signature": {},
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Fievel Mousekewitz": {
+        "franchise": "An American Tail",
+        "gender": "Male",
+        # A mouse: the fur IS the body, so covers_body is mandatory or the engine
+        # hangs randomized Clothing-group accessories/bags/jewelry on him (0.59.0),
+        # and the animal head goes in `mask` + covers_face (the Splinter pattern).
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a small upright mouse with an even, all-over coat of dark brown fur, lighter "
+                   "brown across the face, chest, and belly, and a long thin tail, wearing a red "
+                   "long-sleeved tunic with a cloth sash at the waist and sleeves hanging past "
+                   "the hands, and blue trousers, on a tiny figure only a few inches tall",
+        "mask": "a young mouse head with a rounded snout, whiskers, large round ears, and big "
+                "dark eyes, under an oversized blue Russian kasket cap",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and only a few inches tall",
+        "prop": "a hobo bindle - a red polka-dotted cloth bundle knotted around the end of a "
+                "wooden stick and carried over one shoulder",
+        "physique": {"body_type": "slim", "height": "very petite"},
+    },
+    "Marvin the Martian": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        # His head is a featureless black sphere with only eyes. That is the Allen
+        # the Alien pattern (0.61.0): the head goes in `mask` with covers_face so the
+        # randomized human face/hair never renders under it, even though he wears no
+        # literal mask. The suit is clothing -> no covers_body.
+        "covers_face": True,
+        "costume": "a red long-sleeved suit with a green metallic Roman-style pleated skirt, "
+                   "white gloves, and black-and-white high-top basketball sneakers, on a "
+                   "diminutive figure barely two feet tall",
+        "mask": "a smooth, featureless black spherical head showing only two round white eyes, "
+                "topped by a green Roman centurion's helmet with a tall push-broom bristle crest",
+        "size_scale": "tiny",
+        "scale_prose": "diminutive and barely two feet tall",
+        "prop": "an Illudium Q-36 Explosive Space Modulator - a small ridged metallic ray-gun "
+                "with a bulbous emitter and a slender barrel",
+        "physique": {"body_type": "slim", "height": "very petite"},
+    },
+
+    # === v0.63.0 expansion: giant-scale characters =======================
+    # A fully non-human BODY (fur / metal shell / vessel) needs covers_body or the
+    # engine hangs randomized Clothing-group accessories, bags and jewelry on it
+    # (0.59.0); covers_face alone only drops face/hair/makeup.
+    "The Iron Giant": {
+        "franchise": "The Iron Giant",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a slender fifty-foot robot built from an even, all-over shell of riveted, "
+                   "weathered grey iron plating, with heavy rounded shoulders, articulated "
+                   "segmented limbs, oversized clawed hands, and rocket thrusters set into the "
+                   "soles of the feet",
+        "mask": "a large rounded iron robot head with a hinged jaw, a slim antenna rising from "
+                "the crown, and two big round glowing eyes",
+        "size_scale": "giant",
+        "scale_prose": "colossal and fifty feet tall",
+        "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "King Kong": {
+        "franchise": "King Kong",
+        "gender": "Male",
+        # MonsterVerse scaling (~100 ft), matching our MonsterVerse-scaled Godzilla.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a colossal upright silverback gorilla covered in an even, all-over coat of "
+                   "coarse dark brown-grey fur, with immense slabbed shoulders, a deep barrel "
+                   "chest, tree-thick arms, huge knuckled hands, and old battle scars raked "
+                   "across the chest and forearms",
+        "mask": "a massive gorilla head with a heavy protruding brow, a broad flat nose, a "
+                "jutting jaw with large canines bared, and deep-set amber eyes",
+        "size_scale": "giant",
+        "scale_prose": "colossal and over a hundred feet tall",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Ultraman": {
+        "franchise": "Ultraman",
+        "gender": "Male",
+        # Original 1966 design, canonical height 40 m. The silver-and-red form IS his
+        # body, not a worn suit -> covers_body.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a towering humanoid giant whose body is an even, all-over surface of smooth "
+                   "burnished silver, banded with bold red panels sweeping across the chest, "
+                   "shoulders, arms and legs, with a round chest-mounted color timer disc glowing "
+                   "blue at the sternum",
+        "mask": "a smooth silver head with no mouth, large oval glowing eyes, and a tall "
+                "fin-like crest running front to back over the crown",
+        "size_scale": "giant",
+        "scale_prose": "colossal and over a hundred feet tall",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Atom Smasher": {
+        "franchise": "DC",
+        "gender": "Male",
+        # Albert Rothstein, JSA comics look. Grows to roughly 60 feet. The suit is
+        # clothing and the face is exposed, so no covers_body / covers_face.
+        "costume": "a dark blue full bodysuit with red and silver atomic detailing, a large "
+                   "stylized atom emblem ringed by orbital paths emblazoned across the chest, "
+                   "red gloves and boots, and a close-fitting blue hood-mask framing an open face",
+        "size_scale": "giant",
+        "scale_prose": "colossal and sixty feet tall",
+        "signature": {"hair_color": "bright red", "hair_length": "very short",
+                      "facial_hair": "clean shaven", "eye_color": "bright blue"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Chemo": {
+        "franchise": "DC",
+        "gender": "Male",
+        # A walking chemical vessel, roughly 25 feet. Wholly non-human: the "body" is
+        # a transparent tank of roiling sludge, so covers_face + covers_body.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a towering, roughly man-shaped vessel moulded from an even, all-over shell of "
+                   "thick transparent plastic, filled with roiling luminous toxic sludge in "
+                   "streaked greens, yellows and pinks that slosh visibly inside the torso and "
+                   "limbs, with blocky rigid legs and heavy tank-like arms",
+        "mask": "a simplistic humanoid face moulded into the top of a rounded transparent head, "
+                "with two large circular eyes and a wide lipless mouth serving as a release valve",
+        "size_scale": "giant",
+        "scale_prose": "colossal and twenty five feet tall",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Rubeus Hagrid": {
+        "franchise": "Harry Potter",
+        "gender": "Male",
+        # Half-giant, canonically 11'6" -- the HUGE tier, not building-scale.
+        # The flowery pink umbrella conceals his broken wand: his one iconic held item.
+        "costume": "a long shaggy moleskin overcoat with enormous pockets over a rough waistcoat "
+                   "and heavy boots",
+        "size_scale": "giant",
+        "scale_prose": "giant-sized and nearly twelve feet tall",
+        "prop": "a battered flowery pink umbrella",
+        "signature": {"hair_color": "near black", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous", "facial_hair": "full beard",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Charlotte Smoothie": {
+        "franchise": "One Piece",
+        "gender": "Female",
+        # Longleg tribe, canonically 464 cm (15'3").
+        "costume": "a pink-and-white striped leotard with sleeves gathered at the elbows, an "
+                   "enormous yellow scarf flowing almost to the ground, an oversized floppy "
+                   "beret-like cap, and long dark knee-high boots with decorative trim at the "
+                   "cuffs, on notably long legs and disproportionately large hands, with silver "
+                   "lipstick on prominent lips and a long sweep of bangs covering the right eye",
+        "size_scale": "giant",
+        "scale_prose": "giant-sized and over fifteen feet tall",
+        "prop": "a huge broad-bladed sword",
+        # Silver lipstick and the right-eye bangs have no field that can express
+        # them (no metallic lips_makeup value, no bangs-over-one-eye hair_style),
+        # so they ride in the costume prose - the markings/tattoos route (0.61.0).
+        # lips_makeup is pinned to an *absent* value so the randomizer cannot roll
+        # "classic red" and contradict the silver lipstick in the costume text;
+        # absent values render nothing, leaving the costume prose to speak.
+        "signature": {"hair_color": "white", "hair_length": "lower back",
+                      "hair_texture": "wavy", "eye_color": "bright blue",
+                      "lips_makeup": "bare natural lips"},
+        "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "warm tan"},
+    },
+    "Paul Bunyan": {
+        "franchise": "Folklore",
+        "gender": "Male",
+        "costume": "a red-and-black buffalo-plaid flannel shirt with the sleeves rolled to the "
+                   "elbows, heavy denim dungarees held by wide suspenders, a broad leather belt, "
+                   "and tall laced logging boots",
+        "size_scale": "giant",
+        "scale_prose": "colossal and over thirty feet tall",
+        "prop": "an enormous double-bitted felling axe with a long wooden haft",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "full beard"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Gorilla Grodd": {
+        "franchise": "DC",
+        "gender": "Male",
+        # Telepathic silverback. The mind-control helmet is the requested look (his
+        # DCAU/Silver Age adaptation staple) and rides in `mask` with the ape head.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a hugely muscled upright silverback gorilla covered in an even, all-over coat "
+                   "of coarse near-black fur with a broad saddle of silver-grey across the back, "
+                   "with massive shoulders, a deep chest, and long powerful arms",
+        "mask": "a broad gorilla head with a heavy sloping brow, a wide flat nose, and cold "
+                "intelligent amber eyes, clamped under a fitted metallic mind-control helmet "
+                "ringed with electrodes and a pair of short antennae",
+        "size_scale": "giant",
+        "scale_prose": "enormously tall and hulking",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
 }
 
 
@@ -11053,6 +11427,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The King of Fighters", "Bayonetta", "Divinity: Original Sin", "World of Warcraft",
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
         "Sega", "Namco", "BioShock", "The Last of Us", "Crash Bandicoot", "LittleBigPlanet",
+        "Pikmin",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -11071,9 +11446,10 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
         "Rise of the Guardians", "The Ring", "Ghostbusters", "Edward Scissorhands",
         "Monsters vs. Aliens", "The Boys", "Braveheart", "V for Vendetta",
+        "FernGully", "An American Tail", "The Iron Giant", "King Kong", "Ultraman",
         "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy", "Planters",
         "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",
-        "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo",
+        "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo", "Keebler",
     ),
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",

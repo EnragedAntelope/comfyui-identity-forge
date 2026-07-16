@@ -377,3 +377,30 @@ for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
         "excludes_field": _field, "excludes_values": _excluded,
         "presentation_gated": _field in _PRESENTATION_GATED_FIELDS,
         "reason": f"feminine-coded {_field} is not a male default"})
+
+# --- Setting: a featureless backdrop has no environment ------------------
+# Since 0.63.0 every shot_type describes the camera only, so shot choice is
+# otherwise independent of where the shot happens -- no indoor/outdoor rules are
+# needed. The one exception is the void backdrops: framings that promise to reveal
+# or establish an environment contradict a seamless sweep with nothing in it.
+#
+# ``location`` is the TRIGGER (not the target), so the picked location always
+# stands and the camera adapts to it. A user who *locks* one of these shots gets
+# the engine's contrapositive repair instead: the randomized location re-rolls
+# away from the void backdrops, which is the behaviour you want.
+#
+# "photography studio with backdrop" is deliberately absent: it is a real room
+# (stands, lights, sweep) and reads fine in an establishing or environment shot.
+_VOID_BACKDROPS: list[str] = [
+    "seamless grey studio backdrop", "solid white studio backdrop",
+    "solid black studio backdrop", "chroma-key green screen backdrop",
+]
+_ENVIRONMENT_SHOTS: list[str] = [
+    "extreme wide establishing shot", "full body shot with environment visible",
+]
+for _backdrop in _VOID_BACKDROPS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _backdrop,
+        "excludes_field": "shot_type", "excludes_values": _ENVIRONMENT_SHOTS,
+        "reason": f"a {_backdrop} is a featureless void with no environment to "
+                  f"establish or reveal"})

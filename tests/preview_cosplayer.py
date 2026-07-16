@@ -9,6 +9,7 @@ Examples (run from the repo root)::
     python tests/preview_cosplayer.py "Captain Marvel" --male          # crossplay
     python tests/preview_cosplayer.py "2B" --full --seed 7 --json
     python tests/preview_cosplayer.py "Iron Man" --unmask              # helmet off
+    python tests/preview_cosplayer.py "Indiana Jones" --props          # signature prop on
     python tests/preview_cosplayer.py --random-female --seed 3
     python tests/preview_cosplayer.py --list
 """
@@ -33,11 +34,12 @@ from nodes.identity_forge_cosplayer import (
 
 
 def render(
-    character: str, gender: str, look_level: str, seed: int, mask_mode: str = _MASK_DEFAULT
+    character: str, gender: str, look_level: str, seed: int, mask_mode: str = _MASK_DEFAULT,
+    include_prop: bool = False,
 ) -> tuple[str, str]:
     """Build the cosplay JSON and run it through the IdentityForge engine."""
     flat = _parse_archetype_json(
-        build_cosplayer_json(character, seed, look_level, mask_mode)
+        build_cosplayer_json(character, seed, look_level, mask_mode, include_prop)
     )
     if not flat:
         raise SystemExit(f"No output for {character!r} — unknown name or empty Random pool.")
@@ -67,6 +69,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--full", action="store_true", help="Full character (lock physique too).")
     parser.add_argument("--unmask", action="store_true",
                         help="Drop the mask on a full-mask character (show the random head).")
+    parser.add_argument("--props", action="store_true",
+                        help="Include the character's signature prop (off by default, as in the node).")
     parser.add_argument("--seed", type=int, default=42, help="Seed (default 42).")
     parser.add_argument("--json", action="store_true", help="Also print the prompt_json.")
     args = parser.parse_args(argv)
@@ -92,7 +96,7 @@ def main(argv: list[str] | None = None) -> int:
     look_level = "Full character" if args.full else "Costume only"
     mask_mode = _MASK_OFF if args.unmask else _MASK_DEFAULT
 
-    prose, js = render(character, gender, look_level, args.seed, mask_mode)
+    prose, js = render(character, gender, look_level, args.seed, mask_mode, args.props)
     print(prose)
     if args.json:
         print("\n--- prompt_json ---")

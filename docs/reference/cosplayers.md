@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1079 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1096 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (126)
+## Anime & Manga (128)
 
 ### Attack on Titan
 
@@ -62,7 +62,7 @@
 
 ### Fairy Tail
 
-- **Brandish** (F, +1 alt)
+- **Brandish** (F, giant, +1 alt)
 
 ### Fate/stay night
 
@@ -77,7 +77,7 @@
 - **Riza Hawkeye** (F)
 - **Roy Mustang** (M)
 - **Scar** (M)
-- **Winry Rockbell** (F)
+- **Winry Rockbell** (F, prop)
 
 ### Ghost in the Shell
 
@@ -100,7 +100,7 @@
 
 ### Kill la Kill
 
-- **Ryuko Matoi** (F)
+- **Ryuko Matoi** (F, prop)
 - **Satsuki Kiryuin** (F)
 
 ### Madoka Magica
@@ -126,7 +126,7 @@
 - **Hinata Hyuga** (F)
 - **Itachi Uchiha** (M)
 - **Jiraiya** (M)
-- **Kakashi Hatake** (M)
+- **Kakashi Hatake** (M, prop)
 - **Madara Uchiha** (M)
 - **Naruto Uzumaki** (M)
 - **Orochimaru** (M)
@@ -144,6 +144,7 @@
 ### One Piece
 
 - **Boa Hancock** (F)
+- **Charlotte Smoothie** (F, giant, prop)
 - **Monkey D. Luffy** (M)
 - **Nami** (F)
 - **Nico Robin** (F)
@@ -151,7 +152,7 @@
 - **Roronoa Zoro** (M)
 - **Sanji** (M)
 - **Shirahoshi** (F, giant)
-- **Trafalgar Law** (M)
+- **Trafalgar Law** (M, prop)
 
 ### One Punch Man
 
@@ -162,7 +163,7 @@
 
 ### Pokemon
 
-- **Ash Ketchum** (M)
+- **Ash Ketchum** (M, prop)
 - **Bulbasaur** (M, masked)
 - **Charizard** (M, masked)
 - **Eevee** (M, masked)
@@ -192,13 +193,14 @@
 
 ### Studio Ghibli
 
+- **Arrietty Clock** (F, tiny)
 - **Baron Humbert von Gikkingen** (M, masked, prop)
 - **Kaguya** (F)
 - **Kiki** (F, prop)
 - **No-Face** (M, masked)
 - **Porco Rosso** (M, masked)
 - **Princess Mononoke** (F, prop)
-- **Totoro** (M, giant, masked)
+- **Totoro** (M, giant, masked, prop)
 
 ### The Seven Deadly Sins
 
@@ -208,13 +210,13 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (111)
+## Comics & Cartoons (113)
 
 ### Adventure Time
 
 - **Finn the Human** (M, prop)
 - **Jake the Dog** (M, masked)
-- **Marceline the Vampire Queen** (F)
+- **Marceline the Vampire Queen** (F, prop)
 - **Princess Bubblegum** (F)
 
 ### Avatar: The Last Airbender
@@ -275,7 +277,7 @@
 ### Hellboy
 
 - **Abe Sapien** (M, masked)
-- **Hellboy** (M)
+- **Hellboy** (M, prop)
 - **Liz Sherman** (F)
 
 ### Image
@@ -308,6 +310,7 @@
 
 - **Bugs Bunny** (M, masked, prop)
 - **Daffy Duck** (M, masked)
+- **Marvin the Martian** (M, tiny, masked, prop)
 - **Yosemite Sam** (M, prop)
 
 ### Masters of the Universe
@@ -366,6 +369,7 @@
 - **Barney Rubble** (M)
 - **Betty Rubble** (F)
 - **Fred Flintstone** (M)
+- **The Great Gazoo** (M, tiny)
 - **Wilma Flintstone** (F)
 
 ### The Jetsons
@@ -384,9 +388,9 @@
 
 ### The Simpsons
 
-- **Bart Simpson** (M)
-- **Homer Simpson** (M)
-- **Lisa Simpson** (F)
+- **Bart Simpson** (M, prop)
+- **Homer Simpson** (M, prop)
+- **Lisa Simpson** (F, prop)
 - **Marge Simpson** (F)
 
 ### The Smurfs
@@ -432,7 +436,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (149)
+## DC (152)
 
 ### DC
 
@@ -441,12 +445,13 @@
 - **Aquaman** (M, prop)
 - **Arisia Rrab** (F)
 - **Artemis** (F, prop)
+- **Atom Smasher** (M, giant)
 - **Atrocitus** (M, giant)
 - **Bane** (M, masked)
 - **Batgirl** (F)
 - **Batman** (M, masked)
 - **Batwoman** (F)
-- **Big Barda** (F)
+- **Big Barda** (F, prop)
 - **Bizarro** (M)
 - **Black Adam** (M)
 - **Black Canary** (F)
@@ -461,9 +466,10 @@
 - **Bruce Wayne** (M)
 - **Captain Boomerang** (M, prop)
 - **Captain Cold** (M, prop)
-- **Catwoman** (F, +3 alt)
+- **Catwoman** (F, +3 alt, prop)
 - **Ch'p** (M)
 - **Cheetah** (F)
+- **Chemo** (M, giant, masked)
 - **Cheshire** (F, masked)
 - **Circe** (F)
 - **Cosmic Boy** (M)
@@ -484,6 +490,7 @@
 - **Firestorm** (M, masked)
 - **Giganta** (F, giant, +2 alt)
 - **Golden Glider** (F)
+- **Gorilla Grodd** (M, giant, masked)
 - **Granny Goodness** (F)
 - **Green Arrow** (M, prop)
 - **Green Lantern** (M)
@@ -515,7 +522,7 @@
 - **Liberty Belle** (F)
 - **Lightning Lad** (M)
 - **Livewire** (F)
-- **Lobo** (M, giant)
+- **Lobo** (M, giant, prop)
 - **Lois Lane** (F)
 - **Lyssa Drak** (F, prop)
 - **Mad Hatter (Jervis Tetch)** (M)
@@ -566,7 +573,7 @@
 - **The Spectre** (M)
 - **Thorn** (F)
 - **Tomar-Re** (M)
-- **Two-Face** (M)
+- **Two-Face** (M, prop)
 - **Wildcat** (M, masked)
 - **Wonder Girl (Cassie Sandsmark)** (F)
 - **Wonder Woman** (F, prop)
@@ -606,7 +613,7 @@
 
 ### Aladdin
 
-- **Aladdin** (M)
+- **Aladdin** (M, prop)
 - **Genie** (M)
 - **Jafar** (M, prop)
 - **Jasmine** (F)
@@ -615,7 +622,7 @@
 
 - **Alice** (F)
 - **Cheshire Cat** (M, masked)
-- **Mad Hatter (Alice in Wonderland)** (M)
+- **Mad Hatter (Alice in Wonderland)** (M, prop)
 - **Queen of Hearts** (F, prop)
 - **White Queen (Alice in Wonderland)** (F)
 
@@ -626,7 +633,7 @@
 ### Beauty and the Beast
 
 - **Beast (Beauty and the Beast)** (M, masked)
-- **Belle** (F)
+- **Belle** (F, prop)
 - **Gaston** (M)
 
 ### Big Hero 6
@@ -705,7 +712,7 @@
 
 ### Snow White
 
-- **Snow White** (F)
+- **Snow White** (F, prop)
 
 ### Star vs. the Forces of Evil
 
@@ -713,7 +720,7 @@
 
 ### Tangled
 
-- **Rapunzel** (F)
+- **Rapunzel** (F, prop)
 
 ### Tarzan
 
@@ -722,7 +729,7 @@
 
 ### The Hunchback of Notre Dame
 
-- **Esmeralda** (F)
+- **Esmeralda** (F, prop)
 - **Frollo** (M)
 
 ### The Incredibles
@@ -753,7 +760,7 @@
 
 - **Judy Hopps** (F)
 
-## Fantasy & Literature (54)
+## Fantasy & Literature (57)
 
 ### Anne of Green Gables
 
@@ -775,6 +782,7 @@
 - **Gingerbread Man** (M, masked)
 - **Goldilocks** (F)
 - **Little Red Riding Hood** (F, prop)
+- **Thumbelina** (F, tiny)
 
 ### Fantastic Mr Fox
 
@@ -784,6 +792,7 @@
 
 - **Baba Yaga** (F, prop)
 - **Krampus** (M, masked, prop)
+- **Paul Bunyan** (M, giant, prop)
 - **Robin Hood** (M, prop)
 - **Santa Claus** (M, prop)
 
@@ -797,10 +806,11 @@
 - **Bellatrix Lestrange** (F)
 - **Draco Malfoy** (M)
 - **Harry Potter** (M, prop)
-- **Hermione Granger** (F)
+- **Hermione Granger** (F, prop)
 - **Lord Voldemort** (M, prop)
-- **Luna Lovegood** (F)
+- **Luna Lovegood** (F, prop)
 - **Ron Weasley** (M)
+- **Rubeus Hagrid** (M, giant, prop)
 - **Severus Snape** (M)
 
 ### Legend
@@ -855,7 +865,7 @@
 - **Eeyore** (M, masked)
 - **Piglet** (M, tiny, masked)
 - **Tigger** (M, masked)
-- **Winnie the Pooh** (M, masked)
+- **Winnie the Pooh** (M, masked, prop)
 
 ## Marvel (138)
 
@@ -889,8 +899,8 @@
 - **Colossus** (M)
 - **Crystal** (F)
 - **Cyclops** (M)
-- **Daredevil** (M, masked)
-- **Dazzler** (F)
+- **Daredevil** (M, masked, prop)
+- **Dazzler** (F, prop)
 - **Deadpool** (M, masked, prop)
 - **Doctor Doom** (M, masked)
 - **Doctor Octopus** (M)
@@ -908,7 +918,7 @@
 - **Gamora** (F)
 - **Ghost Rider** (M, masked)
 - **Giant-Man** (M, giant, masked)
-- **Green Goblin** (M, masked)
+- **Green Goblin** (M, masked, prop)
 - **Groot** (M, giant)
 - **Hawkeye** (M, prop)
 - **Hela** (F)
@@ -1000,7 +1010,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (102)
+## Movies & TV (108)
 
 ### A Nightmare on Elm Street
 
@@ -1010,6 +1020,10 @@
 
 - **Ellen Ripley** (F)
 - **Xenomorph** (M, masked)
+
+### An American Tail
+
+- **Fievel Mousekewitz** (M, tiny, masked, prop)
 
 ### Attack of the 50 Foot Woman
 
@@ -1059,6 +1073,10 @@
 
 - **Snake Plissken** (M)
 
+### FernGully
+
+- **Crysta** (F, tiny)
+
 ### Friday the 13th
 
 - **Jason Voorhees** (M, masked, prop)
@@ -1106,9 +1124,17 @@
 - **Rumi** (F, prop)
 - **Zoey** (F, prop)
 
+### Keebler
+
+- **Ernie Keebler** (M, tiny)
+
 ### Kellogg's
 
 - **Tony the Tiger** (M, masked)
+
+### King Kong
+
+- **King Kong** (M, giant, masked)
 
 ### Kool-Aid
 
@@ -1158,7 +1184,7 @@
 ### Pirates of the Caribbean
 
 - **Davy Jones** (M, masked)
-- **Jack Sparrow** (M)
+- **Jack Sparrow** (M, prop)
 
 ### Planters
 
@@ -1202,12 +1228,12 @@
 - **Data** (M)
 - **Ferengi** (M)
 - **Gowron** (M)
-- **Klingon** (M)
+- **Klingon** (M, prop)
 - **Mr. Spock** (M)
 - **Seven of Nine** (F)
 - **Tellarite** (M)
 - **Vulcan** (M)
-- **Worf** (M)
+- **Worf** (M, prop)
 
 ### The Addams Family
 
@@ -1215,7 +1241,7 @@
 - **Gomez Addams** (M, prop)
 - **Lurch** (M)
 - **Morticia Addams** (F)
-- **Uncle Fester** (M)
+- **Uncle Fester** (M, prop)
 - **Wednesday Addams** (F)
 
 ### The Boys
@@ -1233,6 +1259,10 @@
 - **Starlight** (F)
 - **The Deep** (M)
 
+### The Iron Giant
+
+- **The Iron Giant** (M, giant, masked)
+
 ### The Ring
 
 - **Samara** (F)
@@ -1245,6 +1275,10 @@
 ### The Texas Chain Saw Massacre
 
 - **Leatherface** (M, masked, prop)
+
+### Ultraman
+
+- **Ultraman** (M, giant, masked)
 
 ### V for Vendetta
 
@@ -1287,7 +1321,7 @@
 - **Captain Phasma** (F, masked, prop)
 - **Captain Rex** (M, prop)
 - **Cassian Andor** (M)
-- **Chewbacca** (M, masked)
+- **Chewbacca** (M, masked, prop)
 - **Chief Chirpa** (M, masked, prop)
 - **Chopper** (M, masked)
 - **Constable Zuvio** (M)
@@ -1306,7 +1340,7 @@
 - **Emperor Palpatine** (M)
 - **Figrin D'an** (M, masked, prop)
 - **Finn** (M)
-- **General Grievous** (M, masked)
+- **General Grievous** (M, masked, prop)
 - **Gonk Droid** (M, masked)
 - **Gran** (M, masked)
 - **Grand Admiral Thrawn** (M)
@@ -1314,7 +1348,7 @@
 - **Greedo** (M, masked)
 - **Greez Dritus** (M)
 - **Grogu** (M, tiny)
-- **Han Solo** (M)
+- **Han Solo** (M, prop)
 - **Hera Syndulla** (F)
 - **Hondo Ohnaka** (M)
 - **IG-88** (M, masked)
@@ -1364,7 +1398,7 @@
 - **Stormtrooper** (M, masked, prop)
 - **TIE Pilot** (M, masked)
 - **Tauntaun** (M, masked)
-- **The Mandalorian** (M, masked)
+- **The Mandalorian** (M, masked, prop)
 - **Tusken Raider** (M, masked, prop)
 - **Unkar Plutt** (M, masked)
 - **Wampa** (M, giant, masked)
@@ -1376,7 +1410,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (228)
+## Video Games (229)
 
 ### ARMS
 
@@ -1384,7 +1418,7 @@
 
 ### Arcane
 
-- **Jinx** (F)
+- **Jinx** (F, prop)
 
 ### Baldur's Gate 3
 
@@ -1451,15 +1485,15 @@
 
 ### Final Fantasy
 
-- **Aerith Gainsborough** (F)
-- **Auron** (M)
+- **Aerith Gainsborough** (F, prop)
+- **Auron** (M, prop)
 - **Barret Wallace** (M)
 - **Cecil Harvey** (M)
 - **Celes Chere** (F)
 - **Cloud Strife** (M, prop)
 - **Kain Highwind** (M, masked, prop)
 - **Kefka Palazzo** (M)
-- **Lightning** (F)
+- **Lightning** (F, prop)
 - **Moogle** (M, masked)
 - **Noctis** (M)
 - **Rikku** (F)
@@ -1474,8 +1508,8 @@
 - **Ultros** (M, masked)
 - **Vincent Valentine** (M)
 - **Vivi Ornitier** (M, masked)
-- **Yuffie Kisaragi** (F)
-- **Yuna** (F)
+- **Yuffie Kisaragi** (F, prop)
+- **Yuna** (F, prop)
 - **Zidane** (M)
 
 ### Genshin Impact
@@ -1572,7 +1606,7 @@
 - **Reptile** (M, masked)
 - **Scorpion** (M, masked)
 - **Shang Tsung** (M)
-- **Shao Kahn** (M, masked)
+- **Shao Kahn** (M, masked, prop)
 - **Sheeva** (F)
 - **Sindel** (F)
 - **Skarlet** (F)
@@ -1605,12 +1639,16 @@
 - **Sombra** (F)
 - **Symmetra** (F)
 - **Tracer** (F)
-- **Widowmaker** (F)
+- **Widowmaker** (F, prop)
 - **Zarya** (F, giant)
+
+### Pikmin
+
+- **Captain Olimar** (M, tiny)
 
 ### Portal
 
-- **Chell** (F)
+- **Chell** (F, prop)
 
 ### Resident Evil
 
