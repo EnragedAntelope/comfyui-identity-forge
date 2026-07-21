@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1132 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1143 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (132)
+## Anime & Manga (136)
 
 ### Attack on Titan
 
@@ -29,6 +29,10 @@
 
 ### Date A Live
 
+- **Kaguya Yamai** (F)
+- **Kurumi Tokisaki** (F)
+- **Origami Tobiichi** (F)
+- **Tohka Yatogami** (F, prop)
 - **Yuzuru Yamai** (F, +1 alt)
 
 ### Death Note
@@ -1481,7 +1485,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (236)
+## Video Games (243)
 
 ### ARMS
 
@@ -1536,9 +1540,16 @@
 
 ### Dead or Alive
 
+- **Ayane** (F)
+- **Helena Douglas** (F)
+- **Hitomi** (F)
 - **Honoka** (F)
 - **Kasumi** (F)
+- **Kokoro** (F)
+- **Lei Fang** (F)
 - **Marie Rose** (F)
+- **Momiji** (F)
+- **Nyotengu** (F)
 - **Tina Armstrong** (F)
 
 ### Divinity: Original Sin

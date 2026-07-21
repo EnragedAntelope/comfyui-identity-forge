@@ -12023,6 +12023,131 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
+
+    # --- Added batch 2a: Dead or Alive fighters -----------------------------
+    "Ayane": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Kasumi's rival; the signature purple kunoichi outfit with butterfly motif.
+        "costume": "a lavender-and-purple sleeveless kunoichi outfit slit high on the thigh with "
+                   "a butterfly emblem at the chest, a wide obi sash, matching thigh-high "
+                   "stockings, fingerless gloves, and lace-up sandals",
+        "signature": {"hair_color": "purple", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "medium brown"},
+        "physique": {"body_type": "slender", "height": "short", "skin_tone": "fair"},
+    },
+    "Hitomi": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        "costume": "a white karate gi jacket with rolled sleeves and blue-and-red trim worn "
+                   "open over a fitted top, a black belt, matching gi trousers, and bare feet",
+        "signature": {"hair_color": "warm brown", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "fit", "height": "average height", "skin_tone": "fair"},
+    },
+    "Helena Douglas": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Opera singer and DOATEC heiress; her elegant white-and-blue fighting dress.
+        "costume": "an elegant white bodice dress with blue ribbon lacing and gold trim, a "
+                   "short feathered skirt, long white gloves, and white heeled boots",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "long",
+                      "hair_style": "French twist", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Lei Fang": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # T'ai chi prodigy; the red-and-gold cheongsam.
+        "costume": "a fitted red cheongsam with gold dragon embroidery and a high side slit, a "
+                   "mandarin collar, short puffed sleeves, white tights, and flat kung-fu shoes",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "space buns", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Nyotengu": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # A tengu courtesan; oiran kimono, black feathered wings, hime-cut dark hair.
+        "costume": "an ornate purple oiran kimono with gold cloud embroidery worn low off the "
+                   "shoulders with a broad trailing obi, a pair of black-lacquered platform "
+                   "geta, kanzashi hairpins, and a pair of small black feathered wings at the "
+                   "back",
+        "eyes": "light purple",
+        "signature": {"hair_color": "navy blue", "hair_length": "very long",
+                      "hair_style": "blunt bangs", "hair_texture": "pin straight"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Kokoro": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Apprentice geiko; a short pink furisode kimono.
+        "costume": "a short pink furisode kimono with cherry-blossom print and a red obi sash, "
+                   "a floral hair ornament, white tabi socks, and zori sandals",
+        "signature": {"hair_color": "dark brown", "hair_length": "long", "hair_style": "updo",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "fair"},
+    },
+    "Momiji": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Shrine-maiden kunoichi (also Ninja Gaiden); white-and-red kunoichi garb.
+        "costume": "a white sleeveless kunoichi top edged with red ribbon, red kunoichi trousers "
+                   "with tassels trailing at the back, a red sash, fingerless gloves, and black "
+                   "heeled ninja boots",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "high ponytail", "eye_color": "amber"},
+        "physique": {"body_type": "toned", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 2a: Date A Live spirits --------------------------------
+    "Kurumi Tokisaki": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # The clock spirit; frilled red-and-black astral dress, uneven twintails.
+        "costume": "an elaborate red-and-black frilled gothic astral dress with a layered "
+                   "ruffled skirt, a red corseted bodice, black lace trim, black gloves, and a "
+                   "red-and-black wide-brimmed hat",
+        "eyes": "mismatched crimson-and-gold clockface",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "curled pigtails"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
+    },
+    "Tohka Yatogami": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Lead heroine; her armored purple astral dress (Adonai Melek).
+        "costume": "an armored purple-and-violet astral dress with layered metallic plating over "
+                   "the bodice and hips, gold filigree edging, a high collar, and a long flared "
+                   "skirt open at the front",
+        "eyes": "crystal violet",
+        "signature": {"hair_color": "deep purple", "hair_length": "waist length",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "Sandalphon, a broad ornate throne-hilted longsword with a golden guard",
+    },
+    "Kaguya Yamai": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Yuzuru's twin; the purple-strapped astral dress (chains on the right side).
+        "costume": "a dark, form-fitting bodysuit crossed by purple straps that bind the arms "
+                   "and legs, a short half-skirt draped low around the hips, and loose chains "
+                   "trailing from the right wrist and right ankle",
+        "signature": {"hair_color": "orange", "hair_length": "very long", "hair_style": "high ponytail",
+                      "eye_color": "ice blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Origami Tobiichi": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # AST wizard; a white-and-grey mechanized combat wiring suit.
+        "costume": "a sleek white-and-grey mechanized combat suit with armored plating over the "
+                   "shoulders, forearms, and shins, glowing blue sensor lines, and a slim "
+                   "backpack thruster unit",
+        "signature": {"hair_color": "platinum white", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "pale blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
 }
 
 
