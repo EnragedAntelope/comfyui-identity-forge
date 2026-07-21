@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1143 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1154 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (136)
+## Anime & Manga (142)
 
 ### Attack on Titan
 
@@ -179,16 +179,22 @@
 - **Ash Ketchum** (M, prop)
 - **Bulbasaur** (M, masked)
 - **Charizard** (M, masked)
+- **Cynthia** (F)
+- **Dawn** (F)
 - **Eevee** (M, tiny, masked)
 - **Gengar** (M, masked)
+- **Jessie (Team Rocket)** (F)
 - **Jigglypuff** (F, tiny, masked)
 - **Lucario** (M, masked)
 - **May** (F)
 - **Meowth** (M, masked)
 - **Mewtwo** (M, masked)
 - **Misty** (F)
+- **Nurse Joy** (F)
+- **Officer Jenny** (F)
 - **Pikachu** (M, tiny, masked)
 - **Psyduck** (M, masked)
+- **Serena** (F)
 - **Snorlax** (M, masked)
 - **Squirtle** (M, masked)
 
@@ -224,7 +230,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (124)
+## Comics & Cartoons (129)
 
 ### Adventure Time
 
@@ -235,8 +241,13 @@
 
 ### Archer
 
+- **Cheryl Tunt** (F)
+- **Dr. Krieger** (M)
 - **Katya Kazanova** (F)
 - **Lana Kane** (F, prop)
+- **Malory Archer** (F, prop)
+- **Pam Poovey** (F)
+- **Sterling Archer** (M, prop)
 
 ### Avatar: The Last Airbender
 

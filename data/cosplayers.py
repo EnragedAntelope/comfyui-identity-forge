@@ -12148,6 +12148,122 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "sleek straight", "eye_color": "pale blue"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
     },
+
+    # --- Added batch 2b: Archer (ISIS) --------------------------------------
+    "Sterling Archer": {
+        "franchise": "Archer",
+        "gender": "Male",
+        # The world's most dangerous spy; black turtleneck field kit.
+        "costume": "a fitted black turtleneck sweater, slim black trousers, a black leather "
+                   "shoulder holster rig, and black shoes",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a compact black semi-automatic pistol held at low ready",
+    },
+    "Malory Archer": {
+        "franchise": "Archer",
+        "gender": "Female",
+        # ISIS spymaster matriarch; elegant cocktail dress and pearls.
+        "costume": "an elegant emerald cocktail dress with a matching short jacket, a double "
+                   "strand of pearls, long gloves, and heeled pumps",
+        "signature": {"hair_color": "silver", "hair_length": "shoulder length",
+                      "hair_style": "chignon", "eye_color": "blue-gray"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "fair"},
+        "prop": "a cut-crystal tumbler of scotch",
+    },
+    "Pam Poovey": {
+        "franchise": "Archer",
+        "gender": "Female",
+        # HR director turned field muscle; casual sweater and glasses.
+        "costume": "a chunky knit turtleneck sweater over slacks, plain flats, and thick-framed "
+                   "glasses, with a small dolphin tattoo on one shoulder",
+        "signature": {"hair_color": "dark blonde", "hair_length": "short pixie",
+                      "hair_style": "worn down", "eye_color": "blue-gray"},
+        "physique": {"body_type": "plus size", "height": "average height", "skin_tone": "fair"},
+    },
+    "Cheryl Tunt": {
+        "franchise": "Archer",
+        "gender": "Female",
+        # Eccentric ISIS secretary and rail heiress.
+        "costume": "a prim knee-length green office dress with a white peter-pan collar, a thin "
+                   "belt, sheer stockings, and low heels",
+        "signature": {"hair_color": "auburn", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "green"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Dr. Krieger": {
+        "franchise": "Archer",
+        "gender": "Male",
+        # ISIS mad scientist.
+        "costume": "a white laboratory coat worn open over a dark shirt and tie, dark trousers, "
+                   "and round wire-frame glasses",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "full beard",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 2b: Pokemon trainers -----------------------------------
+    "Jessie (Team Rocket)": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Team Rocket. (Distinct from the existing Toy Story "Jessie".)
+        "costume": "a cropped white Team Rocket uniform top with a bold red 'R' on the chest, a "
+                   "short white skirt, black elbow gloves, and knee-high black boots",
+        "signature": {"hair_color": "magenta", "hair_length": "very long",
+                      "hair_style": "windswept", "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Cynthia": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Sinnoh Champion.
+        "costume": "a long black coat with a faux-fur collar worn open over a fitted black dress, "
+                   "black leggings, and heeled boots, with a black-and-yellow teardrop hair "
+                   "ornament",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "waist length",
+                      "hair_style": "curtain bangs", "eye_color": "gray"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Dawn": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "a black sleeveless V-neck top over a short pink skirt, a red scarf, pink "
+                   "knee-high boots, and a white beanie with a pink pokeball emblem",
+        "signature": {"hair_color": "near black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "deep blue"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Serena": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "a sleeveless black tank top under a red pleated skirt, a wide pink sun hat "
+                   "with a black band, black thigh-high socks, and pink low-cut boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_texture": "loosely wavy", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Nurse Joy": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "a white nurse's dress with a pink apron front and short puffed sleeves, a "
+                   "white nurse's cap bearing a pink cross, white stockings, and white shoes",
+        "signature": {"hair_color": "baby pink", "hair_length": "shoulder length",
+                      "hair_style": "low pigtails", "eye_color": "dark brown"},
+        "physique": {"body_type": "softly curved", "height": "average height", "skin_tone": "fair"},
+    },
+    "Officer Jenny": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "a blue police uniform: a short-sleeved blue shirt with a badge, a matching "
+                   "blue mini-skirt, white gloves, a black duty belt, tall black boots, and a "
+                   "blue peaked police cap",
+        "signature": {"hair_color": "teal", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "fit", "height": "average height", "skin_tone": "fair"},
+    },
 }
 
 
