@@ -3,6 +3,35 @@
 A map of how the pack fits together, the data schemas, and the conventions that keep
 changes safe. Aimed at anyone (human or agent) extending the data or the engine.
 
+## Working principles (standing maintainer rules)
+
+These are the maintainer's non-negotiable expectations for **every** change. Read them
+before adding or editing anything; they override "it would be neat to add".
+
+1. **No bloat, no unwarranted complexity.** Prefer the smallest change that fully solves
+   the task. Reuse existing patterns/keys/fields instead of inventing new ones. Do **not**
+   add features, options, schema keys, or docs "for the sake of adding things" — every
+   addition must earn its place. Keep the engine and data efficient.
+2. **No duplication.** Before adding a character/creature/archetype, grep the current keys
+   (data is large — see the roster-size note in the gotchas). If the subject already exists,
+   don't re-add it: instead check whether the entry needs an enhancement, an alternate
+   costume, or another well-known look/variant that isn't represented yet.
+3. **Docs stay accurate and in sync.** After data changes, regenerate
+   `docs/reference/*.md`. Keep `architecture.md`, `cosplayer-notes.md`, `creature-notes.md`,
+   and `usage.md` truthful — update them when behaviour changes, but don't pad them. Leave
+   version-stamped audit figures alone (they record a point-in-time analysis, not a live
+   count). Keep the **README human-readable and genuinely useful without getting long**.
+4. **Tooltips/help stay useful and current.** When a widget's behaviour changes, update its
+   tooltip (node `INPUT_TYPES` and the JS extensions) in the same change. No stale or
+   filler help text.
+5. **Be on the lookout — but curate.** While working, watch for genuinely useful additions
+   or improvements (new characters/creatures/archetypes, main-node field options, engine or
+   UX enhancements). Record only the **legit-useful** ones as potential to-dos in this file
+   (see the considered/rejected notes for the house style); skip anything speculative.
+6. **Best practices always.** Maintain good UI/UX and ease of use, security (validate any
+   file paths / user input, no unsafe eval, keep the pack offline and zero-dep), sound
+   coding, and clean git/GitHub hygiene (focused commits, no PR unless asked).
+
 ## Repo layout
 
 ```
