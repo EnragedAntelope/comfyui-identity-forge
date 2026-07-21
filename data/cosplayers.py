@@ -7093,6 +7093,16 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "loosely wavy", "eye_color": "green"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
+    "Shego": {
+        "franchise": "Kim Possible",
+        "gender": "Female",
+        "costume": "a form-fitting green-and-black catsuit with green shoulders and outer "
+                   "sleeves over a black torso, black gloves with green cuffs, and black "
+                   "boots with green tops, over smooth, flawless pale green skin",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
     "Judy Hopps": {
         "franchise": "Zootopia",
         "gender": "Female",

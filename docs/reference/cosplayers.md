@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1095 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1096 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (128)
 
@@ -605,7 +605,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (63)
+## Disney (64)
 
 ### 101 Dalmatians
 
@@ -664,6 +664,7 @@
 ### Kim Possible
 
 - **Kim Possible** (F)
+- **Shego** (F)
 
 ### Lilo and Stitch
 
