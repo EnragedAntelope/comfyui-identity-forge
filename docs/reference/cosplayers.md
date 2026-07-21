@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1096 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1131 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (128)
+## Anime & Manga (132)
 
 ### Attack on Titan
 
@@ -26,6 +26,10 @@
 
 - **Faye Valentine** (F)
 - **Spike Spiegel** (M)
+
+### Date A Live
+
+- **Yuzuru Yamai** (F, +1 alt)
 
 ### Death Note
 
@@ -55,6 +59,7 @@
 - **Gohan** (M)
 - **Goku** (M)
 - **Krillin** (M)
+- **Launch** (F, +1 alt)
 - **Majin Buu** (M)
 - **Piccolo** (M)
 - **Vegeta** (M)
@@ -107,6 +112,10 @@
 
 - **Homura Akemi (Devil)** (F)
 - **Madoka Kaname (Ultimate)** (F, prop)
+
+### Medaka Box
+
+- **Medaka Kurokami** (F)
 
 ### My Hero Academia
 
@@ -170,6 +179,7 @@
 - **Gengar** (M, masked)
 - **Jigglypuff** (F, tiny, masked)
 - **Lucario** (M, masked)
+- **May** (F)
 - **Meowth** (M, masked)
 - **Mewtwo** (M, masked)
 - **Misty** (F)
@@ -210,7 +220,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (113)
+## Comics & Cartoons (123)
 
 ### Adventure Time
 
@@ -218,6 +228,11 @@
 - **Jake the Dog** (M, masked)
 - **Marceline the Vampire Queen** (F, prop)
 - **Princess Bubblegum** (F)
+
+### Archer
+
+- **Katya Kazanova** (F)
+- **Lana Kane** (F, prop)
 
 ### Avatar: The Last Airbender
 
@@ -234,6 +249,15 @@
 ### Betty Boop
 
 - **Betty Boop** (F)
+
+### Captain Planet
+
+- **Captain Planet** (M)
+- **Doctor Blight** (F)
+
+### Carmen Sandiego
+
+- **Carmen Sandiego** (F)
 
 ### Chaos! Comics
 
@@ -274,6 +298,10 @@
 - **Duke** (M)
 - **Snake Eyes** (M, masked, prop)
 
+### Gen13
+
+- **Caitlin Fairchild** (F)
+
 ### Hellboy
 
 - **Abe Sapien** (M, masked)
@@ -310,6 +338,7 @@
 
 - **Bugs Bunny** (M, masked, prop)
 - **Daffy Duck** (M, masked)
+- **Lola Bunny** (F)
 - **Marvin the Martian** (M, tiny, masked, prop)
 - **Yosemite Sam** (M, prop)
 
@@ -336,6 +365,10 @@
 - **SpongeBob SquarePants** (M, masked)
 - **Squidward** (M, masked)
 
+### Peepoodo
+
+- **Dr. Monique Pussycat** (F)
+
 ### Popeye
 
 - **Olive Oyl** (F)
@@ -345,6 +378,10 @@
 
 - **Rainbow Brite** (F)
 
+### Red Sonja
+
+- **Red Sonja** (F, prop)
+
 ### Rick and Morty
 
 - **Morty Smith** (M)
@@ -353,6 +390,10 @@
 ### Steven Universe
 
 - **Garnet** (F)
+
+### Stripperella
+
+- **Stripperella** (F)
 
 ### TMNT
 
@@ -436,7 +477,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (152)
+## DC (154)
 
 ### DC
 
@@ -481,13 +522,14 @@
 - **Despero** (M, giant, masked)
 - **Doctor Fate** (M, masked)
 - **Doctor Mid-Nite** (M)
-- **Donna Troy** (F)
+- **Donna Troy** (F, +1 alt)
 - **Dove** (F)
 - **Enchantress (Suicide Squad)** (F)
 - **Etrigan the Demon** (M)
 - **Fatality** (F)
 - **Fire** (F)
 - **Firestorm** (M, masked)
+- **Galatea** (F)
 - **Giganta** (F, giant, +2 alt)
 - **Golden Glider** (F)
 - **Gorilla Grodd** (M, giant, masked)
@@ -533,11 +575,12 @@
 - **Mera** (F)
 - **Miss Martian** (F)
 - **Mr. Freeze** (M, masked, prop)
+- **Nightstar** (F)
 - **Nightwing** (M, prop)
 - **Peacemaker** (M, prop)
 - **Phantom Lady (Dee Tyler)** (F)
 - **Plastic Man** (M)
-- **Poison Ivy** (F, +2 alt)
+- **Poison Ivy** (F, +3 alt)
 - **Polka-Dot Man** (M)
 - **Power Girl** (F)
 - **Punchline** (F)
@@ -605,7 +648,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (64)
+## Disney (65)
 
 ### 101 Dalmatians
 
@@ -663,6 +706,7 @@
 
 ### Kim Possible
 
+- **Bonnie Rockwaller** (F, prop)
 - **Kim Possible** (F)
 - **Shego** (F)
 
@@ -868,7 +912,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (137)
+## Marvel (143)
 
 ### Marvel
 
@@ -929,6 +973,7 @@
 - **Invisible Woman** (F)
 - **Iron Fist** (M)
 - **Iron Man** (M, masked)
+- **J. Jonah Jameson** (M, prop)
 - **Jean Grey** (F)
 - **Jubilee** (F)
 - **Juggernaut** (M, giant, masked)
@@ -940,6 +985,7 @@
 - **Lady Sif** (F, prop)
 - **Lascivious** (F)
 - **Loki** (M)
+- **Lorelei (Asgardian)** (F)
 - **Luke Cage** (M)
 - **Magik** (F, +1 alt, prop)
 - **Magneto** (M)
@@ -957,6 +1003,7 @@
 - **Mysterio** (M, masked)
 - **Mystique** (F)
 - **Namor** (M, prop)
+- **Namorita** (F)
 - **Nebula** (F)
 - **Nick Fury** (M)
 - **Nightcrawler** (M)
@@ -968,6 +1015,7 @@
 - **Psylocke** (F, prop)
 - **Punisher** (M)
 - **Pyro** (M, prop)
+- **Quasar** (M)
 - **Quicksilver** (M)
 - **Red Skull** (M, masked)
 - **Rhino** (M, giant, masked)
@@ -978,7 +1026,9 @@
 - **Satana** (F)
 - **Scarlet Witch** (F)
 - **Sebastian Shaw** (M)
+- **Selene Gallio (Black Queen)** (F)
 - **She-Hulk** (F, giant)
+- **Silver Sable** (F)
 - **Silver Surfer** (M, masked, prop)
 - **Snowbird** (F)
 - **Spectrum** (F)
@@ -1010,7 +1060,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (108)
+## Movies & TV (112)
 
 ### A Nightmare on Elm Street
 
@@ -1024,6 +1074,10 @@
 ### An American Tail
 
 - **Fievel Mousekewitz** (M, tiny, masked, prop)
+
+### Anastasia
+
+- **Anastasia** (F, +1 alt)
 
 ### Attack of the 50 Foot Woman
 
@@ -1056,6 +1110,10 @@
 ### Child's Play
 
 - **Chucky** (M, prop)
+
+### Cool World
+
+- **Holli Would** (F)
 
 ### Duolingo
 
@@ -1259,6 +1317,10 @@
 - **Starlight** (F)
 - **The Deep** (M)
 
+### The Fifth Element
+
+- **Leeloo** (F, +1 alt)
+
 ### The Iron Giant
 
 - **The Iron Giant** (M, giant, masked)
@@ -1266,6 +1328,10 @@
 ### The Ring
 
 - **Samara** (F)
+
+### The Road to El Dorado
+
+- **Chel** (F)
 
 ### The Terminator
 
@@ -1297,12 +1363,13 @@
 
 - **Xena** (F, prop)
 
-## Star Wars (108)
+## Star Wars (109)
 
 ### Star Wars
 
 - **2-1B Droid** (M, masked)
 - **4-LOM** (M, masked, prop)
+- **Aayla Secura** (F, prop)
 - **Admiral Ackbar** (M, masked)
 - **Ahsoka Tano** (F, prop)
 - **Anakin Skywalker** (M, prop)
@@ -1410,7 +1477,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (229)
+## Video Games (236)
 
 ### ARMS
 
@@ -1463,6 +1530,13 @@
 - **Sasquatch** (M, giant, masked)
 - **Victor von Gerdenheim** (M, giant)
 
+### Dead or Alive
+
+- **Honoka** (F)
+- **Kasumi** (F)
+- **Marie Rose** (F)
+- **Tina Armstrong** (F)
+
 ### Divinity: Original Sin
 
 - **Astarte** (F)
@@ -1494,6 +1568,7 @@
 - **Kain Highwind** (M, masked, prop)
 - **Kefka Palazzo** (M)
 - **Lightning** (F, prop)
+- **Lulu** (F, prop)
 - **Moogle** (M, tiny, masked)
 - **Noctis** (M)
 - **Rikku** (F)
@@ -1567,6 +1642,10 @@
 ### LittleBigPlanet
 
 - **Sackboy** (M, masked)
+
+### Lollipop Chainsaw
+
+- **Juliet Starling** (F, prop)
 
 ### Mass Effect
 
@@ -1741,6 +1820,7 @@
 ### Tekken
 
 - **Asuka Kazama** (F)
+- **Christie Monteiro** (F)
 - **Heihachi Mishima** (M)
 - **Hwoarang** (M)
 - **Jin Kazama** (M)
