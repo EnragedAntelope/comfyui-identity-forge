@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1154 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1168 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (142)
 
@@ -230,7 +230,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (129)
+## Comics & Cartoons (137)
 
 ### Adventure Time
 
@@ -269,6 +269,14 @@
 
 - **Captain Planet** (M)
 - **Doctor Blight** (F)
+- **Gaia** (F)
+- **Gi** (F)
+- **Hoggish Greedly** (M)
+- **Kwame** (M)
+- **Linka** (F)
+- **Ma-Ti** (M)
+- **Verminous Skumm** (M, masked)
+- **Wheeler** (M)
 
 ### Carmen Sandiego
 
@@ -1079,7 +1087,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (112)
+## Movies & TV (113)
 
 ### A Nightmare on Elm Street
 
@@ -1338,6 +1346,7 @@
 
 ### The Fifth Element
 
+- **Diva Plavalaguna** (F)
 - **Leeloo** (F, +1 alt)
 
 ### The Iron Giant
@@ -1382,7 +1391,7 @@
 
 - **Xena** (F, prop)
 
-## Star Wars (109)
+## Star Wars (114)
 
 ### Star Wars
 
@@ -1396,8 +1405,10 @@
 - **Aurra Sing** (F, prop)
 - **BB-8** (M, masked)
 - **Bantha** (M, masked)
+- **Barriss Offee** (F, prop)
 - **Battle Droid** (M, masked)
 - **Bib Fortuna** (M)
+- **Bo-Katan Kryze** (F, masked)
 - **Boba Fett** (M, masked)
 - **Bossk** (M, masked, prop)
 - **Bothan** (M, masked)
@@ -1454,6 +1465,7 @@
 - **Lobot** (M)
 - **Loth-Cat** (M, tiny, masked)
 - **Luke Skywalker** (M, prop)
+- **Luminara Unduli** (F, prop)
 - **Mace Windu** (M, prop)
 - **Mara Jade** (F, prop)
 - **Max Rebo** (M, masked)
@@ -1464,6 +1476,7 @@
 - **Nute Gunray** (M, masked)
 - **Obi-Wan Kenobi** (M, prop)
 - **Obi-Wan Kenobi (Force Ghost)** (M)
+- **Oola** (F)
 - **Padme Amidala** (F, +1 alt)
 - **Plo Koon** (M, masked, prop)
 - **Poe Dameron** (M)
@@ -1480,6 +1493,7 @@
 - **Saw Gerrera** (M, prop)
 - **Scout Trooper** (M, masked, prop)
 - **Sebulba** (M, masked)
+- **Shaak Ti** (F, prop)
 - **Snowtrooper** (M, masked, prop)
 - **Stormtrooper** (M, masked, prop)
 - **TIE Pilot** (M, masked)

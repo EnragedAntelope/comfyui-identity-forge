@@ -12264,6 +12264,171 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "fit", "height": "average height", "skin_tone": "fair"},
     },
+
+    # --- Added batch 2c: Star Wars (Twi'lek / Togruta / Mirialan / Mando) ----
+    "Oola": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Jabba's green Twi'lek dancer; lekku replace scalp hair (covers_hair).
+        "costume": "smooth, flawless green skin, a pair of long green lekku head-tails falling "
+                   "from the back of the head in place of hair, a skimpy mauve dancer's outfit of "
+                   "loose mesh netting and thin straps, a slave collar, and thin metal chains",
+        "covers_hair": True,
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height"},
+    },
+    "Shaak Ti": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Togruta Jedi Master; montrals and striped head-tails, no scalp hair.
+        "costume": "smooth, flawless red-orange skin patterned with white facial markings, a "
+                   "pair of large hollow montral horns and three blue-and-white striped head-tails "
+                   "falling in place of hair, layered maroon Jedi robes with a leather bodice, a "
+                   "utility belt, and tall boots",
+        "covers_hair": True,
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall"},
+        "prop": "a lightsaber projecting a straight blue energy blade from a slim silver hilt",
+    },
+    "Barriss Offee": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Mirialan Padawan; green skin with black facial tattoos, hooded robes.
+        "costume": "smooth, flawless green skin marked with stark black diamond tattoos across "
+                   "the bridge of the nose, floor-length dark blue-grey Jedi robes with a fitted "
+                   "hood drawn up, a black under-tunic, and a wide cloth belt",
+        "covers_hair": True,  # the drawn-up hood encloses the scalp
+        "signature": {"eye_color": "blue-gray"},
+        "physique": {"body_type": "slim", "height": "average height"},
+        "prop": "a lightsaber projecting a straight blue energy blade from a slim silver hilt",
+    },
+    "Luminara Unduli": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Mirialan Jedi Master; olive skin with black chin tattoos, wrapped headdress.
+        "costume": "smooth, flawless olive-green skin with interlocking black diamond tattoos "
+                   "across the chin and a dark lower lip, floor-length dark layered Jedi robes, "
+                   "a black wrapped headdress and veil covering the scalp, and a wide sash",
+        "covers_hair": True,
+        "signature": {"eye_color": "blue-gray"},
+        "physique": {"body_type": "slender", "height": "tall"},
+        "prop": "a lightsaber projecting a straight green energy blade from a slim silver hilt",
+    },
+    "Bo-Katan Kryze": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Mandalorian; the helmet rides in `mask` so Unmask reveals her auburn bob.
+        "covers_face": True,
+        "costume": "a suit of blue-grey Mandalorian beskar armor over a dark flight bodysuit, "
+                   "with a segmented cuirass, pauldrons, gauntlets, a utility belt, and a jetpack",
+        "mask": "a blue-grey Mandalorian helmet with a narrow black T-visor and a small central "
+                "rangefinder",
+        "signature": {"hair_color": "auburn", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 2c: The Fifth Element ----------------------------------
+    "Diva Plavalaguna": {
+        "franchise": "The Fifth Element",
+        "gender": "Female",
+        # Blue alien opera diva; head tendrils replace hair (covers_hair).
+        "costume": "smooth, flawless pale blue skin, a cluster of long trailing tendrils rising "
+                   "from the crown and flowing down the back in place of hair, a floor-length "
+                   "light-blue satin gown with a sculpted bodice, a black bib-collar necklace, a "
+                   "black choker, and a spiraled headpiece",
+        "covers_hair": True,
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "very tall"},
+    },
+
+    # --- Added batch 2c: Captain Planet (Gaia, Planeteers, eco-villains) -----
+    "Gaia": {
+        "franchise": "Captain Planet",
+        "gender": "Female",
+        # Spirit of the Earth; long purple gown, gold headband, streaked dark hair.
+        "costume": "a long flowing purple gown with a light sash draped from one shoulder and "
+                   "wrapped around the opposite arm, a thin gold headband, and flat sandals",
+        "eyes": "light violet",
+        "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "very long",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "warm tan"},
+    },
+    "Wheeler": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Fire Planeteer (USA); red-headed, fire ring worn.
+        "costume": "a red short-sleeved shirt with a small Earth emblem on the chest, blue "
+                   "jeans, red sneakers, a red baseball cap worn backwards, and a chunky ring "
+                   "set with a small orange flame on one hand",
+        "signature": {"hair_color": "copper", "hair_length": "short pixie",
+                      "hair_style": "slicked back", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Kwame": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Earth Planeteer (Africa); earth ring worn.
+        "costume": "a yellow short-sleeved shirt under a green vest, khaki trousers, brown "
+                   "boots, and a chunky ring set with a small clod of soil on one hand",
+        "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Linka": {
+        "franchise": "Captain Planet",
+        "gender": "Female",
+        # Wind Planeteer (Eastern Europe); wind ring worn.
+        "costume": "a yellow Planeteer shirt over a blue long-sleeved top, a light cargo vest, "
+                   "blue leggings, ankle boots, and a chunky ring set with a small swirling "
+                   "wind cloud on one hand",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Gi": {
+        "franchise": "Captain Planet",
+        "gender": "Female",
+        # Water Planeteer (Asia); water ring worn.
+        "costume": "a blue short-sleeved shirt, white trousers, blue-and-white trainers, and a "
+                   "chunky ring set with a small drop of water on one hand",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light"},
+    },
+    "Ma-Ti": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Heart Planeteer (South America); heart ring worn.
+        "costume": "a white short-sleeved shirt under a red-orange vest, khaki shorts, sandals, "
+                   "and a chunky ring set with a small pink heart-shaped stone on one hand",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "caramel"},
+    },
+    "Verminous Skumm": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Mutant rat eco-villain; rat head + body ride in mask/costume.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a hunched, humanoid mutant rat covered in an even, all-over coat of matted "
+                   "grey fur with pinkish patches, clawed hands and feet, and a long scaly tail",
+        "mask": "a snarling rat's head with a pointed muzzle, jagged yellow teeth, twitching "
+                "whiskers, tattered ears, and beady red eyes",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Hoggish Greedly": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Gluttonous polluter; hog-like human face stays visible.
+        "costume": "a grubby olive-green military uniform straining over an enormous belly, a "
+                   "black tie, a leather webbing belt, and combat boots, with an upturned "
+                   "pig-like nose, small pointed ears, and a thin sepia-brown mohawk strip",
+        "signature": {"hair_color": "warm brown", "hair_length": "buzzed very short",
+                      "facial_hair": "clean shaven", "eye_color": "bright blue"},
+        "physique": {"body_type": "plus size", "height": "tall", "skin_tone": "light"},
+    },
 }
 
 
