@@ -11989,6 +11989,18 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "average", "height": "average height", "skin_tone": "fair"},
         "prop": "a fat lit cigar clamped between two fingers, trailing a thin ribbon of smoke",
     },
+    "Josie McCoy": {
+        "franchise": "Josie and the Pussycats",
+        "gender": "Female",
+        # Lead singer/guitarist of the Pussycats; the leopard cat-suit stage costume.
+        "costume": "a leopard-spotted long-sleeve leotard cut high on the hips, a matching "
+                   "cat-ear headband, a long spotted tail, sheer tan tights, and red high-heeled "
+                   "shoes",
+        "signature": {"hair_color": "auburn", "hair_length": "long", "hair_texture": "loosely wavy",
+                      "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "a slim electric guitar on a strap, its body finished in glossy candy red",
+    },
     "Captain Planet": {
         "franchise": "Captain Planet",
         "gender": "Male",
@@ -12086,7 +12098,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
         "Steven Universe", "Popeye", "Johnny Bravo",
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",
-        "Peepoodo", "Archer",
+        "Peepoodo", "Archer", "Josie and the Pussycats",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

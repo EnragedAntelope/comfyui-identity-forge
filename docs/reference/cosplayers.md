@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1131 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1132 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (132)
 
@@ -220,7 +220,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (123)
+## Comics & Cartoons (124)
 
 ### Adventure Time
 
@@ -333,6 +333,10 @@
 ### Johnny Bravo
 
 - **Johnny Bravo** (M)
+
+### Josie and the Pussycats
+
+- **Josie McCoy** (F, prop)
 
 ### Looney Tunes
 
