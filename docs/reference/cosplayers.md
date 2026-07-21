@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1168 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1178 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (142)
 
@@ -504,7 +504,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (154)
+## DC (155)
 
 ### DC
 
@@ -644,6 +644,7 @@
 - **Thorn** (F)
 - **Tomar-Re** (M)
 - **Two-Face** (M, prop)
+- **Vixen** (F)
 - **Wildcat** (M, masked)
 - **Wonder Girl (Cassie Sandsmark)** (F)
 - **Wonder Woman** (F, prop)
@@ -939,7 +940,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (143)
+## Marvel (148)
 
 ### Marvel
 
@@ -1023,6 +1024,7 @@
 - **Mister Sinister** (M)
 - **Mistress Death** (F)
 - **Moon Knight** (M, masked, prop)
+- **Moondragon** (F)
 - **Moonstone** (F)
 - **Morgan le Fay** (F)
 - **Ms. Marvel (Kamala Khan)** (F)
@@ -1054,10 +1056,12 @@
 - **Scarlet Witch** (F)
 - **Sebastian Shaw** (M)
 - **Selene Gallio (Black Queen)** (F)
+- **Shanna the She-Devil** (F, prop)
 - **She-Hulk** (F, giant)
 - **Silver Sable** (F)
 - **Silver Surfer** (M, masked, prop)
 - **Snowbird** (F)
+- **Songbird** (F)
 - **Spectrum** (F)
 - **Spider-Gwen** (F)
 - **Spider-Man** (M, masked)
@@ -1071,10 +1075,12 @@
 - **Thanos** (M, giant)
 - **The Thing** (M)
 - **Thor** (M, prop)
+- **Tigra** (F)
 - **Titania** (F, giant, +2 alt)
 - **Tony Stark** (M)
 - **Typhoid Mary** (F)
 - **Ultron** (M, giant, masked)
+- **Valkyrie** (F, prop)
 - **Venom** (M, giant, masked)
 - **Viper** (F)
 - **Vision** (M)
@@ -1087,7 +1093,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (113)
+## Movies & TV (117)
 
 ### A Nightmare on Elm Street
 
@@ -1105,6 +1111,8 @@
 ### Anastasia
 
 - **Anastasia** (F, +1 alt)
+- **Dimitri** (M)
+- **Rasputin** (M, prop)
 
 ### Attack of the 50 Foot Woman
 
@@ -1360,6 +1368,8 @@
 ### The Road to El Dorado
 
 - **Chel** (F)
+- **Miguel** (M)
+- **Tulio** (M)
 
 ### The Terminator
 

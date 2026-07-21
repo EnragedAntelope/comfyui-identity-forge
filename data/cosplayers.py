@@ -12429,6 +12429,124 @@ COSPLAYERS: dict[str, dict] = {
                       "facial_hair": "clean shaven", "eye_color": "bright blue"},
         "physique": {"body_type": "plus size", "height": "tall", "skin_tone": "light"},
     },
+
+    # --- Added batch 2d: Marvel & DC ----------------------------------------
+    "Tigra": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Were-woman Avenger; orange striped fur reads as her skin, cat face visible.
+        "costume": "an even, all-over coat of orange fur marked with black tiger stripes, a "
+                   "skimpy black bikini, a wide-buckled belt, a long tufted cat tail, and small "
+                   "pointed feline ears",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous", "eye_color": "green"},
+        "physique": {"body_type": "voluptuous", "height": "tall"},
+    },
+    "Valkyrie": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Brunnhilde of the Defenders; the classic Asgardian battle look.
+        "costume": "a silver scale-mail bodice and skirt with blue-and-white accents, a flowing "
+                   "blue cape, silver arm bracers, a winged silver helm, and silver knee-high "
+                   "boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "wavy", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "fair"},
+        "prop": "Dragonfang, a straight double-edged longsword with a pale ivory blade and a "
+                "gold cross-guard",
+    },
+    "Moondragon": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Bald cosmic telepath; baldness lives in the costume (no hair signature).
+        "costume": "a green-and-white bodysuit with a plunging neckline and a high-collared "
+                   "green cape, green gloves and boots, a golden headpiece, and a clean-shaven "
+                   "bald head",
+        "signature": {"eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Songbird": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Thunderbolt; sonic wings and a gemmed sonic collar.
+        "costume": "a dark grey bodysuit with lighter grey panels, a gold neck brace set with a "
+                   "fuchsia stone at the throat, matching gold bracelets and belt, and a pair of "
+                   "translucent pink sound-construct wings arcing from the back",
+        "signature": {"hair_color": "hot pink", "hair_length": "long", "hair_style": "worn down",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Shanna the She-Devil": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Jungle adventurer.
+        "costume": "a leopard-spotted fur bikini, a leather thong belt, a beaded necklace, and "
+                   "laced leather sandals wrapping up the calves",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "wavy", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "golden tan"},
+        "prop": "a broad-bladed hunting knife with a bone handle",
+    },
+    "Vixen": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Mari McCabe, channeler of the animal kingdom via the Tantu Totem.
+        "costume": "a form-fitting orange bodysuit with a deep neckline, a black belt, black "
+                   "gloves and thigh-high boots, and a golden fox-head Tantu Totem amulet on a "
+                   "cord at the throat",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "worn down",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "brown"},
+    },
+
+    # --- Added batch 2d: Anastasia ------------------------------------------
+    "Rasputin": {
+        "franchise": "Anastasia",
+        "gender": "Male",
+        # Undead sorcerer; gaunt, decaying, in tattered black robes.
+        "costume": "tattered floor-length black robes with a ragged hooded cloak over gaunt, "
+                   "greying, decaying skin, bony clawed hands, and a heavy dark amulet",
+        "eyes": "sunken, pale and sickly",
+        "signature": {"hair_color": "charcoal gray", "hair_length": "long",
+                      "hair_texture": "fine and wispy", "facial_hair": "goatee"},
+        "physique": {"body_type": "very slim", "height": "tall", "skin_tone": "very pale"},
+        "prop": "a green-glowing reliquary vial on a chain, sloshing with sickly light",
+    },
+    "Dimitri": {
+        "franchise": "Anastasia",
+        "gender": "Male",
+        # Con-man turned love interest.
+        "costume": "a long dark blue overcoat over a grey waistcoat and collarless shirt, tan "
+                   "trousers, and worn brown knee boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "short pixie",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 2d: The Road to El Dorado ------------------------------
+    "Tulio": {
+        "franchise": "The Road to El Dorado",
+        "gender": "Male",
+        # The sharp-witted dark-haired con-man.
+        "costume": "a deep red long-sleeved tunic with a wide brown sash at the waist, tan "
+                   "trousers, and brown boots",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "van dyke",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Miguel": {
+        "franchise": "The Road to El Dorado",
+        "gender": "Male",
+        # The carefree fair-haired con-man.
+        "costume": "a sky-blue long-sleeved tunic with a brown sash, tan trousers, brown boots, "
+                   "and a small gold hoop earring",
+        "signature": {"hair_color": "dark blonde", "hair_length": "short pixie",
+                      "hair_style": "tousled bedhead", "facial_hair": "goatee",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
+    },
 }
 
 
