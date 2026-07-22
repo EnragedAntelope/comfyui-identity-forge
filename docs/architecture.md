@@ -579,6 +579,29 @@ be a lie, and `accessory_density` is a global user control, not per-character. A
 key was considered and **rejected** — the current behaviour is defensible and the schema stays
 smaller. Do not add it back without a fresh decision.
 
+### Comic-women roster review (0.70.0 — do not re-litigate the skips)
+
+A pass over two external popularity rankings of comic-book women against the live roster
+confirmed the broadly-recognizable entries are already covered: the Marvel/DC mains and their
+alter-egos/variants (Star Sapphire = Carol Ferris, Spider-Gwen = Gwen Stacy, Captain Marvel =
+Carol/Ms. Marvel, Death of the Endless, Wonder Girl = Donna Troy, DC Jade and MK Jade, both
+Huntresses, Dazzler, Batwoman, Viper/Madame Hydra, Mary Marvel, Invisible Woman, Shanna,
+Valkyrie, Lois Lane, Hawkgirl, Mera, Big Barda, Wasp), plus the indie/other icons Vampirella,
+Red Sonja, Witchblade (Sara Pezzini), Fathom (Aspen Matthews), Lady Death, Caitlin Fairchild
+(Gen13), Lara Croft, Kitana, and the Masters of the Universe cast.
+
+**Added (rule 2 — a represented franchise missing an iconic character):** **Abbey Chase** (Danger
+Girl shipped only via the side operative Natalia Kassle); **Evil-Lyn** (Masters of the Universe had
+He-Man/Skeletor/She-Ra/Sorceress/Teela but not its iconic sorceress-villainess); **Sheena, Queen of
+the Jungle** (a genuinely classic, broadly-recognizable pulp/comics character with a clear worn look).
+
+Deliberately **skipped as deep cuts** (fail the "genuinely iconic, broadly-recognizable" bar, or
+have no distinct worn costume): Tarot, Linsner's Dawn, Purgatori/Chastity, Dejah Thoris, Barbarella,
+Cassie Hack, Painkiller Jane, Shi, Ghost (Dark Horse), Clea, Venus, Fury, Shadow Lass, Phantom Girl,
+Lady Blackhawk, P'Gell, Katy Keene, the Love & Rockets women (Hopey/Maggie/Luba), and the
+civilian/no-costume names (Lois Lane's Lana Lang, Vicki Vale, plus the Archie girls Betty/Veronica —
+everyday teen fashion). Don't re-add these without a fresh curation decision.
+
 ## Gotchas cheat-sheet
 
 - **A character rendering in the wrong *medium* (drawn / illustrated / 3D) is almost never a data

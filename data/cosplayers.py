@@ -5867,6 +5867,19 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "a golden cobra-headed staff",
     },
+    "Evil-Lyn": {
+        "franchise": "Masters of the Universe",
+        "gender": "Female",
+        # Skeletor's scheming sorceress, the villainess of Eternia.
+        "costume": "a form-fitting midnight-blue bodysuit with a plunging neckline, a "
+                   "matching hooded cowl, a winged deep-purple headpiece, a short purple "
+                   "cape, and tall dark boots",
+        "signature": {"hair_color": "raven black", "hair_length": "long",
+                      "hair_style": "worn down", "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "pale"},
+        "prop": "the Havoc Staff, a tall black rod topped with a carved ram's-skull "
+                "finial lit by an orange glow",
+    },
     "Man-At-Arms": {
         "franchise": "Masters of the Universe",
         "gender": "Male",
@@ -13357,6 +13370,18 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "sleek straight"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
+    "Abbey Chase": {
+        "franchise": "Danger Girl",
+        "gender": "Female",
+        # The lead Danger Girl; globe-trotting treasure-hunter adventurer.
+        "costume": "a snug cream ribbed tank top, low-slung khaki cargo shorts with a "
+                   "wide brown belt, twin thigh holsters strapped to the legs, fingerless "
+                   "gloves, and scuffed brown combat boots",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "long",
+                      "hair_style": "low ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "average height",
+                     "skin_tone": "warm tan"},
+    },
     "Natalia Kassle": {
         "franchise": "Danger Girl",
         "gender": "Female",
@@ -13836,6 +13861,51 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "afro", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
     },
+
+    # --- Added batch 9: Sinbad: Legend of the Seven Seas --------------------
+    "Eris": {
+        "franchise": "Sinbad: Legend of the Seven Seas",
+        "gender": "Female",
+        # 2003 DreamWorks film; the Goddess of Chaos/Discord. Ethereal ashen skin,
+        # impossibly long black hair, glowing pale-gold eyes, and a slinky dark gown.
+        "costume": "a slinky floor-length charcoal-grey gown clinging to the figure, "
+                   "low-cut and open-backed, with long trailing draped sleeves that "
+                   "wisp away like smoke, and smooth, flawless ashen pale grey-green skin",
+        "eyes": "glowing pale gold",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "hair_style": "worn down"},
+        "skin": "ashen pale grey-green",
+        "physique": {"body_type": "slender", "height": "statuesque"},
+    },
+    "Sinbad": {
+        "franchise": "Sinbad: Legend of the Seven Seas",
+        "gender": "Male",
+        # 2003 DreamWorks film; the roguish sailor-hero.
+        "costume": "a loose cream linen shirt worn open at the chest with the sleeves "
+                   "pushed up the forearms, a wide crimson sash knotted at the waist "
+                   "over dark loose sailor's trousers, tall worn brown leather boots, "
+                   "and a laced leather bracer on each forearm",
+        "signature": {"hair_color": "dark brown", "hair_length": "ear length",
+                      "hair_texture": "wavy", "hair_style": "windswept",
+                      "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "tan"},
+        "prop": "a curved steel scimitar with a worn leather-wrapped grip and a "
+                "brass crossguard",
+    },
+
+    # --- Added batch 10: classic pulp/adventure -----------------------------
+    "Sheena": {
+        "franchise": "Sheena, Queen of the Jungle",
+        "gender": "Female",
+        # The archetypal jungle queen; leopard-print two-piece and a spear.
+        "costume": "a leopard-print off-one-shoulder bikini top and matching wrap "
+                   "loincloth, a knotted rawhide belt, a beaded choker, a leather arm "
+                   "band, and bare feet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "loosely wavy", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan"},
+        "prop": "a long wooden hunting spear with a lashed flint tip",
+    },
 }
 
 
@@ -13905,6 +13975,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",
         "Cheetos", "General Mills", "Energizer", "Geico", "Duolingo", "Keebler",
         "Cool World", "Anastasia", "The Fifth Element", "The Road to El Dorado",
+        "Sinbad: Legend of the Seven Seas",
     ),
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
@@ -13919,6 +13990,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Peepoodo", "Archer", "Josie and the Pussycats",
         "Crusade Comics", "Darna", "Danger Girl",
         "The Phantom", "The Spirit", "The Tick",
+        "Sheena, Queen of the Jungle",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

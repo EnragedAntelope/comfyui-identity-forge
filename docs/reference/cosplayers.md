@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1291 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1296 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (168)
 
@@ -280,7 +280,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (160)
+## Comics & Cartoons (163)
 
 ### Adventure Time
 
@@ -358,6 +358,7 @@
 
 ### Danger Girl
 
+- **Abbey Chase** (F)
 - **Natalia Kassle** (F)
 
 ### Darna
@@ -444,6 +445,7 @@
 ### Masters of the Universe
 
 - **Beast Man** (M)
+- **Evil-Lyn** (F, prop)
 - **He-Man** (M, prop)
 - **Man-At-Arms** (M)
 - **Orko** (M, masked)
@@ -485,6 +487,10 @@
 
 - **Morty Smith** (M)
 - **Rick Sanchez** (M, prop)
+
+### Sheena, Queen of the Jungle
+
+- **Sheena** (F, prop)
 
 ### Steven Universe
 
@@ -1216,7 +1222,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (124)
+## Movies & TV (126)
 
 ### A Nightmare on Elm Street
 
@@ -1437,6 +1443,11 @@
 
 - **Princess Fiona** (F)
 - **Shrek** (M)
+
+### Sinbad: Legend of the Seven Seas
+
+- **Eris** (F)
+- **Sinbad** (M, prop)
 
 ### Star Trek
 
