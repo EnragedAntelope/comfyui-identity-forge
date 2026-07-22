@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1212 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1225 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (158)
 
@@ -520,7 +520,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (155)
+## DC (157)
 
 ### DC
 
@@ -548,6 +548,7 @@
 - **Brainiac** (M)
 - **Brainiac 5** (M)
 - **Bruce Wayne** (M)
+- **Bumblebee (DC)** (F)
 - **Captain Boomerang** (M, prop)
 - **Captain Cold** (M, prop)
 - **Catwoman** (F, +3 alt, prop)
@@ -652,6 +653,7 @@
 - **Swamp Thing** (M, giant)
 - **Tala** (F, +1 alt)
 - **Talia al Ghul** (F)
+- **Terra (Teen Titans)** (F)
 - **The Atom** (M, tiny, +1 alt)
 - **The Flash** (M, masked)
 - **The Penguin** (M, prop)
@@ -961,7 +963,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (148)
+## Marvel (157)
 
 ### Marvel
 
@@ -1016,6 +1018,7 @@
 - **Groot** (M, giant)
 - **Hawkeye** (M, prop)
 - **Hela** (F)
+- **Hellcat** (F)
 - **Hulk** (M, giant)
 - **Human Torch** (M, masked)
 - **Iceman** (M)
@@ -1026,6 +1029,8 @@
 - **Jean Grey** (F)
 - **Jubilee** (F)
 - **Juggernaut** (M, giant, masked)
+- **Julia Carpenter** (F)
+- **Justice (New Warriors)** (M)
 - **Kang the Conqueror** (M, masked, +1 alt)
 - **Kingpin** (M, giant, prop)
 - **Kitty Pryde** (F)
@@ -1053,13 +1058,16 @@
 - **Mysterio** (M, masked)
 - **Mystique** (F)
 - **Namor** (M, prop)
+- **Namora** (F)
 - **Namorita** (F)
 - **Nebula** (F)
 - **Nick Fury** (M)
+- **Night Thrasher** (M, masked, prop)
 - **Nightcrawler** (M)
 - **Nocturne** (F)
 - **Nova (Frankie Raye)** (F)
 - **Nova (Richard Rider)** (M, masked)
+- **Photon (Monica Rambeau)** (F)
 - **Polaris** (F)
 - **Professor X** (M)
 - **Psylocke** (F, prop)
@@ -1067,6 +1075,7 @@
 - **Pyro** (M, prop)
 - **Quasar** (M)
 - **Quicksilver** (M)
+- **Rage (Marvel)** (M)
 - **Red Skull** (M, masked)
 - **Rhino** (M, giant, masked)
 - **Rocket Raccoon** (M, prop)
@@ -1077,6 +1086,7 @@
 - **Scarlet Witch** (F)
 - **Sebastian Shaw** (M)
 - **Selene Gallio (Black Queen)** (F)
+- **Sersi** (F)
 - **Shanna the She-Devil** (F, prop)
 - **She-Hulk** (F, giant)
 - **Silver Sable** (F)
@@ -1084,6 +1094,7 @@
 - **Snowbird** (F)
 - **Songbird** (F)
 - **Spectrum** (F)
+- **Speedball** (M)
 - **Spider-Gwen** (F)
 - **Spider-Man** (M, masked)
 - **Spider-Woman** (F)
@@ -1422,7 +1433,7 @@
 
 - **Xena** (F, prop)
 
-## Star Wars (114)
+## Star Wars (116)
 
 ### Star Wars
 
@@ -1487,6 +1498,7 @@
 - **Jango Fett** (M, masked)
 - **Jar Jar Binks** (M, masked)
 - **Jawa** (M, masked)
+- **Jyn Erso** (F)
 - **K-2SO** (M, masked)
 - **Kaminoan** (F)
 - **Ki-Adi-Mundi** (M, prop)
@@ -1532,6 +1544,7 @@
 - **The Mandalorian** (M, masked, prop)
 - **Tusken Raider** (M, masked, prop)
 - **Unkar Plutt** (M, masked)
+- **Vette** (F)
 - **Wampa** (M, giant, masked)
 - **Watto** (M)
 - **Wedge Antilles** (M)

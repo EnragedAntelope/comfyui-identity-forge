@@ -12921,6 +12921,152 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "amber"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
     },
+
+    # --- Added batch 3d: Marvel (deep cuts) ---------------------------------
+    "Hellcat": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Patsy Walker; face-visible cat cowl.
+        "costume": "a yellow catsuit with a plunging front, blue gloves and thigh-high boots, a "
+                   "blue utility belt, retractable claws, and a blue cat-eared cowl framing the "
+                   "face",
+        "signature": {"hair_color": "bright red", "hair_length": "very long",
+                      "hair_texture": "wavy", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Photon (Monica Rambeau)": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Monica Rambeau in her white energy-wielder costume.
+        "costume": "a sleek white bodysuit with black side panels and a bold black lightning "
+                   "sash, a short red-lined cape, black gloves, and white boots",
+        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
+                      "hair_texture": "coily", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "brown"},
+    },
+    "Sersi": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Eternal.
+        "costume": "a bright green tunic dress with gold trim and shoulder drapes, a golden "
+                   "girdle belt, and strappy sandals",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "loosely wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Namora": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Atlantean, Namorita's cousin.
+        "costume": "a green scaled one-piece cut high on the hips, small feathered wings at each "
+                   "ankle, pointed elf-like ears, and a gold belt",
+        "signature": {"hair_color": "near black", "hair_length": "very long",
+                      "hair_texture": "loosely wavy", "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "fair"},
+    },
+    "Julia Carpenter": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # The second Spider-Woman / Arachne.
+        "costume": "a matte black bodysuit with a large white spider emblem spanning the chest "
+                   "and back, white elbow-length gloves, and white thigh-high boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Night Thrasher": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # New Warriors leader; full helmet rides in mask, board is a prop.
+        "covers_face": True,
+        "costume": "a black-and-grey armored bodysuit with silver shoulder pads, segmented "
+                   "gauntlets, knee guards, and a utility harness",
+        "mask": "a black full-face armored helmet with a narrow silver visor slit and angular "
+                "cheek plating",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "worn down", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+        "prop": "a reinforced armored skateboard gripped under one arm",
+    },
+    "Speedball": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # Kinetic-bouncing New Warrior; face-visible domino mask.
+        "costume": "a blue-and-yellow bodysuit with a yellow chest panel, a blue domino mask, "
+                   "yellow gloves and boots, wrapped in faint translucent kinetic bubbles",
+        "signature": {"hair_color": "copper", "hair_length": "short pixie",
+                      "hair_texture": "curly", "facial_hair": "clean shaven",
+                      "eye_color": "green"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Justice (New Warriors)": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # Vance Astrovik; telekinetic.
+        "costume": "a blue-and-silver bodysuit with an atom emblem on the chest, gold "
+                   "wristbands, a flowing dark cape, and a blue domino mask",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "worn down", "facial_hair": "clean shaven",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Rage (Marvel)": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # New Warrior with an adult, powerhouse frame; face-visible striped mask.
+        "costume": "a sleeveless dark bodysuit with 'RAGE' emblazoned across the chest, a yellow-"
+                   "striped eye-mask, heavy gauntlets, and thick boots, over a hugely muscular "
+                   "frame",
+        "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
+                      "facial_hair": "clean shaven", "eye_color": "dark brown"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "dark brown"},
+    },
+
+    # --- Added batch 3d: DC --------------------------------------------------
+    "Terra (Teen Titans)": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Tara Markov; earth-mover (distinct from FF's Terra Branford).
+        "costume": "a black bodysuit with a yellow torso panel bearing a stylized 'T', brown "
+                   "gloves and boots, and a pair of goggles pushed up on the forehead",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Bumblebee (DC)": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Karen Beecher; size-changing Teen Titan (distinct from Transformers' Bumblebee).
+        "costume": "a black-and-yellow striped bodysuit with a translucent pair of insect wings, "
+                   "black goggles, a slim antenna headband, black gloves, and yellow boots",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_texture": "coily", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "dark brown"},
+    },
+
+    # --- Added batch 3d: Star Wars ------------------------------------------
+    "Jyn Erso": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Rogue One.
+        "costume": "a layered brown utility jacket over a grey henley, dark cargo trousers, a "
+                   "wrapped scarf, fingerless gloves, and worn boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "long", "hair_style": "low ponytail",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Vette": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Twi'lek scoundrel (SWTOR); lekku replace scalp hair.
+        "costume": "smooth, flawless blue skin, a pair of long blue lekku head-tails falling "
+                   "from the back of the head in place of hair, a fitted sleeveless scoundrel's "
+                   "vest, slim trousers, a utility belt, and knee-high boots",
+        "covers_hair": True,
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
 }
 
 
