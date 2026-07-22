@@ -13067,6 +13067,137 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"eye_color": "dark brown"},
         "physique": {"body_type": "slim", "height": "average height"},
     },
+
+    # --- Added batch 3e: Captain Planet eco-villains ------------------------
+    "Duke Nukem (Captain Planet)": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Radioactive mutant; craggy green skin (distinct from the video-game Duke Nukem).
+        "costume": "uniform, all-over sickly green craggy rock-like skin with a faint orange "
+                   "radioactive glow in the cracks, a heavy metal containment collar and chest "
+                   "harness, and metal wrist clamps",
+        "eyes": "glowing orange",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Looten Plunder": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Corporate-greed villain.
+        "costume": "a gaudy pine-green business suit with tiger-print lapels, a bright silk "
+                   "tie, gold cufflinks, and polished dress shoes",
+        "signature": {"hair_color": "auburn", "hair_length": "shoulder length",
+                      "hair_style": "low ponytail", "facial_hair": "clean shaven",
+                      "eye_color": "green"},
+        "physique": {"body_type": "average", "height": "tall", "skin_tone": "fair"},
+    },
+    "Sly Sludge": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Slovenly waste-dumper.
+        "costume": "grubby khaki coveralls over a stained shirt, yellow rubber gloves marked "
+                   "with 'no' symbols, and black rubber boots, with long straggly hair over a "
+                   "balding crown",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "worn down",
+                      "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "plump", "height": "short", "skin_tone": "light"},
+    },
+    "Captain Pollution": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Captain Planet's corrupted counterpart; lesioned yellow skin.
+        "costume": "smooth, flawless pale yellow skin blotched with brown lesions over a "
+                   "muscular bare chest, grimy multi-colored briefs, and metal wrist bands",
+        "eyes": "glowing red",
+        "signature": {"hair_color": "bright red", "hair_length": "very short",
+                      "hair_style": "slicked back"},
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Zarm": {
+        "franchise": "Captain Planet",
+        "gender": "Male",
+        # Former spirit of Earth, now spirit of war.
+        "costume": "a suit of ornate red-and-gold spirit armor over a muscular frame, a flowing "
+                   "red cape, armored gauntlets, and a spiked shoulder guard",
+        "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "bronze"},
+    },
+
+    # --- Added batch 3e: Duke Nukem (video game) ----------------------------
+    "Duke Nukem (video game)": {
+        "franchise": "Duke Nukem",
+        "gender": "Male",
+        # The wisecracking action hero (distinct from the Captain Planet villain).
+        "costume": "a red sleeveless tank top over a muscular chest, blue jeans with a black "
+                   "belt, black combat boots, and dark wraparound sunglasses",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "tan"},
+        "prop": "a pair of chrome semi-automatic pistols, one in each hand",
+    },
+
+    # --- Added batch 3e: The Fifth Element ----------------------------------
+    "Ruby Rhod": {
+        "franchise": "The Fifth Element",
+        "gender": "Male",
+        # Flamboyant radio host.
+        "costume": "a flamboyant black bodysuit patterned with leopard print and gold trim, a "
+                   "high-collared cape, gold jewelry, and a sculpted forked horn-like hairpiece "
+                   "rising from the head",
+        "signature": {"facial_hair": "mustache", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Zorg": {
+        "franchise": "The Fifth Element",
+        "gender": "Male",
+        # Jean-Baptiste Emanuel Zorg, arms-dealing villain.
+        "costume": "a cream three-piece suit with a wide asymmetric collar, a patterned "
+                   "waistcoat, and an odd half-shaved fringe of hair with a flap combed across "
+                   "a foot-shaped birthmark on the scalp",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "comb over", "facial_hair": "clean shaven",
+                      "eye_color": "hazel"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 3e: The Road to El Dorado ------------------------------
+    "Tzekel-Kan": {
+        "franchise": "The Road to El Dorado",
+        "gender": "Male",
+        # Sinister high priest.
+        "costume": "an elaborate green-feathered Mesoamerican headdress, a jaguar-pelt cloak "
+                   "over bare shoulders, heavy gold and jade jewelry, bone ear-spools, red and "
+                   "white ceremonial face paint, and a loincloth",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "facial_hair": "clean shaven", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "caramel"},
+        "prop": "an obsidian-bladed sacrificial dagger with a carved bone handle",
+    },
+
+    # --- Added batch 3e: Anastasia ------------------------------------------
+    "Bartok": {
+        "franchise": "Anastasia",
+        "gender": "Male",
+        # Rasputin's albino bat sidekick; non-human, features carried in the costume.
+        "costume": "a small upright anthropomorphic albino bat with an even, all-over coat of "
+                   "downy white fur, oversized round ears, big expressive eyes, a little pot "
+                   "belly, and a pair of leathery wings",
+        "signature": {},
+        "physique": {"body_type": "chubby", "height": "very petite"},
+    },
+    "Dowager Empress Marie": {
+        "franchise": "Anastasia",
+        "gender": "Female",
+        # Anastasia's grandmother.
+        "costume": "an elegant floor-length deep-blue gown with a fur-trimmed stole, long "
+                   "gloves, a strand of pearls, and a jeweled tiara set in an upswept coif",
+        "signature": {"hair_color": "white", "hair_length": "long", "hair_style": "chignon",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
 }
 
 
@@ -13107,7 +13238,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The King of Fighters", "Bayonetta", "Divinity: Original Sin", "World of Warcraft",
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
         "Sega", "Namco", "BioShock", "The Last of Us", "Crash Bandicoot", "LittleBigPlanet",
-        "Pikmin", "Dead or Alive", "Lollipop Chainsaw",
+        "Pikmin", "Dead or Alive", "Lollipop Chainsaw", "Duke Nukem",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",

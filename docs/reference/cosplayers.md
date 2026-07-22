@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1225 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1236 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (158)
 
@@ -246,7 +246,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (137)
+## Comics & Cartoons (142)
 
 ### Adventure Time
 
@@ -284,15 +284,20 @@
 ### Captain Planet
 
 - **Captain Planet** (M)
+- **Captain Pollution** (M)
 - **Doctor Blight** (F)
+- **Duke Nukem (Captain Planet)** (M)
 - **Gaia** (F)
 - **Gi** (F)
 - **Hoggish Greedly** (M)
 - **Kwame** (M)
 - **Linka** (F)
+- **Looten Plunder** (M)
 - **Ma-Ti** (M)
+- **Sly Sludge** (M)
 - **Verminous Skumm** (M, masked)
 - **Wheeler** (M)
+- **Zarm** (M)
 
 ### Carmen Sandiego
 
@@ -1125,7 +1130,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (117)
+## Movies & TV (122)
 
 ### A Nightmare on Elm Street
 
@@ -1143,7 +1148,9 @@
 ### Anastasia
 
 - **Anastasia** (F, +1 alt)
+- **Bartok** (M)
 - **Dimitri** (M)
+- **Dowager Empress Marie** (F)
 - **Rasputin** (M, prop)
 
 ### Attack of the 50 Foot Woman
@@ -1388,6 +1395,8 @@
 
 - **Diva Plavalaguna** (F)
 - **Leeloo** (F, +1 alt)
+- **Ruby Rhod** (M)
+- **Zorg** (M)
 
 ### The Iron Giant
 
@@ -1402,6 +1411,7 @@
 - **Chel** (F)
 - **Miguel** (M)
 - **Tulio** (M)
+- **Tzekel-Kan** (M, prop)
 
 ### The Terminator
 
@@ -1554,7 +1564,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (256)
+## Video Games (257)
 
 ### ARMS
 
@@ -1647,6 +1657,10 @@
 ### Dragon Age
 
 - **Morrigan (Dragon Age)** (F)
+
+### Duke Nukem
+
+- **Duke Nukem (video game)** (M, prop)
 
 ### F-Zero
 
