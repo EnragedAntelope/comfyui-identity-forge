@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1251 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1267 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (158)
 
@@ -246,7 +246,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (152)
+## Comics & Cartoons (155)
 
 ### Adventure Time
 
@@ -324,6 +324,18 @@
 - **The Phantom** (M)
 - **The Spirit** (M)
 - **The Tick** (M, masked)
+
+### Crusade Comics
+
+- **Shi (Ana Ishikawa)** (F, prop)
+
+### Danger Girl
+
+- **Natalia Kassle** (F)
+
+### Darna
+
+- **Darna** (F)
 
 ### Despicable Me
 
@@ -535,7 +547,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (157)
+## DC (158)
 
 ### DC
 
@@ -575,6 +587,7 @@
 - **Cosmic Boy** (M)
 - **Cyborg** (M)
 - **Darkseid** (M, giant)
+- **Dawnstar** (F)
 - **Deadshot** (M, prop)
 - **Deathstroke** (M, masked)
 - **Dee Dee** (F)
@@ -978,12 +991,13 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (157)
+## Marvel (163)
 
 ### Marvel
 
 - **Abomination** (M, giant)
 - **Agatha Harkness** (F)
+- **Aleta Ogord** (F)
 - **Angel** (M)
 - **Angela** (F, prop)
 - **Ant-Man** (M, tiny, masked)
@@ -996,6 +1010,7 @@
 - **Bishop** (M, prop)
 - **Black Bolt** (M)
 - **Black Cat** (F)
+- **Black Mamba** (F)
 - **Black Panther** (M, masked)
 - **Black Widow** (F)
 - **Blackheart** (F)
@@ -1077,6 +1092,7 @@
 - **Namorita** (F)
 - **Nebula** (F)
 - **Nick Fury** (M)
+- **Nico Minoru** (F, prop)
 - **Night Thrasher** (M, masked, prop)
 - **Nightcrawler** (M)
 - **Nocturne** (F)
@@ -1090,6 +1106,7 @@
 - **Pyro** (M, prop)
 - **Quasar** (M)
 - **Quicksilver** (M)
+- **Rachel Summers** (F)
 - **Rage (Marvel)** (M)
 - **Red Skull** (M, masked)
 - **Rhino** (M, giant, masked)
@@ -1103,7 +1120,9 @@
 - **Selene Gallio (Black Queen)** (F)
 - **Sersi** (F)
 - **Shanna the She-Devil** (F, prop)
+- **Sharon Carter** (F, prop)
 - **She-Hulk** (F, giant)
+- **Shriek** (F)
 - **Silver Sable** (F)
 - **Silver Surfer** (M, masked, prop)
 - **Snowbird** (F)
@@ -1455,7 +1474,7 @@
 
 - **Xena** (F, prop)
 
-## Star Wars (116)
+## Star Wars (117)
 
 ### Star Wars
 
@@ -1490,6 +1509,7 @@
 - **Dark Trooper** (M, masked)
 - **Darth Maul** (M, prop)
 - **Darth Revan** (M, masked, prop)
+- **Darth Talon** (F, prop)
 - **Darth Vader** (M, masked, prop)
 - **Dathomirian** (F)
 - **Death Trooper** (M, masked, prop)
@@ -1576,7 +1596,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (260)
+## Video Games (265)
 
 ### ARMS
 
@@ -1599,6 +1619,10 @@
 ### BioShock
 
 - **Big Daddy** (M, giant, masked)
+
+### BloodRayne
+
+- **Rayne** (F)
 
 ### Borderlands
 
@@ -1668,6 +1692,7 @@
 
 ### Dragon Age
 
+- **Isabela** (F, prop)
 - **Morrigan (Dragon Age)** (F)
 
 ### Duke Nukem
@@ -1708,6 +1733,10 @@
 - **Yuna** (F, prop)
 - **Zidane** (M)
 
+### Fire Emblem
+
+- **Azura** (F)
+
 ### Genshin Impact
 
 - **Ganyu** (F)
@@ -1718,6 +1747,7 @@
 
 ### God of War
 
+- **Freya** (F)
 - **Kratos** (M, prop)
 
 ### Halo
@@ -1821,6 +1851,10 @@
 ### Namco
 
 - **Pac-Man** (M, masked)
+
+### NieR
+
+- **Kaine** (F, prop)
 
 ### NieR: Automata
 

@@ -13356,6 +13356,188 @@ COSPLAYERS: dict[str, dict] = {
                       "facial_hair": "clean shaven", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
+
+    # --- Added batch 4: mixed comics, games & manga -------------------------
+    "Darth Talon": {
+        "franchise": "Star Wars",
+        "gender": "Female",
+        # Lethan (red) Twi'lek Sith; black ritual tattoos, lekku replace scalp hair.
+        "costume": "smooth, flawless deep red skin covered in intricate black Sith tribal "
+                   "tattoos across the body, face, and lekku, a pair of long red head-tails "
+                   "falling in place of hair, a minimal black leather harness top, a black "
+                   "loincloth wrap, and knee-high black boots",
+        "covers_hair": True,
+        "eyes": "glowing yellow",
+        "physique": {"body_type": "toned", "height": "tall"},
+        "prop": "a red-bladed lightsaber ignited from a slim black hilt",
+    },
+    "Shi (Ana Ishikawa)": {
+        "franchise": "Crusade Comics",
+        "gender": "Female",
+        # Warrior avenger; white kabuki face paint (visible face, not a mask).
+        "costume": "a red ninja battle outfit with a wrapped sash and armored guards, black "
+                   "gloves and tabi boots, the whole face painted stark white in kabuki style "
+                   "with dark markings around the eyes",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "pin straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a naginata, a long wooden pole topped with a single curved blade",
+    },
+    "Darna": {
+        "franchise": "Darna",
+        "gender": "Female",
+        # Filipino superheroine.
+        "costume": "a red two-piece costume with a gold star on each bra cap, a red winged "
+                   "helmet set with a ruby-and-gold medallion, gold bracelets, a gold medallion "
+                   "belt with a front loincloth, and red boots",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "tan"},
+    },
+    "Nico Minoru": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Runaways sorceress; gothic wardrobe, Staff of One.
+        "costume": "an ornate gothic outfit: a black corseted top, layered black lace skirts, "
+                   "a choker and studded chokers, striped stockings, and buckled boots, with "
+                   "heavy dark eye makeup",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "long",
+                      "hair_style": "blunt bangs", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+        "prop": "the Staff of One, a tall slender black staff etched with glowing runes",
+    },
+    "Aleta Ogord": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Starhawk, a being of living light.
+        "costume": "a sleek white bodysuit with pale-blue starburst emblems across the chest, a "
+                   "flared white collar, silver gauntlets and boots, and a faint luminous aura",
+        "eyes": "solid glowing white",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "very long",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Natalia Kassle": {
+        "franchise": "Danger Girl",
+        "gender": "Female",
+        # Danger Girl operative; Russian femme fatale.
+        "costume": "a black fishnet top over a black bra, black tactical trousers, a slim "
+                   "holster belt, fingerless gloves, and knee-high boots",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "ice blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Black Mamba": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Tanya Sealy, Serpent Society; darkforce serpent motifs.
+        "costume": "a glossy black bodysuit with twin coiling serpent motifs across the torso, "
+                   "long black gloves, a high collar, and thigh-high black boots",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "dark brown"},
+    },
+    "Shriek": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Frances Barrison; unhinged sonic villain, Carnage's companion.
+        "costume": "a tattered dark bodysuit with ragged sleeves, torn wrappings, and jagged "
+                   "hems, with heavy smeared black eye makeup",
+        "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "eye_color": "pale blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "very pale"},
+    },
+    "Sharon Carter": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Agent 13 of SHIELD.
+        "costume": "a form-fitting navy-and-black tactical SHIELD bodysuit with a utility belt, "
+                   "a thigh holster, fingerless gloves, and knee-high boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a compact black semi-automatic pistol",
+    },
+    "Dawnstar": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Legion tracker; large white feathered wings, a star on the brow.
+        "costume": "a tan fringed buckskin bodice-and-briefs costume with fringed boots and "
+                   "arm-bands, a large pair of white feathered wings spreading from the back, "
+                   "and a small silver star mark on the forehead",
+        "signature": {"hair_color": "jet black", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "warm brown"},
+    },
+    "Rachel Summers": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Phoenix / Prestige; her red Phoenix costume (distinct from Jean's green).
+        "costume": "a red bodysuit with a gold sash and a gold Phoenix crest across the chest, "
+                   "gold armbands, and gold thigh-high boots",
+        "signature": {"hair_color": "bright red", "hair_length": "short pixie",
+                      "hair_texture": "sleek straight", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 4: video-game heroines ---------------------------------
+    "Azura": {
+        "franchise": "Fire Emblem",
+        "gender": "Female",
+        # Songstress of Fates; the White Songstress look.
+        "costume": "a flowing white gown with blue and gold accents and a sheer layered skirt, "
+                   "a white veiled headdress, a blue teardrop pendant, and bare feet",
+        "eyes": "golden yellow",
+        "signature": {"hair_color": "electric blue", "hair_length": "hip length",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Freya": {
+        "franchise": "God of War",
+        "gender": "Female",
+        # The Witch of the Woods.
+        "costume": "a light brown layered dress trimmed with animal skins and feathers, a hooded "
+                   "shawl, leather wraps, and faded blue Vanir tattoos down the bare arms",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_texture": "loosely wavy", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Kaine": {
+        "franchise": "NieR",
+        "gender": "Female",
+        # Kaine (NieR Replicant); half her body wrapped, silvery braided hair.
+        "costume": "a pale blue lace-trimmed negligee with black ribbon straps, black gloves "
+                   "and long blue sleeves, black heels, and white bandages wrapping the entire "
+                   "left arm and left leg",
+        "signature": {"hair_color": "platinum white", "hair_length": "long",
+                      "hair_style": "crown braid", "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "a slim single-edged sword held reversed along the forearm",
+    },
+    "Rayne": {
+        "franchise": "BloodRayne",
+        "gender": "Female",
+        # Dhampir agent; forearm blade-bracers are worn.
+        "costume": "a black-and-red leather corset bodysuit with red trim, long black gloves, "
+                   "thigh-high heeled boots, and a pair of steel bracers mounting long "
+                   "double-edged forearm blades",
+        "eyes": "blood red",
+        "signature": {"hair_color": "deep red", "hair_length": "long",
+                      "hair_texture": "wavy"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair"},
+    },
+    "Isabela": {
+        "franchise": "Dragon Age",
+        "gender": "Female",
+        # Rivaini pirate captain (Dragon Age II).
+        "costume": "a cream corseted tunic worn as a short dress with a wide studded belt and no "
+                   "trousers, tall brown boots, leather armbands, a blue headscarf, and layered "
+                   "gold necklaces and hoop earrings",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "worn down",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "dark brown"},
+        "prop": "a pair of curved pirate daggers",
+    },
 }
 
 
@@ -13397,6 +13579,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
         "Sega", "Namco", "BioShock", "The Last of Us", "Crash Bandicoot", "LittleBigPlanet",
         "Pikmin", "Dead or Alive", "Lollipop Chainsaw", "Duke Nukem",
+        "Fire Emblem", "NieR", "BloodRayne",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -13432,6 +13615,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Steven Universe", "Popeye", "Johnny Bravo",
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",
         "Peepoodo", "Archer", "Josie and the Pussycats",
+        "Crusade Comics", "Darna", "Danger Girl",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {
