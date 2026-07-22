@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1278 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1280 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (166)
+## Anime & Manga (168)
 
 ### Attack on Titan
 
@@ -28,6 +28,7 @@
 
 ### Chainsaw Man
 
+- **Denji** (M, +1 alt)
 - **Makima** (F)
 - **Power (Chainsaw Man)** (F)
 
@@ -238,6 +239,10 @@
 - **Serena** (F)
 - **Snorlax** (M, masked)
 - **Squirtle** (M, masked)
+
+### Re:Zero
+
+- **Emilia** (F, prop)
 
 ### Sailor Moon
 

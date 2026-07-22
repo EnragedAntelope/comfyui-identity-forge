@@ -19,13 +19,11 @@ here — always grep the live keys instead.
 ## Curated shortlist (higher-value, genuinely missing)
 
 The prior shortlist was added (Yor Forger, Makima, Power, Frieren, Marin Kitagawa,
-A2, Zero Two, Revy, Lucy, Yoko Littner, Faith Connors; **Vi** already shipped and
-was enhanced rather than duplicated). Remaining reasonable follow-ons:
+A2, Zero Two, Revy, Lucy, Yoko Littner, Faith Connors, Denji, Emilia; **Vi**
+already shipped and was enhanced rather than duplicated). The shortlist is
+currently empty.
 
-- **Denji** (Chainsaw Man) — the Chainsaw Devil hunter; pull-cord chest, messy hair.
-- **Emilia** (Re:Zero) — half-elf; white-and-purple dress, silver hair (Rem already ships).
-
-Add more here only when a genuinely iconic, broadly-recognizable character is
+Add here only when a genuinely iconic, broadly-recognizable character is
 confirmed absent — not deep cuts.
 
 ---

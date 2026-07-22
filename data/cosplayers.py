@@ -13667,6 +13667,42 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
     },
+
+    # --- Added batch 6 -------------------------------------------------------
+    "Denji": {
+        "franchise": "Chainsaw Man",
+        "gender": "Male",
+        # Human form is the default; the transformed Chainsaw Man form is an alternate.
+        "costume": "a white collared dress shirt with a loosened black necktie, black slacks, "
+                   "and a short metal pull-cord jutting from the center of the chest",
+        "costumes": [
+            {
+                # Chainsaw Man transformation: chainsaw-toothed head replaces the face.
+                "costume": "a lean muscular body in tattered dark clothing with a roaring "
+                           "chainsaw blade bursting from each forearm, spattered in oil",
+                "covers_face": True,
+                "mask": "a chainsaw-headed helmet of steel teeth and a single spinning saw "
+                        "blade jutting from the brow, with narrow glowing eye slits",
+            },
+        ],
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "hair_style": "tousled bedhead", "facial_hair": "clean shaven",
+                      "eye_color": "golden brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Emilia": {
+        "franchise": "Re:Zero",
+        "gender": "Female",
+        # Half-elf; Puck rides as an optional signature prop.
+        "costume": "a white dress with lilac and purple accents and a rosette brooch, a white "
+                   "half-cape mantle fastened with a large bow, layered white skirts, white "
+                   "sleeves, a white flower hair ornament, and pointed half-elf ears",
+        "eyes": "violet",
+        "signature": {"hair_color": "platinum white", "hair_length": "very long",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
+        "prop": "Puck, a small grey kitten-like spirit hovering at her shoulder",
+    },
 }
 
 
@@ -13684,6 +13720,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
         "My Dress-Up Darling", "Darling in the Franxx", "Black Lagoon", "Gurren Lagann",
+        "Re:Zero",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
