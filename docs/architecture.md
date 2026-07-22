@@ -24,10 +24,12 @@ before adding or editing anything; they override "it would be neat to add".
 4. **Tooltips/help stay useful and current.** When a widget's behaviour changes, update its
    tooltip (node `INPUT_TYPES` and the JS extensions) in the same change. No stale or
    filler help text.
-5. **Be on the lookout — but curate.** While working, watch for genuinely useful additions
-   or improvements (new characters/creatures/archetypes, main-node field options, engine or
-   UX enhancements). Record only the **legit-useful** ones as potential to-dos in this file
-   (see the considered/rejected notes for the house style); skip anything speculative.
+5. **Be on the lookout — but curate.** Whatever you are working on, continuously scan the
+   whole project for genuinely useful additions or improvements — to any **node, field,
+   option, widget, constraint, the engine, or the UX**, as well as new
+   characters/creatures/archetypes. Record only the **legit-useful** ones (act on them if in
+   scope, otherwise note them as potential to-dos in this file — see the considered/rejected
+   notes for the house style); skip anything speculative.
 6. **Best practices always.** Maintain good UI/UX and ease of use, security (validate any
    file paths / user input, no unsafe eval, keep the pack offline and zero-dep), sound
    coding, and clean git/GitHub hygiene (focused commits, no PR unless asked).
@@ -246,9 +248,14 @@ list; the working principles at the top of this file also apply):
 1. **Only if it fits the project.** Add a character when it has a describable, canonical
    *worn look* that suits a character-costume generator. Skip subjects with no real costume
    (e.g. an infant, an off-screen/faceless entity) rather than inventing one.
-2. **No duplicates.** Grep the existing keys first (the roster is large). If the subject
-   already ships, don't re-add it — add a genuinely distinct **alternate costume**/variant
-   instead, or leave it. Note skips in the commit message.
+2. **No duplicates — but don't just skip a dupe.** Grep the existing keys first (the roster
+   is large). If a character you were asked to add already ships, do **not** silently skip it:
+   (a) **verify the existing entry is strong, accurate and solid** and tighten it if not, and
+   (b) check for any **iconic variant look or alternate costume** that isn't represented yet
+   and add it (as a `costumes` alternate, or by enhancing the entry) — e.g. Poison Ivy's
+   Arkham look alongside the classic, or Harley Quinn's multiple signature looks. Only leave
+   it untouched if the entry is already solid and no notable variant is missing. Note what you
+   did (enhanced / added variant / left as-is) in the commit message.
 3. **Correct sub-franchise.** Set `franchise` to the specific sub-franchise the look comes
    from, and map any new franchise into `_CATEGORY_FRANCHISES` so `random_scope` works.
 4. **Masks & props identified and accurate.** A fully-covered head → `covers_face: True` +

@@ -6,34 +6,27 @@ or niche ideas kept for reference). The roster is already very deep, so keep thi
 list short and picky — add only characters with a real, canonical *worn look*.
 
 Rules for adding a character live in
-[architecture.md → "Adding a character — curation checklist"](architecture.md).
-In brief: only if it fits the project, no duplicates (grep the keys first),
-correct sub-franchise, masks/props identified accurately, canonical well-described
-look, disambiguate colliding dict keys, then validate + regenerate docs before
-committing.
+[architecture.md → "Adding a character — curation checklist"](architecture.md)
+(and the working principles above it). In brief: only if it fits the project; if a
+requested character already ships, verify the entry is solid and add any missing
+iconic variant rather than skipping; correct sub-franchise; masks/props identified
+accurately; canonical well-described look; disambiguate colliding dict keys; then
+validate + regenerate docs before committing. No duplicate check is maintained
+here — always grep the live keys instead.
 
 ---
 
 ## Curated shortlist (higher-value, genuinely missing)
 
-Broadly-recognizable, on-theme characters confirmed absent from the roster:
+The prior shortlist was added (Yor Forger, Makima, Power, Frieren, Marin Kitagawa,
+A2, Zero Two, Revy, Lucy, Yoko Littner, Faith Connors; **Vi** already shipped and
+was enhanced rather than duplicated). Remaining reasonable follow-ons:
 
-- **Yor Forger** (Spy x Family) — the Thorn Princess assassin gown, black hair, red.
-- **Makima** (Chainsaw Man) — white shirt, black tie and slacks, red braided hair, ringed eyes.
-- **Power** (Chainsaw Man) — Blood Fiend, red horns, pink-blonde hair, tattered shirt.
-- **Frieren** (Frieren: Beyond Journey's End) — white-and-gold mage robes, silver twin-tails.
-- **Marin Kitagawa** (My Dress-Up Darling) — gyaru cosplayer; especially on-theme for this pack.
-- **Vi** (Arcane / League of Legends) — pink hair, gauntlets, Piltover enforcer look.
-- **A2** (NieR: Automata) — companion to the already-present 2B; white hair, torn combat dress.
-- **Zero Two** (Darling in the Franxx) — red pilot suit, curved red horns, pink hair.
-- **Revy** (Black Lagoon) — tank top, cargo shorts, twin pistols, dark ponytail.
-- **Lucy** (Cyberpunk: Edgerunners) — netrunner, iridescent jacket, white bob.
-- **Yoko Littner** (Gurren Lagann) — flame bikini top, sniper rifle, long red hair.
-- **Faith Connors** (Mirror's Edge) — runner's tank + wraps, facial tattoo, black hair.
+- **Denji** (Chainsaw Man) — the Chainsaw Devil hunter; pull-cord chest, messy hair.
+- **Emilia** (Re:Zero) — half-elf; white-and-purple dress, silver hair (Rem already ships).
 
-(Denji from Chainsaw Man and Emilia from Re:Zero are reasonable follow-ons.
-**Anya Forger** is intentionally left off — a small child, like AJ, has no
-adult-figure cosplay look.)
+Add more here only when a genuinely iconic, broadly-recognizable character is
+confirmed absent — not deep cuts.
 
 ---
 
@@ -55,15 +48,3 @@ earns it.
   Maelstrom, El Topo, Le Chevre, Paper Star, The Cleaner.
 - **Archer** — Conway Stern, Trinette.
 - **AJ** (Archer) — infant; no cosplay look (permanently skipped, not deferred).
-
----
-
-## Already in the set — do NOT re-add (surfaced during review)
-
-Requested/suggested but already shipping, so intentionally skipped as duplicates:
-
-Nico Robin, Emma Frost, Jean Grey, Belle, Esmeralda, Misty, Misa Amane, Circe,
-Boa Hancock, Madame Viper (as "Viper"), Phantom Lady (as "Phantom Lady (Dee
-Tyler)"), Jessica Drew (as "Spider-Woman"), Sebastian Shaw, **Avengelyne** (as
-"Avengelyne", Image), Kaguya (Ghibli's, distinct from "Kaguya Yamai"), Jessie
-(Toy Story's, distinct from "Jessie (Team Rocket)").

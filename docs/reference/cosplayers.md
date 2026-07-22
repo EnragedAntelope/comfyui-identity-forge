@@ -3,15 +3,19 @@
 
 # Cosplayer reference
 
-**1267 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1278 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (158)
+## Anime & Manga (166)
 
 ### Attack on Titan
 
 - **Eren Yeager** (M)
 - **Levi Ackerman** (M)
 - **Mikasa Ackerman** (F)
+
+### Black Lagoon
+
+- **Revy** (F, prop)
 
 ### Bleach
 
@@ -22,10 +26,19 @@
 - **Rukia Kuchiki** (F)
 - **Yoruichi** (F)
 
+### Chainsaw Man
+
+- **Makima** (F)
+- **Power (Chainsaw Man)** (F)
+
 ### Cowboy Bebop
 
 - **Faye Valentine** (F)
 - **Spike Spiegel** (M)
+
+### Darling in the Franxx
+
+- **Zero Two** (F)
 
 ### Date A Live
 
@@ -84,6 +97,10 @@
 - **Rin Tohsaka** (F)
 - **Saber** (F, prop)
 
+### Frieren: Beyond Journey's End
+
+- **Frieren** (F, prop)
+
 ### Fullmetal Alchemist
 
 - **Alphonse Elric** (M, giant, masked)
@@ -97,6 +114,10 @@
 ### Ghost in the Shell
 
 - **Motoko Kusanagi** (F)
+
+### Gurren Lagann
+
+- **Yoko Littner** (F, prop)
 
 ### JoJo's Bizarre Adventure
 
@@ -126,6 +147,10 @@
 ### Medaka Box
 
 - **Medaka Kurokami** (F)
+
+### My Dress-Up Darling
+
+- **Marin Kitagawa** (F)
 
 ### My Hero Academia
 
@@ -226,6 +251,10 @@
 ### Speed Racer
 
 - **Speed Racer** (M)
+
+### Spy x Family
+
+- **Yor Forger** (F, prop)
 
 ### Studio Ghibli
 
@@ -1596,7 +1625,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (265)
+## Video Games (268)
 
 ### ARMS
 
@@ -1631,6 +1660,10 @@
 ### Crash Bandicoot
 
 - **Crash Bandicoot** (M)
+
+### Cyberpunk: Edgerunners
+
+- **Lucy** (F)
 
 ### Darkstalkers
 
@@ -1820,6 +1853,10 @@
 
 - **Zero Suit Samus** (F)
 
+### Mirror's Edge
+
+- **Faith Connors** (F)
+
 ### Mortal Kombat
 
 - **Baraka** (M)
@@ -1859,6 +1896,7 @@
 ### NieR: Automata
 
 - **2B** (F, prop)
+- **A2** (F, prop)
 
 ### Overwatch
 

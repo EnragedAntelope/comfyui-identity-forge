@@ -4050,10 +4050,10 @@ COSPLAYERS: dict[str, dict] = {
     "Vi": {
         "franchise": "League of Legends",
         "gender": "Female",
-        "costume": "a pink-tinted undercut, a studded jacket over bandaged arms, and "
-                   "enormous mechanical gauntlets",
-        "signature": {"hair_color": "hot pink", "hair_length": "very short",
-                      "eye_color": "violet-gray"},
+        "costume": "a studded jacket over bandaged forearms, enormous hextech mechanical "
+                   "gauntlets, and the letters 'VI' tattooed on the left cheek",
+        "signature": {"hair_color": "hot pink", "hair_length": "short pixie",
+                      "hair_style": "slicked back", "eye_color": "violet-gray"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
     "Caitlyn": {
@@ -13538,6 +13538,135 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "dark brown"},
         "prop": "a pair of curved pirate daggers",
     },
+
+    # --- Added batch 5: modern anime & game headliners ----------------------
+    "Yor Forger": {
+        "franchise": "Spy x Family",
+        "gender": "Female",
+        # The Thorn Princess assassin look.
+        "costume": "a form-fitting black halter dress baring the shoulders and upper chest with "
+                   "a high thigh slit and red rose lining inside the skirt, a black choker with "
+                   "square cutouts and a golden rose pendant, fingerless gloves, black thigh-high "
+                   "boots, and a gold headband set with a rose and two upswept points",
+        "eyes": "crimson red",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "low ponytail"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+        "prop": "a pair of slender stiletto daggers, one reversed in each hand",
+    },
+    "Makima": {
+        "franchise": "Chainsaw Man",
+        "gender": "Female",
+        # Ringed eyes are her only inhuman tell.
+        "costume": "a crisp white collared dress shirt tucked into high-waisted black slacks "
+                   "with a black necktie and a thin belt, and low heeled shoes",
+        "eyes": "golden with concentric red rings",
+        "signature": {"hair_color": "copper", "hair_length": "very long", "hair_style": "braided ponytail",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Power (Chainsaw Man)": {
+        "franchise": "Chainsaw Man",
+        "gender": "Female",
+        # Blood Fiend; red horns and cross-pupil eyes (distinct from DC's Power Girl).
+        "costume": "a white collared dress shirt with a loosened black necktie and black slacks, "
+                   "a pair of red curling horns rising from a mane of messy blonde hair, and "
+                   "sharp pointed teeth",
+        "eyes": "yellow with red cross-shaped pupils",
+        "signature": {"hair_color": "light blonde", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "very pale"},
+    },
+    "Frieren": {
+        "franchise": "Frieren: Beyond Journey's End",
+        "gender": "Female",
+        # Elf mage.
+        "costume": "a white mage's robe with gold-bordered trim over a black-and-white striped "
+                   "shirt, a short white mantle, white leggings, brown boots, pointed elf ears, "
+                   "and small red drop earrings",
+        "signature": {"hair_color": "silver", "hair_length": "long", "hair_style": "low pigtails",
+                      "eye_color": "green"},
+        "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "fair"},
+        "prop": "a slender golden mage's staff topped with a small crystal",
+    },
+    "Marin Kitagawa": {
+        "franchise": "My Dress-Up Darling",
+        "gender": "Female",
+        # Gyaru cosplayer; especially on-theme for this pack.
+        "costume": "a white school blouse knotted at the waist with the sleeves rolled up, a "
+                   "light-blue pleated skirt, a dark grey necktie, and loafers, with long hair "
+                   "dyed from blonde down to soft pink at the tips and star hair clips",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "warm tan"},
+    },
+    "A2": {
+        "franchise": "NieR: Automata",
+        "gender": "Female",
+        # YoRHa Type A No.2; the battle-worn counterpart to the already-present 2B.
+        "costume": "a torn black combat dress with a bared midriff and back, black gloves, and "
+                   "thigh-high heeled boots, battle-scarred and frayed at the hems",
+        "signature": {"hair_color": "platinum white", "hair_length": "very long",
+                      "hair_style": "high ponytail", "eye_color": "steel blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain"},
+        "prop": "a long straight broadsword carried across the back",
+    },
+    "Zero Two": {
+        "franchise": "Darling in the Franxx",
+        "gender": "Female",
+        # Klaxosaur hybrid pilot; the red plugsuit look.
+        "costume": "a tight dark-red pilot bodysuit with a matching red headband cap, a pair of "
+                   "small red horns rising from long pink hair, and sharp canine teeth",
+        "eyes": "turquoise",
+        "signature": {"hair_color": "baby pink", "hair_length": "very long", "hair_style": "low ponytail"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Revy": {
+        "franchise": "Black Lagoon",
+        "gender": "Female",
+        # 'Two Hands' gunslinger; twin Berettas.
+        "costume": "a black cropped tank top, cutoff denim short-shorts, a black shoulder "
+                   "holster rig, fingerless gloves, and mid-calf boots, with a tribal tattoo "
+                   "running up the right arm to the neck",
+        "signature": {"hair_color": "deep red", "hair_length": "long", "hair_style": "low ponytail",
+                      "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "warm tan"},
+        "prop": "a pair of customized Beretta pistols, one in each hand",
+    },
+    "Lucy": {
+        "franchise": "Cyberpunk: Edgerunners",
+        "gender": "Female",
+        # Netrunner; split-bob dyed a pastel rainbow gradient.
+        "costume": "a cropped white jacket over a black netrunner leotard with red accents, "
+                   "white shorts, grey thigh-high stockings, and black knee-high boots, with a "
+                   "white split-bob whose ends are dyed a pastel rainbow gradient",
+        "eyes": "red-violet",
+        "signature": {"hair_color": "platinum white", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Yoko Littner": {
+        "franchise": "Gurren Lagann",
+        "gender": "Female",
+        # Sharpshooter; flame-print bikini top and long sniper rifle.
+        "costume": "a black-and-red flame-patterned bikini top, black short-shorts with a white "
+                   "studded belt, pink thigh-high socks, mid-calf white boots with red flame "
+                   "soles, and a loose black scarf",
+        "signature": {"hair_color": "bright red", "hair_length": "hip length", "hair_style": "high ponytail",
+                      "eye_color": "amber"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "warm tan"},
+        "prop": "an oversized long-barreled sniper rifle",
+    },
+    "Faith Connors": {
+        "franchise": "Mirror's Edge",
+        "gender": "Female",
+        # Free-running Runner; the tattoo around her right eye is iconic.
+        "costume": "a black tank top under a black vest with red accents, slim white capri "
+                   "trousers, red-and-white running shoes, a black-and-red glove, a black elbow "
+                   "armband, and a bold black tattoo sweeping around the right eye",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
+    },
 }
 
 
@@ -13553,6 +13682,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Anime", "Speed Racer",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
+        "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
+        "My Dress-Up Darling", "Darling in the Franxx", "Black Lagoon", "Gurren Lagann",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
@@ -13579,7 +13710,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
         "Sega", "Namco", "BioShock", "The Last of Us", "Crash Bandicoot", "LittleBigPlanet",
         "Pikmin", "Dead or Alive", "Lollipop Chainsaw", "Duke Nukem",
-        "Fire Emblem", "NieR", "BloodRayne",
+        "Fire Emblem", "NieR", "BloodRayne", "Mirror's Edge", "Cyberpunk: Edgerunners",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
