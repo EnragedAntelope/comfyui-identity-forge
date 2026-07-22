@@ -13198,6 +13198,164 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "blue-gray"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
+
+    # --- Added batch 3f: Lollipop Chainsaw (Juliet's family) ----------------
+    "Cordelia Starling": {
+        "franchise": "Lollipop Chainsaw",
+        "gender": "Female",
+        # Juliet's cool-headed markswoman older sister.
+        "costume": "a fitted dark cheer-style crop top and pleated skirt in navy and silver, "
+                   "dark thigh-high socks, fingerless gloves, and combat boots",
+        "signature": {"hair_color": "chestnut", "hair_length": "long", "hair_style": "low ponytail",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a long-barreled sniper rifle held across the body",
+    },
+    "Rosalind Starling": {
+        "franchise": "Lollipop Chainsaw",
+        "gender": "Female",
+        # Juliet's ditzy youngest sister.
+        "costume": "a cropped pink-and-white cheer top and pleated skirt, pink-and-white "
+                   "thigh-high socks, sneakers, and oversized round glasses",
+        "signature": {"hair_color": "dark blonde", "hair_length": "long", "hair_style": "high pigtails",
+                      "eye_color": "green"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Nick Carlyle": {
+        "franchise": "Lollipop Chainsaw",
+        "gender": "Male",
+        # Juliet's boyfriend (pre-decapitation letterman look).
+        "costume": "a blue letterman jacket with white leather sleeves and an 'R' patch over a "
+                   "white tee, blue jeans, and sneakers",
+        "signature": {"hair_color": "warm brown", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "eye_color": "warm hazel"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "golden tan"},
+    },
+
+    # --- Added batch 3f: Cool World -----------------------------------------
+    "Jack Deebs": {
+        "franchise": "Cool World",
+        "gender": "Male",
+        # The cartoonist pulled into Cool World.
+        "costume": "a rumpled white dress shirt with rolled sleeves under a loosened grey "
+                   "waistcoat, dark trousers, and scuffed shoes",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short", "hair_style": "worn down",
+                      "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Detective Frank Harris": {
+        "franchise": "Cool World",
+        "gender": "Male",
+        # 1940s noir detective.
+        "costume": "a belted tan trench coat over a rumpled suit and tie, and a grey felt "
+                   "fedora tilted low",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 3f: Carmen Sandiego (2019 cast) ------------------------
+    "Player (Carmen Sandiego)": {
+        "franchise": "Carmen Sandiego",
+        "gender": "Male",
+        # Carmen's teenage hacker ally.
+        "costume": "a dark hooded sweatshirt with the hood up, over a graphic tee, jeans, and "
+                   "sneakers, with a gaming headset over the ears",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short", "hair_style": "worn down",
+                      "facial_hair": "clean shaven", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light medium"},
+    },
+    "Ivy (Carmen Sandiego)": {
+        "franchise": "Carmen Sandiego",
+        "gender": "Female",
+        # Team Red's mechanic (distinct from Poison Ivy / Ivy Valentine).
+        "costume": "a green utility jacket over a white tank top, rolled-cuff jeans, work "
+                   "gloves, and sturdy boots",
+        "signature": {"hair_color": "copper", "hair_length": "shoulder length", "hair_style": "worn down",
+                      "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Zack (Carmen Sandiego)": {
+        "franchise": "Carmen Sandiego",
+        "gender": "Male",
+        # Ivy's brother, Team Red's wheelman (distinct from the DOA Zack).
+        "costume": "a red bomber jacket over a striped shirt, slim jeans, and canvas sneakers",
+        "signature": {"hair_color": "copper", "hair_length": "very short", "hair_style": "windswept",
+                      "facial_hair": "clean shaven", "eye_color": "green"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Chase Devineaux": {
+        "franchise": "Carmen Sandiego",
+        "gender": "Male",
+        # ACME detective forever chasing Carmen.
+        "costume": "a belted tan trench coat over a dark suit and tie, leather gloves, and "
+                   "polished shoes",
+        "signature": {"hair_color": "near black", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Coach Brunt": {
+        "franchise": "Carmen Sandiego",
+        "gender": "Female",
+        # VILE faculty; the towering, folksy 'mama bear'.
+        "costume": "a red-and-white tracksuit jacket over a fitted top, dark athletic trousers, "
+                   "and trainers, on a towering, powerfully-built frame",
+        "signature": {"hair_color": "salt and pepper", "hair_length": "short pixie", "hair_style": "slicked back",
+                      "eye_color": "blue-gray"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Tigress (Carmen Sandiego)": {
+        "franchise": "Carmen Sandiego",
+        "gender": "Female",
+        # VILE operative Sheena, an agile tiger-themed thief.
+        "costume": "a sleek black-and-orange catsuit with tiger-stripe accents, clawed "
+                   "fingerless gloves, knee-high boots, and a black eye-mask",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "high ponytail",
+                      "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 3f: Archer (supporting cast) ---------------------------
+    "Ray Gillette": {
+        "franchise": "Archer",
+        "gender": "Male",
+        # ISIS analyst and pilot.
+        "costume": "a fitted green turtleneck sweater, tan chinos, a slim belt, and brown "
+                   "loafers",
+        "signature": {"hair_color": "medium brown", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Barry Dylan": {
+        "franchise": "Archer",
+        "gender": "Male",
+        # Archer's cyborg archenemy.
+        "costume": "a red-and-white track suit with the jacket half-unzipped, one sleeve rolled "
+                   "back to bare a gleaming articulated bionic arm, and running shoes",
+        "signature": {"hair_color": "light blonde", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Woodhouse": {
+        "franchise": "Archer",
+        "gender": "Male",
+        # Archer's long-suffering elderly valet.
+        "costume": "a worn black butler's tailcoat over a waistcoat, a wing-collar shirt and "
+                   "bow tie, and polished black shoes, on a stooped elderly frame",
+        "signature": {"hair_color": "white", "hair_length": "very short", "hair_style": "comb over",
+                      "facial_hair": "clean shaven", "eye_color": "pale blue"},
+        "physique": {"body_type": "very slim", "height": "average height", "skin_tone": "fair"},
+    },
+    "Slater (Archer)": {
+        "franchise": "Archer",
+        "gender": "Male",
+        # CIA / ODIN handler.
+        "costume": "a sharp charcoal suit with a dark tie, an earpiece coiling into the collar, "
+                   "and dark sunglasses",
+        "signature": {"hair_color": "medium brown", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
 }
 
 

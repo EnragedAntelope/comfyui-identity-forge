@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1236 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1251 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (158)
 
@@ -246,7 +246,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (142)
+## Comics & Cartoons (152)
 
 ### Adventure Time
 
@@ -257,13 +257,17 @@
 
 ### Archer
 
+- **Barry Dylan** (M)
 - **Cheryl Tunt** (F)
 - **Dr. Krieger** (M)
 - **Katya Kazanova** (F)
 - **Lana Kane** (F, prop)
 - **Malory Archer** (F, prop)
 - **Pam Poovey** (F)
+- **Ray Gillette** (M)
+- **Slater (Archer)** (M)
 - **Sterling Archer** (M, prop)
+- **Woodhouse** (M)
 
 ### Avatar: The Last Airbender
 
@@ -302,6 +306,12 @@
 ### Carmen Sandiego
 
 - **Carmen Sandiego** (F)
+- **Chase Devineaux** (M)
+- **Coach Brunt** (F)
+- **Ivy (Carmen Sandiego)** (F)
+- **Player (Carmen Sandiego)** (M)
+- **Tigress (Carmen Sandiego)** (F)
+- **Zack (Carmen Sandiego)** (M)
 
 ### Chaos! Comics
 
@@ -1130,7 +1140,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (122)
+## Movies & TV (124)
 
 ### A Nightmare on Elm Street
 
@@ -1187,7 +1197,9 @@
 
 ### Cool World
 
+- **Detective Frank Harris** (M)
 - **Holli Would** (F)
+- **Jack Deebs** (M)
 
 ### Duolingo
 
@@ -1564,7 +1576,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (257)
+## Video Games (260)
 
 ### ARMS
 
@@ -1754,7 +1766,10 @@
 
 ### Lollipop Chainsaw
 
+- **Cordelia Starling** (F, prop)
 - **Juliet Starling** (F, prop)
+- **Nick Carlyle** (M)
+- **Rosalind Starling** (F)
 
 ### Mass Effect
 
