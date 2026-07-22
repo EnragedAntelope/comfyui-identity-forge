@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1276 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1288 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (168)
 
@@ -280,7 +280,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (151)
+## Comics & Cartoons (160)
 
 ### Adventure Time
 
@@ -351,9 +351,6 @@
 
 - **Lunatica** (F)
 - **Shana the She-Devil** (F, prop)
-- **The Phantom** (M)
-- **The Spirit** (M)
-- **The Tick** (M, masked)
 
 ### Crusade Comics
 
@@ -409,7 +406,9 @@
 - **Avengelyne** (F, prop)
 - **Glory** (F)
 - **Lady Supreme** (F)
+- **Savage Dragon** (M)
 - **Spawn** (M, masked)
+- **The Maxx** (M, masked)
 
 ### Invincible
 
@@ -527,6 +526,10 @@
 
 - **The Mask** (M, masked)
 
+### The Phantom
+
+- **The Phantom** (M)
+
 ### The Simpsons
 
 - **Bart Simpson** (M, prop)
@@ -540,6 +543,14 @@
 - **Papa Smurf** (M, tiny)
 - **Smurfette** (F, tiny)
 
+### The Spirit
+
+- **The Spirit** (M)
+
+### The Tick
+
+- **The Tick** (M, masked)
+
 ### Thundercats
 
 - **Cheetara** (F, prop)
@@ -552,6 +563,8 @@
 
 - **Aphrodite IX** (F, prop)
 - **Cyblade** (F)
+- **The Darkness (Jackie Estacado)** (M)
+- **Velocity** (F)
 
 ### Transformers
 
@@ -565,7 +578,12 @@
 
 ### WildStorm
 
+- **Apollo (WildStorm)** (M)
 - **Diva** (F)
+- **Grifter** (M, masked, prop)
+- **Jenny Sparks** (F)
+- **Midnighter** (M, masked)
+- **Zealot** (F, prop)
 
 ### Witchblade
 
@@ -577,7 +595,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (158)
+## DC (162)
 
 ### DC
 
@@ -741,6 +759,10 @@
 
 - **Death of the Endless** (F)
 - **Delirium** (F)
+- **Desire of the Endless** (F)
+- **Despair of the Endless** (F, prop)
+- **Destiny of the Endless** (M, prop)
+- **Destruction of the Endless** (M)
 - **Dream of the Endless** (M, prop)
 
 ### Watchmen
@@ -752,7 +774,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (70)
+## Disney (68)
 
 ### 101 Dalmatians
 
@@ -815,8 +837,6 @@
 - **Duff Killigan** (M, prop)
 - **Kim Possible** (F)
 - **Monkey Fist** (M)
-- **Senor Senior Jr.** (M)
-- **Senor Senior Sr.** (M)
 - **Shego** (F)
 
 ### Lilo and Stitch
@@ -914,7 +934,7 @@
 
 - **Judy Hopps** (F)
 
-## Fantasy & Literature (57)
+## Fantasy & Literature (58)
 
 ### Anne of Green Gables
 
@@ -924,6 +944,10 @@
 
 - **Oompa Loompa** (M)
 - **Willy Wonka** (M, prop)
+
+### Conan the Barbarian
+
+- **Conan the Barbarian** (M, prop)
 
 ### Dr. Seuss
 

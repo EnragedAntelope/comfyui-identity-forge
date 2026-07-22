@@ -7329,7 +7329,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "The Tick": {
-        "franchise": "Comics",
+        "franchise": "The Tick",
         "gender": "Male",
         "covers_face": True,
         "costume": "a bright blue muscular bodysuit",
@@ -9405,7 +9405,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "light"},
     },
     "The Spirit": {
-        "franchise": "Comics",
+        "franchise": "The Spirit",
         "gender": "Male",
         "costume": "a blue suit and matching blue fedora with a red necktie, a white "
                    "shirt, black leather gloves, and a small blue domino mask",
@@ -9423,7 +9423,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
     "The Phantom": {
-        "franchise": "Comics",
+        "franchise": "The Phantom",
         "gender": "Male",
         "costume": "a skin-tight purple bodysuit with a matching purple hood, a black "
                    "domino mask, black-and-white diagonally striped trunks, a black belt "
@@ -12791,27 +12791,6 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "average height", "skin_tone": "fair"},
         "prop": "an exploding golf club driver, gripped ready to swing",
     },
-    "Senor Senior Sr.": {
-        "franchise": "Kim Possible",
-        "gender": "Male",
-        # Wealthy gentleman supervillain.
-        "costume": "an immaculate black tuxedo with a bow tie and a red-lined cape, patent "
-                   "leather shoes, and white gloves",
-        "signature": {"hair_color": "white", "hair_length": "very short", "hair_style": "slicked back",
-                      "facial_hair": "clean shaven", "eye_color": "pale blue"},
-        "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "tan"},
-    },
-    "Senor Senior Jr.": {
-        "franchise": "Kim Possible",
-        "gender": "Male",
-        # Vain, pampered heir.
-        "costume": "an open designer silk shirt showing the chest, tailored white trousers, a "
-                   "gold medallion, and expensive loafers",
-        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
-                      "hair_style": "curtain bangs", "facial_hair": "clean shaven",
-                      "eye_color": "dark brown"},
-        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
-    },
 
     # --- Added batch 3c: Pokemon (trainers, leaders & champions) ------------
     "Brock": {
@@ -13664,6 +13643,164 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
         "prop": "Puck, a small grey kitten-like spirit hovering at her shoulder",
     },
+
+    # --- Added batch 7: The Endless (completing the Seven) ------------------
+    "Destiny of the Endless": {
+        "franchise": "The Sandman",
+        "gender": "Male",
+        # Eldest of the Endless; blind, hooded, chained to his book.
+        "costume": "a heavy floor-length grey-brown hooded monk's robe cinched with a cord, the "
+                   "deep hood shadowing a blind, careworn face",
+        "covers_hair": True,  # the deep cowl encloses the scalp
+        "signature": {"eye_color": "gray"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale"},
+        "prop": "a large leather-bound book chained to the wrist",
+    },
+    "Destruction of the Endless": {
+        "franchise": "The Sandman",
+        "gender": "Male",
+        # The Prodigal; a huge, warm, red-bearded figure.
+        "costume": "a loose open tunic and rough trousers over a towering, broad-shouldered "
+                   "muscular frame, with a thick red beard and a warm, open expression",
+        "signature": {"hair_color": "copper", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "facial_hair": "full beard", "eye_color": "green"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Desire of the Endless": {
+        "franchise": "The Sandman",
+        "gender": "Female",
+        # Androgynous, impossibly alluring; the heart motif is theirs.
+        "costume": "a sleek, sharply-tailored androgynous outfit in white and gold that shifts "
+                   "between a suit and a gown, with a heart-shaped pendant and immaculate styling",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "short pixie",
+                      "hair_style": "slicked back", "eye_color": "amber"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Despair of the Endless": {
+        "franchise": "The Sandman",
+        "gender": "Female",
+        # Desire's twin; a small, grey-fleshed, grotesque figure.
+        "costume": "uniform, all-over sagging, mottled grey rubbery skin over a short, squat, "
+                   "heavy-set frame, with small sharp teeth and haunted eyes",
+        "eyes": "flat pale grey",
+        "signature": {},
+        "physique": {"body_type": "plus size", "height": "very petite"},
+        "prop": "a small hooked ring worn on one finger",
+    },
+
+    # --- Added batch 7: Conan ----------------------------------------------
+    "Conan the Barbarian": {
+        "franchise": "Conan the Barbarian",
+        "gender": "Male",
+        # Hyborian Cimmerian warrior.
+        "costume": "a fur-and-leather loincloth with a wide studded belt, leather wrist bracers, "
+                   "fur-topped boots, and a bare, heavily-muscled scarred chest",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "facial_hair": "clean shaven",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "tan"},
+        "prop": "a heavy broad-bladed Atlantean broadsword with a crossguard",
+    },
+
+    # --- Added batch 7: Image / WildStorm / Top Cow -------------------------
+    "Savage Dragon": {
+        "franchise": "Image",
+        "gender": "Male",
+        # Green-skinned finned powerhouse; the head-fin is his signature.
+        "costume": "smooth, flawless green skin over a huge, heavily-muscled scarred torso, a "
+                   "tall blade-like fin running back along the top of the head, torn police-blue "
+                   "trousers, and a wide belt",
+        "eyes": "green",
+        "signature": {},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "The Maxx": {
+        "franchise": "Image",
+        "gender": "Male",
+        # Full purple costume with a toothy cowl and claws.
+        "covers_face": True,
+        "costume": "a bulky purple muscle-suit with yellow claws erupting from the backs of the "
+                   "hands and enormous brown boots",
+        "mask": "a purple-and-yellow full head-cowl with big blank white eyes and a row of large "
+                "white teeth across the lower jaw",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Midnighter": {
+        "franchise": "WildStorm",
+        "gender": "Male",
+        # The Authority's ruthless tactician; full executioner's hood.
+        "covers_face": True,
+        "costume": "a black leather bodysuit with a sickle-moon emblem across the chest, a long "
+                   "black coat, armored gloves, and heavy boots",
+        "mask": "a black executioner's hood fully enclosing the head with a narrow visor slit "
+                "across the eyes",
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Apollo (WildStorm)": {
+        "franchise": "WildStorm",
+        "gender": "Male",
+        # The Authority's solar-powered Superman analog; Midnighter's partner.
+        "costume": "a white-and-gold bodysuit with a radiant sun emblem on the chest, a long "
+                   "flowing white cape, gold gauntlets, and white boots",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Jenny Sparks": {
+        "franchise": "WildStorm",
+        "gender": "Female",
+        # The Spirit of the 20th Century; British electricity-controller.
+        "costume": "a white t-shirt printed with a Union Jack, a fitted leather jacket, slim "
+                   "trousers, and worn boots, with a lit cigarette",
+        "signature": {"hair_color": "light blonde", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Zealot": {
+        "franchise": "WildStorm",
+        "gender": "Female",
+        # WildC.A.T.s Coda swordmaster; combat warpaint.
+        "costume": "a red-and-silver armored bodysuit with a utility belt and boots, and combat "
+                   "warpaint of a spot on the forehead and three lines drawn across each cheek",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a pair of Coda longswords, one held reversed in each hand",
+    },
+    "Grifter": {
+        "franchise": "WildStorm",
+        "gender": "Male",
+        # Cole Cash; the red face mask is his signature.
+        "covers_face": True,
+        "costume": "a green trench coat over a black turtleneck and slacks, fingerless gloves, "
+                   "and a hi-tech bandolier harness slung across the chest",
+        "mask": "a red cloth mask covering the whole face, with narrow eye and mouth slits",
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a pair of high-tech pistols, one in each hand",
+    },
+    "The Darkness (Jackie Estacado)": {
+        "franchise": "Top Cow",
+        "gender": "Male",
+        # Bearer of the Darkness; living shadow-tendrils coil from him.
+        "costume": "a sharp black suit and long coat over a lean frame, with writhing tendrils "
+                   "of living black shadow rising from the shoulders, tipped with snarling "
+                   "demonic serpent heads with glowing eyes",
+        "signature": {"hair_color": "jet black", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "facial_hair": "stubble", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Velocity": {
+        "franchise": "Top Cow",
+        "gender": "Female",
+        # Carin Taylor, Cyberforce speedster; thunderbolt birthmark over one eye.
+        "costume": "a skintight pine-green bodysuit with dull-orange zig-zag and thunderbolt "
+                   "trim, matching boots and gloves, and a green thunderbolt birthmark over the "
+                   "right eye",
+        "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
+                      "hair_style": "high ponytail", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "very pale"},
+    },
 }
 
 
@@ -13715,6 +13852,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Anne of Green Gables", "Pippi Longstocking", "The Wizard of Oz", "Fairy Tales",
         "Literature", "Folklore", "Legend", "Dr. Seuss", "Winnie the Pooh",
         "Charlie and the Chocolate Factory", "The BFG", "Fantastic Mr Fox",
+        "Conan the Barbarian",
     ),
     "Movies & TV": (
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
@@ -13745,6 +13883,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",
         "Peepoodo", "Archer", "Josie and the Pussycats",
         "Crusade Comics", "Darna", "Danger Girl",
+        "The Phantom", "The Spirit", "The Tick",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

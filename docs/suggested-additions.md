@@ -40,7 +40,6 @@ earns it.
   Jasmine, Whitney, Skyla, Nessa, Roxie.
 - **Marvel** — Silhouette; Hellfire Club guards; more New Warriors.
 - **DC** — Darkstars corps (e.g. Ferrin Colos), Jesse Quick, Grace Choi, Thunder.
-- **Star Wars** — Oola's fellow Twi'lek dancers.
 - **Kim Possible** — DNAmy, Camille Leon, Warmonga, Adrena Lynn.
 - **Carmen Sandiego** — remaining VILE faculty/operatives: Dr. Saira Bellum, Cleo,
   Maelstrom, El Topo, Le Chevre, Paper Star, The Cleaner.
