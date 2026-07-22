@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1202 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1212 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (148)
+## Anime & Manga (158)
 
 ### Attack on Titan
 
@@ -183,23 +183,33 @@
 ### Pokemon
 
 - **Ash Ketchum** (M, prop)
+- **Bea (Pokemon)** (F)
+- **Brock** (M)
 - **Bulbasaur** (M, masked)
 - **Charizard** (M, masked)
 - **Cynthia** (F)
 - **Dawn** (F)
 - **Eevee** (M, tiny, masked)
+- **Elesa** (F)
+- **Gary Oak** (M)
 - **Gengar** (M, masked)
+- **Iris** (F)
 - **Jessie (Team Rocket)** (F)
 - **Jigglypuff** (F, tiny, masked)
+- **Leon (Pokemon)** (M)
+- **Lillie** (F)
 - **Lucario** (M, masked)
+- **Marnie** (F)
 - **May** (F)
 - **Meowth** (M, masked)
 - **Mewtwo** (M, masked)
 - **Misty** (F)
+- **Nemona** (F)
 - **Nurse Joy** (F)
 - **Officer Jenny** (F)
 - **Pikachu** (M, tiny, masked)
 - **Psyduck** (M, masked)
+- **Red (Pokemon)** (M)
 - **Serena** (F)
 - **Snorlax** (M, masked)
 - **Squirtle** (M, masked)

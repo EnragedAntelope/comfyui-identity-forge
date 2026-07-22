@@ -12812,6 +12812,115 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "dark brown"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
     },
+
+    # --- Added batch 3c: Pokemon (trainers, leaders & champions) ------------
+    "Brock": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        # Perpetually squinting gym leader / breeder.
+        "costume": "an orange short-sleeved shirt under an olive-green sleeveless flak vest, "
+                   "brown trousers, and grey sneakers",
+        "eyes": "narrow and perpetually squinting, barely open",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "windswept", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
+    },
+    "Iris": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Unova dragon trainer / champion; huge spiky purple hair, dark skin.
+        "costume": "a cream sleeveless tunic dress with pink and magenta trim and red ties, a "
+                   "wide pink sash, and low sandals",
+        "signature": {"hair_color": "deep purple", "hair_length": "hip length",
+                      "hair_style": "high ponytail", "hair_texture": "thick and voluminous",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "dark brown"},
+    },
+    "Lillie": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Alola; her white sun-dress look.
+        "costume": "a white sleeveless sundress with a green ribbon bow at the chest, a wide-"
+                   "brimmed white sun hat with a blue band, white stockings, and white boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "loosely wavy", "eye_color": "bright green"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Gary Oak": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        # Ash's cocky rival.
+        "costume": "a purple long-sleeved shirt, black trousers, a black belt, and a beaded "
+                   "necklace",
+        "signature": {"hair_color": "warm brown", "hair_length": "very short",
+                      "hair_style": "windswept", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Red (Pokemon)": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        # The original protagonist.
+        "costume": "a red-and-white baseball cap, a red short-sleeved jacket with white sleeves "
+                   "over a black t-shirt, blue jeans, fingerless gloves, and red-and-white "
+                   "trainers",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "windswept", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Leon (Pokemon)": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        # Galar Champion; caped, flowing purple hair.
+        "costume": "a white champion's tunic covered in colorful sponsor emblems, dark shorts "
+                   "with red leggings, a long flowing red-and-white cape, and a crown-shaped cap "
+                   "over long purple hair",
+        "signature": {"hair_color": "purple", "hair_length": "long", "hair_style": "worn down",
+                      "facial_hair": "clean shaven", "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
+    },
+    "Marnie": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Galar; Team Yell punk styling.
+        "costume": "a black leather jacket with pink trim over a black tartan dress, a studded "
+                   "choker, black tights, and pink-and-black boots",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "long",
+                      "hair_style": "low pigtails", "eye_color": "green"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Bea (Pokemon)": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Galar fighting-type leader; stoic, silver bob.
+        "costume": "a black-and-white sleeveless athletic fighting uniform with a numbered bib, "
+                   "a wide belt, wrist tape, and flat training shoes",
+        "signature": {"hair_color": "silver", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "gray"},
+        "physique": {"body_type": "toned", "height": "average height", "skin_tone": "tan"},
+    },
+    "Elesa": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Unova electric-type leader and fashion model.
+        "costume": "a bright yellow cropped zip jacket over a black two-piece top baring the "
+                   "midriff, opaque black tights, yellow high heels, and large headphones with "
+                   "long cords",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Nemona": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        # Paldea champion / rival; her off-duty stylish outfit.
+        "costume": "a dark pink beret, a black tank top, a red pleated skirt, black thigh-high "
+                   "socks, and black sneakers with a pink pokeball semicircle",
+        "signature": {"hair_color": "orange", "hair_length": "very long", "hair_style": "high ponytail",
+                      "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
+    },
 }
 
 
