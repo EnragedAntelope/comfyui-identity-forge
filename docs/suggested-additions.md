@@ -1,79 +1,69 @@
 # Suggested cosplayer additions (backlog)
 
-A running list of characters proposed for `data/cosplayers.py`, with status.
+Candidate characters for `data/cosplayers.py`, split into a **curated shortlist**
+(higher-value, broadly-recognizable gaps) and a **deferred** pile (lower-priority
+or niche ideas kept for reference). The roster is already very deep, so keep this
+list short and picky — add only characters with a real, canonical *worn look*.
 
-When adding any candidate, follow the usual rules (see
-[cosplayer-notes.md](cosplayer-notes.md) and the `data/cosplayers.py`
-docstring): worn items only in `costume`; `covers_face` + `mask` for full
-helmets/heads; `covers_hair` for lekku/montrals/hoods; skin-native wording for
-non-natural skin colour; free-text `eyes` for non-standard eye colour; keep text
-plain ASCII; then run `python tests/validate_data.py`, the unittest suite, and
-`python scripts/generate_reference_docs.py` before committing.
-
-> Heads-up on **duplicate dict keys** — a candidate that shares a name with an
-> existing entry needs a disambiguated key (Python dicts silently collapse
-> duplicate keys and `validate_data` flags it). Examples used below:
-> `"Christie (Dead or Alive)"`, `"Miku Izayoi"`, `"Terra (Teen Titans)"`,
-> `"Bumblebee (DC)"`, `"Red (Pokemon)"`, `"Leon (Pokemon)"`, `"Bea (Pokemon)"`,
-> `"Ivy (Carmen Sandiego)"`, `"Zack (Carmen Sandiego)"`,
-> `"Photon (Monica Rambeau)"`, `"Justice (New Warriors)"`, `"Rage (Marvel)"`,
-> `"Duke Nukem (Captain Planet)"` vs `"Duke Nukem (video game)"`.
+Rules for adding a character live in
+[architecture.md → "Adding a character — curation checklist"](architecture.md).
+In brief: only if it fits the project, no duplicates (grep the keys first),
+correct sub-franchise, masks/props identified accurately, canonical well-described
+look, disambiguate colliding dict keys, then validate + regenerate docs before
+committing.
 
 ---
 
-## Status
+## Curated shortlist (higher-value, genuinely missing)
 
-**Everything previously listed in this backlog was added to
-`data/cosplayers.py`** (roster grew from 1,132 to 1,251), across these
-franchises: Dead or Alive (incl. Ryu Hayabusa, Hayate, Jann Lee, Bass
-Armstrong, Bayman, Eliot, Zack), Date A Live (Kotori, Yoshino, Miku Izayoi,
-Natsumi, Nia Honjo, Mukuro), Archer (Ray, Barry, Woodhouse, Slater), Pokemon
-(Brock, Iris, Lillie, Gary Oak, Red, Leon, Marnie, Bea, Elesa, Nemona), Star
-Wars (Jyn Erso, Vette), Captain Planet eco-villains (Duke Nukem, Looten
-Plunder, Sly Sludge, Captain Pollution, Zarm), Marvel (Hellcat, Photon, Sersi,
-Namora, Julia Carpenter, Night Thrasher, Speedball, Justice, Rage), DC (Terra,
-Bumblebee), Tekken (Jun Kazama, Anna Williams), Kim Possible (Drakken, Monkey
-Fist, Duff Killigan, both Senor Seniors), The Fifth Element (Ruby Rhod, Zorg),
-The Road to El Dorado (Tzekel-Kan), Anastasia (Bartok, Dowager Empress Marie),
-Lollipop Chainsaw (Cordelia, Rosalind, Nick), Cool World (Jack Deebs, Frank
-Harris), and Carmen Sandiego (Player, Ivy, Zack, Chase Devineaux, Coach Brunt,
-Tigress). The video-game **Duke Nukem** was also added as a separate entry from
-the Captain Planet villain.
+Broadly-recognizable, on-theme characters confirmed absent from the roster:
 
-### Intentionally skipped
-- **AJ** (Archer) — Lana and Archer's daughter is an infant; there is no
-  cosplay costume for an adult-figure generator.
-- **Darkstars corps members** (DC) — listed only as a vague group; add a
-  specific named member if wanted.
+- **Yor Forger** (Spy x Family) — the Thorn Princess assassin gown, black hair, red.
+- **Makima** (Chainsaw Man) — white shirt, black tie and slacks, red braided hair, ringed eyes.
+- **Power** (Chainsaw Man) — Blood Fiend, red horns, pink-blonde hair, tattered shirt.
+- **Frieren** (Frieren: Beyond Journey's End) — white-and-gold mage robes, silver twin-tails.
+- **Marin Kitagawa** (My Dress-Up Darling) — gyaru cosplayer; especially on-theme for this pack.
+- **Vi** (Arcane / League of Legends) — pink hair, gauntlets, Piltover enforcer look.
+- **A2** (NieR: Automata) — companion to the already-present 2B; white hair, torn combat dress.
+- **Zero Two** (Darling in the Franxx) — red pilot suit, curved red horns, pink hair.
+- **Revy** (Black Lagoon) — tank top, cargo shorts, twin pistols, dark ponytail.
+- **Lucy** (Cyberpunk: Edgerunners) — netrunner, iridescent jacket, white bob.
+- **Yoko Littner** (Gurren Lagann) — flame bikini top, sniper rifle, long red hair.
+- **Faith Connors** (Mirror's Edge) — runner's tank + wraps, facial tattoo, black hair.
+
+(Denji from Chainsaw Man and Emilia from Re:Zero are reasonable follow-ons.
+**Anya Forger** is intentionally left off — a small child, like AJ, has no
+adult-figure cosplay look.)
 
 ---
 
-## Ideas for the next round (not yet added)
-Fresh candidates that pair well with the franchises now in the set:
+## Deferred (lower-priority / niche — revisit only if wanted)
 
-- **Dead or Alive** — Kokoro's mother Miyako, La Mariposa alt looks; male:
-  Zack's rival Bass has a daughter (Tina, present).
-- **Date A Live** — Yoshinon-only novelty, Nia's inverse form, Mukuro's civ look.
-- **Pokemon** — Champions/leaders still open: Steven Stone, Diantha, Lance,
-  Wallace, Jasmine, Whitney, Skyla, Nessa, Roxie.
-- **Marvel** — remaining New Warriors: Silhouette, Nova (already present);
-  Hellfire Club guards; Firestar (present) allies.
-- **DC** — the Darkstars (Ferrin Colos), Jesse Quick, Gypsy (present), Grace
-  Choi, Thunder.
-- **Star Wars** — Twi'lek Hera (present), Sith Twi'lek Darth Talon, Oola's
-  fellow dancers.
+Kept for reference; most are deep cuts that would repeat the "too far in the
+weeds" problem if added wholesale. Pull one up into the shortlist only if it
+earns it.
+
+- **Dead or Alive** — Miyako; extra La Mariposa alt looks.
+- **Date A Live** — Nia's inverse form, Mukuro's civilian look.
+- **Pokemon** — more leaders/champions: Steven Stone, Diantha, Lance, Wallace,
+  Jasmine, Whitney, Skyla, Nessa, Roxie.
+- **Marvel** — Silhouette; Hellfire Club guards; more New Warriors.
+- **DC** — Darkstars corps (e.g. Ferrin Colos), Jesse Quick, Grace Choi, Thunder.
+- **Star Wars** — Oola's fellow Twi'lek dancers.
 - **Kim Possible** — DNAmy, Camille Leon, Warmonga, Adrena Lynn.
-- **Carmen Sandiego** — remaining VILE faculty: Dr. Saira Bellum, Cleo, Maelstrom,
-  Countess Cleo; operatives El Topo, Le Chevre, Paper Star, The Cleaner.
-- **Archer** — Katya (present), Slater (present), Conway Stern, Trinette.
+- **Carmen Sandiego** — remaining VILE faculty/operatives: Dr. Saira Bellum, Cleo,
+  Maelstrom, El Topo, Le Chevre, Paper Star, The Cleaner.
+- **Archer** — Conway Stern, Trinette.
+- **AJ** (Archer) — infant; no cosplay look (permanently skipped, not deferred).
 
 ---
 
 ## Already in the set — do NOT re-add (surfaced during review)
-Requested/suggested but already shipped, so intentionally skipped as duplicates:
+
+Requested/suggested but already shipping, so intentionally skipped as duplicates:
 
 Nico Robin, Emma Frost, Jean Grey, Belle, Esmeralda, Misty, Misa Amane, Circe,
 Boa Hancock, Madame Viper (as "Viper"), Phantom Lady (as "Phantom Lady (Dee
-Tyler)"), Jessica Drew (as "Spider-Woman"), Sebastian Shaw, Kaguya (Ghibli's,
-distinct from the added Kaguya Yamai), Jessie (Toy Story's, distinct from the
-added "Jessie (Team Rocket)").
+Tyler)"), Jessica Drew (as "Spider-Woman"), Sebastian Shaw, **Avengelyne** (as
+"Avengelyne", Image), Kaguya (Ghibli's, distinct from "Kaguya Yamai"), Jessie
+(Toy Story's, distinct from "Jessie (Team Rocket)").
