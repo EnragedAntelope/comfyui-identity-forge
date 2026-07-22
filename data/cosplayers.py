@@ -12547,6 +12547,126 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
     },
+
+    # --- Added batch 3a: Dead or Alive (more fighters) ----------------------
+    "Lisa Hamilton": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Her lucha persona La Mariposa; butterfly eye-mask, face visible.
+        "costume": "a red-and-orange luchadora wrestling top baring the midriff, tight matching "
+                   "trousers with red-orange decals, a frilly butterfly-shaped eye-mask, and "
+                   "gold-and-red wrestling boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "long", "hair_style": "high ponytail",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "warm brown"},
+    },
+    "Mila": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # MMA fighter.
+        "costume": "a red-and-white sports bra top, red MMA fight shorts, fingerless grappling "
+                   "gloves, and taped bare feet",
+        "signature": {"hair_color": "strawberry blonde", "hair_length": "short pixie",
+                      "hair_style": "worn down", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Rachel": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Ninja Gaiden fiend hunter.
+        "costume": "a black leather one-piece cut low at the chest and open at the midriff, "
+                   "thigh-high boots with knee-guards and studded straps, black gloves, and a "
+                   "large red pauldron over the left shoulder",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
+        "prop": "a massive black-and-red war hammer with a broad squared head",
+    },
+    "Christie (Dead or Alive)": {
+        "franchise": "Dead or Alive",
+        "gender": "Female",
+        # Assassin (distinct from Tekken's Christie Monteiro).
+        "costume": "a form-fitting white catsuit with a plunging half-open front zipper, a slim "
+                   "belt, and black heeled boots",
+        "signature": {"hair_color": "platinum white", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Ryu Hayabusa": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # The Dragon Ninja (Ninja Gaiden); hood covers the scalp, face-cloth over the lower face.
+        "costume": "a black ninja bodysuit with layered armor plates, a black hood drawn over "
+                   "the head, a black cloth mask across the nose and mouth leaving the eyes bare, "
+                   "bracer gauntlets, a scarf, and tabi boots",
+        "covers_hair": True,  # the drawn-up hood encloses the scalp
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "the Dragon Sword, a slender straight-bladed katana with a dragon-carved guard",
+    },
+    "Hayate": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # Leader of the Mugen Tenshin ninja clan.
+        "costume": "a deep blue sleeveless ninja gi with a wrapped waist sash, black under-mesh "
+                   "on the arms, fingerless gloves, and tabi boots",
+        "signature": {"hair_color": "warm brown", "hair_length": "very short",
+                      "hair_style": "worn down", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Jann Lee": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # Jeet Kune Do fighter, a Bruce Lee homage.
+        "costume": "a black-and-yellow track suit worn open over a bare muscular chest, black "
+                   "kung-fu trousers, and flat martial-arts shoes",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
+    },
+    "Bass Armstrong": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # Pro wrestler, Tina's father.
+        "costume": "a red-and-gold professional wrestling singlet straining over a massive "
+                   "muscular frame, red wrestling boots, and studded wrist bands",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "long", "hair_style": "slicked back",
+                      "facial_hair": "full beard", "eye_color": "bright blue"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "tan"},
+    },
+    "Bayman": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # Russian assassin / mercenary.
+        "costume": "olive-green camouflage military fatigues with a webbing harness, fingerless "
+                   "gloves, combat boots, and a black beret, with a scar across one cheek",
+        "signature": {"hair_color": "near black", "hair_length": "buzzed very short",
+                      "facial_hair": "stubble", "eye_color": "gray"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "fair"},
+    },
+    "Eliot": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # Young British Xingyiquan / Bajiquan fighter.
+        "costume": "a light Chinese-style training jacket with frog-button fastenings over loose "
+                   "trousers and cloth martial-arts shoes",
+        "signature": {"hair_color": "light blonde", "hair_length": "ear length",
+                      "hair_style": "tousled bedhead", "facial_hair": "clean shaven",
+                      "eye_color": "green"},
+        "physique": {"body_type": "lean", "height": "short", "skin_tone": "fair"},
+    },
+    "Zack": {
+        "franchise": "Dead or Alive",
+        "gender": "Male",
+        # Flamboyant kickboxer.
+        "costume": "a flashy gold-and-black Muay Thai outfit with open-fingered gloves and "
+                   "ankle wraps, oversized mirrored sunglasses, and heavy gold chains over a "
+                   "clean-shaven bald head",
+        "signature": {"facial_hair": "clean shaven", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
 }
 
 

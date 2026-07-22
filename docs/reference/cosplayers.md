@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1178 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1189 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (142)
 
@@ -1520,7 +1520,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (243)
+## Video Games (254)
 
 ### ARMS
 
@@ -1576,16 +1576,27 @@
 ### Dead or Alive
 
 - **Ayane** (F)
+- **Bass Armstrong** (M)
+- **Bayman** (M)
+- **Christie (Dead or Alive)** (F)
+- **Eliot** (M)
+- **Hayate** (M)
 - **Helena Douglas** (F)
 - **Hitomi** (F)
 - **Honoka** (F)
+- **Jann Lee** (M)
 - **Kasumi** (F)
 - **Kokoro** (F)
 - **Lei Fang** (F)
+- **Lisa Hamilton** (F)
 - **Marie Rose** (F)
+- **Mila** (F)
 - **Momiji** (F)
 - **Nyotengu** (F)
+- **Rachel** (F, prop)
+- **Ryu Hayabusa** (M, prop)
 - **Tina Armstrong** (F)
+- **Zack** (M)
 
 ### Divinity: Original Sin
 
