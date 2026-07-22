@@ -238,6 +238,31 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
 
 ## cosplayers.py — characters as a worn look
 
+### Adding a character — curation checklist
+
+The standing rules for **every** character addition (mechanics are detailed below the
+list; the working principles at the top of this file also apply):
+
+1. **Only if it fits the project.** Add a character when it has a describable, canonical
+   *worn look* that suits a character-costume generator. Skip subjects with no real costume
+   (e.g. an infant, an off-screen/faceless entity) rather than inventing one.
+2. **No duplicates.** Grep the existing keys first (the roster is large). If the subject
+   already ships, don't re-add it — add a genuinely distinct **alternate costume**/variant
+   instead, or leave it. Note skips in the commit message.
+3. **Correct sub-franchise.** Set `franchise` to the specific sub-franchise the look comes
+   from, and map any new franchise into `_CATEGORY_FRANCHISES` so `random_scope` works.
+4. **Masks & props identified and accurate.** A fully-covered head → `covers_face: True` +
+   a separate `mask`; a scalp-enclosing hood/lekku/montral → `covers_hair`. A *truly iconic*
+   held item → `prop` (worn items never go in `prop`). Describe each richly and correctly.
+5. **Canonical, well-described look.** Costume text is worn items only, plain-ASCII, lowercase
+   with a leading article; coloured/alien skin is skin-native; non-standard eyes use `eyes`.
+   Use only valid `FIELD_DEFINITIONS` values in `signature`/`physique`.
+6. **Disambiguate colliding keys.** A name that clashes with an existing dict key needs a
+   parenthetical key (`"Christie (Dead or Alive)"`, `"Red (Pokemon)"`); duplicate keys
+   silently collapse and `validate_data` flags them.
+7. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
+   `python scripts/generate_reference_docs.py`, and commit the refreshed reference index.
+
 `COSPLAYERS: dict[name -> entry]`. Required: `franchise`, `gender` (`Female`/`Male` — SOURCE
 gender, used only to scope the `Random — female/male` picks; the *person's* gender is the
 IdentityForge widget, so crossplay works), `costume`. Optional: `signature` / `physique`
