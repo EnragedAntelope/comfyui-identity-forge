@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1280 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1276 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (168)
 
@@ -280,7 +280,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (155)
+## Comics & Cartoons (151)
 
 ### Adventure Time
 
@@ -340,12 +340,8 @@
 ### Carmen Sandiego
 
 - **Carmen Sandiego** (F)
-- **Chase Devineaux** (M)
 - **Coach Brunt** (F)
-- **Ivy (Carmen Sandiego)** (F)
-- **Player (Carmen Sandiego)** (M)
 - **Tigress (Carmen Sandiego)** (F)
-- **Zack (Carmen Sandiego)** (M)
 
 ### Chaos! Comics
 

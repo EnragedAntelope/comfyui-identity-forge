@@ -13255,45 +13255,6 @@ COSPLAYERS: dict[str, dict] = {
     },
 
     # --- Added batch 3f: Carmen Sandiego (2019 cast) ------------------------
-    "Player (Carmen Sandiego)": {
-        "franchise": "Carmen Sandiego",
-        "gender": "Male",
-        # Carmen's teenage hacker ally.
-        "costume": "a dark hooded sweatshirt with the hood up, over a graphic tee, jeans, and "
-                   "sneakers, with a gaming headset over the ears",
-        "signature": {"hair_color": "dark brown", "hair_length": "very short", "hair_style": "worn down",
-                      "facial_hair": "clean shaven", "eye_color": "dark brown"},
-        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light medium"},
-    },
-    "Ivy (Carmen Sandiego)": {
-        "franchise": "Carmen Sandiego",
-        "gender": "Female",
-        # Team Red's mechanic (distinct from Poison Ivy / Ivy Valentine).
-        "costume": "a green utility jacket over a white tank top, rolled-cuff jeans, work "
-                   "gloves, and sturdy boots",
-        "signature": {"hair_color": "copper", "hair_length": "shoulder length", "hair_style": "worn down",
-                      "eye_color": "green"},
-        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
-    },
-    "Zack (Carmen Sandiego)": {
-        "franchise": "Carmen Sandiego",
-        "gender": "Male",
-        # Ivy's brother, Team Red's wheelman (distinct from the DOA Zack).
-        "costume": "a red bomber jacket over a striped shirt, slim jeans, and canvas sneakers",
-        "signature": {"hair_color": "copper", "hair_length": "very short", "hair_style": "windswept",
-                      "facial_hair": "clean shaven", "eye_color": "green"},
-        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
-    },
-    "Chase Devineaux": {
-        "franchise": "Carmen Sandiego",
-        "gender": "Male",
-        # ACME detective forever chasing Carmen.
-        "costume": "a belted tan trench coat over a dark suit and tie, leather gloves, and "
-                   "polished shoes",
-        "signature": {"hair_color": "near black", "hair_length": "very short", "hair_style": "slicked back",
-                      "facial_hair": "stubble", "eye_color": "dark brown"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light medium"},
-    },
     "Coach Brunt": {
         "franchise": "Carmen Sandiego",
         "gender": "Female",
