@@ -12667,6 +12667,151 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"facial_hair": "clean shaven", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
     },
+
+    # --- Added batch 3b: Date A Live (more spirits) -------------------------
+    "Kotori Itsuka": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Efreet; white goddess-kimono astral dress with oni horns, hair worn free.
+        "costume": "a white goddess-like kimono astral dress with a plunging neckline and a "
+                   "translucent sash, black ribbons tied around a pair of small oni-like horns, "
+                   "and gold flame-shaped accents",
+        "signature": {"hair_color": "bright red", "hair_length": "very long",
+                      "hair_style": "worn down", "eye_color": "bright green"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+        "prop": "Camael, an enormous single-bladed halberd wreathed in flame",
+    },
+    "Yoshino": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # El; pale rabbit-hooded dress, blue-green hair.
+        "costume": "a pale green-and-white dress with a large hood shaped like a rabbit's head "
+                   "with floppy ears, puffed sleeves, and knee-high boots",
+        "signature": {"hair_color": "teal", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "petite and slim", "height": "petite", "skin_tone": "fair"},
+        "prop": "Yoshinon, a green rabbit hand-puppet with a wide stitched grin",
+    },
+    "Miku Izayoi": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Diva; idol-styled yellow astral dress.
+        "costume": "a yellow astral-dress gown layered with blue-and-white ruffles, a fitted "
+                   "bodice, elbow gloves, and a crescent-moon hairclip decorated with white "
+                   "lilies",
+        "signature": {"hair_color": "electric blue", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Natsumi": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Witch; her elder illusory form.
+        "costume": "a ragged dark-green witch's dress with an asymmetric hem, a wide-brimmed "
+                   "pointed witch hat, long green gloves, and buckled boots",
+        "signature": {"hair_color": "emerald green", "hair_length": "long", "hair_style": "worn down",
+                      "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "a gnarled wooden broomstick",
+    },
+    "Nia Honjo": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Sister; nun-styled astral dress.
+        "costume": "a pale nun-styled astral dress with a wimple-like hood and veil, a long "
+                   "pleated skirt, a wide collar, and a rosary-like belt",
+        "signature": {"hair_color": "lavender", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "eye_color": "blue-gray"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Mukuro Hoshimiya": {
+        "franchise": "Date A Live",
+        "gender": "Female",
+        # Zodiac; celestial astral dress, extremely long golden hair.
+        "costume": "a flowing celestial astral dress patterned with stars in gold and deep "
+                   "blue, layered translucent panels, and gold star-shaped ornaments",
+        "signature": {"hair_color": "golden blonde", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "eye_color": "amber"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+        "prop": "Michael, a huge ornate golden staff shaped like a key",
+    },
+
+    # --- Added batch 3b: Tekken ---------------------------------------------
+    "Jun Kazama": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        # Nature-attuned fighter, Jin's mother.
+        "costume": "a white sleeveless fighting dress with a high slit and nature-toned green "
+                   "accents, a wide sash, fingerless gloves, and low boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "toned", "height": "average height", "skin_tone": "fair"},
+    },
+    "Anna Williams": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        # Assassin, Nina's rival sister.
+        "costume": "a slinky red evening dress slit high on the thigh with a plunging neckline, "
+                   "long red gloves, sheer stockings, and red high heels",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Added batch 3b: Kim Possible (villains) ----------------------------
+    "Dr. Drakken": {
+        "franchise": "Kim Possible",
+        "gender": "Male",
+        # Blue-skinned mad scientist; skin-native blue, facial scar.
+        "costume": "smooth, flawless pale blue skin with a thin scar under one eye, a high-"
+                   "collared dark blue lab tunic with black gloves, black trousers, and boots",
+        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
+                      "hair_style": "low ponytail", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Monkey Fist": {
+        "franchise": "Kim Possible",
+        "gender": "Male",
+        # Monkey-obsessed martial artist with surgically simian hands and feet.
+        "costume": "a dark blue ninja gi with a wrapped sash, bare simian-furred hands and feet "
+                   "with long prehensile digits, and a leather chest harness",
+        "signature": {"hair_color": "dark brown", "hair_length": "buzzed very short",
+                      "facial_hair": "goatee", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+    },
+    "Duff Killigan": {
+        "franchise": "Kim Possible",
+        "gender": "Male",
+        # Exiled Scottish golf villain.
+        "costume": "a green tartan kilt with a sporran, a matching tam o'shanter cap, a green "
+                   "argyle sweater vest over a collared shirt, tall socks, and golf shoes",
+        "signature": {"hair_color": "bright red", "hair_length": "very short",
+                      "facial_hair": "full beard", "eye_color": "green"},
+        "physique": {"body_type": "stocky", "height": "average height", "skin_tone": "fair"},
+        "prop": "an exploding golf club driver, gripped ready to swing",
+    },
+    "Senor Senior Sr.": {
+        "franchise": "Kim Possible",
+        "gender": "Male",
+        # Wealthy gentleman supervillain.
+        "costume": "an immaculate black tuxedo with a bow tie and a red-lined cape, patent "
+                   "leather shoes, and white gloves",
+        "signature": {"hair_color": "white", "hair_length": "very short", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "tan"},
+    },
+    "Senor Senior Jr.": {
+        "franchise": "Kim Possible",
+        "gender": "Male",
+        # Vain, pampered heir.
+        "costume": "an open designer silk shirt showing the chest, tailored white trousers, a "
+                   "gold medallion, and expensive loafers",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_style": "curtain bangs", "facial_hair": "clean shaven",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
+    },
 }
 
 

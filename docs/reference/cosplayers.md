@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1189 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1202 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (142)
+## Anime & Manga (148)
 
 ### Attack on Titan
 
@@ -30,9 +30,15 @@
 ### Date A Live
 
 - **Kaguya Yamai** (F)
+- **Kotori Itsuka** (F, prop)
 - **Kurumi Tokisaki** (F)
+- **Miku Izayoi** (F)
+- **Mukuro Hoshimiya** (F, prop)
+- **Natsumi** (F, prop)
+- **Nia Honjo** (F)
 - **Origami Tobiichi** (F)
 - **Tohka Yatogami** (F, prop)
+- **Yoshino** (F, prop)
 - **Yuzuru Yamai** (F, +1 alt)
 
 ### Death Note
@@ -676,7 +682,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (65)
+## Disney (70)
 
 ### 101 Dalmatians
 
@@ -735,7 +741,12 @@
 ### Kim Possible
 
 - **Bonnie Rockwaller** (F, prop)
+- **Dr. Drakken** (M)
+- **Duff Killigan** (M, prop)
 - **Kim Possible** (F)
+- **Monkey Fist** (M)
+- **Senor Senior Jr.** (M)
+- **Senor Senior Sr.** (M)
 - **Shego** (F)
 
 ### Lilo and Stitch
@@ -1520,7 +1531,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (254)
+## Video Games (256)
 
 ### ARMS
 
@@ -1880,11 +1891,13 @@
 
 ### Tekken
 
+- **Anna Williams** (F)
 - **Asuka Kazama** (F)
 - **Christie Monteiro** (F)
 - **Heihachi Mishima** (M)
 - **Hwoarang** (M)
 - **Jin Kazama** (M)
+- **Jun Kazama** (F)
 - **Kazuya Mishima** (M)
 - **King** (M, masked)
 - **Lili** (F)
