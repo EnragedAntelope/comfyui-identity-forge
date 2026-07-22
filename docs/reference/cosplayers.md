@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1288 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1291 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (168)
 
@@ -595,7 +595,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (162)
+## DC (165)
 
 ### DC
 
@@ -653,6 +653,7 @@
 - **Giganta** (F, giant, +2 alt)
 - **Golden Glider** (F)
 - **Gorilla Grodd** (M, giant, masked)
+- **Grace Choi** (F)
 - **Granny Goodness** (F)
 - **Green Arrow** (M, prop)
 - **Green Lantern** (M)
@@ -668,6 +669,7 @@
 - **Ice** (F)
 - **Jade (Jennifer-Lynn Hayden)** (F, prop)
 - **Jay Garrick** (M)
+- **Jesse Quick** (F)
 - **Jessica Cruz** (F)
 - **Jinx (Teen Titans)** (F)
 - **John Constantine** (M)
@@ -736,6 +738,7 @@
 - **The Riddler** (M, prop)
 - **The Spectre** (M)
 - **Thorn** (F)
+- **Thunder (Anissa Pierce)** (F)
 - **Tomar-Re** (M)
 - **Two-Face** (M, prop)
 - **Vixen** (F)

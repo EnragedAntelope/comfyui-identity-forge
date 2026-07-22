@@ -13801,6 +13801,41 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "high ponytail", "eye_color": "green"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "very pale"},
     },
+
+    # --- Added batch 8: DC (Titans / Outsiders) -----------------------------
+    "Jesse Quick": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Jesse Chambers, speedster of the Flash legacy.
+        "costume": "a red bodysuit with yellow sleeves, gloves and boots, a yellow lightning-bolt "
+                   "emblem across the chest, a yellow belt, and amber goggles pushed up on the "
+                   "forehead",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long", "hair_style": "high ponytail",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Grace Choi": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Outsiders bruiser; Pacific-Islander-style tattoos are her signature.
+        "costume": "a bright red midriff-baring half-shirt, baggy camouflage cargo pants, heavy "
+                   "combat boots, Pacific-Islander-style tribal tattoos running down both arms, "
+                   "and a circular sun tattoo around the navel",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "worn down",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "light medium"},
+    },
+    "Thunder (Anissa Pierce)": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Black Lightning's daughter; density-shifting powerhouse.
+        "costume": "a black armored bodysuit with silver lightning-bolt trim down the sides, a "
+                   "'T' belt buckle, black gloves and boots, and a black eye-mask fitted with "
+                   "protective goggles",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "afro", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
+    },
 }
 
 
