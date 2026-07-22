@@ -456,7 +456,7 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
-    "Jinx": {
+    "Jinx (League of Legends)": {
         "franchise": "Arcane",
         "gender": "Female",
         "costume": "a purple crop top, blue shorts, pink-and-blue striped stockings, "
@@ -3812,7 +3812,7 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "thick and voluminous", "eye_color": "violet-gray"},
         "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
     },
-    "Jade": {
+    "Jade (Mortal Kombat)": {
         "franchise": "Mortal Kombat",
         "gender": "Female",
         "costume": "a green ninja outfit with a lowered veil, gold trim, and a metal "
@@ -4501,7 +4501,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "plump", "height": "short", "skin_tone": "very pale"},
         "prop": "a black umbrella with a pointed tip",
     },
-    "Scarecrow": {
+    "Scarecrow (Batman)": {
         "franchise": "DC",
         "gender": "Male",
         "covers_face": True,
@@ -5198,7 +5198,7 @@ COSPLAYERS: dict[str, dict] = {
         "skin": "icy pale-blue",  # 'ice' isn't a material the anchor regex catches
         "physique": {"body_type": "lean", "height": "tall"},
     },
-    "Beast": {
+    "Beast (X-Men)": {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_body": True,
@@ -5837,7 +5837,7 @@ COSPLAYERS: dict[str, dict] = {
         "scale_prose": "colossal and over thirty feet tall",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
-    "Bumblebee": {
+    "Bumblebee (Transformers)": {
         "franchise": "Transformers",
         "gender": "Male",
         "covers_face": True,
@@ -7238,7 +7238,7 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a glowing gold dome helmet",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
-    "Sandman": {
+    "Sandman (Spider-Man)": {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_body": True,
@@ -9790,7 +9790,7 @@ COSPLAYERS: dict[str, dict] = {
     },
 
     # === v0.57.0 expansion: Inhumans + Marvel/DC + indie heroines =========
-    "Enchantress": {
+    "Enchantress (Marvel)": {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a green skin-tight Asgardian corset top that bares the shoulders, a matching "
@@ -10908,7 +10908,7 @@ COSPLAYERS: dict[str, dict] = {
                 "brows, a long orange carrot nose, and three short twigs sprouting on top",
         "physique": {"body_type": "chubby", "height": "short"},
     },
-    "Jessie": {
+    "Jessie (Toy Story)": {
         "franchise": "Toy Story",
         "gender": "Female",
         "costume": "a yellow long-sleeve cowgirl shirt with red-and-white trim, blue jeans "

@@ -574,7 +574,7 @@
 
 ### Transformers
 
-- **Bumblebee** (M, masked)
+- **Bumblebee (Transformers)** (M, masked)
 - **Megatron** (M, giant, masked)
 - **Optimus Prime** (M, giant, masked)
 
@@ -722,7 +722,7 @@
 - **Salaak** (M)
 - **Sandman (Wesley Dodds)** (M, masked, prop)
 - **Saturn Girl** (F)
-- **Scarecrow** (M, masked)
+- **Scarecrow (Batman)** (M, masked)
 - **Shazam** (M)
 - **Silver Banshee** (F)
 - **Sinestro** (M)
@@ -936,7 +936,7 @@
 ### Toy Story
 
 - **Buzz Lightyear** (M)
-- **Jessie** (F)
+- **Jessie (Toy Story)** (F)
 - **Woody** (M)
 
 ### Zootopia
@@ -1067,7 +1067,7 @@
 - **Apocalypse** (M, giant)
 - **Banshee** (M)
 - **Baron Zemo** (M, masked)
-- **Beast** (M)
+- **Beast (X-Men)** (M)
 - **Big Bertha** (F, +1 alt)
 - **Binary** (F)
 - **Bishop** (M, prop)
@@ -1099,7 +1099,7 @@
 - **Electro** (M, masked)
 - **Elektra** (F, prop)
 - **Emma Frost** (F)
-- **Enchantress** (F)
+- **Enchantress (Marvel)** (F)
 - **Falcon** (M)
 - **Firestar** (F)
 - **Galactus** (M, giant, masked)
@@ -1176,7 +1176,7 @@
 - **Rocket Raccoon** (M, prop)
 - **Rogue** (F)
 - **Sabretooth** (M)
-- **Sandman** (M)
+- **Sandman (Spider-Man)** (M)
 - **Satana** (F)
 - **Scarlet Witch** (F)
 - **Sebastian Shaw** (M)
@@ -1672,7 +1672,7 @@
 
 ### Arcane
 
-- **Jinx** (F, prop)
+- **Jinx (League of Legends)** (F, prop)
 
 ### Baldur's Gate 3
 
@@ -1904,7 +1904,7 @@
 - **D'Vorah** (F)
 - **Frost** (F)
 - **Goro** (M, giant)
-- **Jade** (F, prop)
+- **Jade (Mortal Kombat)** (F, prop)
 - **Johnny Cage** (M)
 - **Kano** (M)
 - **Kitana** (F, prop)
