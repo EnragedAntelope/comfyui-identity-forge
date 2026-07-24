@@ -4,7 +4,9 @@ import { app } from "../../scripts/app.js";
  * IdentityForge frontend extension.
  *
  * Data (GROUP_ORDER / FIELD_TO_GROUP / GENDER_POOLS) is generated from
- * data/fields.py — regenerate it if the Python field definitions change.
+ * data/fields.py by scripts/generate_js_data.py — do not edit the block between
+ * the GENERATED DATA markers by hand; rerun that script after changing the fields
+ * (CI runs it with --check, and tests/test_js_sync.py guards the same invariant).
  *
  * Features (all degrade gracefully; any failure is caught so the node still
  * works headless):
@@ -19,6 +21,7 @@ import { app } from "../../scripts/app.js";
  * native widget serialization, so saved workflows round-trip unchanged.
  */
 
+// >>> GENERATED DATA — do not edit by hand. Regenerate: python scripts/generate_js_data.py >>>
 const GROUP_ORDER = ["Demographics", "Body", "Face", "Hair", "Makeup", "Jewelry & Nails", "Clothing", "Setting & Shot"];
 const FIELD_TO_GROUP = {
   "age": "Demographics",
@@ -30,15 +33,19 @@ const FIELD_TO_GROUP = {
   "waist": "Body",
   "hips": "Body",
   "face_shape": "Face",
+  "forehead": "Face",
+  "cheekbones": "Face",
+  "eyebrows": "Face",
   "eye_color": "Face",
   "eye_shape": "Face",
   "nose": "Face",
   "lips": "Face",
-  "cheekbones": "Face",
+  "smile_type": "Face",
   "jawline": "Face",
   "chin": "Face",
-  "eyebrows": "Face",
+  "complexion": "Face",
   "skin_details": "Face",
+  "freckles_density": "Face",
   "hair_color": "Hair",
   "hair_length": "Hair",
   "hair_texture": "Hair",
@@ -46,11 +53,14 @@ const FIELD_TO_GROUP = {
   "facial_hair": "Hair",
   "hair_accessory": "Hair",
   "makeup_style": "Makeup",
+  "eyebrow_makeup": "Makeup",
   "eye_makeup": "Makeup",
   "eyeliner": "Makeup",
   "lashes": "Makeup",
-  "lips_makeup": "Makeup",
+  "contour": "Makeup",
+  "highlight": "Makeup",
   "blush": "Makeup",
+  "lips_makeup": "Makeup",
   "skin_finish": "Makeup",
   "earrings": "Jewelry & Nails",
   "necklace": "Jewelry & Nails",
@@ -64,19 +74,12 @@ const FIELD_TO_GROUP = {
   "location": "Setting & Shot",
   "lighting": "Setting & Shot",
   "shot_type": "Setting & Shot",
-  "forehead": "Face",
-  "smile_type": "Face",
-  "freckles_density": "Face",
-  "complexion": "Face",
   "shoulder_width": "Body",
   "neck_length": "Body",
   "posture": "Body",
   "fitness_level": "Body",
   "hair_part": "Hair",
   "hair_highlights": "Hair",
-  "eyebrow_makeup": "Makeup",
-  "contour": "Makeup",
-  "highlight": "Makeup",
   "rings": "Jewelry & Nails",
   "bracelet": "Jewelry & Nails",
   "watch_type": "Jewelry & Nails",
@@ -126,128 +129,6 @@ const GENDER_POOLS = {
       "average",
       "broad",
       "muscular",
-      "None"
-    ]
-  },
-  "facial_hair": {
-    "Female": [
-      "Random",
-      "None"
-    ],
-    "Male": [
-      "Random",
-      "stubble",
-      "short beard",
-      "full beard",
-      "goatee",
-      "mustache",
-      "van dyke",
-      "soul patch",
-      "mutton chops",
-      "five o'clock shadow",
-      "None"
-    ],
-    "Any": [
-      "Random",
-      "stubble",
-      "short beard",
-      "full beard",
-      "goatee",
-      "mustache",
-      "van dyke",
-      "soul patch",
-      "mutton chops",
-      "five o'clock shadow",
-      "None"
-    ]
-  },
-  "makeup_style": {
-    "Female": [
-      "Random",
-      "barely there natural makeup",
-      "soft natural makeup",
-      "fresh-faced dewy look",
-      "classic no-makeup makeup",
-      "soft everyday glam",
-      "soft glam",
-      "full glam",
-      "bold glam",
-      "heavy glam",
-      "editorial makeup",
-      "vintage 1950s pin-up makeup",
-      "mod 1960s eye makeup",
-      "gothic dark makeup",
-      "club makeup",
-      "None"
-    ],
-    "Male": [
-      "Random",
-      "barely there natural makeup",
-      "soft natural makeup",
-      "fresh-faced dewy look",
-      "classic no-makeup makeup",
-      "None"
-    ],
-    "Any": [
-      "Random",
-      "barely there natural makeup",
-      "soft natural makeup",
-      "fresh-faced dewy look",
-      "classic no-makeup makeup",
-      "soft everyday glam",
-      "soft glam",
-      "full glam",
-      "bold glam",
-      "heavy glam",
-      "editorial makeup",
-      "vintage 1950s pin-up makeup",
-      "mod 1960s eye makeup",
-      "gothic dark makeup",
-      "club makeup",
-      "None"
-    ]
-  },
-  "hair_accessory": {
-    "Female": [
-      "Random",
-      "hair bow",
-      "oversized hair bow",
-      "satin ribbon tied in hair",
-      "silk headband",
-      "knotted headband",
-      "padded headband",
-      "scrunchie",
-      "claw clip",
-      "small hair clip",
-      "decorative hair pins",
-      "jeweled hair comb",
-      "thin scarf tied in hair",
-      "flower crown",
-      "None"
-    ],
-    "Male": [
-      "Random",
-      "thin headband",
-      "bandana tied over hair",
-      "None"
-    ],
-    "Any": [
-      "Random",
-      "hair bow",
-      "oversized hair bow",
-      "satin ribbon tied in hair",
-      "silk headband",
-      "knotted headband",
-      "padded headband",
-      "scrunchie",
-      "claw clip",
-      "small hair clip",
-      "decorative hair pins",
-      "jeweled hair comb",
-      "thin scarf tied in hair",
-      "flower crown",
-      "thin headband",
-      "bandana tied over hair",
       "None"
     ]
   },
@@ -446,8 +327,131 @@ const GENDER_POOLS = {
       "mullet",
       "None"
     ]
+  },
+  "facial_hair": {
+    "Female": [
+      "Random",
+      "None"
+    ],
+    "Male": [
+      "Random",
+      "stubble",
+      "short beard",
+      "full beard",
+      "goatee",
+      "mustache",
+      "van dyke",
+      "soul patch",
+      "mutton chops",
+      "five o'clock shadow",
+      "None"
+    ],
+    "Any": [
+      "Random",
+      "stubble",
+      "short beard",
+      "full beard",
+      "goatee",
+      "mustache",
+      "van dyke",
+      "soul patch",
+      "mutton chops",
+      "five o'clock shadow",
+      "None"
+    ]
+  },
+  "hair_accessory": {
+    "Female": [
+      "Random",
+      "hair bow",
+      "oversized hair bow",
+      "satin ribbon tied in hair",
+      "silk headband",
+      "knotted headband",
+      "padded headband",
+      "scrunchie",
+      "claw clip",
+      "small hair clip",
+      "decorative hair pins",
+      "jeweled hair comb",
+      "thin scarf tied in hair",
+      "flower crown",
+      "None"
+    ],
+    "Male": [
+      "Random",
+      "thin headband",
+      "bandana tied over hair",
+      "None"
+    ],
+    "Any": [
+      "Random",
+      "hair bow",
+      "oversized hair bow",
+      "satin ribbon tied in hair",
+      "silk headband",
+      "knotted headband",
+      "padded headband",
+      "scrunchie",
+      "claw clip",
+      "small hair clip",
+      "decorative hair pins",
+      "jeweled hair comb",
+      "thin scarf tied in hair",
+      "flower crown",
+      "thin headband",
+      "bandana tied over hair",
+      "None"
+    ]
+  },
+  "makeup_style": {
+    "Female": [
+      "Random",
+      "barely there natural makeup",
+      "soft natural makeup",
+      "fresh-faced dewy look",
+      "classic no-makeup makeup",
+      "soft everyday glam",
+      "soft glam",
+      "full glam",
+      "bold glam",
+      "heavy glam",
+      "editorial makeup",
+      "vintage 1950s pin-up makeup",
+      "mod 1960s eye makeup",
+      "gothic dark makeup",
+      "club makeup",
+      "None"
+    ],
+    "Male": [
+      "Random",
+      "barely there natural makeup",
+      "soft natural makeup",
+      "fresh-faced dewy look",
+      "classic no-makeup makeup",
+      "None"
+    ],
+    "Any": [
+      "Random",
+      "barely there natural makeup",
+      "soft natural makeup",
+      "fresh-faced dewy look",
+      "classic no-makeup makeup",
+      "soft everyday glam",
+      "soft glam",
+      "full glam",
+      "bold glam",
+      "heavy glam",
+      "editorial makeup",
+      "vintage 1950s pin-up makeup",
+      "mod 1960s eye makeup",
+      "gothic dark makeup",
+      "club makeup",
+      "None"
+    ]
   }
 };
+// <<< GENERATED DATA <<<
 
 function isFieldWidget(w) {
   return w && Object.prototype.hasOwnProperty.call(FIELD_TO_GROUP, w.name);
