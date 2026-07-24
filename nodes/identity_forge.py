@@ -1711,9 +1711,9 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                     if isinstance(meta.get(str_key), str):
                         species[str_key] = meta[str_key]
                 for list_key in ("suppress_groups", "suppress_fields"):
-                    raw = meta.get(list_key)
-                    if isinstance(raw, list):
-                        species[list_key] = [v for v in raw if isinstance(v, str)]
+                    raw_list = meta.get(list_key)
+                    if isinstance(raw_list, list):
+                        species[list_key] = [v for v in raw_list if isinstance(v, str)]
             continue
         if key == _SPECIES_GROUP:
             # Anatomy slots: capture the whole group verbatim under the reserved

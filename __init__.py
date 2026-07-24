@@ -51,6 +51,14 @@ def _register_vault_routes() -> None:
     Best-effort and idempotent: the routes power the Vault Load node's Refresh,
     thumbnails and manager modal. Graph execution never depends on them, so any
     failure here is logged and ignored rather than breaking node loading.
+
+    Security note: these routes are unauthenticated (matching ComfyUI's usual
+    localhost trust model), and the ``delete`` / ``rename`` routes mutate the
+    vault. All paths are constrained to the vault root by ``_entry_dir`` (resolve
+    + parent check), so a caller cannot escape it with ``..`` / absolute-path
+    tricks — but on a ComfyUI instance exposed to an untrusted network these
+    still allow anyone who can reach the server to delete or rename saved
+    characters. Front such a deployment with authentication.
     """
     try:
         from aiohttp import web

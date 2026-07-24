@@ -1,0 +1,40 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+# Least privilege: CI only needs to read the repo.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Validate data, tests & generated docs
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Cover the floor (requires-python = ">=3.10") and a current release.
+        python-version: ["3.10", "3.13"]
+    steps:
+      - name: Check out code
+        # Pinned to the same commit SHA (v4.2.2) the publish workflow uses.
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Python ${{ matrix.python-version }}
+        # First-party GitHub action; this workflow holds no secrets (contents:read
+        # only), so a tag pin is acceptable here — unlike the publish workflow, an
+        # upstream change could not reach a registry token from this job.
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Validate data integrity
+        # The pack has no third-party deps and the engine runs without ComfyUI, so
+        # nothing needs installing — the standard library is enough.
+        run: python tests/validate_data.py
+      - name: Run the test suite
+        run: python -m unittest discover -s tests -v
+      - name: Check generated reference docs are current
+        run: python scripts/generate_reference_docs.py --check
