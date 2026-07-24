@@ -258,8 +258,9 @@ python tests/validate_data.py            # data integrity
 python -m unittest discover -s tests -v  # engine + integration tests
 ```
 
-`js/identity_forge.js` embeds data generated from `data/fields.py` — regenerate it only if you
-change the gender-divergent fields or the field set.
+`js/identity_forge.js` embeds data generated from `data/fields.py` by
+`scripts/generate_js_data.py` — rerun it (and commit the result) after changing the field set
+or the gender-divergent pools; CI's `--check` catches a stale commit.
 
 ## License
 

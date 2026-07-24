@@ -47,6 +47,8 @@ js/          identity_forge.js · identity_forge_creature.js · identity_forge_v
 tests/       validate_data.py (static integrity) · test_engine.py · test_creature.py
              · test_vault.py · preview_cosplayer.py
 scripts/     generate_reference_docs.py (regenerates docs/reference/*.md)
+             · generate_js_data.py (regenerates the GROUP_ORDER/FIELD_TO_GROUP/GENDER_POOLS
+               block in js/identity_forge.js)
 docs/        usage.md · cosplayer-notes.md · creature-notes.md · architecture.md (this file)
              · reference/ (GENERATED indexes — see below)
 ```
@@ -511,8 +513,14 @@ User additions are first-class (0.46.1):
 - `python -m unittest discover -s tests -v` — engine + creature + vault (headless).
 - **Version:** bump `pyproject.toml` on every functional commit — **minor** for feature/content,
   **patch** for fixes (standing order).
-- **JS regen:** `js/identity_forge.js` embeds `GROUP_ORDER` / `FIELD_TO_GROUP` / `GENDER_POOLS`
-  from `data/fields.py`; update it when the field set or the gender-divergent pools change.
+- **JS regen:** `js/identity_forge.js` embeds a `GROUP_ORDER` / `FIELD_TO_GROUP` / `GENDER_POOLS`
+  block (between `GENERATED DATA` markers) built by `python scripts/generate_js_data.py` from
+  `data/fields.py`; rerun it and commit the result after changing the field set or the
+  gender-divergent pools. `--check` exits non-zero if the committed JS is stale (CI-enforced);
+  `tests/test_js_sync.py` guards the same invariant independently.
+- **CI:** `.github/workflows/ci.yml` runs `validate_data.py`, the unittest suite, and both
+  `--check` generators on every push/PR — the three checks above are enforced automatically,
+  not just documented here.
 
 ## Considered and deferred
 
