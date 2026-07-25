@@ -36,6 +36,7 @@ from nodes.identity_forge import (
     _SET_ALL_NONE,
     _a,
     _prepend_descriptor,
+    _article_if_singular,
 )
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
@@ -3357,6 +3358,119 @@ class FranchiseScopeTests(unittest.TestCase):
     def test_predicate_lookup_covers_both_scope_families(self):
         for label in (*_SPECIAL_SCOPES, *_FRANCHISE_SCOPES):
             self.assertIn(label, _PREDICATE_SCOPES)
+
+
+class WornItemArticleTests(unittest.TestCase):
+    """Singular worn items take an article; plural ones do not (0.72.0).
+
+    The jewellery/bag/accessory pools mix both in one slot, and the prose voices
+    them in a single list. Before this, only ``watch_type`` and ``nails`` were
+    articled, so a run read "He has brooch, thumb ring, nose stud, a metal link
+    watch". The head-noun split matters: "reading glasses pushed up on head" is
+    plural (head "reading glasses"), "belt cinching waist" is singular (head "belt").
+    """
+
+    _POOLS = ("earrings", "necklace", "other_jewelry", "rings", "bracelet",
+              "piercings", "bag", "accessories")
+
+    def test_head_noun_drives_the_article(self):
+        for value, expected in (
+            ("brooch", "a brooch"),
+            ("arm cuff", "an arm cuff"),
+            ("industrial earring", "an industrial earring"),
+            ("pearl studs", "pearl studs"),
+            ("layered gold chains", "layered gold chains"),
+            ("classic black sunglasses", "classic black sunglasses"),
+            # Post-modifiers must not be mistaken for the head noun.
+            ("reading glasses pushed up on head", "reading glasses pushed up on head"),
+            ("belt cinching waist", "a belt cinching waist"),
+            ("pendant on a leather cord", "a pendant on a leather cord"),
+            ("envelope clutch in gold", "an envelope clutch in gold"),
+        ):
+            self.assertEqual(_article_if_singular(value), expected, value)
+
+    def test_every_pool_value_is_stable(self):
+        """No pool value may produce a doubled or stranded article."""
+        for field in self._POOLS:
+            definition = FIELD_DEFINITIONS[field]
+            values = set(definition["female_options"]) | set(definition["male_options"])
+            for value in values:
+                if _is_absent(value):
+                    continue
+                rendered = _article_if_singular(value)
+                self.assertNotRegex(rendered, r"^an? an? ", f"{field}: {rendered}")
+                self.assertTrue(rendered.endswith(value), f"{field}: {rendered}")
+
+    def test_prose_articles_the_singular_pieces(self):
+        prose, _ = generate_character(
+            3, "Female", {"other_jewelry": "brooch", "rings": "thumb ring",
+                          "piercings": "nose stud"},
+            accessory_density="Maximal")
+        self.assertIn("a brooch", prose)
+        self.assertIn("a thumb ring", prose)
+        self.assertIn("a nose stud", prose)
+
+    def test_prose_leaves_plural_pieces_bare(self):
+        prose, _ = generate_character(
+            3, "Female", {"earrings": "pearl studs"}, accessory_density="Maximal")
+        self.assertIn("pearl studs", prose)
+        self.assertNotIn("a pearl studs", prose)
+
+    def test_bag_and_accessories_are_articled(self):
+        prose, _ = generate_character(
+            3, "Female", {"bag": "canvas tote", "accessories": "wide brim sun hat"},
+            accessory_density="Maximal")
+        self.assertIn("carrying a canvas tote", prose)
+        self.assertIn("accessorized with a wide brim sun hat", prose)
+
+
+class CostumePronounTests(unittest.TestCase):
+    """Costume prose must not hardcode a gendered pronoun (0.72.0).
+
+    ``costume`` is voiced verbatim after "She/He wears ...", and the *person's*
+    gender is the IdentityForge widget, not the character's -- that is what makes
+    crossplay work. Ten entries carried "her"/"his"/"she"/"he" in the costume
+    text, so a man cosplaying She-Hulk read "...covering her face and entire body".
+    """
+
+    _PRONOUN = re.compile(r"\b(?:her|his|she|he)\b", re.IGNORECASE)
+
+    def test_no_gendered_pronoun_in_costume_text(self):
+        offenders = sorted(
+            name for name, entry in COSPLAYERS.items()
+            if self._PRONOUN.search(entry.get("costume", ""))
+        )
+        self.assertEqual(offenders, [], f"gendered pronouns in costume: {offenders}")
+
+    #: Every free-text key that reaches the prose verbatim. ``prop`` is on the list
+    #: because it caught three entries the costume-only sweep missed (Bloodsport's
+    #: "assembled from his gauntlet", Silver Surfer, Emilia) -- it is voiced as
+    #: "holding ..." on a person whose gender the character does not decide.
+    _TEXT_KEYS = ("costume", "mask", "prop", "prop_costume", "scale_prose",
+                  "skin", "eyes")
+
+    def test_no_gendered_pronoun_in_any_free_text(self):
+        offenders = []
+        for name, entry in COSPLAYERS.items():
+            texts = [entry.get(key, "") for key in self._TEXT_KEYS]
+            for alternate in entry.get("costumes", []) or []:
+                texts.extend([alternate] if isinstance(alternate, str)
+                             else [v for v in alternate.values() if isinstance(v, str)])
+            for text in texts:
+                if isinstance(text, str) and self._PRONOUN.search(text):
+                    offenders.append(f"{name}: {text[:60]}")
+        self.assertEqual(sorted(offenders), [], f"gendered pronouns: {offenders}")
+
+    def test_crossplay_renders_without_a_stray_pronoun(self):
+        """She-Hulk on a male cosplayer must not say "her face"."""
+        document = build_cosplayer_json("She-Hulk", 7, look_level="Full character")
+        parsed = _parse_archetype_json(document)
+        label = parsed.pop(_COSPLAY_LABEL_KEY, None)
+        locked = resolve_locked_fields(
+            {}, {k: v for k, v in parsed.items() if isinstance(v, str)})
+        prose, _ = generate_character(7, "Male", locked, cosplay_label=label)
+        self.assertNotIn("her face", prose)
+        self.assertIn("covering the face and entire body", prose)
 
 
 class FranchiseLabelTests(unittest.TestCase):

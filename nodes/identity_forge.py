@@ -420,6 +420,39 @@ def _prepend_descriptor(phrase: str, descriptor: str) -> str:
     return f"{descriptor} {phrase}"
 
 
+#: Splits a worn-item phrase at the preposition / participle that starts a
+#: post-modifier, so the *head* noun can be inspected: "reading glasses pushed up
+#: on head" heads on "reading glasses" (plural), not on the trailing "head", and
+#: "belt cinching waist" heads on "belt" (singular), not on "waist". Without this
+#: the naive last-word test gets both backwards.
+_ITEM_TAIL_RE = re.compile(
+    r"\s+(?:on|in|over|at|with|as|under|across|tied|worn|pushed|cinching|"
+    r"bearing|falling|framing)\b"
+)
+
+
+def _article_if_singular(value: str) -> str:
+    """Return ``value`` with an indefinite article when its head noun is singular.
+
+    The worn-item pools mix singular and plural entries in the same slot — "brooch",
+    "thumb ring" and "canvas tote" sit beside "pearl studs", "layered gold chains"
+    and "classic black sunglasses". The prose voices them in one list, so a blanket
+    article would give "a pearl studs" and no article gives "He has brooch, thumb
+    ring, nose stud" (while the neighbouring watch, which does use ``_an``, reads
+    correctly). Articling only the singular heads makes the whole list agree.
+
+    Plural is detected on the head noun's final ``s`` (ignoring ``ss``, so "dress"
+    and "sunglasses" are handled correctly by the head split above).
+    """
+    if not value:
+        return value
+    head = _ITEM_TAIL_RE.split(value, 1)[0]
+    last = head.split()[-1].lower() if head.split() else ""
+    if last.endswith("s") and not last.endswith("ss"):
+        return value
+    return _an(value)
+
+
 def _join(items: list[str]) -> str:
     """Comma-join with an Oxford "and" before the final item."""
     items = [i for i in items if i]
@@ -1157,7 +1190,10 @@ def _format_prose(
     jewelry = []
     for field in ("earrings", "necklace", "other_jewelry", "rings", "bracelet", "piercings"):
         if g(field):
-            jewelry.append(g(field))
+            # Singular pieces take an article ("a brooch", "a nose stud"); plural ones
+            # ("pearl studs", "layered gold chains") stay bare, so the list agrees with
+            # the watch below, which has always been articled.
+            jewelry.append(_article_if_singular(g(field)))
     if g("watch_type"):
         watch = g("watch_type")
         jewelry.append(_an(watch, "" if "watch" in watch else "watch"))
@@ -1180,9 +1216,9 @@ def _format_prose(
         if g("footwear"):
             clothing.append(f"in {g('footwear')}")
     if g("bag"):
-        clothing.append(f"carrying {g('bag')}")
+        clothing.append(f"carrying {_article_if_singular(g('bag'))}")
     if g("accessories"):
-        clothing.append(f"accessorized with {g('accessories')}")
+        clothing.append(f"accessorized with {_article_if_singular(g('accessories'))}")
     if clothing:
         sentences.append(", ".join(clothing))
 

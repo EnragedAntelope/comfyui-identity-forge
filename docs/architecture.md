@@ -743,11 +743,36 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   ("Cosplaying as Dracula (Movie)") and would have produced a nonsense `Franchise: Movie`
   scope, so they were refranchised (the five Universal horror leads share
   `"Universal Monsters"`) and mapped into `_CATEGORY_FRANCHISES["Movies & TV"]`.
-  `FranchiseLabelTests` now rejects any medium-as-franchise label. **Two `"Comics"` entries
-  remain and are a deliberate open item**, not an oversight: *Shana the She-Devil* is a
-  possible near-duplicate of both `Red Sonja` and Marvel's `Shanna the She-Devil` (already in
-  the roster), and *Lunatica* needs a source confirmed — both are curation calls, so they were
-  left for a decision rather than guessed at.
+  `FranchiseLabelTests` now rejects any medium-as-franchise label. The two `"Comics"` entries
+  were resolved in the same release (see below).
+- **The two `"Comics"` placeholders, resolved (0.72.0).** Both were flagged as needing a source
+  and then checked against the actual characters.
+  *Shana the She-Devil* was **deleted**: no such character exists. The name was a one-letter
+  drift off Marvel's *Shanna the She-Devil* — which ships, correctly, in its leopard-print
+  jungle look — while the *described* look (red bikini, fire-red very long hair, green eyes,
+  bronzed skin, broad-bladed sword) was Red Sonja, who also ships. It shared 3 of 4 signature
+  fields and 2 of 3 physique fields with Red Sonja. Sheena, the character Shanna was created to
+  imitate, is on the roster too, so all three real subjects stay covered and nothing was lost.
+  *Lunatica* → **`La Lunatica`, franchise `Marvel`** (X-Men 2099). The entry had the leather and
+  the tall, muscular build right but every high-attention colour trait wrong: it shipped red
+  hair, pale lavender skin and yellow reptilian slit eyes, where canon is an albino-pale psychic
+  vampire with **bone-white hair and skin, burning red eyes** and pronounced fangs, dressed in
+  black leather that deliberately leaves skin bare (her power works on touch). Corrected to
+  canon, keeping the canonical `smooth, flawless bone-white skin` phrasing so the body-paint
+  suppression and colour anchor both fire.
+  **Lesson for future roster work:** a wrong `franchise` is worth treating as a smell, not just
+  a tidiness issue. Both placeholder entries turned out to have substantive problems underneath
+  — one was not a real character at all — because nobody could name the source when they were
+  written.
+- **Costume prose must not hardcode a gendered pronoun (0.72.0).** `costume` is voiced verbatim
+  after "She/He wears …", and the *person's* gender is the IdentityForge widget, not the
+  character's — that is the whole basis of crossplay. Ten entries carried `her`/`his`/`she`/`he`
+  (She-Hulk, Jolly Green Giant, Iori Yagami, Heihachi Mishima, Paul Phoenix, Medusa, Allen the
+  Alien, Liz Sherman, Rumi, Zoey), so a man cosplaying She-Hulk rendered "…covering **her** face
+  and entire body". All ten were reworded to a neutral construction ("covering the face…", "with
+  long crimson hair…"), preserving each body-paint marker verbatim so `_BODY_PAINT_RE` and the
+  colour anchor still match. `CostumePronounTests` covers `costume`, `mask`, `prop_costume` and
+  every `costumes` alternate.
 - **Prose articles are chosen by sound, not spelling (0.72.0).** `_a()` carries two exception
   sets (`_CONSONANT_VOWEL_PREFIXES`, `_VOWEL_CONSONANT_PREFIXES`) because a bare vowel-letter
   test shipped "a hourglass build" and "an university lecture hall". Free-text `skin` / `eyes`
@@ -760,6 +785,15 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   article; the 9 with a mass/plural head (`denim overalls`, `yoga pants`, `high waisted
   trousers`, …) are correctly bare and are the documented exception. Pure data edit — no pool
   change, no RNG draw, no seed drift. `OutfitArticleTests` guards the convention.
+- **Singular worn items are articled in prose, plural ones are not (0.72.0).** The jewellery,
+  bag and accessory pools mix both in one slot — "brooch", "thumb ring" and "canvas tote" sit
+  beside "pearl studs", "layered gold chains" and "classic black sunglasses" — and `_format_prose`
+  voices them in a single list. Only `watch_type` and `nails` were ever articled, so a run read
+  "He has brooch, thumb ring, nose stud, **a** metal link watch". `_article_if_singular` articles
+  just the singular heads. The head split (`_ITEM_TAIL_RE`) is the load-bearing part: a naive
+  last-word test calls "reading glasses pushed up on **head**" singular and "belt cinching
+  **waist**" plural, i.e. exactly backwards on both. Prose-only, zero RNG. Adding a value to any
+  of those pools needs no bookkeeping — the head noun decides.
 - **A Modifier must not prepend in front of an article (0.72.0).** `_apply_modifiers` used a
   blind f-string and produced "wears weathered a gothic black dress". It now routes through
   `_prepend_descriptor`, which **moved from the creature node into `nodes/identity_forge.py`**

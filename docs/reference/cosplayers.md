@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1296 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1295 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (168)
 
@@ -280,7 +280,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (163)
+## Comics & Cartoons (161)
 
 ### Adventure Time
 
@@ -346,11 +346,6 @@
 ### Chaos! Comics
 
 - **Lady Death** (F)
-
-### Comics
-
-- **Lunatica** (F)
-- **Shana the She-Devil** (F, prop)
 
 ### Crusade Comics
 
@@ -1054,7 +1049,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (163)
+## Marvel (164)
 
 ### Marvel
 
@@ -1129,6 +1124,7 @@
 - **Kitty Pryde** (F)
 - **Kraven the Hunter** (M, prop)
 - **Krystalin** (F)
+- **La Lunatica** (F)
 - **Lady Sif** (F, prop)
 - **Lascivious** (F)
 - **Loki** (M)

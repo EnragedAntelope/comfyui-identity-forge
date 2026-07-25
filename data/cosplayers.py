@@ -322,7 +322,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The King of Fighters",
         "gender": "Male",
         "costume": "a menacing black outfit with a long crescent-hemmed coat, red straps and "
-                   "buckles, and pointed boots, his long crimson hair falling across the right eye",
+                   "buckles, and pointed boots, with long crimson hair falling across the right eye",
         "signature": {"hair_color": "bright red", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "dark brown",
                       "facial_hair": "clean shaven"},
@@ -760,7 +760,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "near black", "hair_length": "very short",
                       "facial_hair": "short beard", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "dark brown"},
-        "prop": "a modular rifle assembled from his gauntlet, leveled forward",
+        "prop": "a modular rifle assembled from the wrist gauntlet, leveled forward",
     },
     "Rick Flag": {
         "franchise": "DC",
@@ -1196,7 +1196,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a purple-and-white athletic leotard, with smooth, flawless rich green skin "
-                   "covering her face and entire body, on a strikingly tall and powerfully "
+                   "covering the face and entire body, on a strikingly tall and powerfully "
                    "muscled figure",
         "signature": {"hair_color": "emerald green", "hair_length": "slightly past shoulders",
                       "hair_texture": "loosely wavy", "eye_color": "emerald"},
@@ -1938,7 +1938,7 @@ COSPLAYERS: dict[str, dict] = {
                    "silver skin",
         "mask": "a featureless chrome head with blank silver eyes",
         "physique": {"body_type": "lean", "height": "tall"},
-        "prop": "a sleek mirror-chrome cosmic surfboard, held upright at his side",
+        "prop": "a sleek mirror-chrome cosmic surfboard, held upright at one side",
     },
     "Winter Soldier": {
         "franchise": "Marvel",
@@ -3880,9 +3880,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Tekken",
         "gender": "Male",
         "costume": "a bare-chested elderly martial-arts master in a red and gold silk fighting "
-                   "robe worn open, with wide dark hakama trousers and a black obi; his black hair "
-                   "is swept up into two tall pointed flame-like spikes above a bald crown, and he "
-                   "has thick gray eyebrows and a broad gray mustache",
+                   "robe worn open, with wide dark hakama trousers and a black obi; the black hair "
+                   "is swept up into two tall pointed flame-like spikes above a bald crown, with "
+                   "thick gray eyebrows and a broad gray mustache",
         "signature": {"eye_color": "dark brown", "facial_hair": "mustache"},
         "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "light medium"},
     },
@@ -3900,7 +3900,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Tekken",
         "gender": "Male",
         "costume": "a red judo-style fighting gi worn open over a bare chest with a black belt and "
-                   "matching red trousers, his blond hair sculpted into a tall gravity-defying "
+                   "matching red trousers, with blond hair sculpted into a tall gravity-defying "
                    "flat-top pompadour",
         "signature": {"hair_color": "golden blonde", "eye_color": "bright blue",
                       "facial_hair": "clean shaven"},
@@ -6908,25 +6908,26 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "loosely wavy"},
         "physique": {"body_type": "hourglass", "height": "statuesque"},
     },
-    "Shana the She-Devil": {
-        "franchise": "Comics",
+    # "Shana the She-Devil" was removed in 0.72.0: no such character exists. The name
+    # was a one-letter drift off Marvel's "Shanna the She-Devil" (which ships, correctly,
+    # in its leopard-print jungle look) while the described look -- red bikini, fire-red
+    # very long hair, green eyes, bronzed skin, broad-bladed sword -- was Red Sonja, who
+    # also ships. It shared 3 of 4 signature fields and 2 of 3 physique fields with her.
+    # Sheena, the character Shanna was created to imitate, is on the roster too, so all
+    # three real subjects remain covered.
+    "La Lunatica": {
+        "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a minimal red barbarian bikini-style top and brief bottom, leather boots and "
-                   "bracers, and fire-red battle-flung hair, over smooth, flawless "
-                   "sun-and-battle-bronzed skin",
-        "signature": {"hair_color": "bright red", "hair_length": "very long",
-                      "hair_texture": "thick and voluminous", "eye_color": "green"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "bronze"},
-        "prop": "a broad-bladed barbarian sword",
-    },
-    "Lunatica": {
-        "franchise": "Comics",
-        "gender": "Female",
-        "costume": "black leather straps and armored pieces, clawed gauntlets, and heavy boots, "
-                   "with wild red hair, over smooth, flawless pale lavender skin with darker "
-                   "markings",
-        "eyes": "yellow reptilian slit",
-        "signature": {"hair_color": "bright red", "hair_length": "very long",
+        # X-Men 2099. Canon is an albino-pale psychic vampire: bone-white hair and skin,
+        # burning red eyes and pronounced fangs, dressed in black leather that leaves skin
+        # bare (her power works on touch). The entry previously shipped as "Lunatica" with
+        # red hair, lavender skin and reptilian eyes -- the leather and the tall, muscular
+        # build were right, but all three high-attention colour traits were wrong.
+        "costume": "black leather straps and armored pieces, clawed gauntlets, and heavy "
+                   "boots left open at the midriff and thighs, with sharp fanglike canine "
+                   "teeth, over smooth, flawless bone-white skin",
+        "eyes": "burning red",
+        "signature": {"hair_color": "platinum white", "hair_length": "very long",
                       "hair_texture": "thick and voluminous"},
         "physique": {"body_type": "athletic", "height": "tall"},
     },
@@ -8955,7 +8956,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Green Giant",
         "gender": "Male",
         "costume": "a short toga made of woven green leaves, with smooth, flawless rich green "
-                   "skin covering his face and entire body, on a towering figure of impossible "
+                   "skin covering the face and entire body, on a towering figure of impossible "
                    "gigantic scale and proportion",
         "signature": {"hair_color": "emerald green", "hair_length": "very short",
                       "hair_texture": "wavy", "hair_style": "slicked back"},
@@ -9814,8 +9815,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a one-piece violet bodysuit with black accents and a black crown-like tiara, "
-                   "and an immense mane of prehensile deep-red hair that flows several times her "
-                   "own body length and moves like living tendrils",
+                   "and an immense mane of prehensile deep-red hair that flows several times the "
+                   "body's own length and moves like living tendrils",
         "signature": {"hair_color": "deep red", "hair_length": "hip length",
                       "hair_texture": "thick and voluminous", "eye_color": "bright green"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
@@ -10469,7 +10470,7 @@ COSPLAYERS: dict[str, dict] = {
                    "green cuffs at the wrists, a prominent belt buckle bearing the Coalition of "
                    "Planets emblem, custom iron gloves with small wrist screens, and custom boots, "
                    "worn over a heavily muscled body with unusual three-fingered hands (a thumb and "
-                   "two thick fused digits) and three thick toes on each foot; his skin is smooth, "
+                   "two thick fused digits) and three thick toes on each foot, over smooth, "
                    "flawless orange skin",
         "mask": "a large hairless cyclopean head with a single big eye - a white sclera around a "
                 "tiny horizontal rectangular pupil - set beneath a heavy protruding brow, with a "
@@ -10526,7 +10527,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Hellboy",
         "gender": "Female",
         "costume": "a fitted dark BPRD field jacket over a black top and utility trousers "
-                   "with a holster belt, her whole body wreathed in dancing blue flames",
+                   "with a holster belt, the whole body wreathed in dancing blue flames",
         "signature": {"hair_color": "dark brown", "hair_length": "short pixie",
                       "hair_style": "tousled bedhead", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
@@ -10992,8 +10993,8 @@ COSPLAYERS: dict[str, dict] = {
                    "spiked pad on the left shoulder, worn over a white mockneck crop top with two "
                    "layered necklaces, high-waisted dark indigo denim shorts, a hot pink belt with "
                    "a small lilac norigae charm, and black calf-high platform boots with red "
-                   "stripes; her thick dragon-style braid is tied with a golden silk daenggi ribbon, "
-                   "and glowing purple eldritch-pattern markings trace her arms",
+                   "stripes; a thick dragon-style braid tied with a golden silk daenggi ribbon, "
+                   "and glowing purple eldritch-pattern markings tracing the arms",
         "signature": {"hair_color": "purple", "hair_length": "hip length",
                       "hair_style": "braided ponytail", "hair_texture": "pin straight",
                       "eye_color": "dark brown", "eye_shape": "monolid", "face_shape": "oval"},
@@ -11027,8 +11028,8 @@ COSPLAYERS: dict[str, dict] = {
                    "silver zippers and a pink lotus print on one side, high-waisted purple-black "
                    "parachute pants with geometric yellow-and-black panels, dual teal hip straps "
                    "and a yellow norigae charm at the left hip, and chunky yellow-and-black high-top "
-                   "sneakers; she wears silver double-hoop earrings, a gold wrist bracelet and black "
-                   "rings, with blunt micro-bangs and side fringe framing her face and light "
+                   "sneakers; silver double-hoop earrings, a gold wrist bracelet and black "
+                   "rings, with blunt micro-bangs and side fringe framing the face and light "
                    "freckles across the nose",
         "signature": {"hair_color": "near black", "hair_length": "long",
                       "hair_style": "space buns", "eye_color": "light brown",
@@ -13666,7 +13667,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "platinum white", "hair_length": "very long",
                       "hair_texture": "sleek straight"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
-        "prop": "Puck, a small grey kitten-like spirit hovering at her shoulder",
+        "prop": "Puck, a small grey kitten-like spirit hovering at one shoulder",
     },
 
     # --- Added batch 7: The Endless (completing the Seven) ------------------
