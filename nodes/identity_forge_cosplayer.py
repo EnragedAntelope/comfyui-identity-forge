@@ -378,33 +378,45 @@ def _apply_suppress(
 _SCOPE_NOTICE_SEEN: set[tuple[str, str]] = set()
 
 
+#: Outcomes of narrowing the Random pool, reported by :func:`_announce_scope`.
+_SCOPE_OK = "ok"                    # the (gender, scope) combo had characters
+_SCOPE_GENDER_RELAXED = "gender"    # scope kept, gender dropped to fill it
+_SCOPE_ABANDONED = "abandoned"      # scope itself matched nothing (result out of scope)
+
+
 def _announce_scope(
-    character: str, category: str, gender: str | None, count: int, fell_back: bool
+    character: str, category: str, gender: str | None, count: int, outcome: str
 ) -> None:
     """Print a one-time console note of the in-scope pool size for a Random combo.
 
     A franchise/attribute scope narrows the Random pool. A *small* pool (e.g.
-    ``Masked`` + ``female`` = 7) then repeats characters across seeds, which reads
+    ``Masked`` + ``female`` = 8) then repeats characters across seeds, which reads
     like the scope was ignored even though it is working. Printing the pool size
     once per (character, scope) combo makes the scope legible without spamming the
     console every generation.
 
-    If a (gender, scope) combo is ever *empty* the pick silently falls back to the
-    full gender pool — unreachable with the shipped roster (the smallest combo is
-    7), but a ``user_options.json`` addition could create it, so the fallback warns
-    loudly instead of quietly handing back an out-of-scope character.
+    ``outcome`` distinguishes the two degraded cases, which are very different for
+    the user: :data:`_SCOPE_GENDER_RELAXED` still honours the franchise they asked
+    for (only the *source* gender was dropped, which crossplay makes harmless),
+    while :data:`_SCOPE_ABANDONED` means the scope matched nothing at all and the
+    result really is out of scope.
     """
     key = (character, category)
     if key in _SCOPE_NOTICE_SEEN:
         return
     _SCOPE_NOTICE_SEEN.add(key)
     gender_word = gender.lower() if gender else "any-gender"
-    if fell_back:
+    plural = "s" if count != 1 else ""
+    if outcome == _SCOPE_GENDER_RELAXED:
+        print(f"[IdentityForgeCosplayer] scope '{category}' has no {gender_word} "
+              f"characters; keeping the scope and picking from all {count} "
+              f"character{plural} in it instead. Set the person's gender on the "
+              f"IdentityForge node for crossplay.")
+    elif outcome == _SCOPE_ABANDONED:
         print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}' matched no "
               f"characters; falling back to the full {gender_word} pool "
               f"({count} characters). The result will be OUT OF SCOPE.")
     else:
-        plural = "s" if count != 1 else ""
         print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}': "
               f"{count} character{plural} in scope.")
 
@@ -418,27 +430,43 @@ def _resolve_character(
     pool (e.g. "Random — male" before any male characters are added). ``category``
     limits the Random picks to one franchise/category ("Any" = no limit). A specific
     character selection ignores ``category``.
+
+    When a (gender, scope) combo is empty the **scope wins and the gender is
+    relaxed**: asking for "Random — male" + "Franchise: Date A Live" (an all-female
+    cast) returns a Date A Live character rather than an out-of-scope one from the
+    whole roster. The scope is the deliberate, visible choice; the source gender
+    only pre-filters the pool, and the *person* cosplaying is gendered separately on
+    the IdentityForge node, so crossplay already makes the relaxed pick valid.
+    Only a scope that matches nothing at all falls back to the full roster, loudly.
     """
     if character in _RANDOM_POOLS:
         gender = _RANDOM_POOLS[character]
         scoped = category != _SCOPE_ANY
         predicate = _PREDICATE_SCOPES.get(category)
-        if predicate is not None:
-            # Attribute scope (Giant/Tiny/Non-human/Masked) or a single-franchise
-            # scope: filter the gender pool by the predicate instead of by category.
-            pool = [n for n in get_cosplayer_names(gender=gender)
-                    if predicate(get_cosplayer(n))]
-        else:
-            pool = get_cosplayer_names(gender=gender, category=category)
-        fell_back = False
-        if not pool:  # empty (gender, scope) combo -> fall back to the full gender pool
-            fell_back = scoped
+
+        def in_scope(for_gender: str | None) -> list[str]:
+            names = get_cosplayer_names(gender=for_gender)
+            if predicate is not None:
+                # Attribute scope (Giant/Tiny/Non-human/Masked) or a single-franchise
+                # scope: filter the gender pool by the predicate instead of by category.
+                return [n for n in names if predicate(get_cosplayer(n))]
+            return get_cosplayer_names(gender=for_gender, category=category)
+
+        pool = in_scope(gender)
+        outcome = _SCOPE_OK
+        if not pool and scoped and gender is not None:
+            # Keep the scope the user picked; drop only the source-gender filter.
+            pool = in_scope(None)
+            outcome = _SCOPE_GENDER_RELAXED
+        if not pool:
+            # The scope itself is empty (only reachable via user_options.json).
+            outcome = _SCOPE_ABANDONED if scoped else _SCOPE_OK
             pool = get_cosplayer_names(gender=gender)
         if not pool:
             print(f"[IdentityForgeCosplayer] No characters available for '{character}'.")
             return None
         if scoped:
-            _announce_scope(character, category, gender, len(pool), fell_back)
+            _announce_scope(character, category, gender, len(pool), outcome)
         return rng.choice(pool)
     if character == _NONE or character not in COSPLAYERS:
         return None

@@ -6,6 +6,8 @@ Pure-stdlib ``unittest`` so it runs without ComfyUI installed:
 """
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 from pathlib import Path
 import random
@@ -342,30 +344,51 @@ class ScopeAnnounceTests(unittest.TestCase):
     def test_announce_is_once_per_combo(self):
         import nodes.identity_forge_cosplayer as cn
         cn._SCOPE_NOTICE_SEEN.clear()
-        cn._announce_scope("Random - female", "Masked", "Female", 7, False)
-        cn._announce_scope("Random - female", "Masked", "Female", 7, False)
+        cn._announce_scope("Random - female", "Masked", "Female", 7, cn._SCOPE_OK)
+        cn._announce_scope("Random - female", "Masked", "Female", 7, cn._SCOPE_OK)
         self.assertIn(("Random - female", "Masked"), cn._SCOPE_NOTICE_SEEN)
         self.assertEqual(len(cn._SCOPE_NOTICE_SEEN), 1)
 
-    def test_empty_scope_falls_back_and_flags(self):
-        # Force an empty (gender, scope) combo via a stubbed roster: the resolver
-        # must still return a name (from the full gender pool), not None.
+    def test_empty_gender_combo_keeps_the_scope(self):
+        """An all-one-gender franchise must still return a character FROM it.
+
+        0.75.0 bug: "Random - male" + a franchise with no male characters (Date A
+        Live) silently fell back to the whole male roster and handed back an Ewok.
+        The scope is the deliberate choice, so the gender filter yields instead.
+        """
         import nodes.identity_forge_cosplayer as cn
         real = cn.get_cosplayer_names
-        calls = {"n": 0}
 
         def fake_names(gender=None, category=cn._SCOPE_ANY):
-            # First call (scoped) is empty; the fallback (gender-only) returns a name.
-            calls["n"] += 1
-            return [] if calls["n"] == 1 else ["Zatanna"]
+            # No male characters exist; the un-gendered pool is the in-scope cast.
+            return [] if gender == "Male" else ["Kurumi Tokisaki", "Tohka Yatogami"]
 
         cn._SCOPE_NOTICE_SEEN.clear()
         cn.get_cosplayer_names = fake_names
         try:
-            name = cn._resolve_character(cn._RANDOM_FEMALE, random.Random(0), "Masked")
+            # A category scope, so the stubbed roster is used directly rather than
+            # re-filtered through a predicate against the real COSPLAYERS dict.
+            name = cn._resolve_character(cn._RANDOM_MALE, random.Random(0), "Anime & Manga")
         finally:
             cn.get_cosplayer_names = real
-        self.assertEqual(name, "Zatanna")  # fell back to the full gender pool
+        self.assertIn(name, ("Kurumi Tokisaki", "Tohka Yatogami"))
+
+    def test_wholly_empty_scope_still_falls_back_and_flags(self):
+        """A scope matching nothing at all (any gender) keeps the old loud fallback."""
+        import nodes.identity_forge_cosplayer as cn
+        real = cn.get_cosplayer_names
+
+        def fake_names(gender=None, category=cn._SCOPE_ANY):
+            # Scoped lookups are empty for every gender; only the bare pool has names.
+            return ["Zatanna"] if category in (None, cn._SCOPE_ANY) else []
+
+        cn._SCOPE_NOTICE_SEEN.clear()
+        cn.get_cosplayer_names = fake_names
+        try:
+            name = cn._resolve_character(cn._RANDOM_FEMALE, random.Random(0), "DC")
+        finally:
+            cn.get_cosplayer_names = real
+        self.assertEqual(name, "Zatanna")
 
     def test_unscoped_pick_announces_nothing(self):
         import nodes.identity_forge_cosplayer as cn
@@ -3359,6 +3382,69 @@ class FranchiseScopeTests(unittest.TestCase):
     def test_predicate_lookup_covers_both_scope_families(self):
         for label in (*_SPECIAL_SCOPES, *_FRANCHISE_SCOPES):
             self.assertIn(label, _PREDICATE_SCOPES)
+
+
+class EveryScopeGenderComboTests(unittest.TestCase):
+    """Every scope x every gender must return an IN-SCOPE character. (0.75.0)
+
+    The previous coverage sampled one franchise ("Franchise: Pokemon") against one
+    gender ("Random - any"), which is why the empty-combo fallback shipped: "Random
+    - male" + "Franchise: Date A Live" (an all-female cast) matched nothing and
+    quietly returned a character from the entire roster. This walks the whole
+    dropdown -- attribute scopes, broad categories and every derived franchise --
+    against all three character picks, so any future roster edit that empties a
+    combo fails here instead of in a user's graph.
+    """
+
+    _PICKS = ("Random — any", "Random — female", "Random — male")
+
+    @staticmethod
+    def _members(scope):
+        """The set of names a scope legitimately covers, ignoring gender."""
+        from data.cosplayers import get_cosplayer_categories
+        if scope in get_cosplayer_categories():
+            return set(get_cosplayer_names(category=scope))
+        predicate = _PREDICATE_SCOPES[scope]
+        return {n for n, e in COSPLAYERS.items() if predicate(e)}
+
+    def test_every_scope_and_gender_stays_in_scope(self):
+        from data.cosplayers import get_cosplayer_categories
+        scopes = [*_SPECIAL_SCOPES, *get_cosplayer_categories(), *_FRANCHISE_SCOPES]
+        self.assertGreater(len(scopes), 30, "scope dropdown unexpectedly small")
+        offenders = []
+        for scope in scopes:
+            allowed = self._members(scope)
+            self.assertTrue(allowed, f"{scope} covers no characters at all")
+            for pick in self._PICKS:
+                for seed in range(15):
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        raw = build_cosplayer_json(pick, seed, random_scope=scope)
+                    name = json.loads(raw)["_meta"]["cosplay_of"]
+                    if name not in allowed:
+                        offenders.append((scope, pick, seed, name))
+        self.assertEqual(offenders, [], f"out-of-scope picks: {offenders[:10]}")
+
+    def test_no_scope_gender_combo_is_silently_empty(self):
+        """Document which combos rely on the gender-relaxing path, and why.
+
+        An empty combo is not itself a bug -- an all-female cast has no male
+        members -- but it MUST resolve through the relax-gender branch rather than
+        the out-of-scope fallback. This asserts the branch is what fires.
+        """
+        import nodes.identity_forge_cosplayer as cn
+        from data.cosplayers import get_cosplayer_categories
+        for scope in (*_SPECIAL_SCOPES, *get_cosplayer_categories(), *_FRANCHISE_SCOPES):
+            allowed = self._members(scope)
+            for gender in ("Female", "Male"):
+                gendered = {n for n in allowed
+                            if COSPLAYERS[n].get("gender") == gender}
+                if gendered:
+                    continue
+                pick = cn._RANDOM_FEMALE if gender == "Female" else cn._RANDOM_MALE
+                with contextlib.redirect_stdout(io.StringIO()):
+                    name = cn._resolve_character(pick, random.Random(0), scope)
+                self.assertIn(name, allowed,
+                              f"{scope} + {gender} escaped its scope")
 
 
 class WornItemArticleTests(unittest.TestCase):
