@@ -597,14 +597,38 @@ it counts `user_options.json` additions and self-maintains as the roster grows. 
 thresholds for a future re-tune: ≥3 chars → 94 franchises covering 1093 of 1296; ≥5 → 54 covering
 955; ≥8 → 30 covering 817 (27 after removing the category-named three).
 
-**Related pre-existing UX wart — fixed in 0.68.0, kept here for the reasoning.**
+**Related pre-existing UX wart — legibility addressed in 0.68.0, correctness in 0.75.0.**
 `_resolve_character` used to fall back to the **full gender pool** silently when a (gender, scope)
-combo came up empty, and small combos looked like the scope had been ignored. `_announce_scope`
-now prints the in-scope pool size once per `(character, scope)` combination, and shouts
-`The result will be OUT OF SCOPE.` on an actual fallback. The shipped roster has no empty combo
-(the smallest, `Masked` + `Random — female`, is 8), so the fallback branch only fires for a
-`user_options.json` configuration — which is exactly when a silent fallback would be most
-confusing.
+combo came up empty, and small combos looked like the scope had been ignored. 0.68.0 added
+`_announce_scope`, which prints the in-scope pool size once per `(character, scope)` combination.
+
+0.68.0 also asserted, in this document, that *"the shipped roster has no empty combo (the
+smallest, `Masked` + `Random — female`, is 8), so the fallback branch only fires for a
+`user_options.json` configuration."* **That was wrong, and the wrong claim is why the bug
+survived.** It was checked against the attribute scopes only; the franchise scopes added in
+0.74.0 introduced `Franchise: Date A Live` — an all-female cast — whose intersection with
+`Random — male` is empty. The user hit it, and got Ghostbusters and Ewoks back from a franchise
+scope.
+
+**0.75.0 changed the precedence: the scope wins, the gender relaxes.** When a (gender, scope)
+combo is empty the pick is redrawn from the scope with the gender filter dropped, so the user
+still gets a character from the franchise they asked for. This is the right way round because the
+scope is the deliberate, visible choice, the source gender only pre-filters the pool, and the
+*person* cosplaying is gendered separately on the Identity Forge node — crossplay is a
+first-class feature, so a relaxed pick is already valid output. Only a scope matching nothing at
+all for any gender (reachable solely via `user_options.json`) still falls back to the full roster,
+and shouts `The result will be OUT OF SCOPE.` `_announce_scope` takes an outcome of `_SCOPE_OK` /
+`_SCOPE_GENDER_RELAXED` / `_SCOPE_ABANDONED` rather than a boolean, so the console says which of
+the three happened.
+
+**Testing lesson.** The franchise-scope test sampled one franchise (Pokemon) against one gender
+(`Random — any`) — the bug lives in the *intersection*, which that sample never touched.
+`EveryScopeGenderComboTests` now walks the entire dropdown × all three character picks. Any scope
+matrix should be tested as a matrix; do not re-narrow it to a sample.
+
+One-sided casts are a permanent feature of the data, not a defect to fix by padding: `Date A Live`
+is 11F/0M and `Sailor Moon` is 9F/1M because those casts are one-sided. The relax-gender path is
+what makes them behave.
 
 ### Per-character "has skin but wouldn't wear jewellery" (closed 0.66.0 — do not re-flag)
 

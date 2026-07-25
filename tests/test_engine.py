@@ -3384,6 +3384,32 @@ class FranchiseScopeTests(unittest.TestCase):
             self.assertIn(label, _PREDICATE_SCOPES)
 
 
+class AdvertisedCharacterCountTests(unittest.TestCase):
+    """The roster size quoted in README.md and pyproject.toml must be the real one.
+
+    0.75.0 leads both with the character count as the headline differentiator
+    ("a hand-written visual description for every one of its N characters"). A
+    stale number there is a marketing claim the pack no longer backs, and nothing
+    else would catch it -- so the count is asserted against COSPLAYERS itself.
+    Update both files whenever the roster changes.
+    """
+
+    def _sources(self):
+        root = Path(__file__).resolve().parents[1]
+        return (root / "README.md", root / "pyproject.toml")
+
+    def test_quoted_count_matches_the_roster(self):
+        expected = f"{len(COSPLAYERS):,}"          # e.g. "1,391"
+        for path in self._sources():
+            text = path.read_text(encoding="utf-8")
+            quoted = set(re.findall(r"\b\d,\d{3}\b", text))
+            self.assertTrue(
+                quoted, f"{path.name} quotes no character count; expected {expected}")
+            self.assertEqual(
+                quoted, {expected},
+                f"{path.name} quotes {sorted(quoted)} but the roster holds {expected}")
+
+
 class EveryScopeGenderComboTests(unittest.TestCase):
     """Every scope x every gender must return an IN-SCOPE character. (0.75.0)
 

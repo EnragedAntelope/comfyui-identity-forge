@@ -8,8 +8,29 @@ and skin tone that stays plausible for the chosen ancestry in either direction �
 subject in ebony skin, no West African subject in porcelain. Lock the few traits you care about,
 let the rest roll.
 
+### It describes the costume — it doesn't just name the character
+
+Most character wildcards emit a name and hope the model knows it. Identity Forge ships a
+**hand-written, canon-checked visual description for every one of its 1,391 characters** — the
+garments, the colours, the masks, the markings, the signature props — so the look renders on
+*any* checkpoint, including ones that have never heard of the character.
+
+Ask a plain wildcard for Chun-Li and your prompt says `Chun-Li`. Ask Identity Forge and it says:
+
+> Cosplaying as Chun-Li (Street Fighter): a 22-year-old Armenian woman with an average build,
+> short, and medium skin. […] Her hair is shoulder length loosely wavy dark brown, space buns.
+> […] She wears **a blue qipao dress with gold trim and puffed short sleeves modified for
+> combat, brown tights, white cross-laced combat boots with blue accents, and spiked
+> bracelets**. She is in a confident power pose, set in a university library reading room […]
+
+That is why the results hold up: the costume is *specified*, not *invoked*. It survives weak
+character knowledge, it stays consistent across seeds and models, and — because the person
+underneath is randomized separately — every run is a different individual wearing it.
+
 **Why you'll like it**
 
+- **Described, not just named** — every character carries a real visual description (above), so
+  the look renders even on checkpoints that don't know the character.
 - **Coherent by design** — a constraint engine resolves clashing traits for you, automatically.
 - **Reproducible** — seed-driven, so any character you like comes back exactly.
 - **Archetypes & cosplayers** — a deep library of themed looks and fictional-character costumes
@@ -212,7 +233,10 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   a broad category (Anime & Manga, Marvel, DC, Star Wars, …), or a single franchise
   (`Franchise: Pokemon`, `Franchise: Final Fantasy`, `Franchise: Mortal Kombat`, …, offered for
   franchises with enough characters to browse). It combines with gender, and the console prints
-  the in-scope pool size the first time you use a combination.
+  the in-scope pool size the first time you use a combination. Where a franchise has no character
+  of the chosen gender (an all-female cast picked with `Random — male`), the **scope wins and the
+  gender relaxes** — you get a character from that franchise, which crossplay makes valid — rather
+  than an out-of-scope one.
 - **Alternate costumes.** Characters with more than one iconic look (Harley Quinn, Catwoman,
   Poison Ivy, Titania, Giganta, Diane, …) rotate between them by seed, so the same character
   yields a different signature costume each roll.
