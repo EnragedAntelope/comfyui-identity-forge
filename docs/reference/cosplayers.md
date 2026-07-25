@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1295 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1300 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (168)
+## Anime & Manga (173)
 
 ### Attack on Titan
 
@@ -100,6 +100,7 @@
 
 ### Frieren: Beyond Journey's End
 
+- **Fern** (F, +1 alt, prop)
 - **Frieren** (F, prop)
 
 ### Fullmetal Alchemist
@@ -119,6 +120,13 @@
 ### Gurren Lagann
 
 - **Yoko Littner** (F, prop)
+
+### Hell's Paradise
+
+- **Akaginu** (F)
+- **Gabimaru** (M, +1 alt)
+- **Yamada Asaemon Sagiri** (F, prop)
+- **Yuzuriha** (F, +2 alt)
 
 ### JoJo's Bizarre Adventure
 

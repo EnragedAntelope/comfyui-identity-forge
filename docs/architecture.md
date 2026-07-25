@@ -763,7 +763,30 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   **Lesson for future roster work:** a wrong `franchise` is worth treating as a smell, not just
   a tidiness issue. Both placeholder entries turned out to have substantive problems underneath
   — one was not a real character at all — because nobody could name the source when they were
-  written.
+  written. The same check paid off again at 0.73.0: *Gabimaru* was about to be written with
+  black hair from memory, and is canonically **white**-haired.
+- **Hell's Paradise added (0.73.0).** Four entries under the new `Hell's Paradise` franchise
+  (mapped into `Anime & Manga`): **Gabimaru** (protagonist), **Yamada Asaemon Sagiri**
+  (deuteragonist), **Yuzuriha** and **Akaginu**. Three things worth knowing for future anime
+  additions from this run:
+  *Anime/manga colour splits are real.* Gabimaru's pupils are yellow in the anime and red in the
+  manga; Yuzuriha's hair is black in the manga and purple in the anime, and sources give her eyes
+  as red, blue *and* purple. Where the anime reading is the widely-cosplayed one it leads
+  (Yuzuriha's purple garb, Gabimaru's yellow eyes); where sources genuinely conflict, the field is
+  **left unlocked** rather than guessed at — Yuzuriha ships with no `eye_color`, so it randomizes.
+  Asserting a wrong colour is worse than randomizing one.
+  *A half-mask is not `covers_face`.* Gabimaru's battle look pulls a turtleneck over the nose;
+  the eyes and brow still show, so it is a plain `costumes` alternate. `covers_face` is for a
+  fully enclosed head only — setting it here would have wrongly dropped the whole Face group.
+  *Sagiri wears her sword*, so she carries a `prop_costume` that empties the scabbard (the Zoro
+  pattern) — prop off leaves "a katana in a black lacquered scabbard" at the hip, prop on swaps
+  to "an empty black lacquered scabbard" and puts the drawn blade in her hands.
+- **Fern added (0.73.0)**, alongside the existing Frieren entry, with the Count Granat winter
+  look as an alternate. Her mirrored lotus bracelet was deliberately **left out** of the costume:
+  the Jewelry group is not in `_COSTUME_SUPPRESSED_EXTRAS`, so naming a bracelet in costume prose
+  would double against a randomized one — the wart the gotchas warn about for `accessories` /
+  `bag` / `hair_accessory`. Her butterfly hair clip *is* included, because `hair_accessory` **is**
+  costume-suppressed and so cannot double. Worth checking per-item, not per-costume.
 - **Costume prose must not hardcode a gendered pronoun (0.72.0).** `costume` is voiced verbatim
   after "She/He wears …", and the *person's* gender is the IdentityForge widget, not the
   character's — that is the whole basis of crossplay. Ten entries carried `her`/`his`/`she`/`he`
@@ -785,6 +808,16 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   article; the 9 with a mass/plural head (`denim overalls`, `yoga pants`, `high waisted
   trousers`, …) are correctly bare and are the documented exception. Pure data edit — no pool
   change, no RNG draw, no seed drift. `OutfitArticleTests` guards the convention.
+- **Every field value has to complete the frame its prose slot puts it in (0.73.0).**
+  `footwear` is voiced as `"in {value}"`, so `"barefoot"` — an adjective, not a noun phrase —
+  rendered "in barefoot". Renamed to `"bare feet"` (the two `constraints.py` exclusion lists
+  that name it moved in the same commit; `validate_data` would have caught a miss). This is the
+  same class as the 0.66.0 `pose` participle rule and the `shot_type` camera-only doctrine:
+  the slot's sentence frame is part of the field's contract, not just its wording.
+  `FootwearPhrasingTests` pins it. Note the branch is nearly unreachable in practice —
+  `_resolve_outfit_description` always fills `outfit_description`, so the separate
+  footwear/colour/pattern clause only renders when no outfit resolves — but the value is
+  lockable from the widget, which is enough to matter.
 - **Singular worn items are articled in prose, plural ones are not (0.72.0).** The jewellery,
   bag and accessory pools mix both in one slot — "brooch", "thumb ring" and "canvas tote" sit
   beside "pearl studs", "layered gold chains" and "classic black sunglasses" — and `_format_prose`

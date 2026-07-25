@@ -484,8 +484,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("footwear", {
         "group": 'Clothing',
-        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'barefoot', 'ankle boots', 'wedges', 'mules'],
-        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'barefoot', 'ankle boots', 'wedges', 'mules'],
+        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules'],
+        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules'],
         "optional": False
     }),
     ("clothing_color", {

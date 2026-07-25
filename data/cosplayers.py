@@ -13554,6 +13554,30 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "fair"},
         "prop": "a slender golden mage's staff topped with a small crystal",
     },
+    "Fern": {
+        "franchise": "Frieren: Beyond Journey's End",
+        "gender": "Female",
+        # Frieren's human apprentice. The butterfly hair clip is a gift from Frieren and
+        # is part of the silhouette, so it rides in the costume rather than being locked
+        # as a hair_accessory (a locked outfit already suppresses that field). The
+        # mirrored lotus bracelet is deliberately left out: the Jewelry group is not
+        # costume-suppressed, so naming a bracelet here would double against a randomized
+        # one. Alternate is the Count Granat winter look.
+        "costume": "a long black hooded mage's cloak fastened at the throat over a "
+                   "high-collared white dress with a buttoned bodice and a full pleated "
+                   "skirt, a wide dark sash at the waist, dark brown lace-up boots, and a "
+                   "small silver butterfly clip pinned in the hair",
+        "costumes": [
+            "a dark blue long-sleeved winter dress with a short light grey quilted jacket, "
+            "a soft blue scarf wound at the neck, dark brown lace-up boots, and a small "
+            "silver butterfly clip pinned in the hair",
+        ],
+        "eyes": "deep bluish purple",
+        "signature": {"hair_color": "purple", "hair_length": "waist length",
+                      "hair_texture": "pin straight", "hair_style": "blunt bangs"},
+        "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "fair"},
+        "prop": "a slender wooden mage's staff wrapped along its length in violet ribbon",
+    },
     "Marin Kitagawa": {
         "franchise": "My Dress-Up Darling",
         "gender": "Female",
@@ -13907,6 +13931,104 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan"},
         "prop": "a long wooden hunting spear with a lashed flint tip",
     },
+
+    # === v0.73.0 expansion: Hell's Paradise (Jigokuraku) =================
+    # Edo-period shinobi/executioner cast. Note the anime and manga disagree on two
+    # eye colours (Gabimaru yellow vs red, Yuzuriha red vs blue vs purple); the anime
+    # reading is used where it is the widely-cosplayed one, and Yuzuriha's is left
+    # unlocked rather than guessed at.
+    "Gabimaru": {
+        "franchise": "Hell's Paradise",
+        "gender": "Male",
+        # "Gabimaru the Hollow", Iwagakure shinobi and the protagonist. The messy
+        # fringe over the right eye is not field-mappable, so it is described here
+        # alongside the locked hair colour -- the same shape the Iori Yagami entry uses.
+        # Alternate is his battle-ready look with the turtleneck drawn up; that covers
+        # only the lower face, so it is NOT covers_face (the eyes and brow still show).
+        "costume": "a dark blue-grey shinobi robe with long frayed sleeves over a matching "
+                   "tattsuke-bakama gathered at the shin, a frayed white sash knotted at "
+                   "the waist, black hand wraps, and straw waraji sandals, with messy "
+                   "white hair falling across the right eye and old blade scars across the "
+                   "forearms",
+        "costumes": [
+            "a dark blue-grey shinobi robe with long frayed sleeves over a matching "
+            "tattsuke-bakama gathered at the shin, a frayed white sash knotted at the "
+            "waist, black hand wraps, straw waraji sandals, and a high black turtleneck "
+            "drawn up over the nose to mask the lower face, with messy white hair falling "
+            "across the right eye",
+        ],
+        "eyes": "sharp pale yellow",
+        "signature": {"hair_color": "white", "hair_length": "ear length",
+                      "hair_style": "natural and unstyled", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "slightly below average height",
+                     "skin_tone": "light"},
+    },
+    "Yamada Asaemon Sagiri": {
+        "franchise": "Hell's Paradise",
+        "gender": "Female",
+        # Executioner of the Yamada Asaemon clan and the deuteragonist; at 172cm one of
+        # the tallest women in the series. Her sword is worn at the hip in the default
+        # look, so the prop ships with a prop_costume that removes it -- otherwise the
+        # blade renders twice (the Zoro pattern).
+        "costume": "the white Yamada Asaemon executioner's uniform -- a white hakama and "
+                   "wide-sleeved white top with deep red lining running from the collar "
+                   "down the chest, a red corset-like haramaki bound with four red ribbon "
+                   "straps, white tabi and straw sandals, a katana in a black lacquered "
+                   "scabbard thrust through the sash at the hip, and a very long red "
+                   "ribbon tying back the hair",
+        "prop_costume": "the white Yamada Asaemon executioner's uniform -- a white hakama "
+                        "and wide-sleeved white top with deep red lining running from the "
+                        "collar down the chest, a red corset-like haramaki bound with four "
+                        "red ribbon straps, white tabi and straw sandals, an empty black "
+                        "lacquered scabbard thrust through the sash at the hip, and a very "
+                        "long red ribbon tying back the hair",
+        "prop": "a drawn executioner's katana, a slender curved blade held level in both hands",
+        "signature": {"hair_color": "medium brown", "hair_length": "long",
+                      "hair_texture": "sleek straight", "hair_style": "low ponytail",
+                      "eye_color": "medium brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Yuzuriha": {
+        "franchise": "Hell's Paradise",
+        "gender": "Female",
+        # Kunoichi of Keishu. The anime recolours her black kunoichi garb to the vivid
+        # purple she is best known for in cosplay, so that leads; the alternates are the
+        # manga's black original and the green Kotaku cheongsam. Eye colour is left
+        # unlocked -- sources give red, blue and purple, so it randomizes rather than
+        # asserting a wrong one. The mucus vials are worn, not held, so there is no prop.
+        "costume": "a revealing sleeveless purple kunoichi garb cut low at the chest, a "
+                   "white obi wound at the waist carrying small stoppered vials, a short "
+                   "wrapped hakama left open at the thighs, purple armbands high on both "
+                   "arms, white bandaging down the left forearm and a black armband on the "
+                   "right, and dark tabi boots, with a lacquered kanzashi pin through the "
+                   "hair",
+        "costumes": [
+            "a sleeveless black kunoichi top and loose black trousers cinched with a white "
+            "belt, black bindings wrapping both arms and wrists, small stoppered vials "
+            "hanging from the belt, and dark tabi boots, with a lacquered kanzashi pin "
+            "through the hair",
+            "a fitted green silk cheongsam embroidered with yellow peonies, slit high at "
+            "the thigh, with a mandarin collar, knotted frog fastenings, and flat black "
+            "slippers, with a lacquered kanzashi pin through the hair",
+        ],
+        "signature": {"hair_color": "purple", "hair_length": "shoulder length",
+                      "hair_style": "messy bun"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "fair"},
+    },
+    "Akaginu": {
+        "franchise": "Hell's Paradise",
+        "gender": "Female",
+        # Death-row criminal turned Kotaku predator. Peach-coloured pupils sit outside the
+        # believable eye_color pool, so they use the free-text override.
+        "costume": "a loosely worn silk kimono patterned with skulls, coiled snakes and "
+                   "tree peonies, slipped off both shoulders to bare the collarbones and "
+                   "chest, a broad dark obi tied low at the hips, and very tall lacquered "
+                   "geta sandals, with an ornamental pin set high in the hair",
+        "eyes": "pale peach",
+        "signature": {"hair_color": "light blonde", "hair_length": "shoulder length",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "pale"},
+    },
 }
 
 
@@ -13924,7 +14046,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
         "My Dress-Up Darling", "Darling in the Franxx", "Black Lagoon", "Gurren Lagann",
-        "Re:Zero",
+        "Re:Zero", "Hell's Paradise",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),

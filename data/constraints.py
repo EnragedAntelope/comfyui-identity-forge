@@ -165,7 +165,7 @@ CONSTRAINT_RULES: list[dict] = [
      "reason": "a sportwatch clashes with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "footwear",
-     "excludes_values": ["sneakers", "slippers", "barefoot", "sandals"],
+     "excludes_values": ["sneakers", "slippers", "bare feet", "sandals"],
      "reason": "black-tie dress calls for heels or oxfords"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "bracelet", "excludes_values": ["leather wrap bracelet", "beaded bracelet"],
@@ -178,7 +178,7 @@ CONSTRAINT_RULES: list[dict] = [
      "reason": "playful accessories undercut a formal suit"},
     {"type": "exclusion", "field": "outfit_style", "value": "business formal",
      "excludes_field": "footwear",
-     "excludes_values": ["sneakers", "slippers", "barefoot", "sandals"],
+     "excludes_values": ["sneakers", "slippers", "bare feet", "sandals"],
      "reason": "a formal suit calls for dress shoes"},
 
     {"type": "exclusion", "field": "outfit_style", "value": "edgy alternative",

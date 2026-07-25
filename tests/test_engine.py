@@ -37,6 +37,7 @@ from nodes.identity_forge import (
     _a,
     _prepend_descriptor,
     _article_if_singular,
+    _format_prose,
 )
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
@@ -3471,6 +3472,94 @@ class CostumePronounTests(unittest.TestCase):
         prose, _ = generate_character(7, "Male", locked, cosplay_label=label)
         self.assertNotIn("her face", prose)
         self.assertIn("covering the face and entire body", prose)
+
+
+class FootwearPhrasingTests(unittest.TestCase):
+    """``footwear`` is voiced as "in <value>", so every value must fit that frame.
+
+    "barefoot" is an adjective, not a noun phrase, and rendered "in barefoot"
+    (0.73.0 -> "bare feet"). The branch only runs when no outfit_description was
+    resolved, which is rare, but the value is also lockable from the widget.
+    """
+
+    def test_every_value_completes_the_frame(self):
+        values = set(FIELD_DEFINITIONS["footwear"]["female_options"])
+        values |= set(FIELD_DEFINITIONS["footwear"]["male_options"])
+        for value in values:
+            self.assertNotIn(value, ("barefoot", "shoeless", "unshod"),
+                             f"'in {value}' is not a noun phrase")
+
+    def test_bare_feet_renders(self):
+        prose = _format_prose(
+            {"gender": "Female", "footwear": "bare feet",
+             "outfit_description": "None"}, "Female")
+        self.assertIn("in bare feet", prose)
+
+
+class NewRosterEntryTests(unittest.TestCase):
+    """The 0.73.0 additions: Hell's Paradise cast + Fern.
+
+    Guards the wiring each entry depends on rather than restating its prose:
+    a mapped franchise (so ``random_scope`` works), a working ``prop_costume``
+    swap on the one entry that wears its weapon, and rollable alternates.
+    """
+
+    _ADDED = ("Gabimaru", "Yamada Asaemon Sagiri", "Yuzuriha", "Akaginu", "Fern")
+
+    def test_entries_exist_and_are_mapped(self):
+        from data.cosplayers import get_cosplayer_category, _FRANCHISE_CATEGORY
+        for name in self._ADDED:
+            self.assertIn(name, COSPLAYERS, name)
+            franchise = COSPLAYERS[name]["franchise"]
+            self.assertIn(franchise, _FRANCHISE_CATEGORY,
+                          f"{name}: '{franchise}' is not in the category map")
+            self.assertEqual(get_cosplayer_category(franchise), "Anime & Manga", name)
+
+    def test_sagiri_prop_costume_sheathes_the_sword(self):
+        """Prop on must move the katana from the hip to the hand, not double it."""
+        worn = json.loads(build_cosplayer_json("Yamada Asaemon Sagiri", 2))
+        held = json.loads(build_cosplayer_json(
+            "Yamada Asaemon Sagiri", 2, include_prop=True))
+        self.assertIn("a katana in a black lacquered scabbard",
+                      worn["Clothing"]["outfit_description"])
+        self.assertIn("an empty black lacquered scabbard",
+                      held["Clothing"]["outfit_description"])
+        self.assertNotIn("a katana in a black lacquered scabbard",
+                         held["Clothing"]["outfit_description"])
+
+    def test_alternate_looks_actually_roll(self):
+        for name, expected in (("Yuzuriha", 3), ("Gabimaru", 2), ("Fern", 2)):
+            looks = {
+                json.loads(build_cosplayer_json(name, seed))["Clothing"]["outfit_description"]
+                for seed in range(40)
+            }
+            self.assertEqual(len(looks), expected, f"{name} rolled {len(looks)} looks")
+
+    def test_free_text_eyes_suppress_the_shape_word(self):
+        """An `eyes` override must not read "pale peach almond-shaped eyes".
+
+        The builder injects ``eye_shape: "None"`` after ``group_fields`` on purpose:
+        the engine keeps a locked ``"None"`` as the absent state and drops it from
+        the prose, so the free-text colour reads clean. Assert the lock is present
+        *and* that the rendered prose carries no shape word.
+        """
+        shape_words = set(FIELD_DEFINITIONS["eye_shape"]["female_options"])
+        for name in ("Akaginu", "Gabimaru", "Fern"):
+            document = json.loads(build_cosplayer_json(name, 2))
+            face = document.get("Face", {})
+            self.assertTrue(face.get("eye_color"), name)
+            self.assertEqual(face.get("eye_shape"), "None", name)
+
+            parsed = _parse_archetype_json(build_cosplayer_json(name, 2))
+            label = parsed.pop(_COSPLAY_LABEL_KEY, None)
+            locked = resolve_locked_fields(
+                {}, {k: v for k, v in parsed.items() if isinstance(v, str)})
+            prose, _ = generate_character(
+                2, COSPLAYERS[name]["gender"], locked, cosplay_label=label)
+            eye_clause = next(s for s in prose.split(". ") if " eyes" in s)
+            for word in shape_words:
+                if not _is_absent(word):
+                    self.assertNotIn(f"{word} eyes", eye_clause, f"{name}: {eye_clause}")
 
 
 class FranchiseLabelTests(unittest.TestCase):
