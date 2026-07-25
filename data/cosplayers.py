@@ -14029,6 +14029,62 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "sleek straight"},
         "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "pale"},
     },
+
+    # === v0.73.0 expansion: Ben 10 / The Emperor's New Groove ============
+    "Gwen Tennyson": {
+        "franchise": "Ben 10",
+        "gender": "Female",
+        # Leads with the Alien Force S1-2 teen look (the most-cosplayed one) and rolls
+        # her other three: Ultimate Alien's red sweater, the Alien Force S3 vest, and
+        # the Original Series look -- the last carries its own signature because
+        # classic Gwen's hair is a short clipped bixie, not the waist-length teen hair.
+        # No prop: her mana is an energy effect, not a held object, and the house style
+        # for energy characters (Green Lantern, Scarlet Witch) is to omit the key.
+        "costume": "a crisp white tee under a fitted dark blue crew-neck sweater, a short "
+                   "black pleated miniskirt over opaque black tights, and black high-heeled "
+                   "shoes",
+        "costumes": [
+            "a crisp white tee under a fitted red crew-neck sweater, a short black pleated "
+            "miniskirt over opaque black tights, and black high-heeled shoes",
+            "a red scoop-neck shirt under a fitted black vest, slim grey jeans, and flat "
+            "black shoes",
+            {
+                "costume": "an elbow-length raglan tee in white with blue sleeves and a "
+                           "stylized black cat logo on the chest, white calf-length capri "
+                           "pants, and white low-top sneakers with dark blue stripes worn "
+                           "without socks, with a pale blue barrette clipped in the hair",
+                "signature": {"hair_color": "bright red", "hair_length": "short pixie",
+                              "hair_texture": "sleek straight", "eye_color": "bright green"},
+            },
+        ],
+        "signature": {"hair_color": "bright red", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Yzma": {
+        "franchise": "The Emperor's New Groove",
+        "gender": "Female",
+        # Lavender-skinned and face-visible, so she follows the She-Hulk/Mystique route:
+        # skin-native colour phrasing, which auto-suppresses the human skin fields and
+        # re-plants "light purple" as the skin_tone anchor. That suppression also clears
+        # makeup_style, so her unmistakable makeup -- brows drawn high above the natural
+        # line, heavy liner, huge lashes -- is written into the costume prose instead of
+        # the Makeup fields, where it would have been overridden. The headdress fully
+        # encloses the scalp while the face shows, hence covers_hair and no hair
+        # signature. Her orb earrings are deliberately omitted: the Jewelry group is not
+        # costume-suppressed, so naming them would double against a randomized pair.
+        "covers_hair": True,
+        "costume": "a floor-length sleeveless black gown with a deep V neckline and a high "
+                   "front slit, a thick collar of violet feathers around the shoulders, and "
+                   "a towering black headdress enclosing the whole head with one long "
+                   "blue-violet plume curling up and over, worn with dramatically arched "
+                   "brows painted high above the natural browline, heavy black liner and "
+                   "enormous false lashes, over smooth, flawless light purple skin",
+        "signature": {"age": "70"},
+        "physique": {"body_type": "very slim", "height": "tall"},
+        "prop": "a small stoppered glass vial of glowing violet potion",
+    },
 }
 
 
@@ -14054,6 +14110,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     "Disney": (
         "Disney", "The Little Mermaid", "Sleeping Beauty", "Frozen", "Snow White", "Tangled",
         "Pocahontas", "Mulan", "Moana", "The Princess and the Frog", "Peter Pan", "Cinderella",
+        "The Emperor's New Groove",
         "Beauty and the Beast", "Aladdin", "Hercules", "Tarzan", "Brave",
         "Alice in Wonderland", "101 Dalmatians",
         "Big Hero 6", "The Incredibles", "Zootopia", "Star vs. the Forces of Evil",
@@ -14109,7 +14166,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Top Cow", "Witchblade", "Youngblood", "WildStorm",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
-        "Steven Universe", "Popeye", "Johnny Bravo",
+        "Steven Universe", "Popeye", "Johnny Bravo", "Ben 10",
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",
         "Peepoodo", "Archer", "Josie and the Pussycats",
         "Crusade Comics", "Darna", "Danger Girl",

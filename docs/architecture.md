@@ -781,6 +781,24 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   *Sagiri wears her sword*, so she carries a `prop_costume` that empties the scabbard (the Zoro
   pattern) — prop off leaves "a katana in a black lacquered scabbard" at the hip, prop on swaps
   to "an empty black lacquered scabbard" and puts the drawn blade in her hands.
+- **Gwen Tennyson and Yzma added (0.73.0)**, each demonstrating a mechanism worth reusing.
+  *Gwen* rolls four looks and shows **an alternate overriding `signature`**: the three teen
+  outfits share her waist-length hair, but the Original Series look is a short clipped bixie, so
+  that alternate is a dict carrying its own `signature` rather than a plain string. `signature`
+  is in `_LOOK_OVERRIDE_KEYS` precisely for this. She gets **no prop** — her mana is an energy
+  effect, not a held object, matching Green Lantern and Scarlet Witch.
+  *Yzma* is the instructive one: she is lavender-skinned **and** her makeup is iconic, and those
+  two facts fight. The skin-native phrasing auto-suppresses `makeup_style` (override=True, so
+  even an explicit signature lock loses), which would have erased the arched brows and false
+  lashes she is entirely recognisable by. The fix is to write the makeup into the **costume
+  prose**, which is voiced verbatim and untouched by the suppression — the same escape the bald
+  and free-text-eye cases use. Her headdress fully encloses the scalp while the face shows, so
+  `covers_hair` with no hair signature. Her orb earrings are omitted for the same reason as
+  Fern's bracelet. Her age is locked in `signature` (the `Tellah` precedent) so she reads elderly
+  in both look levels.
+  **The general rule these three surface:** when a suppression mechanism would delete a trait the
+  character is defined by, move that trait into the costume prose rather than fighting the
+  suppression or disabling it with an explicit flag.
 - **Fern added (0.73.0)**, alongside the existing Frieren entry, with the Count Granat winter
   look as an alternate. Her mirrored lotus bracelet was deliberately **left out** of the costume:
   the Jewelry group is not in `_COSTUME_SUPPRESSED_EXTRAS`, so naming a bracelet in costume prose

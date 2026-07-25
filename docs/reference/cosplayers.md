@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1300 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1302 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (173)
 
@@ -288,7 +288,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (161)
+## Comics & Cartoons (162)
 
 ### Adventure Time
 
@@ -322,6 +322,10 @@
 - **Toph Beifong** (F)
 - **Ty Lee** (F)
 - **Zuko** (M)
+
+### Ben 10
+
+- **Gwen Tennyson** (F, +3 alt)
 
 ### Betty Boop
 
@@ -786,7 +790,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (68)
+## Disney (69)
 
 ### 101 Dalmatians
 
@@ -912,6 +916,10 @@
 
 - **Jane Porter** (F)
 - **Tarzan** (M)
+
+### The Emperor's New Groove
+
+- **Yzma** (F, prop)
 
 ### The Hunchback of Notre Dame
 
