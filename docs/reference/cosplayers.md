@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1357 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1391 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (190)
+## Anime & Manga (208)
 
 ### Astro Boy
 
@@ -13,6 +13,8 @@
 
 ### Attack on Titan
 
+- **Annie Leonhart** (F)
+- **Armin Arlert** (M)
 - **Eren Yeager** (M)
 - **Historia Reiss** (F)
 - **Levi Ackerman** (M)
@@ -25,11 +27,13 @@
 ### Bleach
 
 - **Byakuya Kuchiki** (M)
+- **Grimmjow** (M)
 - **Ichigo Kurosaki** (M, prop)
 - **Orihime Inoue** (F)
 - **Rangiku Matsumoto** (F, prop)
 - **Renji Abarai** (M)
 - **Rukia Kuchiki** (F)
+- **Toshiro Hitsugaya** (M, prop)
 - **Yoruichi** (F)
 
 ### Chainsaw Man
@@ -71,6 +75,8 @@
 
 - **Giyu Tomioka** (M)
 - **Inosuke Hashibira** (M, masked)
+- **Kyojuro Rengoku** (M, prop)
+- **Mitsuri Kanroji** (F)
 - **Nezuko Kamado** (F)
 - **Shinobu Kocho** (F)
 - **Tanjiro Kamado** (M, prop)
@@ -158,6 +164,7 @@
 ### Jujutsu Kaisen
 
 - **Gojo Satoru** (M)
+- **Maki Zenin** (F, prop)
 - **Megumi Fushiguro** (M)
 - **Nobara Kugisaki** (F)
 - **Sukuna** (M)
@@ -188,16 +195,19 @@
 - **Bakugo** (M)
 - **Deku** (M)
 - **Endeavor** (M)
+- **Himiko Toga** (F)
 - **Momo Yaoyorozu** (F)
 - **Mt. Lady** (F, giant)
 - **Ochaco Uraraka** (F)
 - **Shoto Todoroki** (M)
 - **Tomura Shigaraki** (M)
+- **Tsuyu Asui** (F)
 
 ### Naruto
 
 - **Gaara** (M)
 - **Hinata Hyuga** (F)
+- **Ino Yamanaka** (F)
 - **Itachi Uchiha** (M)
 - **Jiraiya** (M)
 - **Kakashi Hatake** (M, prop)
@@ -208,6 +218,7 @@
 - **Rock Lee** (M)
 - **Sakura Haruno** (F)
 - **Sasuke Uchiha** (M)
+- **Temari** (F, prop)
 - **Tsunade** (F)
 
 ### Neon Genesis Evangelion
@@ -219,7 +230,9 @@
 ### One Piece
 
 - **Boa Hancock** (F)
+- **Brook** (M, prop)
 - **Charlotte Smoothie** (F, giant, prop)
+- **Franky** (M)
 - **Monkey D. Luffy** (M)
 - **Nami** (F)
 - **Nico Robin** (F)
@@ -228,6 +241,7 @@
 - **Sanji** (M)
 - **Shirahoshi** (F, giant)
 - **Trafalgar Law** (M, prop)
+- **Usopp** (M, prop)
 
 ### One Punch Man
 
@@ -280,6 +294,10 @@
 - **Sailor Mars** (F)
 - **Sailor Mercury** (F)
 - **Sailor Moon** (F, prop)
+- **Sailor Neptune** (F)
+- **Sailor Pluto** (F, prop)
+- **Sailor Saturn** (F, prop)
+- **Sailor Uranus** (F)
 - **Sailor Venus** (F)
 - **Tuxedo Mask** (M, prop)
 
@@ -314,7 +332,7 @@
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (167)
+## Comics & Cartoons (171)
 
 ### Adventure Time
 
@@ -343,6 +361,7 @@
 - **Azula** (F)
 - **Iroh** (M, prop)
 - **Katara** (F)
+- **Mai (Avatar)** (F)
 - **Sokka** (M, prop)
 - **Suki** (F)
 - **Toph Beifong** (F)
@@ -478,6 +497,7 @@
 - **Daffy Duck** (M, masked)
 - **Lola Bunny** (F)
 - **Marvin the Martian** (M, tiny, masked, prop)
+- **Tasmanian Devil** (M)
 - **Yosemite Sam** (M, prop)
 
 ### Masters of the Universe
@@ -546,7 +566,9 @@
 ### TMNT
 
 - **April O'Neil** (F)
+- **Casey Jones** (M, masked, prop)
 - **Donatello** (M, masked, prop)
+- **Karai** (F, prop)
 - **Leonardo** (M, masked, prop)
 - **Michelangelo** (M, masked, prop)
 - **Raphael** (M, masked, prop)
@@ -832,7 +854,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (74)
+## Disney (73)
 
 ### 101 Dalmatians
 
@@ -981,7 +1003,6 @@
 - **Frozone** (M)
 - **Mr. Incredible** (M)
 - **Violet** (F)
-- **Violet Parr** (F)
 
 ### The Little Mermaid
 
@@ -1007,7 +1028,7 @@
 
 - **Judy Hopps** (F)
 
-## Fantasy & Literature (60)
+## Fantasy & Literature (62)
 
 ### Anne of Green Gables
 
@@ -1060,9 +1081,11 @@
 - **Hermione Granger** (F, prop)
 - **Lord Voldemort** (M, prop)
 - **Luna Lovegood** (F, prop)
+- **Minerva McGonagall** (F, prop)
 - **Ron Weasley** (M)
 - **Rubeus Hagrid** (M, giant, prop)
 - **Severus Snape** (M)
+- **Sirius Black** (M)
 
 ### Legend
 
@@ -1300,7 +1323,7 @@
 - **X-23** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (131)
+## Movies & TV (135)
 
 ### A Nightmare on Elm Street
 
@@ -1541,16 +1564,20 @@
 
 - **Andorian** (M)
 - **Borg Drone** (M)
+- **Captain Janeway** (F)
 - **Captain Kirk** (M)
 - **Captain Picard** (M)
 - **Cardassian** (M)
 - **Data** (M)
+- **Deanna Troi** (F)
 - **Ferengi** (M)
+- **Geordi La Forge** (M)
 - **Gowron** (M)
 - **Klingon** (M, prop)
 - **Mr. Spock** (M)
 - **Seven of Nine** (F, +3 alt)
 - **Tellarite** (M)
+- **Uhura** (F)
 - **Vulcan** (M)
 - **Worf** (M, prop)
 
@@ -1768,7 +1795,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (282)
+## Video Games (289)
 
 ### ARMS
 
@@ -1932,6 +1959,7 @@
 - **Hu Tao** (F)
 - **Raiden Shogun** (F)
 - **Venti** (M)
+- **Yae Miko** (F)
 - **Zhongli** (M)
 
 ### God of War
@@ -2068,9 +2096,12 @@
 - **D.Va** (F)
 - **Genji** (M, masked, prop)
 - **Hanzo** (M, prop)
+- **Junker Queen** (F, prop)
 - **Junkrat** (M)
+- **Kiriko** (F)
 - **Mei** (F)
 - **Mercy** (F, prop)
+- **Moira** (F)
 - **Pharah** (F)
 - **Reaper** (M, masked)
 - **Reinhardt** (M, giant, masked, prop)
@@ -2097,9 +2128,11 @@
 ### Resident Evil
 
 - **Ada Wong** (F)
+- **Chris Redfield** (M)
 - **Claire Redfield** (F)
 - **Jill Valentine** (F)
 - **Lady Dimitrescu** (F)
+- **Leon S. Kennedy** (M)
 
 ### Sega
 
@@ -2177,6 +2210,7 @@
 - **Princess Peach** (F)
 - **Rosalina** (F, giant, prop)
 - **Toad** (M)
+- **Waluigi** (M)
 - **Wario** (M)
 - **Yoshi** (M, masked)
 

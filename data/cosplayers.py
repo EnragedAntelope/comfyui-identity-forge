@@ -5949,7 +5949,9 @@ COSPLAYERS: dict[str, dict] = {
     "Violet": {
         "franchise": "The Incredibles",
         "gender": "Female",
-        "costume": "a red-and-black supersuit with an 'i' emblem",
+        "costume": "a red and black supersuit with the black-bordered 'i' emblem "
+                   "on the chest, a black eye mask, long black gloves, and "
+                   "matching black boots",
         "signature": {"hair_color": "near black", "hair_length": "long",
                       "hair_texture": "sleek straight", "eye_color": "violet-gray"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
@@ -14708,17 +14710,6 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "Mjolnir, a short-handled squared war hammer",
     },
-    "Violet Parr": {
-        "franchise": "The Incredibles",
-        "gender": "Female",
-        "costume": "a red and black supersuit with a black eye-mask panel across "
-                   "the chest emblem, long black gloves, black leggings and "
-                   "matching black boots",
-        "signature": {"hair_color": "raven black", "hair_length": "long",
-                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
-        "physique": {"body_type": "very slim", "height": "petite",
-                     "skin_tone": "fair"},
-    },
     # The wildcard list's "Symbiote Suit Spiderwoman" is Julia Carpenter's black
     # and white suit, a different character from the Jessica Drew "Spider-Woman"
     # already in the roster -- so it gets its own entry rather than becoming an
@@ -14832,6 +14823,405 @@ COSPLAYERS: dict[str, dict] = {
                    "tattooed markings tracing the bald scalp and face",
         "eyes": "solid black",
         "physique": {"body_type": "athletic", "height": "tall"},
+    },
+
+    # --- 0.75.0 marquee-gap pass ------------------------------------------
+    # Franchise-by-franchise review for missing lead / highly-recognisable
+    # characters with a genuinely distinct look. Several of these also deepen the
+    # thin side of a franchise scope the scope audit flagged (Star Trek had one
+    # female character; Naruto, My Hero Academia and Super Mario had three each).
+    "Uhura": {
+        "franchise": "Star Trek",
+        "gender": "Female",
+        "costume": "a red Starfleet minidress uniform with a black collar, black "
+                   "tights, tall black boots, and a gold Starfleet delta badge",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "updo", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "warm brown"},
+    },
+    "Captain Janeway": {
+        "franchise": "Star Trek",
+        "gender": "Female",
+        "costume": "a black Starfleet uniform jacket with red shoulder panels "
+                   "over a grey undershirt, with four gold rank pips at the "
+                   "collar and a Starfleet delta badge",
+        "signature": {"hair_color": "auburn", "hair_length": "shoulder length",
+                      "hair_style": "updo", "eye_color": "blue-gray"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Deanna Troi": {
+        "franchise": "Star Trek",
+        "gender": "Female",
+        "costume": "a fitted teal Starfleet jumpsuit with a low scooped neckline "
+                   "and a combadge at the breast",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
+        "physique": {"body_type": "curvy", "height": "average height",
+                     "skin_tone": "olive"},
+    },
+    "Geordi La Forge": {
+        "franchise": "Star Trek",
+        "gender": "Male",
+        "costume": "a black and mustard Starfleet uniform with a combadge, worn "
+                   "with a curved metallic VISOR strapped across the eyes",
+        "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
+                      "facial_hair": "short beard"},
+        "eyes": "hidden behind a gold VISOR",
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "dark brown"},
+    },
+    "Usopp": {
+        "franchise": "One Piece",
+        "gender": "Male",
+        "costume": "yellow overalls over a bare chest with a green bandana tied "
+                   "over the hair, a brown satchel on a shoulder strap, and a "
+                   "notably long nose",
+        "signature": {"hair_color": "near black", "hair_length": "chin length bob",
+                      "hair_texture": "coily", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "warm brown"},
+        "prop": "a slingshot",
+    },
+    "Brook": {
+        "franchise": "One Piece",
+        "gender": "Male",
+        "costume": "a bright orange and blue frock coat over a frilled cravat "
+                   "and waistcoat, striped trousers, a black top hat, and a "
+                   "skeletal frame of bare white bone",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_texture": "thick and voluminous"},
+        "eyes": "empty black sockets",
+        "physique": {"body_type": "very slim", "height": "very tall"},
+        "prop": "a slim sword cane",
+    },
+    "Franky": {
+        "franchise": "One Piece",
+        "gender": "Male",
+        "costume": "an open blue hawaiian shirt over a bare chest with oversized "
+                   "metal cyborg forearms, a black speedo, and a studded belt",
+        "signature": {"hair_color": "electric blue", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "skin_tone": "golden tan"},
+    },
+    "Leon S. Kennedy": {
+        "franchise": "Resident Evil",
+        "gender": "Male",
+        "costume": "a brown leather jacket with a fur-lined collar over a navy "
+                   "shirt, a shoulder holster rig, dark cargo trousers, and "
+                   "combat boots",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "ear length",
+                      "hair_style": "curtain bangs", "eye_color": "blue-gray",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "fair"},
+    },
+    "Chris Redfield": {
+        "franchise": "Resident Evil",
+        "gender": "Male",
+        "costume": "black tactical body armour over a green undershirt with the "
+                   "sleeves cut away, a chest rig with pouches, fingerless "
+                   "gloves, and heavy combat trousers",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "dark brown", "facial_hair": "stubble"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "light medium"},
+    },
+    "Sailor Saturn": {
+        "franchise": "Sailor Moon",
+        "gender": "Female",
+        "costume": "a white sailor leotard with a deep purple collar and skirt, "
+                   "a dark red neck bow, white gloves with purple trim, and "
+                   "purple knee-high heeled boots",
+        "signature": {"hair_color": "raven black", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "eye_color": "violet-gray"},
+        "physique": {"body_type": "petite and slim", "height": "very petite",
+                     "skin_tone": "fair"},
+        "prop": "the Silence Glaive, a tall black-shafted scythe",
+    },
+    "Sailor Uranus": {
+        "franchise": "Sailor Moon",
+        "gender": "Female",
+        "costume": "a white sailor leotard with a navy collar and skirt, a gold "
+                   "neck bow, white gloves with navy trim, and tan ankle boots",
+        "signature": {"hair_color": "dark blonde", "hair_length": "short pixie",
+                      "hair_texture": "sleek straight", "eye_color": "dark gray"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Sailor Neptune": {
+        "franchise": "Sailor Moon",
+        "gender": "Female",
+        "costume": "a white sailor leotard with a teal collar and skirt, a navy "
+                   "neck bow, white gloves with teal trim, and teal heeled shoes",
+        "signature": {"hair_color": "teal", "hair_length": "shoulder length",
+                      "hair_texture": "loosely wavy", "eye_color": "deep blue"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Sailor Pluto": {
+        "franchise": "Sailor Moon",
+        "gender": "Female",
+        "costume": "a white sailor leotard with a black collar and skirt, a "
+                   "garnet neck bow, white gloves with black trim, and black "
+                   "knee-high heeled boots",
+        "signature": {"hair_color": "deep purple", "hair_length": "hip length",
+                      "hair_texture": "sleek straight"},
+        "eyes": "deep garnet red",
+        "physique": {"body_type": "slender", "height": "tall",
+                     "skin_tone": "warm brown"},
+        "prop": "the Garnet Rod, a tall key-shaped staff",
+    },
+    "Himiko Toga": {
+        "franchise": "My Hero Academia",
+        "gender": "Female",
+        "costume": "a beige cardigan over a grey pleated school skirt, an "
+                   "oversized dark scarf around the neck, thigh-high black socks, "
+                   "and a harness of small filled vials across the chest",
+        "signature": {"hair_color": "dark blonde", "hair_length": "jaw length",
+                      "hair_style": "space buns", "eye_color": "amber"},
+        "physique": {"body_type": "petite and slim", "height": "petite",
+                     "skin_tone": "fair"},
+    },
+    "Tsuyu Asui": {
+        "franchise": "My Hero Academia",
+        "gender": "Female",
+        "costume": "a green and black full-body hero suit with a high yellow "
+                   "collar, yellow goggles pushed up on the head, webbed gloves "
+                   "and flippered boots",
+        "signature": {"hair_color": "emerald green", "hair_length": "waist length",
+                      "hair_style": "low ponytail", "eye_color": "nearly black"},
+        "physique": {"body_type": "slim", "height": "petite", "skin_tone": "fair"},
+    },
+    "Kyojuro Rengoku": {
+        "franchise": "Demon Slayer",
+        "gender": "Male",
+        "costume": "a black Demon Slayer Corps uniform under a white haori with "
+                   "ragged flame-shaped red and orange hems, a sword belt at the "
+                   "waist, and white shin wraps",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "shoulder length",
+                      "hair_texture": "thick and voluminous", "eye_color": "amber",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "light"},
+        "prop": "a flame-patterned nichirin katana",
+    },
+    "Mitsuri Kanroji": {
+        "franchise": "Demon Slayer",
+        "gender": "Female",
+        "costume": "a heavily modified Demon Slayer Corps uniform with a very "
+                   "short pleated skirt, a pale green haori with white trim, "
+                   "white knee socks and low boots",
+        "signature": {"hair_color": "baby pink", "hair_length": "waist length",
+                      "hair_style": "braided pigtails", "eye_color": "bright green"},
+        "physique": {"body_type": "curvy", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Ino Yamanaka": {
+        "franchise": "Naruto",
+        "gender": "Female",
+        "costume": "a purple crop top and matching purple skirt over black "
+                   "shorts, white arm warmers, bandaged legs, and a purple "
+                   "Konoha forehead protector worn as a belt",
+        "signature": {"hair_color": "light blonde", "hair_length": "waist length",
+                      "hair_style": "high ponytail", "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Temari": {
+        "franchise": "Naruto",
+        "gender": "Female",
+        "costume": "a dark grey-purple kimono-style dress with a red sash, "
+                   "fishnet under-sleeves, and a Sunagakure forehead protector",
+        "signature": {"hair_color": "dark blonde", "hair_length": "short pixie",
+                      "hair_style": "high pigtails", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "light"},
+        "prop": "a huge folding iron war fan",
+    },
+    "Waluigi": {
+        "franchise": "Super Mario",
+        "gender": "Male",
+        "costume": "purple overalls over a black long-sleeved shirt with a "
+                   "gold upside-down L on the chest, orange shoes with curled "
+                   "pointed toes, purple gloves, a purple cap, and a very long "
+                   "thin pointed moustache",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "facial_hair": "mustache", "eye_color": "nearly black"},
+        "physique": {"body_type": "very slim", "height": "very tall",
+                     "skin_tone": "fair"},
+    },
+    "Minerva McGonagall": {
+        "franchise": "Harry Potter",
+        "gender": "Female",
+        "costume": "long emerald-green robes with a high collar over a black "
+                   "underdress, a pointed black witch's hat, and small square "
+                   "spectacles",
+        "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "long",
+                      "hair_style": "sleek bun", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slender wooden wand",
+    },
+    "Sirius Black": {
+        "franchise": "Harry Potter",
+        "gender": "Male",
+        "costume": "a long dark ragged frock coat over a grey prison-worn shirt, "
+                   "with tattooed knuckles and hollow, gaunt features",
+        "signature": {"hair_color": "raven black", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "eye_color": "dark gray",
+                      "facial_hair": "short beard"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale"},
+    },
+    "Armin Arlert": {
+        "franchise": "Attack on Titan",
+        "gender": "Male",
+        "costume": "the Survey Corps uniform -- a short brown jacket with the "
+                   "Wings of Freedom crest, a white shirt, white trousers, the "
+                   "leather omni-directional gear harness, and tall brown boots",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "eye_color": "bright blue",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Annie Leonhart": {
+        "franchise": "Attack on Titan",
+        "gender": "Female",
+        "costume": "the Military Police uniform -- a short jacket with the "
+                   "unicorn crest over a white shirt and a green hooded top, "
+                   "white trousers, the leather gear harness, and brown boots",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "hair_style": "low ponytail", "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "petite",
+                     "skin_tone": "fair"},
+    },
+    "Kiriko": {
+        "franchise": "Overwatch",
+        "gender": "Female",
+        "costume": "a short red and white kitsune-styled outfit with a wrapped "
+                   "haori top, a wide obi belt, detached sleeves, black leggings "
+                   "and tabi boots, with a white fox mask pushed up onto the head",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "high ponytail", "eye_color": "amber"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "light medium"},
+    },
+    "Moira": {
+        "franchise": "Overwatch",
+        "gender": "Female",
+        "costume": "a black and white asymmetric bodysuit with a high collar and "
+                   "long coat-tails, one arm sheathed in purple biotic tubing "
+                   "and a clawed gauntlet",
+        "signature": {"hair_color": "bright red", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "blue-gray"},
+        "physique": {"body_type": "very slim", "height": "very tall",
+                     "skin_tone": "very pale"},
+    },
+    "Junker Queen": {
+        "franchise": "Overwatch",
+        "gender": "Female",
+        "costume": "heavy scrap-metal Junker armour with a spiked shoulder "
+                   "pauldron over a leather harness, torn trousers, heavy boots, "
+                   "and dense black tattoos across both arms and the shaved "
+                   "sides of the scalp",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "shoulder length",
+                      "hair_style": "top knot", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "skin_tone": "golden tan"},
+        "prop": "a large jagged battle axe",
+    },
+    "Toshiro Hitsugaya": {
+        "franchise": "Bleach",
+        "gender": "Male",
+        "costume": "a black Shinigami kimono under a sleeveless white captain's "
+                   "haori with a green lining and a tenth-division insignia, "
+                   "with a green sash worn across the chest",
+        "signature": {"hair_color": "platinum white", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous"},
+        "eyes": "turquoise",
+        "physique": {"body_type": "slim", "height": "very petite",
+                     "skin_tone": "fair"},
+        "prop": "a katana with a four-pointed star guard",
+    },
+    "Grimmjow": {
+        "franchise": "Bleach",
+        "gender": "Male",
+        "costume": "a white Arrancar jacket worn open over a bare chest with a "
+                   "hollow hole below the sternum, white hakama trousers, a "
+                   "black sash, and a fragment of white jawbone mask on one cheek",
+        "signature": {"hair_color": "electric blue", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "light"},
+    },
+    "Maki Zenin": {
+        "franchise": "Jujutsu Kaisen",
+        "gender": "Female",
+        "costume": "a navy Jujutsu High uniform jacket buttoned to the collar "
+                   "over matching trousers, with round-framed glasses",
+        "signature": {"hair_color": "emerald green", "hair_length": "shoulder length",
+                      "hair_style": "high ponytail", "eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "light"},
+        "prop": "a long-handled naginata",
+    },
+    "Yae Miko": {
+        "franchise": "Genshin Impact",
+        "gender": "Female",
+        "costume": "a white and red shrine-maiden robe with detached wide "
+                   "sleeves, a purple sash and pleated skirt, tall socks and "
+                   "sandals, and tall pink fox ears set in the hair",
+        "signature": {"hair_color": "baby pink", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "eye_color": "violet-gray"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Casey Jones": {
+        "franchise": "TMNT",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a grey sleeveless sweatshirt with the hood down over a "
+                   "bandaged torso, fingerless gloves, torn jeans, and a golf "
+                   "bag of sports gear slung across the back",
+        "mask": "a white hockey goalie mask with narrow eye slots",
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a hockey stick and a baseball bat",
+    },
+    "Mai (Avatar)": {
+        "franchise": "Avatar: The Last Airbender",
+        "gender": "Female",
+        "costume": "a dark red Fire Nation robe with wide sleeves over black "
+                   "trousers, a black sash at the waist, and slim throwing-blade "
+                   "sheaths strapped along both forearms",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_style": "space buns", "eye_color": "nearly black"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "light"},
+    },
+    # TMNT crossed the franchise-scope threshold with Casey Jones, which exposed a
+    # one-female scope (April O'Neil alone). Karai is the obvious second: a lead
+    # character with a look nothing like April's.
+    "Karai": {
+        "franchise": "TMNT",
+        "gender": "Female",
+        "costume": "charcoal Foot Clan armour -- a fitted segmented chest plate "
+                   "and shoulder guards over a black bodysuit, a red sash at the "
+                   "waist, armoured gauntlets and tall boots",
+        "signature": {"hair_color": "raven black", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "light medium"},
+        "prop": "a straight-bladed ninjato",
+    },
+    "Tasmanian Devil": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "costume": "an even, all-over coat of shaggy dark brown fur with a "
+                   "cream-furred belly, an oversized fanged jaw and small "
+                   "pointed ears",
+        "eyes": "small and dark under a heavy brow",
+        "physique": {"body_type": "stocky", "height": "short"},
     },
 }
 

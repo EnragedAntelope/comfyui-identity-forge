@@ -315,6 +315,43 @@ def validate() -> list[str]:
             errors.append(f"{filename}: duplicate {dict_name} key {dup!r} "
                           f"(later entry silently overrides the earlier one)")
 
+    # --- cosplayers: near-duplicate names within one franchise --------
+    # _duplicate_literal_keys above catches an EXACT repeated key. It cannot catch
+    # the same character entered under a longer name ("Violet" + "Violet Parr" in
+    # The Incredibles, 0.75.0), which passes every other check while quietly
+    # double-weighting that character in the Random pool. Same franchise + one name
+    # being a whole-word prefix/suffix of the other is the signature of that
+    # mistake; genuinely distinct characters who share a surname ("Anna Williams" /
+    # "Nina Williams") differ in the FIRST token, so they do not trip it.
+    # A name extending another is not enough on its own: "(Force Ghost)" /
+    # "(Julia Carpenter)" parentheticals are the established convention for a
+    # deliberate variant or disambiguation, and "Brainiac 5" / "Starro Spore" are
+    # genuinely separate characters. The duplicate signature is a matching name
+    # PLUS a costume describing the same look, so both must hold.
+    _by_franchise: dict[str, list[str]] = {}
+    for name, entry in COSPLAYERS.items():
+        _by_franchise.setdefault(entry.get("franchise", ""), []).append(name)
+    for franchise, names in _by_franchise.items():
+        for i, first in enumerate(names):
+            for second in names[i + 1:]:
+                shorter, longer = sorted((first, second), key=lambda n: len(n.split()))
+                short_words, long_words = shorter.lower().split(), longer.lower().split()
+                if len(short_words) >= len(long_words):
+                    continue
+                if long_words[:len(short_words)] != short_words:
+                    continue
+                if longer[len(shorter):].lstrip().startswith("("):
+                    continue  # explicit variant/disambiguation suffix
+                a = set(COSPLAYERS[first].get("costume", "").lower().split())
+                b = set(COSPLAYERS[second].get("costume", "").lower().split())
+                overlap = len(a & b) / max(1, len(a | b))
+                if overlap >= 0.4:
+                    errors.append(
+                        f"cosplayer '{longer}' looks like a duplicate of '{shorter}' "
+                        f"in franchise '{franchise}': the name extends it and the "
+                        f"costumes overlap {overlap:.0%}. Refine the existing entry "
+                        f"instead of adding a second.")
+
     # --- cosplayers: costume/signature/physique validity -------------
     if len(COSPLAYERS) < 50:
         errors.append(f"COSPLAYERS has {len(COSPLAYERS)}; need >= 50")
