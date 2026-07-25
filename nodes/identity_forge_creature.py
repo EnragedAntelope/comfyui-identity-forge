@@ -43,7 +43,7 @@ try:
         get_creature, get_creature_names, get_creature_names_by_class,
     )
     from .identity_forge import (
-        merge_preset_documents, _a, _SPECIES_GROUP,
+        merge_preset_documents, _prepend_descriptor, _SPECIES_GROUP,
         _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE,
     )
 except ImportError:  # pragma: no cover — standalone/test context
@@ -52,7 +52,7 @@ except ImportError:  # pragma: no cover — standalone/test context
         get_creature, get_creature_names, get_creature_names_by_class,
     )
     from nodes.identity_forge import (
-        merge_preset_documents, _a, _SPECIES_GROUP,
+        merge_preset_documents, _prepend_descriptor, _SPECIES_GROUP,
         _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE,
     )
 
@@ -142,19 +142,10 @@ _MORE_HELP = (
 )
 
 
-def _prepend_descriptor(phrase: str, descriptor: str) -> str:
-    """Prepend ``descriptor`` to ``phrase``, fixing the article ("a"/"an").
-
-    "a segmented exoskeleton" + "emerald" -> "an emerald segmented exoskeleton".
-    A phrase without a leading article (a plural / mass noun) just gets the
-    descriptor in front: "compound eyes" + "glowing" -> "glowing compound eyes".
-    """
-    if not descriptor or not phrase:
-        return phrase
-    for article in ("a ", "an ", "A ", "An "):
-        if phrase.startswith(article):
-            return f"{_a(descriptor)} {descriptor} {phrase[len(article):]}"
-    return f"{descriptor} {phrase}"
+# ``_prepend_descriptor`` started here (palette + finish onto an integument slot)
+# and now lives in nodes/identity_forge.py, imported above: the engine's Modifier
+# path needs the identical article relocation for costume prose. Same function,
+# one home.
 
 
 def _resolve_creature(creature: str, rng: random.Random) -> str | None:

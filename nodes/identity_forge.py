@@ -364,15 +364,60 @@ def _is_absent(value: str | None) -> bool:
     return value in _ABSENCE_EXACT
 
 
+#: The article is chosen by the *sound* a word starts with, not its spelling, so a
+#: bare vowel-letter test gets two classes wrong. Words opening on a "yoo" glide
+#: ("university lecture hall", "uniform", "eucalyptus", "one-shoulder") take "a"
+#: despite the vowel letter; words with a silent h ("hourglass", "honest") take
+#: "an" despite the consonant. Both classes are live in the shipped pools --
+#: ``body_type`` has "hourglass" and ``location`` has two "university …" values --
+#: and free-text ``skin`` / ``eyes`` / ``scale_prose`` overrides route through here
+#: too, so the exceptions are matched on the leading word rather than listed value
+#: by value.
+_CONSONANT_VOWEL_PREFIXES: tuple[str, ...] = (
+    "uni", "use", "usu", "usa", "uti", "ubi", "eu", "ewe", "one", "once",
+)
+_VOWEL_CONSONANT_PREFIXES: tuple[str, ...] = ("hour", "honest", "honor", "heir")
+
+
 def _a(word: str) -> str:
-    """Return the indefinite article ("a"/"an") that fits ``word``."""
-    return "an" if word[:1].lower() in "aeiou" else "a"
+    """Return the indefinite article ("a"/"an") that fits ``word``.
+
+    Vowel-letter test plus the two sound-based exception classes above, so
+    "an hourglass build" and "a university lecture hall" both read correctly.
+    """
+    first = word.split(" ", 1)[0].lower() if word else ""
+    if first.startswith(_VOWEL_CONSONANT_PREFIXES):
+        return "an"
+    if first.startswith(_CONSONANT_VOWEL_PREFIXES):
+        return "a"
+    return "an" if first[:1] in "aeiou" else "a"
 
 
 def _an(value: str, noun: str = "") -> str:
     """Render ``value`` (optionally with a trailing ``noun``) with its article."""
     tail = f" {noun}" if noun else ""
     return f"{_a(value)} {value}{tail}"
+
+
+def _prepend_descriptor(phrase: str, descriptor: str) -> str:
+    """Prepend ``descriptor`` to ``phrase``, relocating the article ("a"/"an").
+
+    "a segmented exoskeleton" + "emerald" -> "an emerald segmented exoskeleton".
+    A phrase without a leading article (a plural / mass noun) just gets the
+    descriptor in front: "compound eyes" + "glowing" -> "glowing compound eyes".
+
+    Lives here (rather than in the creature node, where it started) because the
+    Modifier path needs exactly the same fix: costume prose starts with an article
+    by convention -- 1107 of the shipped cosplayer costumes do -- so a blind
+    prepend rendered "wears weathered a gothic black dress". The creature node
+    imports it from here.
+    """
+    if not descriptor or not phrase:
+        return phrase
+    for article in ("a ", "an ", "A ", "An "):
+        if phrase.startswith(article):
+            return f"{_a(descriptor)} {descriptor} {phrase[len(article):]}"
+    return f"{descriptor} {phrase}"
 
 
 def _join(items: list[str]) -> str:
@@ -1313,6 +1358,11 @@ def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None)
     group key for the same field. Only *present* values are decorated — absent /
     ``"None"`` / suppressed fields are left untouched so a modifier styles an
     element without forcing one to appear.
+
+    Goes through :func:`_prepend_descriptor` so an article-led value keeps its
+    article in front: a costume reads "a gothic black dress" by convention, and a
+    blind prepend produced "wears weathered a gothic black dress". Values with a
+    plural / mass head ("robes", "plate armor") just take the descriptor in front.
     """
     if not modifiers:
         return
@@ -1324,7 +1374,7 @@ def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None)
             group = FIELD_DEFINITIONS.get(field, {}).get("group")
             descriptor = modifiers.get(group) if group else None
         if descriptor:
-            resolved[field] = f"{descriptor} {value}"
+            resolved[field] = _prepend_descriptor(value, descriptor)
 
 
 def generate_character(
@@ -1786,11 +1836,13 @@ if _COMFY_AVAILABLE:
                     "wardrobe",
                     options=["Match gender", "Feminine", "Masculine", "Any"],
                     default="Match gender",
-                    tooltip="Which outfit wardrobe to draw from. 'Match gender' keeps "
-                            "outfits typical for the chosen gender; 'Feminine' / "
-                            "'Masculine' force a wardrobe (e.g. a man in feminine "
-                            "outfits). 'Any' mixes outfits -- and, when gender is also "
-                            "'Any', unlocks fully mixed-gender features too.",
+                    tooltip="Which outfit wardrobe to draw from -- and how the character "
+                            "presents. 'Match gender' keeps outfits typical for the chosen "
+                            "gender; 'Feminine' / 'Masculine' force a wardrobe (e.g. a man "
+                            "in feminine outfits). 'Any' mixes outfits -- and, when gender "
+                            "is also 'Any', unlocks fully mixed-gender features too. On a "
+                            "man, 'Feminine' / 'Any' also lift the masculine defaults for "
+                            "jewellery, nails and makeup so a full femme look is reachable.",
                 ),
                 io.Combo.Input(
                     "hair_color_scope",

@@ -19,7 +19,7 @@ if str(ROOT) not in sys.path:
 
 from data.fields import (
     FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES,
-    HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
+    HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
 )
 from nodes.identity_forge import (
     generate_character,
@@ -34,6 +34,8 @@ from nodes.identity_forge import (
     _EXTRA_ABSENCE,
     _SET_ALL_OFF,
     _SET_ALL_NONE,
+    _a,
+    _prepend_descriptor,
 )
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
@@ -43,6 +45,8 @@ from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
     _pick_look, _resolve_character, _SPECIAL_SCOPES,
+    _FRANCHISE_SCOPES, _PREDICATE_SCOPES, _FRANCHISE_SCOPE_MINIMUM,
+    _FRANCHISE_SCOPE_PREFIX,
 )
 from nodes.identity_forge_modifier import build_modifier_json, _parse_modifier_text
 from data.templates import ARCHETYPES
@@ -3169,6 +3173,209 @@ class SpecialRandomScopeTests(unittest.TestCase):
         self.assertTrue(picked, "Non-human scope produced no characters")
         for name in picked:
             self.assertTrue(predicate(COSPLAYERS[name]))
+
+
+class ArticleTests(unittest.TestCase):
+    """``_a`` picks the article by sound, not by spelling (0.72.0).
+
+    A bare vowel-letter test shipped "a hourglass build" and "an university
+    lecture hall" for three real option values. Both exception classes are pinned
+    here so a future simplification of ``_a`` cannot quietly reintroduce them.
+    """
+
+    def test_silent_h_takes_an(self):
+        for word in ("hourglass", "honest mistake", "heirloom brooch"):
+            self.assertEqual(_a(word), "an", word)
+
+    def test_yoo_glide_takes_a(self):
+        for word in ("university lecture hall", "uniform", "eucalyptus grove",
+                     "one piece swimsuit", "useful thing"):
+            self.assertEqual(_a(word), "a", word)
+
+    def test_ordinary_words_unchanged(self):
+        for word, article in (("athletic", "an"), ("emerald", "an"), ("oval", "an"),
+                              ("silver", "a"), ("bronze", "a"), ("wide", "a")):
+            self.assertEqual(_a(word), article, word)
+
+    def test_shipped_values_render_correctly(self):
+        prose, _ = generate_character(
+            0, "Female",
+            {"body_type": "hourglass", "location": "university lecture hall"},
+        )
+        self.assertIn("an hourglass build", prose)
+        self.assertIn("a university lecture hall", prose)
+
+
+class ModifierArticleTests(unittest.TestCase):
+    """A Modifier must not prepend in front of a costume's own article (0.72.0).
+
+    Costume prose starts with an article by convention -- 1107 of the shipped
+    cosplayer costumes do -- so the old blind prepend rendered "wears weathered a
+    gothic black dress". ``_apply_modifiers`` now routes through
+    ``_prepend_descriptor``, which relocates the article; a plural/mass head
+    ("robes", "plate armor") still just takes the descriptor in front.
+    """
+
+    def test_prepend_relocates_article(self):
+        self.assertEqual(
+            _prepend_descriptor("a gothic black dress", "weathered"),
+            "a weathered gothic black dress")
+        self.assertEqual(
+            _prepend_descriptor("a segmented exoskeleton", "emerald"),
+            "an emerald segmented exoskeleton")
+
+    def test_prepend_leaves_mass_nouns_alone(self):
+        self.assertEqual(
+            _prepend_descriptor("ornate summoner robes", "weathered"),
+            "weathered ornate summoner robes")
+
+    def test_costume_modifier_does_not_strand_the_article(self):
+        prose, _ = generate_character(
+            0, "Female", {"outfit_description": "a gothic black dress with a lace hem"},
+            modifiers={"Clothing": "weathered"})
+        self.assertIn("wears a weathered gothic black dress", prose)
+        self.assertNotIn("weathered a gothic", prose)
+
+    def test_every_shipped_costume_survives_a_modifier(self):
+        """No cosplayer costume may render "<descriptor> a ..." under a modifier."""
+        for name, entry in COSPLAYERS.items():
+            decorated = _prepend_descriptor(entry["costume"], "weathered")
+            self.assertNotRegex(
+                decorated, r"^weathered an? ",
+                f"{name}: modifier stranded the costume's article")
+
+
+class OutfitArticleTests(unittest.TestCase):
+    """Random outfits read with an article, like costumes do (0.72.0).
+
+    ``outfit_description`` is voiced verbatim after "She/He wears", and cosplayer
+    and archetype costumes supply their own leading article. The built-in outfit
+    pool never did, so the same prose slot rendered two grammars ("wears a gothic
+    black dress" vs "wears cropped hoodie with..."). Values with a plural / mass
+    head are correctly bare and are the documented exception.
+    """
+
+    #: Heads that are mass or plural nouns, so "a ..." would be wrong.
+    _BARE_HEADS = ("overalls", "trousers", "jeans", "corduroys", "layers", "pants")
+
+    def test_singular_headed_outfits_carry_an_article(self):
+        for style, buckets in OUTFIT_DESCRIPTIONS.items():
+            for bucket, values in buckets.items():
+                for value in values:
+                    head = re.split(r"\s+(?:with|over|under|and|in)\s+|,", value)[0]
+                    if head.split()[-1].lower().endswith(self._BARE_HEADS):
+                        continue
+                    self.assertRegex(
+                        value, r"^an? ",
+                        f"{style}/{bucket}: {value!r} needs a leading article")
+
+    def test_prose_renders_the_article(self):
+        prose, _ = generate_character(3, "Female", {})
+        self.assertRegex(prose, r"\b(?:She|He|They) wears? (?:an? |[a-z]+ (?:jeans|trousers|pants))")
+
+
+class PresentationGateTests(unittest.TestCase):
+    """Makeup follows the wardrobe presentation, not raw gender (0.72.0).
+
+    The jewellery/nail trims were already ``presentation_gated``; the
+    ``gender=Male -> makeup_style="no makeup"`` requirement was not, so a man with
+    wardrobe="Feminine" drew feminine jewellery, nails and a skirt but was
+    bare-faced in 300 of 300 seeds. Gating it leaves the default untouched and
+    opens only the explicit Feminine/"Any" wardrobes.
+    """
+
+    @staticmethod
+    def _styles(wardrobe, seeds=120):
+        out = []
+        for seed in range(seeds):
+            _, raw = generate_character(seed, "Male", {}, wardrobe=wardrobe)
+            out.append(json.loads(raw).get("Makeup", {}).get("makeup_style"))
+        return out
+
+    def test_masculine_wardrobes_stay_bare_faced(self):
+        """The default must be byte-identical to pre-0.72.0 behaviour."""
+        for wardrobe in ("Match gender", "Masculine"):
+            self.assertEqual(set(self._styles(wardrobe)), {"no makeup"}, wardrobe)
+
+    def test_feminine_wardrobe_opens_the_natural_styles(self):
+        styles = set(self._styles("Feminine"))
+        self.assertIn("no makeup", styles, "bare-faced must stay reachable")
+        self.assertTrue(styles - {"no makeup"},
+                        "a Feminine wardrobe should allow some makeup on a man")
+
+    def test_male_pool_still_caps_at_natural_styles(self):
+        """Gating opens the field but never the feminine-only glam values."""
+        allowed = set(FIELD_DEFINITIONS["makeup_style"]["male_options"])
+        for wardrobe in ("Feminine", "Any"):
+            self.assertLessEqual(set(self._styles(wardrobe)), allowed, wardrobe)
+
+
+class FranchiseScopeTests(unittest.TestCase):
+    """Derived per-franchise Random scopes (0.72.0).
+
+    The nine broad categories leave the biggest ones unbrowsable (Video Games is
+    268 characters). Exposing all 263 franchises does not work either -- 135 are
+    singletons -- so scopes are derived above a threshold.
+    """
+
+    def test_scopes_are_derived_and_thresholded(self):
+        self.assertTrue(_FRANCHISE_SCOPES, "no franchise scopes were derived")
+        for label in _FRANCHISE_SCOPES:
+            self.assertTrue(label.startswith(_FRANCHISE_SCOPE_PREFIX), label)
+            franchise = label[len(_FRANCHISE_SCOPE_PREFIX):]
+            count = sum(1 for e in COSPLAYERS.values()
+                        if e.get("franchise") == franchise)
+            self.assertGreaterEqual(count, _FRANCHISE_SCOPE_MINIMUM, label)
+
+    def test_predicates_are_bound_per_franchise(self):
+        """A closure over the loop variable would make every predicate identical."""
+        matched = {
+            label: {n for n, e in COSPLAYERS.items() if pred(e)}
+            for label, pred in _FRANCHISE_SCOPES.items()
+        }
+        self.assertEqual(len(matched), len(_FRANCHISE_SCOPES))
+        for label, names in matched.items():
+            self.assertTrue(names, f"{label} matched nothing")
+        # Distinct franchises must yield disjoint rosters.
+        labels = list(matched)
+        self.assertFalse(matched[labels[0]] & matched[labels[-1]])
+
+    def test_scope_narrows_the_random_pick(self):
+        label = f"{_FRANCHISE_SCOPE_PREFIX}Pokemon"
+        self.assertIn(label, _FRANCHISE_SCOPES)
+        for seed in range(30):
+            raw = build_cosplayer_json("Random — any", seed, random_scope=label)
+            meta = json.loads(raw)["_meta"]
+            self.assertEqual(meta["franchise"], "Pokemon", meta["cosplay_of"])
+
+    def test_category_named_franchises_are_not_duplicated(self):
+        """Marvel / DC / Star Wars are already categories -- no second entry."""
+        from data.cosplayers import get_cosplayer_categories
+        for category in get_cosplayer_categories():
+            self.assertNotIn(f"{_FRANCHISE_SCOPE_PREFIX}{category}", _FRANCHISE_SCOPES)
+
+    def test_predicate_lookup_covers_both_scope_families(self):
+        for label in (*_SPECIAL_SCOPES, *_FRANCHISE_SCOPES):
+            self.assertIn(label, _PREDICATE_SCOPES)
+
+
+class FranchiseLabelTests(unittest.TestCase):
+    """Franchise labels name a real franchise, not a medium (0.72.0).
+
+    ``"Movie"`` was a placeholder on 8 entries (Dracula, Godzilla, Rambo, ...),
+    which reads badly in the cosplay label ("Cosplaying as Dracula (Movie)") and
+    would have produced a nonsense "Franchise: Movie" scope.
+    """
+
+    _GENERIC = {"movie", "movies", "film", "tv", "anime", "game", "games",
+                "various", "other", "unknown", "misc"}
+
+    def test_no_medium_as_a_franchise(self):
+        offenders = sorted(
+            f"{n} ({e['franchise']})" for n, e in COSPLAYERS.items()
+            if e.get("franchise", "").strip().lower() in self._GENERIC
+        )
+        self.assertEqual(offenders, [], f"generic franchise labels: {offenders}")
 
 
 if __name__ == "__main__":

@@ -135,6 +135,53 @@ _SPECIAL_SCOPES: "dict[str, Any]" = {
     "Masked": _scope_is_masked,
 }
 
+#: Minimum roster size for a franchise to earn its own Random scope. The nine
+#: broad categories leave the biggest ones unbrowsable (Video Games alone is 268
+#: characters), but exposing all 263 franchises does not work either: 135 of them
+#: are singletons and would each return one fixed character forever -- the reason
+#: franchise scoping was scoped and rejected once before. A threshold keeps only
+#: the franchises deep enough for a Random pick to feel random.
+_FRANCHISE_SCOPE_MINIMUM: int = 8
+
+#: Prefix so franchise scopes read as one family in the dropdown, sorted together
+#: and visibly distinct from the attribute scopes and the broad categories.
+_FRANCHISE_SCOPE_PREFIX = "Franchise: "
+
+
+def _build_franchise_scopes() -> "dict[str, Any]":
+    """Derive ``{"Franchise: X": predicate}`` for every franchise big enough to browse.
+
+    Built from :data:`COSPLAYERS` at import, so it picks up ``user_options.json``
+    additions and self-maintains as the roster grows -- no hand-kept list to drift.
+    Franchises whose name is already a broad category (Marvel, DC, Star Wars) are
+    skipped: they would be an exact duplicate of the category entry.
+    """
+    counts: dict[str, int] = {}
+    for entry in COSPLAYERS.values():
+        franchise = entry.get("franchise", "")
+        if franchise:
+            counts[franchise] = counts.get(franchise, 0) + 1
+    categories = set(get_cosplayer_categories())
+    scopes: "dict[str, Any]" = {}
+    for franchise in sorted(counts):
+        if counts[franchise] < _FRANCHISE_SCOPE_MINIMUM or franchise in categories:
+            continue
+        # Bind the franchise per iteration; a closure over the loop variable would
+        # leave every predicate matching the last franchise only.
+        scopes[f"{_FRANCHISE_SCOPE_PREFIX}{franchise}"] = (
+            lambda entry, _f=franchise: entry.get("franchise") == _f
+        )
+    return scopes
+
+
+#: Franchise scopes, offered after the broad categories in ``random_scope``.
+_FRANCHISE_SCOPES: "dict[str, Any]" = _build_franchise_scopes()
+
+#: Every predicate-driven scope (attribute + franchise), which is what
+#: ``_resolve_character`` looks a scope up in. The two are kept apart above only so
+#: the dropdown can order them: attributes first, then categories, then franchises.
+_PREDICATE_SCOPES: "dict[str, Any]" = {**_SPECIAL_SCOPES, **_FRANCHISE_SCOPES}
+
 #: A face-visible character whose colour covers the whole body (and therefore the
 #: face) — She-Hulk's green, Mystique's blue, a Nightsister's chalk-white — is
 #: written with a canonical skin-native phrasing: "smooth, flawless <colour> skin"
@@ -375,10 +422,10 @@ def _resolve_character(
     if character in _RANDOM_POOLS:
         gender = _RANDOM_POOLS[character]
         scoped = category != _SCOPE_ANY
-        predicate = _SPECIAL_SCOPES.get(category)
+        predicate = _PREDICATE_SCOPES.get(category)
         if predicate is not None:
-            # Attribute scope (Giant/Tiny/Non-human/Masked): filter the gender pool
-            # by the predicate instead of by franchise category.
+            # Attribute scope (Giant/Tiny/Non-human/Masked) or a single-franchise
+            # scope: filter the gender pool by the predicate instead of by category.
             pool = [n for n in get_cosplayer_names(gender=gender)
                     if predicate(get_cosplayer(n))]
         else:
@@ -574,13 +621,18 @@ if _COMFY_AVAILABLE:
                     ),
                     io.Combo.Input(
                         "random_scope",
-                        options=[_SCOPE_ANY] + list(_SPECIAL_SCOPES) + get_cosplayer_categories(),
+                        options=([_SCOPE_ANY] + list(_SPECIAL_SCOPES)
+                                 + get_cosplayer_categories() + list(_FRANCHISE_SCOPES)),
                         default=_SCOPE_ANY,
                         tooltip="Limits the 'Random — …' picks. Attribute scopes come "
                                 "first (Giant / Tiny characters, Non-human / colored, "
-                                "Masked), then one franchise/category (only Anime & Manga, "
-                                "only Marvel, …). 'Any' = no limit. Combines with the gender "
-                                "scope; no effect when a specific character is picked.",
+                                "Masked), then the broad categories (only Anime & Manga, "
+                                "only Marvel, …), then 'Franchise: …' entries for single "
+                                "franchises with enough characters to browse (Pokemon, "
+                                "Final Fantasy, Mortal Kombat, …). 'Any' = no limit. "
+                                "Combines with the gender scope; no effect when a specific "
+                                "character is picked. The console prints the in-scope pool "
+                                "size the first time you use a combo.",
                     ),
                     io.Combo.Input(
                         "look_level",

@@ -53,13 +53,19 @@ except ImportError:  # pragma: no cover -- standalone/test context
     )
 
 #: Hair styles that physically require enough length to braid, pin, or tie up.
+#: ``cornrows`` and ``bantu knots`` joined at 0.72.0: both need hair long enough to
+#: gather and section (cornrows want roughly two inches, a bantu knot is a coil), and
+#: neither had ever been slotted into a length list, so they landed on buzz cuts --
+#: 210 cornrow and 86 bantu-knot collisions in a 4000-seed sweep. They are texture-
+#: free (they read on any curl pattern), which is why the texture gate below leaves
+#: them alone; length is a separate axis.
 _LONG_HAIR_STYLES: list[str] = [
     "side braid", "fishtail braid", "French braid", "dutch braids", "crown braid",
     "waterfall braid", "loose braids", "box braids", "locs", "updo", "French twist",
     "top knot", "chignon", "high ponytail", "low ponytail", "side ponytail",
     "braided ponytail", "messy bun", "sleek bun", "ballerina bun", "space buns",
     "pigtails", "high pigtails", "low pigtails", "curled pigtails", "braided pigtails",
-    "half up half down", "twist-out", "afro",
+    "half up half down", "twist-out", "afro", "cornrows", "bantu knots",
 ]
 
 CONSTRAINT_RULES: list[dict] = [
@@ -111,6 +117,11 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "exclusion", "field": "hair_length", "value": "short pixie",
      "excludes_field": "hair_style", "excludes_values": ["mullet"],
      "reason": "a pixie cut has no back length for a mullet"},
+    # Deliberately narrower than _LONG_HAIR_STYLES: a pixie IS long enough for the
+    # short natural styles, so afro / twist-out (a pixie-length TWA is a real look),
+    # locs (starter locs), cornrows and the small buns stay reachable. Only the
+    # styles that need gatherable length are culled. ``box braids`` and ``bantu
+    # knots`` joined at 0.72.0 -- both hang or coil well past a pixie's length.
     {"type": "exclusion", "field": "hair_length", "value": "short pixie",
      "excludes_field": "hair_style",
      "excludes_values": ["side braid", "fishtail braid", "French braid",
@@ -118,7 +129,7 @@ CONSTRAINT_RULES: list[dict] = [
                          "space buns", "pigtails", "high pigtails", "low pigtails",
                          "curled pigtails", "braided pigtails",
                          "high ponytail", "low ponytail", "side ponytail",
-                         "braided ponytail"],
+                         "braided ponytail", "box braids", "bantu knots"],
      "reason": "a pixie cut is too short to braid or tie back"},
 
     # Note: the "Natural only" hair scope is enforced during randomization (see
@@ -338,9 +349,19 @@ for _texture in _NON_COILED_TEXTURES:
 # is in the engine's ``locked`` set, so the constraint warns and KEEPS it — which
 # is exactly what faithful crossplay (a man cosplaying a pigtailed character)
 # needs. "Any" is unaffected (it deliberately mixes both genders' pools).
+# Makeup is a wardrobe *presentation* choice, not anatomy -- the same reasoning that
+# gates the jewellery/nail trims below. Before 0.72.0 this rule was ungated, so a man
+# with wardrobe="Feminine" drew feminine jewellery, nails and a skirt but was bare-
+# faced in 300 of 300 seeds: the most visible half of the femme look was the one part
+# the presentation switch could not reach. Gated, "Match gender" (the default) is
+# unchanged -- only an explicit Feminine/"Any" wardrobe opens the field, and even then
+# makeup_style's male pool is just "no makeup" plus the four natural styles, with
+# male_weights already leaning 2x toward "no makeup" (~1 in 3 stays bare-faced).
+# Bold/full glam still needs an explicit lock, which _GENDER_FLEXIBLE_GROUPS honours.
 CONSTRAINT_RULES.append({
     "type": "requirement", "field": "gender", "value": "Male",
     "requires_field": "makeup_style", "requires_value": "no makeup",
+    "presentation_gated": True,
     "reason": "a male character is bare-faced by default (cascades to clear all cosmetics)"})
 
 #: field -> feminine-coded values a random Male should not pick up. The remaining

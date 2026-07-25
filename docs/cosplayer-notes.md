@@ -56,14 +56,29 @@ you just toggle which one is active.
 
 ### Scoping the Random picks
 
-The **`random_scope`** widget limits the `Random — any / female / male` picks to one
-broad franchise category (Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games,
-Fantasy & Literature, Movies & TV, Comics & Cartoons). It **combines** with the gender
-scope — `Random — female` + `Marvel` draws a random female Marvel character — and is
-ignored when a specific character is chosen; `Any` (default) applies no limit. If a
-`(gender, category)` combination is empty it falls back to the full gender pool. Each
-franchise's category lives in `_FRANCHISE_CATEGORY` in `data/cosplayers.py`; an unmapped
-franchise falls back to a default so a new entry still scopes sensibly.
+The **`random_scope`** widget limits the `Random — any / female / male` picks. It offers
+three families, in this order:
+
+1. **Attribute scopes** — Giant characters, Tiny characters, Non-human / colored, Masked.
+   Filtered by a predicate over the entry (`_SPECIAL_SCOPES` in the node), not by franchise.
+2. **Broad categories** — Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games,
+   Fantasy & Literature, Movies & TV, Comics & Cartoons.
+3. **Single franchises** — `Franchise: Pokemon`, `Franchise: Final Fantasy`, … Derived at
+   import from the roster for every franchise with at least `_FRANCHISE_SCOPE_MINIMUM` (8)
+   characters, minus the three whose name is already a category (Marvel, DC, Star Wars).
+   The threshold matters: 135 of the 263 franchises are singletons and would each return
+   one fixed character forever, which is why the whole franchise list is *not* exposed.
+   Because it is derived, `user_options.json` additions count toward the threshold and the
+   list self-maintains as the roster grows.
+
+Any scope **combines** with the gender scope — `Random — female` + `Marvel` draws a random
+female Marvel character — and is ignored when a specific character is chosen; `Any`
+(default) applies no limit. The first time you use a `(character, scope)` combination the
+console prints how many characters are in scope, so a small pool that repeats across seeds
+is legible rather than looking broken. If a combination is empty it falls back to the full
+gender pool and says so loudly. Each franchise's category lives in `_FRANCHISE_CATEGORY` in
+`data/cosplayers.py`; an unmapped franchise falls back to a default so a new entry still
+scopes sensibly.
 
 ## Known limitations
 

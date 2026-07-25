@@ -59,6 +59,15 @@ def _register_vault_routes() -> None:
     tricks — but on a ComfyUI instance exposed to an untrusted network these
     still allow anyone who can reach the server to delete or rename saved
     characters. Front such a deployment with authentication.
+
+    The mutating routes additionally require ``Content-Type: application/json``
+    (see ``_json_body``). That is not decoration: aiohttp's ``request.json()``
+    parses any body regardless of content type, and a ``text/plain`` POST is a
+    CORS-*simple* request that a browser sends cross-origin with no preflight —
+    so without the check, any page a user happened to visit while ComfyUI was
+    running could silently delete or rename their saved characters. Requiring a
+    JSON content type forces a preflight, which fails since these routes send no
+    CORS headers.
     """
     try:
         from aiohttp import web
@@ -77,6 +86,24 @@ def _register_vault_routes() -> None:
 
     routes = PromptServer.instance.routes
 
+    async def _json_body(request):  # type: ignore[no-untyped-def]
+        """Parse a mutating route's JSON body, or return an error response.
+
+        Returns ``(body, None)`` on success and ``(None, response)`` on failure, so
+        the caller can bail out with a 4xx instead of raising into a 500. Enforces
+        a JSON content type — see the CSRF note in this function's docstring.
+        """
+        if request.content_type != "application/json":
+            return None, web.json_response(
+                {"error": "Content-Type must be application/json"}, status=415)
+        try:
+            body = await request.json()
+        except Exception:  # noqa: BLE001 — any parse failure is a client error
+            return None, web.json_response({"error": "Malformed JSON body"}, status=400)
+        if not isinstance(body, dict):
+            return None, web.json_response({"error": "Body must be a JSON object"}, status=400)
+        return body, None
+
     @routes.get("/identity_forge/vault/characters")
     async def _characters(_request):  # type: ignore[no-untyped-def]
         return web.json_response({"characters": list_characters(_vault_root())})
@@ -94,14 +121,18 @@ def _register_vault_routes() -> None:
 
     @routes.post("/identity_forge/vault/delete")
     async def _delete(request):  # type: ignore[no-untyped-def]
-        body = await request.json()
+        body, error = await _json_body(request)
+        if error is not None:
+            return error
         names = body.get("names") or ([body["name"]] if body.get("name") else [])
         survivors = delete_characters(_vault_root(), names)
         return web.json_response({"characters": survivors})
 
     @routes.post("/identity_forge/vault/rename")
     async def _rename(request):  # type: ignore[no-untyped-def]
-        body = await request.json()
+        body, error = await _json_body(request)
+        if error is not None:
+            return error
         try:
             new_name = rename_character(_vault_root(), body.get("from", ""), body.get("to", ""))
         except ValueError as exc:

@@ -1320,6 +1320,10 @@
 - **Ghostbuster** (M)
 - **Stay Puft Marshmallow Man** (M, giant, masked)
 
+### Godzilla
+
+- **Godzilla** (M, giant, masked)
+
 ### Green Giant
 
 - **Jolly Green Giant** (M, giant)
@@ -1335,6 +1339,10 @@
 ### IT
 
 - **Pennywise** (M, prop)
+
+### Indiana Jones
+
+- **Indiana Jones** (M, prop)
 
 ### Judge Dredd
 
@@ -1388,17 +1396,6 @@
 
 - **Ginormica** (F, giant)
 
-### Movie
-
-- **Bride of Frankenstein** (F)
-- **Dracula** (M)
-- **Frankenstein's Monster** (M)
-- **Godzilla** (M, giant, masked)
-- **Indiana Jones** (M, prop)
-- **Rambo** (M, prop)
-- **The Mummy** (M, masked)
-- **The Wolf Man** (M)
-
 ### Mr. Clean
 
 - **Mr. Clean** (M)
@@ -1419,6 +1416,10 @@
 ### Predator
 
 - **Predator** (M, giant, masked)
+
+### Rambo
+
+- **Rambo** (M, prop)
 
 ### Rise of the Guardians
 
@@ -1524,6 +1525,14 @@
 ### Ultraman
 
 - **Ultraman** (M, giant, masked)
+
+### Universal Monsters
+
+- **Bride of Frankenstein** (F)
+- **Dracula** (M)
+- **Frankenstein's Monster** (M)
+- **The Mummy** (M, masked)
+- **The Wolf Man** (M)
 
 ### V for Vendetta
 

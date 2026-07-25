@@ -2902,7 +2902,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a battered brass compass with a hinged lid",
     },
     "Indiana Jones": {
-        "franchise": "Movie",
+        "franchise": "Indiana Jones",
         "gender": "Male",
         "costume": "a brown felt fedora, a worn leather jacket over a khaki shirt, a "
                    "coiled bullwhip on the belt, and a satchel",
@@ -8791,7 +8791,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Movie monsters / action icons -----------------------------------
     "Dracula": {
-        "franchise": "Movie",
+        "franchise": "Universal Monsters",
         "gender": "Male",
         "costume": "a black formal suit with a high-collared cape lined in red, and two "
                    "long fangs",
@@ -8800,7 +8800,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "very pale"},
     },
     "Frankenstein's Monster": {
-        "franchise": "Movie",
+        "franchise": "Universal Monsters",
         "gender": "Male",
         "costume": "an ill-fitting dark suit and heavy elevated boots, over smooth, flawless "
                    "pale green-grey skin, with a flat-topped head, stitched scars, and two neck "
@@ -8810,7 +8810,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "The Wolf Man": {
-        "franchise": "Movie",
+        "franchise": "Universal Monsters",
         "gender": "Male",
         "covers_body": True,
         "costume": "a torn shirt and trousers, over an even, all-over coat of brown fur, "
@@ -8820,7 +8820,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "The Mummy": {
-        "franchise": "Movie",
+        "franchise": "Universal Monsters",
         "gender": "Male",
         "covers_face": True,
         "costume": "a body wrapped head to toe in tattered grey ancient bandages, with "
@@ -8829,7 +8829,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "Godzilla": {
-        "franchise": "Movie",
+        "franchise": "Godzilla",
         "gender": "Male",
         "covers_body": True,
         "covers_face": True,
@@ -8842,7 +8842,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Rambo": {
-        "franchise": "Movie",
+        "franchise": "Rambo",
         "gender": "Male",
         "costume": "a red headband, torn fatigues, and an ammo bandolier across a bare "
                    "sweat-sheened chest",
@@ -9543,7 +9543,7 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a gnarled wooden broom",
     },
     "Bride of Frankenstein": {
-        "franchise": "Movie",
+        "franchise": "Universal Monsters",
         "gender": "Female",
         "costume": "a long flowing white burial gown with trailing gauze wrappings, over "
                    "smooth, flawless pale grey skin, with faint stitched neck scars and dramatic "
@@ -13962,7 +13962,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     "Movies & TV": (
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
         "Judge Dredd", "Mad Max",
-        "Escape from New York", "Pirates of the Caribbean", "Movie", "The Addams Family",
+        "Escape from New York", "Pirates of the Caribbean", "The Addams Family",
+        "Universal Monsters", "Indiana Jones", "Godzilla", "Rambo",
         "KPop Demon Hunters",
         "Scooby-Doo", "Who Framed Roger Rabbit", "Mistress of the Dark", "Xena: Warrior Princess",
         "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",

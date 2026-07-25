@@ -92,6 +92,16 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   (`form`, `suppress_groups`, `suppress_fields`).
 - **Modifier** → prepends a descriptor to one field or a whole group.
 - **Vault Save/Load** → persist a generated `prompt_json` under `ComfyUI/user/identity_forge/`.
+  The frontend's list/preview/delete/rename routes are registered by `_register_vault_routes()`
+  in `__init__.py`. Path safety is `sanitize_name` + `_entry_dir` (resolve, then require the
+  parent to *be* the vault root), which blocks `..` and absolute-path escapes. **0.72.0 added a
+  content-type check on the two mutating routes**: `request.json()` parses any body regardless of
+  content type, and a `text/plain` POST is a CORS-*simple* request a browser sends cross-origin
+  **without a preflight** — so any page open while ComfyUI ran could have deleted or renamed
+  saved characters. Requiring `application/json` forces a preflight, which fails since these
+  routes send no CORS headers. `_json_body()` also turns a malformed body into a 400 instead of
+  letting it raise into a 500. The pack's own JS already sent the right header, so the UI was
+  unaffected. Graph execution never touches these routes.
 
 ## fields.py — the field engine
 
@@ -132,6 +142,15 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   checks **every** `FIELD_FAMILIES` entry partitions its field's options exactly. New `hair_style`
   variants must also be slotted into the relevant `data/constraints.py` length lists
   (`_LONG_HAIR_STYLES`, the pixie exclusion) so they're culled on short hair like their siblings.
+  **This is the rule `cornrows` and `bantu knots` escaped until 0.72.0** — they were in no length
+  list at all, so a 4000-seed sweep put cornrows on `buzzed very short`/`very short` 210 times and
+  bantu knots on a buzz or pixie 86 times. Both are now in `_LONG_HAIR_STYLES`, and `box braids` +
+  `bantu knots` joined the pixie exclusion. Note the trap that hid them: the texture note in the
+  gotchas says braids, locs, cornrows and bantu knots "read fine on any texture and stay unpaired"
+  — true, but that is the **texture** axis. Length is a separate gate, and a style can be free on
+  one and constrained on the other. The pixie list stays deliberately narrower than
+  `_LONG_HAIR_STYLES`: `afro`/`twist-out` (a pixie-length TWA), `locs` (starter locs) and
+  `cornrows` are all real at that length.
 - **`pose` values are participle phrases, and must stay performable (0.66.0 doctrine).**
   Two separate rules, both learned the hard way.
   *Grammar:* the prose renders `"{subject} is {pose}."`, so every value has to complete that
@@ -562,17 +581,30 @@ also turns the four attribute scopes into review tools — "show me all 26 Tiny 
 3. **Interaction with the gender scope** — `Sequential` + `Random — female` is coherent, but
    `Sequential` + a specific character is a no-op that needs a tooltip.
 
-**Rejected alongside it — franchise scoping.** Same request, different half: scope Random picks by
-franchise rather than the 9 broad categories. Not built because the shape of the data is against
-it: **114 of 224 franchises are singletons**, so most options would return one fixed character
-forever. Thresholding helps but does not fix it (≥5 chars → 45 franchises covering 799 of 1095;
-≥3 → 81 covering 923). Revisit only with a real per-franchise UX (a second dependent combo), not
-by flattening 224 entries into the existing dropdown.
+**Franchise scoping — deferred here, then built in 0.72.0 with a threshold.** Same request,
+different half: scope Random picks by franchise rather than the 9 broad categories. The original
+objection was the shape of the data, and it still holds — at the current roster **135 of 263
+franchises are singletons**, so exposing all of them would give most options one fixed character
+forever. What changed is the framing: the answer was never "all franchises or none", it was
+*thresholding*, which the original note dismissed too quickly. `_build_franchise_scopes()` in
+`nodes/identity_forge_cosplayer.py` derives a scope for every franchise with
+`_FRANCHISE_SCOPE_MINIMUM` (8) or more characters, minus the three whose name is already a
+category (Marvel, DC, Star Wars) — 26 entries covering ~389 characters, taking `random_scope`
+from 14 options to 40. Singletons are simply never offered. It needed **no new plumbing**:
+`_SPECIAL_SCOPES` was already a `{label: predicate}` map with its own branch in
+`_resolve_character`, so a franchise scope is one `lambda`. Being derived rather than hand-listed,
+it counts `user_options.json` additions and self-maintains as the roster grows. Current
+thresholds for a future re-tune: ≥3 chars → 94 franchises covering 1093 of 1296; ≥5 → 54 covering
+955; ≥8 → 30 covering 817 (27 after removing the category-named three).
 
-**Related pre-existing UX wart (unfixed).** `_resolve_character` falls back to the **full gender
-pool** when a (gender, scope) combo comes up empty, silently. `Masked` + `Random — female` is only
-7 characters and small combos look like the scope was ignored. A console warning on fallback would
-be the cheap fix.
+**Related pre-existing UX wart — fixed in 0.68.0, kept here for the reasoning.**
+`_resolve_character` used to fall back to the **full gender pool** silently when a (gender, scope)
+combo came up empty, and small combos looked like the scope had been ignored. `_announce_scope`
+now prints the in-scope pool size once per `(character, scope)` combination, and shouts
+`The result will be OUT OF SCOPE.` on an actual fallback. The shipped roster has no empty combo
+(the smallest, `Masked` + `Random — female`, is 8), so the fallback branch only fires for a
+`user_options.json` configuration — which is exactly when a silent fallback would be most
+confusing.
 
 ### Per-character "has skin but wouldn't wear jewellery" (closed 0.66.0 — do not re-flag)
 
@@ -702,8 +734,39 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   seed still reproduces exactly, and identical output keeps expensive downstream nodes cached.
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
-- The roster is large (~895 cosplayers, ~169 creatures): always grep the current keys before
-  adding to avoid silent overrides (the validator's duplicate-key scan backstops this).
+- The roster is large (~1300 cosplayers across ~263 franchises, ~195 creatures): always grep
+  the current keys before adding to avoid silent overrides (the validator's duplicate-key scan
+  backstops this).
+- **`franchise` names a franchise, not a medium (0.72.0).** Eight entries shipped with the
+  placeholder `"Movie"` (Dracula, Frankenstein's Monster, The Wolf Man, The Mummy, Bride of
+  Frankenstein, Godzilla, Rambo, Indiana Jones). It read badly in the cosplay label
+  ("Cosplaying as Dracula (Movie)") and would have produced a nonsense `Franchise: Movie`
+  scope, so they were refranchised (the five Universal horror leads share
+  `"Universal Monsters"`) and mapped into `_CATEGORY_FRANCHISES["Movies & TV"]`.
+  `FranchiseLabelTests` now rejects any medium-as-franchise label. **Two `"Comics"` entries
+  remain and are a deliberate open item**, not an oversight: *Shana the She-Devil* is a
+  possible near-duplicate of both `Red Sonja` and Marvel's `Shanna the She-Devil` (already in
+  the roster), and *Lunatica* needs a source confirmed — both are curation calls, so they were
+  left for a decision rather than guessed at.
+- **Prose articles are chosen by sound, not spelling (0.72.0).** `_a()` carries two exception
+  sets (`_CONSONANT_VOWEL_PREFIXES`, `_VOWEL_CONSONANT_PREFIXES`) because a bare vowel-letter
+  test shipped "a hourglass build" and "an university lecture hall". Free-text `skin` / `eyes`
+  / `scale_prose` overrides route through the same helper, so the fix is keyed on the leading
+  word rather than on a list of known values. `ArticleTests` pins both classes.
+- **`outfit_description` is voiced verbatim, so every source must supply its own article
+  (0.72.0).** Cosplayer costumes (1107 of them) and archetype outfits (346 of 394) already
+  did; the built-in `OUTFIT_DESCRIPTIONS` pool never had, so plain runs read "She wears cropped
+  hoodie with…" while cosplay runs read "She wears a gothic black dress…". 171 values gained an
+  article; the 9 with a mass/plural head (`denim overalls`, `yoga pants`, `high waisted
+  trousers`, …) are correctly bare and are the documented exception. Pure data edit — no pool
+  change, no RNG draw, no seed drift. `OutfitArticleTests` guards the convention.
+- **A Modifier must not prepend in front of an article (0.72.0).** `_apply_modifiers` used a
+  blind f-string and produced "wears weathered a gothic black dress". It now routes through
+  `_prepend_descriptor`, which **moved from the creature node into `nodes/identity_forge.py`**
+  (the creature node imports it) — the palette-onto-integument case and the
+  descriptor-onto-costume case are the same problem, so they share one implementation. Note it
+  re-articles on the *descriptor* ("a gothic black dress" + "emerald" → "an emerald gothic
+  black dress"), which is why `_a`'s exception sets matter here too.
 - An outfit whose prose already includes headwear (hat/helmet/hood/crown…, `_HAT_RE`)
   suppresses a hat-valued random `accessories` draw so two hats never stack; non-hat
   accessories still show and an explicit lock wins. Keep `_HAT_ACCESSORY_VALUES` in sync
@@ -718,14 +781,26 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
 - Adding options to a **flat** field shifts its distribution; prefer the density-gated
   `_EXTRA_ABSENCE` fields (variety changes, frequency doesn't). New feminine-coded values on a
   shared-pool field must also be added to `_MALE_EXCLUDED_VALUES` so a random Male skips them.
-- **Masculine-default trims are wardrobe-gated for jewellery/nails.** `_MALE_EXCLUDED_VALUES`
-  drives the "no chandeliers/pearls/polish on a random man" behaviour, but the jewellery/nails
-  fields (`_PRESENTATION_GATED_FIELDS`) tag their rules `presentation_gated=True`. `_apply_constraints`
-  skips those unless the man reads `"Masculine"` (i.e. `wardrobe == "Match gender"`), so a
-  **Feminine/"Any" wardrobe leaves the full feminine-coded pool available** to a man for a femme look;
-  the structural defaults (hair, brows, lips, eye_shape, bust) always apply. Presentation is
-  `_presentation_mode(gender, wardrobe)`, shared with the outfit picker. Locked/archetype values
-  bypass the trim entirely (constraint warns and keeps them).
+- **Masculine-default trims are wardrobe-gated for jewellery/nails *and makeup*.**
+  `_MALE_EXCLUDED_VALUES` drives the "no chandeliers/pearls/polish on a random man" behaviour, but
+  the jewellery/nails fields (`_PRESENTATION_GATED_FIELDS`) tag their rules
+  `presentation_gated=True`. `_apply_constraints` skips those unless the man reads `"Masculine"`
+  (i.e. `wardrobe == "Match gender"`), so a **Feminine/"Any" wardrobe leaves the full
+  feminine-coded pool available** to a man for a femme look; the structural defaults (hair,
+  brows, lips, eye_shape, bust) always apply. Presentation is `_presentation_mode(gender,
+  wardrobe)`, shared with the outfit picker. Locked/archetype values bypass the trim entirely
+  (constraint warns and keeps them).
+  **0.72.0: the `gender=Male → makeup_style="no makeup"` requirement joined the gate.** It had
+  been left ungated, so the presentation switch reached the jewellery and the wardrobe but not
+  the face: a man with `wardrobe="Feminine"` drew chandelier earrings, almond nails and a mini
+  skirt while staying bare-faced in **300 of 300 seeds** — the most visible half of the femme
+  look was the one part it could not touch. Gated, `Match gender`/`Masculine` are byte-identical
+  to before (verified over the full control matrix); only the explicit Feminine/"Any" wardrobes
+  change. The result needs no extra tuning because `makeup_style`'s **male pool is already the
+  cap** — `no makeup` plus the four natural styles — and its `male_weights` leans `no makeup`
+  2×, so a femme male look lands ~1 in 3 bare-faced and never reaches glam by random draw. Bold
+  glam still needs an explicit lock, which `_GENDER_FLEXIBLE_GROUPS` already honours.
+  `PresentationGateTests` pins all three directions.
 - **Wired `"None"` is an explicit omit and survives to the engine.** `IdentityForge.execute`
   builds `archetype_locked` from every wired value *except* `"Random"` — so a cosplayer/archetype
   field set to `"None"` (the builder's body-paint, bald, and free-text-eye suppressions) reaches
