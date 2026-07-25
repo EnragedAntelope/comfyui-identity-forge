@@ -3496,6 +3496,38 @@ class FootwearPhrasingTests(unittest.TestCase):
         self.assertIn("in bare feet", prose)
 
 
+class EyePartPhrasingTests(unittest.TestCase):
+    """A free-text ``eyes`` override that names the eye part keeps it (0.74.0).
+
+    The prose appends " eyes" to the colour, which turned the ten overrides ending
+    in an eye part into "...has green with vertical cat-slit pupils eyes". Same
+    guard, same reasoning, as the skin_tone material-noun check.
+    """
+
+    _EYE_PARTS = ("pupils", "irises", "sclera", "lenses")
+
+    def test_part_naming_overrides_drop_the_noun(self):
+        prose = _format_prose(
+            {"gender": "Female", "eye_color": "green with vertical cat-slit pupils"},
+            "Female")
+        self.assertIn("green with vertical cat-slit pupils", prose)
+        self.assertNotIn("pupils eyes", prose)
+
+    def test_ordinary_colours_still_get_the_noun(self):
+        prose = _format_prose({"gender": "Female", "eye_color": "deep blue"}, "Female")
+        self.assertIn("deep blue eyes", prose)
+
+    def test_no_shipped_override_renders_a_doubled_noun(self):
+        for name, entry in COSPLAYERS.items():
+            override = entry.get("eyes")
+            if not override:
+                continue
+            prose = _format_prose(
+                {"gender": "Female", "eye_color": override}, "Female")
+            for part in self._EYE_PARTS:
+                self.assertNotIn(f"{part} eyes", prose, f"{name}: {override!r}")
+
+
 class NewRosterEntryTests(unittest.TestCase):
     """The 0.73.0 additions: Hell's Paradise cast + Fern.
 
@@ -3504,16 +3536,22 @@ class NewRosterEntryTests(unittest.TestCase):
     swap on the one entry that wears its weapon, and rollable alternates.
     """
 
-    _ADDED = ("Gabimaru", "Yamada Asaemon Sagiri", "Yuzuriha", "Akaginu", "Fern")
+    _ADDED = ("Gabimaru", "Yamada Asaemon Sagiri", "Yuzuriha", "Akaginu", "Fern",
+              "Gwen Tennyson", "Yzma", "Maron", "Nani Pelekai", "Babette",
+              "Simon", "Kamina", "Nia Teppelin", "Rias Gremory", "Akeno Himejima",
+              "Asia Argento", "Koneko Toujou", "Issei Hyoudou")
 
     def test_entries_exist_and_are_mapped(self):
-        from data.cosplayers import get_cosplayer_category, _FRANCHISE_CATEGORY
+        """Every addition must resolve to a real category, not the silent fallback."""
+        from data.cosplayers import (get_cosplayer_category, get_cosplayer_categories,
+                                     _FRANCHISE_CATEGORY)
+        categories = set(get_cosplayer_categories())
         for name in self._ADDED:
             self.assertIn(name, COSPLAYERS, name)
             franchise = COSPLAYERS[name]["franchise"]
             self.assertIn(franchise, _FRANCHISE_CATEGORY,
                           f"{name}: '{franchise}' is not in the category map")
-            self.assertEqual(get_cosplayer_category(franchise), "Anime & Manga", name)
+            self.assertIn(get_cosplayer_category(franchise), categories, name)
 
     def test_sagiri_prop_costume_sheathes_the_sword(self):
         """Prop on must move the katana from the hip to the hand, not double it."""

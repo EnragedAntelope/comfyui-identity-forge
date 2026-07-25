@@ -13637,10 +13637,25 @@ COSPLAYERS: dict[str, dict] = {
     "Yoko Littner": {
         "franchise": "Gurren Lagann",
         "gender": "Female",
-        # Sharpshooter; flame-print bikini top and long sniper rifle.
+        # Sharpshooter; flame-print bikini top and long sniper rifle. Alternates added
+        # 0.74.0: the "Yomako-sensei" timeskip schoolteacher look (the one variant she is
+        # as widely cosplayed in as the original, and the reason the glasses/tied-back
+        # hair carry their own signature) and the post-timeskip Dai-Gurren officer suit.
         "costume": "a black-and-red flame-patterned bikini top, black short-shorts with a white "
                    "studded belt, pink thigh-high socks, mid-calf white boots with red flame "
                    "soles, and a loose black scarf",
+        "costumes": [
+            {
+                "costume": "a pale striped blouse with puffed shoulders and white sleeves, a "
+                           "green necktie, a high-waisted red-brown pencil skirt, and black "
+                           "high-heeled shoes, with small round wire-framed glasses",
+                "signature": {"hair_color": "bright red", "hair_length": "hip length",
+                              "hair_texture": "sleek straight", "hair_style": "worn down",
+                              "eye_color": "amber"},
+            },
+            "a form-fitting white and black flight suit panelled in red and yellow stars "
+            "with a high collar, a slim utility belt, and matching white boots",
+        ],
         "signature": {"hair_color": "bright red", "hair_length": "hip length", "hair_style": "high ponytail",
                       "eye_color": "amber"},
         "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "warm tan"},
@@ -14085,6 +14100,213 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "very slim", "height": "tall"},
         "prop": "a small stoppered glass vial of glowing violet potion",
     },
+
+    # === v0.74.0 expansion: Gurren Lagann / High School DxD / misc =======
+    "Maron": {
+        "franchise": "Dragon Ball",
+        "gender": "Female",
+        # Krillin's anime-only girlfriend from the Garlic Jr. and Android sagas. Note
+        # this is Maron, NOT Marron (Krillin and 18's daughter) -- one 'r'. Her hair is
+        # a lighter blue than Bulma's teal, which is the usual point of confusion.
+        "costume": "a bright red sleeveless minidress with thin low-cut shoulder straps, "
+                   "folded white cuff socks, and white low-top gym shoes",
+        "costumes": [
+            "a bright red sleeveless minidress with thin low-cut shoulder straps worn "
+            "under an oversized olive-green military jacket left open, folded white cuff "
+            "socks, and white low-top gym shoes",
+        ],
+        "signature": {"hair_color": "electric blue", "hair_length": "mid back",
+                      "hair_texture": "sleek straight", "eye_color": "gray"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair"},
+    },
+    "Nani Pelekai": {
+        "franchise": "Lilo and Stitch",
+        "gender": "Female",
+        # Lilo's older sister and guardian. Alternates are her job-hunting outfit and
+        # the finale look.
+        "costume": "a coral-orange short-sleeved crop top with a dusty-pink heart on the "
+                   "chest, cut-off denim shorts, folded white socks, and brown lace-up "
+                   "hiking boots",
+        "costumes": [
+            "a plain blue short-sleeved top, khaki trousers, and brown open-toed sandals",
+            "a white tee with red raglan sleeves, cut-off denim shorts, folded white "
+            "socks, and brown lace-up hiking boots",
+        ],
+        "signature": {"hair_color": "jet black", "hair_length": "slightly past shoulders",
+                      "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
+        "physique": {"body_type": "curvy", "height": "average height",
+                     "skin_tone": "medium olive"},
+    },
+    "Babette": {
+        "franchise": "Beauty and the Beast",
+        "gender": "Female",
+        # Lumiere's sweetheart, enchanted into a feather duster (called Fifi in much of
+        # the merchandise, Babette in the screenplay and stage musical). Rendered the way
+        # she is actually cosplayed -- a French maid whose skirt and headpiece are built
+        # from ostrich plumes -- rather than as a literal prop object, which would have no
+        # wearable look at all. The alternate is her restored human form from the finale.
+        "costume": "a black-and-white French maid dress whose short skirt is built from "
+                   "layered black and white ostrich plumes, a stiff white ruffled apron and "
+                   "cuffs, a lace choker, sheer black stockings, and a white lace cap set "
+                   "in a spray of upright feathers",
+        "costumes": [
+            "a knee-length black maid's dress with puffed sleeves, a crisp white pinafore "
+            "apron tied in a bow at the back, a white lace-trimmed cap, black buckled shoes, "
+            "and a lace choker",
+        ],
+        "signature": {"hair_color": "raven black", "hair_length": "shoulder length",
+                      "hair_texture": "loosely curled", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+        "prop": "a long-handled ostrich-feather duster",
+    },
+
+    # --- Gurren Lagann (Yoko Littner already ships, enhanced above) ------
+    "Simon": {
+        "franchise": "Gurren Lagann",
+        "gender": "Male",
+        # Simon the Digger. Leads with the mid-series Team Gurren look (the one the
+        # goggles and Core Drill belong to); alternates are the early digging rags and
+        # the post-timeskip commander coat with the star-shaped shades.
+        "costume": "a blue jacket with red stripes down the shoulders and sleeves over a "
+                   "dark shirt, a red armband on the left arm, dark trousers and heavy "
+                   "brown boots, large digging goggles pushed up on the forehead, and a "
+                   "small conical drill pendant hanging on a chain at the throat",
+        "costumes": [
+            "a rough brown rag wrapped around the torso over bandages, shorts held with a "
+            "wide belt, oversized brown boots, large digging goggles pushed up on the "
+            "forehead, and a small conical drill pendant on a chain at the throat",
+            {
+                "costume": "a long navy trench coat with gold studs and a spiral emblem on "
+                           "the back, worn open over a black haramaki and a black neck "
+                           "brace with grey low-rise jeans and heavy boots, with pointed "
+                           "red star-shaped sunglasses",
+                "signature": {"hair_color": "navy blue", "hair_length": "very short",
+                              "hair_texture": "thick and voluminous", "facial_hair": "clean shaven"},
+            },
+        ],
+        "signature": {"hair_color": "navy blue", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "eye_color": "deep blue",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "slightly below average height",
+                     "skin_tone": "light medium"},
+    },
+    "Kamina": {
+        "franchise": "Gurren Lagann",
+        "gender": "Male",
+        # Bare-chested under an open cape, so the blue flame tattoos are painted on skin,
+        # not a pelt: no body-paint marker phrasing and no covers_body -- he is a human
+        # body with markings (the Maui rule). His nodachi is carried, so it is a prop.
+        "costume": "a long open cape with a jagged flame-patterned hem worn over a bare "
+                   "chest, a wide dark belt with a large buckle, loose dark trousers and "
+                   "heavy boots, blue flame tattoos running up both arms to the shoulders, "
+                   "and narrow red wraparound sunglasses with sharply pointed corners",
+        "eyes": "burning red",
+        "signature": {"hair_color": "electric blue", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
+        "prop": "an oversized nodachi with a long wrapped grip, held one-handed over the shoulder",
+    },
+    "Nia Teppelin": {
+        "franchise": "Gurren Lagann",
+        "gender": "Female",
+        # The Spiral King's daughter. Her flower-iris eyes fall outside the believable
+        # pool, so they use the free-text override. Her pale-pink skin is a *tint*, not an
+        # all-over non-human colour, so it stays a normal skin_tone rather than triggering
+        # the body-paint mechanism -- which would have suppressed her face and makeup.
+        "costume": "a high-cut pale pink dress cut shorter at the front than the sides, a "
+                   "wide golden neck brace set with two red gems and a green centre stone "
+                   "with a long red tie hanging from it, matching golden belt and wrist "
+                   "bands, and a large pink flower-shaped ribbon in the hair",
+        "eyes": "pink and blue with flower-shaped irises",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "very long",
+                      "hair_texture": "loosely curled"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "porcelain"},
+    },
+
+    # --- High School DxD -------------------------------------------------
+    # The Kuoh Academy girls' uniform is shared, so each entry spells out what makes
+    # its wearer distinguishable (Koneko drops the shoulder cape, Akeno adds calf
+    # socks) and the alternates carry the looks that actually differ.
+    "Rias Gremory": {
+        "franchise": "High School DxD",
+        "gender": "Female",
+        "costume": "the Kuoh Academy girls' uniform -- a white long-sleeved button-down "
+                   "shirt with fine vertical stripes, a black ribbon at the collar, a "
+                   "black shoulder cape over a matching buttoned corset, and a magenta "
+                   "pleated skirt with a white underskirt, worn with brown loafers",
+        "signature": {"hair_color": "deep red", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "eye_color": "blue-gray"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Akeno Himejima": {
+        "franchise": "High School DxD",
+        "gender": "Female",
+        # Alternate is her shrine-maiden outfit, the look she is most distinct in.
+        "costume": "the Kuoh Academy girls' uniform -- a white long-sleeved button-down "
+                   "shirt with fine vertical stripes, a black ribbon at the collar, a "
+                   "black shoulder cape over a matching buttoned corset, and a magenta "
+                   "pleated skirt with a white underskirt, worn with black calf-length "
+                   "socks and brown loafers, with an orange ribbon tying the hair",
+        "costumes": [
+            "a traditional miko outfit -- a loose white kosode with wide sleeves tucked "
+            "into a bright red hakama, white tabi and wooden sandals, with an orange "
+            "ribbon tying the hair",
+        ],
+        "signature": {"hair_color": "raven black", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "hair_style": "high ponytail",
+                      "eye_color": "violet-gray"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
+    },
+    "Asia Argento": {
+        "franchise": "High School DxD",
+        "gender": "Female",
+        # Alternate is the nun's habit she first appears in.
+        "costume": "the Kuoh Academy girls' uniform -- a white long-sleeved button-down "
+                   "shirt with fine vertical stripes, a black ribbon at the collar, a "
+                   "black shoulder cape over a matching buttoned corset, and a magenta "
+                   "pleated skirt with a white underskirt, worn with brown loafers",
+        "costumes": [
+            "a pale grey-blue nun's habit with a white wimple and veil framing the face, a "
+            "long pleated skirt to the ankle, and a silver cross on a fine chain",
+        ],
+        "signature": {"hair_color": "light blonde", "hair_length": "mid back",
+                      "hair_texture": "sleek straight", "eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Koneko Toujou": {
+        "franchise": "High School DxD",
+        "gender": "Female",
+        "costume": "the Kuoh Academy girls' uniform worn without the shoulder cape -- a "
+                   "white long-sleeved button-down shirt with fine vertical stripes, a "
+                   "black ribbon at the collar, a black buttoned corset, and a magenta "
+                   "pleated skirt with a white underskirt, worn with brown loafers and a "
+                   "pair of small black cat-shaped clips in the hair",
+        "signature": {"hair_color": "white", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "eye_color": "hazel"},
+        "physique": {"body_type": "petite and slim", "height": "petite",
+                     "skin_tone": "fair"},
+    },
+    "Issei Hyoudou": {
+        "franchise": "High School DxD",
+        "gender": "Male",
+        # The Boosted Gear is a worn gauntlet, not a held prop, so it lives in the costume
+        # -- which also (correctly) trips the engine's glove rule and drops randomized
+        # nails/rings that would otherwise render on top of the armoured hand.
+        "costume": "the Kuoh Academy boys' uniform worn loose -- a black blazer open over "
+                   "an untucked white dress shirt with black trim and a black collar "
+                   "ribbon, a red t-shirt beneath, matching black trousers, and blue-and-"
+                   "white sneakers instead of dress shoes, with a bulky red scaled dragon "
+                   "gauntlet sheathing the left forearm and hand, a green gem set on its back",
+        "signature": {"hair_color": "medium brown", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "eye_color": "light brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "light"},
+    },
 }
 
 
@@ -14102,7 +14324,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
         "My Dress-Up Darling", "Darling in the Franxx", "Black Lagoon", "Gurren Lagann",
-        "Re:Zero", "Hell's Paradise",
+        "Re:Zero", "Hell's Paradise", "High School DxD",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),

@@ -781,6 +781,38 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   *Sagiri wears her sword*, so she carries a `prop_costume` that empties the scabbard (the Zoro
   pattern) — prop off leaves "a katana in a black lacquered scabbard" at the hip, prop on swaps
   to "an empty black lacquered scabbard" and puts the drawn blade in her hands.
+- **A free-text `eyes` override may name its own eye part (0.74.0).** The prose builds
+  `"{colour} {shape} eyes"`, so the ten overrides that already end in an eye part rendered
+  "...has green with vertical cat-slit **pupils eyes**" (Cheetah, Sephiroth, Geralt, Hu Tao,
+  Lobo, Voldemort, Maz Kanata, Nightstar, Power, and Nia Teppelin, who surfaced it). `_EYE_PART_RE`
+  drops the noun when the value already ends in `eyes/pupils/irises/sclera/lenses` — the same
+  guard, for the same reason, as the `skin_tone` material-noun check ("dark blue scaled-skin").
+  Fixed in the **engine**, not by rewording ten values: the data phrasing is good prose and the
+  next entry describing a pupil would have hit it again. `EyePartPhrasingTests` sweeps every
+  shipped override.
+- **Gurren Lagann, High School DxD and friends (0.74.0).** Twelve entries; the reusable notes:
+  *Enhancing beats skipping (rule 2 in practice).* **Yoko Littner** already shipped with a solid
+  entry, so per the curation checklist she was not skipped but *enhanced* — she gained the
+  "Yomako-sensei" timeskip teacher look and the Dai-Gurren officer suit. The teacher look carries
+  its own `signature` because the glasses come with hair worn down instead of her ponytail; a
+  plain-string alternate would have left the ponytail on.
+  *A worn signature object is not a `prop`.* **Issei Hyoudou**'s Boosted Gear is a gauntlet, so it
+  belongs in the costume — which also, correctly, trips `_GLOVE_RE` and drops randomized
+  nails/rings that would otherwise render on top of an armoured hand. Compare **Kamina**'s nodachi,
+  which is carried and so *is* a prop.
+  *Tattoos are skin, not a pelt.* **Kamina** is bare-chested with blue flame tattoos up both arms:
+  no body-paint marker phrasing and no `covers_body`, so his tan `skin_tone` stands (the Maui rule).
+  *A tint is not a body-paint colour.* **Nia Teppelin**'s pale-pink skin is a tint, not an all-over
+  non-human colour, so it stays an ordinary `skin_tone`; using the marker phrasing would have
+  suppressed her face and makeup for no gain.
+  *An object-character still needs a wearable look.* **Babette** is a feather duster for the whole
+  film, so she is written the way she is actually cosplayed — a French maid whose skirt and
+  headpiece are built from ostrich plumes — with her restored human form as the alternate. A
+  literal prop object would have failed rule 1.
+  *A shared uniform needs per-entry differentiation.* The five Kuoh Academy entries would
+  otherwise be near-identical costume strings, so each spells out what distinguishes it (Koneko
+  drops the shoulder cape, Akeno adds calf socks and a hair ribbon) and the alternates carry the
+  looks that genuinely differ — Akeno's miko outfit, Asia's nun habit.
 - **Gwen Tennyson and Yzma added (0.73.0)**, each demonstrating a mechanism worth reusing.
   *Gwen* rolls four looks and shows **an alternate overriding `signature`**: the three teen
   outfits share her waist-length hair, but the Original Series look is a short clipped bixie, so

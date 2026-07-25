@@ -430,6 +430,15 @@ _ITEM_TAIL_RE = re.compile(
     r"bearing|falling|framing)\b"
 )
 
+#: A free-text ``eyes`` override (a cosplayer's non-standard eye description) may
+#: already name the eye part it describes -- "green with vertical cat-slit pupils",
+#: "red on black sclera", "warm brown behind thick round goggle lenses". The prose
+#: normally appends " eyes" to the colour, which turns those into "...pupils eyes".
+#: When the value already ends in an eye part, the noun is dropped. Mirrors the
+#: material-noun guard the skin_tone anchor uses ("dark blue scaled-skin").
+_EYE_PART_RE = re.compile(r"\b(?:eyes?|pupils?|irises|iris|sclerae?|lenses|lens)$",
+                          re.IGNORECASE)
+
 
 def _article_if_singular(value: str) -> str:
     """Return ``value`` with an indefinite article when its head noun is singular.
@@ -1069,7 +1078,12 @@ def _format_prose(
     # --- Eyes / nose / lips / brows ------------------------------------
     features = []
     if g("eye_color") or g("eye_shape"):
-        features.append(_words(g("eye_color"), g("eye_shape")) + " eyes")
+        # Normally "{colour} {shape} eyes". A free-text ``eyes`` override may already
+        # end in the eye part it describes ("green with vertical cat-slit pupils",
+        # "red on black sclera") -- appending the noun there gives "...pupils eyes".
+        # Same guard, and same reasoning, as the skin_tone material-noun check above.
+        eye_desc = _words(g("eye_color"), g("eye_shape"))
+        features.append(eye_desc if _EYE_PART_RE.search(eye_desc) else f"{eye_desc} eyes")
     if g("nose"):
         features.append(_an(g("nose"), "nose"))
     if g("lips"):

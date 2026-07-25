@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1302 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1313 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (173)
+## Anime & Manga (182)
 
 ### Attack on Titan
 
@@ -85,6 +85,7 @@
 - **Krillin** (M)
 - **Launch** (F, +1 alt)
 - **Majin Buu** (M)
+- **Maron** (F, +1 alt)
 - **Piccolo** (M)
 - **Vegeta** (M)
 - **Videl** (F)
@@ -119,7 +120,10 @@
 
 ### Gurren Lagann
 
-- **Yoko Littner** (F, prop)
+- **Kamina** (M, prop)
+- **Nia Teppelin** (F)
+- **Simon** (M, +2 alt)
+- **Yoko Littner** (F, +2 alt, prop)
 
 ### Hell's Paradise
 
@@ -127,6 +131,14 @@
 - **Gabimaru** (M, +1 alt)
 - **Yamada Asaemon Sagiri** (F, prop)
 - **Yuzuriha** (F, +2 alt)
+
+### High School DxD
+
+- **Akeno Himejima** (F, +1 alt)
+- **Asia Argento** (F, +1 alt)
+- **Issei Hyoudou** (M)
+- **Koneko Toujou** (F)
+- **Rias Gremory** (F)
 
 ### JoJo's Bizarre Adventure
 
@@ -790,7 +802,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (69)
+## Disney (71)
 
 ### 101 Dalmatians
 
@@ -817,6 +829,7 @@
 
 ### Beauty and the Beast
 
+- **Babette** (F, +1 alt, prop)
 - **Beast (Beauty and the Beast)** (M, masked)
 - **Belle** (F, prop)
 - **Gaston** (M)
@@ -857,6 +870,7 @@
 
 ### Lilo and Stitch
 
+- **Nani Pelekai** (F, +2 alt)
 - **Stitch** (M, masked)
 
 ### Mary Poppins
