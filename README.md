@@ -11,7 +11,7 @@ let the rest roll.
 ### It describes the costume — it doesn't just name the character
 
 Most character wildcards emit a name and hope the model knows it. Identity Forge ships a
-**hand-written, canon-checked visual description for every one of its 1,391 characters** — the
+**hand-written, canon-checked visual description for every one of its 1,480 characters** — the
 garments, the colours, the masks, the markings, the signature props — so the look renders on
 *any* checkpoint, including ones that have never heard of the character.
 

@@ -3,9 +3,13 @@
 
 # Cosplayer reference
 
-**1391 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1480 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (208)
+## Anime & Manga (238)
+
+### Akame ga Kill
+
+- **Esdeath** (F, prop)
 
 ### Astro Boy
 
@@ -16,6 +20,7 @@
 - **Annie Leonhart** (F)
 - **Armin Arlert** (M)
 - **Eren Yeager** (M)
+- **Hange Zoe** (F)
 - **Historia Reiss** (F)
 - **Levi Ackerman** (M)
 - **Mikasa Ackerman** (F)
@@ -29,10 +34,12 @@
 - **Byakuya Kuchiki** (M)
 - **Grimmjow** (M)
 - **Ichigo Kurosaki** (M, prop)
+- **Nelliel Tu Odelschwanck** (F)
 - **Orihime Inoue** (F)
 - **Rangiku Matsumoto** (F, prop)
 - **Renji Abarai** (M)
 - **Rukia Kuchiki** (F)
+- **Tier Harribel** (F, prop)
 - **Toshiro Hitsugaya** (M, prop)
 - **Yoruichi** (F)
 
@@ -42,10 +49,20 @@
 - **Makima** (F)
 - **Power (Chainsaw Man)** (F)
 
+### Code Geass
+
+- **C.C.** (F)
+- **Kallen Stadtfeld** (F)
+- **Zero (Code Geass)** (M, masked)
+
 ### Cowboy Bebop
 
 - **Faye Valentine** (F)
 - **Spike Spiegel** (M)
+
+### Danganronpa
+
+- **Junko Enoshima** (F)
 
 ### Darling in the Franxx
 
@@ -71,8 +88,13 @@
 - **Light Yagami** (M, prop)
 - **Misa Amane** (F)
 
+### Delicious in Dungeon
+
+- **Marcille Donato** (F, prop)
+
 ### Demon Slayer
 
+- **Daki** (F)
 - **Giyu Tomioka** (M)
 - **Inosuke Hashibira** (M, masked)
 - **Kyojuro Rengoku** (M, prop)
@@ -85,6 +107,7 @@
 ### Dragon Ball
 
 - **Android 18** (F)
+- **Android 21** (F, +1 alt)
 - **Beerus** (M)
 - **Broly** (M)
 - **Bulma** (F)
@@ -106,6 +129,13 @@
 ### Fairy Tail
 
 - **Brandish** (F, giant, +1 alt)
+- **Erza Scarlet** (F, prop)
+- **Lucy Heartfilia** (F)
+
+### Fate/Grand Order
+
+- **Jeanne d'Arc (Fate)** (F, prop)
+- **Scathach** (F, prop)
 
 ### Fate/stay night
 
@@ -158,6 +188,7 @@
 
 - **Dio Brando** (M)
 - **Giorno Giovanna** (M)
+- **Jolyne Cujoh** (F)
 - **Joseph Joestar** (M)
 - **Jotaro Kujo** (M)
 
@@ -170,11 +201,19 @@
 - **Sukuna** (M)
 - **Yuji Itadori** (M)
 
+### Kakegurui
+
+- **Yumeko Jabami** (F)
+
 ### Kill la Kill
 
 - **Nui Harime** (F)
 - **Ryuko Matoi** (F, prop)
 - **Satsuki Kiryuin** (F)
+
+### KonoSuba
+
+- **Megumin** (F, prop)
 
 ### Madoka Magica
 
@@ -198,10 +237,15 @@
 - **Himiko Toga** (F)
 - **Momo Yaoyorozu** (F)
 - **Mt. Lady** (F, giant)
+- **Nejire Hado** (F)
 - **Ochaco Uraraka** (F)
 - **Shoto Todoroki** (M)
 - **Tomura Shigaraki** (M)
 - **Tsuyu Asui** (F)
+
+### Nana
+
+- **Nana Osaki** (F)
 
 ### Naruto
 
@@ -211,6 +255,7 @@
 - **Itachi Uchiha** (M)
 - **Jiraiya** (M)
 - **Kakashi Hatake** (M, prop)
+- **Konan** (F)
 - **Madara Uchiha** (M)
 - **Might Guy** (M)
 - **Naruto Uzumaki** (M)
@@ -250,6 +295,11 @@
 - **Saitama** (M)
 - **Tatsumaki** (F)
 
+### Overlord
+
+- **Albedo (Overlord)** (F, prop)
+- **Shalltear Bloodfallen** (F, prop)
+
 ### Pokemon
 
 - **Ash Ketchum** (M, prop)
@@ -284,6 +334,10 @@
 - **Snorlax** (M, masked)
 - **Squirtle** (M, masked)
 
+### Rascal Does Not Dream of Bunny Girl Senpai
+
+- **Mai Sakurajima** (F)
+
 ### Re:Zero
 
 - **Emilia** (F, prop)
@@ -305,9 +359,17 @@
 
 - **Speed Racer** (M)
 
+### Spice and Wolf
+
+- **Holo** (F)
+
 ### Spy x Family
 
 - **Yor Forger** (F, prop)
+
+### Steins;Gate
+
+- **Makise Kurisu** (F)
 
 ### Studio Ghibli
 
@@ -320,6 +382,10 @@
 - **Princess Mononoke** (F, prop)
 - **Totoro** (M, giant, masked, prop)
 
+### Sword Art Online
+
+- **Asuna Yuuki** (F, prop)
+
 ### That Time I Got Reincarnated as a Slime
 
 - **Milim Nava** (F)
@@ -327,12 +393,18 @@
 ### The Seven Deadly Sins
 
 - **Diane** (F, giant, +2 alt)
+- **Elizabeth Liones** (F)
+
+### Tokyo Ghoul
+
+- **Ken Kaneki** (M)
+- **Touka Kirishima** (F)
 
 ### Vocaloid
 
 - **Hatsune Miku** (F)
 
-## Comics & Cartoons (171)
+## Comics & Cartoons (186)
 
 ### Adventure Time
 
@@ -376,6 +448,10 @@
 
 - **Betty Boop** (F)
 
+### Bob's Burgers
+
+- **Tina Belcher** (F)
+
 ### Captain Planet
 
 - **Captain Planet** (M)
@@ -412,6 +488,11 @@
 
 - **Abbey Chase** (F)
 - **Natalia Kassle** (F)
+
+### Danny Phantom
+
+- **Danny Phantom** (M)
+- **Sam Manson** (F)
 
 ### Darna
 
@@ -459,6 +540,10 @@
 - **Hellboy** (M, prop)
 - **Liz Sherman** (F)
 
+### Hey Arnold!
+
+- **Helga Pataki** (F)
+
 ### Image
 
 - **Avengelyne** (F, prop)
@@ -467,6 +552,10 @@
 - **Savage Dragon** (M)
 - **Spawn** (M, masked)
 - **The Maxx** (M, masked)
+
+### Inspector Gadget
+
+- **Inspector Gadget** (M)
 
 ### Invincible
 
@@ -482,6 +571,7 @@
 ### Jem and the Holograms
 
 - **Jem** (F)
+- **Pizzazz** (F)
 
 ### Johnny Bravo
 
@@ -517,6 +607,10 @@
 
 - **Abbey Bominable** (F)
 - **Frankie Stein** (F)
+
+### My Life as a Teenage Robot
+
+- **Jenny Wakeman** (F, masked)
 
 ### Nickelodeon
 
@@ -554,9 +648,17 @@
 
 - **Marv** (M, giant)
 
+### South Park
+
+- **Eric Cartman** (M)
+- **Kenny McCormick** (M, masked)
+
 ### Steven Universe
 
 - **Garnet** (F)
+- **Lapis Lazuli** (F)
+- **Pearl** (F)
+- **Peridot** (F)
 - **Topaz** (F, giant)
 
 ### Stripperella
@@ -600,6 +702,12 @@
 ### The Phantom
 
 - **The Phantom** (M)
+
+### The Powerpuff Girls
+
+- **Blossom** (F)
+- **Bubbles** (F)
+- **Buttercup** (F)
 
 ### The Simpsons
 
@@ -670,7 +778,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (167)
+## DC (171)
 
 ### DC
 
@@ -701,6 +809,7 @@
 - **Bumblebee (DC)** (F)
 - **Captain Boomerang** (M, prop)
 - **Captain Cold** (M, prop)
+- **Cassandra Cain** (F, masked)
 - **Catwoman** (F, +3 alt, prop)
 - **Ch'p** (M)
 - **Cheetah** (F)
@@ -753,6 +862,7 @@
 - **Katana** (F, masked, prop)
 - **Katma Tui** (F)
 - **Kid Flash** (M)
+- **Killer Croc** (M, giant, masked)
 - **Killer Frost** (F)
 - **Kilowog** (M)
 - **King Shark** (M, giant, masked)
@@ -776,6 +886,7 @@
 - **Mr. Freeze** (M, masked, prop)
 - **Nightstar** (F)
 - **Nightwing** (M, prop)
+- **Nubia** (F, prop)
 - **Peacemaker** (M, prop)
 - **Phantom Lady (Dee Tyler)** (F)
 - **Plastic Man** (M)
@@ -786,6 +897,7 @@
 - **Ra's al Ghul** (M)
 - **Ratcatcher 2** (F, prop)
 - **Red Claw** (F)
+- **Red Hood** (M, masked)
 - **Reverse-Flash** (M)
 - **Rick Flag** (M, prop)
 - **Robin** (M)
@@ -1028,7 +1140,7 @@
 
 - **Judy Hopps** (F)
 
-## Fantasy & Literature (62)
+## Fantasy & Literature (64)
 
 ### Anne of Green Gables
 
@@ -1077,11 +1189,13 @@
 - **Albus Dumbledore** (M, prop)
 - **Bellatrix Lestrange** (F)
 - **Draco Malfoy** (M)
+- **Fleur Delacour** (F)
 - **Harry Potter** (M, prop)
 - **Hermione Granger** (F, prop)
 - **Lord Voldemort** (M, prop)
 - **Luna Lovegood** (F, prop)
 - **Minerva McGonagall** (F, prop)
+- **Nymphadora Tonks** (F)
 - **Ron Weasley** (M)
 - **Rubeus Hagrid** (M, giant, prop)
 - **Severus Snape** (M)
@@ -1149,13 +1263,14 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (169)
+## Marvel (176)
 
 ### Marvel
 
 - **Abomination** (M, giant)
 - **Agatha Harkness** (F)
 - **Aleta Ogord** (F)
+- **America Chavez** (F)
 - **Angel** (M)
 - **Angela** (F, prop)
 - **Ant-Man** (M, tiny, masked)
@@ -1241,6 +1356,8 @@
 - **Mister Fantastic** (M)
 - **Mister Sinister** (M)
 - **Mistress Death** (F)
+- **Misty Knight** (F)
+- **Mockingbird** (F, prop)
 - **Moon Knight** (M, masked, prop)
 - **Moondragon** (F)
 - **Moonstone** (F)
@@ -1261,6 +1378,7 @@
 - **Nova (Frankie Raye)** (F)
 - **Nova (Richard Rider)** (M, masked)
 - **Okoye** (F, prop)
+- **Peggy Carter** (F)
 - **Photon (Monica Rambeau)** (F)
 - **Polaris** (F)
 - **Professor X** (M)
@@ -1286,6 +1404,7 @@
 - **Sharon Carter** (F, prop)
 - **She-Hulk** (F, giant)
 - **Shriek** (F)
+- **Shuri** (F)
 - **Silver Sable** (F)
 - **Silver Surfer** (M, masked, prop)
 - **Snowbird** (F)
@@ -1297,6 +1416,7 @@
 - **Spider-Woman** (F)
 - **Spider-Woman (Julia Carpenter)** (F)
 - **Spiral** (F, prop)
+- **Squirrel Girl** (F)
 - **Star-Lord** (M, prop)
 - **Stature** (F, giant)
 - **Storm** (F)
@@ -1321,9 +1441,10 @@
 - **Winter Soldier** (M)
 - **Wolverine** (M)
 - **X-23** (F)
+- **Yelena Belova** (F)
 - **Yondu** (M, prop)
 
-## Movies & TV (135)
+## Movies & TV (158)
 
 ### A Nightmare on Elm Street
 
@@ -1354,9 +1475,18 @@
 
 - **Cylon Centurion** (M, giant, masked)
 
+### Beetlejuice
+
+- **Beetlejuice** (M)
+- **Lydia Deetz** (F, +1 alt)
+
 ### Big Boy
 
 - **Big Boy** (M, prop)
+
+### Blade Runner
+
+- **Pris** (F)
 
 ### Braveheart
 
@@ -1433,6 +1563,10 @@
 
 - **Godzilla** (M, giant, masked)
 
+### Grease
+
+- **Sandy Olsson** (F)
+
 ### Green Giant
 
 - **Jolly Green Giant** (M, giant)
@@ -1452,6 +1586,11 @@
 ### Indiana Jones
 
 - **Indiana Jones** (M, prop)
+
+### James Bond
+
+- **Honey Ryder** (F)
+- **James Bond** (M, prop)
 
 ### Judge Dredd
 
@@ -1476,6 +1615,13 @@
 
 - **Tony the Tiger** (M, masked)
 
+### Kill Bill
+
+- **Elle Driver** (F)
+- **Gogo Yubari** (F, prop)
+- **O-Ren Ishii** (F, prop)
+- **The Bride (Beatrix Kiddo)** (F, prop)
+
 ### King Kong
 
 - **King Kong** (M, giant, masked)
@@ -1484,8 +1630,13 @@
 
 - **Kool-Aid Man** (M, giant, masked)
 
+### Labyrinth
+
+- **Jareth the Goblin King** (M, prop)
+
 ### Mad Max
 
+- **Imperator Furiosa** (F)
 - **Mad Max** (M)
 
 ### McDonald's
@@ -1516,7 +1667,9 @@
 
 ### Pirates of the Caribbean
 
+- **Calypso (Tia Dalma)** (F)
 - **Davy Jones** (M, masked)
+- **Elizabeth Swann** (F, +1 alt, prop)
 - **Jack Sparrow** (M, prop)
 
 ### Planters
@@ -1526,6 +1679,10 @@
 ### Predator
 
 - **Predator** (M, giant, masked)
+
+### Pulp Fiction
+
+- **Mia Wallace** (F)
 
 ### Rambo
 
@@ -1609,6 +1766,10 @@
 
 - **Marcia Brady** (F)
 
+### The Crow
+
+- **Eric Draven** (M)
+
 ### The Fifth Element
 
 - **Diva Plavalaguna** (F)
@@ -1616,9 +1777,18 @@
 - **Ruby Rhod** (M)
 - **Zorg** (M)
 
+### The Girl with the Dragon Tattoo
+
+- **Lisbeth Salander** (F)
+
 ### The Iron Giant
 
 - **The Iron Giant** (M, giant, masked)
+
+### The Matrix
+
+- **Neo** (M)
+- **Trinity** (F)
 
 ### The Partridge Family
 
@@ -1635,6 +1805,11 @@
 - **Tulio** (M)
 - **Tzekel-Kan** (M, prop)
 
+### The Rocky Horror Picture Show
+
+- **Dr. Frank-N-Furter** (M)
+- **Magenta** (F)
+
 ### The Terminator
 
 - **Sarah Connor** (F)
@@ -1644,9 +1819,17 @@
 
 - **Leatherface** (M, masked, prop)
 
+### Tron
+
+- **Quorra** (F)
+
 ### Ultraman
 
 - **Ultraman** (M, giant, masked)
+
+### Underworld
+
+- **Selene (Underworld)** (F, prop)
 
 ### Universal Monsters
 
@@ -1795,7 +1978,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (289)
+## Video Games (297)
 
 ### ARMS
 
@@ -1843,6 +2026,7 @@
 ### Cyberpunk: Edgerunners
 
 - **Lucy** (F)
+- **Rebecca (Cyberpunk)** (F, prop)
 
 ### Darkstalkers
 
@@ -1914,6 +2098,16 @@
 ### Duke Nukem
 
 - **Duke Nukem (video game)** (M, prop)
+
+### Elden Ring
+
+- **Blaidd the Half-Wolf** (M, masked, prop)
+- **Malenia, Blade of Miquella** (F, +1 alt)
+- **Melina** (F)
+- **Queen Marika the Eternal** (F, prop)
+- **Ranni the Witch** (F)
+- **Rennala, Queen of the Full Moon** (F, prop)
+- **Starscourge Radahn** (M, giant, prop)
 
 ### F-Zero
 

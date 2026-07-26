@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-identity-forge"
-version = "0.75.0"
-description = "A character creator and person generator for ComfyUI that DESCRIBES characters instead of just naming them: 1,391 fictional characters each ship a hand-written, canon-checked visual description - garments, colours, masks, markings, signature props - so the look renders on any checkpoint, even ones that have never heard of the character. Plus a wildcard-style person randomizer with a constraint engine, themed archetype presets, a creature/monster/alien form layer with slot-by-slot hybridization, per-element style modifiers, a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
+version = "0.76.0"
+description = "A character creator and person generator for ComfyUI that DESCRIBES characters instead of just naming them: 1,480 fictional characters each ship a hand-written, canon-checked visual description - garments, colours, masks, markings, signature props - so the look renders on any checkpoint, even ones that have never heard of the character. Plus a wildcard-style person randomizer with a constraint engine, themed archetype presets, a creature/monster/alien form layer with slot-by-slot hybridization, per-element style modifiers, a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.10"

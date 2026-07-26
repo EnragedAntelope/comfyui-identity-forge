@@ -283,7 +283,8 @@ list; the working principles at the top of this file also apply):
    a separate `mask`; a scalp-enclosing hood/lekku/montral → `covers_hair`. A *truly iconic*
    held item → `prop` (worn items never go in `prop`). Describe each richly and correctly.
 5. **Canonical, well-described look.** Costume text is worn items only, plain-ASCII, lowercase
-   with a leading article; coloured/alien skin is skin-native; non-standard eyes use `eyes`.
+   with a leading article; coloured/alien skin is skin-native; non-standard eyes use `eyes`
+   (a short noun phrase only — see the `eyes` gotcha; asymmetric details go in the costume).
    Use only valid `FIELD_DEFINITIONS` values in `signature`/`physique`.
 6. **Disambiguate colliding keys.** A name that clashes with an existing dict key needs a
    parenthetical key (`"Christie (Dead or Alive)"`, `"Red (Pokemon)"`); duplicate keys
@@ -814,6 +815,17 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
   Fixed in the **engine**, not by rewording ten values: the data phrasing is good prose and the
   next entry describing a pupil would have hit it again. `EyePartPhrasingTests` sweeps every
   shipped override.
+- **…so an `eyes` override must be a *noun phrase*, not a clause (0.76.0).** `_EYE_PART_RE`
+  only looks at the **end** of the string, and the value is dropped into a feature list:
+  `"She has {eyes}, a wide nose, thin lips…"`. A multi-clause value therefore reads badly
+  whichever branch it takes — `"glowing cyan, the left one sealed shut beneath an azure sigil
+  eyes"` (noun appended to the wrong clause) or `"pink with a slitted pupil, a wide nose"`
+  (noun suppressed, so the phrase never resolves as eyes). Two shapes are safe:
+  a short colour phrase (`"molten gold"`, `"glacial ice blue"`) or a phrase whose **last word**
+  is the eye part (`"one pale blue eye and one darkly dilated eye"`). **Anything asymmetric or
+  conditional — a sealed eye, a sigil, an eyepatch — belongs in the costume prose**, which is
+  free-form, alongside markings and tattoos. Two long-standing values were reworded in place
+  under this rule (Delirium, Victor von Gerdenheim).
 - **Gurren Lagann, High School DxD and friends (0.74.0).** Twelve entries; the reusable notes:
   *Enhancing beats skipping (rule 2 in practice).* **Yoko Littner** already shipped with a solid
   entry, so per the curation checklist she was not skipped but *enhanced* — she gained the
