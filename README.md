@@ -211,6 +211,11 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 - **Every field is `Random` (roll) / a value (lock) / `None` (omit).** Set scene fields
   (`location`, `lighting`, framing) to `None` for a character-only description to splice elsewhere.
 - **`accessory_density`** — drop it to `Minimal`/`None` for clean portraits without locking fields by hand.
+- **`size_scale`** — force an unrealistic body scale on an ordinary person: a doll-sized office
+  worker, a fifty-foot commuter. It is **manual only**; `Auto` is the default and is never
+  chosen at random, so it can't affect normal output. Picking a tier replaces the height
+  description in the opening sentence and overrides a wired character's own scale, so you can
+  make anyone giant or tiny.
 - **The light matches the place.** Indoor locations never draw open-sky light and outdoor ones never
   draw window or hearth light. The **location** stands and the light adapts; lock a light instead
   and the location re-rolls to somewhere it can exist. Most locations are interiors, so set
@@ -226,6 +231,10 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 - **Alternate costumes.** Characters with more than one iconic look (Harley Quinn, Catwoman,
   Poison Ivy, …) rotate between them by seed, so the same character yields a different signature
   costume each roll.
+- **Non-human skin colour skips ethnicity too.** When a character's colour covers the whole
+  body (She-Hulk's green, Lobo's chalk-white), the wearer's ethnicity is dropped along with the
+  human skin tone — naming one only fought the colour and left the face rendering as an
+  ordinary human above a coloured body.
 - **Fully-encased cosplays skip ethnicity.** With no visible skin or face left (Iron Giant, a
   droid), mentioning the cosplayer's ethnicity only risked nudging the render toward a stray human
   trait. Face-visible cosplays still describe the person underneath as usual.

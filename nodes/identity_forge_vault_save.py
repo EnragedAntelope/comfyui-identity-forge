@@ -295,7 +295,10 @@ if _COMFY_AVAILABLE:
                         "on_existing",
                         options=[_OVERWRITE, _KEEP_BOTH, _SKIP],
                         default=_OVERWRITE,
-                        tooltip="What to do if you type a name that already exists. (Auto "
+                        tooltip="What to do if you type a name that already exists: "
+                                "'Overwrite' replaces the saved character, 'Keep both' "
+                                "saves alongside it under a numbered name, 'Skip' leaves "
+                                "the existing one untouched and saves nothing. (Auto "
                                 "names ignore this and always keep both.)",
                     ),
                 ],

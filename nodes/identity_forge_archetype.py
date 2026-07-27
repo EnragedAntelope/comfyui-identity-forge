@@ -196,8 +196,14 @@ if _COMFY_AVAILABLE:
                         "archetype",
                         options=[_NONE, _RANDOM] + get_archetype_names(),
                         default=_NONE,
-                        tooltip="Character archetype. 'None' emits nothing; 'Random' "
-                                "picks one using the seed.",
+                        tooltip="Character archetype - a ROLE or era (knight, sorceress, "
+                                "1990s Goth), not a named character; for a specific "
+                                "fictional character use the Cosplayer node instead. "
+                                "'None' emits nothing; 'Random' picks one using the "
+                                "seed. Most archetypes carry several costume variations "
+                                "and colourways, so re-rolling the seed on a fixed "
+                                "archetype gives a different take on the same theme. "
+                                "Type to filter the list.",
                     ),
                     io.Combo.Input(
                         "lock_level",

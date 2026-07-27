@@ -669,7 +669,30 @@ exclusion) — the rule `cornrows` and `bantu knots` escaped until 0.72.0.
 Two genuine **archetype** gaps surfaced while checking this and are recorded here rather than
 acted on: there is no western/cowboy archetype and no biker archetype.
 
-### The `loose` hair_style family blocks the rest of the buzz-cut fix (open, 0.77.0)
+### The `loose` hair_style family blocks the rest of the buzz-cut fix (CLOSED 0.78.0)
+
+**Done.** `loose` was split into `loose_styled` / `loose_natural` / `loose_combover` /
+`loose_mullet`, `braid` into `braid_long` / `braid_short`, and `bun` into `bun_small` /
+`bun_gathered`, with all weights scaled **×105** so every proportional sub-weight stays an
+integer (lcm of the 9, 10 and 7 denominators). Every value keeps its exact pre-split
+probability, pinned in `HairStyleFamilyTests` against a hardcoded 0.77.0 baseline. The
+impossible pairings went from **790 per 12,000 samples to 0**, and `hair_length` / `lighting`
+marginals moved ≤0.18pp (sampling noise). Seeds drifted, as designed.
+
+Two things were learned doing it that are worth more than the fix itself:
+
+1. **A latent multi-rule bug surfaced immediately** — see the constraint re-pick note in the
+   gotchas below. Splitting the family took the legal hair_style set on a buzz cut from 7 of 33
+   to 2 of 33, which made an existing convergence failure bite constantly.
+2. **The `gender = Male` rule partially culls three families and it does not matter.** By the
+   theory above, `bun_small` (1/5), `braid_long` (2/8) and `knots` (1/2) should concentrate
+   their full weight on the survivors for half of all output. Measured over 23,270 male
+   samples: `bantu knots` 3.79% vs `cornrows` 3.51%, ratio 1.08 against a proportional
+   expectation of 1.11 — marginally *under* its fair share. The 0.64.0 mixture property is why:
+   the engine re-picks only a value it actually rejected, and most subjects draw a permitted
+   style first time and never enter that path. **Measure before splitting anything else.**
+
+### Superseded: why it was deferred at 0.77.0
 
 0.77.0 fixed bangs-on-a-buzz-cut (see `constraints.py`), but a 12,000-sample sweep found five
 more physically impossible pairings that were **deliberately left in place**:
@@ -721,15 +744,60 @@ Girl shipped only via the side operative Natalia Kassle); **Evil-Lyn** (Masters 
 He-Man/Skeletor/She-Ra/Sorceress/Teela but not its iconic sorceress-villainess); **Sheena, Queen of
 the Jungle** (a genuinely classic, broadly-recognizable pulp/comics character with a clear worn look).
 
+**Venus was reopened at 0.78.0** on an explicit maintainer request and now ships as
+`Venus (Marvel)` — the same precedent as Kimberly (Space Ace) at 0.77.0. The original skip
+reason was sound (she alters her own appearance in canon and has no single fixed costume), so
+she ships with her most-drawn look, the white Grecian gown, plus the Agents of Atlas green gown
+as an alternate. She is struck from the list below rather than left to contradict the roster.
+
 Deliberately **skipped as deep cuts** (fail the "genuinely iconic, broadly-recognizable" bar, or
 have no distinct worn costume): Tarot, Linsner's Dawn, Purgatori/Chastity, Dejah Thoris, Barbarella,
-Cassie Hack, Painkiller Jane, Shi, Ghost (Dark Horse), Clea, Venus, Fury, Shadow Lass, Phantom Girl,
+Cassie Hack, Painkiller Jane, Shi, Ghost (Dark Horse), Clea, Fury, Shadow Lass, Phantom Girl,
 Lady Blackhawk, P'Gell, Katy Keene, the Love & Rockets women (Hopey/Maggie/Luba), and the
 civilian/no-costume names (Lois Lane's Lana Lang, Vicki Vale, plus the Archie girls Betty/Veronica —
 everyday teen fashion). Don't re-add these without a fresh curation decision.
 
 ## Gotchas cheat-sheet
 
+- **A constraint re-pick must exclude every rule firing on that field, not just its own
+  (0.78.0).** `_apply_constraints` filtered the re-pick pool with only the current rule's
+  `excludes_values`, so the replacement it drew was frequently forbidden by a *different* live
+  rule. Rule A re-picked a value rule B bans, B re-picked one A bans, and whatever the 12th
+  pass happened to hold got emitted. It hid for releases because convergence was likely while
+  few values were banned; the 0.78.0 `loose` split cut the legal hair_style set on a buzz cut
+  from 7 of 33 to 2 of 33 and it began firing constantly — buzz cuts with high ponytails, afros
+  on pin-straight hair. The fix collects the union of all currently-firing exclusions for the
+  target and converges in one pass. **If you add a rule that makes a field's legal set small,
+  this is the failure mode to expect.**
+- **`covers_body` / full-shell detection is spelling-sensitive (0.78.0).** `_FULL_COVER_RE`
+  matched only American `armor` while `data/cosplayers.py` carried 32 British-spelled values,
+  so those characters silently failed the shell test and drew necklaces and drop earrings over
+  plate armour. The data is normalised to `armor` (enforced by `FullCoverSpellingTests`) and
+  the regex now accepts `armou?r` everywhere, because `user_options.json` is free text that no
+  validator can reach.
+- **A costume does NOT suppress jewellery (0.78.0).** `_COSTUME_SUPPRESSED_EXTRAS` covers
+  `bag` / `watch_type` / `hair_accessory` / `accessories` only — deliberately, since earrings
+  over a costume are coherent. So a costume string that *names* a necklace or earrings renders
+  a second, different set alongside it. Either stay off those nouns in costume prose, or pin
+  the field to its absent value in `signature` (`"necklace": "no necklace"`). Same shape as the
+  0.63.0 Charlotte Smoothie rule for any prose attribute shadowing a real field.
+- **Face colour and body colour cannot differ through the skin anchor alone (0.78.0).** The
+  anchor plants one colour and `_format_prose` restates it on the face and hands, so Krusty's
+  white greasepaint face over a yellow body rendered as a flat contradiction. The explicit
+  `body_paint: True` + `skin: "<colour>"` pair is the escape hatch: it forces the suppression
+  without needing a marker phrase and pins the anchor to whichever colour matters most —
+  normally the face, being the high-attention region.
+- **`ethnicity` is suppressed under a full-body colour (0.78.0).** It was the last
+  skin-describing field still randomizing there and the loudest, landing in the lead sentence
+  ("a 19-year-old Chilean man … with chalk-white skin"), which t2i resolved into an ordinary
+  human face above a coloured body. Same argument as the 0.65.0 decision for fully-encased
+  characters. Note this **drifts seeds for body-paint entries only** — a locked field stops
+  consuming an RNG draw.
+- **A male character's face makeup must be authored into the costume prose (0.78.0).** The
+  global `Male → makeup_style: "no makeup"` rule cascades through every cosmetic sub-field, so
+  the engine will never supply makeup on a man. Anything a male character wears on his face —
+  Lobo's blacked-out lips, a clown's greasepaint, corpse paint — renders only if the costume
+  string says so.
 - **A franchise-disambiguated key must not restate its franchise in the label (0.77.0).** The
   cosplay prefix is built as `f"{cosplay_of} ({franchise})"`, so the 29 entries whose key is
   disambiguated *by their franchise* rendered it twice — `Cosplaying as Red (Pokemon)
