@@ -1,45 +1,41 @@
 # ComfyUI Identity Forge
 
-**Endless, coherent characters from dropdowns — no prompt-wrangling.** Queue once for a
-believable person; queue again for a brand-new one. Identity Forge turns menu choices into clean
-natural-language prose (for CLIP Text Encode) plus a structured JSON record — with a constraint
-engine that keeps every result sensible: no beard on the buzz-cut, no handbag with the gym kit,
-and skin tone that stays plausible for the chosen ancestry in either direction — no Irish
-subject in ebony skin, no West African subject in porcelain. Lock the few traits you care about,
-let the rest roll.
+**Believable people from dropdowns — no prompt-wrangling.** Queue once and you get a coherent,
+fully described person. Queue again and you get someone completely new. Identity Forge turns menu
+choices into clean natural-language prose (straight into CLIP Text Encode) plus a structured JSON
+record.
 
-### It describes the costume — it doesn't just name the character
-
-Most character wildcards emit a name and hope the model knows it. Identity Forge ships a
-**hand-written, canon-checked visual description for every one of its 1,480 characters** — the
-garments, the colours, the masks, the markings, the signature props — so the look renders on
-*any* checkpoint, including ones that have never heard of the character.
-
-Ask a plain wildcard for Chun-Li and your prompt says `Chun-Li`. Ask Identity Forge and it says:
-
-> Cosplaying as Chun-Li (Street Fighter): a 22-year-old Armenian woman with an average build,
-> short, and medium skin. […] Her hair is shoulder length loosely wavy dark brown, space buns.
-> […] She wears **a blue qipao dress with gold trim and puffed short sleeves modified for
-> combat, brown tights, white cross-laced combat boots with blue accents, and spiked
-> bracelets**. She is in a confident power pose, set in a university library reading room […]
-
-That is why the results hold up: the costume is *specified*, not *invoked*. It survives weak
-character knowledge, it stays consistent across seeds and models, and — because the person
-underneath is randomized separately — every run is a different individual wearing it.
+A constraint engine keeps every result sensible — no beard on the buzz cut, no handbag with the
+gym kit, no open-sky sunlight indoors, and a skin tone that stays plausible for the chosen
+ancestry in either direction. Lock the few traits you care about; let the rest roll.
 
 **Why you'll like it**
 
-- **Described, not just named** — every character carries a real visual description (above), so
-  the look renders even on checkpoints that don't know the character.
-- **Coherent by design** — a constraint engine resolves clashing traits for you, automatically.
-- **Reproducible** — seed-driven, so any character you like comes back exactly.
-- **Archetypes & cosplayers** — a deep library of themed looks and fictional-character costumes
-  dropped onto an ever-changing person, with crossplay and a helmet-off *Unmask* toggle.
-- **Creature layer** — render the character as an animal / monster / alien, *hybridized
-  slot-by-slot* (a praying-mantis body with a sloth's head), anthropomorphic, feral or a subtle accent.
-- **Chainable** — Archetype → Cosplayer → Creature → Modifier → Identity Forge stack instead of
-  fighting over one socket; a **character vault** saves and recalls the ones you love.
+- **Coherent by design** — clashing traits get resolved for you, automatically.
+- **Reproducible** — seed-driven, so a person you liked comes back exactly.
+- **Yours to steer** — every field is roll it, lock it, or leave it out.
 - **Zero dependencies, fully offline** — no LLM, no API keys, no model downloads.
+
+### Optional layers
+
+Four preset nodes stack in front of Identity Forge to steer the look. Each one is optional and
+passes through when you set it to `None`, so you can leave them all wired and just toggle.
+**Archetype** drops a themed look (knight, sorceress, astronaut, surgeon…) onto a still-random
+person. **Creature** turns that person into an animal, monster or alien. **Modifier** tweaks one
+field or a whole group. And **Cosplayer** puts a fictional character's costume on a random,
+optionally cross-gender person.
+
+The Cosplayer node is worth a special mention: most character wildcards emit a name and hope the
+model recognises it. Every character here instead carries a hand-written, canon-checked
+description of the *costume* — garments, colours, masks, markings, signature props — so the look
+renders even on checkpoints that have never heard of the character. Ask a plain wildcard for
+Chun-Li and your prompt says `Chun-Li`; ask this one and you get the blue qipao with gold trim,
+the brown tights, the white cross-laced boots and the spiked bracelets.
+
+**Browse what's on offer:** [cosplay characters](docs/reference/cosplayers.md) ·
+[archetypes](docs/reference/archetypes.md) · [creatures](docs/reference/creatures.md).
+Something obvious missing? [Open an issue](https://github.com/EnragedAntelope/comfyui-identity-forge/issues) —
+suggestions are welcome.
 
 Built on the ComfyUI **V3 API** (`comfy_api.latest`). Category: `conditioning/character`.
 
@@ -215,31 +211,24 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 - **Every field is `Random` (roll) / a value (lock) / `None` (omit).** Set scene fields
   (`location`, `lighting`, framing) to `None` for a character-only description to splice elsewhere.
 - **`accessory_density`** — drop it to `Minimal`/`None` for clean portraits without locking fields by hand.
-- **The light matches the place.** An indoor location never draws open-sky light and an outdoor one
-  never draws window/ceiling/hearth light, so you won't get a spice-market stall lit by "dappled
-  sunlight through forest canopy". The **location** is what stands: the light adapts to it. Lock a
-  light instead (e.g. `harsh desert sun`) and the *location* re-rolls to somewhere that light can
-  exist. Most locations are interiors, so random daylight is uncommon by design — set
+- **The light matches the place.** Indoor locations never draw open-sky light and outdoor ones never
+  draw window or hearth light. The **location** stands and the light adapts; lock a light instead
+  and the location re-rolls to somewhere it can exist. Most locations are interiors, so set
   `location_setting: Outdoor` when you want sunny, golden-hour looks.
-- **Fully-encased cosplays skip ethnicity.** A character with no visible skin or face left
-  (Iron Giant, Ultraman, a droid) no longer mentions the cosplayer's ethnicity — with nothing
-  human left showing, the mention only risked nudging the render toward a stray human trait. A
-  face-visible or partially-covered cosplay still describes the person underneath as usual.
-- **Gender & crossplay.** The *person's* gender is the Identity Forge `gender` widget (independent
-  of a character's). `Any` rolls a **coherent man or woman each run**; pair it with `wardrobe: Any`
-  to unlock fully mixed-gender output. Locked / archetype / cosplayer values are always respected.
-- **Scope the random character.** On the Cosplayer node, `random_scope` limits the `Random — …`
-  picks to an attribute scope (Giant characters, Tiny characters, Non-human / colored, Masked),
-  a broad category (Anime & Manga, Marvel, DC, Star Wars, …), or a single franchise
-  (`Franchise: Pokemon`, `Franchise: Final Fantasy`, `Franchise: Mortal Kombat`, …, offered for
-  franchises with enough characters to browse). It combines with gender, and the console prints
-  the in-scope pool size the first time you use a combination. Where a franchise has no character
-  of the chosen gender (an all-female cast picked with `Random — male`), the **scope wins and the
-  gender relaxes** — you get a character from that franchise, which crossplay makes valid — rather
-  than an out-of-scope one.
+- **Gender & crossplay.** The *person's* gender is the Identity Forge `gender` widget, independent
+  of any character's. `Any` rolls a coherent man or woman each run; pair it with `wardrobe: Any`
+  for fully mixed-gender output. Locked / archetype / cosplayer values always win.
+- **Scope the random character.** On the Cosplayer node, `random_scope` narrows the `Random — …`
+  picks to an attribute (Giant, Tiny, Non-human / colored, Masked), a broad category (Anime &
+  Manga, Marvel, DC, …), or a single franchise. It combines with gender, and the console prints
+  the in-scope pool size the first time you use a combination. If a franchise has nobody of the
+  chosen gender, the **scope wins and the gender relaxes** — crossplay makes that valid anyway.
 - **Alternate costumes.** Characters with more than one iconic look (Harley Quinn, Catwoman,
-  Poison Ivy, Titania, Giganta, Diane, …) rotate between them by seed, so the same character
-  yields a different signature costume each roll.
+  Poison Ivy, …) rotate between them by seed, so the same character yields a different signature
+  costume each roll.
+- **Fully-encased cosplays skip ethnicity.** With no visible skin or face left (Iron Giant, a
+  droid), mentioning the cosplayer's ethnicity only risked nudging the render toward a stray human
+  trait. Face-visible cosplays still describe the person underneath as usual.
 - **Masked characters** (Spider-Man, a Mandalorian helmet) suppress the randomized face/hair so
   only the mask shows; the Cosplayer `Unmask` toggle reveals the head under the suit.
 - **Vault** — *Vault Save* is a terminal node used like Save Image (branch `prompt_json` in,

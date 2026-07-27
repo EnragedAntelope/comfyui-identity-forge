@@ -3385,29 +3385,41 @@ class FranchiseScopeTests(unittest.TestCase):
 
 
 class AdvertisedCharacterCountTests(unittest.TestCase):
-    """The roster size quoted in README.md and pyproject.toml must be the real one.
+    """README.md and pyproject.toml must quote NO roster count. (0.77.0)
 
-    0.75.0 leads both with the character count as the headline differentiator
-    ("a hand-written visual description for every one of its N characters"). A
-    stale number there is a marketing claim the pack no longer backs, and nothing
-    else would catch it -- so the count is asserted against COSPLAYERS itself.
-    Update both files whenever the roster changes.
+    This test used to assert the opposite -- that the count quoted in both files
+    matched ``len(COSPLAYERS)`` exactly. That made every content release a
+    three-file edit, and the count went stale between them anyway. The maintainer's
+    standing rule is now the inverse: **live counts live only in the generated
+    ``docs/reference/*.md``**, which ``scripts/generate_reference_docs.py`` keeps
+    accurate for free.
+
+    So the invariant is flipped rather than deleted -- a hardcoded roster size
+    creeping back into either file is caught here instead of silently rotting.
+    ``docs/`` is deliberately not checked: the reference indexes are supposed to
+    carry counts, and the prose docs quote point-in-time audit figures on purpose
+    (see architecture.md's "leave version-stamped audit figures alone").
     """
 
     def _sources(self):
         root = Path(__file__).resolve().parents[1]
         return (root / "README.md", root / "pyproject.toml")
 
-    def test_quoted_count_matches_the_roster(self):
-        expected = f"{len(COSPLAYERS):,}"          # e.g. "1,391"
+    #: A thousands-separated number (``1,480``), or a bare four-digit one
+    #: immediately followed by a roster noun (``1480 characters``). A bare
+    #: ``\d{4}`` alone is NOT enough -- it matches the UUID fragments in the
+    #: README's asset URLs (``33bd47f1-1789-473f-...``) and any year.
+    _COUNT_RE = r"\b\d,\d{3}\b|\b\d{4}\s+(?:characters|cosplayers|entries)\b"
+
+    def test_no_roster_count_is_quoted(self):
         for path in self._sources():
             text = path.read_text(encoding="utf-8")
-            quoted = set(re.findall(r"\b\d,\d{3}\b", text))
-            self.assertTrue(
-                quoted, f"{path.name} quotes no character count; expected {expected}")
+            quoted = set(re.findall(self._COUNT_RE, text))
             self.assertEqual(
-                quoted, {expected},
-                f"{path.name} quotes {sorted(quoted)} but the roster holds {expected}")
+                quoted, set(),
+                f"{path.name} quotes a roster count {sorted(quoted)}. Counts belong "
+                f"only in the generated docs/reference/*.md -- describe the roster "
+                f"qualitatively here and link the reference index instead.")
 
 
 class EveryScopeGenderComboTests(unittest.TestCase):
