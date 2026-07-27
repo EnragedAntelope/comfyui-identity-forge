@@ -1,0 +1,5 @@
+# gh-pages branch: Only the gallery files are deployed
+# Ignore everything from the main branch that leaked into the working tree
+*
+!gallery/
+!gallery/**
