@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1638 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1655 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (294)
+## Anime & Manga (300)
 
 ### Akame ga Kill
 
@@ -387,6 +387,15 @@
 - **Rem** (F)
 - **Subaru Natsuki** (M)
 
+### Record of Ragnarok
+
+- **Aphrodite (Record of Ragnarok)** (F)
+- **Brunhilde** (F)
+- **Buddha (Record of Ragnarok)** (M)
+- **Jack the Ripper (Record of Ragnarok)** (M)
+- **Lu Bu** (M, prop)
+- **Shiva (Record of Ragnarok)** (M)
+
 ### Rent-a-Girlfriend
 
 - **Chizuru Mizuhara** (F)
@@ -738,7 +747,7 @@
 
 ### Steven Universe
 
-- **Amethyst** (F)
+- **Amethyst (Steven Universe)** (F)
 - **Garnet** (F)
 - **Lapis Lazuli** (F)
 - **Pearl** (F)
@@ -1068,7 +1077,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (95)
+## Disney (96)
 
 ### 101 Dalmatians
 
@@ -1129,6 +1138,7 @@
 
 ### Hercules
 
+- **Aphrodite (Hercules)** (F)
 - **Hades** (M)
 - **Hercules** (M)
 - **Megara** (F)
@@ -1392,7 +1402,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (176)
+## Marvel (177)
 
 ### Marvel
 
@@ -1561,6 +1571,7 @@
 - **Ultron** (M, giant, masked)
 - **Valkyrie** (F, prop)
 - **Venom** (M, giant, masked)
+- **Venus (Marvel)** (F, +1 alt)
 - **Viper** (F)
 - **Vision** (M)
 - **Vulture** (M)
@@ -2094,7 +2105,7 @@
 - **Ponda Baba** (M, masked)
 - **Porg** (M, tiny, masked)
 - **Praetorian Guard** (M, masked, prop)
-- **Princess Leia Organa** (F)
+- **Princess Leia Organa** (F, +5 alt)
 - **Qui-Gon Jinn** (M, prop)
 - **R2-D2** (M, masked)
 - **Rancor** (M, giant, masked)
@@ -2122,7 +2133,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (320)
+## Video Games (329)
 
 ### ARMS
 
@@ -2130,7 +2141,7 @@
 
 ### Arcane
 
-- **Jinx (League of Legends)** (F, prop)
+- **Silco** (M)
 
 ### Baldur's Gate 3
 
@@ -2357,9 +2368,18 @@
 - **Ahri** (F)
 - **Akali** (F)
 - **Caitlyn** (F, prop)
+- **Ekko** (M, prop)
 - **Evelynn** (F)
+- **Jinx (League of Legends)** (F, prop)
+- **Kai'Sa** (F)
+- **Katarina** (F, prop)
+- **Leona (League of Legends)** (F, prop)
 - **Lux** (F)
+- **Miss Fortune** (F, prop)
+- **Morgana** (F)
+- **Seraphine** (F, prop)
 - **Vi** (F)
+- **Yasuo** (M, prop)
 
 ### LittleBigPlanet
 

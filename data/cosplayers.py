@@ -457,7 +457,13 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
     "Jinx (League of Legends)": {
-        "franchise": "Arcane",
+        # 0.78.0: was filed under "Arcane" while the key disambiguates against
+        # "Jinx (Teen Titans)" using the OTHER name, so the label rendered
+        # "Cosplaying as Jinx (League of Legends) (Arcane)". Same stutter class the
+        # 0.77.0 guard fixes, but caused by a key/franchise mismatch rather than a
+        # repeat, so the guard could not catch it. She is a champion and belongs
+        # with Vi and Caitlyn; "Arcane" stays registered for show-only characters.
+        "franchise": "League of Legends",
         "gender": "Female",
         "costume": "a purple crop top, blue shorts, pink-and-blue striped stockings, "
                    "purple boots, and blue arm tattoos in a punk-anarchist style",
@@ -466,6 +472,112 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "loose braids"},
         "physique": {"body_type": "very slim", "height": "short", "skin_tone": "pale"},
         "prop": "an oversized shark-shaped rocket launcher with a toothy painted grin",
+    },
+    "Morgana": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a black and deep purple gown with gold filigree trim, layered gold "
+                   "shoulder plates, a high thigh slit, and enormous tattered "
+                   "dark-feathered wings arcing from the back",
+        "eyes": "glowing violet",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "pale"},
+    },
+    "Kai'Sa": {
+        # The void suit is a WORN second skin, so it is clothing, not a non-skin
+        # body: no covers_body (the Black Noir precedent -- a fabric/armor suit is
+        # a garment however total the coverage).
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a skin-tight living purple-and-black void suit with glowing violet "
+                   "seams, a bare midriff, clawed gauntlets, and a pair of iridescent "
+                   "void wings arcing from the shoulders",
+        "eyes": "glowing violet",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Miss Fortune": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a brown leather bustier with gold buckles under a long open coat, "
+                   "a wide belt, thigh-high boots and a plumed captain's hat",
+        "eyes": "pale blue",
+        "signature": {"hair_color": "auburn", "hair_length": "very long",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair"},
+        "prop": "a pair of ornate flintlock pistols",
+    },
+    "Katarina": {
+        # The scar is asymmetric, so it goes in the costume prose, never in `eyes`
+        # (a free-text `eyes` value must be a plain noun phrase -- 0.76.0 rule).
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "black and crimson Noxian leather armor with a bare midriff, "
+                   "arm wraps, thigh straps lined with throwing daggers, and a long "
+                   "vertical scar crossing the left eye",
+        "eyes": "emerald green",
+        "signature": {"hair_color": "bright red", "hair_length": "long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "prop": "a pair of long curved daggers held in a reverse grip",
+    },
+    "Seraphine": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a pastel blue and white performance dress with a sheer layered "
+                   "overlay, oversized rose-gold headphones worn around the neck, and "
+                   "sheet-music motifs stitched along the hem",
+        "eyes": "bright blue",
+        "signature": {"hair_color": "hot pink", "hair_length": "very long",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
+        "prop": "a floating crystalline microphone",
+    },
+    "Yasuo": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "costume": "a dark blue sleeveless haori worn open over a bare chest, a "
+                   "crimson rope sash, wrapped forearms and loose grey hakama trousers",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "top knot", "facial_hair": "goatee"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light medium"},
+        "prop": "a slender curved katana drawn in a low guard",
+    },
+    "Ekko": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "costume": "a teal and brown Zaun jacket over a patched hoodie, goggles pushed "
+                   "up on the forehead, wrapped forearms and heavy scuffed boots",
+        "signature": {"hair_color": "platinum white", "hair_length": "very short"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "dark brown"},
+        "prop": "a bladed clockwork time device trailing a hoverboard",
+    },
+    "Leona (League of Legends)": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "heavy gold and bronze Solari plate armor with a sunburst "
+                   "breastplate, layered pauldrons, a deep red cape and armored greaves",
+        "eyes": "amber",
+        "signature": {"hair_color": "auburn", "hair_length": "very long",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan"},
+        "prop": "a great engraved sun-disc shield and a short sword",
+    },
+    "Silco": {
+        # Arcane-exclusive, which is what keeps the "Arcane" franchise string in use
+        # after Jinx was repointed to League of Legends.
+        # The damaged eye is asymmetric -> costume prose, not `eyes`.
+        "franchise": "Arcane",
+        "gender": "Male",
+        "costume": "a high-collared charcoal three-piece suit with a dark cravat and a "
+                   "long overcoat, with heavy scarring down the left side of the face "
+                   "and a clouded, discoloured left eye",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_style": "slicked back", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "slim", "height": "tall", "skin_tone": "pale"},
     },
 
     # --- Star Wars --------------------------------------------------------
@@ -480,11 +592,55 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a pair of ignited lightsabers, a long white energy blade in one "
                 "hand and a shorter white shoto blade in the other",
     },
+    # Her iconic looks are alternate COSTUMES on one entry, not separate keys
+    # (curation rule 2). Every alternate that changes the hair must restate the
+    # COMPLETE signature dict: `_pick_look` does `merged[key] = chosen[key]`, so an
+    # overlay signature REPLACES the base one instead of merging into it (0.59.0
+    # trap). Boushh is the only look with a full-face helmet, so it is the only one
+    # carrying covers_face + mask.
     "Princess Leia Organa": {
         "franchise": "Star Wars",
         "gender": "Female",
         "costume": "a floor-length long-sleeved white gown with a high collar and a "
                    "silver belt",
+        "costumes": [
+            {   # Return of the Jedi -- Jabba's captive
+                "costume": "a brass and burgundy metal bikini with a chained collar, "
+                           "red silk loincloth panels front and back, a brass armlet "
+                           "and tall leather boots",
+                "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                              "hair_style": "braided ponytail",
+                              "eye_color": "dark brown"},
+            },
+            {   # The Empire Strikes Back -- Cloud City / Bespin
+                "costume": "a crimson high-collared satin gown with a fitted bodice "
+                           "and a floor-length flowing cape",
+                "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                              "hair_style": "crown braid", "eye_color": "dark brown"},
+            },
+            {   # The Empire Strikes Back -- Echo Base, Hoth
+                "costume": "a padded white and tan snowsuit with a quilted vest, a "
+                           "utility belt and heavy insulated boots",
+                "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                              "hair_style": "crown braid", "eye_color": "dark brown"},
+            },
+            {   # Return of the Jedi -- Endor strike team
+                "costume": "a camouflage green and brown poncho over a fitted combat "
+                           "tunic and trousers, with a utility belt and tall boots",
+                "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                              "hair_style": "braided ponytail",
+                              "eye_color": "dark brown"},
+            },
+            {   # Return of the Jedi -- the Boushh bounty-hunter disguise
+                "costume": "layered brown and grey Ubese bounty-hunter armor with a "
+                           "banded chest plate, heavy gloves, a shoulder satchel and "
+                           "a wrapped cloak",
+                "covers_face": True,
+                "mask": "a battered grey Ubese helmet with a narrow horizontal visor "
+                        "slot and a segmented breathing grille",
+                "prop": "a thermal detonator held up in one hand",
+            },
+        ],
         "signature": {"hair_color": "dark brown", "hair_length": "long",
                       "hair_style": "space buns", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
@@ -1274,7 +1430,7 @@ COSPLAYERS: dict[str, dict] = {
     },
     "Nebula": {
         "bald": True,
-        "covers_body": True,  # fully armoured cybernetic combat suit, no bare skin
+        "covers_body": True,  # fully armored cybernetic combat suit, no bare skin
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a fitted dark combat suit with armored segments, boots, gauntlets, smooth, "
@@ -4183,6 +4339,25 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "high ponytail", "eye_color": "violet-gray"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
     },
+    # Key disambiguated because `Aphrodite IX` (Top Cow) already ships and a second
+    # Aphrodite lands this pass from Record of Ragnarok. The label collapses the
+    # repeat via the 0.77.0 endswith guard, so it renders "Aphrodite (Hercules)".
+    "Aphrodite (Hercules)": {
+        "franchise": "Hercules",
+        "gender": "Female",
+        # Canon's deep-purple liner has no matching `eyeliner` option, so it rides in
+        # the costume prose and the field is pinned to an ABSENT value -- otherwise
+        # the randomizer draws its own liner and contradicts the prose. This is the
+        # 0.63.0 Charlotte Smoothie pattern (silver lipstick vs `lips_makeup`), which
+        # generalises to any prose attribute shadowing a real field.
+        "costume": "a purple single-strapped Grecian gown with a heart-shaped brooch "
+                   "on the strap and a long skirt slit to the thigh, gold high-heeled "
+                   "sandals, matching gold ankle bracelets, and deep purple eyeliner",
+        "eyes": "bright blue",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_texture": "loosely wavy", "eyeliner": "no eyeliner"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain"},
+    },
     "Kida": {
         "franchise": "Atlantis: The Lost Empire",
         "gender": "Female",
@@ -4620,13 +4795,24 @@ COSPLAYERS: dict[str, dict] = {
                       "facial_hair": "stubble", "eye_color": "blue-gray"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
+    # The face markings are authored into the costume prose deliberately. A male
+    # cosplayer draws the global ``Male -> makeup_style: "no makeup"`` rule, which
+    # cascades through every cosmetic sub-field, so the engine will NEVER supply a
+    # character's face makeup on a man. Anything a male character wears on his face
+    # has to be written here or it simply does not render -- this entry was the
+    # 0.78.0 report ("Lobo's clothes but not his face"). ``hair_style``/
+    # ``hair_texture`` are locked because the randomizer was drawing cornrows and
+    # locs on him; his hair is long, straight and worn loose.
     "Lobo": {
         "franchise": "DC",
         "gender": "Male",
         "costume": "black biker leathers with chains and spikes over smooth, flawless "
-                   "chalk-white skin, on an enormously tall hulking figure of imposing stature",
+                   "chalk-white skin, with blacked-out lips and dark shadowed hollows "
+                   "around the eyes, on an enormously tall hulking figure of imposing stature",
         "eyes": "red on black sclera",
-        "signature": {"hair_color": "jet black", "hair_length": "long"},
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "worn down", "hair_texture": "sleek straight",
+                      "facial_hair": "clean shaven"},
         "size_scale": "giant",
         "scale_prose": "enormously tall and hulking",
         "physique": {"body_type": "stocky", "height": "very tall"},
@@ -4680,7 +4866,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "RoboCop",
         "gender": "Male",
         "covers_face": True,
-        "covers_body": True,  # full cybernetic armour shell, no bare skin for jewellery
+        "covers_body": True,  # full cybernetic armor shell, no bare skin for jewellery
         "costume": "a full suit of matte gunmetal cybernetic police armor with exposed "
                    "servos and a holstered sidearm",
         "mask": "a sleek steel helmet leaving only a stern jaw exposed",
@@ -9159,7 +9345,7 @@ COSPLAYERS: dict[str, dict] = {
     "Commander Shepard": {
         "franchise": "Mass Effect",
         "gender": "Female",
-        "covers_body": True,  # full hardsuit armour shell, no bare skin for jewellery
+        "covers_body": True,  # full hardsuit armor shell, no bare skin for jewellery
         "costume": "a dark grey N7 hardsuit with red-and-white arm and chest stripes and "
                    "armored plating",
         "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
@@ -14297,7 +14483,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         # The Boosted Gear is a worn gauntlet, not a held prop, so it lives in the costume
         # -- which also (correctly) trips the engine's glove rule and drops randomized
-        # nails/rings that would otherwise render on top of the armoured hand.
+        # nails/rings that would otherwise render on top of the armored hand.
         "costume": "the Kuoh Academy boys' uniform worn loose -- a black blazer open over "
                    "an untucked white dress shirt with black trim and a black collar "
                    "ribbon, a red t-shirt beneath, matching black trousers, and blue-and-"
@@ -14361,7 +14547,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Kingdom Hearts",
         "gender": "Female",
         "costume": "a black sleeveless halter top with pink and silver trim, fitted "
-                   "black shorts under overlapping armoured hip plates, detached "
+                   "black shorts under overlapping armored hip plates, detached "
                    "silver pauldrons, and tall black boots",
         "signature": {"hair_color": "electric blue", "hair_length": "chin length bob",
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
@@ -14441,7 +14627,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Judge Dredd",
         "gender": "Female",
         # Psi-Judges famously go helmetless, so no covers_face.
-        "costume": "black leather Judge armour with heavy gold shoulder pads, a "
+        "costume": "black leather Judge armor with heavy gold shoulder pads, a "
                    "gold eagle badge at one shoulder, a blue and gold ribbed "
                    "bodysuit beneath, a utility belt, and knee-high black boots",
         "signature": {"hair_color": "light blonde", "hair_length": "short pixie",
@@ -14452,7 +14638,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Female",
         "covers_face": True,
-        "costume": "a red and white armoured bodysuit with black side panels and "
+        "costume": "a red and white armored bodysuit with black side panels and "
                    "a black obi sash at the waist",
         "mask": "a white kabuki-style face mask with a red circle on the forehead",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
@@ -14530,7 +14716,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "That Time I Got Reincarnated as a Slime",
         "gender": "Female",
         "costume": "a short black crop top and matching black shorts with red and "
-                   "blue armoured accents, a long white cape with a high collar, "
+                   "blue armored accents, a long white cape with a high collar, "
                    "black thigh-high boots, and a gold circlet",
         "signature": {"hair_color": "baby pink", "hair_length": "hip length",
                       "hair_style": "high pigtails", "hair_texture": "sleek straight",
@@ -14574,7 +14760,7 @@ COSPLAYERS: dict[str, dict] = {
     "Okoye": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "Dora Milaje ceremonial armour -- a fitted deep red plated "
+        "costume": "Dora Milaje ceremonial armor -- a fitted deep red plated "
                    "bodice over patterned red fabric panels, stacked gold neck "
                    "rings, gold arm bands, a beaded waist tabard, and strapped "
                    "sandals, worn with a clean-shaven bald head marked with fine "
@@ -14701,8 +14887,8 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         "covers_face": True,
-        "costume": "silver Asgardian armour with a red cape, a segmented chest "
-                   "plate, armoured gauntlets and greaves, and a leather kilt "
+        "costume": "silver Asgardian armor with a red cape, a segmented chest "
+                   "plate, armored gauntlets and greaves, and a leather kilt "
                    "over chainmail",
         "mask": "a silver winged helmet that masks the upper face",
         "signature": {"hair_color": "platinum blonde", "hair_length": "long",
@@ -14730,7 +14916,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "StarCraft",
         "gender": "Female",
         "costume": "a sleek grey and black ghost operative bodysuit with glowing "
-                   "cyan panel lines, armoured shoulder and thigh plating, and a "
+                   "cyan panel lines, armored shoulder and thigh plating, and a "
                    "visored headset pushed up onto the forehead",
         "signature": {"hair_color": "platinum blonde", "hair_length": "shoulder length",
                       "hair_style": "low ponytail", "eye_color": "bright blue"},
@@ -14912,7 +15098,7 @@ COSPLAYERS: dict[str, dict] = {
     "Chris Redfield": {
         "franchise": "Resident Evil",
         "gender": "Male",
-        "costume": "black tactical body armour over a green undershirt with the "
+        "costume": "black tactical body armor over a green undershirt with the "
                    "sleeves cut away, a chest rig with pouches, fingerless "
                    "gloves, and heavy combat trousers",
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
@@ -15112,7 +15298,7 @@ COSPLAYERS: dict[str, dict] = {
     "Junker Queen": {
         "franchise": "Overwatch",
         "gender": "Female",
-        "costume": "heavy scrap-metal Junker armour with a spiked shoulder "
+        "costume": "heavy scrap-metal Junker armor with a spiked shoulder "
                    "pauldron over a leather harness, torn trousers, heavy boots, "
                    "and dense black tattoos across both arms and the shaved "
                    "sides of the scalp",
@@ -15196,9 +15382,9 @@ COSPLAYERS: dict[str, dict] = {
     "Karai": {
         "franchise": "TMNT",
         "gender": "Female",
-        "costume": "charcoal Foot Clan armour -- a fitted segmented chest plate "
+        "costume": "charcoal Foot Clan armor -- a fitted segmented chest plate "
                    "and shoulder guards over a black bodysuit, a red sash at the "
-                   "waist, armoured gauntlets and tall boots",
+                   "waist, armored gauntlets and tall boots",
         "signature": {"hair_color": "raven black", "hair_length": "chin length bob",
                       "hair_texture": "sleek straight", "eye_color": "dark brown"},
         "physique": {"body_type": "lean", "height": "average height",
@@ -15299,7 +15485,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_face": True,
         "covers_body": True,
-        "costume": "black plate armour with a high spiked collar over a shaggy "
+        "costume": "black plate armor with a high spiked collar over a shaggy "
                    "black-furred body, a heavy dark cloak, and clawed gauntlets",
         "mask": "a great black wolf's head with a long muzzle, bared fangs, tall "
                 "pointed ears and pale glowing eyes",
@@ -15311,7 +15497,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "size_scale": "giant",
         "scale_prose": "colossal and over twenty-five feet tall",
-        "costume": "dark crimson and gold plate armour crowned by an enormous "
+        "costume": "dark crimson and gold plate armor crowned by an enormous "
                    "snarling golden lion pauldron, a tattered red cape, and heavy "
                    "gauntlets and greaves",
         "signature": {"hair_color": "bright red", "hair_length": "mid back",
@@ -15371,7 +15557,7 @@ COSPLAYERS: dict[str, dict] = {
     "Erza Scarlet": {
         "franchise": "Fairy Tail",
         "gender": "Female",
-        "costume": "silver Heart Kreuz plate armour -- a moulded steel breastplate "
+        "costume": "silver Heart Kreuz plate armor -- a moulded steel breastplate "
                    "with a cross emblem and flared shoulder guards, steel gauntlets "
                    "and greaves -- over a dark blue pleated skirt and black boots, "
                    "with a blue guild mark on the upper left arm",
@@ -15713,9 +15899,9 @@ COSPLAYERS: dict[str, dict] = {
     "Jeanne d'Arc (Fate)": {
         "franchise": "Fate/Grand Order",
         "gender": "Female",
-        "costume": "silver-white plate armour with a tall gorget and pauldrons "
+        "costume": "silver-white plate armor with a tall gorget and pauldrons "
                    "over a deep violet skirt and a purple under-tunic, with "
-                   "armoured gauntlets and sabatons",
+                   "armored gauntlets and sabatons",
         "eyes": "violet",
         "signature": {"hair_color": "platinum blonde", "hair_length": "hip length",
                       "hair_style": "French braid", "hair_texture": "silky and glossy"},
@@ -15754,7 +15940,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a black leather biker jacket over a printed band tee, a red and "
                    "black plaid mini skirt with a garter belt and torn stockings, "
                    "tall black engineer boots, a spiked leather choker and studded "
-                   "bracelets, a heavy silver orb pendant and a silver armour ring, "
+                   "bracelets, a heavy silver orb pendant and a silver armor ring, "
                    "with a lotus tattooed on the upper arm",
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
                       "hair_style": "tousled bedhead", "eye_color": "nearly black",
@@ -16025,7 +16211,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Female",
         "covers_face": True,
-        "costume": "a seamless black armoured bodysuit with a yellow bat emblem "
+        "costume": "a seamless black armored bodysuit with a yellow bat emblem "
                    "across the chest, a yellow utility belt, and a long black cape "
                    "with a scalloped hem",
         "mask": "a full black face mask stitched down the middle with blank white "
@@ -16037,7 +16223,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_face": True,
         "costume": "a brown leather jacket over a black tactical bodysuit with a "
-                   "red bat emblem on the chest, armoured gloves, twin thigh "
+                   "red bat emblem on the chest, armored gloves, twin thigh "
                    "holsters and heavy boots",
         "mask": "a smooth crimson full-face helmet with narrow blacked-out eye "
                 "slots",
@@ -16502,17 +16688,29 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_length": "bald", "facial_hair": "mustache"},
         "physique": {"body_type": "stocky", "height": "very petite"},
     },
+    # The face and the body are DIFFERENT colours, which a single skin anchor cannot
+    # express: the costume said "white greasepaint covering the face" while the
+    # auto-derived anchor emitted "His face has the same bright yellow skin" (found
+    # 0.78.0 by previewing). Resolved with the explicit override pair -- ``body_paint``
+    # forces the human-skin suppression without needing a marker phrase, and ``skin``
+    # pins the anchor to the FACE colour, the high-attention region and the more
+    # recognisable half of the character. The yellow body stays in the prose.
+    # ``bald crown`` triggers the scalp scrub, so the green side tufts live in the
+    # costume text and the entry must NOT lock hair_* in ``signature``: the bald
+    # suppression runs with override=False, so a signature lock survives it, which is
+    # exactly why he had been rendering a full head of mint-green hair in a messy bun.
     "Krusty the Clown": {
         "franchise": "The Simpsons",
         "gender": "Male",
         "costume": "a baggy sky blue clown suit with an oversized red bow tie and "
-                   "a ruffled white collar, enormous red clown shoes, white "
-                   "greasepaint covering the face with a bulbous red nose and a "
-                   "wide red painted grin, over smooth, flawless bright yellow "
-                   "skin",
-        "signature": {"hair_color": "mint green", "hair_length": "short pixie",
-                      "hair_texture": "thick and voluminous",
-                      "facial_hair": "clean shaven"},
+                   "a ruffled white collar, enormous red clown shoes, a bald crown "
+                   "flanked by two large flared tufts of mint green hair, white "
+                   "greasepaint over the face with a bulbous red nose and a wide "
+                   "red painted grin, and bright yellow skin on the neck, body and "
+                   "hands",
+        "body_paint": True,
+        "skin": "chalk-white greasepainted",
+        "signature": {"facial_hair": "clean shaven"},
         "physique": {"body_type": "chubby", "height": "average height"},
     },
     "Bob Belcher": {
@@ -17137,7 +17335,12 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "curly", "eye_color": "nearly black"},
         "physique": {"body_type": "chubby", "skin_tone": "light medium"},
     },
-    "Amethyst": {
+    # Renamed from the bare "Amethyst" at 0.78.0 so the dropdown distinguishes her
+    # from "Amethyst, Princess of Gemworld" (DC). This is a DELIBERATE breaking
+    # change, taken on an explicit maintainer decision after the consequence was
+    # raised twice: a saved workflow locking the old key no longer resolves and
+    # falls back to a random character. An alias layer was offered and declined.
+    "Amethyst (Steven Universe)": {
         "franchise": "Steven Universe",
         "gender": "Female",
         "costume": "a black tank top with a wide cut-out star across the chest, "
@@ -18213,6 +18416,122 @@ COSPLAYERS: dict[str, dict] = {
                    "of russet fox fur with a long bushy tail",
         "physique": {"body_type": "lean", "height": "average height"},
     },
+
+    # === Record of Ragnarok ==============================================
+    # Curated on the "unique, describable WORN look" bar (curation rule 1), which
+    # excludes a good deal of this cast: Adam, Heracles, Raiden Tameemon and Zeus
+    # fight bare-chested in plain shorts or a loincloth and would render as a
+    # generic muscular figure. Thor and Poseidon's brother gods also collide with
+    # far better-known Marvel keys, so only the ones whose silhouette is genuinely
+    # their own are here. Recorded in docs/suggested-additions.md.
+    "Aphrodite (Record of Ragnarok)": {
+        # Canon presentation is essentially nude, with attendants physically
+        # supporting her bust -- unusable twice over: a costume roster needs a worn
+        # look, and naming attendants would put extra figures in the frame (the
+        # reason 0.63.0 deleted the over-the-shoulder shot type). Shipped as the
+        # clothed Grecian reading of the same character: the flower-dressed
+        # shoulder-length blonde hair and the blue eyes are the canon identifiers.
+        "franchise": "Record of Ragnarok",
+        "gender": "Female",
+        "costume": "a draped white Grecian gown clasped at one shoulder with a gold "
+                   "brooch, a gold rope girdle, layered gold necklaces and armlets, "
+                   "and small pale flowers threaded through the hair",
+        "eyes": "large pale blue",
+        # The costume names necklaces, so the field is pinned absent -- a costume
+        # suppresses bag/watch/hair_accessory/accessories but NOT jewellery, so an
+        # unpinned `necklace` renders a second, different one alongside the prose.
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_texture": "loosely wavy", "necklace": "no necklace"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Brunhilde": {
+        "franchise": "Record of Ragnarok",
+        "gender": "Female",
+        "costume": "a white and silver high-collared valkyrie dress with blue trim, "
+                   "a long slit skirt over dark thigh-high stockings, silver armored "
+                   "gauntlets and a flowing pale cape",
+        "eyes": "deep blue",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Lu Bu": {
+        "franchise": "Record of Ragnarok",
+        "gender": "Male",
+        "costume": "ornate crimson and gold Han lamellar armor with broad layered "
+                   "shoulder guards and a wide sash, over a bare muscular chest, with "
+                   "a tall headdress crowned by two long pheasant tail feathers",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "top knot", "facial_hair": "full beard"},
+        "physique": {"body_type": "stocky", "height": "very tall",
+                     "fitness_level": "muscular", "skin_tone": "warm tan"},
+        "prop": "an enormous crescent-bladed halberd",
+    },
+    "Jack the Ripper (Record of Ragnarok)": {
+        "franchise": "Record of Ragnarok",
+        "gender": "Male",
+        "costume": "a long dark Victorian overcoat over a waistcoat and cravat, a "
+                   "flat newsboy cap, a wound scarf and close-fitting leather gloves",
+        "eyes": "pale green",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "ear length",
+                      "hair_texture": "sleek straight", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale"},
+    },
+    "Buddha (Record of Ragnarok)": {
+        "franchise": "Record of Ragnarok",
+        "gender": "Male",
+        "costume": "an ornate cream and gold monastic robe worn open over the chest "
+                   "with heavy beaded prayer strands, gold arm rings, and small round "
+                   "dark sunglasses",
+        "signature": {"hair_color": "lavender", "hair_length": "very short",
+                      "hair_texture": "tightly curled", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "fitness_level": "very fit", "skin_tone": "light medium"},
+    },
+    "Shiva (Record of Ragnarok)": {
+        # Four arms are anatomy, not a garment, so they ride in the costume prose
+        # the way the Soul Calibur four-armed entries do. The body is skin, so no
+        # covers_body (the 0.64.0 material rule).
+        "franchise": "Record of Ragnarok",
+        "gender": "Male",
+        "costume": "a short golden dhoti with a jewelled belt over a bare torso, heavy "
+                   "gold arm rings and a broad collar necklace, painted white ash "
+                   "stripes across the brow and chest, and four muscular arms",
+        "eyes": "molten gold",
+        # `necklace` pinned absent because the costume names a collar necklace (see
+        # the Aphrodite note above -- a costume does not suppress jewellery).
+        "signature": {"hair_color": "silver", "hair_length": "long",
+                      "hair_style": "top knot", "facial_hair": "clean shaven",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "fitness_level": "muscular", "skin_tone": "warm brown"},
+    },
+
+    # === Marvel (later additions) ========================================
+    "Venus (Marvel)": {
+        # Reopens a 0.70.0 "deliberately skipped" row on an explicit maintainer
+        # request, exactly as Kimberly (Space Ace) was reopened at 0.77.0. The
+        # original skip reason was real -- she shifts her own appearance in canon
+        # and has no single fixed costume -- so this ships her most-drawn look, the
+        # white Grecian gown, with the Agents of Atlas green gown as an alternate.
+        # The skip table in docs/suggested-additions.md is updated, not ignored.
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a flowing white Grecian gown gathered at one shoulder with a gold "
+                   "clasp, a gold rope belt and gold sandals",
+        "costumes": [
+            # No earrings named here: `earrings` is a randomized field that a costume
+            # does NOT suppress (_COSTUME_SUPPRESSED_EXTRAS covers bag/watch/
+            # hair_accessory/accessories only), so naming a pair in the prose renders
+            # two different sets. Either lock the field or stay off it.
+            "a strapless emerald green evening gown with a thigh slit and long "
+            "matching opera gloves",
+        ],
+        "eyes": "sea green",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
 }
 
 
@@ -18227,6 +18546,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Anime", "Speed Racer",
+        "Record of Ragnarok",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
         "My Dress-Up Darling", "Darling in the Franxx", "Black Lagoon", "Gurren Lagann",

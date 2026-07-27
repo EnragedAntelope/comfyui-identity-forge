@@ -39,6 +39,23 @@ maintainer decision — worth recording so the bar is not misread as having drop
 
 **The shortlist is currently empty.** Add new candidates here as they are found.
 
+### Record of Ragnarok — characters deliberately NOT added (0.78.0)
+
+The franchise opened at 0.78.0 with Aphrodite, Brunhilde, Lu Bu, Jack the Ripper, Buddha and
+Shiva. The rest of the headline cast was assessed and skipped, so it is not re-litigated:
+
+| Candidate | Why skipped |
+|---|---|
+| Adam, Heracles, Raiden Tameemon, Zeus | Fight bare-chested in plain shorts or a loincloth. No describable worn look — fails curation rule 1, and they would render as a generic muscular figure. |
+| Thor, Poseidon, Hermes | The names collide with far better-known Marvel/DC keys already shipping, and their Record of Ragnarok designs are not distinctive enough to earn a disambiguated key. |
+| Qin Shi Huang, Nikola Tesla, Sasaki Kojiro, Beelzebub, Hajun | Real deep cuts outside the series' own audience. |
+
+**Aphrodite carries a note in the data:** her canonical presentation is essentially nude with
+attendants physically supporting her bust. That is unusable twice over — a costume roster needs
+a worn look, and naming attendants puts extra figures in the frame (the reason 0.63.0 deleted
+the over-the-shoulder shot type). She ships as the clothed Grecian reading, keeping the canon
+identifiers (flower-dressed shoulder-length blonde hair, blue eyes).
+
 ---
 
 ## TBD — how to handle animal characters
