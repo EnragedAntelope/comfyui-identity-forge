@@ -1,7 +1,8 @@
 # Gallery images are deployed to the gh-pages branch only.
-# DO NOT commit images to the main branch.
+# A clone of main must never pull ~200 MB of samples.
 images/
 
-# Scratch output from cross_reference.py -- regenerate on demand, never commit.
+# Scratch output from cross_reference.py. Regenerate on demand, never commit.
 missing.txt
+orphans.txt
 extra.txt

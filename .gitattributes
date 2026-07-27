@@ -1,0 +1,6 @@
+# Batch files MUST be CRLF. An LF-only .bat breaks goto/:label resolution on
+# Windows, and every launcher in gallery/ is built around goto labels.
+*.bat text eol=crlf
+
+# Everything else: normalize to LF in the repository, check out natively.
+* text=auto

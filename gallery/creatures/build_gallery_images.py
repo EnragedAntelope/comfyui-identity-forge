@@ -1,8 +1,8 @@
-"""Optimize COSPLAY sample images for web display.
+"""Optimize CREATURE sample images for web display.
 
 Standalone bulk tool: resize to 600px wide, JPEG quality 80, keep aspect ratio.
 
-    python gallery/cosplay/build_gallery_images.py --source <dir> --output <dir>
+    python gallery/creatures/build_gallery_images.py --source <dir> --output <dir>
 
 ``publish.py`` imports :func:`optimize_image` from here and writes straight into
 the gh-pages checkout, so the normal workflow never needs this script directly.
@@ -10,7 +10,7 @@ Use it when you want a local optimized copy without publishing.
 
 =============================================================================
  THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/cosplay/ - gallery/archetypes/ - gallery/creatures/
+ gallery/creatures/ - gallery/archetypes/ - gallery/creatures/
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
  it to the other two (see gallery/README.md).
 =============================================================================
@@ -28,7 +28,7 @@ except ImportError:
     sys.exit(1)
 
 # === GALLERY CONFIG - the only part that differs between the three copies ====
-GALLERY_KIND = "cosplay"
+GALLERY_KIND = "creatures"
 # ============================================================================
 
 #: 600px is the widest the gallery grid ever renders a card, so anything larger

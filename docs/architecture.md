@@ -66,9 +66,35 @@ and hold no source-of-truth data.
 and commit the refreshed files. `--check` regenerates in memory and exits non-zero if the
 committed docs are stale (suitable for CI / a pre-commit guard).
 
+### Sample galleries (`gallery/`)
+
+Three sibling galleries — `cosplay/`, `archetypes/`, `creatures/` — each publishing a
+sample render per roster entry to GitHub Pages. Full detail in
+[gallery/README.md](../gallery/README.md); the parts that constrain future work:
+
+- **Images live only on `gh-pages`.** `gallery/.gitignore` blocks `images/` on `main`, so
+  a clone never pulls hundreds of megabytes. Pages, scripts and manifests live on `main`.
+- **The manifest is rebuilt from what is published, never from the source folder.** This
+  is the whole safety model: your source folder only adds or overwrites, so an entry you
+  did not supply an image for is never touched and never deleted. The removed `deploy.py`
+  got this backwards and would have deleted the entire gallery if pointed at a folder of
+  a few new images.
+- **Publishing uses `git worktree`, not `stash` + `checkout`.** The current working tree
+  is never touched. Deletion requires an explicit `--prune-orphans`, and even then only
+  removes images matching no roster entry at all.
+- **The three copies are byte-identical outside their docstring and `GALLERY CONFIG`
+  block.** This is copy-and-adapt by design (three independently-published sites, no
+  shared package), so **an improvement to one script must be ported to the other two** —
+  `tests/test_gallery.py::CopiesStayInSyncTests` fails until it is. `BatchLauncherTests`
+  guards the `.bat` launchers (every exit pauses, no parenthesised `if` blocks, ASCII
+  only, CRLF via `.gitattributes`).
+- Adding a fourth gallery is a folder copy plus one config block per file; the checklist
+  is at the bottom of `gallery/README.md`.
+
 Pack is **V3 API** (`comfy_api.latest`), category `conditioning/character`, **zero deps**,
 fully offline. The engine half of every node is a pure function importable without ComfyUI
-(that's how the tests run headless).
+(that's how the tests run headless). Pillow is required *only* by the gallery publishing
+scripts, which are maintainer tooling and never imported by a node.
 
 ## Nodes & data flow
 

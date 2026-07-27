@@ -1,14 +1,14 @@
-"""Report which COSPLAY entries still need a sample image.
+"""Report which CREATURE entries still need a sample image.
 
-    python gallery/cosplay/cross_reference.py                 # against gh-pages
-    python gallery/cosplay/cross_reference.py --images <dir>  # against a folder
+    python gallery/creatures/cross_reference.py                 # against gh-pages
+    python gallery/creatures/cross_reference.py --images <dir>  # against a folder
 
 Read-only. Writes ``missing.txt`` / ``orphans.txt`` beside this script (both
 git-ignored) and prints a summary. Deletes nothing, publishes nothing.
 
 =============================================================================
  THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/cosplay/ - gallery/archetypes/ - gallery/creatures/
+ gallery/creatures/ - gallery/archetypes/ - gallery/creatures/
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
  it to the other two (see gallery/README.md).
 =============================================================================
@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # === GALLERY CONFIG - the only part that differs between the three copies ====
-GALLERY_KIND = "cosplay"
+GALLERY_KIND = "creatures"
 # ============================================================================
 
 from build_manifest import entry_names, normalize_name  # noqa: E402

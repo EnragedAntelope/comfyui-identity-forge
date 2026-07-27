@@ -1,10 +1,10 @@
-"""Generate manifest.json for the COSPLAY gallery.
+"""Generate manifest.json for the ARCHETYPE gallery.
 
-    python gallery/cosplay/build_manifest.py --images <dir>
+    python gallery/archetypes/build_manifest.py --images <dir>
 
 =============================================================================
  THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/cosplay/build_manifest.py - gallery/archetypes/build_manifest.py -
+ gallery/archetypes/build_manifest.py - gallery/archetypes/build_manifest.py -
  gallery/creatures/build_manifest.py
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
  it to the other two (see gallery/README.md).
@@ -28,25 +28,21 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 sys.path.insert(0, REPO_ROOT)
 
 # === GALLERY CONFIG - the only part that differs between the three copies ====
-GALLERY_KIND = "cosplay"
+GALLERY_KIND = "archetypes"
 
-from data.cosplayers import COSPLAYERS  # noqa: E402
-
-#: Dropdown sentinels are not characters and never have an image.
-SENTINEL_NAMES = {"None", "Random — any", "Random — female", "Random — male"}
-
+from data.templates import ARCHETYPES  # noqa: E402
 
 def entry_names() -> list[str]:
-    """Every roster name this gallery can show an image for."""
-    return [n for n in COSPLAYERS if n not in SENTINEL_NAMES]
+    """Every archetype name this gallery can show an image for."""
+    return list(ARCHETYPES)
 
 
 def entry_meta(name: str) -> dict:
     """Extra per-entry fields for the manifest; also searchable on the page."""
-    data = COSPLAYERS[name]
+    data = ARCHETYPES[name]
     return {
-        "gender": data.get("gender", "unknown"),
-        "group": data.get("franchise", ""),
+        "gender": data.get("gender", "any"),
+        "group": data.get("outfit_style", ""),
     }
 # ============================================================================
 

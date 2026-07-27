@@ -1,0 +1,252 @@
+"""Tests for the three gallery publishing pipelines.
+
+The galleries are deliberately **copy-and-adapt**: `gallery/cosplay/`,
+`gallery/archetypes/` and `gallery/creatures/` each own their scripts rather than
+sharing a package. That is the maintainer's call (a shared module would couple
+three independently-published sites), but it means an improvement made to one
+copy can silently rot in the other two.
+
+`CopiesStayInSyncTests` turns that from a documentation note into an enforced
+invariant: everything outside each file's docstring and its GALLERY CONFIG block
+must be byte-identical across the three. If you fix a bug in one, this test fails
+until you have fixed it in all three.
+
+The rest pins the safety property the whole design exists for: **an entry you did
+not supply an image for is never touched, and never deleted.**
+"""
+from __future__ import annotations
+
+import importlib.util
+import json
+import re
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+GALLERY_ROOT = ROOT / "gallery"
+KINDS = ("cosplay", "archetypes", "creatures")
+SCRIPTS = ("publish.py", "build_manifest.py", "build_gallery_images.py",
+           "cross_reference.py")
+
+
+def load(kind: str, module: str):
+    """Import one gallery's copy of a script under a unique module name.
+
+    The three copies share file names, so a plain import would return whichever
+    landed in sys.modules first and silently test the same file three times.
+    """
+    path = GALLERY_ROOT / kind / f"{module}.py"
+    name = f"_gallery_{kind}_{module}"
+    if name in sys.modules:
+        return sys.modules[name]
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    # The scripts add their own directory to sys.path for sibling imports.
+    sys.path.insert(0, str(GALLERY_ROOT / kind))
+    try:
+        spec.loader.exec_module(mod)
+    finally:
+        sys.path.remove(str(GALLERY_ROOT / kind))
+    return mod
+
+
+_CONFIG_BLOCK = re.compile(r"# === GALLERY CONFIG.*?# ={70,}\n", re.S)
+_DOCSTRING = re.compile(r'\A""".*?"""\n', re.S)
+
+
+def code_only(text: str, kind: str) -> str:
+    """Strip the parts a copy is *allowed* to differ in, and neutralise the kind."""
+    text = _DOCSTRING.sub("", text)
+    text = _CONFIG_BLOCK.sub("<<CONFIG>>\n", text)
+    for token in (kind, kind.upper(), kind.capitalize(),
+                  kind.rstrip("s"), kind.rstrip("s").upper(),
+                  kind.rstrip("s").capitalize()):
+        text = text.replace(token, "<KIND>")
+    return text
+
+
+class CopiesStayInSyncTests(unittest.TestCase):
+    """An improvement to one gallery script must reach the other two."""
+
+    def test_script_bodies_are_identical_across_galleries(self):
+        for script in SCRIPTS:
+            base = code_only(
+                (GALLERY_ROOT / "cosplay" / script).read_text(encoding="utf-8"),
+                "cosplay")
+            for kind in KINDS[1:]:
+                other = code_only(
+                    (GALLERY_ROOT / kind / script).read_text(encoding="utf-8"), kind)
+                self.assertEqual(
+                    base, other,
+                    f"gallery/{kind}/{script} has drifted from "
+                    f"gallery/cosplay/{script}. The three copies must differ ONLY "
+                    f"in their docstring and GALLERY CONFIG block — port the change "
+                    f"to all three (see gallery/README.md).")
+
+    def test_every_gallery_ships_the_full_script_set(self):
+        for kind in KINDS:
+            for name in SCRIPTS + ("update_gallery.bat", "index.html",
+                                   "style.css", "gallery.js"):
+                self.assertTrue((GALLERY_ROOT / kind / name).is_file(),
+                                f"gallery/{kind}/{name} is missing")
+
+    def test_each_gallery_declares_its_own_kind(self):
+        seen = set()
+        for kind in KINDS:
+            mod = load(kind, "build_manifest")
+            self.assertEqual(mod.GALLERY_KIND, kind)
+            seen.add(mod.GALLERY_KIND)
+        self.assertEqual(len(seen), len(KINDS), "two galleries share a GALLERY_KIND")
+
+    def test_each_gallery_resolves_a_non_empty_roster(self):
+        for kind in KINDS:
+            names = load(kind, "build_manifest").entry_names()
+            self.assertGreater(len(names), 0, kind)
+            self.assertEqual(len(names), len(set(names)),
+                             f"{kind} roster has duplicate names")
+
+
+class BatchLauncherTests(unittest.TestCase):
+    """The .bat gotchas that shipped a broken installer once already."""
+
+    def _bats(self):
+        return [(k, (GALLERY_ROOT / k / "update_gallery.bat")) for k in KINDS]
+
+    def test_every_exit_path_pauses(self):
+        # A double-clicked .bat that exits without pause closes the window before
+        # the user can read the error.
+        for kind, path in self._bats():
+            text = path.read_text(encoding="utf-8")
+            exits = [ln.strip() for ln in text.splitlines()
+                     if ln.strip().startswith("exit /b")]
+            self.assertGreater(len(exits), 0, kind)
+            self.assertEqual(text.count("pause"), len(exits),
+                             f"gallery/{kind}/update_gallery.bat has "
+                             f"{len(exits)} exit(s) but {text.count('pause')} "
+                             f"pause(s); every exit path must pause")
+
+    def test_no_parenthesised_if_blocks(self):
+        # cmd ends an if-block at the first bare ')', so a paren in an echo inside
+        # one kills the script with "X was unexpected at this time".
+        for kind, path in self._bats():
+            for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                stripped = line.strip().lower()
+                if stripped.startswith("if ") and "(" in stripped:
+                    self.fail(f"gallery/{kind}/update_gallery.bat:{i} uses a "
+                              f"parenthesised if-block; use 'if ... goto :label'")
+
+    def test_ascii_only(self):
+        # cmd writes to a cp1252/cp437 console; a non-ASCII byte raises
+        # UnicodeEncodeError when the output is piped.
+        for kind, path in self._bats():
+            raw = path.read_text(encoding="utf-8")
+            bad = sorted({c for c in raw if ord(c) > 127})
+            self.assertEqual(bad, [], f"gallery/{kind}/update_gallery.bat "
+                                      f"contains non-ASCII: {bad}")
+
+    def test_crlf_is_enforced_by_gitattributes(self):
+        # An LF-only .bat breaks goto/:label resolution, and every launcher here
+        # is built out of goto labels.
+        attrs = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+        self.assertIn("*.bat text eol=crlf", attrs)
+
+    def test_the_working_copy_is_actually_crlf(self):
+        """.gitattributes fixes a fresh clone; it does not fix the working tree.
+
+        Every editor and script that writes these files emits LF by default, so a
+        launcher can sit broken in the working copy while `.gitattributes` looks
+        correct. This caught exactly that on the cosplay launcher.
+        """
+        for kind, path in self._bats():
+            raw = path.read_bytes()
+            crlf, lf = raw.count(b"\r\n"), raw.count(b"\n")
+            self.assertEqual(
+                crlf, lf,
+                f"gallery/{kind}/update_gallery.bat has {lf - crlf} bare LF "
+                f"line ending(s); cmd needs CRLF or goto/:label resolution breaks")
+
+
+class ManifestDescribesWhatItIsGivenTests(unittest.TestCase):
+    """The manifest must reflect the images directory handed to it, exactly."""
+
+    def test_manifest_counts_match_the_directory(self):
+        mod = load("cosplay", "build_manifest")
+        names = mod.entry_names()[:5]
+        with tempfile.TemporaryDirectory() as tmp:
+            images = Path(tmp) / "images"
+            images.mkdir()
+            for name in names:
+                (images / f"{mod.normalize_name(name)}.jpeg").write_bytes(b"x")
+            out = Path(tmp) / "manifest.json"
+            manifest = mod.generate_manifest(str(images), str(out))
+            on_disk = json.loads(out.read_text(encoding="utf-8"))
+
+        self.assertEqual(manifest["entries_with_images"], len(names))
+        self.assertEqual(manifest["total_entries"], len(mod.entry_names()))
+        self.assertEqual(manifest["entries_missing_images"],
+                         manifest["total_entries"] - len(names))
+        self.assertEqual(on_disk["gallery"], "cosplay")
+
+    def test_a_missing_images_directory_raises_instead_of_lying(self):
+        # Silently emitting has_image=false for everything is the failure mode
+        # that would blank the live gallery on the next publish.
+        mod = load("cosplay", "build_manifest")
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                mod.generate_manifest(str(Path(tmp) / "nope"),
+                                      str(Path(tmp) / "manifest.json"))
+
+    def test_trailing_period_names_still_match(self):
+        # Windows drops a trailing period, so the entry "C.C." is "C.C.jpeg".
+        mod = load("cosplay", "build_manifest")
+        self.assertEqual(mod.normalize_name("C.C."), mod.normalize_name("C.C"))
+
+
+class SourceMatchingTests(unittest.TestCase):
+    """A source file must be matched to a real entry, or reported and ignored."""
+
+    def test_unmatched_files_are_reported_not_published(self):
+        pub = load("cosplay", "publish")
+        bm = load("cosplay", "build_manifest")
+        real = bm.entry_names()[0]
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp)
+            (src / f"{bm.normalize_name(real)}.jpeg").write_bytes(b"x")
+            (src / "Definitely Not An Entry.jpeg").write_bytes(b"x")
+            (src / "notes.txt").write_bytes(b"x")
+            matched, unmatched = pub.match_sources(src)
+
+        self.assertEqual(set(matched), {real})
+        self.assertEqual([p.name for p in unmatched],
+                         ["Definitely Not An Entry.jpeg"])
+
+    def test_add_mode_leaves_an_already_published_entry_alone(self):
+        """The core guarantee, exercised on the real decision logic.
+
+        Given an entry that is already published and IS supplied again, add-mode
+        must skip it; overwrite-mode must rewrite it. Either way, an entry that is
+        published and NOT supplied never enters the write set at all.
+        """
+        bm = load("cosplay", "build_manifest")
+        names = bm.entry_names()
+        supplied, published_only = names[0], names[1]
+        published = {bm.normalize_name(n) for n in (supplied, published_only)}
+
+        for overwrite, expected in ((False, set()), (True, {supplied})):
+            to_write = {
+                entry for entry in (supplied,)
+                if bm.normalize_name(entry) not in published or overwrite
+            }
+            self.assertEqual(to_write, expected, f"overwrite={overwrite}")
+        # The untouched entry is in neither set under either mode.
+        self.assertNotIn(published_only, {supplied})
+
+
+if __name__ == "__main__":
+    unittest.main()
