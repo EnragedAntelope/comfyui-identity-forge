@@ -631,6 +631,67 @@ One-sided casts are a permanent feature of the data, not a defect to fix by padd
 is 11F/0M and `Sailor Moon` is 9F/1M because those casts are one-sided. The relax-gender path is
 what makes them behave.
 
+### Field-pool growth: `outfit_style` and `hair_style` (deferred 0.77.0)
+
+Both were scoped at 0.77.0 after the maintainer asked whether more hairstyles or clothing
+styles should be on offer. Both were **deliberately not built**. The reasoning is worth keeping,
+because the *shape* of the objection generalises to any future field-pool expansion.
+
+**`outfit_style` is a register axis, not a theme axis.** Its 14 values answer *how dressed up,
+for what occasion* — `casual` → `business formal` → `athletic` → `loungewear`. The obvious
+additions (goth, cottagecore, western, punk, y2k, utility/workwear) are **subculture and era
+themes**, which is the **Archetype node's** job, not the base node's. This was checked, not
+assumed: `1990s Goth`, `Gothic Doll`, `Cottagecore`, `Y2K Mall Casual`, `1990s Grunge` and
+`Punk Rocker` **already ship as archetypes**, so adding them here would have duplicated a whole
+layer of the pack inside the "believable person" node and pulled its output away from believable
+and toward costumed. `bohemian`, `edgy alternative` and `vintage retro` are the existing
+borderline values; they are **grandfathered, not precedent**. Note the separate mechanical cost:
+`outfit_style` is a **flat** field, so 14 → 19 would dilute every existing style from 7.1% to
+5.3%.
+
+**`hair_style` is family-weighted, so additions are provably bias-free — but the same theme
+objection applies to half the list.** Splitting the candidates is the useful part of this note:
+
+- *Era- or subculture-coded — do not add without a fresh decision:* `victory rolls` (1940s
+  pin-up), `hime cut` (anime-coded), `faux hawk`, `wolf cut`. Same failure mode as
+  `outfit_style`; `1940s Factory Worker`, `Pin-up Model` and `Gothic Doll` already cover this
+  ground as archetypes.
+- *Ordinary contemporary barbering — the real, theme-free gap:* `fade`, `undercut`,
+  `pompadour`, `quiff`, `shag`. None of these date or theme a person. The **male pool currently
+  adds only `comb over` and `mullet`** over the female pool, both of which are *more* era-coded
+  than anything in this group — so masculine styling is simultaneously thin and skewed toward
+  the dated end. This is the half worth revisiting.
+
+If the second group is ever built, each value must be slotted into a `HAIR_STYLE_FAMILIES`
+family **and** into the `data/constraints.py` length lists (`_LONG_HAIR_STYLES`, the pixie
+exclusion) — the rule `cornrows` and `bantu knots` escaped until 0.72.0.
+
+Two genuine **archetype** gaps surfaced while checking this and are recorded here rather than
+acted on: there is no western/cowboy archetype and no biker archetype.
+
+### The `loose` hair_style family blocks the rest of the buzz-cut fix (open, 0.77.0)
+
+0.77.0 fixed bangs-on-a-buzz-cut (see `constraints.py`), but a 12,000-sample sweep found five
+more physically impossible pairings that were **deliberately left in place**:
+`buzzed very short` × `worn down` (98), `windswept` (103), `freshly blown out` (102),
+`tousled bedhead` (93), `slicked back` (99) — roughly 4% of all output.
+
+They could not be fixed the same way. `curtain bangs` + `blunt bangs` are *exactly* the `bangs`
+family, so excluding both drops a **whole family** and every other family stays proportional.
+All five of these instead live in the 9-variant `loose` family beside `wet look`,
+`natural and unstyled`, `comb over` and `mullet`. Culling part of a family leaves its **full
+frozen weight** on the survivors (the trap documented for `LIGHTING_FAMILIES` at 0.64.0), so the
+"fix" would have concentrated `loose`'s entire share onto `wet look` and `natural and unstyled`
+for every buzz cut — trading a coherence bug for a distribution bug.
+
+**The real fix is a family split**, exactly the treatment `POSE_FAMILIES` got at 0.66.0: break
+`loose` into sub-families whose weights are **proportional to variant count**, so the
+buzz-impossible ones can be dropped as whole units. That is a designed change with seed drift,
+so it needs its own decision. The same argument applies to `short pixie` × `dutch braids` (69)
+and `crown braid` (30), which are the two braids missing from the pixie exclusion list: culling
+them would double `cornrows`/`locs` on pixies, because they would be the `braid` family's only
+survivors there.
+
 ### Per-character "has skin but wouldn't wear jewellery" (closed 0.66.0 — do not re-flag)
 
 Raised at 0.64.0 and **closed by explicit user decision**: leave it alone entirely.
@@ -668,6 +729,25 @@ civilian/no-costume names (Lois Lane's Lana Lang, Vicki Vale, plus the Archie gi
 everyday teen fashion). Don't re-add these without a fresh curation decision.
 
 ## Gotchas cheat-sheet
+
+- **A franchise-disambiguated key must not restate its franchise in the label (0.77.0).** The
+  cosplay prefix is built as `f"{cosplay_of} ({franchise})"`, so the 29 entries whose key is
+  disambiguated *by their franchise* rendered it twice — `Cosplaying as Red (Pokemon)
+  (Pokemon)`, `Zero (Code Geass) (Code Geass)`, `Selene (Underworld) (Underworld)`. It had been
+  shipping in the prompt text for many releases and nothing caught it, because the roster
+  validator checks key *uniqueness* and never looks at the rendered label. Fixed in
+  `nodes/identity_forge.py` with an `endswith(f"({franchise})")` guard rather than by renaming
+  26 shipped keys, which would have broken every saved workflow that locked one. Prose-only,
+  zero RNG draws, no seed drift. The disambiguation convention itself is unchanged — keep using
+  `Christie (Dead or Alive)`; the label just no longer stutters.
+- **Count the family before adding a coherence exclusion (0.77.0).** Whether an "obviously
+  correct" exclusion is safe depends entirely on whether it removes a **whole**
+  `FIELD_FAMILIES` family. Excluding `curtain bangs` + `blunt bangs` on a buzz cut is safe
+  because those two *are* the `bangs` family; excluding the five equally-impossible `loose`
+  family members alongside them would have dumped that family's full frozen weight on two
+  survivors. Same rule, same reason as the lighting buckets — check
+  `HAIR_STYLE_FAMILIES`/`POSE_FAMILIES`/etc. **before** writing the rule, not after. The
+  deferred half is written up under "Considered and deferred".
 
 - **A character rendering in the wrong *medium* (drawn / illustrated / 3D) is almost never a data
   bug.** Investigated at 0.66.0 for Rydia (FF4), who renders as official art. A scan of **every

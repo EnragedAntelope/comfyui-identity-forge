@@ -22,42 +22,116 @@ genuinely different name, so the grep is still the first step.
 
 ## Curated shortlist (higher-value, genuinely missing)
 
-Carried over from the 0.76.0 coverage pass, which opened a batch of previously
-unrepresented franchises. These are the next-best candidates in each — worth
-adding, but they were below the line for that revision's scope.
+**Cleared in 0.77.0.** Every candidate carried over from the 0.76.0 coverage pass has
+now shipped, except the two animal entries, which moved to the TBD section below.
+Added: Akame, Kirito, Lelouch vi Britannia (civilian), Ainz Ooal Gown,
+`Aqua (KonoSuba)`, `Darkness (KonoSuba)`, `Morpheus (The Matrix)`, Columbia, Rachael,
+Kiss-Shot Acerola-Orion Heart-Under-Blade, Hitagi Senjougahara, and Chizuru Mizuhara.
 
-| Candidate | Franchise | Why it is worth adding |
+Three of those shipped over the shortlist's own reservations, on an explicit
+maintainer decision — worth recording so the bar is not misread as having dropped:
+
+| Candidate | Reservation | How it was resolved |
 |---|---|---|
-| Akame | Akame ga Kill | The title character; black uniform, red eyes, a named katana. The franchise currently ships only Esdeath. |
-| Kirito | Sword Art Online | The lead; black long coat and dual blades. Franchise ships only Asuna. |
-| Lelouch vi Britannia (civilian) | Code Geass | Only the masked **Zero** look ships. The Ashford uniform plus the Geass sigil is a distinct second look. |
-| Ainz Ooal Gown | Overlord | Skeletal overlord in dark robes; the only male anchor for a franchise that ships two succubi. |
-| Aqua / Darkness | KonoSuba | Both need a disambiguating key (`Aqua` is taken by Kingdom Hearts). |
-| Morpheus | The Matrix | Long leather coat and pince-nez mirrored glasses; completes the trio with Neo and Trinity. |
-| Columbia | The Rocky Horror Picture Show | Gold sequinned tailcoat and top hat — visually distinct from Magenta's maid look. |
-| Rachael | Blade Runner | 1940s-revival suit with padded shoulders and victory rolls; a different silhouette from Pris. |
-| Shinobu Oshino / Hitagi Senjougahara | Monogatari | Well-known, but neither has a costume that reads without series context. |
-| Sandy Cheeks | SpongeBob | Needs a decision first: the pressurised diving suit with the glass dome hides the head, and the squirrel underneath arguably belongs to the Creature node. |
-| Gadget Hackwrench | Chip 'n Dale Rescue Rangers | Purple jumpsuit and goggles, but she is a mouse — same Creature-node question as Sandy. |
-| Chizuru Mizuhara | Rent-a-Girlfriend | Top of the popularity rankings, but the canonical look is ordinary modern dress. |
+| Shinobu Oshino | Listed both as "no costume that reads without series context" **and** in the skip table as child-bodied — the file contradicted itself. | Shipped as the **adult Kiss-Shot Acerola-Orion Heart-Under-Blade** form, which has a real, ornate worn look and sidesteps the child-bodied objection entirely. Keyed under the Kiss-Shot name, not "Shinobu". |
+| Hitagi Senjougahara | Canonical look is a school uniform. | Shipped anyway; the lavender hair and the specific Naoetsu High uniform carry it. Genuinely a soft entry. |
+| Chizuru Mizuhara | Canonical look is ordinary modern dress. | Shipped anyway. The softest entry of the three — if a future pass tightens the "iconic *and* specific outfit" bar, this is the first one to re-examine. |
+
+**The shortlist is currently empty.** Add new candidates here as they are found.
+
+---
+
+## TBD — how to handle animal characters
+
+Candidates parked pending a decision on how (and whether) fully-animal characters
+should be represented. Moved here in 0.77.0 from the shortlist and the skip table.
+
+| Candidate | Franchise | Shape of the problem |
+|---|---|---|
+| Sandy Cheeks | SpongeBob | The pressurised diving suit with the glass dome hides the head, and the squirrel underneath arguably belongs to the Creature node. |
+| Gadget Hackwrench | Chip 'n Dale Rescue Rangers | Purple jumpsuit and goggles — a real worn look — but she is a mouse. |
+| Appa, Momo | Avatar: The Last Airbender | Non-human companions, no worn look at all. |
+| Luna, Artemis | Sailor Moon | Same — talking cats. |
+| Nala, Simba, Baloo, Shere Khan, Maid Marian, Yogi Bear, Tom & Jerry, Courage, Reptar, Scrooge McDuck, Darkwing Duck | various | Quadruped or funny-animal characters. Some (Maid Marian, Scrooge, Darkwing) *do* wear clothes; the rest do not. |
+
+### The important context: the pack already ships ~50 of these
+
+This was framed as an open question, but the roster answered a large part of it years
+ago. **91 entries carry both `covers_body` and `covers_face`** — a full head-and-body
+covering, i.e. a mascot suit — and roughly 50 of those are animals or creatures:
+
+> Bugs Bunny · Daffy Duck · Mickey Mouse · Donald Duck · Horton · Winnie the Pooh ·
+> Tigger · Eeyore · Pikachu · Eevee · Jigglypuff · Yoshi · Sonic the Hedgehog ·
+> Donkey Kong · Fox McCloud · Stitch · Olaf · Jake the Dog · Cheshire Cat ·
+> Curious George · Paddington Bear · Cowardly Lion · the four TMNT + Splinter ·
+> King Shark · Killer Croc · Gorilla Grodd · Godzilla · King Kong · Abe Sapien ·
+> Porg · Loth-Cat · Salacious Crumb · Chester Cheetah · Tony the Tiger ·
+> Energizer Bunny · Duolingo Owl · Geico Gecko · Zoidberg · Moogle · Ultros ·
+> Blaidd the Half-Wolf · Jon Talbain · Rikuo · Sasquatch · Q-Bee · Verminous Skumm ·
+> Fievel Mousekewitz · No-Face · Baron Humbert von Gikkingen · Reptile
+
+So the mechanism is settled and works: `covers_body: True` + `covers_face: True` +
+a `mask` renders a coherent person-in-a-full-suit. **The real open question is much
+narrower than "how do we handle animals":** it is whether *quadrupeds with no worn
+look at all* (Appa, Simba, Baloo, Luna/Artemis) belong in a costume roster.
+
+**Recommendation: they do not.** A quadruped has no garments to describe, which fails
+curation rule 1, and the **Creature node already covers exactly this ground** — it
+renders a character as an animal form, hybridized slot-by-slot. Sandy Cheeks and
+Gadget Hackwrench are the genuinely borderline pair, because both wear real,
+describable garments over an animal body; they would work as ordinary entries with
+`covers_body: True` if the animal head is written into a `mask`.
+
+### Proposed grouping/toggle (not built — needs a decision)
+
+Add a **`Mascot / full-suit`** attribute scope to the Cosplayer node's `random_scope`,
+derived from `covers_body and covers_face`:
+
+```python
+"Mascot / full-suit": lambda e: e.get("covers_body") and e.get("covers_face"),
+```
+
+- `_SPECIAL_SCOPES` in `nodes/identity_forge_cosplayer.py` is already a
+  `{label: predicate}` map with its own branch in `_resolve_character`, so this is
+  **one lambda** — the same shape as the existing `Giant` / `Tiny` / `Masked` /
+  `Non-human / colored` scopes.
+- It is a **filter over the existing pool**, so it adds no entries and cannot shift
+  any field's distribution. Bias-free by construction.
+- It is self-maintaining: derived from the flags, so it counts `user_options.json`
+  additions and grows with the roster.
+- UX: users who want mascot suits get a way to find them (91 entries is a lot to
+  stumble on by luck), and users who don't get to see the category exists.
+
+Alternatives considered and **rejected**:
+
+- **A per-entry `is_animal` key.** A new schema key driving no engine behaviour —
+  fails working principle 1 (no unwarranted complexity). The two flags already encode
+  what matters.
+- **A global "no animal cosplays" toggle.** A negative filter is worse UX than a
+  positive scope, and `accessory_density` is the only global-control precedent in the
+  pack — it earns its place by affecting every run, which this would not.
 
 ---
 
 ## Considered and deliberately skipped
 
 Recorded so they are not re-litigated. Reopen only with a specific reason.
+(The animal rows that used to live here moved to the TBD section above.)
 
 | Candidate | Why skipped |
 |---|---|
 | Shanna / "Shana the She-Devil" | The available description conflates her with **Red Sonja**, who already ships. Would need a canon-checked jungle-heroine look to be worth a distinct entry. |
-| Kimberly (Space Ace) | Obscure, and the name collides with **Kimberly Jackson** (Street Fighter), which is already in the roster. |
 | "Magic" (Limbo sorceress) | A misspelling of **Magik**, who ships — including the blue demon-form look as an alternate costume. |
 | "The Wolfman" | Already ships as **The Wolf Man** (Universal Monsters). |
 | "Catwoman 1940s" | Catwoman already carries four alternate looks, including the Golden-Age emerald gown. |
-| Appa / Momo, Luna / Artemis | Non-human companions — these belong to the **Creature** node's domain, not the cosplayer roster. |
-| Nala, Simba, Baloo, Shere Khan, Maid Marian, Yogi Bear, Tom & Jerry, Courage, Reptar, Scrooge McDuck, Darkwing Duck | Same rule — quadruped or funny-animal characters with no worn look. The **Creature** node covers this ground. |
 | Jessica Jones, Marion Ravenwood, Baby Houseman, Frankie Foster, Peggy Hill, Luanne Platter | Everyday modern dress. Fails the "iconic *and* specific outfit" bar that admitted Trinity, Mia Wallace and Sandy Olsson. |
 | Barbarella | Re-confirmed skip (first recorded in the 0.70.0 comic-women review). |
 | Sue Storm, Ghost-Spider, Spider-Gwen, Kurisu (Steins;Gate) | Already ship under their other names — **Invisible Woman**, **Spider-Gwen**, **Makise Kurisu**. |
 | Alice Abernathy | The *Resident Evil* films only. `Resident Evil` is registered under **Video Games**, so she would be filed in the wrong category; a `Resident Evil (film)` franchise is not worth the split. |
-| Anya Forger, Beatrice (Re:Zero), Shinobu Oshino | Small-child or child-bodied characters. Distinct from the accepted child *cosplays* (Dora, the Powerpuff Girls, Tina Belcher), whose looks are ordinary clothing. |
+| Anya Forger, Beatrice (Re:Zero) | Small-child or child-bodied characters. Distinct from the accepted child *cosplays* (Dora, the Powerpuff Girls, Tina Belcher, Charlie Brown), whose looks are ordinary clothing. |
+
+**Two rows were removed from this table in 0.77.0 because they no longer apply:**
+*Kimberly (Space Ace)* was skipped as "obscure, and the name collides with Kimberly
+Jackson" — the maintainer reopened it, and she ships as `Kimberly (Space Ace)`.
+*Shinobu Oshino* was skipped as child-bodied — the adult Kiss-Shot form ships instead,
+which is why the child-bodied rule itself still stands for Anya and Beatrice.
