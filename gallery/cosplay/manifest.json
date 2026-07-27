@@ -1,10 +1,51 @@
 {
   "schema_version": 1,
-  "generated": "2026-07-27T15:58:51.332887",
-  "total_entries": 1655,
-  "entries_with_images": 1655,
-  "entries_missing_images": 0,
-  "missing": [],
+  "generated": "2026-07-27T17:08:01.722719",
+  "total_entries": 1694,
+  "entries_with_images": 1654,
+  "entries_missing_images": 40,
+  "missing": [
+    "Aeryn Sun",
+    "Alice Nakiri",
+    "Bishamonten",
+    "Casca",
+    "Chiana",
+    "Dante",
+    "Erina Nakiri",
+    "Fubuki (One Punch Man)",
+    "Griffith",
+    "Guts",
+    "Hana Midorikawa",
+    "Isuzu Sento",
+    "Ka D'Argo",
+    "Kaori Miyazono",
+    "Kate Takenomiya",
+    "Lady (Devil May Cry)",
+    "Latifa Fleuranza",
+    "Leafa",
+    "Lisa Lisa",
+    "Mari Kurihara",
+    "Megumi Tadokoro",
+    "Mei Terumi",
+    "Meiko Shiraki",
+    "Michiko Malandro",
+    "Midnight (My Hero Academia)",
+    "Moka Akashiya",
+    "Muse",
+    "Nero",
+    "Pa'u Zotoh Zhaan",
+    "Re-L Mayer",
+    "Rindou Kobayashi",
+    "Rygel XVI",
+    "Saeko Busujima",
+    "Salama",
+    "Scorpius",
+    "Soma Yukihira",
+    "Sylphy",
+    "Trish",
+    "Vergil",
+    "Yuno Gasai"
+  ],
   "entries": [
     {
       "name": "2-1B Droid",
@@ -110,6 +151,12 @@
       "gender": "Female",
       "franchise": "Final Fantasy",
       "image": "images/Aerith Gainsborough.jpeg"
+    },
+    {
+      "name": "Aeryn Sun",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Farscape"
     },
     {
       "name": "Agatha Harkness",
@@ -250,6 +297,12 @@
       "gender": "Female",
       "franchise": "Alice in Wonderland",
       "image": "images/Alice.jpeg"
+    },
+    {
+      "name": "Alice Nakiri",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Food Wars"
     },
     {
       "name": "All Might",
@@ -476,11 +529,11 @@
       "image": "images/April O'Neil.jpeg"
     },
     {
-      "name": "Aqua",
+      "name": "Aqua (Kingdom Hearts)",
       "has_image": true,
       "gender": "Female",
       "franchise": "Kingdom Hearts",
-      "image": "images/Aqua.jpeg"
+      "image": "images/Aqua (Kingdom Hearts).jpeg"
     },
     {
       "name": "Aqua (KonoSuba)",
@@ -1078,6 +1131,12 @@
       "image": "images/Bishamon.jpeg"
     },
     {
+      "name": "Bishamonten",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Noragami"
+    },
+    {
       "name": "Bishop",
       "has_image": true,
       "gender": "Male",
@@ -1379,13 +1438,6 @@
       "image": "images/Brook.jpeg"
     },
     {
-      "name": "Bruce Banner",
-      "has_image": true,
-      "gender": "Male",
-      "franchise": "Marvel",
-      "image": "images/Bruce Banner.jpeg"
-    },
-    {
       "name": "Bruce Wayne",
       "has_image": true,
       "gender": "Male",
@@ -1680,6 +1732,12 @@
       "image": "images/Carnage.jpeg"
     },
     {
+      "name": "Casca",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Berserk"
+    },
+    {
       "name": "Casey Jones",
       "has_image": true,
       "gender": "Male",
@@ -1860,6 +1918,12 @@
       "gender": "Female",
       "franchise": "Dragon Ball",
       "image": "images/Chi-Chi.jpeg"
+    },
+    {
+      "name": "Chiana",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Farscape"
     },
     {
       "name": "Chief Chirpa",
@@ -2231,6 +2295,12 @@
       "gender": "Male",
       "franchise": "Danny Phantom",
       "image": "images/Danny Phantom.jpeg"
+    },
+    {
+      "name": "Dante",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Devil May Cry"
     },
     {
       "name": "Daphne Blake",
@@ -3059,6 +3129,12 @@
       "image": "images/Eric Draven.jpeg"
     },
     {
+      "name": "Erina Nakiri",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Food Wars"
+    },
+    {
       "name": "Eris",
       "has_image": true,
       "gender": "Female",
@@ -3372,6 +3448,12 @@
       "gender": "Male",
       "franchise": "Futurama",
       "image": "images/Fry.jpeg"
+    },
+    {
+      "name": "Fubuki (One Punch Man)",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "One Punch Man"
     },
     {
       "name": "Furina",
@@ -3871,6 +3953,12 @@
       "image": "images/Greez Dritus.jpeg"
     },
     {
+      "name": "Griffith",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Berserk"
+    },
+    {
       "name": "Grifter",
       "has_image": true,
       "gender": "Male",
@@ -3920,6 +4008,12 @@
       "image": "images/Guile.jpeg"
     },
     {
+      "name": "Guts",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Berserk"
+    },
+    {
       "name": "Guy Gardner",
       "has_image": true,
       "gender": "Male",
@@ -3967,6 +4061,12 @@
       "gender": "Male",
       "franchise": "Star Wars",
       "image": "images/Han Solo.jpeg"
+    },
+    {
+      "name": "Hana Midorikawa",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Prison School"
     },
     {
       "name": "Handsome Jack",
@@ -4478,6 +4578,12 @@
       "gender": "Male",
       "franchise": "High School DxD",
       "image": "images/Issei Hyoudou.jpeg"
+    },
+    {
+      "name": "Isuzu Sento",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Amagi Brilliant Park"
     },
     {
       "name": "Itachi Uchiha",
@@ -5019,6 +5125,12 @@
       "image": "images/K-2SO.jpeg"
     },
     {
+      "name": "Ka D'Argo",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Farscape"
+    },
+    {
       "name": "Kabal",
       "has_image": true,
       "gender": "Male",
@@ -5124,6 +5236,12 @@
       "image": "images/Kano.jpeg"
     },
     {
+      "name": "Kaori Miyazono",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Your Lie in April"
+    },
+    {
       "name": "Karai",
       "has_image": true,
       "gender": "Female",
@@ -5164,6 +5282,12 @@
       "gender": "Female",
       "franchise": "League of Legends",
       "image": "images/Katarina.jpeg"
+    },
+    {
+      "name": "Kate Takenomiya",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Prison School"
     },
     {
       "name": "Katma Tui",
@@ -5579,6 +5703,12 @@
       "image": "images/La Lunatica.jpeg"
     },
     {
+      "name": "Lady (Devil May Cry)",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Devil May Cry"
+    },
+    {
       "name": "Lady Death",
       "has_image": true,
       "gender": "Female",
@@ -5677,6 +5807,12 @@
       "image": "images/Lascivious.jpeg"
     },
     {
+      "name": "Latifa Fleuranza",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Amagi Brilliant Park"
+    },
+    {
       "name": "Launch",
       "has_image": true,
       "gender": "Female",
@@ -5703,6 +5839,12 @@
       "gender": "Female",
       "franchise": "The Partridge Family",
       "image": "images/Laurie Partridge.jpeg"
+    },
+    {
+      "name": "Leafa",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Sword Art Online"
     },
     {
       "name": "Leatherface",
@@ -5927,6 +6069,12 @@
       "gender": "Female",
       "franchise": "Dead or Alive",
       "image": "images/Lisa Hamilton.jpeg"
+    },
+    {
+      "name": "Lisa Lisa",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "JoJo's Bizarre Adventure"
     },
     {
       "name": "Lisa Simpson",
@@ -6433,6 +6581,12 @@
       "image": "images/Marge Simpson.jpeg"
     },
     {
+      "name": "Mari Kurihara",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Prison School"
+    },
+    {
       "name": "Marie Rose",
       "has_image": true,
       "gender": "Female",
@@ -6615,6 +6769,12 @@
       "image": "images/Megumi Fushiguro.jpeg"
     },
     {
+      "name": "Megumi Tadokoro",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Food Wars"
+    },
+    {
       "name": "Megumin",
       "has_image": true,
       "gender": "Female",
@@ -6634,6 +6794,18 @@
       "gender": "Female",
       "franchise": "Overwatch",
       "image": "images/Mei.jpeg"
+    },
+    {
+      "name": "Mei Terumi",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Naruto"
+    },
+    {
+      "name": "Meiko Shiraki",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Prison School"
     },
     {
       "name": "Melina",
@@ -6727,6 +6899,12 @@
       "image": "images/Michelin Man.jpeg"
     },
     {
+      "name": "Michiko Malandro",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Michiko & Hatchin"
+    },
+    {
       "name": "Mickey Mouse",
       "has_image": true,
       "gender": "Male",
@@ -6739,6 +6917,12 @@
       "gender": "Female",
       "franchise": "The Legend of Zelda",
       "image": "images/Midna.jpeg"
+    },
+    {
+      "name": "Midnight (My Hero Academia)",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "My Hero Academia"
     },
     {
       "name": "Midnighter",
@@ -6942,6 +7126,12 @@
       "gender": "Male",
       "franchise": "The Powerpuff Girls",
       "image": "images/Mojo Jojo.jpeg"
+    },
+    {
+      "name": "Moka Akashiya",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Rosario + Vampire"
     },
     {
       "name": "Momiji",
@@ -7189,6 +7379,12 @@
       "image": "images/Mumm-Ra.jpeg"
     },
     {
+      "name": "Muse",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Amagi Brilliant Park"
+    },
+    {
       "name": "Muzan Kibutsuji",
       "has_image": true,
       "gender": "Male",
@@ -7355,6 +7551,12 @@
       "gender": "Male",
       "franchise": "The Matrix",
       "image": "images/Neo.jpeg"
+    },
+    {
+      "name": "Nero",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Devil May Cry"
     },
     {
       "name": "Neville Longbottom",
@@ -7698,6 +7900,12 @@
       "gender": "Male",
       "franchise": "Watchmen",
       "image": "images/Ozymandias.jpeg"
+    },
+    {
+      "name": "Pa'u Zotoh Zhaan",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Farscape"
     },
     {
       "name": "Pac-Man",
@@ -8421,6 +8629,12 @@
       "image": "images/Rayne.jpeg"
     },
     {
+      "name": "Re-L Mayer",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Ergo Proxy"
+    },
+    {
       "name": "Reaper",
       "has_image": true,
       "gender": "Male",
@@ -8608,6 +8822,12 @@
       "gender": "Female",
       "franchise": "Fate/stay night",
       "image": "images/Rin Tohsaka.jpeg"
+    },
+    {
+      "name": "Rindou Kobayashi",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Food Wars"
     },
     {
       "name": "Riptide",
@@ -8813,6 +9033,12 @@
       "image": "images/Rydia.jpeg"
     },
     {
+      "name": "Rygel XVI",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Farscape"
+    },
+    {
       "name": "Ryu",
       "has_image": true,
       "gender": "Male",
@@ -8881,6 +9107,12 @@
       "gender": "Female",
       "franchise": "Inside Out",
       "image": "images/Sadness.jpeg"
+    },
+    {
+      "name": "Saeko Busujima",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Highschool of the Dead"
     },
     {
       "name": "Sagat",
@@ -8986,6 +9218,12 @@
       "gender": "Male",
       "franchise": "Star Wars",
       "image": "images/Salacious Crumb.jpeg"
+    },
+    {
+      "name": "Salama",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Amagi Brilliant Park"
     },
     {
       "name": "Sam Manson",
@@ -9182,6 +9420,12 @@
       "gender": "Male",
       "franchise": "Mortal Kombat",
       "image": "images/Scorpion.jpeg"
+    },
+    {
+      "name": "Scorpius",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Farscape"
     },
     {
       "name": "Scout Trooper",
@@ -9681,6 +9925,12 @@
       "image": "images/Solid Snake.jpeg"
     },
     {
+      "name": "Soma Yukihira",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Food Wars"
+    },
+    {
       "name": "Sombra",
       "has_image": true,
       "gender": "Female",
@@ -10099,6 +10349,12 @@
       "gender": "Male",
       "franchise": "DC",
       "image": "images/Swamp Thing.jpeg"
+    },
+    {
+      "name": "Sylphy",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Amagi Brilliant Park"
     },
     {
       "name": "Sylvanas Windrunner",
@@ -10675,6 +10931,12 @@
       "image": "images/Trinity.jpeg"
     },
     {
+      "name": "Trish",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Devil May Cry"
+    },
+    {
       "name": "Triss Merigold",
       "has_image": true,
       "gender": "Female",
@@ -10911,6 +11173,12 @@
       "gender": "Female",
       "franchise": "Marvel",
       "image": "images/Venus (Marvel).jpeg"
+    },
+    {
+      "name": "Vergil",
+      "has_image": false,
+      "gender": "Male",
+      "franchise": "Devil May Cry"
     },
     {
       "name": "Verminous Skumm",
@@ -11401,6 +11669,12 @@
       "gender": "Female",
       "franchise": "Final Fantasy",
       "image": "images/Yuna.jpeg"
+    },
+    {
+      "name": "Yuno Gasai",
+      "has_image": false,
+      "gender": "Female",
+      "franchise": "Future Diary"
     },
     {
       "name": "Yuzuriha",
