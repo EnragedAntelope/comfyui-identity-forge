@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identity Forge — Cosplay Sample Gallery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="gallery-header">
+  <h1>🎭 Identity Forge — Cosplay Sample Gallery</h1>
+  <p class="header-subtitle">
+    Samples generated using the <strong>Krea2 T2I model</strong> on randomized character identities.
+    Your results will vary — these are examples of what the Identity Forge Cosplayer node can produce.
+  </p>
+  <div class="header-links">
+    <a href="Krea2_IdentityForge_CharacterCycle.json" class="header-link" download>
+      ⬇ Download Workflow
+    </a>
+    <a href="https://github.com/EnragedAntelope/comfyui-identity-forge" class="header-link" target="_blank" rel="noopener">
+      📦 View on GitHub
+    </a>
+  </div>
+</header>
+
+<div class="gallery-controls">
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search characters…" autocomplete="off" aria-label="Search characters">
+    <button id="search-clear" class="search-clear hidden" aria-label="Clear search">&times;</button>
+  </div>
+  <div class="stats-bar">
+    <span id="stats-visible">Showing <strong id="count-visible">0</strong> of <strong id="count-total">0</strong> entries</span>
+    <span id="stats-missing" class="stats-missing"></span>
+  </div>
+</div>
+
+<div id="gallery-grid" class="gallery-grid" role="list" aria-label="Cosplay sample gallery">
+  <!-- Cards injected by gallery.js -->
+</div>
+
+<div id="loading" class="loading-indicator">
+  <div class="spinner"></div>
+  <p>Loading gallery…</p>
+</div>
+
+<div id="no-results" class="no-results hidden">
+  <p>No characters match your search.</p>
+  <button id="clear-search-btn" class="btn-secondary">Clear search</button>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button id="lightbox-close" class="lightbox-close" aria-label="Close">&times;</button>
+  <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Previous image">&lsaquo;</button>
+  <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Next image">&rsaquo;</button>
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="">
+    <p id="lightbox-name" class="lightbox-name"></p>
+  </div>
+</div>
+
+<footer class="gallery-footer">
+  <p>
+    Powered by <a href="https://github.com/EnragedAntelope/comfyui-identity-forge" target="_blank" rel="noopener">ComfyUI Identity Forge</a>.
+    Gallery images are not included in the main repository download.
+  </p>
+</footer>
+
+<script src="gallery.js"></script>
+</body>
+</html>

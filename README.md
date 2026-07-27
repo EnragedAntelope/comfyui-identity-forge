@@ -32,7 +32,8 @@ renders even on checkpoints that have never heard of the character. Ask a plain 
 Chun-Li and your prompt says `Chun-Li`; ask this one and you get the blue qipao with gold trim,
 the brown tights, the white cross-laced boots and the spiked bracelets.
 
-**Browse what's on offer:** [cosplay characters](docs/reference/cosplayers.md) ·
+**Browse what's on offer:** [🎭 cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) — 1,560+ sample images ·
+[cosplay characters](docs/reference/cosplayers.md) ·
 [archetypes](docs/reference/archetypes.md) · [creatures](docs/reference/creatures.md).
 Something obvious missing? [Open an issue](https://github.com/EnragedAntelope/comfyui-identity-forge/issues) —
 suggestions are welcome.
@@ -49,6 +50,9 @@ wins** any conflict:
 <img width="560" alt="Sample node chain" src="https://github.com/user-attachments/assets/82d80ecd-b25a-475a-a4e0-ae0d6116a744" />
 
 A taste of archetypes, cosplay characters and creatures:
+
+> 🎭 **[Browse the full cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/)** — 1,560+ sample images
+> generated with the Krea2 T2I model on randomized identities. Your results will vary.
 
 <table>
   <tr>

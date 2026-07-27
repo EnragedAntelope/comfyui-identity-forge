@@ -1,0 +1,3 @@
+# Gallery images are deployed to the gh-pages branch only.
+# DO NOT commit images to the main branch.
+images/
