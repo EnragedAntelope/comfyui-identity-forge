@@ -114,16 +114,22 @@ CONSTRAINT_RULES: list[dict] = [
     # ``curtain bangs`` + ``blunt bangs`` are EXACTLY the ``bangs`` family in
     # HAIR_STYLE_FAMILIES, so excluding both drops a WHOLE family and the
     # remaining families stay exactly proportional -- the bias rule the lighting
-    # buckets follow. Do not extend this rule to the five other physically-wrong
-    # buzz-cut styles (worn down / windswept / freshly blown out / tousled
-    # bedhead / slicked back): all five live in the 9-variant ``loose`` family
-    # next to ``wet look`` and ``natural and unstyled``, so culling part of it
-    # would dump the family's full frozen weight onto the two survivors. That one
-    # needs a family split (the 0.66.0 POSE_FAMILIES treatment) -- see
-    # architecture.md, "Considered and deferred".
+    # buckets follow.
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style", "excludes_values": ["curtain bangs", "blunt bangs"],
      "reason": "a buzz cut has no fringe to cut into bangs"},
+    # 0.78.0: the other half of the buzz-cut fix, unblocked by splitting the
+    # ``loose`` family in fields.py. These five need length to hold a style and a
+    # 12,000-sample sweep put them on a buzz cut 706 times (~5.9% of all output).
+    # They are EXACTLY the ``loose_styled`` sub-family, so this drops a whole unit
+    # and every other family stays proportional. Before the split they were 5 of 9
+    # in one ``loose`` family, and excluding them would have handed that family's
+    # full frozen weight to ``wet look`` + ``natural and unstyled``.
+    {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
+     "excludes_field": "hair_style",
+     "excludes_values": ['worn down', 'slicked back', 'windswept',
+                         'freshly blown out', 'tousled bedhead'],
+     "reason": "a buzz cut has no length to wear down, style, or blow out"},
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style", "excludes_values": ["mullet"],
      "reason": "a buzz cut has no back length for a mullet"},
@@ -138,6 +144,12 @@ CONSTRAINT_RULES: list[dict] = [
     # locs (starter locs), cornrows and the small buns stay reachable. Only the
     # styles that need gatherable length are culled. ``box braids`` and ``bantu
     # knots`` joined at 0.72.0 -- both hang or coil well past a pixie's length.
+    # ``dutch braids`` + ``crown braid`` joined at 0.78.0 (84 hits in a 12,000-sample
+    # sweep): both need enough length to section and wrap. They could not be culled
+    # before the ``braid`` family was split, because they would have left
+    # ``cornrows`` and ``locs`` as the family's only pixie survivors, roughly
+    # doubling both. With the split this rule now removes EXACTLY the ``braid_long``
+    # sub-family, leaving ``braid_short`` intact -- a whole-unit drop.
     {"type": "exclusion", "field": "hair_length", "value": "short pixie",
      "excludes_field": "hair_style",
      "excludes_values": ["side braid", "fishtail braid", "French braid",
@@ -145,7 +157,8 @@ CONSTRAINT_RULES: list[dict] = [
                          "space buns", "pigtails", "high pigtails", "low pigtails",
                          "curled pigtails", "braided pigtails",
                          "high ponytail", "low ponytail", "side ponytail",
-                         "braided ponytail", "box braids", "bantu knots"],
+                         "braided ponytail", "box braids", "bantu knots",
+                         "dutch braids", "crown braid"],
      "reason": "a pixie cut is too short to braid or tie back"},
 
     # Note: the "Natural only" hair scope is enforced during randomization (see

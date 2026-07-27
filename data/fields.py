@@ -400,8 +400,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("location", {
         "group": 'Setting & Shot',
-        "female_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'server room with blinking lights', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace at dusk', 'sandy beach at golden hour', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'desert dune at sunset', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street at night', 'rainy street with umbrellas', 'harbor dock at sunrise', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'street food market at night', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop bar at night'],
-        "male_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'server room with blinking lights', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace at dusk', 'sandy beach at golden hour', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'desert dune at sunset', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street at night', 'rainy street with umbrellas', 'harbor dock at sunrise', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'street food market at night', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop bar at night'],
+        "female_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace at dusk', 'sandy beach at golden hour', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'desert dune at sunset', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street at night', 'rainy street with umbrellas', 'harbor dock at sunrise', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'street food market at night', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop bar at night', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace at dusk', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank'],
+        "male_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace at dusk', 'sandy beach at golden hour', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'desert dune at sunset', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street at night', 'rainy street with umbrellas', 'harbor dock at sunrise', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'street food market at night', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop bar at night', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace at dusk', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank'],
         "optional": False
     }),
     ("lighting", {
@@ -558,25 +558,182 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
 ])
 
+#: Per-field help, shown as the tooltip on that field's dropdown (0.78.0).
+#:
+#: Every field previously shared one generic string ("<group> · 'Random' =
+#: randomize, a value = lock, 'None' = omit"), which explained the *mechanic* but
+#: never the *field* -- nothing told a user that ``bust`` renders as "chest" on a
+#: man, that ``fitness_level`` is where muscle lives rather than ``body_type``, or
+#: that ``shot_type`` is camera-only. The mechanic sentence is still appended by the
+#: node, so these say what the field means and flag any engine behaviour that will
+#: surprise someone (automatic suppression, cross-field effects, gender defaults).
+#:
+#: Keep them ONE short sentence. Missing keys fall back to the generic text, and
+#: tests/validate_data.py checks that every key names a real field and that every
+#: user-visible field has an entry.
+FIELD_HELP: dict[str, str] = {
+    # --- Demographics ---
+    "age": "Apparent age in years.",
+    "ethnicity": "Also nudges skin tone toward a plausible range; locking skin tone overrides that.",
+    # --- Body ---
+    "skin_tone": "Overall skin colour. A costume that colours the whole body replaces this.",
+    "body_type": "Overall build and proportions. Muscle definition is separate - see fitness_level.",
+    "height": "Relative height. To force an unrealistic scale (doll-sized, fifty feet tall), use the size_scale control near the top instead.",
+    "bust": "Chest size and shape. Renders as 'chest' on a male subject.",
+    "waist": "Waist width relative to the rest of the figure.",
+    "hips": "Hip width relative to the rest of the figure.",
+    "shoulder_width": "Shoulder breadth relative to the hips.",
+    "neck_length": "Neck length and thickness.",
+    "posture": "How the subject carries themselves - upright, slouched, confident.",
+    "fitness_level": "How conditioned the body looks, from sedentary to muscular. This is where muscle lives, not body_type.",
+    # --- Face ---
+    "face_shape": "Overall shape of the face - oval, square, heart.",
+    "forehead": "Forehead height and brow ridge.",
+    "cheekbones": "How high and prominent the cheekbones sit.",
+    "eyebrows": "Natural brow shape and thickness. Grooming and product are eyebrow_makeup.",
+    "eye_color": "Iris colour. A cosplay character with non-human eyes overrides this.",
+    "eye_shape": "Eye shape and set - almond, hooded, deep-set.",
+    "nose": "Nose shape and bridge.",
+    "lips": "Lip shape and fullness. Colour and finish are lips_makeup.",
+    "smile_type": "What the mouth is doing - closed, toothy, smirking.",
+    "jawline": "Jaw width and definition.",
+    "chin": "Chin shape and projection.",
+    "complexion": "Skin quality and undertone - rosy, sallow, weathered.",
+    "skin_details": "Moles, beauty marks, scars and other distinguishing marks.",
+    "freckles_density": "How heavily freckled the skin is.",
+    # --- Hair ---
+    "hair_color": "Limited to realistic shades unless the hair_color_scope control is set to 'Full spectrum'.",
+    "hair_length": "Hair length. Styles that need more length are automatically excluded on short cuts.",
+    "hair_texture": "Curl pattern and body - straight, wavy, coily, fine.",
+    "hair_style": "How the hair is worn. Styles needing gatherable length are dropped automatically on a pixie or a buzz cut.",
+    "facial_hair": "Beard and moustache. Randomized only on male subjects.",
+    "hair_part": "Where the hair is parted. Cleared automatically on a bald or buzzed head.",
+    "hair_highlights": "Colour worked through the hair - balayage, streaks, frosted tips.",
+    "hair_accessory": "Headband, clip, scarf in the hair. Dropped automatically when a costume is supplied.",
+    # --- Makeup ---
+    "makeup_style": "The overall makeup look. Set it to 'no makeup' and every other Makeup field clears automatically; male subjects default to bare-faced.",
+    "eyebrow_makeup": "Brow grooming and product. Natural brow shape is the eyebrows field.",
+    "eye_makeup": "Eyeshadow colour and finish.",
+    "eyeliner": "Liner style and weight.",
+    "lashes": "Mascara or falsies.",
+    "contour": "Sculpting on the cheeks, nose and jaw.",
+    "highlight": "Where the skin catches the light.",
+    "blush": "Cheek colour and placement.",
+    "lips_makeup": "Lip colour and finish. Lip shape is the lips field.",
+    "skin_finish": "How the base reads - matte, dewy, glass.",
+    # --- Jewelry & Nails ---
+    "earrings": "Ear jewellery. Name earrings in a costume only if you also lock this field, or you get two sets.",
+    "necklace": "Neck jewellery. Same caution as earrings if a costume already describes one.",
+    "other_jewelry": "Brooches, anklets, body chains and the like.",
+    "piercings": "Piercings other than earlobes.",
+    "nails": "Nail length, shape and polish.",
+    "rings": "Finger rings.",
+    "bracelet": "Wrist jewellery.",
+    "watch_type": "Wristwatch. Dropped automatically when a costume is supplied, so no smartwatch on a samurai.",
+    # --- Clothing ---
+    "outfit_style": "How dressed up, and for what occasion. Subculture and era themes live on the Archetype node instead.",
+    "bag": "Bag carried. Dropped automatically when a costume is supplied.",
+    "accessories": "Hats, glasses, belts and scarves. Dropped automatically when a costume is supplied.",
+    "footwear": "Shoes. Overridden by a costume that specifies its own.",
+    "clothing_color": "Dominant colour of the outfit.",
+    "clothing_pattern": "Print or weave of the outfit.",
+    # --- Setting & Shot ---
+    "expression": "The face the subject is pulling.",
+    "location": "Where the shot happens. Narrow it with the location_setting control; a value locked here overrides that control.",
+    "lighting": "Quality and source of the light. Automatically kept coherent with whether the location is indoors or out.",
+    "shot_type": "The camera only - distance, height, angle and lens. Never scene content.",
+    "season": "Time of year, which colours the setting and wardrobe.",
+    "mood": "Overall emotional tone of the image.",
+    "pose": "What the body is doing. Poses that reach for hair or pockets are dropped when the character has neither.",
+}
+
+
 #: Hair styles grouped into families for weighted random selection. The flat
 #: ``hair_style`` option list above still drives the widget (every variant is
 #: lockable); this structure only steers the *random* pick. The engine first
 #: chooses a family (weighted by ``weight``), then a variant uniformly within it,
 #: so adding variants to a family subdivides that family's share instead of
 #: inflating it. Each ``weight`` is frozen to the family's original variant count
-#: (sum = 30), so the macro distribution matches the pre-families uniform pick;
+#: (scaled uniformly, see below), so the macro distribution still matches the
+#: pre-families uniform pick;
 #: only the within-family split changes as variants are added. The union of all
 #: ``variants`` must equal the ``hair_style`` options exactly (checked in tests).
+#:
+#: --- 0.78.0: the loose/braid split (finishes the 0.77.0 buzz-cut fix) ----------
+#: Only a WHOLE family may be excluded by a constraint rule: ``_pick_family_weighted``
+#: intersects a family's variants with the available pool but keeps the family's
+#: **full frozen weight**, so culling *part* of a family dumps its entire share onto
+#: the survivors. 0.77.0 fixed bangs-on-a-buzz-cut (``bangs`` is exactly two values,
+#: so it drops whole) but had to leave five equally-impossible ``loose`` styles in
+#: place -- roughly 4% of all output -- because they were 5 of 9 in one family.
+#:
+#: The fix is the treatment ``POSE_FAMILIES`` got at 0.66.0: split the family into
+#: sub-families whose weights are **proportional to variant count**, so each
+#: exclusion boundary lands on a whole unit. Sub-family boundaries are drawn from
+#: the *actual* rules in data/constraints.py, not from intuition:
+#:
+#:   * ``loose_styled``   -- needs length to style; impossible on a buzz cut only.
+#:   * ``loose_natural``  -- possible at every length; never excluded.
+#:   * ``loose_combover`` -- excluded on a buzz cut (no length on top).
+#:   * ``loose_mullet``   -- excluded on a buzz cut AND on very short (no back
+#:                           length). Different boundary from comb over, hence its
+#:                           own singleton -- ``half-up`` is the existing precedent.
+#:   * ``braid_long``     -- needs gatherable length; excluded on a pixie.
+#:   * ``braid_short``    -- cornrows and locs work at pixie length (a pixie-length
+#:                           TWA is a real look), so they survive there.
+#:   * ``bun_gathered``   -- an updo / French twist needs gatherable length;
+#:                           excluded on a pixie.
+#:   * ``bun_small``      -- the small buns a pixie CAN hold; the 0.72.0 rule
+#:                           deliberately keeps them reachable there.
+#:
+#: All weights are scaled **x105** so every proportional sub-weight stays an integer
+#: (``loose`` 6 splits 5:2:1:1, needing /9; ``bun`` 5 splits 5:2, needing /7;
+#: ``braid`` 9 splits 8:2, needing /10; lcm(3, 5, 7) = 105). Scaling every weight by
+#: the same factor is a no-op on relative shares, so **each variant keeps its exact
+#: pre-split probability**: a loose variant was (6/30)x(1/9) = 1/45 and is now
+#: (350/3150)x(1/5) = 1/45; a bun variant was (5/30)x(1/7) = 1/42 and is now
+#: (375/3150)x(1/5) = 1/42. Pinned against a hardcoded pre-split baseline in
+#: ``HairStyleFamilyTests``. Sum = 3150 (was 30). **Seeds drift** -- ``rng.choices``
+#: now sees 14 families instead of 9 -- which is why this needed its own decision.
+#: The distribution is unchanged.
+#:
+#: ``bun`` was split for the same reason as the other two, one step later: the pixie
+#: rule drops ``updo`` + ``French twist``, 2 of the 7-variant family, which handed
+#: bun's full frozen weight to its 5 small-bun survivors on every pixie. It was
+#: nearly left as a documented wart, but ``HairStyleFamilyTests`` asserts the
+#: whole-family invariant *mechanically* across every hair_length rule, and an
+#: exception list in that test would have been the thing most likely to rot. Every
+#: hair_length -> hair_style exclusion now drops whole families.
+#:
+#: MEASURED AND DELIBERATELY LEFT ALONE (0.78.0) -- the ``gender = Male`` hair_style
+#: rule in data/constraints.py partially culls three families: ``bun_small`` (1/5,
+#: ballerina bun), ``braid_long`` (2/8, crown + fishtail braid) and ``knots`` (1/2,
+#: space buns). By the theory above that should concentrate each family's full
+#: weight on its survivors for ~half of all output, which would be a far bigger bug
+#: than the buzz cut. **It does not, and the reason is worth recording**: the engine
+#: re-picks only a value it actually rejected (the mixture property documented at
+#: 0.64.0), and most males draw a permitted style on the first try and never enter
+#: the re-pick path, so only that minority sees the concentrated weight. Measured
+#: over 23,270 male samples: ``bantu knots`` 3.79% vs ``cornrows`` 3.51%, a ratio of
+#: 1.08 against a proportional expectation of 1.11 -- i.e. marginally *under* its
+#: fair share, not doubled. Splitting these three (which M = 105 does accommodate:
+#: 375 -> 300/75, 756 -> 567/189, 210 -> 105/105) would add three more families for
+#: a sub-1pp correction. Do not "fix" this without re-measuring first.
 HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("loose", {"weight": 6, "variants": ['worn down', 'slicked back', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'comb over', 'mullet']}),
-    ("half-up", {"weight": 1, "variants": ['half up half down']}),
-    ("ponytail", {"weight": 2, "variants": ['high ponytail', 'low ponytail', 'side ponytail', 'braided ponytail']}),
-    ("bun", {"weight": 5, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'updo', 'French twist', 'ballerina bun']}),
-    ("braid", {"weight": 9, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs']}),
-    ("knots", {"weight": 2, "variants": ['space buns', 'bantu knots']}),
-    ("pigtails", {"weight": 1, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
-    ("texture", {"weight": 2, "variants": ['afro', 'twist-out']}),
-    ("bangs", {"weight": 2, "variants": ['curtain bangs', 'blunt bangs']}),
+    ("loose_styled", {"weight": 350, "variants": ['worn down', 'slicked back', 'windswept', 'freshly blown out', 'tousled bedhead']}),
+    ("loose_natural", {"weight": 140, "variants": ['wet look', 'natural and unstyled']}),
+    ("loose_combover", {"weight": 70, "variants": ['comb over']}),
+    ("loose_mullet", {"weight": 70, "variants": ['mullet']}),
+    ("half-up", {"weight": 105, "variants": ['half up half down']}),
+    ("ponytail", {"weight": 210, "variants": ['high ponytail', 'low ponytail', 'side ponytail', 'braided ponytail']}),
+    ("bun_small", {"weight": 375, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'ballerina bun']}),
+    ("bun_gathered", {"weight": 150, "variants": ['updo', 'French twist']}),
+    ("braid_long", {"weight": 756, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids']}),
+    ("braid_short", {"weight": 189, "variants": ['cornrows', 'locs']}),
+    ("knots", {"weight": 210, "variants": ['space buns', 'bantu knots']}),
+    ("pigtails", {"weight": 105, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
+    ("texture", {"weight": 210, "variants": ['afro', 'twist-out']}),
+    ("bangs", {"weight": 210, "variants": ['curtain bangs', 'blunt bangs']}),
 ])
 
 #: hair_color families (0.41): shade neighbourhoods, weights = current family
@@ -687,14 +844,14 @@ LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 
 LOCATION_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("domestic", {"weight": 24, "variants": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'cozy home library', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'home office with bookshelves', 'walk-in closet with mirrors']}),
-    ("food_drink", {"weight": 15, "variants": ['elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'ramen shop counter', 'artisan bakery interior']}),
-    ("retail_services", {"weight": 16, "variants": ['neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'flower shop interior', 'vintage camera store', 'indoor spice market stall']}),
-    ("leisure_fitness", {"weight": 11, "variants": ['local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'climbing gym with colorful holds', 'dance studio with mirrors', 'ceramics studio with pottery wheels']}),
-    ("civic_institutional", {"weight": 17, "variants": ['university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'police station bullpen', 'courtroom', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium']}),
-    ("work_industrial", {"weight": 7, "variants": ['corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'server room with blinking lights', 'factory floor', 'warehouse interior', 'woodworking workshop', "artist's painting studio", 'commercial kitchen']}),
-    ("transit_travel", {"weight": 7, "variants": ['hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge']}),
-    ("urban_outdoor", {"weight": 20, "variants": ['sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace at dusk', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street at night', 'rainy street with umbrellas', 'harbor dock at sunrise', 'riverside boardwalk', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'street food market at night', 'crumbling stone ruin', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'rooftop bar at night']}),
-    ("nature_outdoor", {"weight": 15, "variants": ['sandy beach at golden hour', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'desert dune at sunset', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'alpine meadow with wildflowers', 'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees']}),
+    ("food_drink", {"weight": 15, "variants": ['elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'ramen shop counter', 'artisan bakery interior', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor']}),
+    ("retail_services", {"weight": 16, "variants": ['neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter']}),
+    ("leisure_fitness", {"weight": 11, "variants": ['local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'climbing gym with colorful holds', 'dance studio with mirrors', 'ceramics studio with pottery wheels', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo']}),
+    ("civic_institutional", {"weight": 17, "variants": ['university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'police station bullpen', 'courtroom', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium']}),
+    ("work_industrial", {"weight": 7, "variants": ['corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room']}),
+    ("transit_travel", {"weight": 7, "variants": ['hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station']}),
+    ("urban_outdoor", {"weight": 20, "variants": ['sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace at dusk', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street at night', 'rainy street with umbrellas', 'harbor dock at sunrise', 'riverside boardwalk', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'street food market at night', 'crumbling stone ruin', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'rooftop bar at night', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace at dusk']}),
+    ("nature_outdoor", {"weight": 15, "variants": ['sandy beach at golden hour', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'desert dune at sunset', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'alpine meadow with wildflowers', 'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank']}),
     ("studio", {"weight": 4, "variants": ['seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop']}),
 ])
 
@@ -865,6 +1022,17 @@ OUTDOOR_LOCATIONS: frozenset[str] = frozenset([
     'harbor with moored boats', 'alpine meadow with wildflowers',
     'salt flats at dusk', 'mangrove boardwalk', 'bamboo forest path',
     'tide pools at low tide', 'golden savanna with acacia trees',
+    # 0.78.0 additions. Indoor is DERIVED (all - OUTDOOR - STUDIO), so anything
+    # outdoors that is missing here silently buckets as indoor and starts pairing
+    # with window light. Keep this list in step with the two outdoor families.
+    'red rock desert arch', 'slot canyon with striated walls',
+    'geothermal geyser basin', 'redwood grove with towering trunks',
+    'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool',
+    'volcanic black sand beach', 'moss-draped rainforest trail',
+    'the Grand Canyon south rim', 'a Yosemite valley meadow',
+    'a Zion canyon riverbank',
+    'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square',
+    'the Spanish Steps in Rome', 'the Griffith Observatory terrace at dusk',
 ])
 
 

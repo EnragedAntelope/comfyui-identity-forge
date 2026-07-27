@@ -21,7 +21,7 @@ if str(ROOT) not in sys.path:
 
 
 from data.fields import (
-    FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
+    FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
     ETHNICITY_REGION, STUDIO_BACKDROPS,
 )
 from data.constraints import CONSTRAINT_RULES
@@ -189,6 +189,27 @@ def validate() -> list[str]:
                 f"{field_name} FIELD_FAMILIES variants != {field_name} options "
                 f"(missing: {missing}, extra: {extra})"
             )
+
+    # --- per-field tooltips (0.78.0) ---------------------------------
+    # FIELD_HELP drives every field dropdown's tooltip. A stale key is invisible
+    # (the node silently falls back to the generic mechanic line), so pin both
+    # directions: no help for a field that no longer exists, and no user-visible
+    # field left without help.
+    # Mirrors nodes/identity_forge.py's _HIDDEN_FIELDS. Duplicated by hand rather
+    # than imported, the same way _LOOK_OVERRIDE_KEYS is: this validator must not
+    # depend on the node package. Both are asserted equal in tests/test_engine.py.
+    hidden_fields = {"outfit_description", "held_item"}
+    visible_fields = {
+        name for name, field_def in FIELD_DEFINITIONS.items()
+        if not field_def.get("control") and name not in hidden_fields
+    }
+    for name in sorted(set(FIELD_HELP) - set(FIELD_DEFINITIONS)):
+        errors.append(f"FIELD_HELP has an entry for unknown field '{name}'")
+    for name in sorted(visible_fields - set(FIELD_HELP)):
+        errors.append(f"FIELD_HELP is missing an entry for field '{name}'")
+    for name, text in sorted(FIELD_HELP.items()):
+        if not text.strip():
+            errors.append(f"FIELD_HELP['{name}'] is empty")
 
     # --- outfit descriptions (gendered buckets) ----------------------
     # User-registered styles (user_options.json "outfits" section) are exempt

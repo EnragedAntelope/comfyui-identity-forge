@@ -20,9 +20,10 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from data.fields import (
-    FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES,
+    FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES, HAIR_STYLE_FAMILIES,
     HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
 )
+from data.constraints import CONSTRAINT_RULES
 from nodes.identity_forge import (
     generate_character,
     merge_preset_documents,
@@ -1231,6 +1232,20 @@ class LocationAndPoseTests(unittest.TestCase):
             _, js = generate_character(seed, "Female", {}, location_setting="Outdoor")
             self.assertIn(json.loads(js)["Setting & Shot"]["location"], OUTDOOR_LOCATIONS)
 
+    def test_outdoor_bucket_matches_the_outdoor_families(self):
+        # 0.78.0: indoor is DERIVED (all - OUTDOOR_LOCATIONS - STUDIO_BACKDROPS), so a
+        # new outdoor location that nobody adds to OUTDOOR_LOCATIONS silently buckets
+        # as indoor and starts drawing window light on a canyon rim. Nothing caught
+        # that before -- the union check in validate_data.py only covers the families
+        # against the option list. Pin the two outdoor families to the frozenset.
+        from data.fields import LOCATION_FAMILIES, OUTDOOR_LOCATIONS
+        expected = set(LOCATION_FAMILIES["urban_outdoor"]["variants"]) | set(
+            LOCATION_FAMILIES["nature_outdoor"]["variants"])
+        self.assertEqual(
+            set(OUTDOOR_LOCATIONS), expected,
+            "OUTDOOR_LOCATIONS has drifted from the urban_outdoor / nature_outdoor "
+            "families; missing entries silently become indoor")
+
     def test_location_setting_not_in_json(self):
         d = json.loads(generate_character(1, "Female", {})[1])
         for group, fields in d.items():
@@ -1954,6 +1969,232 @@ class PoseFamilyTests(unittest.TestCase):
         self.assertTrue((HAIR_DEPENDENT_POSES | GARMENT_DEPENDENT_POSES) <= options)
 
 
+class FieldHelpTests(unittest.TestCase):
+    """0.78.0: every field dropdown carries its own tooltip."""
+
+    def test_hidden_field_list_matches_the_validator(self):
+        # validate_data.py duplicates _HIDDEN_FIELDS by hand so it need not import
+        # the node package (same arrangement as _LOOK_OVERRIDE_KEYS). Pin them.
+        from nodes.identity_forge import _HIDDEN_FIELDS
+        self.assertEqual(set(_HIDDEN_FIELDS), {"outfit_description", "held_item"})
+
+    def test_every_visible_field_has_help(self):
+        from data.fields import FIELD_HELP
+        from nodes.identity_forge import _HIDDEN_FIELDS, _CONTROL_FIELDS
+        for name in FIELD_DEFINITIONS:
+            if name in _HIDDEN_FIELDS or name in _CONTROL_FIELDS:
+                continue
+            self.assertIn(name, FIELD_HELP, f"{name} has no tooltip")
+
+    def test_help_is_a_single_short_sentence(self):
+        from data.fields import FIELD_HELP
+        for name, text in FIELD_HELP.items():
+            self.assertLessEqual(len(text), 190, f"{name} tooltip is too long")
+            self.assertNotIn("\n", text, f"{name} tooltip should be one line")
+
+
+class ManualSizeScaleTests(unittest.TestCase):
+    """0.78.0: the manual-only size_scale override on the human node.
+
+    The whole point of the control is that it is bias-free: ``Auto`` is never drawn
+    by the randomizer, so adding tiers cannot dilute anything (the Creature node's
+    ``integument_finish`` contract).
+    """
+
+    def test_auto_is_a_no_op(self):
+        from nodes.identity_forge import _SIZE_SCALE_AUTO
+        for seed in range(20):
+            baseline = generate_character(seed, "Female", {})
+            explicit = generate_character(seed, "Female", {},
+                                          size_scale=_SIZE_SCALE_AUTO)
+            self.assertEqual(baseline, explicit, f"seed {seed}")
+
+    def test_auto_is_never_randomly_selected(self):
+        # No tier phrase may appear unless the caller asked for one. This is the
+        # bias guarantee, asserted rather than assumed.
+        from nodes.identity_forge import _SIZE_SCALE_PHRASES
+        for seed in range(200):
+            prose, _ = generate_character(seed, "Any", {})
+            for phrase in _SIZE_SCALE_PHRASES.values():
+                self.assertNotIn(phrase, prose, f"seed {seed}")
+
+    def test_each_tier_replaces_height_in_the_lead_sentence(self):
+        from nodes.identity_forge import _SIZE_SCALE_PHRASES
+        human_heights = set(FIELD_DEFINITIONS["height"]["female_options"])
+        for tier, phrase in _SIZE_SCALE_PHRASES.items():
+            prose, js = generate_character(4, "Female", {}, size_scale=tier)
+            self.assertIn(phrase, prose, tier)
+            # Replaced, not prepended: no ordinary height word survives alongside it.
+            height = json.loads(js)["Body"]["height"]
+            self.assertEqual(height, phrase, tier)
+            self.assertNotIn(height, human_heights, tier)
+            # It lands in the opening sentence, the strongest position for t2i.
+            self.assertIn(phrase, prose.split(".")[0], tier)
+
+    def test_tier_overrides_a_wired_cosplayer_scale(self):
+        # A user who deliberately picks a tier expects it to apply even to a
+        # canonically giant character; the widget beats the preset, as everywhere
+        # else in the node.
+        from nodes.identity_forge import _SIZE_SCALE_PHRASES
+        locked, label, cf, ch = _node_locked(
+            build_cosplayer_json("Lobo", 0, "Full character"))
+        prose, _ = generate_character(3, "Male", locked, cosplay_label=label,
+                                      covers_face=cf, covers_hair=ch,
+                                      size_scale="tiny")
+        self.assertIn(_SIZE_SCALE_PHRASES["tiny"], prose)
+        self.assertNotIn("enormously tall and hulking", prose)
+
+    def test_unknown_tier_is_ignored_loudly(self):
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            prose, _ = generate_character(1, "Female", {}, size_scale="enormous")
+        self.assertIn("Unknown size_scale", buffer.getvalue())
+        for phrase in ("barely six inches", "fifty feet"):
+            self.assertNotIn(phrase, prose)
+
+    def test_phrases_avoid_comparison_objects(self):
+        # 0.55.0 doctrine: a comparison object ("beside a towering oak", "the size
+        # of a mouse") makes t2i render the object. Concrete measurements only.
+        from nodes.identity_forge import _SIZE_SCALE_PHRASES
+        banned = ("beside", "compared", "size of", "-sized", "apples")
+        for tier, phrase in _SIZE_SCALE_PHRASES.items():
+            for word in banned:
+                self.assertNotIn(word, phrase.lower(), f"{tier}: {phrase}")
+
+
+class FullCoverSpellingTests(unittest.TestCase):
+    """0.78.0: the full-shell regex must accept both spellings of "armor".
+
+    It was American-only while the roster carried 32 British-spelled values, so
+    those entries failed the shell test and drew necklaces and drop earrings over
+    plate armour. The data is normalised now, but user_options.json is free text
+    and no validator reaches it, so the pattern itself has to be tolerant.
+    """
+
+    def test_both_spellings_detected(self):
+        from nodes.identity_forge import _FULL_COVER_RE
+        for text in ("heavy gold plate armor", "heavy gold plate armour",
+                     "an armored bodysuit", "an armoured bodysuit",
+                     "powered armor", "powered armour",
+                     "a suit of ornate ceremonial armor",
+                     "a suit of ornate ceremonial armour"):
+                self.assertTrue(_FULL_COVER_RE.search(text), text)
+
+    def test_roster_uses_one_spelling(self):
+        # Cosmetic, but a mixed roster is what hid the bug: keep it consistent so a
+        # future reader does not have to wonder which spelling is load-bearing.
+        offenders = [name for name, entry in COSPLAYERS.items()
+                     if "armour" in str(entry).lower()]
+        self.assertEqual(offenders, [], "use the American 'armor' spelling in data")
+
+
+class HairStyleFamilyTests(unittest.TestCase):
+    """The 0.78.0 loose/braid split must not move a single hair style's probability.
+
+    Same contract as :class:`PoseFamilyTests`: a family may only be split into
+    sub-families whose weights are proportional to their variant counts, otherwise
+    the split itself re-weights the field. Pinned against the pre-split baseline so
+    a future weight tweak cannot silently bias ``hair_style``.
+    """
+
+    #: HAIR_STYLE_FAMILIES exactly as it stood at 0.77.0, before the split.
+    #: {family: (weight, variant_count)}; sum of weights = 30.
+    _BASELINE = {
+        "loose": (6, 9), "half-up": (1, 1), "ponytail": (2, 4), "bun": (5, 7),
+        "braid": (9, 10), "knots": (2, 2), "pigtails": (1, 5), "texture": (2, 2),
+        "bangs": (2, 2),
+    }
+
+    #: Which pre-split family each post-split family carves out of.
+    _DERIVED_FROM = {
+        "loose_styled": "loose", "loose_natural": "loose",
+        "loose_combover": "loose", "loose_mullet": "loose",
+        "braid_long": "braid", "braid_short": "braid",
+        "bun_small": "bun", "bun_gathered": "bun",
+    }
+
+    @staticmethod
+    def _marginals(families):
+        """value -> P(value) for a {name: (weight, variants)} style mapping."""
+        total = sum(weight for weight, _ in families.values())
+        return {
+            value: (weight / total) / len(variants)
+            for weight, variants in families.values()
+            for value in variants
+        }
+
+    def _current(self):
+        return self._marginals(
+            {name: (fam["weight"], fam["variants"])
+             for name, fam in HAIR_STYLE_FAMILIES.items()}
+        )
+
+    def test_split_preserves_every_hair_style_probability(self):
+        baseline_total = sum(weight for weight, _ in self._BASELINE.values())
+        current = self._current()
+        # Same number of styles before and after -- a split moves values between
+        # families, it never adds or drops one.
+        self.assertEqual(len(current), sum(count for _, count in self._BASELINE.values()))
+        for family, fam in HAIR_STYLE_FAMILIES.items():
+            origin = self._DERIVED_FROM.get(family, family)
+            weight, count = self._BASELINE[origin]
+            expected = (weight / baseline_total) / count
+            for value in fam["variants"]:
+                self.assertAlmostEqual(
+                    current[value], expected, places=12,
+                    msg=f"{value} ({family}, from {origin})")
+
+    def test_probabilities_sum_to_one(self):
+        self.assertAlmostEqual(sum(self._current().values()), 1.0, places=12)
+
+    def test_sub_family_weights_are_proportional_to_variant_count(self):
+        # The invariant that makes the split safe, asserted directly rather than
+        # only via the marginals: within a pre-split family, weight per variant is
+        # constant across its sub-families.
+        for origin in ("loose", "braid", "bun"):
+            subs = [fam for name, fam in HAIR_STYLE_FAMILIES.items()
+                    if self._DERIVED_FROM.get(name) == origin]
+            self.assertGreater(len(subs), 1, origin)
+            per_variant = {fam["weight"] / len(fam["variants"]) for fam in subs}
+            self.assertEqual(len(per_variant), 1,
+                             f"{origin} sub-families are not proportional: {per_variant}")
+
+    def test_impossible_length_style_pairs_are_whole_sub_families(self):
+        # The reason the split exists: every hair_style exclusion must remove whole
+        # families, never part of one. Rebuild each rule's effect and assert it.
+        by_length: dict[str, set[str]] = {}
+        for rule in CONSTRAINT_RULES:
+            if (rule.get("type") == "exclusion" and rule.get("field") == "hair_length"
+                    and rule.get("excludes_field") == "hair_style"):
+                by_length.setdefault(rule["value"], set()).update(rule["excludes_values"])
+        self.assertIn("buzzed very short", by_length)
+        for length, excluded in by_length.items():
+            for name, fam in HAIR_STYLE_FAMILIES.items():
+                variants = set(fam["variants"])
+                overlap = variants & excluded
+                self.assertIn(
+                    len(overlap), (0, len(variants)),
+                    f"hair_length '{length}' culls {len(overlap)} of {len(variants)} "
+                    f"in family '{name}' -- a partial cull concentrates its full "
+                    f"frozen weight on the survivors")
+
+    def test_buzz_cut_cannot_draw_a_styled_or_gathered_look(self):
+        # End-to-end: the pairings the split was built to eliminate.
+        impossible = {"worn down", "slicked back", "windswept", "freshly blown out",
+                      "tousled bedhead", "curtain bangs", "blunt bangs",
+                      "comb over", "mullet"}
+        for seed in range(600):
+            _, js = generate_character(seed, "Any", {"hair_length": "buzzed very short"})
+            style = json.loads(js).get("Hair", {}).get("hair_style")
+            self.assertNotIn(style, impossible, f"seed {seed}")
+
+    def test_pixie_cannot_draw_a_braid_that_needs_length(self):
+        for seed in range(600):
+            _, js = generate_character(seed, "Any", {"hair_length": "short pixie"})
+            style = json.loads(js).get("Hair", {}).get("hair_style")
+            self.assertNotIn(style, {"dutch braids", "crown braid"}, f"seed {seed}")
+
+
 class PerformablePoseTests(unittest.TestCase):
     """A character without hair / a garment never draws a pose that needs one."""
 
@@ -2256,6 +2497,44 @@ class SuppressionLockSurvivalTests(unittest.TestCase):
                 self.assertNotIn(tone, human, f"{name} seed {seed}: human tone leaked")
                 self.assertIn("green", tone, f"{name} seed {seed}")
                 self.assertNotIn("complexion", doc.get("Face", {}), f"{name} seed {seed}")
+
+    def test_body_paint_suppresses_ethnicity(self):
+        # 0.78.0: ethnicity was the last skin-describing field still randomizing under
+        # a full-body colour, and the loudest -- it lands in the lead sentence ("a
+        # 19-year-old Chilean man ... with chalk-white skin"), so t2i resolved the
+        # high-attention face token to the ethnicity and rendered an ordinary human
+        # face above a coloured body. Covers a male (no makeup cascade) and a female
+        # entry, and the prose as well as the JSON.
+        for name, gender in (("Lobo", "Male"), ("She-Hulk", "Female")):
+            locked, label, cf, ch = _node_locked(
+                build_cosplayer_json(name, 0, "Full character"))
+            for seed in range(15):
+                prose, js = generate_character(seed, gender, locked, cosplay_label=label,
+                                               covers_face=cf, covers_hair=ch)
+                doc = json.loads(js)
+                self.assertNotIn("ethnicity", doc.get("Demographics", {}),
+                                 f"{name} seed {seed}: ethnicity leaked into JSON")
+                # Ethnicity renders in the lead clause, immediately before the gender
+                # noun ("a 19-year-old Chilean man"). Scanning the WHOLE prose for
+                # ethnicity words is a false-positive trap -- "French braid" and
+                # "Roman nose" are hair/face values, not demographics.
+                noun = "man" if gender == "Male" else "woman"
+                self.assertRegex(prose, rf"a \d+-year-old {noun} with",
+                                 f"{name} seed {seed}: lead clause carries an ethnicity")
+
+    def test_unpainted_cosplayer_keeps_ethnicity(self):
+        # The suppression is gated on the body-paint marker, so an ordinary costumed
+        # character must still describe the person wearing it.
+        locked, label, cf, ch = _node_locked(
+            build_cosplayer_json("Princess Leia Organa", 0, "Full character"))
+        seen = set()
+        for seed in range(15):
+            _, js = generate_character(seed, "Female", locked, cosplay_label=label,
+                                       covers_face=cf, covers_hair=ch)
+            value = json.loads(js).get("Demographics", {}).get("ethnicity")
+            if value:
+                seen.add(value)
+        self.assertTrue(seen, "an unpainted cosplayer must still carry an ethnicity")
 
     def test_bald_suppresses_scalp_hair_through_node_path(self):
         # Saitama is fully bald: no scalp-hair field may survive (facial_hair, a

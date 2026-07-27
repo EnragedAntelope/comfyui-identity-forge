@@ -29,15 +29,15 @@ from typing import Any
 # the generic "data"/"nodes" names), absolute when run standalone for tests.
 try:
     from ..data.fields import (
-        FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
-        ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
+        FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
+        SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
     )
     from ..data.constraints import CONSTRAINT_RULES
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
-        FIELD_DEFINITIONS, FIELD_FAMILIES, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
-        ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
+        FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
+        SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
     )
     from data.constraints import CONSTRAINT_RULES
@@ -242,10 +242,17 @@ _HAT_ACCESSORY_VALUES: frozenset[str] = frozenset({
 #: drops the Jewelry & Nails group so a random necklace/ring/polish can't render on
 #: top of the shell. Kept conservative (terms that imply full hard coverage, never
 #: a bare-chested gladiator's "breastplate" or a partial "cybernetic arm").
+#: 0.78.0: every ``armor`` alternative accepts ``armour`` too. The pattern was
+#: American-only while data/cosplayers.py carried 32 British-spelled values, so
+#: those entries silently failed the full-shell test and drew necklaces and drop
+#: earrings over plate armour. The data has been normalised to the majority
+#: spelling (202 vs 32), but the regex stays spelling-agnostic because
+#: user_options.json is free text and no validator can reach it.
 _FULL_COVER_RE = re.compile(
     r"exoskeleton|carapace|\bdroid\b|\brobot\b|android|"
-    r"power(?:ed)?[ -]armor|powered exosuit|\bexosuit\b|armored bodysuit|"
-    r"plate armor|armor plating|beskar|mjolnir|bio-armor|suit of .{0,40}?armor",
+    r"power(?:ed)?[ -]armou?r|powered exosuit|\bexosuit\b|armou?red bodysuit|"
+    r"plate armou?r|armou?r plating|beskar|mjolnir|bio-armou?r|"
+    r"suit of .{0,40}?armou?r",
     re.IGNORECASE,
 )
 
@@ -278,6 +285,38 @@ _POCKETLESS_GARMENT_RE = re.compile(
 
 #: Maximum constraint-propagation passes before giving up (cycle guard).
 _MAX_CONSTRAINT_ITERATIONS: int = 12
+
+#: The "Auto" sentinel for the manual-only ``size_scale`` control. It is not a tier
+#: and is never selected by the randomizer -- ``Auto`` means "say nothing about
+#: scale", which is why the field is bias-free by construction. Same contract as the
+#: Creature node's ``integument_finish``: adding tiers cannot dilute anything,
+#: because nothing is ever drawn from this pool.
+_SIZE_SCALE_AUTO: str = "Auto"
+
+#: Hand-authored scale phrases, one per tier, that REPLACE the ``height`` value.
+#:
+#: This reuses the proven Cosplayer ``size_scale`` / ``scale_prose`` machinery: the
+#: phrase is locked into the ``height`` slot with override=True, so it renders in the
+#: LEAD sentence ("a 34-year-old woman with a slim build, colossal and fifty feet
+#: tall, and fair skin") rather than being prepended somewhere weaker. ``height``'s
+#: two gender pools are identical, so ``_gender_permits`` short-circuits True and
+#: passes the free text through -- the same route the body-paint skin anchor uses.
+#:
+#: Wording follows the doctrine established across 0.55.0/0.63.0 and must not be
+#: "improved" casually:
+#:   * CONCRETE MEASUREMENTS, never comparison objects. "beside a towering oak" or
+#:     "the size of a mouse" makes t2i render the oak or the mouse.
+#:   * Never "insect-sized" / "three apples high" for the same reason.
+#:   * Giant tiers pair scale with mass ("hulking", "dwarfing"), because a plain
+#:     "very tall" reads as a tall human rather than a change of scale.
+_SIZE_SCALE_PHRASES: "OrderedDict[str, str]" = OrderedDict([
+    ("tiny", "tiny and barely six inches tall"),
+    ("miniature", "miniature and barely two feet tall"),
+    ("short", "notably short and slight of frame"),
+    ("large", "powerfully built and well over seven feet tall"),
+    ("towering", "towering and hulking, easily twelve feet tall"),
+    ("colossal", "colossal and fifty feet tall, dwarfing the scene"),
+])
 
 #: Probability that a randomized skin tone is drawn from the ethnicity's
 #: plausible band rather than the full spectrum. < 1.0 keeps real-world
@@ -876,8 +915,37 @@ def _apply_constraints(
                 field_def = FIELD_DEFINITIONS.get(target)
                 if field_def is None:
                     continue
+                # Re-pick against the union of EVERY exclusion currently firing on
+                # this target, not just this rule's values.
+                #
+                # 0.78.0 bug fix (latent since the multi-rule constraints landed):
+                # filtering only ``excluded`` left the re-pick pool full of values
+                # some *other* live rule forbids, so the loop ping-ponged -- rule A
+                # re-picks a value rule B bans, rule B re-picks a value rule A bans
+                # -- and whatever the 12th pass happened to hold was emitted. It
+                # mostly went unnoticed because convergence was likely while few
+                # values were banned. Splitting the ``loose`` family took the legal
+                # hair_style set on a buzz cut from 7 of 33 down to 2 of 33, which
+                # made the cap bite constantly and surfaced it: buzz cuts came out
+                # with high ponytails, and afros landed on pin-straight hair.
+                #
+                # Collecting the union converges in a single pass and is strictly
+                # more correct. The contrapositive branch above already builds its
+                # ``conflicting`` set the same way, so this only brings the forward
+                # direction in line with it.
+                forbidden = set(excluded)
+                for other in CONSTRAINT_RULES:
+                    if (other["type"] != "exclusion"
+                            or other.get("excludes_field") != target):
+                        continue
+                    if (other.get("presentation_gated")
+                            and presentation != "Masculine"):
+                        continue
+                    if resolved.get(other["field"]) != other["value"]:
+                        continue
+                    forbidden.update(other["excludes_values"])
                 pool = [v for v in _build_option_pool(target, field_def, gender, resolved)
-                        if v not in excluded]
+                        if v not in forbidden]
                 if pool:
                     resolved[target] = _repick(target, field_def, pool, gender, rng)
                     changed = True
@@ -1442,6 +1510,7 @@ def generate_character(
     modifiers: dict[str, str] | None = None,
     species: dict | None = None,
     gender_variants: dict[str, dict[str, str]] | None = None,
+    size_scale: str = _SIZE_SCALE_AUTO,
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
@@ -1479,6 +1548,13 @@ def generate_character(
     ``"Male"`` to a look block; once the gender is settled the matching block is
     folded into the locks, so one archetype selection yields a coherent male or
     female look (e.g. a housewife dress vs a suburban-dad sweater-vest).
+
+    ``size_scale`` is a MANUAL-ONLY override. ``"Auto"`` (the default) leaves scale
+    unstated and is never chosen by the randomizer, so the control cannot bias any
+    distribution. Any other tier replaces the ``height`` value with a hand-authored
+    scale phrase, letting a perfectly ordinary randomized person be rendered
+    towering or doll-sized. A cosplayer's own ``size_scale`` wins, so selecting a
+    tier cannot shrink a canonically giant character.
     """
     rng = random.Random(seed)
     # "None" locks the *absent* state (optional fields only); keep it. Only
@@ -1492,6 +1568,28 @@ def generate_character(
         and value != "Random"
         and (name not in _HIDDEN_FIELDS or name in _PRESET_HIDDEN_FIELDS)
     }
+    # Manual size-scale override. Replaces `height` outright rather than prepending,
+    # so the lead sentence reads "with a slim build, towering and hulking, easily
+    # twelve feet tall, and fair skin" instead of stacking two contradictory height
+    # words. Free text survives the gender gate because `height`'s two pools are
+    # identical (`_gender_permits` short-circuits) -- the same route the Cosplayer
+    # node's `scale_prose` and the body-paint skin anchor already take.
+    #
+    # PRECEDENCE: the widget wins, including over a wired character's own scale.
+    # That is the node's rule everywhere else ("explicit non-Random widgets still
+    # override" a preset), and a user who deliberately picks a tier expects it to
+    # apply. The alternative -- silently ignoring the tier whenever a cosplayer is
+    # connected -- looks like a broken control. `Auto` is never picked by the
+    # randomizer, so this whole path is inert unless a human chooses a tier.
+    if size_scale != _SIZE_SCALE_AUTO:
+        phrase = _SIZE_SCALE_PHRASES.get(size_scale)
+        if phrase:
+            locked_clean["height"] = phrase
+        else:
+            print(f"[IdentityForge] Unknown size_scale {size_scale!r}; ignoring. "
+                  f"Expected 'Auto' or one of: "
+                  f"{', '.join(_SIZE_SCALE_PHRASES)}.")
+
     # "Any" gender resolves to a concrete man or woman per seed so the person is
     # coherent: the gender gate and randomizer below then draw from a single
     # gender's pools (no beard on a bust, no "they/them" mix). An anatomically
@@ -1901,6 +1999,21 @@ if _COMFY_AVAILABLE:
                             "jewellery, nails and makeup so a full femme look is reachable.",
                 ),
                 io.Combo.Input(
+                    "size_scale",
+                    options=[_SIZE_SCALE_AUTO] + list(_SIZE_SCALE_PHRASES),
+                    default=_SIZE_SCALE_AUTO,
+                    tooltip="Force an unrealistic body scale on an otherwise ordinary "
+                            "person -- a doll-sized office worker, a fifty-foot "
+                            "commuter.\n"
+                            "'Auto' (the default) says nothing about scale and is "
+                            "NEVER chosen at random, so this control only ever does "
+                            "something when you pick a tier yourself -- it cannot "
+                            "affect normal randomized output.\n"
+                            "A tier replaces the height description in the opening "
+                            "sentence, and overrides a connected Cosplayer's own "
+                            "scale, so you can make any character giant or tiny.",
+                ),
+                io.Combo.Input(
                     "hair_color_scope",
                     options=["Natural only", "Full spectrum"],
                     default="Natural only",
@@ -1957,13 +2070,18 @@ if _COMFY_AVAILABLE:
                     if not _is_absent(v)
                 ]
                 options = ["Random"] + visible + ["None"]
+                # Per-field help first, then the shared mechanic line. Before 0.78.0
+                # every field carried only the mechanic sentence, which explained the
+                # widget but never the field itself.
+                help_text = FIELD_HELP.get(field_name)
+                mechanic = (f"{field_def['group']} · 'Random' = randomize, "
+                            f"a value = lock, 'None' = omit from the output.")
                 inputs.append(
                     io.Combo.Input(
                         field_name,
                         options=options,
                         default="Random",
-                        tooltip=f"{field_def['group']} · 'Random' = randomize, "
-                                f"a value = lock, 'None' = omit from the output.",
+                        tooltip=f"{help_text}\n{mechanic}" if help_text else mechanic,
                     )
                 )
 
@@ -2061,5 +2179,6 @@ if _COMFY_AVAILABLE:
                 seed, gender, locked, hair_color_scope, wardrobe,
                 accessory_density, location_setting, cosplay_label, covers_face,
                 covers_body, covers_hair, modifiers, species, gender_variants,
+                kwargs.get("size_scale", _SIZE_SCALE_AUTO),
             )
             return io.NodeOutput(prose, json_output)

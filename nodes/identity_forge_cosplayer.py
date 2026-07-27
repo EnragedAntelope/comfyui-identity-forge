@@ -211,8 +211,26 @@ _BODY_PAINT_RE = re.compile(
 #: the style suppressed the costume's own paint colour becomes the only skin/face
 #: descriptor. ``"None"`` is the universal absent sentinel for the skin fields, which
 #: carry no such constraint; "no blush"/"none" match the makeup absent tokens.
+#:
+#: ``ethnicity`` joined at 0.78.0 for the same reason the rest of this map exists.
+#: It had been the one skin-describing field left randomizing under a full-body
+#: colour, and it is the *loudest* of them: the lead sentence opened "a 19-year-old
+#: Chilean man ... with chalk-white skin", and t2i resolves the high-attention face
+#: token to the ethnicity, rendering an ordinary human face above a coloured body.
+#: That is the Lobo report ("a hispanic guy wearing Lobo's clothes but not his
+#: face") and it reproduces at every seed. Same argument, same verdict as 0.65.0,
+#: which added ``ethnicity`` to ``_CONCEALED_SHELL_SKIN_FIELDS`` for fully-encased
+#: characters: when no natural skin is visible there is nothing for an ethnicity to
+#: attach to, so naming one only fights the colour the costume just established.
+#:
+#: **Seeds drift for body-paint characters** (only). Locking a field makes the
+#: randomizer skip it, so ``ethnicity``'s draw leaves the RNG stream and every
+#: field resolved after it shifts. Scope is exactly the entries where
+#: ``_is_body_paint`` is true; plain runs, archetypes and unpainted cosplayers are
+#: byte-identical. Verified by previewing Lobo at seeds 0/2 before and after.
 _BODY_PAINT_SUPPRESS: dict[str, str] = {
     "skin_tone": "None",
+    "ethnicity": "None",
     "complexion": "None",
     "skin_details": "None",
     "freckles_density": "None",
@@ -645,7 +663,11 @@ if _COMFY_AVAILABLE:
                         tooltip="Character to cosplay. 'None' emits nothing; the "
                                 "'Random — …' entries pick one using the seed, scoped by "
                                 "the source character's gender (and by 'random_scope' "
-                                "below). Type to filter the list.",
+                                "below). Type to filter the list.\n"
+                                "Many characters ship several canonical outfits (Leia's "
+                                "white gown / Hoth / Boushh, Harley's classic and Arkham "
+                                "looks). One is chosen per seed, so re-rolling the seed "
+                                "on a fixed character cycles their wardrobe.",
                     ),
                     io.Combo.Input(
                         "random_scope",
