@@ -1791,9 +1791,15 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
             cosplay_of = meta.get("cosplay_of")
             if isinstance(cosplay_of, str) and cosplay_of:
                 franchise = meta.get("franchise")
+                # A key disambiguated *by its franchise* already carries it
+                # ("Red (Pokemon)", "Zero (Code Geass)"), so appending again
+                # stuttered -- "Cosplaying as Red (Pokemon) (Pokemon)". 29 shipped
+                # entries did this. Prose-only, no RNG draw, no seed drift.
+                named = isinstance(franchise, str) and bool(franchise)
                 flat[_COSPLAY_LABEL_KEY] = (
                     f"{cosplay_of} ({franchise})"
-                    if isinstance(franchise, str) and franchise else cosplay_of
+                    if named and not cosplay_of.endswith(f"({franchise})")
+                    else cosplay_of
                 )
             if meta.get("covers_face"):
                 flat[_COVERS_FACE_KEY] = "1"

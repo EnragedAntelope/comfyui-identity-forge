@@ -108,6 +108,22 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style", "excludes_values": ["comb over"],
      "reason": "a buzz cut has no length on top to comb over"},
+    # 0.77.0: a buzz cut has no fringe to cut into bangs. A 12,000-sample sweep
+    # put bangs on a buzz 267 times (~2.2% of all output) -- the same class as the
+    # cornrows-on-a-buzz bug fixed at 0.72.0, and found the same way.
+    # ``curtain bangs`` + ``blunt bangs`` are EXACTLY the ``bangs`` family in
+    # HAIR_STYLE_FAMILIES, so excluding both drops a WHOLE family and the
+    # remaining families stay exactly proportional -- the bias rule the lighting
+    # buckets follow. Do not extend this rule to the five other physically-wrong
+    # buzz-cut styles (worn down / windswept / freshly blown out / tousled
+    # bedhead / slicked back): all five live in the 9-variant ``loose`` family
+    # next to ``wet look`` and ``natural and unstyled``, so culling part of it
+    # would dump the family's full frozen weight onto the two survivors. That one
+    # needs a family split (the 0.66.0 POSE_FAMILIES treatment) -- see
+    # architecture.md, "Considered and deferred".
+    {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
+     "excludes_field": "hair_style", "excludes_values": ["curtain bangs", "blunt bangs"],
+     "reason": "a buzz cut has no fringe to cut into bangs"},
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style", "excludes_values": ["mullet"],
      "reason": "a buzz cut has no back length for a mullet"},
