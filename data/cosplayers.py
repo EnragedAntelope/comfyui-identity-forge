@@ -11858,6 +11858,18 @@ COSPLAYERS: dict[str, dict] = {
                    "yellow fur marked by faint darker stripes, pointed cat ears and a long tail, "
                    "wearing an open white physician's lab coat over a light blouse, with a "
                    "stethoscope around the neck",
+        # 0.79.0: the second look the character is drawn in -- the same clinic coat
+        # worn open over lingerie rather than over the blouse. Plain-string overlay
+        # (no dict) because only the garments change: the fur, ears, tail, pink hair
+        # and build are all shared, so restating a signature would be the 0.59.0
+        # whole-dict-replacement trap for no gain.
+        "costumes": [
+            "an upright anthropomorphic tabby cat with an even, all-over coat of soft "
+            "yellow fur marked by faint darker stripes, pointed cat ears and a long tail, "
+            "wearing a white physician's lab coat hanging open over a black lace "
+            "bralette and matching high-cut briefs, with sheer black thigh-high "
+            "stockings and a stethoscope around the neck",
+        ],
         "signature": {"hair_color": "hot pink", "hair_length": "shoulder length",
                       "hair_style": "worn down"},
         "physique": {"body_type": "slender", "height": "average height"},
@@ -14543,7 +14555,13 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "petite and slim", "height": "petite",
                      "skin_tone": "light medium"},
     },
-    "Aqua": {
+    # Renamed from the bare "Aqua" at 0.79.0 so it reads unambiguously beside
+    # "Aqua (KonoSuba)" in the dropdown -- two different blue-haired women a list
+    # apart, and the bare key gave no way to tell which was which before selecting.
+    # BREAKING for a saved workflow holding the old value (the Amethyst precedent at
+    # 0.78.0); reselect once. The label already carried the franchise, so rendered
+    # output is unchanged and the stutter guard keeps it from doubling up.
+    "Aqua (Kingdom Hearts)": {
         "franchise": "Kingdom Hearts",
         "gender": "Female",
         "costume": "a black sleeveless halter top with pink and silver trim, fitted "
@@ -14922,17 +14940,17 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "low ponytail", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
-    "Bruce Banner": {
-        "franchise": "Marvel",
-        "gender": "Male",
-        "costume": "a rumpled untucked button-down shirt with the sleeves rolled "
-                   "back, plain slacks, and wire-rimmed glasses",
-        "signature": {"hair_color": "dark brown", "hair_length": "very short",
-                      "hair_texture": "curly", "eye_color": "dark brown",
-                      "facial_hair": "stubble"},
-        "physique": {"body_type": "slim", "height": "average height",
-                     "skin_tone": "fair"},
-    },
+    # Bruce Banner was removed at 0.79.0. Two reasons, in order of weight:
+    # (1) "a rumpled button-down and wire-rimmed glasses" is an ordinary man in
+    #     ordinary clothes -- the costume carried no recognisable silhouette, so the
+    #     render leaned entirely on the model's association with the NAME, and that
+    #     association drags in the Hulk's palette (reliably grey/green-tinted output).
+    #     Same class as Mt. Lady (0.59.0): not fixable in our data.
+    # (2) The pack ships the Hulk, which is the look people actually want, and does
+    #     not ship the equivalent civilian identities elsewhere (no Peter Parker).
+    # This does NOT reopen the 0.59.0 decision to keep civilian/hero pairs whose
+    # civilian look is itself distinctive (Tony Stark's suit, Clark Kent's glasses-
+    # and-tie over a peeking S). Banner had no such look.
     "Marv": {
         "franchise": "Sin City",
         "gender": "Male",
@@ -16128,12 +16146,24 @@ COSPLAYERS: dict[str, dict] = {
                      "skin_tone": "dark brown"},
         "prop": "a broad golden sword",
     },
+    # Kept alongside "White Widow" deliberately (0.79.0 review): they are different
+    # characters -- in the comics White Widow is Ava Orlova -- and the two entries
+    # render nothing alike (forest-green multi-pocket vest and a blonde bob vs a
+    # white tactical suit and platinum hair). Neither is a near-duplicate of the
+    # other or of Black Widow.
     "Yelena Belova": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "an olive green hooded utility vest crowded with pockets over a "
+        "costume": "a forest green hooded utility vest crowded with pockets over a "
                    "black tactical bodysuit, black gloves, a loaded belt and black "
                    "combat boots",
+        # The stripped-down all-black field look, no vest -- her second screen
+        # costume and the one that reads as a Widow rather than as a scavenger.
+        "costumes": [
+            "a black tactical bodysuit with reinforced panelling, a slim utility "
+            "belt with twin thigh holsters, black forearm gauntlets and black "
+            "combat boots",
+        ],
         "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "average height",
@@ -18532,6 +18562,609 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "loosely wavy"},
         "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
     },
+
+    # === v0.79.0: Farscape ===============================================
+    # The franchise had zero representation and is unusually well suited to this
+    # pack: almost every lead is a practical-makeup or Henson-creature design, so
+    # the costume descriptions carry the look on their own without leaning on the
+    # model recognising a name. Six entries -- deliberately one short of the eight
+    # that would mint a new `Franchise: Farscape` random_scope, so the scope
+    # dropdown does not move and saved workflows keep their indices (the Elden Ring
+    # decision at 0.76.0).
+    "Chiana": {
+        "franchise": "Farscape",
+        "gender": "Female",
+        # Nebari: grey skin, and the females are white-haired (the males are
+        # black-haired). The dark shading is makeup-like patterning around the eyes
+        # and temples, so it belongs in the costume prose -- `eyes` free text must
+        # stay a noun phrase and cannot carry a clause about surrounding markings.
+        "costume": "smooth, flawless pale grey skin with sooty black shading washed "
+                   "around the eyes and back across the temples, in a layered charcoal "
+                   "and black outfit - a cropped fitted top with soft padded shoulders, "
+                   "a wrapped grey skirt over dark leggings, and scuffed black boots",
+        "eyes": "large and dark",
+        "signature": {"hair_color": "white", "hair_length": "chin length bob",
+                      "hair_texture": "pin straight", "hair_style": "tousled bedhead"},
+        "physique": {"body_type": "very slim", "height": "petite"},
+    },
+    "Ka D'Argo": {
+        "franchise": "Farscape",
+        "gender": "Male",
+        # A Luxan's head tendrils are not hair -- covers_hair drops the whole Hair
+        # group (including facial_hair) so the randomizer cannot put a beard or a
+        # side part on him, and the tendrils are described in the costume instead.
+        #
+        # The skin-native marker ("smooth, flawless <colour> skin") is load-bearing,
+        # not decoration: covers_hair alone left ethnicity, skin_tone and complexion
+        # randomizing, and the first preview read "a Dominican man ... light skin ...
+        # a peaches and cream complexion" directly above "weathered bronze-red skin".
+        # The marker is what _BODY_PAINT_RE detects, and detection is what suppresses
+        # those fields and restates the colour on the face and hands.
+        "costume": "a towering Luxan warrior with smooth, flawless weathered bronze-red "
+                   "skin and a heavy ridged brow, a fall of thick dark rope-like tendrils "
+                   "hanging from the scalp past the shoulders, ritual scarring across the "
+                   "cheeks, in layered brown leather armor with a studded chest "
+                   "harness, bracers and a long dark coat",
+        "covers_hair": True,
+        "prop": "a Qualta Blade, a broad notched sword with a rifle stock built into "
+                "the hilt",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Pa'u Zotoh Zhaan": {
+        "franchise": "Farscape",
+        "gender": "Female",
+        # Delvians are plant-derived humanoids: vivid blue and completely hairless.
+        # `bald: True` is the gender-agnostic scalp scrub (never hair_length "bald",
+        # which is male-only and would be gender-gated away on a woman -- the Jack
+        # recipe from 0.60.0).
+        "costume": "a serene Delvian priestess with smooth, flawless deep blue skin "
+                   "faintly mottled in darker blue, a bare hairless scalp, in flowing "
+                   "layered priestly robes of oxblood and gold with a wide draped "
+                   "collar and long open sleeves",
+        "bald": True,
+        "eyes": "pale blue",
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Scorpius": {
+        "franchise": "Farscape",
+        "gender": "Male",
+        # The face lives entirely in `mask` (the covers_face slot) and the body
+        # entirely in `costume`; describing the face in both stuttered the pallor.
+        "costume": "a full glossy black leather bodysuit with ribbed panelling, a "
+                   "high buckled collar and heavy black gloves",
+        "mask": "a close-fitting black leather hood laced tight over the skull with a "
+                "cooling rod socket at the crown, framing a gaunt skull-like face of "
+                "mottled grey-white skin with dark pitted hollows and black-rimmed eyes",
+        "covers_face": True,
+        "signature": {"necklace": "no necklace"},
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Rygel XVI": {
+        "franchise": "Farscape",
+        "gender": "Male",
+        # 26 inches tall -- squarely the TINY tier. scale_prose is hand-authored and
+        # uses a concrete measurement, never a comparison object (0.55.0 doctrine:
+        # "the size of a cat" makes t2i render a cat).
+        "costume": "a diminutive Hynerian Dominar with an even, all-over hide of "
+                   "mottled green and amber and three-fingered hands, in ornate "
+                   "deposed-royal robes of burgundy and gold brocade",
+        # covers_body alone is NOT enough for a non-human head: the first preview gave
+        # him "mid back curly light chestnut" hair and a human face over the hide.
+        # covers_face + a `mask` carrying the head is the fix (the Rosie the Robot /
+        # Mr. Krabs pattern from 0.77.0) -- "mask" here means "what the head looks
+        # like", not a worn object.
+        "mask": "a broad wrinkled amphibian face with heavy folds, small dark eyes and "
+                "wide fan-like ear frills, under a small jewelled gold circlet",
+        "covers_face": True,
+        "covers_body": True,
+        "size_scale": "tiny",
+        "scale_prose": "tiny and barely two feet tall",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Aeryn Sun": {
+        "franchise": "Farscape",
+        "gender": "Female",
+        "costume": "a black Peacekeeper commando uniform - a fitted leather jacket "
+                   "with oxblood shoulder panels over a black tank, black tactical "
+                   "trousers, a thigh holster and heavy black boots",
+        "signature": {"hair_color": "near black", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "hair_style": "low ponytail"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # === v0.79.0: Food Wars! Shokugeki no Soma ============================
+    # Five entries. The academy's chef whites are the through-line, so each
+    # character has to be carried by hair, eye colour and how they wear the jacket
+    # -- which is exactly what the descriptions below lead with.
+    "Alice Nakiri": {
+        "franchise": "Food Wars",
+        "gender": "Female",
+        "costume": "crisp white double-breasted chef whites with the sleeves pushed "
+                   "back and a black neckerchief, worn open over a dark academy "
+                   "blouse, with a short pleated skirt",
+        "eyes": "vivid red",
+        "signature": {"hair_color": "silver", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "hair_style": "worn down",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "porcelain"},
+    },
+    "Erina Nakiri": {
+        "franchise": "Food Wars",
+        "gender": "Female",
+        "costume": "a Totsuki academy uniform - a white blouse with a wide red ribbon "
+                   "tie at the collar under a fitted dark blazer, a pleated navy skirt "
+                   "and dark knee socks",
+        "costumes": [
+            "immaculate white double-breasted chef whites with a high collar and "
+            "long sleeves, worn buttoned and precise over a pleated navy skirt",
+        ],
+        "eyes": "violet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "silky and glossy", "hair_style": "worn down",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "porcelain"},
+    },
+    "Rindou Kobayashi": {
+        "franchise": "Food Wars",
+        "gender": "Female",
+        # Her look is the swept fringe over one eye plus the slit-pupil gold stare;
+        # the asymmetry lives in the costume prose, because free-text `eyes` must
+        # stay a short noun phrase or the renderer splices the noun onto the wrong
+        # clause (the 0.76.0 eyes rule).
+        "costume": "chef whites worn loose and open over a black shirt, sleeves shoved "
+                   "to the elbow, with a crimson fringe swept down across one eye",
+        "eyes": "sharp gold",
+        "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
+                      "hair_texture": "slightly wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "toned", "height": "tall", "skin_tone": "fair"},
+    },
+    "Megumi Tadokoro": {
+        "franchise": "Food Wars",
+        "gender": "Female",
+        "costume": "chef whites with the sleeves rolled to the forearm over a Totsuki "
+                   "academy blouse, a plain white apron tied at the waist and a pleated "
+                   "navy skirt",
+        "eyes": "deep blue",
+        "signature": {"hair_color": "navy blue", "hair_length": "waist length",
+                      "hair_texture": "slightly wavy", "hair_style": "low ponytail"},
+        "physique": {"body_type": "softly curved", "height": "petite",
+                     "skin_tone": "fair"},
+    },
+    "Soma Yukihira": {
+        "franchise": "Food Wars",
+        "gender": "Male",
+        # hair_accessory is a fixed 14-option list and a knotted white headband is
+        # not in it, so the headband rides in the costume string (0.76.0 rule); the
+        # random one is dropped anyway once a costume exists.
+        "costume": "chef whites with the sleeves rolled high and the jacket half "
+                   "unbuttoned over a plain dark tee, a white cloth headband knotted "
+                   "across the forehead, and a folded towel through the belt",
+        "eyes": "golden amber",
+        "signature": {"hair_color": "bright red", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+
+    # === v0.79.0: Amagi Brilliant Park ====================================
+    # Five entries: the two leads plus three of the four Elementario fairies.
+    # Koboli (earth) is DELIBERATELY ABSENT -- no source found that pins her colours,
+    # and inventing them would be worse than the gap (the 0.77.0 rule: add real ones
+    # or report the residual, never fabricate a counterpart for symmetry).
+    "Isuzu Sento": {
+        "franchise": "Amagi Brilliant Park",
+        "gender": "Female",
+        "costume": "a scarlet full-dress bandsman's tunic with black facings and gold "
+                   "frogging, gold aigrettes looped over the right shoulder, a white "
+                   "ribbon at the throat, a black skirt, and white thigh-high stockings "
+                   "tied with black ribbons",
+        "prop": "Steinberger, a long ornate muzzle-loading musket",
+        "eyes": "golden",
+        "signature": {"hair_color": "light chestnut", "hair_length": "mid back",
+                      "hair_texture": "sleek straight", "hair_style": "low ponytail",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Latifa Fleuranza": {
+        "franchise": "Amagi Brilliant Park",
+        "gender": "Female",
+        "costume": "a pale lilac and white princess dress with puffed sleeves, a "
+                   "ribboned bodice and a full layered skirt, with white gloves and a "
+                   "small silver tiara set in the hair",
+        "eyes": "bright blue",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "very slim", "height": "petite",
+                     "skin_tone": "porcelain"},
+    },
+    "Salama": {
+        "franchise": "Amagi Brilliant Park",
+        "gender": "Female",
+        "costume": "a fire fairy in a flame-shaped orange halter dress with ragged "
+                   "flickering hems, a red choker tied with a yellow ribbon, a red "
+                   "armband finished with a bow, red shoes, and tattered translucent "
+                   "wings tipped in pale red and pierced with small round holes",
+        "eyes": "ruby red",
+        # The costume names a choker, and `necklace` is not one of the fields a
+        # costume suppresses, so it must be pinned or a second one renders (0.78.0).
+        "signature": {"hair_color": "copper", "hair_length": "very short",
+                      "hair_texture": "slightly wavy", "necklace": "no necklace"},
+        "physique": {"body_type": "very slim", "height": "petite"},
+    },
+    "Muse": {
+        "franchise": "Amagi Brilliant Park",
+        "gender": "Female",
+        "costume": "a water fairy in a flowing aquamarine dress with a rippling "
+                   "layered hem and a deep blue sash, with sheer blue-tinted "
+                   "dragonfly wings",
+        "eyes": "deep blue",
+        "signature": {"hair_color": "silver", "hair_length": "waist length",
+                      "hair_texture": "silky and glossy", "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "petite"},
+    },
+    "Sylphy": {
+        "franchise": "Amagi Brilliant Park",
+        "gender": "Female",
+        "costume": "a wind fairy in a pale mint and white dress with a floating "
+                   "handkerchief hem, two blue ribbons tied at either side of the "
+                   "head, and sheer near-invisible wings",
+        "eyes": "bright blue",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_texture": "slightly wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "very slim", "height": "petite"},
+    },
+
+    # === v0.79.0: Prison School ===========================================
+    # Four entries. Each look is a variation on one school uniform, so the
+    # differentiators are hair and how the uniform is worn -- which is genuinely how
+    # readers tell them apart, and is what the descriptions lead with.
+    "Meiko Shiraki": {
+        "franchise": "Prison School",
+        "gender": "Female",
+        "costume": "a dark brown school blazer worn buttoned and straining tight over "
+                   "a white shirt, a very short matching skirt, sheer black stockings "
+                   "and high-heeled black leather boots",
+        "costumes": [
+            # Her second recurring look: the disciplinarian rig, tracksuit and whip.
+            "a black tracksuit jacket left open over a white tank top, with fitted "
+            "black shorts and high-heeled black leather boots",
+        ],
+        "eyes": "pale grey",
+        "signature": {"hair_color": "platinum white", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "high ponytail"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
+    },
+    "Mari Kurihara": {
+        "franchise": "Prison School",
+        "gender": "Female",
+        "costume": "a crisply worn dark school blazer over a white shirt, a pleated "
+                   "skirt and opaque dark tights, with a black riding crop tucked "
+                   "under one arm",
+        "eyes": "dark brown",
+        "signature": {"hair_color": "jet black", "hair_length": "mid back",
+                      "hair_texture": "sleek straight", "hair_style": "worn down"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Hana Midorikawa": {
+        "franchise": "Prison School",
+        "gender": "Female",
+        "costume": "a school blazer over a white shirt with a pleated skirt worn over "
+                   "black leggings and no socks, and a blunt blonde bob with square "
+                   "bangs cut level across the brows",
+        "costumes": [
+            # The karate look she is most often drawn in outside the uniform.
+            "a white karate gi with the jacket crossed and belted at a brown obi, "
+                "worn barefoot",
+        ],
+        "eyes": "brown",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "hair_texture": "pin straight", "hair_style": "blunt bangs"},
+        "physique": {"body_type": "toned", "height": "petite", "skin_tone": "fair"},
+    },
+    "Kate Takenomiya": {
+        "franchise": "Prison School",
+        "gender": "Female",
+        "costume": "a neat dark school blazer over a white shirt with a pleated skirt, "
+                   "the hair worn in two low ringlet pigtails tied with burgundy "
+                   "ribbons and a fringe swept to one side",
+        "eyes": "dark brown",
+        "signature": {"hair_color": "auburn", "hair_length": "mid back",
+                      "hair_texture": "curly", "hair_style": "low pigtails"},
+        "physique": {"body_type": "slim", "height": "petite", "skin_tone": "fair"},
+    },
+
+    # === v0.79.0: Berserk =================================================
+    # A landmark franchise with zero prior representation. Three leads, each with a
+    # silhouette a model can render without knowing the name.
+    "Guts": {
+        "franchise": "Berserk",
+        "gender": "Male",
+        # The missing right eye is asymmetric, so it lives in the costume prose --
+        # free-text `eyes` is spliced into a feature list and only survives as a
+        # short noun phrase (0.76.0). Same for the prosthetic arm.
+        "costume": "a colossal black swordsman in blackened plate armor and dark "
+                   "leather over a black tunic, a heavy iron prosthetic left hand and forearm, "
+                   "a deep scar closing the right eye, and a long jagged scar across "
+                   "the bridge of the nose",
+        "prop": "the Dragonslayer, a slab of a greatsword taller than a man and thick "
+                "as a plank",
+        "eyes": "dark brown",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "facial_hair": "clean shaven",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Casca": {
+        "franchise": "Berserk",
+        "gender": "Female",
+        "costume": "a Band of the Falcon officer in fitted steel plate armor - a "
+                   "cuirass, pauldrons and greaves - over a deep blue gambeson, with "
+                   "a short sword belt at the hip",
+        "costumes": [
+            # Her post-Eclipse look. The overlay REPLACES the whole signature dict
+            # (0.59.0 trap), so the long hair has to be restated in full here --
+            # a partial overlay would silently keep the cropped soldier's cut.
+            {
+                "costume": "a simple unbelted cream linen shift dress, worn barefoot",
+                "signature": {"hair_color": "jet black", "hair_length": "mid back",
+                              "hair_texture": "wavy", "hair_style": "worn down"},
+            },
+        ],
+        "eyes": "dark brown",
+        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
+                      "hair_texture": "thick and voluminous"},
+        "physique": {"body_type": "toned", "height": "average height",
+                     "skin_tone": "dark brown"},
+    },
+    "Griffith": {
+        "franchise": "Berserk",
+        "gender": "Male",
+        "costume": "gleaming silver-white plate armor chased with a hawk motif, worn "
+                   "over a white tunic with a long white cape, and white gauntlets",
+        "eyes": "pale blue",
+        "signature": {"hair_color": "white", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "porcelain"},
+    },
+
+    # === v0.79.0: Devil May Cry ===========================================
+    # Also previously unrepresented. Coat colour is the franchise's whole visual
+    # grammar (red Dante / blue Vergil / white Lady), so each entry leads with it.
+    "Dante": {
+        "franchise": "Devil May Cry",
+        "gender": "Male",
+        "costume": "a long red leather coat with the sleeves rolled to the elbow over "
+                   "a black leather vest and bare chest, black trousers, buckled boots "
+                   "and fingerless gloves",
+        "prop": "Ebony and Ivory, a matched pair of long-barrelled black and white "
+                "handguns",
+        "eyes": "pale blue",
+        "signature": {"hair_color": "platinum white", "hair_length": "very short",
+                      "hair_texture": "sleek straight", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven", "necklace": "no necklace"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Vergil": {
+        "franchise": "Devil May Cry",
+        "gender": "Male",
+        "costume": "a long midnight blue coat with ornate silver brocade at the "
+                   "shoulders and a high collar, worn buttoned over a dark waistcoat, "
+                   "with black gloves and tall boots",
+        "prop": "the Yamato, a slim straight-bladed katana in a black lacquered scabbard",
+        "eyes": "pale blue",
+        "signature": {"hair_color": "platinum white", "hair_length": "very short",
+                      "hair_texture": "sleek straight", "hair_style": "slicked back",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "porcelain"},
+    },
+    "Trish": {
+        "franchise": "Devil May Cry",
+        "gender": "Female",
+        "costume": "a black leather corset cut low and stamped with a lightning-bolt "
+                   "motif, tight black leather trousers, twin belts slung at the hips, "
+                   "a black choker and high-heeled black boots",
+        "eyes": "sharp blue",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "worn down",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Lady (Devil May Cry)": {
+        "franchise": "Devil May Cry",
+        "gender": "Female",
+        # Disambiguated on the key: the roster already carries Lady Sif, Lady Shiva,
+        # Lady Death and others, and a bare "Lady" would be unreadable in a dropdown.
+        # Heterochromia is safe as free text because the phrase ENDS in the eye part,
+        # so the renderer does not splice a stray noun onto it (0.76.0).
+        "costume": "a white full-body jumpsuit cinched with red leather belts and "
+                   "harness straps, red-buckled boots, and a slim shoulder rig",
+        "prop": "the Kalina Ann, an oversized shoulder-fired rocket launcher with a "
+                "bayonet under the barrel",
+        "eyes": "one crimson eye and one pale blue eye",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Nero": {
+        "franchise": "Devil May Cry",
+        "gender": "Male",
+        "costume": "a hooded blue coat with red lining and a zippered high collar over "
+                   "a dark shirt, fingerless gloves and heavy boots, with a demonic "
+                   "right arm of glowing blue-white scaled plating",
+        "eyes": "pale blue",
+        "signature": {"hair_color": "platinum white", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # === v0.79.0: iconic single adds (anime/manga coverage review) ========
+    # Chosen for a distinctive, renderable silhouette rather than for ranking --
+    # names whose look is a school uniform and little else were skipped.
+    "Fubuki (One Punch Man)": {
+        "franchise": "One Punch Man",
+        "gender": "Female",
+        "costume": "a fitted black cocktail dress with a plunging neckline and a white "
+                   "fur-trimmed coat worn draped over the shoulders, with sheer black "
+                   "stockings and heels",
+        "eyes": "pale green",
+        "signature": {"hair_color": "mint green", "hair_length": "chin length bob",
+                      "hair_texture": "silky and glossy", "hair_style": "worn down"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Yuno Gasai": {
+        "franchise": "Future Diary",
+        "gender": "Female",
+        "costume": "a school uniform of a white blouse with a red neck ribbon under a "
+                   "dark blazer and a pleated skirt, the hair in two long tails tied "
+                   "high with red ribbons",
+        "eyes": "rose pink",
+        "signature": {"hair_color": "baby pink", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "hair_style": "high pigtails",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "slim", "height": "petite", "skin_tone": "porcelain"},
+    },
+    "Lisa Lisa": {
+        "franchise": "JoJo's Bizarre Adventure",
+        "gender": "Female",
+        "costume": "a sharply tailored black bodysuit with a wide belt and a long "
+                   "trailing scarf wound at the throat, with a broad hair scarf tied "
+                   "across the crown",
+        "prop": "a long slim cigarette holder",
+        "eyes": "hazel",
+        "signature": {"hair_color": "dark brown", "hair_length": "mid back",
+                      "hair_texture": "loosely wavy", "hair_style": "updo",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "toned", "height": "tall", "skin_tone": "fair"},
+    },
+    "Midnight (My Hero Academia)": {
+        "franchise": "My Hero Academia",
+        "gender": "Female",
+        # Disambiguated: "Midnight" alone collides with Midnighter (Wildstorm), who
+        # is already on the roster and a completely different character.
+        "costume": "a white hero bodysuit slashed open at the thighs and shoulders "
+                   "under a high scarlet-lined collar, with a black domino mask, long "
+                   "black gloves and thigh-high heeled boots",
+        "prop": "a coiled black leather whip",
+        "eyes": "deep blue",
+        "signature": {"hair_color": "deep purple", "hair_length": "waist length",
+                      "hair_texture": "wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Leafa": {
+        "franchise": "Sword Art Online",
+        "gender": "Female",
+        "costume": "a short bright green sylph tunic with white and gold trim over "
+                   "close-fitting shorts, long green gloves, tall boots, and "
+                   "translucent green insect wings at the back",
+        "prop": "a slim single-edged longsword",
+        "eyes": "bright green",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "hair_style": "high ponytail"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Re-L Mayer": {
+        "franchise": "Ergo Proxy",
+        "gender": "Female",
+        "costume": "a severe black high-collared coat over a dark bodysuit, with a "
+                   "broad band of smudged black paint swept across the eyes from "
+                   "temple to temple",
+        "eyes": "steel grey",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_texture": "pin straight", "hair_style": "blunt bangs",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "porcelain"},
+    },
+    "Saeko Busujima": {
+        "franchise": "Highschool of the Dead",
+        "gender": "Female",
+        "costume": "a school uniform of a white blouse and a short pleated skirt with "
+                   "an orange bow at the collar, worn with knee socks and a sword belt",
+        "prop": "a wooden bokken practice sword",
+        "eyes": "deep blue",
+        "signature": {"hair_color": "deep purple", "hair_length": "waist length",
+                      "hair_texture": "silky and glossy", "hair_style": "worn down",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Mei Terumi": {
+        "franchise": "Naruto",
+        "gender": "Female",
+        "costume": "a long-sleeved deep blue dress slit high at the thigh over mesh "
+                   "armor, with a wide dark sash, and a fall of auburn hair drawn "
+                   "forward over the right side of the face",
+        "eyes": "green",
+        "signature": {"hair_color": "auburn", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+    },
+    "Moka Akashiya": {
+        "franchise": "Rosario + Vampire",
+        "gender": "Female",
+        "costume": "a Youkai Academy uniform - a white blouse under a fitted brown "
+                   "blazer with a green plaid skirt and knee socks - with a silver "
+                   "rosary cross on a choker at the throat",
+        "costumes": [
+            # Her unsealed vampire form: the hair and eyes change, so the overlay
+            # restates the COMPLETE signature (0.59.0 whole-dict rule).
+            {
+                "costume": "the same brown-blazered academy uniform with the rosary "
+                           "broken from the choker, worn with an air of cold menace",
+                "eyes": "blood red with a slitted cat-like pupil",
+                "signature": {"hair_color": "platinum white", "hair_length": "waist length",
+                              "hair_texture": "thick and voluminous",
+                              "hair_style": "worn down", "necklace": "no necklace"},
+            },
+        ],
+        "eyes": "emerald green",
+        "signature": {"hair_color": "baby pink", "hair_length": "waist length",
+                      "hair_texture": "silky and glossy", "hair_style": "worn down",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "softly curved", "height": "average height",
+                     "skin_tone": "porcelain"},
+    },
+    "Michiko Malandro": {
+        "franchise": "Michiko & Hatchin",
+        "gender": "Female",
+        "costume": "a cropped white halter top and low-slung denim shorts with a wide "
+                   "studded belt, gold hoop earrings and oversized dark sunglasses "
+                   "pushed up into the hair, with tall boots",
+        "eyes": "dark brown",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_texture": "curly", "hair_style": "worn down",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "hourglass", "height": "tall",
+                     "skin_tone": "dark brown"},
+    },
+    "Kaori Miyazono": {
+        "franchise": "Your Lie in April",
+        "gender": "Female",
+        "costume": "a floaty white summer dress with a wide skirt and a pale cardigan, "
+                   "worn with white ankle socks and flat shoes",
+        "prop": "a violin held loosely by the neck, with the bow in the other hand",
+        "eyes": "blue-green",
+        "signature": {"hair_color": "light blonde", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "very slim", "height": "petite",
+                     "skin_tone": "porcelain"},
+    },
+    "Bishamonten": {
+        "franchise": "Noragami",
+        "gender": "Female",
+        "costume": "a black leather bodice and low-slung trousers under a long "
+                   "fur-collared coat, with heavy buckled thigh boots and a broad "
+                   "sword belt",
+        "prop": "a slim straight-bladed sword",
+        "eyes": "molten gold",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+    },
 }
 
 
@@ -18557,6 +19190,9 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Akame ga Kill", "Delicious in Dungeon", "Fate/Grand Order", "Nana",
         "Rascal Does Not Dream of Bunny Girl Senpai",
         "Monogatari", "Rent-a-Girlfriend",
+        "Food Wars", "Amagi Brilliant Park", "Prison School",
+        "Berserk", "Future Diary", "Ergo Proxy", "Highschool of the Dead",
+        "Rosario + Vampire", "Michiko & Hatchin", "Your Lie in April", "Noragami",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
@@ -18578,7 +19214,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
         "Mortal Kombat", "Soul Calibur", "Tekken", "Overwatch", "League of Legends", "Arcane",
-        "Genshin Impact",
+        "Genshin Impact", "Devil May Cry",
         "The Legend of Zelda", "Super Mario", "Star Fox", "F-Zero", "Kirby", "Donkey Kong",
         "Metroid", "Resident Evil", "Tomb Raider", "Mass Effect", "Halo",
         "Metal Gear", "God of War", "Kingdom Hearts", "Baldur's Gate 3", "The Witcher",
@@ -18620,7 +19256,10 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Matrix", "Kill Bill", "Underworld", "Beetlejuice", "Labyrinth",
         "The Crow", "Blade Runner", "Tron", "The Rocky Horror Picture Show",
         "Grease", "Pulp Fiction", "James Bond", "The Girl with the Dragon Tattoo",
+        "Farscape",
     ),
+    # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
+    # "Anime & Manga" below, not here.
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
         "Invincible", "Image", "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",

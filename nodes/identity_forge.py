@@ -95,6 +95,13 @@ _COVERS_BODY_KEY = "__covers_body__"
 #: but the face still shows — so hair is hidden while Face/Makeup stay).
 _COVERS_HAIR_KEY = "__covers_hair__"
 
+#: Reserved key carrying a cosplayer's ``size_scale`` tier ("giant" / "tiny")
+#: through the parsed dict. The Cosplayer node already locks the entry's authored
+#: ``scale_prose`` into the ``height`` slot, but that only states the scale in prose;
+#: the engine needs the tier itself to keep the *scene* coherent with it (see
+#: :func:`_scale_coherent_pool`). Travels exactly like the ``covers_*`` flags.
+_SCALE_TIER_KEY = "__scale_tier__"
+
 #: Top-level section name a Modifier node adds to the chained preset document,
 #: holding ``{field_or_group: descriptor}`` style modifiers.
 _MODIFIERS_DOC_KEY = "_modifiers"
@@ -317,6 +324,59 @@ _SIZE_SCALE_PHRASES: "OrderedDict[str, str]" = OrderedDict([
     ("towering", "towering and hulking, easily twelve feet tall"),
     ("colossal", "colossal and fifty feet tall, dwarfing the scene"),
 ])
+
+#: Tiers that change the subject's *scale* rather than merely their stature, keyed
+#: by both vocabularies that reach this code: the widget's tier names above and the
+#: Cosplayer entry's ``size_scale`` ("giant"/"tiny").
+#:
+#: ``short`` and ``large`` are deliberately in NEITHER set. "well over seven feet
+#: tall" is a very tall *person*; the scene around them still works, so narrowing
+#: their framing or location would cost variety for nothing.
+_GIANT_TIERS: frozenset[str] = frozenset({"giant", "towering", "colossal"})
+_TINY_TIERS: frozenset[str] = frozenset({"tiny", "miniature"})
+
+#: Framings that can actually carry a change of scale. A subject is only legible as
+#: fifty feet tall when the frame holds enough of the world to compare them against,
+#: or looks up at them from ground level. Everything else in ``shot_type`` -- every
+#: portrait, every medium shot, every profile -- crops the reference away and renders
+#: an ordinary person, no matter how emphatic the scale phrase in the prose is.
+#:
+#: Measured before this existed: 71 giant entries x 30 seeds drew a framing from this
+#: set 26.2% of the time and an outdoor location 25.9% of the time, so a giant render
+#: that could read as giant was roughly a 1-in-14 event.
+#:
+#: BIAS: ``shot_type`` is not in FIELD_FAMILIES and carries no ``weights`` map, so the
+#: pick is flat uniform and narrowing the pool cannot redistribute anything. Same
+#: property the 0.63.0 camera-only rework relied on.
+_SCALE_SHOWING_SHOTS: frozenset[str] = frozenset({
+    "full body shot with environment visible",
+    "wide shot with subject at center",
+    "wide shot with subject off-center",
+    "extreme wide establishing shot",
+    "low angle looking up",
+    "worm's-eye view from ground",
+})
+
+#: The mirror problem at the other end: a six-inch subject in an establishing shot is
+#: a few pixels. Only the framings that cannot resolve them at all are dropped -- a
+#: tiny subject still reads fine in a close-up or a medium shot, so the tiny tiers get
+#: a far lighter touch than the giant ones (and no location rule at all; a doll-sized
+#: person indoors beside ordinary furniture is *better* scale evidence, not worse).
+_SHOTS_TOO_WIDE_FOR_TINY: frozenset[str] = frozenset({
+    "extreme wide establishing shot",
+    "wide shot with subject off-center",
+})
+
+#: The only two ``body_type`` values that state *stature* rather than *shape*. They
+#: land in the lead sentence two words from the scale phrase -- "a petite and curvy
+#: build, colossal and hundreds of feet tall" -- and a flat contradiction beside a
+#: high-attention token is exactly the failure the 0.78.0 Krusty fix documented.
+#:
+#: Deliberately narrow: "very slim" / "slender" / "lean" describe build, not size, and
+#: a slender fifty-foot figure is perfectly coherent. Culling those would trade a real
+#: contradiction for lost variety. ``body_type`` is flat (no families, no weights), so
+#: removing two of nineteen values is bias-free.
+_STATURE_BODY_TYPES: frozenset[str] = frozenset({"petite and slim", "petite and curvy"})
 
 #: Probability that a randomized skin tone is drawn from the ethnicity's
 #: plausible band rather than the full spectrum. < 1.0 keeps real-world
@@ -783,6 +843,80 @@ def _performable_poses(
     return [p for p in pool if p not in excluded] or pool
 
 
+def _scale_class(widget_tier: str, character_tier: str | None) -> str:
+    """Resolve the active scale class: ``"giant"``, ``"tiny"`` or ``""`` (none).
+
+    Two sources feed this. ``widget_tier`` is the manual ``size_scale`` control on the
+    Identity Forge node; ``character_tier`` is a wired Cosplayer entry's own
+    ``size_scale``. **The widget wins**, which is the node's precedence rule
+    everywhere else and matches the height override the widget already performs -- a
+    user who picks ``tiny`` for a colossal character gets a tiny scene to go with the
+    tiny body, not a contradiction.
+
+    Returns ``""`` for ``Auto`` with no wired character, and for the human-plausible
+    ``short`` / ``large`` tiers, so ordinary output is untouched.
+    """
+    for tier in (widget_tier, character_tier):
+        if not tier:
+            continue
+        if tier in _GIANT_TIERS:
+            return "giant"
+        if tier in _TINY_TIERS:
+            return "tiny"
+    return ""
+
+
+def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> list[str]:
+    """Narrow a scene/build pool so the render can actually show the subject's scale.
+
+    An extreme change of scale is the one thing the prose cannot establish on its own.
+    "Colossal and fifty feet tall" is a claim about the *relationship* between the
+    subject and everything around them, so it only survives into the image when the
+    frame contains something to measure against. Three fields decide that:
+
+    * ``shot_type`` -- must hold a framing that keeps the world in shot, or looks up
+      from ground level (:data:`_SCALE_SHOWING_SHOTS`).
+    * ``location`` -- must be outdoors. A fifty-foot figure in a nail salon has no
+      room to be fifty feet, and the interior sets the ceiling height that the model
+      then draws the subject inside.
+    * ``body_type`` -- must not simultaneously call the subject petite
+      (:data:`_STATURE_BODY_TYPES`).
+
+    Only the giant class takes all three; ``tiny`` takes the framing rule alone, in
+    its own lighter form (see :data:`_SHOTS_TOO_WIDE_FOR_TINY`).
+
+    **This is called from the randomize loop, which has already skipped every locked
+    field, so an explicit user lock is never narrowed** -- lock ``location`` to a
+    kitchen and you get the kitchen. An empty result also falls back to ``pool``
+    rather than failing: ``location_setting: Indoor`` plus a giant is a contradiction
+    the user asked for, and the 0.63.0 empty-studio-pool precedent is to keep the
+    value rather than raise.
+
+    **BIAS.** All three fields are safe, each for its own reason. ``shot_type`` and
+    ``body_type`` are flat -- no ``FIELD_FAMILIES`` entry, no ``weights`` map -- so a
+    narrowed pool stays uniform over the survivors. ``location`` *is* family-weighted,
+    and it passes because its families bucket perfectly: ``domestic``, ``food_drink``,
+    ``retail_services``, ``leisure_fitness``, ``civic_institutional``,
+    ``work_industrial`` and ``transit_travel`` are entirely indoor, while
+    ``urban_outdoor`` and ``nature_outdoor`` are entirely outdoor. Filtering to
+    outdoors therefore drops seven WHOLE families and leaves the surviving two
+    proportional to each other (20 : 15) -- the whole-unit drop the family-weight rule
+    requires, never the partial cull that concentrates a frozen weight. This is also
+    why the shipped ``location_setting: Outdoor`` control has never skewed anything.
+    """
+    if scale_class == "giant":
+        if field_name == "shot_type":
+            return [v for v in pool if v in _SCALE_SHOWING_SHOTS] or pool
+        if field_name == "location":
+            return [v for v in pool if v in OUTDOOR_LOCATIONS] or pool
+        if field_name == "body_type":
+            return [v for v in pool if v not in _STATURE_BODY_TYPES] or pool
+    elif scale_class == "tiny":
+        if field_name == "shot_type":
+            return [v for v in pool if v not in _SHOTS_TOO_WIDE_FOR_TINY] or pool
+    return pool
+
+
 def _randomize_fields(
     locked: dict[str, str],
     gender: str,
@@ -793,6 +927,7 @@ def _randomize_fields(
     covers_face: bool = False,
     covers_body: bool = False,
     covers_hair: bool = False,
+    scale_class: str = "",
 ) -> dict[str, str]:
     """Fill every unlocked, non-control field from its option pool.
 
@@ -802,6 +937,11 @@ def _randomize_fields(
     The ``covers_*`` flags are the cosplayer coverage flags; they only narrow the
     ``pose`` pool (see :func:`_performable_poses`). Every other suppression they
     drive happens after the fill, in :func:`generate_character`.
+
+    ``scale_class`` is ``"giant"`` / ``"tiny"`` / ``""`` and narrows the scene and
+    build pools so the render can show the scale (see :func:`_scale_coherent_pool`).
+    It is applied inside this loop precisely because the loop has already skipped
+    every locked field, so a user's explicit choice is never narrowed.
     """
     resolved: dict[str, str] = {
         "gender": gender,
@@ -821,6 +961,8 @@ def _randomize_fields(
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
         elif field_name == "pose":
             pool = _performable_poses(pool, resolved, covers_face, covers_body, covers_hair)
+        if scale_class:
+            pool = _scale_coherent_pool(field_name, pool, scale_class)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
         if forced_absent is not None:
             resolved[field_name] = forced_absent
@@ -846,6 +988,7 @@ def _apply_constraints(
     locked: set[str],
     rng: random.Random,
     presentation: str = "Masculine",
+    scale_class: str = "",
 ) -> list[str]:
     """Apply :data:`CONSTRAINT_RULES` until stable. Returns warning messages.
 
@@ -857,6 +1000,12 @@ def _apply_constraints(
     when a man reads ``"Masculine"``; a Feminine/"Any" wardrobe skips them so a
     deliberately femme male look keeps feminine-coded pieces available. The default
     is ``"Masculine"`` so a caller that omits it keeps the historical male defaults.
+
+    ``scale_class`` narrows every re-pick pool the same way the initial fill was
+    narrowed (see :func:`_scale_coherent_pool`). Without it a constraint could hand a
+    giant an indoor location right back: the lighting rules use ``location`` as their
+    trigger, so a *locked* indoor light drives the contrapositive repair to re-roll
+    ``location`` -- straight past the filter the randomizer applied.
     """
     warnings: list[str] = []
     warned: set[tuple[str, str]] = set()
@@ -903,8 +1052,11 @@ def _apply_constraints(
                             and r["excludes_field"] == target
                             and resolved[target] in set(r["excludes_values"])
                         }
-                        pool = [v for v in _build_option_pool(trigger, trig_def, gender, resolved)
-                                if v not in conflicting]
+                        pool = [v for v in _scale_coherent_pool(
+                            trigger,
+                            _build_option_pool(trigger, trig_def, gender, resolved),
+                            scale_class,
+                        ) if v not in conflicting]
                         if pool:
                             resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng)
                             changed = True
@@ -944,8 +1096,11 @@ def _apply_constraints(
                     if resolved.get(other["field"]) != other["value"]:
                         continue
                     forbidden.update(other["excludes_values"])
-                pool = [v for v in _build_option_pool(target, field_def, gender, resolved)
-                        if v not in forbidden]
+                pool = [v for v in _scale_coherent_pool(
+                    target,
+                    _build_option_pool(target, field_def, gender, resolved),
+                    scale_class,
+                ) if v not in forbidden]
                 if pool:
                     resolved[target] = _repick(target, field_def, pool, gender, rng)
                     changed = True
@@ -1511,6 +1666,7 @@ def generate_character(
     species: dict | None = None,
     gender_variants: dict[str, dict[str, str]] | None = None,
     size_scale: str = _SIZE_SCALE_AUTO,
+    character_scale: str = "",
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
@@ -1555,6 +1711,11 @@ def generate_character(
     scale phrase, letting a perfectly ordinary randomized person be rendered
     towering or doll-sized. A cosplayer's own ``size_scale`` wins, so selecting a
     tier cannot shrink a canonically giant character.
+
+    ``character_scale`` is a wired Cosplayer entry's own ``size_scale`` tier. It does
+    not set the height (the Cosplayer node already locked its authored ``scale_prose``
+    into that slot); it tells the engine which scale is in play so the framing,
+    location and build stay coherent with it.
     """
     rng = random.Random(seed)
     # "None" locks the *absent* state (optional fields only); keep it. Only
@@ -1589,6 +1750,12 @@ def generate_character(
             print(f"[IdentityForge] Unknown size_scale {size_scale!r}; ignoring. "
                   f"Expected 'Auto' or one of: "
                   f"{', '.join(_SIZE_SCALE_PHRASES)}.")
+
+    # Which scale, if any, the scene has to be able to show. Empty for ordinary
+    # output, so every pool below is untouched unless a scale is genuinely in play.
+    scale_class = _scale_class(
+        size_scale if size_scale != _SIZE_SCALE_AUTO else "", character_scale
+    )
 
     # "Any" gender resolves to a concrete man or woman per seed so the person is
     # coherent: the gender gate and randomizer below then draw from a single
@@ -1645,13 +1812,16 @@ def generate_character(
     resolved = _randomize_fields(
         locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
         covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
+        scale_class=scale_class,
     )
 
     # Wardrobe presentation gates the masculine-default trims: a man reads Masculine
     # under "Match gender", but a Feminine/"Any" wardrobe keeps feminine-coded
     # jewellery/nails available so a deliberately femme male look still works.
     presentation = _presentation_mode(gender, wardrobe)
-    warnings = _apply_constraints(resolved, gender, set(locked_clean), rng, presentation)
+    warnings = _apply_constraints(
+        resolved, gender, set(locked_clean), rng, presentation, scale_class
+    )
     for message in warnings:
         print(message)
 
@@ -1905,6 +2075,9 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                 flat[_COVERS_BODY_KEY] = "1"
             if meta.get("covers_hair"):
                 flat[_COVERS_HAIR_KEY] = "1"
+            tier = meta.get("size_scale")
+            if isinstance(tier, str) and tier:
+                flat[_SCALE_TIER_KEY] = tier
             # A creature preset carries its form + suppression here. ``form`` is
             # the marker that species data is present; slots arrive in the group.
             form = meta.get("form")
@@ -2135,6 +2308,7 @@ if _COMFY_AVAILABLE:
             covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
             covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
             covers_hair = bool(archetype.pop(_COVERS_HAIR_KEY, None))
+            character_scale = archetype.pop(_SCALE_TIER_KEY, "") or ""
             modifiers = archetype.pop(_MODIFIERS_KEY, None)
             species = archetype.pop(_SPECIES_KEY, None)
             gender_variants = archetype.pop(_VARIANTS_KEY, None)
@@ -2180,5 +2354,6 @@ if _COMFY_AVAILABLE:
                 accessory_density, location_setting, cosplay_label, covers_face,
                 covers_body, covers_hair, modifiers, species, gender_variants,
                 kwargs.get("size_scale", _SIZE_SCALE_AUTO),
+                character_scale,
             )
             return io.NodeOutput(prose, json_output)

@@ -13,7 +13,6 @@ This script is designed to be re-run as new images are added.
 """
 
 import argparse
-import os
 import sys
 from pathlib import Path
 
@@ -34,7 +33,7 @@ JPEG_QUALITY = 80
 
 def optimize_image(source_path: Path, output_path: Path, dry_run: bool = False) -> dict:
     """Optimize a single JPEG image. Returns stats dict."""
-    if not source_path.suffix.lower() in ('.jpeg', '.jpg'):
+    if source_path.suffix.lower() not in ('.jpeg', '.jpg'):
         return {"status": "skipped", "reason": "not a JPEG"}
 
     if dry_run:
@@ -102,7 +101,7 @@ def main():
     print(f"Output directory: {output_dir}")
     print(f"Max width: {MAX_WIDTH}px, Quality: {JPEG_QUALITY}")
     if incremental:
-        print(f"Mode: INCREMENTAL (skipping existing in output)")
+        print("Mode: INCREMENTAL (skipping existing in output)")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
     print("-" * 60)
 
@@ -142,7 +141,7 @@ def main():
             stats["skipped"] += 1
 
     print("-" * 60)
-    print(f"\nSUMMARY:")
+    print("\nSUMMARY:")
     print(f"  Total files:       {stats['total']}")
     print(f"  Optimized:         {stats['optimized']}")
     print(f"  Skipped:           {stats['skipped']}")

@@ -27,11 +27,18 @@ OPTIMIZED_IMAGES = r"D:\tempforgithubrepo\identityforge\optimized\cosplay"
 GALLERY_SRC_DIR = os.path.join(REPO_ROOT, "gallery", "cosplay")
 
 
-def run(cmd):
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=REPO_ROOT)
+def run(*cmd):
+    """Run a git command given as separate argv words.
+
+    Deliberately NOT ``shell=True``: the commit message is user-supplied via
+    ``--message`` and used to be interpolated into a shell string, so a quote or a
+    semicolon in it either broke the command or ran as shell syntax. Passing argv
+    removes the quoting problem entirely.
+    """
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO_ROOT)
     out = (result.stdout + result.stderr).strip()
     if result.returncode != 0:
-        print(f"  CMD FAILED: {cmd}")
+        print(f"  CMD FAILED: {' '.join(cmd)}")
         print(f"  {out}")
         raise RuntimeError(f"Command failed (exit {result.returncode})")
     return out
@@ -74,25 +81,33 @@ def main():
     print(f"Manifest: {manifest_data['entries_with_images']} entries with images")
     print(f"Images: {len(image_files)} files")
 
+    # Exactly the image files the manifest points at. Anything else under
+    # images/ on gh-pages is an orphan -- a character that was renamed or deleted
+    # since the last deploy -- and gets pruned below.
+    wanted = {
+        os.path.basename(e["image"])
+        for e in manifest_data["entries"] if e.get("image")
+    }
+
     if args.dry_run:
         print("\nDRY RUN -- would copy images, page files, manifest, commit, push.")
+        print(f"Manifest references {len(wanted)} image files.")
         return
 
-    current_branch = run("git rev-parse --abbrev-ref HEAD")
+    current_branch = run("git", "rev-parse", "--abbrev-ref", "HEAD")
     print(f"\nBranch: {current_branch}")
 
     has_stash = False
-    stash_out = run("git stash --include-untracked")
+    stash_out = run("git", "stash", "--include-untracked")
     if "No local changes to save" not in stash_out:
         has_stash = True
         print("Stashed changes.")
 
-    ghpages_dirty = False
     try:
         print("Switching to gh-pages...")
-        run("git checkout gh-pages")
+        run("git", "checkout", "gh-pages")
         print("Pulling latest...")
-        run("git pull origin gh-pages --ff-only")
+        run("git", "pull", "origin", "gh-pages", "--ff-only")
 
         target = os.path.join(REPO_ROOT, "gallery", "cosplay", "images")
         os.makedirs(target, exist_ok=True)
@@ -110,6 +125,21 @@ def main():
                 try_copy(str(img), dest)
                 copied += 1
         print(f"Images: {copied} copied, {len(image_files) - copied} unchanged")
+
+        # Prune orphans. Without this the deploy is copy-only, so a character who
+        # is renamed or removed keeps a live image on the site forever -- the
+        # gallery slowly fills with entries no dropdown can reach. Driven off the
+        # manifest rather than off the source directory, so a stale local build
+        # cannot delete images the manifest still wants.
+        pruned = []
+        for existing in sorted(os.listdir(target)):
+            if existing.lower().endswith(".jpeg") and existing not in wanted:
+                os.remove(os.path.join(target, existing))
+                pruned.append(existing)
+        if pruned:
+            print(f"Images: {len(pruned)} orphan(s) pruned")
+            for name in pruned:
+                print(f"    - {name}")
 
         # Sync page files via read+write (avoids Windows shutil.copy2 locks)
         page_files = ["index.html", "style.css", "gallery.js",
@@ -134,29 +164,31 @@ def main():
             json.dump(manifest_data, f, indent=2, ensure_ascii=False)
         print("Wrote manifest.json")
 
-        run('git add "gallery/cosplay/"')
-        status = run("git status --porcelain")
+        # `git add -A` on the path, not `git add`: a plain add stages additions and
+        # modifications but NOT deletions, so the pruned orphans above would be
+        # restored by the next checkout and never actually leave the site.
+        run("git", "add", "-A", "gallery/cosplay/")
+        status = run("git", "status", "--porcelain")
         if not status:
             print("Nothing changed.")
         else:
             print(f"Committing: {args.message}")
-            run(f'git commit -m "{args.message}"')
+            run("git", "commit", "-m", args.message)
             print("Pushing...")
-            run("git push origin gh-pages")
-            ghpages_dirty = False
+            run("git", "push", "origin", "gh-pages")
             print("Deployed.")
 
     finally:
         print(f"\nSwitching back to {current_branch}...")
         try:
-            run(f"git checkout {current_branch}")
+            run("git", "checkout", current_branch)
         except RuntimeError:
             print("WARNING: Could not switch back. Run: git checkout main")
         if has_stash:
             try:
-                run("git stash pop")
+                run("git", "stash", "pop")
             except RuntimeError:
-                print("WARNING: Could not restore stash.")
+                print("WARNING: Could not restore stash. Run: git stash pop")
 
     print("\nDone.")
     print("https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/")

@@ -68,6 +68,15 @@ def generate_manifest(images_dir: str, output_path: str) -> dict:
     norm_lookup = {}  # normalized_name -> actual_filename_stem
 
     images_path = Path(images_dir)
+    if not images_path.is_dir():
+        # Fail loudly. Continuing would write a perfectly well-formed manifest in
+        # which every entry has has_image=false -- a silently wrong artifact that
+        # deploy.py would then push, blanking the live gallery.
+        raise SystemExit(
+            f"ERROR: images directory not found: {images_dir}\n"
+            f"Pass --images <dir>, or mount the drive holding the optimized JPEGs. "
+            f"Refusing to write a manifest that claims no character has an image."
+        )
     if images_path.is_dir():
         for f in images_path.iterdir():
             if f.suffix.lower() == '.jpeg':
@@ -133,19 +142,19 @@ def main():
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Output manifest.json path")
     args = parser.parse_args()
 
-    print(f"Reading cosplayer data from cosplayers.py...")
+    print("Reading cosplayer data from cosplayers.py...")
     print(f"Scanning images in: {args.images}")
     print(f"Output: {args.output}")
 
     manifest = generate_manifest(args.images, args.output)
 
-    print(f"\nManifest generated:")
+    print("\nManifest generated:")
     print(f"  Total entries:        {manifest['total_entries']}")
     print(f"  With images:          {manifest['entries_with_images']}")
     print(f"  Missing images:       {manifest['entries_missing_images']}")
 
     if manifest["missing"]:
-        print(f"\nMissing entries (no image yet):")
+        print("\nMissing entries (no image yet):")
         for name in sorted(manifest["missing"])[:10]:
             print(f"  - {name}")
         if len(manifest["missing"]) > 10:

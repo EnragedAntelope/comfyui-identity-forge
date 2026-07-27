@@ -3,15 +3,23 @@
 
 # Cosplayer reference
 
-**1655 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1694 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (300)
+## Anime & Manga (329)
 
 ### Akame ga Kill
 
 - **Akame** (F, prop)
 - **Esdeath** (F, prop)
 - **Leone** (F)
+
+### Amagi Brilliant Park
+
+- **Isuzu Sento** (F, prop)
+- **Latifa Fleuranza** (F)
+- **Muse** (F)
+- **Salama** (F)
+- **Sylphy** (F)
 
 ### Attack on Titan
 
@@ -23,6 +31,12 @@
 - **Historia Reiss** (F)
 - **Levi Ackerman** (M)
 - **Mikasa Ackerman** (F)
+
+### Berserk
+
+- **Casca** (F, +1 alt)
+- **Griffith** (M)
+- **Guts** (M, prop)
 
 ### Black Lagoon
 
@@ -135,6 +149,10 @@
 - **Videl** (F)
 - **Whis** (M, prop)
 
+### Ergo Proxy
+
+- **Re-L Mayer** (F)
+
 ### Fairy Tail
 
 - **Brandish** (F, giant, +1 alt)
@@ -155,6 +173,14 @@
 - **Rin Tohsaka** (F)
 - **Saber** (F, prop)
 
+### Food Wars
+
+- **Alice Nakiri** (F)
+- **Erina Nakiri** (F, +1 alt)
+- **Megumi Tadokoro** (F)
+- **Rindou Kobayashi** (F)
+- **Soma Yukihira** (M)
+
 ### Frieren: Beyond Journey's End
 
 - **Fern** (F, +1 alt, prop)
@@ -172,6 +198,10 @@
 - **Roy Mustang** (M)
 - **Scar** (M)
 - **Winry Rockbell** (F, prop)
+
+### Future Diary
+
+- **Yuno Gasai** (F)
 
 ### Ghost in the Shell
 
@@ -199,6 +229,10 @@
 - **Koneko Toujou** (F)
 - **Rias Gremory** (F)
 
+### Highschool of the Dead
+
+- **Saeko Busujima** (F, prop)
+
 ### JoJo's Bizarre Adventure
 
 - **Dio Brando** (M)
@@ -207,6 +241,7 @@
 - **Joseph Joestar** (M)
 - **Josuke Higashikata** (M)
 - **Jotaro Kujo** (M)
+- **Lisa Lisa** (F, prop)
 
 ### Jujutsu Kaisen
 
@@ -249,6 +284,10 @@
 
 - **Medaka Kurokami** (F)
 
+### Michiko & Hatchin
+
+- **Michiko Malandro** (F)
+
 ### Monogatari
 
 - **Hitagi Senjougahara** (F)
@@ -268,6 +307,7 @@
 - **Eraser Head** (M)
 - **Hawks** (M)
 - **Himiko Toga** (F)
+- **Midnight (My Hero Academia)** (F, prop)
 - **Momo Yaoyorozu** (F)
 - **Mt. Lady** (F, giant)
 - **Nejire Hado** (F)
@@ -290,6 +330,7 @@
 - **Kakashi Hatake** (M, prop)
 - **Konan** (F)
 - **Madara Uchiha** (M)
+- **Mei Terumi** (F)
 - **Might Guy** (M)
 - **Minato Namikaze** (M)
 - **Naruto Uzumaki** (M)
@@ -308,6 +349,10 @@
 - **Misato Katsuragi** (F)
 - **Rei Ayanami** (F)
 - **Shinji Ikari** (M)
+
+### Noragami
+
+- **Bishamonten** (F, prop)
 
 ### One Piece
 
@@ -329,6 +374,7 @@
 
 ### One Punch Man
 
+- **Fubuki (One Punch Man)** (F)
 - **Garou** (M)
 - **Genos** (M)
 - **Mumen Rider** (M)
@@ -376,6 +422,13 @@
 - **Snorlax** (M, masked)
 - **Squirtle** (M, masked)
 
+### Prison School
+
+- **Hana Midorikawa** (F, +1 alt)
+- **Kate Takenomiya** (F)
+- **Mari Kurihara** (F)
+- **Meiko Shiraki** (F, +1 alt)
+
 ### Rascal Does Not Dream of Bunny Girl Senpai
 
 - **Mai Sakurajima** (F)
@@ -399,6 +452,10 @@
 ### Rent-a-Girlfriend
 
 - **Chizuru Mizuhara** (F)
+
+### Rosario + Vampire
+
+- **Moka Akashiya** (F, +1 alt)
 
 ### Sailor Moon
 
@@ -448,6 +505,7 @@
 
 - **Asuna Yuuki** (F, prop)
 - **Kirito** (M, prop)
+- **Leafa** (F, prop)
 - **Sinon** (F, prop)
 
 ### That Time I Got Reincarnated as a Slime
@@ -471,6 +529,10 @@
 - **Hatsune Miku** (F)
 - **Kagamine Rin** (F)
 - **Megurine Luka** (F)
+
+### Your Lie in April
+
+- **Kaori Miyazono** (F, prop)
 
 ## Comics & Cartoons (223)
 
@@ -708,7 +770,7 @@
 
 ### Peepoodo
 
-- **Dr. Monique Pussycat** (F)
+- **Dr. Monique Pussycat** (F, +1 alt)
 
 ### Popeye
 
@@ -1402,7 +1464,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (177)
+## Marvel (176)
 
 ### Marvel
 
@@ -1428,7 +1490,6 @@
 - **Blackheart** (F)
 - **Blade** (M, prop)
 - **Blink** (F, prop)
-- **Bruce Banner** (M)
 - **Bullseye** (M, masked)
 - **Cable** (M, prop)
 - **Captain America** (M, prop)
@@ -1581,10 +1642,10 @@
 - **Winter Soldier** (M)
 - **Wolverine** (M)
 - **X-23** (F)
-- **Yelena Belova** (F)
+- **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (173)
+## Movies & TV (179)
 
 ### A Nightmare on Elm Street
 
@@ -1681,6 +1742,15 @@
 ### Escape from New York
 
 - **Snake Plissken** (M)
+
+### Farscape
+
+- **Aeryn Sun** (F)
+- **Chiana** (F)
+- **Ka D'Argo** (M, prop)
+- **Pa'u Zotoh Zhaan** (F)
+- **Rygel XVI** (M, tiny, masked)
+- **Scorpius** (M, masked)
 
 ### FernGully
 
@@ -2133,7 +2203,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (329)
+## Video Games (334)
 
 ### ARMS
 
@@ -2232,6 +2302,14 @@
 - **Ryu Hayabusa** (M, prop)
 - **Tina Armstrong** (F)
 - **Zack** (M)
+
+### Devil May Cry
+
+- **Dante** (M, prop)
+- **Lady (Devil May Cry)** (F, prop)
+- **Nero** (M)
+- **Trish** (F)
+- **Vergil** (M, prop)
 
 ### Divinity: Original Sin
 
@@ -2352,7 +2430,7 @@
 
 ### Kingdom Hearts
 
-- **Aqua** (F, prop)
+- **Aqua (Kingdom Hearts)** (F, prop)
 - **Axel** (M, prop)
 - **Kairi** (F)
 - **Riku** (M)

@@ -1,3 +1,7 @@
 # Gallery images are deployed to the gh-pages branch only.
 # DO NOT commit images to the main branch.
 images/
+
+# Scratch output from cross_reference.py -- regenerate on demand, never commit.
+missing.txt
+extra.txt

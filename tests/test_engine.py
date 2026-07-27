@@ -2062,6 +2062,175 @@ class ManualSizeScaleTests(unittest.TestCase):
                 self.assertNotIn(word, phrase.lower(), f"{tier}: {phrase}")
 
 
+class ScaleCoherenceTests(unittest.TestCase):
+    """0.79.0: the scene has to be able to *show* an extreme scale.
+
+    "Colossal and fifty feet tall" is a claim about the subject's relationship to
+    everything around them, so it only survives into an image when the frame holds
+    something to measure against. Before this, 71 giant entries x 30 seeds drew a
+    scale-showing framing 26.2% of the time and an outdoor location 25.9% of the
+    time, and ~7% of renders called the subject "petite" in the same sentence.
+    """
+
+    SCALE_SHOTS = frozenset({
+        "full body shot with environment visible",
+        "wide shot with subject at center",
+        "wide shot with subject off-center",
+        "extreme wide establishing shot",
+        "low angle looking up",
+        "worm's-eye view from ground",
+    })
+
+    def setUp(self):
+        from data.fields import OUTDOOR_LOCATIONS
+        self.outdoor = OUTDOOR_LOCATIONS
+
+    def _scene(self, **kwargs):
+        prose, js = generate_character(**kwargs)
+        doc = json.loads(js)
+        return prose, doc["Setting & Shot"], doc["Body"]
+
+    def test_giant_tier_forces_a_framing_that_can_show_scale(self):
+        for seed in range(40):
+            _, shot, _ = self._scene(seed=seed, gender="Any", locked={},
+                                     size_scale="colossal")
+            self.assertIn(shot["shot_type"], self.SCALE_SHOTS, f"seed {seed}")
+
+    def test_giant_tier_forces_an_outdoor_location(self):
+        for seed in range(40):
+            _, shot, _ = self._scene(seed=seed, gender="Any", locked={},
+                                     size_scale="colossal")
+            self.assertIn(shot["location"], self.outdoor, f"seed {seed}")
+
+    def test_giant_tier_never_calls_the_subject_petite(self):
+        # "a petite and curvy build, colossal and fifty feet tall" is a flat
+        # contradiction two words apart in the highest-attention sentence.
+        from nodes.identity_forge import _STATURE_BODY_TYPES
+        for seed in range(60):
+            _, _, body = self._scene(seed=seed, gender="Any", locked={},
+                                     size_scale="towering")
+            self.assertNotIn(body["body_type"], _STATURE_BODY_TYPES, f"seed {seed}")
+
+    def test_tiny_tier_drops_only_the_framings_that_cannot_resolve_it(self):
+        from nodes.identity_forge import _SHOTS_TOO_WIDE_FOR_TINY
+        seen = set()
+        for seed in range(60):
+            _, shot, _ = self._scene(seed=seed, gender="Any", locked={},
+                                     size_scale="tiny")
+            self.assertNotIn(shot["shot_type"], _SHOTS_TOO_WIDE_FOR_TINY, f"seed {seed}")
+            seen.add(shot["shot_type"])
+        # Deliberately a light touch: a tiny subject still reads in a close-up, so
+        # the pool must stay broad rather than collapsing to the giant rule.
+        self.assertGreater(len(seen), 6)
+
+    def test_a_cosplayers_own_giant_scale_drives_the_scene(self):
+        # The tier travels from the Cosplayer node's _meta, not from a widget.
+        from nodes.identity_forge import _SCALE_TIER_KEY
+        flat = _parse_archetype_json(build_cosplayer_json("Godzilla", 0, "Costume only"))
+        self.assertEqual(flat.get(_SCALE_TIER_KEY), "giant")
+        for seed in range(20):
+            locked, label, cf, ch = _node_locked(
+                build_cosplayer_json("Godzilla", seed, "Costume only"))
+            _, js = generate_character(seed, "Any", locked, cosplay_label=label,
+                                       covers_face=cf, covers_hair=ch,
+                                       character_scale="giant")
+            shot = json.loads(js)["Setting & Shot"]
+            self.assertIn(shot["shot_type"], self.SCALE_SHOTS, f"seed {seed}")
+            self.assertIn(shot["location"], self.outdoor, f"seed {seed}")
+
+    def test_an_explicit_lock_always_wins(self):
+        # The filter runs inside the randomize loop, which skips locked fields, so
+        # a user who asks for a giant in a kitchen gets a giant in a kitchen.
+        _, shot, body = self._scene(
+            seed=5, gender="Female",
+            locked={"location": "sunny suburban kitchen",
+                    "shot_type": "close-up portrait",
+                    "body_type": "petite and slim"},
+            size_scale="colossal",
+        )
+        self.assertEqual(shot["location"], "sunny suburban kitchen")
+        self.assertEqual(shot["shot_type"], "close-up portrait")
+        self.assertEqual(body["body_type"], "petite and slim")
+
+    def test_an_impossible_scope_degrades_gracefully(self):
+        # location_setting Indoor + a giant is a contradiction the user asked for.
+        # Precedent (0.63.0 empty studio pool) is warn-and-keep, never an exception
+        # and never an empty field.
+        for seed in range(20):
+            _, shot, _ = self._scene(seed=seed, gender="Any", locked={},
+                                     location_setting="Indoor",
+                                     size_scale="colossal")
+            self.assertTrue(shot["location"])
+            self.assertNotIn(shot["location"], self.outdoor, f"seed {seed}")
+
+    def test_human_plausible_tiers_are_untouched(self):
+        # "well over seven feet tall" is a very tall person, not a change of scale:
+        # narrowing their scene would cost variety for nothing.
+        from nodes.identity_forge import _scale_class
+        for tier in ("short", "large"):
+            self.assertEqual(_scale_class(tier, None), "")
+        indoor = 0
+        for seed in range(60):
+            _, shot, _ = self._scene(seed=seed, gender="Any", locked={},
+                                     size_scale="large")
+            if shot["location"] not in self.outdoor:
+                indoor += 1
+        self.assertGreater(indoor, 0)
+
+    def test_no_scale_leaves_ordinary_output_byte_identical(self):
+        # The whole feature must be inert unless a scale is genuinely in play.
+        for seed in range(30):
+            self.assertEqual(
+                generate_character(seed, "Any", {}),
+                generate_character(seed, "Any", {}, character_scale=""),
+                f"seed {seed}",
+            )
+
+    def test_the_widget_beats_a_wired_characters_scale_for_the_scene_too(self):
+        # Precedence has to be consistent: the widget already overrides the height
+        # phrase, so it must override the scene rule that goes with it.
+        from nodes.identity_forge import _scale_class, _SHOTS_TOO_WIDE_FOR_TINY
+        self.assertEqual(_scale_class("tiny", "giant"), "tiny")
+        for seed in range(20):
+            locked, label, cf, ch = _node_locked(
+                build_cosplayer_json("Godzilla", seed, "Costume only"))
+            _, js = generate_character(seed, "Any", locked, cosplay_label=label,
+                                       covers_face=cf, covers_hair=ch,
+                                       size_scale="tiny", character_scale="giant")
+            shot = json.loads(js)["Setting & Shot"]
+            self.assertNotIn(shot["shot_type"], _SHOTS_TOO_WIDE_FOR_TINY, f"seed {seed}")
+
+    def test_the_location_filter_drops_whole_families(self):
+        """The bias gate. A partial family cull would concentrate a frozen weight.
+
+        ``location`` is family-weighted, so this rule is only legal because every
+        family is entirely indoor or entirely outdoor. Pinned here rather than
+        trusted: a future location added to a family that spans the boundary would
+        silently turn this coherence rule into a distribution bug.
+        """
+        outdoor_families, indoor_families = [], []
+        for name, spec in FIELD_FAMILIES["location"].items():
+            variants = set(spec["variants"] if isinstance(spec, dict) else spec)
+            survivors = variants & self.outdoor
+            self.assertIn(
+                len(survivors), (0, len(variants)),
+                f"location family {name!r} spans the indoor/outdoor boundary "
+                f"({len(survivors)} of {len(variants)} outdoor); filtering to "
+                f"outdoors would concentrate its frozen weight on the survivors",
+            )
+            (outdoor_families if survivors else indoor_families).append(name)
+        self.assertTrue(outdoor_families)
+        self.assertTrue(indoor_families)
+
+    def test_the_narrowed_fields_carry_no_weights(self):
+        # shot_type and body_type are safe for the opposite reason: flat pools, so
+        # narrowing cannot redistribute anything.
+        for field in ("shot_type", "body_type"):
+            self.assertNotIn(field, FIELD_FAMILIES, field)
+            self.assertNotIn("weights", FIELD_DEFINITIONS[field], field)
+            self.assertNotIn("male_weights", FIELD_DEFINITIONS[field], field)
+
+
 class FullCoverSpellingTests(unittest.TestCase):
     """0.78.0: the full-shell regex must accept both spellings of "armor".
 

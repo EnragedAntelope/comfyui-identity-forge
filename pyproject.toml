@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-identity-forge"
-version = "0.78.0"
+version = "0.79.0"
 description = "A character creator and person generator for ComfyUI. Build a believable, coherent person from dropdowns - a constraint engine keeps every trait sensible and a seed makes any result reproducible. Optional preset nodes layer on themed archetypes, a creature/monster/alien form with slot-by-slot hybridization, per-element style modifiers, and a cosplay layer whose characters each ship a hand-written, canon-checked visual description - garments, colours, masks, markings, signature props - so the look renders on any checkpoint. Plus a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
 license = { text = "MIT" }
 readme = "README.md"
@@ -25,3 +25,7 @@ requires-comfyui = ">=0.25.0"
 # run standalone (``python tests/...``); those imports necessarily follow the shim,
 # which is the sole, intentional source of E402 in these files.
 "tests/*.py" = ["E402"]
+# Same shim, same reason: the gallery build scripts are run standalone from the
+# repo root (``python gallery/cosplay/build_manifest.py``) and must extend
+# sys.path before they can import the roster.
+"gallery/*.py" = ["E402"]

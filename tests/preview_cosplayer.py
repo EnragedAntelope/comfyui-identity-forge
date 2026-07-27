@@ -26,7 +26,7 @@ if str(ROOT) not in sys.path:
 from data.cosplayers import get_cosplayer_names
 from nodes.identity_forge import (
     generate_character, _parse_archetype_json, _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY,
-    _COVERS_BODY_KEY, _COVERS_HAIR_KEY, _CONTROL_FIELDS,
+    _COVERS_BODY_KEY, _COVERS_HAIR_KEY, _SCALE_TIER_KEY, _CONTROL_FIELDS,
 )
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
@@ -47,6 +47,11 @@ def render(
     covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
     covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
     covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+    # The entry's own size_scale tier. The node pops and forwards this; the preview
+    # must too, or a giant previews with the framing/location the real graph would
+    # never give it (the 0.51.0 lesson -- a preview that skips a forwarded flag
+    # misreports the very bug you are checking for).
+    character_scale = flat.pop(_SCALE_TIER_KEY, "") or ""
     # The IdentityForge node forwards the parsed _meta gender; mirror that so the
     # person defaults to the character's gender unless --male/--female overrides.
     resolved_gender = gender or flat.get("gender", "Any")
@@ -54,6 +59,7 @@ def render(
     return generate_character(
         seed, resolved_gender, locked, cosplay_label=label, covers_face=covers_face,
         covers_body=covers_body, covers_hair=covers_hair,
+        character_scale=character_scale,
     )
 
 

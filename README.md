@@ -32,7 +32,8 @@ renders even on checkpoints that have never heard of the character. Ask a plain 
 Chun-Li and your prompt says `Chun-Li`; ask this one and you get the blue qipao with gold trim,
 the brown tights, the white cross-laced boots and the spiked bracelets.
 
-**Browse what's on offer:** [🎭 cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) — 1,560+ sample images ·
+**Browse what's on offer:** [cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) —
+a sample render for every character, searchable ·
 [cosplay characters](docs/reference/cosplayers.md) ·
 [archetypes](docs/reference/archetypes.md) · [creatures](docs/reference/creatures.md).
 Something obvious missing? [Open an issue](https://github.com/EnragedAntelope/comfyui-identity-forge/issues) —
@@ -51,8 +52,11 @@ wins** any conflict:
 
 A taste of archetypes, cosplay characters and creatures:
 
-> 🎭 **[Browse the full cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/)** — 1,560+ sample images
-> generated with the Krea2 T2I model on randomized identities. Your results will vary.
+> [!TIP]
+> **[Browse the full cosplay gallery →](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/)**
+> Every character on the roster with a sample render, searchable by name and franchise —
+> so you can see the look before you pick the name. Generated with the Krea2 T2I model on
+> randomized identities, so your own results will vary.
 
 <table>
   <tr>
@@ -220,6 +224,12 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   chosen at random, so it can't affect normal output. Picking a tier replaces the height
   description in the opening sentence and overrides a wired character's own scale, so you can
   make anyone giant or tiny.
+- **The scene shows the scale.** A giant only *looks* giant if the frame has something to
+  compare against, so a giant tier — or a canonically giant character like Godzilla or the
+  Iron Giant — moves the shot outdoors and picks a wide, low or establishing framing, and stops
+  the build being described as petite. Lock `location` or `shot_type` yourself and your choice
+  wins as always. Tiny characters get the lighter version: only the framings too wide to
+  resolve them are dropped.
 - **The light matches the place.** Indoor locations never draw open-sky light and outdoor ones never
   draw window or hearth light. The **location** stands and the light adapts; lock a light instead
   and the location re-rolls to somewhere it can exist. Most locations are interiors, so set

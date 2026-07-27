@@ -759,6 +759,36 @@ everyday teen fashion). Don't re-add these without a fresh curation decision.
 
 ## Gotchas cheat-sheet
 
+- **An extreme scale needs the SCENE, not just the prose (0.79.0).** "Colossal and fifty feet
+  tall" is a claim about the subject's relationship to their surroundings, so it only survives
+  into an image when the frame holds something to measure against. Measured before the fix, 71
+  giant entries x 30 seeds drew a scale-showing framing 26.2% of the time and an outdoor
+  location 25.9% of the time — a giant that could actually read as giant was about 1 render in
+  14, and ~7% called the subject "petite" in the same sentence as the scale phrase.
+  `_scale_coherent_pool` narrows three fields when a giant tier is active: `shot_type` to
+  `_SCALE_SHOWING_SHOTS`, `location` to `OUTDOOR_LOCATIONS`, and `body_type` away from
+  `_STATURE_BODY_TYPES`. `tiny` gets only the light framing rule. It runs inside the randomize
+  loop, which has already skipped every locked field, **so an explicit user lock is never
+  narrowed**; an empty result falls back to the unfiltered pool (the 0.63.0 empty-studio-pool
+  precedent — warn and keep, never raise).
+  - *The bias argument, which is what made this buildable.* `shot_type` and `body_type` are
+    flat — no `FIELD_FAMILIES` entry, no `weights` map — so narrowing them stays uniform.
+    `location` **is** family-weighted and passes only because its families bucket perfectly:
+    `domestic`, `food_drink`, `retail_services`, `leisure_fitness`, `civic_institutional`,
+    `work_industrial` and `transit_travel` are entirely indoor; `urban_outdoor` and
+    `nature_outdoor` entirely outdoor. Filtering to outdoors drops seven WHOLE families and
+    leaves the surviving two proportional (20 : 15) — the whole-unit drop the family-weight
+    rule demands, never a partial cull. `ScaleCoherenceTests.test_the_location_filter_drops_
+    whole_families` pins this: **a location added to a family that spans the indoor/outdoor
+    boundary would silently turn this coherence rule into a distribution bug**, and that test
+    is the only thing that would catch it.
+  - The tier reaches the engine two ways: the manual `size_scale` widget, and a wired
+    Cosplayer entry's own `size_scale` via the reserved `_SCALE_TIER_KEY` (`"__scale_tier__"`),
+    which travels exactly like the `covers_*` flags. **The widget wins**, consistent with the
+    height override it already performs. `short` and `large` are in neither tier set — "well
+    over seven feet tall" is a very tall person whose scene still works.
+  - Ordinary output is untouched (verified: 300 seeds byte-identical across the change). Seeds
+    *do* drift for giant/tiny cosplayers.
 - **A constraint re-pick must exclude every rule firing on that field, not just its own
   (0.78.0).** `_apply_constraints` filtered the re-pick pool with only the current rule's
   `excludes_values`, so the replacement it drew was frequently forbidden by a *different* live

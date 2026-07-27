@@ -1,5 +1,9 @@
 """Cross-reference cosplayers.py entries against available JPEG sample images.
 
+Tells you two things after a roster change: which characters still need a sample
+image generated, and which image files are now orphaned (a character renamed or
+deleted). ``deploy.py`` prunes the orphans from gh-pages on the next deploy.
+
 Usage: python cross_reference.py
 Outputs: missing.txt, extra.txt, and prints a summary.
 """
@@ -12,13 +16,18 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 sys.path.insert(0, REPO_ROOT)
 
 from data.cosplayers import COSPLAYERS
+from build_manifest import normalize_name
 
 # Path to source images
 IMAGES_DIR = r"D:\tempforgithubrepo\identityforge"
 
+
 def main():
-    # Get all cosplayer names
-    cosplayer_names = set(COSPLAYERS.keys())
+    # Match the way build_manifest.py pairs entries with files, or this script
+    # reports phantom problems: Windows strips a trailing period, so the entry
+    # "C.C." is stored as "C.C.jpeg". Exact-matching flagged it as BOTH a missing
+    # entry and an orphaned image on every run, while the gallery showed it fine.
+    cosplayer_names = {normalize_name(k) for k in COSPLAYERS}
     print(f"Cosplayer entries in code: {len(cosplayer_names)}")
 
     # Get all JPEG filenames (without extension)
@@ -26,8 +35,10 @@ def main():
     if os.path.isdir(IMAGES_DIR):
         for f in os.listdir(IMAGES_DIR):
             if f.lower().endswith('.jpeg'):
-                name = f[:-5]  # Remove '.jpeg'
-                image_names.add(name)
+                image_names.add(normalize_name(f[:-5]))
+    else:
+        print(f"WARNING: images directory not found: {IMAGES_DIR}")
+        print("         Every entry will be reported as missing.")
 
     print(f"JPEG files available:     {len(image_names)}")
 
@@ -57,12 +68,12 @@ def main():
 
     # Print sample missing
     if missing_images:
-        print(f"\n--- Sample missing entries (first 25) ---")
+        print("\n--- Sample missing entries (first 25) ---")
         for name in sorted(missing_images)[:25]:
             print(f"  {name}")
 
     # Check for naming mismatches
-    print(f"\n--- Checking for close-but-not-exact matches ---")
+    print("\n--- Checking for close-but-not-exact matches ---")
     for code_name in sorted(missing_images)[:50]:
         # Try to find close matches in extra_images
         code_lower = code_name.lower().replace(" ", "")
