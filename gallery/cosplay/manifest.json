@@ -1,102 +1,10 @@
 {
   "schema_version": 1,
-  "generated": "2026-07-27T12:13:37.843556",
+  "generated": "2026-07-27T15:45:09.081943",
   "total_entries": 1655,
-  "entries_with_images": 1564,
-  "entries_missing_images": 91,
-  "missing": [
-    "Akame",
-    "Akaza",
-    "Aki Hayakawa",
-    "Albert Wesker",
-    "Amethyst (Steven Universe)",
-    "Aphrodite (Hercules)",
-    "Aphrodite (Record of Ragnarok)",
-    "Arnold",
-    "Arthas Menethil",
-    "Ashe (Overwatch)",
-    "Axel",
-    "Bloody Mary",
-    "Bluto",
-    "Bo Peep",
-    "Brigitte",
-    "Bruce Banner",
-    "Brunhilde",
-    "Buddha (Record of Ragnarok)",
-    "Chizuru Mizuhara",
-    "Christopher Robin",
-    "Columbia",
-    "Commander Borf",
-    "Creature from the Black Lagoon",
-    "Dabi",
-    "Daisy Duck",
-    "Darkness (KonoSuba)",
-    "David Martinez",
-    "Destro",
-    "Donquixote Doflamingo",
-    "Doomfist",
-    "Dr. McCoy",
-    "Edna Mode",
-    "Ekko",
-    "Elmer Fudd",
-    "Elroy Jetson",
-    "Eraser Head",
-    "Erwin Smith",
-    "Evil Queen",
-    "Flynn Rider",
-    "Furina",
-    "Garou",
-    "Gene Belcher",
-    "Gilgamesh",
-    "Ginny Weasley",
-    "Go Go Tomago",
-    "Greed",
-    "Handsome Jack",
-    "Hawks",
-    "Hector Barbossa",
-    "Hiro Hamada",
-    "Hitagi Senjougahara",
-    "Honey Lemon",
-    "Howl",
-    "Ice King",
-    "Illidan Stormrage",
-    "Impa",
-    "Jack the Ripper (Record of Ragnarok)",
-    "James (Team Rocket)",
-    "Jane Jetson",
-    "Josuke Higashikata",
-    "Joy",
-    "Juvia Lockser",
-    "Kaedehara Kazuha",
-    "Kagamine Rin",
-    "Kai'Sa",
-    "Karlach",
-    "Katarina",
-    "Kazuma Satou",
-    "Kenpachi Zaraki",
-    "King Bradley",
-    "Kirito",
-    "Kiss-Shot Acerola-Orion Heart-Under-Blade",
-    "Kristoff",
-    "Kyle Broflovski",
-    "Kyoko Sakura",
-    "Lady Tremaine",
-    "Lelouch vi Britannia",
-    "Leona (League of Legends)",
-    "Leone",
-    "Lilo",
-    "Loid Forger",
-    "Lord Farquaad",
-    "Louise Belcher",
-    "Lu Bu",
-    "Miss Fortune",
-    "Morgana",
-    "Seraphine",
-    "Shiva (Record of Ragnarok)",
-    "Silco",
-    "Venus (Marvel)",
-    "Yasuo"
-  ],
+  "entries_with_images": 1655,
+  "entries_missing_images": 0,
+  "missing": [],
   "entries": [
     {
       "name": "2-1B Droid",
@@ -261,15 +169,17 @@
     },
     {
       "name": "Akame",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Akame ga Kill"
+      "franchise": "Akame ga Kill",
+      "image": "images/Akame.jpeg"
     },
     {
       "name": "Akaza",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Demon Slayer"
+      "franchise": "Demon Slayer",
+      "image": "images/Akaza.jpeg"
     },
     {
       "name": "Akeno Himejima",
@@ -280,9 +190,10 @@
     },
     {
       "name": "Aki Hayakawa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Chainsaw Man"
+      "franchise": "Chainsaw Man",
+      "image": "images/Aki Hayakawa.jpeg"
     },
     {
       "name": "Akuma",
@@ -314,9 +225,10 @@
     },
     {
       "name": "Albert Wesker",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Resident Evil"
+      "franchise": "Resident Evil",
+      "image": "images/Albert Wesker.jpeg"
     },
     {
       "name": "Albus Dumbledore",
@@ -383,9 +295,10 @@
     },
     {
       "name": "Amethyst (Steven Universe)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Steven Universe"
+      "franchise": "Steven Universe",
+      "image": "images/Amethyst (Steven Universe).jpeg"
     },
     {
       "name": "Amethyst, Princess of Gemworld",
@@ -522,15 +435,17 @@
     },
     {
       "name": "Aphrodite (Hercules)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Hercules"
+      "franchise": "Hercules",
+      "image": "images/Aphrodite (Hercules).jpeg"
     },
     {
       "name": "Aphrodite (Record of Ragnarok)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Record of Ragnarok"
+      "franchise": "Record of Ragnarok",
+      "image": "images/Aphrodite (Record of Ragnarok).jpeg"
     },
     {
       "name": "Aphrodite IX",
@@ -611,9 +526,10 @@
     },
     {
       "name": "Arnold",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Hey Arnold!"
+      "franchise": "Hey Arnold!",
+      "image": "images/Arnold.jpeg"
     },
     {
       "name": "Arrietty Clock",
@@ -631,9 +547,10 @@
     },
     {
       "name": "Arthas Menethil",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "World of Warcraft"
+      "franchise": "World of Warcraft",
+      "image": "images/Arthas Menethil.jpeg"
     },
     {
       "name": "Arwen",
@@ -665,9 +582,10 @@
     },
     {
       "name": "Ashe (Overwatch)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Overwatch"
+      "franchise": "Overwatch",
+      "image": "images/Ashe (Overwatch).jpeg"
     },
     {
       "name": "Asia Argento",
@@ -790,9 +708,10 @@
     },
     {
       "name": "Axel",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Kingdom Hearts"
+      "franchise": "Kingdom Hearts",
+      "image": "images/Axel.jpeg"
     },
     {
       "name": "Ayane",
@@ -1286,9 +1205,10 @@
     },
     {
       "name": "Bloody Mary",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Fables"
+      "franchise": "Fables",
+      "image": "images/Bloody Mary.jpeg"
     },
     {
       "name": "Blossom",
@@ -1313,15 +1233,17 @@
     },
     {
       "name": "Bluto",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Popeye"
+      "franchise": "Popeye",
+      "image": "images/Bluto.jpeg"
     },
     {
       "name": "Bo Peep",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Toy Story"
+      "franchise": "Toy Story",
+      "image": "images/Bo Peep.jpeg"
     },
     {
       "name": "Bo-Katan Kryze",
@@ -1430,9 +1352,10 @@
     },
     {
       "name": "Brigitte",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Overwatch"
+      "franchise": "Overwatch",
+      "image": "images/Brigitte.jpeg"
     },
     {
       "name": "Brock",
@@ -1457,9 +1380,10 @@
     },
     {
       "name": "Bruce Banner",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Marvel"
+      "franchise": "Marvel",
+      "image": "images/Bruce Banner.jpeg"
     },
     {
       "name": "Bruce Wayne",
@@ -1470,9 +1394,10 @@
     },
     {
       "name": "Brunhilde",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Record of Ragnarok"
+      "franchise": "Record of Ragnarok",
+      "image": "images/Brunhilde.jpeg"
     },
     {
       "name": "Bubbles",
@@ -1483,9 +1408,10 @@
     },
     {
       "name": "Buddha (Record of Ragnarok)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Record of Ragnarok"
+      "franchise": "Record of Ragnarok",
+      "image": "images/Buddha (Record of Ragnarok).jpeg"
     },
     {
       "name": "Buffy Summers",
@@ -1944,9 +1870,10 @@
     },
     {
       "name": "Chizuru Mizuhara",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Rent-a-Girlfriend"
+      "franchise": "Rent-a-Girlfriend",
+      "image": "images/Chizuru Mizuhara.jpeg"
     },
     {
       "name": "Chopper",
@@ -1978,9 +1905,10 @@
     },
     {
       "name": "Christopher Robin",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Winnie the Pooh"
+      "franchise": "Winnie the Pooh",
+      "image": "images/Christopher Robin.jpeg"
     },
     {
       "name": "Chucky",
@@ -2061,15 +1989,17 @@
     },
     {
       "name": "Columbia",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "The Rocky Horror Picture Show"
+      "franchise": "The Rocky Horror Picture Show",
+      "image": "images/Columbia.jpeg"
     },
     {
       "name": "Commander Borf",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Space Ace"
+      "franchise": "Space Ace",
+      "image": "images/Commander Borf.jpeg"
     },
     {
       "name": "Commander Shepard",
@@ -2157,9 +2087,10 @@
     },
     {
       "name": "Creature from the Black Lagoon",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Universal Monsters"
+      "franchise": "Universal Monsters",
+      "image": "images/Creature from the Black Lagoon.jpeg"
     },
     {
       "name": "Crimson Countess",
@@ -2254,9 +2185,10 @@
     },
     {
       "name": "Dabi",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "My Hero Academia"
+      "franchise": "My Hero Academia",
+      "image": "images/Dabi.jpeg"
     },
     {
       "name": "Daenerys Targaryen",
@@ -2281,9 +2213,10 @@
     },
     {
       "name": "Daisy Duck",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Mickey Mouse & Friends"
+      "franchise": "Mickey Mouse & Friends",
+      "image": "images/Daisy Duck.jpeg"
     },
     {
       "name": "Daki",
@@ -2322,9 +2255,10 @@
     },
     {
       "name": "Darkness (KonoSuba)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "KonoSuba"
+      "franchise": "KonoSuba",
+      "image": "images/Darkness (KonoSuba).jpeg"
     },
     {
       "name": "Darkseid",
@@ -2391,9 +2325,10 @@
     },
     {
       "name": "David Martinez",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Cyberpunk: Edgerunners"
+      "franchise": "Cyberpunk: Edgerunners",
+      "image": "images/David Martinez.jpeg"
     },
     {
       "name": "Davy Jones",
@@ -2537,9 +2472,10 @@
     },
     {
       "name": "Destro",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "G.I. Joe"
+      "franchise": "G.I. Joe",
+      "image": "images/Destro.jpeg"
     },
     {
       "name": "Destruction of the Endless",
@@ -2718,9 +2654,10 @@
     },
     {
       "name": "Donquixote Doflamingo",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "One Piece"
+      "franchise": "One Piece",
+      "image": "images/Donquixote Doflamingo.jpeg"
     },
     {
       "name": "Doom Slayer",
@@ -2731,9 +2668,10 @@
     },
     {
       "name": "Doomfist",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Overwatch"
+      "franchise": "Overwatch",
+      "image": "images/Doomfist.jpeg"
     },
     {
       "name": "Dora the Explorer",
@@ -2793,9 +2731,10 @@
     },
     {
       "name": "Dr. McCoy",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Star Trek"
+      "franchise": "Star Trek",
+      "image": "images/Dr. McCoy.jpeg"
     },
     {
       "name": "Dr. Monique Pussycat",
@@ -2890,9 +2829,10 @@
     },
     {
       "name": "Edna Mode",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "The Incredibles"
+      "franchise": "The Incredibles",
+      "image": "images/Edna Mode.jpeg"
     },
     {
       "name": "Edward Elric",
@@ -2924,9 +2864,10 @@
     },
     {
       "name": "Ekko",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Ekko.jpeg"
     },
     {
       "name": "Elastigirl",
@@ -3007,15 +2948,17 @@
     },
     {
       "name": "Elmer Fudd",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Looney Tunes"
+      "franchise": "Looney Tunes",
+      "image": "images/Elmer Fudd.jpeg"
     },
     {
       "name": "Elroy Jetson",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "The Jetsons"
+      "franchise": "The Jetsons",
+      "image": "images/Elroy Jetson.jpeg"
     },
     {
       "name": "Elsa",
@@ -3089,9 +3032,10 @@
     },
     {
       "name": "Eraser Head",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "My Hero Academia"
+      "franchise": "My Hero Academia",
+      "image": "images/Eraser Head.jpeg"
     },
     {
       "name": "Eren Yeager",
@@ -3137,9 +3081,10 @@
     },
     {
       "name": "Erwin Smith",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Attack on Titan"
+      "franchise": "Attack on Titan",
+      "image": "images/Erwin Smith.jpeg"
     },
     {
       "name": "Erza Scarlet",
@@ -3178,9 +3123,10 @@
     },
     {
       "name": "Evil Queen",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Snow White"
+      "franchise": "Snow White",
+      "image": "images/Evil Queen.jpeg"
     },
     {
       "name": "Evil-Lyn",
@@ -3317,9 +3263,10 @@
     },
     {
       "name": "Flynn Rider",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Tangled"
+      "franchise": "Tangled",
+      "image": "images/Flynn Rider.jpeg"
     },
     {
       "name": "Fox McCloud",
@@ -3428,9 +3375,10 @@
     },
     {
       "name": "Furina",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Genshin Impact"
+      "franchise": "Genshin Impact",
+      "image": "images/Furina.jpeg"
     },
     {
       "name": "Future Trunks",
@@ -3539,9 +3487,10 @@
     },
     {
       "name": "Garou",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "One Punch Man"
+      "franchise": "One Punch Man",
+      "image": "images/Garou.jpeg"
     },
     {
       "name": "Garrus Vakarian",
@@ -3573,9 +3522,10 @@
     },
     {
       "name": "Gene Belcher",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Bob's Burgers"
+      "franchise": "Bob's Burgers",
+      "image": "images/Gene Belcher.jpeg"
     },
     {
       "name": "General Grievous",
@@ -3677,9 +3627,10 @@
     },
     {
       "name": "Gilgamesh",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Fate/stay night"
+      "franchise": "Fate/stay night",
+      "image": "images/Gilgamesh.jpeg"
     },
     {
       "name": "Gimli",
@@ -3697,9 +3648,10 @@
     },
     {
       "name": "Ginny Weasley",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Harry Potter"
+      "franchise": "Harry Potter",
+      "image": "images/Ginny Weasley.jpeg"
     },
     {
       "name": "Ginormica",
@@ -3738,9 +3690,10 @@
     },
     {
       "name": "Go Go Tomago",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Big Hero 6"
+      "franchise": "Big Hero 6",
+      "image": "images/Go Go Tomago.jpeg"
     },
     {
       "name": "Godzilla",
@@ -3877,9 +3830,10 @@
     },
     {
       "name": "Greed",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Fullmetal Alchemist"
+      "franchise": "Fullmetal Alchemist",
+      "image": "images/Greed.jpeg"
     },
     {
       "name": "Greedo",
@@ -4016,9 +3970,10 @@
     },
     {
       "name": "Handsome Jack",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Borderlands"
+      "franchise": "Borderlands",
+      "image": "images/Handsome Jack.jpeg"
     },
     {
       "name": "Hange Zoe",
@@ -4078,9 +4033,10 @@
     },
     {
       "name": "Hawks",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "My Hero Academia"
+      "franchise": "My Hero Academia",
+      "image": "images/Hawks.jpeg"
     },
     {
       "name": "Hayate",
@@ -4098,9 +4054,10 @@
     },
     {
       "name": "Hector Barbossa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Pirates of the Caribbean"
+      "franchise": "Pirates of the Caribbean",
+      "image": "images/Hector Barbossa.jpeg"
     },
     {
       "name": "Heihachi Mishima",
@@ -4195,9 +4152,10 @@
     },
     {
       "name": "Hiro Hamada",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Big Hero 6"
+      "franchise": "Big Hero 6",
+      "image": "images/Hiro Hamada.jpeg"
     },
     {
       "name": "Historia Reiss",
@@ -4208,9 +4166,10 @@
     },
     {
       "name": "Hitagi Senjougahara",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Monogatari"
+      "franchise": "Monogatari",
+      "image": "images/Hitagi Senjougahara.jpeg"
     },
     {
       "name": "Hitomi",
@@ -4270,9 +4229,10 @@
     },
     {
       "name": "Honey Lemon",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Big Hero 6"
+      "franchise": "Big Hero 6",
+      "image": "images/Honey Lemon.jpeg"
     },
     {
       "name": "Honey Ryder",
@@ -4304,9 +4264,10 @@
     },
     {
       "name": "Howl",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Studio Ghibli"
+      "franchise": "Studio Ghibli",
+      "image": "images/Howl.jpeg"
     },
     {
       "name": "Hsien-Ko",
@@ -4373,9 +4334,10 @@
     },
     {
       "name": "Ice King",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Adventure Time"
+      "franchise": "Adventure Time",
+      "image": "images/Ice King.jpeg"
     },
     {
       "name": "Iceman",
@@ -4393,15 +4355,17 @@
     },
     {
       "name": "Illidan Stormrage",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "World of Warcraft"
+      "franchise": "World of Warcraft",
+      "image": "images/Illidan Stormrage.jpeg"
     },
     {
       "name": "Impa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "The Legend of Zelda"
+      "franchise": "The Legend of Zelda",
+      "image": "images/Impa.jpeg"
     },
     {
       "name": "Imperator Furiosa",
@@ -4580,9 +4544,10 @@
     },
     {
       "name": "Jack the Ripper (Record of Ragnarok)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Record of Ragnarok"
+      "franchise": "Record of Ragnarok",
+      "image": "images/Jack the Ripper (Record of Ragnarok).jpeg"
     },
     {
       "name": "Jade (Jennifer-Lynn Hayden)",
@@ -4621,9 +4586,10 @@
     },
     {
       "name": "James (Team Rocket)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Pokemon"
+      "franchise": "Pokemon",
+      "image": "images/James (Team Rocket).jpeg"
     },
     {
       "name": "James Bond",
@@ -4641,9 +4607,10 @@
     },
     {
       "name": "Jane Jetson",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "The Jetsons"
+      "franchise": "The Jetsons",
+      "image": "images/Jane Jetson.jpeg"
     },
     {
       "name": "Jane Porter",
@@ -4906,9 +4873,10 @@
     },
     {
       "name": "Josuke Higashikata",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "JoJo's Bizarre Adventure"
+      "franchise": "JoJo's Bizarre Adventure",
+      "image": "images/Josuke Higashikata.jpeg"
     },
     {
       "name": "Jotaro Kujo",
@@ -4919,9 +4887,10 @@
     },
     {
       "name": "Joy",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Inside Out"
+      "franchise": "Inside Out",
+      "image": "images/Joy.jpeg"
     },
     {
       "name": "Jubilee",
@@ -5023,9 +4992,10 @@
     },
     {
       "name": "Juvia Lockser",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Fairy Tail"
+      "franchise": "Fairy Tail",
+      "image": "images/Juvia Lockser.jpeg"
     },
     {
       "name": "Jyn Erso",
@@ -5057,15 +5027,17 @@
     },
     {
       "name": "Kaedehara Kazuha",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Genshin Impact"
+      "franchise": "Genshin Impact",
+      "image": "images/Kaedehara Kazuha.jpeg"
     },
     {
       "name": "Kagamine Rin",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Vocaloid"
+      "franchise": "Vocaloid",
+      "image": "images/Kagamine Rin.jpeg"
     },
     {
       "name": "Kaguya",
@@ -5083,9 +5055,10 @@
     },
     {
       "name": "Kai'Sa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Kai'Sa.jpeg"
     },
     {
       "name": "Kain Highwind",
@@ -5159,9 +5132,10 @@
     },
     {
       "name": "Karlach",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Baldur's Gate 3"
+      "franchise": "Baldur's Gate 3",
+      "image": "images/Karlach.jpeg"
     },
     {
       "name": "Kasumi",
@@ -5186,9 +5160,10 @@
     },
     {
       "name": "Katarina",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Katarina.jpeg"
     },
     {
       "name": "Katma Tui",
@@ -5213,9 +5188,10 @@
     },
     {
       "name": "Kazuma Satou",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "KonoSuba"
+      "franchise": "KonoSuba",
+      "image": "images/Kazuma Satou.jpeg"
     },
     {
       "name": "Kazuya Mishima",
@@ -5254,9 +5230,10 @@
     },
     {
       "name": "Kenpachi Zaraki",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Bleach"
+      "franchise": "Bleach",
+      "image": "images/Kenpachi Zaraki.jpeg"
     },
     {
       "name": "Ki-Adi-Mundi",
@@ -5351,9 +5328,10 @@
     },
     {
       "name": "King Bradley",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Fullmetal Alchemist"
+      "franchise": "Fullmetal Alchemist",
+      "image": "images/King Bradley.jpeg"
     },
     {
       "name": "King Kong",
@@ -5392,15 +5370,17 @@
     },
     {
       "name": "Kirito",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Sword Art Online"
+      "franchise": "Sword Art Online",
+      "image": "images/Kirito.jpeg"
     },
     {
       "name": "Kiss-Shot Acerola-Orion Heart-Under-Blade",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Monogatari"
+      "franchise": "Monogatari",
+      "image": "images/Kiss-Shot Acerola-Orion Heart-Under-Blade.jpeg"
     },
     {
       "name": "Kitana",
@@ -5495,9 +5475,10 @@
     },
     {
       "name": "Kristoff",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Frozen"
+      "franchise": "Frozen",
+      "image": "images/Kristoff.jpeg"
     },
     {
       "name": "Krusty the Clown",
@@ -5543,9 +5524,10 @@
     },
     {
       "name": "Kyle Broflovski",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "South Park"
+      "franchise": "South Park",
+      "image": "images/Kyle Broflovski.jpeg"
     },
     {
       "name": "Kyle Rayner",
@@ -5577,9 +5559,10 @@
     },
     {
       "name": "Kyoko Sakura",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Madoka Magica"
+      "franchise": "Madoka Magica",
+      "image": "images/Kyoko Sakura.jpeg"
     },
     {
       "name": "L Lawliet",
@@ -5639,9 +5622,10 @@
     },
     {
       "name": "Lady Tremaine",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Cinderella"
+      "franchise": "Cinderella",
+      "image": "images/Lady Tremaine.jpeg"
     },
     {
       "name": "Lae'zel",
@@ -5757,9 +5741,10 @@
     },
     {
       "name": "Lelouch vi Britannia",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Code Geass"
+      "franchise": "Code Geass",
+      "image": "images/Lelouch vi Britannia.jpeg"
     },
     {
       "name": "Leon (Pokemon)",
@@ -5777,9 +5762,10 @@
     },
     {
       "name": "Leona (League of Legends)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Leona (League of Legends).jpeg"
     },
     {
       "name": "Leona Heidern",
@@ -5797,9 +5783,10 @@
     },
     {
       "name": "Leone",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Akame ga Kill"
+      "franchise": "Akame ga Kill",
+      "image": "images/Leone.jpeg"
     },
     {
       "name": "Levi Ackerman",
@@ -5887,9 +5874,10 @@
     },
     {
       "name": "Lilo",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Lilo and Stitch"
+      "franchise": "Lilo and Stitch",
+      "image": "images/Lilo.jpeg"
     },
     {
       "name": "Lily",
@@ -5998,9 +5986,10 @@
     },
     {
       "name": "Loid Forger",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Spy x Family"
+      "franchise": "Spy x Family",
+      "image": "images/Loid Forger.jpeg"
     },
     {
       "name": "Lois Griffin",
@@ -6039,9 +6028,10 @@
     },
     {
       "name": "Lord Farquaad",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Shrek"
+      "franchise": "Shrek",
+      "image": "images/Lord Farquaad.jpeg"
     },
     {
       "name": "Lord Raptor",
@@ -6073,15 +6063,17 @@
     },
     {
       "name": "Louise Belcher",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Bob's Burgers"
+      "franchise": "Bob's Burgers",
+      "image": "images/Louise Belcher.jpeg"
     },
     {
       "name": "Lu Bu",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Record of Ragnarok"
+      "franchise": "Record of Ragnarok",
+      "image": "images/Lu Bu.jpeg"
     },
     {
       "name": "Lucario",
@@ -6869,9 +6861,10 @@
     },
     {
       "name": "Miss Fortune",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Miss Fortune.jpeg"
     },
     {
       "name": "Miss Martian",
@@ -7036,9 +7029,10 @@
     },
     {
       "name": "Morgana",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Morgana.jpeg"
     },
     {
       "name": "Morpheus (The Matrix)",
@@ -9247,9 +9241,10 @@
     },
     {
       "name": "Seraphine",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Seraphine.jpeg"
     },
     {
       "name": "Serena",
@@ -9435,9 +9430,10 @@
     },
     {
       "name": "Shiva (Record of Ragnarok)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Record of Ragnarok"
+      "franchise": "Record of Ragnarok",
+      "image": "images/Shiva (Record of Ragnarok).jpeg"
     },
     {
       "name": "Shoto Todoroki",
@@ -9490,9 +9486,10 @@
     },
     {
       "name": "Silco",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "Arcane"
+      "franchise": "Arcane",
+      "image": "images/Silco.jpeg"
     },
     {
       "name": "Silk Spectre",
@@ -10910,9 +10907,10 @@
     },
     {
       "name": "Venus (Marvel)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "franchise": "Marvel"
+      "franchise": "Marvel",
+      "image": "images/Venus (Marvel).jpeg"
     },
     {
       "name": "Verminous Skumm",
@@ -11294,9 +11292,10 @@
     },
     {
       "name": "Yasuo",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "franchise": "League of Legends"
+      "franchise": "League of Legends",
+      "image": "images/Yasuo.jpeg"
     },
     {
       "name": "Yelena Belova",
