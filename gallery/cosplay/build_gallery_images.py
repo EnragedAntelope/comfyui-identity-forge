@@ -81,6 +81,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Show what would be done without processing")
     parser.add_argument("--source", default=DEFAULT_SOURCE, help="Source directory with original JPEGs")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Output directory for optimized images")
+    parser.add_argument("--skip-existing", action="store_true", help="Skip images already present in output (incremental mode)")
     args = parser.parse_args()
 
     source_dir = Path(args.source)
@@ -95,10 +96,13 @@ def main():
         [f for f in source_dir.iterdir() if f.suffix.lower() == '.jpeg'],
         key=lambda f: f.name.lower(),
     )
+    incremental = args.skip_existing
 
     print(f"Found {len(jpeg_files)} JPEG files in {source_dir}")
     print(f"Output directory: {output_dir}")
     print(f"Max width: {MAX_WIDTH}px, Quality: {JPEG_QUALITY}")
+    if incremental:
+        print(f"Mode: INCREMENTAL (skipping existing in output)")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
     print("-" * 60)
 
@@ -113,6 +117,12 @@ def main():
 
     for i, jpeg_file in enumerate(jpeg_files, 1):
         output_file = output_dir / jpeg_file.name
+
+        # In incremental mode, skip if output already exists
+        if incremental and not args.dry_run and output_file.exists():
+            stats["skipped"] += 1
+            continue
+
         result = optimize_image(jpeg_file, output_file, dry_run=args.dry_run)
 
         if result["status"] == "optimized":
