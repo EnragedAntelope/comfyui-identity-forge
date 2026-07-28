@@ -1,13 +1,11 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-07-28T10:10:06.561510",
+  "generated": "2026-07-28T10:26:49.874045",
   "total_entries": 1694,
-  "entries_with_images": 1693,
-  "entries_missing_images": 1,
-  "missing": [
-    "Mei Terumi"
-  ],
+  "entries_with_images": 1694,
+  "entries_missing_images": 0,
+  "missing": [],
   "entries": [
     {
       "name": "2-1B Droid",
@@ -6780,9 +6778,10 @@
     },
     {
       "name": "Mei Terumi",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Naruto"
+      "group": "Naruto",
+      "image": "images/Mei Terumi.jpeg"
     },
     {
       "name": "Meiko Shiraki",
