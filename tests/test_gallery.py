@@ -42,6 +42,15 @@ SCRIPTS = ("publish.py", "build_manifest.py", "build_gallery_images.py",
            "cross_reference.py")
 
 
+#: Modules the gallery scripts import from their own directory by BARE name.
+#: ``publish.py`` does ``from build_manifest import entry_names``, which resolves
+#: through sys.modules -- so once any copy has been loaded, every later copy binds
+#: the FIRST one's roster. That made publish tests silently assert against the
+#: wrong gallery's data (a cosplay source folder matched against the archetype
+#: roster). They must be evicted around each load.
+_SIBLING_MODULES = ("build_manifest", "build_gallery_images")
+
+
 def load(kind: str, module: str):
     """Import one gallery's copy of a script under a unique module name.
 
@@ -57,10 +66,15 @@ def load(kind: str, module: str):
     sys.modules[name] = mod
     # The scripts add their own directory to sys.path for sibling imports.
     sys.path.insert(0, str(GALLERY_ROOT / kind))
+    # Evict BEFORE exec: that is the load at which the bare name is resolved, so
+    # this is the line that forces THIS kind's sibling to be executed. Restoring
+    # afterwards is only tidiness -- `mod` has already bound its own copy.
+    stashed = {n: sys.modules.pop(n) for n in _SIBLING_MODULES if n in sys.modules}
     try:
         spec.loader.exec_module(mod)
     finally:
         sys.path.remove(str(GALLERY_ROOT / kind))
+        sys.modules.update(stashed)
     return mod
 
 
@@ -111,6 +125,20 @@ class CopiesStayInSyncTests(unittest.TestCase):
             self.assertEqual(mod.GALLERY_KIND, kind)
             seen.add(mod.GALLERY_KIND)
         self.assertEqual(len(seen), len(KINDS), "two galleries share a GALLERY_KIND")
+
+    def test_each_publish_copy_binds_its_own_roster(self):
+        """Guards the sibling-import eviction in ``load`` above.
+
+        Without it every ``publish`` copy shares one cached ``build_manifest``, so
+        two galleries would report the same roster and the publish tests would be
+        quietly meaningless. Remove the eviction and this fails.
+        """
+        rosters = {kind: set(load(kind, "publish").entry_names()) for kind in KINDS}
+        for kind in KINDS:
+            expected = set(load(kind, "build_manifest").entry_names())
+            self.assertEqual(
+                rosters[kind], expected,
+                f"gallery/{kind}/publish.py resolved another gallery's roster")
 
     def test_each_gallery_resolves_a_non_empty_roster(self):
         for kind in KINDS:
@@ -264,6 +292,129 @@ class ManifestDescribesWhatItIsGivenTests(unittest.TestCase):
         # Windows drops a trailing period, so the entry "C.C." is "C.C.jpeg".
         mod = load("cosplay", "build_manifest")
         self.assertEqual(mod.normalize_name("C.C."), mod.normalize_name("C.C"))
+
+
+class FilesystemUnsafeNameTests(unittest.TestCase):
+    """A roster label is not a filename, and the saving side edits it silently.
+
+    ``B-Boy / B-Girl`` cannot exist on disk, so the archetype images the maintainer
+    generated arrived as ``B-Boy  B-Girl.jpeg`` -- slash gone, a double space left
+    behind. Nothing matched them, and the gallery reported two entries missing while
+    both files sat right there.
+    """
+
+    #: entry label -> the filename Windows actually produces for it
+    CASES = (
+        ("B-Boy / B-Girl", "B-Boy  B-Girl"),
+        ("E-Girl / E-Boy", "E-Girl  E-Boy"),
+        ("Who? What: Why", "Who What Why"),
+        ('A "quoted" name', "A quoted name"),
+        ("Back\\slash", "Back slash"),
+    )
+
+    def test_a_label_matches_the_filename_the_os_produces_for_it(self):
+        for kind in KINDS:
+            mod = load(kind, "build_manifest")
+            for label, on_disk in self.CASES:
+                self.assertEqual(
+                    mod.normalize_name(label), mod.normalize_name(on_disk),
+                    f"{kind}: '{label}' does not match its saved filename "
+                    f"'{on_disk}.jpeg'")
+
+    def test_sanitising_never_merges_two_distinct_entries(self):
+        """The risk the sanitiser itself creates, pinned for every real roster.
+
+        Stripping characters can make two different entries collide on one
+        filename -- and a collision is silent: both would map to the same image
+        and one of them would be wrong. Nothing else in the pipeline would notice.
+        """
+        for kind in KINDS:
+            mod = load(kind, "build_manifest")
+            names = mod.entry_names()
+            buckets: dict[str, list[str]] = {}
+            for name in names:
+                buckets.setdefault(mod.normalize_name(name), []).append(name)
+            collisions = {k: v for k, v in buckets.items() if len(v) > 1}
+            self.assertEqual(
+                collisions, {},
+                f"{kind}: these entries share one sanitised filename and would "
+                f"show each other's image: {collisions}")
+
+    def test_manifest_pairs_a_slash_entry_with_its_stripped_file(self):
+        """End to end, through the real manifest builder."""
+        mod = load("archetypes", "build_manifest")
+        target = next((n for n in mod.entry_names() if "/" in n), None)
+        self.assertIsNotNone(target, "archetype roster no longer has a slash entry; "
+                                     "point this test at another unsafe character")
+        with tempfile.TemporaryDirectory() as tmp:
+            images = Path(tmp) / "images"
+            images.mkdir()
+            # Exactly what Windows writes: slash dropped, spaces left doubled.
+            (images / f"{target.replace('/', ' ')}.jpeg").write_bytes(b"x")
+            manifest = mod.generate_manifest(str(images), str(Path(tmp) / "m.json"))
+
+        entry = next(e for e in manifest["entries"] if e["name"] == target)
+        self.assertTrue(entry["has_image"], f"'{target}' still reported imageless")
+        self.assertNotIn(target, manifest["missing"])
+
+    def test_published_stems_keep_a_slash_entry_out_of_the_orphan_set(self):
+        """The prune hazard: the fix has to reach ``--prune-orphans`` too.
+
+        ``published_stems`` normalises, so an entry whose label cannot be a
+        filename verbatim is recognised as its own published image. Comparing raw
+        stems here would have deleted the two hand-added archetype images.
+        """
+        pub = load("archetypes", "publish")
+        bm = load("archetypes", "build_manifest")
+        target = next(n for n in bm.entry_names() if "/" in n)
+        with tempfile.TemporaryDirectory() as tmp:
+            images = Path(tmp)
+            (images / f"{target.replace('/', ' ')}.jpeg").write_bytes(b"x")
+            stems = pub.published_stems(images)
+
+            keep = {bm.normalize_name(n) for n in bm.entry_names()}
+            orphans = [p.name for norm, p in stems.items() if norm not in keep]
+
+        self.assertIn(bm.normalize_name(target), stems)
+        self.assertEqual(orphans, [], "a real entry's image was classed an orphan")
+
+
+class StagedFileTests(unittest.TestCase):
+    """Everything ``PAGE_FILES`` names must exist, or it is silently not published.
+
+    ``publish.py`` copies each name only ``if src.exists()``. A typo, or a workflow
+    renamed in ComfyUI and not here, therefore fails completely silently -- the
+    commit just would not contain it, and the page's download link 404s.
+    """
+
+    def test_every_named_page_file_exists(self):
+        for kind in KINDS:
+            pub = load(kind, "publish")
+            for fname in pub.PAGE_FILES:
+                self.assertTrue(
+                    (GALLERY_ROOT / kind / fname).is_file(),
+                    f"gallery/{kind}/publish.py names '{fname}' in PAGE_FILES but "
+                    f"the file does not exist; it would be skipped silently")
+
+    def test_every_gallery_ships_a_downloadable_workflow(self):
+        for kind in KINDS:
+            pub = load(kind, "publish")
+            workflows = [f for f in pub.PAGE_FILES if f.endswith(".json")]
+            self.assertEqual(len(workflows), 1,
+                             f"{kind}: expected exactly one workflow in PAGE_FILES, "
+                             f"got {workflows}")
+            raw = (GALLERY_ROOT / kind / workflows[0]).read_text(encoding="utf-8")
+            self.assertIn("nodes", json.loads(raw), f"{kind}: workflow has no nodes")
+
+    def test_the_page_links_to_the_workflow_it_stages(self):
+        """The link and the staged filename are set in two different files."""
+        for kind in KINDS:
+            pub = load(kind, "publish")
+            workflow = next(f for f in pub.PAGE_FILES if f.endswith(".json"))
+            page = (GALLERY_ROOT / kind / "index.html").read_text(encoding="utf-8")
+            self.assertIn(f'href="{workflow}"', page,
+                          f"gallery/{kind}/index.html does not link to the workflow "
+                          f"'{workflow}' that publish.py stages")
 
 
 class SourceMatchingTests(unittest.TestCase):

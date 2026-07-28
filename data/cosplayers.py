@@ -293,7 +293,7 @@ COSPLAYERS: dict[str, dict] = {
                    "beret, red mid-calf combat boots, brown gloves, brown leg warmers, "
                    "and red camo face paint",
         "signature": {"hair_color": "golden blonde", "hair_length": "very long",
-                      "hair_style": "loose braids", "eye_color": "bright blue"},
+                      "hair_style": "loose braids", "eye_color": "bright blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
     "Mai Shiranui": {
@@ -530,8 +530,11 @@ COSPLAYERS: dict[str, dict] = {
                    "overlay, oversized rose-gold headphones worn around the neck, and "
                    "sheet-music motifs stitched along the hem",
         "eyes": "bright blue",
+        # The headphones sit AROUND THE NECK, and `necklace` is not in
+        # _COSTUME_SUPPRESSED_EXTRAS -- without this pin the accessory draw hangs a
+        # chain there as well.
         "signature": {"hair_color": "hot pink", "hair_length": "very long",
-                      "hair_texture": "loosely wavy"},
+                      "hair_texture": "loosely wavy", "necklace": "no necklace"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
         "prop": "a floating crystalline microphone",
     },
@@ -578,6 +581,323 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "jet black", "hair_length": "ear length",
                       "hair_style": "slicked back", "facial_hair": "clean shaven"},
         "physique": {"body_type": "slim", "height": "tall", "skin_tone": "pale"},
+    },
+    # 0.81.0 League of Legends expansion (+23). Curated for a distinct WORN
+    # silhouette, not for roster completeness: the full ~170-champion list would
+    # make League larger than Marvel and push Video Games from 19.7% to ~28%.
+    # Champions skipped and why are recorded in docs/suggested-additions.md.
+    "Nidalee": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        # Bone necklace named in the costume -> pin `necklace` absent, or the
+        # accessory draw adds a SECOND one on top of it.
+        "costume": "a spotted jungle-cat pelt worn as a hooded headdress and "
+                   "loincloth over a teal beaded halter, a bone-and-tooth necklace, "
+                   "woven arm and leg wraps, and bare feet",
+        "eyes": "feline amber",
+        "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                      "hair_style": "worn down", "necklace": "no necklace"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "bronze"},
+        "prop": "a carved wooden hunting spear balanced for a throw",
+    },
+    "Brand": {
+        # A body of burning ember, not skin -> covers_body + the textured
+        # "uniform, all-over" marker. Fire in place of hair -> covers_hair, which
+        # also drops the run-a-hand-through-the-hair gesture.
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_hair": True,
+        "costume": "nothing but uniform, all-over blackened charcoal hide split by "
+                   "molten orange fissures, with fire streaming back from the head "
+                   "and shoulders in place of hair",
+        "eyes": "molten orange",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Briar": {
+        # Ashen skin is still SKIN (the 10-skip rule) -> the skin-native
+        # "smooth, flawless" marker, NOT covers_body. The iron collar is a neck
+        # ornament, so `necklace` is pinned absent.
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a buckled leather restraint harness and straitjacket straps over "
+                   "a tattered dark dress, a heavy iron collar trailing a broken "
+                   "chain, and oversized clawed gauntlets, over smooth, flawless "
+                   "ashen grey-blue skin",
+        "eyes": "blood red",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous",
+                      "hair_style": "natural and unstyled", "necklace": "no necklace"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Zyra": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "covers_body": True,
+        "covers_hair": True,
+        "costume": "nothing but uniform, all-over deep green vine-woven bark skin "
+                   "bound in curling thorned vines, with a crown of crimson petals "
+                   "and thorny tendrils rising from the shoulders in place of hair",
+        "eyes": "burning amber",
+        "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Dr. Mundo": {
+        # Purple skin on a humanoid: an odd COLOUR, not a different material, so
+        # this is the She-Hulk/Thanos treatment and jewellery stays reachable.
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "bald": True,
+        "costume": "a filthy torn straitjacket hanging open with loose buckled "
+                   "straps, a blood-stained surgical apron and heavy boots, over "
+                   "smooth, flawless deep purple skin criss-crossed with crude "
+                   "stitches",
+        "eyes": "sickly yellow",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+        "prop": "an enormous rusted meat cleaver",
+    },
+    "Elise": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a high-collared deep crimson gown with black lace and gold "
+                   "spider-motif filigree, long clawed gloves, and four dark "
+                   "chitinous spider legs arcing from the back",
+        "eyes": "glowing red",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "updo"},
+        "physique": {"body_type": "slender", "height": "tall",
+                     "skin_tone": "porcelain"},
+    },
+    "Janna": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a flowing white and pale teal gown of layered wind-caught silks "
+                   "with feathered shoulder pieces and a long trailing sash",
+        "eyes": "pale glacier blue",
+        "signature": {"hair_color": "white blonde", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a tall weather-vane staff crowned with a spinning brass gale-wheel",
+    },
+    "Jax": {
+        # The face is never seen -- only two lights under the hood. That is a full
+        # mask, so the head covering lives in `mask` where the Unmask toggle can
+        # drop it, not in `costume`.
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "covers_face": True,
+        "mask": "a deep shadowed hood from which only two glowing golden eyes shine",
+        "costume": "layered brown travelling robes under mismatched heavy iron "
+                   "pauldrons and bracers, with wrapped forearms and a tattered "
+                   "hooded cloak",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+        "prop": "a battered iron lamppost carried as a weapon",
+    },
+    "Yunara": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "layered white and deep blue Ionian robes with gold trim and a "
+                   "wide knotted sash, strings of wooden prayer beads wound at the "
+                   "wrist, and a spirit bow of pale blue light",
+        "eyes": "luminous blue",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "high ponytail"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "light"},
+        "prop": "a drawn bow drawn from pale blue spirit-light",
+    },
+    "Zilean": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "bald": True,
+        # The beard's COLOUR has no field of its own once `bald` suppresses the
+        # scalp-hair sentence, so it lives in the prose. Do NOT re-add a signature
+        # `hair_color` to carry it: signature locks beat the bald suppression
+        # (override=False), which puts "His hair is white" back on a bald head.
+        # The stiff collar occupies the throat -> `necklace` pinned absent.
+        "costume": "layered indigo and gold sorcerer's robes hung with hourglasses "
+                   "and clock faces, a wide clasped belt and a tall stiff collar, "
+                   "with a long sweeping white beard, over smooth, flawless pale "
+                   "blue-grey skin",
+        "eyes": "glowing pale blue",
+        "signature": {"facial_hair": "full beard", "necklace": "no necklace"},
+        "physique": {"body_type": "slim", "height": "average height"},
+        "prop": "a great brass hourglass turning in one hand",
+    },
+    "Zeri": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a cropped teal and yellow hooded jacket over a bare midriff, "
+                   "baggy patched trousers, chunky boots, and glowing electric-blue "
+                   "conduits running the length of the arms",
+        "eyes": "bright gold",
+        "signature": {"hair_color": "electric blue", "hair_length": "long",
+                      "hair_style": "high ponytail"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "brown"},
+        "prop": "a makeshift rail-spike lightning gun crackling with current",
+    },
+    "Thresh": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "covers_face": True,
+        "mask": "a fleshless skull helm lit from within by green spectral fire",
+        # "plate armor" is the literal phrase _FULL_COVER_RE reads; spelling it
+        # any other way silently loses the full-shell treatment.
+        "costume": "blackened spectral plate armor over tattered grave-robes, with "
+                   "heavy iron chains wound around the arms",
+        "physique": {"body_type": "lean", "height": "very tall"},
+        "prop": "a rusted lantern glowing with trapped green souls, and a hooked chain",
+    },
+    "Jhin": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "covers_face": True,
+        "mask": "a smooth white porcelain mask with fine gold cracks and a painted "
+                "red mouth",
+        "costume": "a long ornate charcoal coat with crimson lining and gold "
+                   "filigree over dark tailored garb, with one slender articulated "
+                   "mechanical arm",
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a long-barrelled ornate four-shot pistol",
+    },
+    "Illaoi": {
+        # Gold tentacle tattoos belong in the costume prose -- markings have no
+        # field of their own.
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a teal and gold Buhru wrap with a bare midriff and a heavy "
+                   "beaded belt, wide gold arm bands, and swirling gold tentacle "
+                   "tattoos across the shoulders and arms",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "locs"},
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "skin_tone": "dark brown"},
+        "prop": "a towering golden idol mounted on a carved haft",
+    },
+    "Pyke": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "costume": "a stripped-down harbor diver's harness of buckled leather straps "
+                   "over a torn oilskin wrap, with a ragged gaping wound across the "
+                   "throat and chest, over smooth, flawless drowned grey-blue skin",
+        "eyes": "glowing blue-white",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a long curved bone harpoon",
+    },
+    "Sett": {
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "costume": "an open black and gold suit jacket worn over a bare chest with a "
+                   "red under-sash, a heavy gold chain, gold rings and wrapped "
+                   "fists, dark tailored trousers, and small tufted vastayan ears",
+        "eyes": "molten gold",
+        "signature": {"hair_color": "hot pink", "hair_length": "shoulder length",
+                      "hair_style": "slicked back", "necklace": "no necklace",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "stocky", "height": "very tall",
+                     "skin_tone": "light medium"},
+    },
+    "Irelia": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "a blue and white Ionian dancer's outfit with gold trim, a bare "
+                   "midriff, layered flowing skirts and long draped sleeves, with "
+                   "four floating steel blade shards hovering at the back",
+        "eyes": "steel blue",
+        "signature": {"hair_color": "deep red", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "light"},
+    },
+    "Sona": {
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "an ornate blue and gold gown with a corseted bodice, long "
+                   "trailing sleeves and layered skirts",
+        "eyes": "luminous blue",
+        "signature": {"hair_color": "teal", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+        "prop": "a floating gilded etwahl harp played at the fingertips",
+    },
+    "Neeko": {
+        # Scaled skin is a different MATERIAL, so covers_body applies here where it
+        # does not for Dr. Mundo. The leaf crown replaces hair -> covers_hair.
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "covers_body": True,
+        "covers_hair": True,
+        "costume": "a wrap of broad leaves and woven vines tied with a beaded cord, "
+                   "over uniform, all-over teal-green scaled skin patterned in pink "
+                   "and yellow, with a thick crown of orange and pink leaf-like "
+                   "growth in place of hair and a long tapering lizard tail",
+        "eyes": "large violet",
+        "physique": {"body_type": "petite and slim", "height": "petite"},
+    },
+    "Gwen (League of Legends)": {
+        # Disambiguated: a bare "Gwen" sits next to "Gwen Tennyson" and
+        # "Spider-Gwen" in the dropdown. Her body is porcelain and cloth, not
+        # skin -> covers_body.
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "covers_body": True,
+        "costume": "a stitched patchwork doll's dress with a pale blue pinafore and "
+                   "a large bow at the back, oversized ribbon-tied sleeves and "
+                   "needle-and-thread trims, over uniform, all-over porcelain-pale "
+                   "doll skin seamed with fine stitching",
+        "eyes": "pale mint green",
+        "signature": {"hair_color": "navy blue", "hair_length": "very long",
+                      "hair_style": "pigtails"},
+        "physique": {"body_type": "very slim", "height": "petite"},
+        "prop": "a pair of enormous sewing scissors",
+    },
+    "Ambessa": {
+        # Her warpaint IS the face. A random `makeup_style` would render a glam
+        # look over it, so the style is pinned absent and the costume prose is
+        # left as the only facial descriptor -- the same trick _BODY_PAINT_SUPPRESS
+        # performs automatically for painted characters.
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "heavy black and gold Noxian plate armor with a fanged pauldron "
+                   "and a deep crimson cape, wide gold arm bands, and dark warpaint "
+                   "marking the brow and cheekbones",
+        "eyes": "amber",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "cornrows", "makeup_style": "no makeup"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "dark brown"},
+        "prop": "a long-handled chain flail",
+    },
+    "Mel Medarda": {
+        # Keyed on the full name: a bare "Mel" is not findable in a 1700-row
+        # dropdown and reads as a truncation.
+        "franchise": "League of Legends",
+        "gender": "Female",
+        "costume": "an elegant floor-length gold and cream gown with a structured "
+                   "shoulder, layered gold arm cuffs and a wide gold collar necklace",
+        "eyes": "warm amber",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "curly", "necklace": "no necklace"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "brown"},
+    },
+    "Yone": {
+        # The oni mask is worn pushed ASIDE and the face is visible, so this is
+        # costume prose -- `mask` is only for a covering the Unmask toggle removes.
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "costume": "a black and white Ionian robe with a red sash worn open over "
+                   "wrapped forearms, with a horned red-and-white oni mask pushed to "
+                   "one side of the face",
+        "eyes": "glowing red",
+        "signature": {"hair_color": "white", "hair_length": "long",
+                      "hair_style": "high ponytail",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "light medium"},
+        "prop": "two swords held low, one bright steel and one dark spirit blade",
     },
 
     # --- Star Wars --------------------------------------------------------
@@ -754,7 +1074,7 @@ COSPLAYERS: dict[str, dict] = {
                    "and a glowing blue Focus device at the temple",
         "signature": {"hair_color": "copper", "hair_length": "long",
                       "hair_style": "dutch braids", "eye_color": "bright green",
-                      "freckles_density": "scattered"},
+                      "freckles_density": "scattered", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
         "prop": "a drawn wood-and-sinew tribal hunting bow, an arrow nocked",
     },
@@ -1333,7 +1653,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a form-fitting floor-length black gown with trailing sleeves and a "
                    "subtle cobweb motif",
         "signature": {"hair_color": "jet black", "hair_length": "waist length",
-                      "hair_texture": "silky and glossy", "eye_color": "dark brown"},
+                      "hair_texture": "silky and glossy", "eye_color": "dark brown", "makeup_style": "gothic dark makeup"},
         "physique": {"body_type": "hourglass", "height": "statuesque", "skin_tone": "porcelain"},
     },
     "Wednesday Addams": {
@@ -1656,7 +1976,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a skintight black gown with a plunging neckline and a thigh-high "
                    "slit, a dagger-shaped belt, and stiletto heels",
         "signature": {"hair_color": "raven black", "hair_length": "very long",
-                      "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
+                      "hair_texture": "thick and voluminous", "eye_color": "dark brown", "makeup_style": "gothic dark makeup"},
         "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "porcelain"},
     },
 
@@ -3118,7 +3438,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "green Kyoshi Warrior robes with metal armor plates, and dramatic "
                    "white face paint with bold red eye and lip makeup",
         "signature": {"hair_color": "chestnut", "hair_length": "shoulder length",
-                      "eye_color": "blue-gray"},
+                      "eye_color": "blue-gray", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
     "Asami Sato": {
@@ -4227,8 +4547,11 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a green ninja crop-top outfit with a face mask pulled down around "
                    "the neck and a kama on a chain",
+        # The lowered face mask occupies the throat -- pin `necklace` absent so the
+        # accessory draw does not layer a chain over it (0.79.0 rule).
         "signature": {"hair_color": "near black", "hair_length": "shoulder length",
-                      "hair_style": "high ponytail", "eye_color": "amber"},
+                      "hair_style": "high ponytail", "eye_color": "amber",
+                      "necklace": "no necklace"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
     },
     "Lux": {
@@ -4364,7 +4687,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a teal bandeau and loincloth with gold armbands and anklets, a "
                    "crystal pendant, and blue tribal face markings",
         "signature": {"hair_color": "white", "hair_length": "very long",
-                      "eye_color": "bright blue"},
+                      "eye_color": "bright blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "caramel"},
     },
     "Jane Porter": {
@@ -5029,7 +5352,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "layered leather Pict warrior garb with body wraps, and teal war "
                    "paint over half the face fading into a dark handprint",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
-                      "hair_style": "loose braids", "eye_color": "green"},
+                      "hair_style": "loose braids", "eye_color": "green", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
     "Shadowheart": {
@@ -5829,7 +6152,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a black tank top and black jeans with a silver ankh necklace, and a "
                    "swirl of dark eyeliner forming an Eye of Horus around the right eye",
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
-                      "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
+                      "hair_texture": "thick and voluminous", "eye_color": "dark brown", "makeup_style": "no makeup"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "very pale"},
     },
     "Delirium": {
@@ -6735,7 +7058,7 @@ COSPLAYERS: dict[str, dict] = {
                    "face painted stark white, and vivid red lipstick",
         "signature": {"hair_color": "bright red", "hair_length": "long",
                       "hair_texture": "thick and voluminous", "hair_style": "windswept",
-                      "eye_color": "dark brown"},
+                      "eye_color": "dark brown", "makeup_style": "no makeup"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
     "Viper": {
@@ -6858,7 +7181,7 @@ COSPLAYERS: dict[str, dict] = {
                    "mismatched striped stockings, thigh-high boots, long gloves, and heavy "
                    "theatrical makeup with smudged bright-red lipstick",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
-                      "hair_style": "pigtails", "eye_color": "bright blue"},
+                      "hair_style": "pigtails", "eye_color": "bright blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "pale"},
     },
     "Miranda Lawson": {
@@ -6992,7 +7315,7 @@ COSPLAYERS: dict[str, dict] = {
                    "modest heels, a press badge at the hip, a feminine hair bow, and "
                    "classic red lipstick",
         "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
-                      "hair_texture": "softly curled", "eye_color": "bright blue"},
+                      "hair_texture": "softly curled", "eye_color": "bright blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
     # === Anime & Manga (more) ============================================
@@ -7035,7 +7358,7 @@ COSPLAYERS: dict[str, dict] = {
                    "wrappings, red-and-blue war-paint face markings, and a fur cape with a "
                    "carved wolf mask",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
-                      "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
+                      "hair_texture": "thick and voluminous", "eye_color": "dark brown", "makeup_style": "no makeup"},
         "physique": {"body_type": "lean", "height": "short", "skin_tone": "warm tan"},
         "prop": "a stone dagger",
     },
@@ -11778,7 +12101,7 @@ COSPLAYERS: dict[str, dict] = {
         # absent values render nothing, leaving the costume prose to speak.
         "signature": {"hair_color": "white", "hair_length": "lower back",
                       "hair_texture": "wavy", "eye_color": "bright blue",
-                      "lips_makeup": "bare natural lips"},
+                      "lips_makeup": "bare natural lips", "makeup_style": "no makeup"},
         "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "warm tan"},
     },
     "Paul Bunyan": {
@@ -13533,7 +13856,7 @@ COSPLAYERS: dict[str, dict] = {
                    "gloves and tabi boots, the whole face painted stark white in kabuki style "
                    "with dark markings around the eyes",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
-                      "hair_texture": "pin straight", "eye_color": "dark brown"},
+                      "hair_texture": "pin straight", "eye_color": "dark brown", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
         "prop": "a naginata, a long wooden pole topped with a single curved blade",
     },
@@ -13610,7 +13933,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a tattered dark bodysuit with ragged sleeves, torn wrappings, and jagged "
                    "hems, with heavy smeared black eye makeup",
         "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "long",
-                      "hair_texture": "thick and voluminous", "eye_color": "pale blue"},
+                      "hair_texture": "thick and voluminous", "eye_color": "pale blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "very pale"},
     },
     "Sharon Carter": {
@@ -14029,7 +14352,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a red-and-silver armored bodysuit with a utility belt and boots, and combat "
                    "warpaint of a spot on the forehead and three lines drawn across each cheek",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
-                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
+                      "hair_texture": "sleek straight", "eye_color": "bright blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "a pair of Coda longswords, one held reversed in each hand",
     },
@@ -14897,7 +15220,7 @@ COSPLAYERS: dict[str, dict] = {
                    "wrapped forearms, and dark celestial tattoos tracing the "
                    "shoulders and midriff, with heavy kohl around the eyes",
         "signature": {"hair_color": "jet black", "hair_length": "long",
-                      "hair_texture": "sleek straight", "eye_color": "amber"},
+                      "hair_texture": "sleek straight", "eye_color": "amber", "makeup_style": "no makeup"},
         "physique": {"body_type": "lean", "height": "tall",
                      "skin_tone": "warm brown"},
     },
@@ -16417,7 +16740,7 @@ COSPLAYERS: dict[str, dict] = {
                    "grease-stained grey singlet and canvas trousers, with a "
                    "shaved head, a wide band of black grease smeared across the "
                    "brow and eyes, and a scavenged steel prosthetic left arm",
-        "signature": {"eye_color": "gray"},
+        "signature": {"eye_color": "gray", "makeup_style": "no makeup"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
     },
     "Pris": {
@@ -16428,7 +16751,7 @@ COSPLAYERS: dict[str, dict] = {
                    "band of black paint smeared across the eyes like a mask",
         "signature": {"hair_color": "platinum blonde", "hair_length": "shoulder length",
                       "hair_texture": "thick and voluminous",
-                      "hair_style": "tousled bedhead", "eye_color": "pale blue"},
+                      "hair_style": "tousled bedhead", "eye_color": "pale blue", "makeup_style": "no makeup"},
         "physique": {"body_type": "slim", "height": "average height",
                      "skin_tone": "very pale"},
     },

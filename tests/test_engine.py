@@ -1246,6 +1246,32 @@ class LocationAndPoseTests(unittest.TestCase):
             "OUTDOOR_LOCATIONS has drifted from the urban_outdoor / nature_outdoor "
             "families; missing entries silently become indoor")
 
+    def test_no_location_bakes_in_a_time_of_day(self):
+        """0.81.0: `time_of_day` was DELETED as a field because `lighting` owns it.
+
+        Nine location values had quietly put it back ("rooftop terrace at dusk",
+        "harbor dock at sunrise", "sandy beach at golden hour", ...). Nothing
+        stopped those pairing with a contradicting light, so a real preview
+        produced "set in a harbor dock at sunrise, under fire and flame warm
+        flicker". `lighting` is the only field allowed to state the hour, so a
+        location that also states it is a contradiction the engine cannot resolve.
+
+        `tide pools at low tide` is deliberately fine (a tide state, not an hour)
+        and `art gallery opening night` names an event type indoors, where the
+        lighting pool is artificial anyway.
+        """
+        from data.fields import LOCATION_FAMILIES
+        banned = re.compile(
+            r"\bat (?:night|dusk|dawn|sunrise|sunset|midday|noon|golden hour|"
+            r"twilight|first light)\b", re.IGNORECASE)
+        offenders = [v for fam in LOCATION_FAMILIES.values()
+                     for v in fam["variants"] if banned.search(v)]
+        self.assertEqual(
+            offenders, [],
+            "these location values state a time of day, which `lighting` already "
+            f"controls and can contradict: {offenders}. Reword in place (same "
+            "slot, same family) so the bias profile does not move.")
+
     def test_location_setting_not_in_json(self):
         d = json.loads(generate_character(1, "Female", {})[1])
         for group, fields in d.items():
@@ -2231,6 +2257,69 @@ class ScaleCoherenceTests(unittest.TestCase):
             self.assertNotIn("male_weights", FIELD_DEFINITIONS[field], field)
 
 
+class CanonicalMakeupTests(unittest.TestCase):
+    """0.81.0: a face authored in costume prose must silence the makeup draw.
+
+    Female cosplayers draw a *random* makeup look. For most characters that is
+    correct -- a real person at a convention wears their own makeup. But when the
+    entry's own prose already paints the face ("teal war paint over half the
+    face", "the whole face painted stark white in kabuki style"), the random draw
+    lands a second, contradicting face on top: full glam over Senua's warpaint.
+
+    The fix is a per-entry ``makeup_style`` lock, which needs no schema change --
+    ``"no makeup"`` cascades through CONSTRAINT_RULES to clear every cosmetic
+    sub-field and drops the makeup sentence entirely, leaving the prose as the
+    only facial descriptor. That is the same end state ``_BODY_PAINT_SUPPRESS``
+    reaches automatically for body-painted characters, which is why those are
+    exempt here.
+    """
+
+    #: Unambiguous "the prose owns this face" phrasings. Deliberately narrow --
+    #: this gate must not fire on an entry that merely mentions lipstick in
+    #: passing, or it becomes noise that gets suppressed rather than fixed.
+    _FACE_IS_AUTHORED = re.compile(
+        r"greasepaint|face ?paint|war[- ]?paint|corpse ?paint|clown white|"
+        r"kabuki|painted stark white|face (?:painted|markings)|"
+        r"smeared across the (?:brow|eyes)|painted across the face",
+        re.IGNORECASE,
+    )
+
+    def test_an_authored_face_pins_the_makeup_style(self):
+        from nodes.identity_forge_cosplayer import _BODY_PAINT_RE
+        offenders = []
+        for name, entry in COSPLAYERS.items():
+            if entry.get("gender") != "Female":
+                continue  # the engine already forces "no makeup" on men
+            costume = entry.get("costume", "")
+            if not self._FACE_IS_AUTHORED.search(costume):
+                continue
+            if _BODY_PAINT_RE.search(costume):
+                continue  # _BODY_PAINT_SUPPRESS handles these already
+            if not entry.get("signature", {}).get("makeup_style"):
+                offenders.append(name)
+        self.assertEqual(
+            offenders, [],
+            "these entries paint the face in their costume prose but leave "
+            "makeup_style to the random draw, so a glam look renders on top of "
+            f"it: {offenders}. Pin signature.makeup_style (usually 'no makeup').")
+
+    def test_the_gate_would_catch_an_unpinned_face(self):
+        """Non-vacuous: the regex really does fire on the shipped phrasings."""
+        for phrase in ("teal war paint over half the face",
+                       "the whole face painted stark white in kabuki style",
+                       "a wide carved red grin with clown white"):
+            self.assertRegex(phrase, self._FACE_IS_AUTHORED)
+
+    def test_pinning_no_makeup_actually_silences_the_makeup_sentence(self):
+        """End to end, on a real entry, rather than trusting the cascade."""
+        for seed in range(40):
+            flat = _parse_archetype_json(
+                build_cosplayer_json("Senua", seed, "Full character"))
+            prose, _ = generate_character(seed, "Female", flat)
+            self.assertNotIn("makeup", prose.lower(), f"seed {seed}: {prose}")
+            self.assertIn("war paint", prose.lower(), f"seed {seed}")
+
+
 class FullCoverSpellingTests(unittest.TestCase):
     """0.78.0: the full-shell regex must accept both spellings of "armor".
 
@@ -2298,20 +2387,84 @@ class HairStyleFamilyTests(unittest.TestCase):
              for name, fam in HAIR_STYLE_FAMILIES.items()}
         )
 
+    #: 0.81.0 added the barbering families. These are NOT splits -- they are genuinely
+    #: new values, so they must take share from somewhere. They take it uniformly:
+    #: weight 350 on a pre-existing 3150 means every older value keeps exactly
+    #: 3150/3500 = 9/10 of its former probability, and no family is singled out.
+    _ADDED_FAMILIES = ("barbered_short", "barbered_shag")
+    _DILUTION = 3150 / 3500
+
     def test_split_preserves_every_hair_style_probability(self):
+        """Every PRE-EXISTING style keeps its exact relative probability.
+
+        The 0.78.0 split had to be probability-neutral outright. Since 0.81.0 the
+        target is neutral *up to one uniform factor*: five new values were added, so
+        each old value is scaled by `_DILUTION` and by nothing else. A family that
+        drifted by any other amount would mean a weight was retuned by hand.
+        """
         baseline_total = sum(weight for weight, _ in self._BASELINE.values())
         current = self._current()
-        # Same number of styles before and after -- a split moves values between
-        # families, it never adds or drops one.
-        self.assertEqual(len(current), sum(count for _, count in self._BASELINE.values()))
+        added = {v for name in self._ADDED_FAMILIES
+                 for v in HAIR_STYLE_FAMILIES[name]["variants"]}
+        # A split moves values between families; only the 0.81.0 additions are new.
+        self.assertEqual(len(current) - len(added),
+                         sum(count for _, count in self._BASELINE.values()))
         for family, fam in HAIR_STYLE_FAMILIES.items():
+            if family in self._ADDED_FAMILIES:
+                continue
             origin = self._DERIVED_FROM.get(family, family)
             weight, count = self._BASELINE[origin]
-            expected = (weight / baseline_total) / count
+            expected = (weight / baseline_total) / count * self._DILUTION
             for value in fam["variants"]:
                 self.assertAlmostEqual(
                     current[value], expected, places=12,
                     msg=f"{value} ({family}, from {origin})")
+
+    def test_each_barbered_cut_is_priced_like_an_existing_everyday_cut(self):
+        """The barbering weights are justified by a precedent, not picked freely.
+
+        `comb over` and `mullet` are the pack's existing "one ordinary everyday
+        cut" families (weight 70, one variant each). Every new barbered cut is
+        priced identically, which is the whole argument for 280 + 70.
+        """
+        current = self._current()
+        reference = current["mullet"]
+        self.assertAlmostEqual(current["comb over"], reference, places=12)
+        for name in self._ADDED_FAMILIES:
+            fam = HAIR_STYLE_FAMILIES[name]
+            self.assertAlmostEqual(
+                fam["weight"] / len(fam["variants"]), 70.0, places=9,
+                msg=f"{name} is not priced at 70 per variant")
+            for value in fam["variants"]:
+                self.assertAlmostEqual(current[value], reference, places=12, msg=value)
+
+    def test_the_barbered_short_constraint_list_matches_its_family(self):
+        """A partial cull would concentrate the family's frozen weight.
+
+        `data/constraints.py` excludes `_BARBERED_SHORT_STYLES` as a unit. If a
+        fifth cut joins the family and not that list, the exclusions silently stop
+        being whole-family drops -- which is the bias trap the split exists to
+        avoid, reintroduced by omission.
+        """
+        from data.constraints import _BARBERED_SHORT_STYLES
+        self.assertEqual(
+            sorted(_BARBERED_SHORT_STYLES),
+            sorted(HAIR_STYLE_FAMILIES["barbered_short"]["variants"]),
+            "_BARBERED_SHORT_STYLES has drifted from the barbered_short family")
+
+    def test_a_barbered_cut_never_lands_on_hair_it_cannot_be_cut_into(self):
+        from data.constraints import _BARBERED_SHORT_STYLES, _PAST_SHOULDER_LENGTHS
+        for length in (*_PAST_SHOULDER_LENGTHS, "buzzed very short"):
+            for seed in range(120):
+                _, js = generate_character(seed, "Any", {"hair_length": length})
+                style = json.loads(js).get("Hair", {}).get("hair_style")
+                self.assertNotIn(style, _BARBERED_SHORT_STYLES,
+                                 f"{length!r} @ seed {seed}")
+        for length in ("buzzed very short", "very short", "short pixie"):
+            for seed in range(120):
+                _, js = generate_character(seed, "Any", {"hair_length": length})
+                self.assertNotEqual(json.loads(js).get("Hair", {}).get("hair_style"),
+                                    "shag", f"{length!r} @ seed {seed}")
 
     def test_probabilities_sum_to_one(self):
         self.assertAlmostEqual(sum(self._current().values()), 1.0, places=12)

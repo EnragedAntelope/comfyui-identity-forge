@@ -32,9 +32,11 @@ renders even on checkpoints that have never heard of the character. Ask a plain 
 Chun-Li and your prompt says `Chun-Li`; ask this one and you get the blue qipao with gold trim,
 the brown tights, the white cross-laced boots and the spiked bracelets.
 
-**Browse what's on offer:** [cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) —
-a sample render for every character, searchable ·
-[cosplay characters](docs/reference/cosplayers.md) ·
+**Browse what's on offer** — a searchable sample render for every entry:
+[cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) ·
+[archetype gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/archetypes/) ·
+[creature gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/creatures/).
+Or read the full lists: [cosplay characters](docs/reference/cosplayers.md) ·
 [archetypes](docs/reference/archetypes.md) · [creatures](docs/reference/creatures.md).
 Something obvious missing? [Open an issue](https://github.com/EnragedAntelope/comfyui-identity-forge/issues) —
 suggestions are welcome.
@@ -53,9 +55,13 @@ wins** any conflict:
 A taste of archetypes, cosplay characters and creatures:
 
 > [!TIP]
-> **[Browse the full cosplay gallery →](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/)**
-> Every character on the roster with a sample render, searchable by name and franchise —
-> so you can see the look before you pick the name. Generated with the Krea2 T2I model on
+> **Browse the galleries —
+> [cosplay](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) ·
+> [archetypes](https://enragedantelope.github.io/comfyui-identity-forge/gallery/archetypes/) ·
+> [creatures](https://enragedantelope.github.io/comfyui-identity-forge/gallery/creatures/)**
+> Every entry on every roster with a sample render, searchable by name and franchise —
+> so you can see the look before you pick the name. Each gallery also links the exact
+> ComfyUI workflow its samples were made with. Generated with the Krea2 T2I model on
 > randomized identities, so your own results will vary.
 
 <table>

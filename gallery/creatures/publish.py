@@ -6,7 +6,7 @@
 
 =============================================================================
  THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/creatures/publish.py - gallery/archetypes/publish.py -
+ gallery/cosplay/publish.py - gallery/archetypes/publish.py -
  gallery/creatures/publish.py
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
  it to the other two (see gallery/README.md).
@@ -48,7 +48,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # === GALLERY CONFIG — the only part that differs between the three copies ====
 GALLERY_KIND = "creatures"
 GALLERY_TITLE = "creature form"
-PAGE_FILES = ["index.html", "style.css", "gallery.js"]
+PAGE_FILES = ["index.html", "style.css", "gallery.js",
+              "Krea2_IdentityForge_CreatureCycle.json"]
 # ============================================================================
 
 from build_manifest import entry_names, generate_manifest, normalize_name  # noqa: E402
@@ -74,6 +75,19 @@ def run(*cmd: str, cwd: Path | None = None) -> str:
         print(f"  {out}")
         raise RuntimeError(f"git exited {result.returncode}")
     return out
+
+
+def published_stems(images_dir: Path) -> dict[str, Path]:
+    """Map ``normalize_name(stem) -> path`` for every image already on the branch.
+
+    Both callers below used to compare a **raw** ``Path.stem`` against normalized
+    roster names. Any entry whose label cannot be a filename verbatim therefore
+    never matched its own published image: add-mode would re-encode it on every
+    run, and ``--prune-orphans`` would classify it as belonging to no roster entry
+    and DELETE it. That is exactly what would have happened to the two hand-added
+    ``B-Boy / B-Girl`` and ``E-Girl / E-Boy`` images.
+    """
+    return {normalize_name(p.stem): p for p in images_dir.glob("*.jpeg")}
 
 
 def match_sources(source_dir: Path) -> tuple[dict[str, Path], list[Path]]:
@@ -167,7 +181,7 @@ def main() -> int:
 
         images_dir = worktree / "gallery" / GALLERY_KIND / "images"
         images_dir.mkdir(parents=True, exist_ok=True)
-        published = {p.stem for p in images_dir.glob("*.jpeg")}
+        published = published_stems(images_dir)
         print(f"Already published: {len(published)} image(s)")
 
         # Decide per entry. An entry that already has an image and was not
@@ -186,8 +200,8 @@ def main() -> int:
         orphans = []
         if args.prune_orphans:
             keep = {normalize_name(n) for n in entry_names()}
-            orphans = sorted(p.name for p in images_dir.glob("*.jpeg")
-                             if p.stem not in keep)
+            orphans = sorted(p.name for norm, p in published_stems(images_dir).items()
+                             if norm not in keep)
             print(f"Orphans to prune: {len(orphans)}")
             for name in orphans:
                 print(f"    - {name}")

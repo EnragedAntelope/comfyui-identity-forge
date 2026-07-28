@@ -4,7 +4,7 @@
 
 =============================================================================
  THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/creatures/build_manifest.py - gallery/archetypes/build_manifest.py -
+ gallery/cosplay/build_manifest.py - gallery/archetypes/build_manifest.py -
  gallery/creatures/build_manifest.py
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
  it to the other two (see gallery/README.md).
@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import unicodedata
 from pathlib import Path
@@ -49,14 +50,37 @@ def entry_meta(name: str) -> dict:
 DEFAULT_OUTPUT = os.path.join(os.path.dirname(__file__), "manifest.json")
 
 
+#: Characters no Windows (and, for ``/``, no POSIX) filename may contain. A roster
+#: name is a display label, not a filename, so any entry is free to use them --
+#: ``B-Boy / B-Girl`` reads correctly in the dropdown and must not be renamed just
+#: to suit the gallery. The saving side strips them silently, so the MATCHING side
+#: has to do the same or the image can never be paired with its entry.
+_UNSAFE_FILENAME_CHARS = re.compile(r'[<>:"/\\|?*]')
+
+
 def normalize_name(name: str) -> str:
     """Normalize a name for filename comparison.
 
-    Windows strips a trailing period, so the entry ``C.C.`` lands on disk as
-    ``C.C.jpeg``. Matching without this reported that entry as simultaneously
-    missing an image and having an orphaned one, on every single run.
+    Three separate things Windows does to a name on its way to disk, each of which
+    silently broke the pairing before it was handled here:
+
+    * **Trailing period dropped** -- the entry ``C.C.`` lands as ``C.C.jpeg``.
+      Without this, that entry was reported as *both* missing an image and having
+      an orphaned one, on every single run.
+    * **Illegal characters removed** -- ``B-Boy / B-Girl`` is saved as
+      ``B-Boy  B-Girl.jpeg``. Substituting a space (not the empty string) is what
+      makes the stripped filename and the original label converge, since the label
+      already has spaces either side of the slash.
+    * **Whitespace runs** -- the substitution above leaves a double space, and a
+      hand-typed filename may differ in spacing anyway. Collapsing both sides makes
+      ``B-Boy  B-Girl`` and ``B-Boy B-Girl`` the same key.
+
+    Callers that build a *filename* use this too, so the canonical on-disk form is
+    whatever this returns. NFC last, so a decomposed accent from a Mac-authored
+    filename matches a composed one in the roster.
     """
-    name = name.rstrip(".")
+    name = _UNSAFE_FILENAME_CHARS.sub(" ", name)
+    name = name.rstrip(". ")
     name = " ".join(name.split())
     return unicodedata.normalize("NFC", name)
 

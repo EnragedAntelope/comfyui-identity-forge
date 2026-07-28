@@ -233,6 +233,11 @@ const GENDER_POOLS = {
       "tousled bedhead",
       "ballerina bun",
       "braided ponytail",
+      "fade",
+      "undercut",
+      "pompadour",
+      "quiff",
+      "shag",
       "None"
     ],
     "Male": [
@@ -279,6 +284,11 @@ const GENDER_POOLS = {
       "braided ponytail",
       "comb over",
       "mullet",
+      "fade",
+      "undercut",
+      "pompadour",
+      "quiff",
+      "shag",
       "None"
     ],
     "Any": [
@@ -323,6 +333,11 @@ const GENDER_POOLS = {
       "tousled bedhead",
       "ballerina bun",
       "braided ponytail",
+      "fade",
+      "undercut",
+      "pompadour",
+      "quiff",
+      "shag",
       "comb over",
       "mullet",
       "None"

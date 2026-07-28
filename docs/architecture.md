@@ -783,6 +783,107 @@ Lady Blackhawk, P'Gell, Katy Keene, the Love & Rockets women (Hopey/Maggie/Luba)
 civilian/no-costume names (Lois Lane's Lana Lang, Vicki Vale, plus the Archie girls Betty/Veronica —
 everyday teen fashion). Don't re-add these without a fresh curation decision.
 
+### Only `lighting` may state the hour (0.81.0)
+
+`time_of_day` was **deleted as a field** because `lighting` already encodes it — "golden hour
+sunlight", "moonlight with cool blue tones", "harsh overhead midday sun". Nine `location` values
+had quietly reintroduced it (`rooftop terrace at dusk`, `harbor dock at sunrise`, `sandy beach at
+golden hour`, `the Griffith Observatory terrace at dusk`, …), so nothing stopped a dusk terrace
+rendering under midday sun. A real preview produced *"set in a harbor dock at sunrise, under fire
+and flame warm flicker."*
+
+All nine were **reworded in place** — same slot, same family, same count, so the share multiset is
+byte-identical and no seed moved for any other reason. `LocationAndPoseTests::
+test_no_location_bakes_in_a_time_of_day` is the standing gate. Two lookalikes are deliberately
+fine: `tide pools at low tide` names a tide state, and `art gallery opening night` names an event
+type indoors, where the lighting pool is artificial anyway.
+
+**The general rule: a location describes a PLACE. Anything about the hour, the weather or the
+light belongs to `lighting`, which owns it exclusively.**
+
+### Per-character canonical makeup — the targeted form that shipped (0.81.0)
+
+The long-deferred item was "female cosplayers draw a *random* makeup look rather than the
+character's". The full version (a makeup lock on ~815 female entries) was rejected as a data
+project with no clear finish line. What shipped is the subset where the current behaviour is an
+actual **contradiction** rather than merely a variation:
+
+> If the entry's own `costume` prose already paints the face, the random draw puts a *second*,
+> conflicting face on top of it — full glam over Senua's warpaint.
+
+19 entries were found mechanically (costume prose matching an unambiguous face-paint phrasing) and
+pinned. **No schema change was needed**: `signature.makeup_style` already accepts any pool value,
+and `"no makeup"` cascades through `CONSTRAINT_RULES` to clear every cosmetic sub-field, then
+`_is_absent()` drops the whole makeup sentence — the same end state `_BODY_PAINT_SUPPRESS` reaches
+automatically for body-painted characters. Where the canonical look genuinely *is* a makeup look
+and the prose does not carry it (Elvira, Morticia), the **style** is pinned and the sub-fields are
+left to vary, following the pre-existing `Lydia Deetz` precedent.
+
+`CanonicalMakeupTests` is the standing gate. Two things it deliberately does **not** do:
+
+- It only inspects **female** entries. Men are forced to `no makeup` globally, so a male
+  character whose face *is* makeup (the Joker, Beetlejuice, Krusty, Pennywise, William Wallace)
+  must author it into `costume` prose — all of those already do.
+- It does not fire on an entry that merely mentions lipstick in passing. A gate that cries wolf
+  gets suppressed instead of fixed.
+
+**`Harley Quinn` is correct as shipped and is not a counter-example.** Her signature pins a full
+makeup look (`club makeup` + four sub-fields) that matches her *Suicide Squad* pale-face-plus-bold-
+colour design. That is the deliberate per-character lock this section describes, not the random
+draw the 0.78.0 report complained about.
+
+### Barbering: the first genuinely NEW hair_style values since the splits (0.81.0)
+
+`hair_style` had 40 ways to arrange hair and no everyday **barber** cut — no fade, undercut,
+pompadour, quiff or shag. Unlike the 0.66.0/0.78.0 family *splits*, this adds new values, so it
+cannot be probability-neutral: share has to come from somewhere.
+
+It is taken **uniformly**. `loose_combover` and `loose_mullet` are the existing "one ordinary
+everyday cut" families at weight 70 for a single variant each; every barbered cut is priced
+identically. Total family weight goes 3150 → 3500, so **every pre-existing value keeps exactly
+9/10 of its former share** and each new value lands on 70/3500 = 2.0%. No family is singled out.
+**Seeds drift** (`rng.choices` sees more families) — accepted, same as 0.64.0 / 0.66.0 / 0.78.0.
+
+It ships as **two** families, and that is the load-bearing decision:
+
+```
+barbered_short  w=280  fade · undercut · pompadour · quiff
+barbered_shag   w= 70  shag
+```
+
+The four short cuts are impossible on hip-length hair and the shag is impossible on a buzz, so the
+two groups must be excludable **independently**. As one family, culling four of five variants would
+hand the whole frozen weight to the survivor — the exact trap documented for `loose` above. As two
+families, each is dropped whole. `_BARBERED_SHORT_STYLES` in `data/constraints.py` must stay equal
+to the `barbered_short` family or the exclusions silently become partial culls;
+`HairStyleFamilyTests` pins the two lists together.
+
+One deliberate imprecision: `buzzed very short` excludes the *whole* short group even though "buzz
+fade" is a real barbershop order, because the family cannot be cut in half. Losing a marginal
+buzz-fade is the cheaper side of that trade.
+
+### A roster label is not a filename (0.81.0)
+
+`B-Boy / B-Girl` cannot exist on disk. Windows strips the slash silently, so a hand-generated
+sample arrived as `B-Boy  B-Girl.jpeg` — slash gone, a double space left behind — and matched
+nothing. The gallery reported two archetypes as imageless while both files sat in the directory.
+
+**Fixed in the gallery scripts, not by renaming the entries.** `normalize_name()` now substitutes a
+space for each of the nine filename-illegal characters (`< > : " / \ | ? *`) and collapses
+whitespace runs, so the label and the filename the OS produces for it converge. Renaming the
+archetypes was rejected: it breaks saved workflows for no user benefit and fixes only those two
+names, while the next entry containing a colon breaks again.
+
+Two follow-on hazards fixed at the same time, both in `publish.py`, which compared a **raw**
+`Path.stem` against normalized roster names:
+
+1. add-mode never recognised such an entry's own published image, so it re-encoded it every run;
+2. `--prune-orphans` classified it as matching no roster entry and would have **deleted** it.
+
+`FilesystemUnsafeNameTests::test_sanitising_never_merges_two_distinct_entries` guards the risk the
+sanitiser itself creates: stripping characters can make two labels collide on one filename, and a
+collision is silent — both entries would show the same image and one would be wrong.
+
 ## Gotchas cheat-sheet
 
 - **An extreme scale needs the SCENE, not just the prose (0.79.0).** "Colossal and fifty feet

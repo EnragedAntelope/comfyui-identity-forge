@@ -39,6 +39,38 @@ maintainer decision — worth recording so the bar is not misread as having drop
 
 **The shortlist is currently empty.** Add new candidates here as they are found.
 
+### League of Legends — the 0.81.0 expansion and where it stopped
+
+League went 15 → 38 entries. The maintainer explicitly offered the **full ~170-champion roster**
+and it was declined, which is the decision worth recording:
+
+| Scope | Effect |
+|---|---|
+| The 11 requested + 12 curated (**shipped**) | League 15 → 38, comparable to Pokemon (32) and Mortal Kombat (28). Video Games 19.72% → 20.79%. |
+| Full champion roster (**rejected**) | ~155 adds. League would become the largest franchise in the pack and Video Games would jump to ~28% — one game steering the global Random pool. |
+
+`Evelynn` and `Seraphine` were on the request list and **already shipped**; they were refined, not
+duplicated (Seraphine's neck-worn headphones needed a `necklace` pin). `Akali` got the same pin for
+her lowered face mask.
+
+Shipped: Nidalee, Brand, Briar, Zyra, Dr. Mundo, Elise, Janna, Jax, Yunara, Zilean, Zeri (the
+request), plus Thresh, Jhin, Illaoi, Pyke, Sett, Irelia, Sona, Neeko, `Gwen (League of Legends)`,
+Ambessa, `Mel Medarda`, Yone.
+
+Deliberately **skipped**, so they are not re-proposed:
+
+| Candidate | Why skipped |
+|---|---|
+| Bard | A floating cosmic spirit with a chime-and-bell body. No worn garments at all — fails curation rule 1, the same test that excluded the bare-chested Record of Ragnarok cast. |
+| Yordles (Teemo, Lulu, Veigar, Poppy, Kennen…) | Small-child-bodied by design. Same rule that keeps Anya Forger and Beatrice off the roster. |
+| Sylas, Braum, Udyr, Volibear, Rammus, Malphite, Blitzcrank | Either shirtless with no describable garment, or a non-humanoid construct/elemental better served by the Creature node. |
+| Ryze, Swain, Viktor, Singed, Twisted Fate, Graves | Real looks, but each is a coat-and-trousers silhouette that would render as a generic robed or long-coated man without the name doing the work. Reconsider individually, not as a block. |
+
+Two naming notes: `Gwen` was disambiguated because a bare "Gwen" sits beside `Gwen Tennyson` and
+`Spider-Gwen` in the dropdown; `Mel Medarda` is keyed on her full name because a bare "Mel" is not
+findable in a 1,700-row list. `Arcane` stays a separate franchise string for `Silco`, who is
+Arcane-only; Ambessa and Mel are playable champions and file under League of Legends.
+
 ### Record of Ragnarok — characters deliberately NOT added (0.78.0)
 
 The franchise opened at 0.78.0 with Aphrodite, Brunhilde, Lu Bu, Jack the Ripper, Buddha and

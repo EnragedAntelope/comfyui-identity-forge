@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1694 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1717 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (329)
 
@@ -2203,7 +2203,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (334)
+## Video Games (357)
 
 ### ARMS
 
@@ -2445,19 +2445,42 @@
 
 - **Ahri** (F)
 - **Akali** (F)
+- **Ambessa** (F, prop)
+- **Brand** (M)
+- **Briar** (F)
 - **Caitlyn** (F, prop)
+- **Dr. Mundo** (M, prop)
 - **Ekko** (M, prop)
+- **Elise** (F)
 - **Evelynn** (F)
+- **Gwen (League of Legends)** (F, prop)
+- **Illaoi** (F, prop)
+- **Irelia** (F)
+- **Janna** (F, prop)
+- **Jax** (M, masked, prop)
+- **Jhin** (M, masked, prop)
 - **Jinx (League of Legends)** (F, prop)
 - **Kai'Sa** (F)
 - **Katarina** (F, prop)
 - **Leona (League of Legends)** (F, prop)
 - **Lux** (F)
+- **Mel Medarda** (F)
 - **Miss Fortune** (F, prop)
 - **Morgana** (F)
+- **Neeko** (F)
+- **Nidalee** (F, prop)
+- **Pyke** (M, prop)
 - **Seraphine** (F, prop)
+- **Sett** (M)
+- **Sona** (F, prop)
+- **Thresh** (M, masked, prop)
 - **Vi** (F)
 - **Yasuo** (M, prop)
+- **Yone** (M, prop)
+- **Yunara** (F, prop)
+- **Zeri** (F, prop)
+- **Zilean** (M, prop)
+- **Zyra** (F)
 
 ### LittleBigPlanet
 

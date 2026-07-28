@@ -68,6 +68,21 @@ _LONG_HAIR_STYLES: list[str] = [
     "half up half down", "twist-out", "afro", "cornrows", "bantu knots",
 ]
 
+#: The four short barbered cuts (0.81.0). This list is EXACTLY the
+#: ``barbered_short`` family in fields.py, and the rules below rely on that: they
+#: exclude the whole family, so every other family keeps its share. If a fifth
+#: short cut is ever added to that family it must be added here too, or the
+#: exclusion becomes a partial cull and concentrates the family's frozen weight on
+#: whatever is left. ``HairStyleFamilyTests`` pins the two lists together.
+_BARBERED_SHORT_STYLES: list[str] = ["fade", "undercut", "pompadour", "quiff"]
+
+#: Lengths at which a fade / undercut / pompadour / quiff no longer describes the
+#: cut. Deliberately starts past the shoulders: an undercut or a quiff on
+#: shoulder-length hair is an ordinary look, so shoulder lengths stay reachable.
+_PAST_SHOULDER_LENGTHS: tuple[str, ...] = (
+    "mid back", "lower back", "long", "very long", "waist length", "hip length",
+)
+
 CONSTRAINT_RULES: list[dict] = [
     # --- "no makeup" zeroes out every cosmetic sub-field -------------------
     {"type": "requirement", "field": "makeup_style", "value": "no makeup",
@@ -160,6 +175,32 @@ CONSTRAINT_RULES: list[dict] = [
                          "braided ponytail", "box braids", "bantu knots",
                          "dutch braids", "crown braid"],
      "reason": "a pixie cut is too short to braid or tie back"},
+    # 0.81.0: the barbered cuts. Both groups are excluded as WHOLE families
+    # (`barbered_short` = these four, `barbered_shag` = shag), which is the only
+    # reason they can be culled at all -- see the split note in fields.py.
+    #
+    # `buzzed very short` takes the whole short group rather than just the two that
+    # are flatly impossible: a pompadour and a quiff need top length a buzz does not
+    # have, and while "buzz fade" is a real barbershop order, the family cannot be
+    # cut in half without handing its weight to the survivors. Losing a marginal
+    # buzz-fade is the cheaper side of that trade.
+    {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
+     "excludes_field": "hair_style",
+     "excludes_values": _BARBERED_SHORT_STYLES,
+     "reason": "a buzz cut has no top length to fade into, sweep up, or undercut"},
+    *[
+        {"type": "exclusion", "field": "hair_length", "value": length,
+         "excludes_field": "hair_style", "excludes_values": _BARBERED_SHORT_STYLES,
+         "reason": f"{length} hair is far past the length these barbered cuts describe"}
+        for length in _PAST_SHOULDER_LENGTHS
+    ],
+    # A shag is a layered MID-length cut; there is nothing to layer on a crop.
+    *[
+        {"type": "exclusion", "field": "hair_length", "value": length,
+         "excludes_field": "hair_style", "excludes_values": ["shag"],
+         "reason": f"{length} hair is too short to cut into a shag's layers"}
+        for length in ("buzzed very short", "very short", "short pixie")
+    ],
 
     # Note: the "Natural only" hair scope is enforced during randomization (see
     # _build_option_pool), so randomized hair is always realistic. We do NOT add

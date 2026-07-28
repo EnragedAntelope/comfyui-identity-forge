@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**224 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**225 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -49,6 +49,7 @@
 - **Beekeeper** -- casual
 - **Belly Dancer** [Female] -- edgy alternative
 - **Berserker Barbarian** [Male] -- edgy alternative
+- **Biker** -- edgy alternative
 - **Bollywood Heroine** [Female] -- evening formal
 - **Bosozoku** [Male] -- edgy alternative
 - **Boxer** [Male] -- athletic
