@@ -1,13 +1,12 @@
 {
   "schema_version": 1,
   "gallery": "archetypes",
-  "generated": "2026-07-28T16:14:59.683735",
-  "total_entries": 224,
-  "entries_with_images": 222,
-  "entries_missing_images": 2,
+  "generated": "2026-07-28T19:42:38.459405",
+  "total_entries": 225,
+  "entries_with_images": 224,
+  "entries_missing_images": 1,
   "missing": [
-    "B-Boy / B-Girl",
-    "E-Girl / E-Boy"
+    "Biker"
   ],
   "entries": [
     {
@@ -236,9 +235,10 @@
     },
     {
       "name": "B-Boy / B-Girl",
-      "has_image": false,
+      "has_image": true,
       "gender": "any",
-      "group": ""
+      "group": "",
+      "image": "images/B-Boy B-Girl.jpeg"
     },
     {
       "name": "Babushka",
@@ -316,6 +316,12 @@
       "gender": "Male",
       "group": "edgy alternative",
       "image": "images/Berserker Barbarian.jpeg"
+    },
+    {
+      "name": "Biker",
+      "has_image": false,
+      "gender": "any",
+      "group": "edgy alternative"
     },
     {
       "name": "Bollywood Heroine",
@@ -557,9 +563,10 @@
     },
     {
       "name": "E-Girl / E-Boy",
-      "has_image": false,
+      "has_image": true,
       "gender": "any",
-      "group": ""
+      "group": "",
+      "image": "images/E-Girl E-Boy.jpeg"
     },
     {
       "name": "ER Nurse",
