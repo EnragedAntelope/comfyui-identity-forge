@@ -1,51 +1,12 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-07-27T21:31:13.860115",
+  "generated": "2026-07-28T10:10:06.561510",
   "total_entries": 1694,
-  "entries_with_images": 1654,
-  "entries_missing_images": 40,
+  "entries_with_images": 1693,
+  "entries_missing_images": 1,
   "missing": [
-    "Aeryn Sun",
-    "Alice Nakiri",
-    "Bishamonten",
-    "Casca",
-    "Chiana",
-    "Dante",
-    "Erina Nakiri",
-    "Fubuki (One Punch Man)",
-    "Griffith",
-    "Guts",
-    "Hana Midorikawa",
-    "Isuzu Sento",
-    "Ka D'Argo",
-    "Kaori Miyazono",
-    "Kate Takenomiya",
-    "Lady (Devil May Cry)",
-    "Latifa Fleuranza",
-    "Leafa",
-    "Lisa Lisa",
-    "Mari Kurihara",
-    "Megumi Tadokoro",
-    "Mei Terumi",
-    "Meiko Shiraki",
-    "Michiko Malandro",
-    "Midnight (My Hero Academia)",
-    "Moka Akashiya",
-    "Muse",
-    "Nero",
-    "Pa'u Zotoh Zhaan",
-    "Re-L Mayer",
-    "Rindou Kobayashi",
-    "Rygel XVI",
-    "Saeko Busujima",
-    "Salama",
-    "Scorpius",
-    "Soma Yukihira",
-    "Sylphy",
-    "Trish",
-    "Vergil",
-    "Yuno Gasai"
+    "Mei Terumi"
   ],
   "entries": [
     {
@@ -155,9 +116,10 @@
     },
     {
       "name": "Aeryn Sun",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Farscape"
+      "group": "Farscape",
+      "image": "images/Aeryn Sun.jpeg"
     },
     {
       "name": "Agatha Harkness",
@@ -301,9 +263,10 @@
     },
     {
       "name": "Alice Nakiri",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Food Wars"
+      "group": "Food Wars",
+      "image": "images/Alice Nakiri.jpeg"
     },
     {
       "name": "All Might",
@@ -1133,9 +1096,10 @@
     },
     {
       "name": "Bishamonten",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Noragami"
+      "group": "Noragami",
+      "image": "images/Bishamonten.jpeg"
     },
     {
       "name": "Bishop",
@@ -1734,9 +1698,10 @@
     },
     {
       "name": "Casca",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Berserk"
+      "group": "Berserk",
+      "image": "images/Casca.jpeg"
     },
     {
       "name": "Casey Jones",
@@ -1922,9 +1887,10 @@
     },
     {
       "name": "Chiana",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Farscape"
+      "group": "Farscape",
+      "image": "images/Chiana.jpeg"
     },
     {
       "name": "Chief Chirpa",
@@ -2299,9 +2265,10 @@
     },
     {
       "name": "Dante",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Devil May Cry"
+      "group": "Devil May Cry",
+      "image": "images/Dante.jpeg"
     },
     {
       "name": "Daphne Blake",
@@ -3131,9 +3098,10 @@
     },
     {
       "name": "Erina Nakiri",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Food Wars"
+      "group": "Food Wars",
+      "image": "images/Erina Nakiri.jpeg"
     },
     {
       "name": "Eris",
@@ -3452,9 +3420,10 @@
     },
     {
       "name": "Fubuki (One Punch Man)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "One Punch Man"
+      "group": "One Punch Man",
+      "image": "images/Fubuki (One Punch Man).jpeg"
     },
     {
       "name": "Furina",
@@ -3955,9 +3924,10 @@
     },
     {
       "name": "Griffith",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Berserk"
+      "group": "Berserk",
+      "image": "images/Griffith.jpeg"
     },
     {
       "name": "Grifter",
@@ -4010,9 +3980,10 @@
     },
     {
       "name": "Guts",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Berserk"
+      "group": "Berserk",
+      "image": "images/Guts.jpeg"
     },
     {
       "name": "Guy Gardner",
@@ -4065,9 +4036,10 @@
     },
     {
       "name": "Hana Midorikawa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Prison School"
+      "group": "Prison School",
+      "image": "images/Hana Midorikawa.jpeg"
     },
     {
       "name": "Handsome Jack",
@@ -4582,9 +4554,10 @@
     },
     {
       "name": "Isuzu Sento",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Amagi Brilliant Park"
+      "group": "Amagi Brilliant Park",
+      "image": "images/Isuzu Sento.jpeg"
     },
     {
       "name": "Itachi Uchiha",
@@ -5127,9 +5100,10 @@
     },
     {
       "name": "Ka D'Argo",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Farscape"
+      "group": "Farscape",
+      "image": "images/Ka D'Argo.jpeg"
     },
     {
       "name": "Kabal",
@@ -5238,9 +5212,10 @@
     },
     {
       "name": "Kaori Miyazono",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Your Lie in April"
+      "group": "Your Lie in April",
+      "image": "images/Kaori Miyazono.jpeg"
     },
     {
       "name": "Karai",
@@ -5286,9 +5261,10 @@
     },
     {
       "name": "Kate Takenomiya",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Prison School"
+      "group": "Prison School",
+      "image": "images/Kate Takenomiya.jpeg"
     },
     {
       "name": "Katma Tui",
@@ -5705,9 +5681,10 @@
     },
     {
       "name": "Lady (Devil May Cry)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Devil May Cry"
+      "group": "Devil May Cry",
+      "image": "images/Lady (Devil May Cry).jpeg"
     },
     {
       "name": "Lady Death",
@@ -5809,9 +5786,10 @@
     },
     {
       "name": "Latifa Fleuranza",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Amagi Brilliant Park"
+      "group": "Amagi Brilliant Park",
+      "image": "images/Latifa Fleuranza.jpeg"
     },
     {
       "name": "Launch",
@@ -5843,9 +5821,10 @@
     },
     {
       "name": "Leafa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Sword Art Online"
+      "group": "Sword Art Online",
+      "image": "images/Leafa.jpeg"
     },
     {
       "name": "Leatherface",
@@ -6073,9 +6052,10 @@
     },
     {
       "name": "Lisa Lisa",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "JoJo's Bizarre Adventure"
+      "group": "JoJo's Bizarre Adventure",
+      "image": "images/Lisa Lisa.jpeg"
     },
     {
       "name": "Lisa Simpson",
@@ -6583,9 +6563,10 @@
     },
     {
       "name": "Mari Kurihara",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Prison School"
+      "group": "Prison School",
+      "image": "images/Mari Kurihara.jpeg"
     },
     {
       "name": "Marie Rose",
@@ -6771,9 +6752,10 @@
     },
     {
       "name": "Megumi Tadokoro",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Food Wars"
+      "group": "Food Wars",
+      "image": "images/Megumi Tadokoro.jpeg"
     },
     {
       "name": "Megumin",
@@ -6804,9 +6786,10 @@
     },
     {
       "name": "Meiko Shiraki",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Prison School"
+      "group": "Prison School",
+      "image": "images/Meiko Shiraki.jpeg"
     },
     {
       "name": "Melina",
@@ -6901,9 +6884,10 @@
     },
     {
       "name": "Michiko Malandro",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Michiko & Hatchin"
+      "group": "Michiko & Hatchin",
+      "image": "images/Michiko Malandro.jpeg"
     },
     {
       "name": "Mickey Mouse",
@@ -6921,9 +6905,10 @@
     },
     {
       "name": "Midnight (My Hero Academia)",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "My Hero Academia"
+      "group": "My Hero Academia",
+      "image": "images/Midnight (My Hero Academia).jpeg"
     },
     {
       "name": "Midnighter",
@@ -7130,9 +7115,10 @@
     },
     {
       "name": "Moka Akashiya",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Rosario + Vampire"
+      "group": "Rosario + Vampire",
+      "image": "images/Moka Akashiya.jpeg"
     },
     {
       "name": "Momiji",
@@ -7381,9 +7367,10 @@
     },
     {
       "name": "Muse",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Amagi Brilliant Park"
+      "group": "Amagi Brilliant Park",
+      "image": "images/Muse.jpeg"
     },
     {
       "name": "Muzan Kibutsuji",
@@ -7555,9 +7542,10 @@
     },
     {
       "name": "Nero",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Devil May Cry"
+      "group": "Devil May Cry",
+      "image": "images/Nero.jpeg"
     },
     {
       "name": "Neville Longbottom",
@@ -7904,9 +7892,10 @@
     },
     {
       "name": "Pa'u Zotoh Zhaan",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Farscape"
+      "group": "Farscape",
+      "image": "images/Pa'u Zotoh Zhaan.jpeg"
     },
     {
       "name": "Pac-Man",
@@ -8631,9 +8620,10 @@
     },
     {
       "name": "Re-L Mayer",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Ergo Proxy"
+      "group": "Ergo Proxy",
+      "image": "images/Re-L Mayer.jpeg"
     },
     {
       "name": "Reaper",
@@ -8826,9 +8816,10 @@
     },
     {
       "name": "Rindou Kobayashi",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Food Wars"
+      "group": "Food Wars",
+      "image": "images/Rindou Kobayashi.jpeg"
     },
     {
       "name": "Riptide",
@@ -9035,9 +9026,10 @@
     },
     {
       "name": "Rygel XVI",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Farscape"
+      "group": "Farscape",
+      "image": "images/Rygel XVI.jpeg"
     },
     {
       "name": "Ryu",
@@ -9111,9 +9103,10 @@
     },
     {
       "name": "Saeko Busujima",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Highschool of the Dead"
+      "group": "Highschool of the Dead",
+      "image": "images/Saeko Busujima.jpeg"
     },
     {
       "name": "Sagat",
@@ -9222,9 +9215,10 @@
     },
     {
       "name": "Salama",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Amagi Brilliant Park"
+      "group": "Amagi Brilliant Park",
+      "image": "images/Salama.jpeg"
     },
     {
       "name": "Sam Manson",
@@ -9424,9 +9418,10 @@
     },
     {
       "name": "Scorpius",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Farscape"
+      "group": "Farscape",
+      "image": "images/Scorpius.jpeg"
     },
     {
       "name": "Scout Trooper",
@@ -9927,9 +9922,10 @@
     },
     {
       "name": "Soma Yukihira",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Food Wars"
+      "group": "Food Wars",
+      "image": "images/Soma Yukihira.jpeg"
     },
     {
       "name": "Sombra",
@@ -10353,9 +10349,10 @@
     },
     {
       "name": "Sylphy",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Amagi Brilliant Park"
+      "group": "Amagi Brilliant Park",
+      "image": "images/Sylphy.jpeg"
     },
     {
       "name": "Sylvanas Windrunner",
@@ -10933,9 +10930,10 @@
     },
     {
       "name": "Trish",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Devil May Cry"
+      "group": "Devil May Cry",
+      "image": "images/Trish.jpeg"
     },
     {
       "name": "Triss Merigold",
@@ -11177,9 +11175,10 @@
     },
     {
       "name": "Vergil",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
-      "group": "Devil May Cry"
+      "group": "Devil May Cry",
+      "image": "images/Vergil.jpeg"
     },
     {
       "name": "Verminous Skumm",
@@ -11673,9 +11672,10 @@
     },
     {
       "name": "Yuno Gasai",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
-      "group": "Future Diary"
+      "group": "Future Diary",
+      "image": "images/Yuno Gasai.jpeg"
     },
     {
       "name": "Yuzuriha",
