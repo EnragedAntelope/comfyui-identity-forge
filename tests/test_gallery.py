@@ -28,6 +28,14 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+try:
+    from PIL import Image as PILImage
+except ImportError:
+    # Attempt the real import rather than probing with find_spec: a package that
+    # is present but broken satisfies find_spec and then fails at use, which is
+    # exactly what a "skip if unavailable" guard is supposed to prevent.
+    PILImage = None
+
 GALLERY_ROOT = ROOT / "gallery"
 KINDS = ("cosplay", "archetypes", "creatures")
 SCRIPTS = ("publish.py", "build_manifest.py", "build_gallery_images.py",
@@ -170,6 +178,56 @@ class BatchLauncherTests(unittest.TestCase):
                 crlf, lf,
                 f"gallery/{kind}/update_gallery.bat has {lf - crlf} bare LF "
                 f"line ending(s); cmd needs CRLF or goto/:label resolution breaks")
+
+
+class OptionalPillowTests(unittest.TestCase):
+    """The gallery scripts must import in a dependency-free environment.
+
+    The pack itself is zero-dependency and CI installs nothing, so importing a
+    gallery script must never require Pillow. It once called ``sys.exit(1)`` at
+    import time, which took the entire CI run down the moment this test file
+    started importing it -- the failure looked like a test error, not a missing
+    optional dependency.
+    """
+
+    def test_every_copy_imports_and_degrades_without_pillow(self):
+        for kind in KINDS:
+            mod = load(kind, "build_gallery_images")
+            self.assertTrue(hasattr(mod, "Image"),
+                            f"{kind}: Pillow must be bound (possibly to None), "
+                            f"never exited on")
+            self.assertTrue(hasattr(mod, "PILLOW_HINT"))
+
+    def test_encode_reports_an_error_rather_than_raising_when_absent(self):
+        mod = load("cosplay", "build_gallery_images")
+        real = mod.Image
+        mod.Image = None
+        try:
+            result = mod.optimize_image(Path("in.jpeg"), Path("out.jpeg"))
+        finally:
+            mod.Image = real
+        self.assertEqual(result["status"], "error")
+        self.assertIn("Pillow", result["reason"])
+
+    @unittest.skipUnless(
+        PILImage is not None,
+        "Pillow not installed - the encode path is maintainer-only tooling")
+    def test_a_real_encode_resizes_and_writes_jpeg(self):
+        """Runs locally where Pillow exists; skipped in the dep-free CI run."""
+        mod = load("cosplay", "build_gallery_images")
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "big.png"
+            PILImage.new("RGBA", (1500, 1000), (10, 20, 30, 255)).save(src)
+            dest = Path(tmp) / "out.jpeg"
+            result = mod.optimize_image(src, dest)
+
+            self.assertEqual(result["status"], "optimized", result.get("reason"))
+            self.assertTrue(dest.is_file())
+            with PILImage.open(dest) as out:
+                # Resized to the grid's width, and alpha flattened for JPEG.
+                self.assertEqual(out.width, mod.MAX_WIDTH)
+                self.assertEqual(out.format, "JPEG")
+                self.assertEqual(out.mode, "RGB")
 
 
 class ManifestDescribesWhatItIsGivenTests(unittest.TestCase):

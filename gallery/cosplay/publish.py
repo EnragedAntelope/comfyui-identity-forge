@@ -101,8 +101,9 @@ def match_sources(source_dir: Path) -> tuple[dict[str, Path], list[Path]]:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=f"Publish the {GALLERY_KIND} gallery to the {BRANCH} branch.")
-    parser.add_argument("--source", required=True,
-                        help="Folder of full-size images named after entries.")
+    parser.add_argument("--source",
+                        help="Folder of full-size images named after entries. "
+                             "Required unless --pages-only.")
     parser.add_argument("--overwrite", action="store_true",
                         help="Replace images for entries that already have one. "
                              "Default is to add only what is missing.")
@@ -111,6 +112,10 @@ def main() -> int:
     parser.add_argument("--prune-orphans", action="store_true",
                         help="Also delete published images matching no roster "
                              "entry (renamed/deleted characters). Off by default.")
+    parser.add_argument("--pages-only", action="store_true",
+                        help="Publish only the page files (HTML/CSS/JS) and "
+                             "refresh the manifest. No --source needed, and no "
+                             "image is added, replaced or removed.")
     parser.add_argument("--no-push", action="store_true",
                         help="Commit to the local branch but do not push. Lets you "
                              "inspect the result before it goes live.")
@@ -118,15 +123,26 @@ def main() -> int:
                         help="Commit message.")
     args = parser.parse_args()
 
-    source_dir = Path(args.source)
-    if not source_dir.is_dir():
-        print(f"ERROR: source folder not found: {source_dir}")
-        return 1
-
-    matched, unmatched = match_sources(source_dir)
+    if args.pages_only:
+        source_dir, matched, unmatched = None, {}, []
+    else:
+        if not args.source:
+            print("ERROR: --source is required (or use --pages-only).")
+            return 1
+        source_dir = Path(args.source)
+        if not source_dir.is_dir():
+            print(f"ERROR: source folder not found: {source_dir}")
+            return 1
+        matched, unmatched = match_sources(source_dir)
     print(f"Gallery      : {GALLERY_KIND}")
-    print(f"Source folder: {source_dir}")
-    print(f"Mode         : {'OVERWRITE existing' if args.overwrite else 'ADD missing only'}")
+    if args.pages_only:
+        mode = "PAGE FILES ONLY - no image added, replaced or removed"
+    elif args.overwrite:
+        mode = "OVERWRITE existing"
+    else:
+        mode = "ADD missing only"
+    print(f"Source folder: {source_dir or '(not used)'}")
+    print(f"Mode         : {mode}")
     print(f"Roster        : {len(entry_names())} entries")
     print(f"Source images : {len(matched)} matched, {len(unmatched)} unmatched")
     if unmatched:
@@ -136,8 +152,9 @@ def main() -> int:
             print(f"    ? {path.name}")
         if len(unmatched) > 20:
             print(f"    ... and {len(unmatched) - 20} more")
-    if not matched:
-        print("\nNothing to publish. Stopping before touching the branch.")
+    if not matched and not args.pages_only:
+        print()
+        print("Nothing to publish. Stopping before touching the branch.")
         return 0
 
     worktree = Path(tempfile.mkdtemp(prefix=f"ifgallery-{GALLERY_KIND}-"))

@@ -18,14 +18,20 @@ Use it when you want a local optimized copy without publishing.
 from __future__ import annotations
 
 import argparse
-import sys
 from pathlib import Path
 
 try:
     from PIL import Image
-except ImportError:
-    print("ERROR: Pillow is required. Install it with:  pip install Pillow")
-    sys.exit(1)
+except ImportError:  # pragma: no cover - exercised by the dependency-free CI run
+    # Pillow is OPTIONAL and only the encode path needs it. Importing this module
+    # must never kill the process: `publish.py`, `cross_reference.py` and the test
+    # suite all import it, and CI installs no third-party packages at all (the
+    # pack itself is zero-dependency). A `sys.exit(1)` here took the whole test
+    # run down with "ERROR: Pillow is required" the moment tests/test_gallery.py
+    # started importing it.
+    Image = None
+
+PILLOW_HINT = "Pillow is required to optimize images. Install it: pip install Pillow"
 
 # === GALLERY CONFIG - the only part that differs between the three copies ====
 GALLERY_KIND = "creatures"
@@ -41,6 +47,8 @@ SOURCE_SUFFIXES = (".jpeg", ".jpg", ".png", ".webp")
 
 def optimize_image(source_path: Path, output_path: Path) -> dict:
     """Resize and re-encode one image. Returns a stats dict, never raises."""
+    if Image is None:
+        return {"status": "error", "reason": PILLOW_HINT}
     source_path = Path(source_path)
     output_path = Path(output_path)
     if source_path.suffix.lower() not in SOURCE_SUFFIXES:
@@ -83,6 +91,10 @@ def main() -> int:
     parser.add_argument("--skip-existing", action="store_true",
                         help="Leave images already present in --output alone.")
     args = parser.parse_args()
+
+    if Image is None:
+        print(f"ERROR: {PILLOW_HINT}")
+        return 1
 
     source_dir, output_dir = Path(args.source), Path(args.output)
     if not source_dir.is_dir():

@@ -20,9 +20,9 @@ jobs:
     if: ${{ github.repository_owner == 'EnragedAntelope' }}
     steps:
       - name: Check out code
-        # Pinned to a commit SHA (v4.2.2). persist-credentials:false so the
+        # Pinned to a commit SHA (v7.0.1). persist-credentials:false so the
         # GITHUB_TOKEN isn't left in .git/config for the third-party step below.
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
       - name: Publish Custom Node
