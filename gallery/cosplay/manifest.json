@@ -1,11 +1,35 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-07-28T10:26:49.874045",
-  "total_entries": 1694,
+  "generated": "2026-07-28T20:18:18.623752",
+  "total_entries": 1717,
   "entries_with_images": 1694,
-  "entries_missing_images": 0,
-  "missing": [],
+  "entries_missing_images": 23,
+  "missing": [
+    "Ambessa",
+    "Brand",
+    "Briar",
+    "Dr. Mundo",
+    "Elise",
+    "Gwen (League of Legends)",
+    "Illaoi",
+    "Irelia",
+    "Janna",
+    "Jax",
+    "Jhin",
+    "Mel Medarda",
+    "Neeko",
+    "Nidalee",
+    "Pyke",
+    "Sett",
+    "Sona",
+    "Thresh",
+    "Yone",
+    "Yunara",
+    "Zeri",
+    "Zilean",
+    "Zyra"
+  ],
   "entries": [
     {
       "name": "2-1B Droid",
@@ -300,6 +324,12 @@
       "gender": "Female",
       "group": "Half-Life",
       "image": "images/Alyx Vance.jpeg"
+    },
+    {
+      "name": "Ambessa",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "America Chavez",
@@ -1359,11 +1389,23 @@
       "image": "images/Brainiac 5.jpeg"
     },
     {
+      "name": "Brand",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
+    },
+    {
       "name": "Brandish",
       "has_image": true,
       "gender": "Female",
       "group": "Fairy Tail",
       "image": "images/Brandish.jpeg"
+    },
+    {
+      "name": "Briar",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "Bride of Frankenstein",
@@ -2780,6 +2822,12 @@
       "image": "images/Dr. Monique Pussycat.jpeg"
     },
     {
+      "name": "Dr. Mundo",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
+    },
+    {
       "name": "Draco Malfoy",
       "has_image": true,
       "gender": "Male",
@@ -2946,6 +2994,12 @@
       "gender": "Male",
       "group": "Dead or Alive",
       "image": "images/Eliot.jpeg"
+    },
+    {
+      "name": "Elise",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "Elizabeth Liones",
@@ -3991,6 +4045,12 @@
       "image": "images/Guy Gardner.jpeg"
     },
     {
+      "name": "Gwen (League of Legends)",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
+    },
+    {
       "name": "Gwen Tennyson",
       "has_image": true,
       "gender": "Female",
@@ -4425,6 +4485,12 @@
       "image": "images/Ichigo Kurosaki.jpeg"
     },
     {
+      "name": "Illaoi",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
+    },
+    {
       "name": "Illidan Stormrage",
       "has_image": true,
       "gender": "Male",
@@ -4507,6 +4573,12 @@
       "gender": "Male",
       "group": "The King of Fighters",
       "image": "images/Iori Yagami.jpeg"
+    },
+    {
+      "name": "Irelia",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "Iris",
@@ -4712,6 +4784,12 @@
       "image": "images/Jann Lee.jpeg"
     },
     {
+      "name": "Janna",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
+    },
+    {
       "name": "Jar Jar Binks",
       "has_image": true,
       "gender": "Male",
@@ -4745,6 +4823,12 @@
       "gender": "Male",
       "group": "Star Wars",
       "image": "images/Jawa.jpeg"
+    },
+    {
+      "name": "Jax",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
     },
     {
       "name": "Jay Garrick",
@@ -4829,6 +4913,12 @@
       "gender": "Female",
       "group": "Toy Story",
       "image": "images/Jessie (Toy Story).jpeg"
+    },
+    {
+      "name": "Jhin",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
     },
     {
       "name": "Jigglypuff",
@@ -6791,6 +6881,12 @@
       "image": "images/Meiko Shiraki.jpeg"
     },
     {
+      "name": "Mel Medarda",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
+    },
+    {
       "name": "Melina",
       "has_image": true,
       "gender": "Female",
@@ -7505,6 +7601,12 @@
       "image": "images/Ned Flanders.jpeg"
     },
     {
+      "name": "Neeko",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
+    },
+    {
       "name": "Nejire Hado",
       "has_image": true,
       "gender": "Female",
@@ -7608,6 +7710,12 @@
       "gender": "Female",
       "group": "One Piece",
       "image": "images/Nico Robin.jpeg"
+    },
+    {
+      "name": "Nidalee",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "Nien Nunb",
@@ -8350,6 +8458,12 @@
       "gender": "Male",
       "group": "Shrek",
       "image": "images/Puss in Boots.jpeg"
+    },
+    {
+      "name": "Pyke",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
     },
     {
       "name": "Pyramid Head",
@@ -9500,6 +9614,12 @@
       "image": "images/Sersi.jpeg"
     },
     {
+      "name": "Sett",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
+    },
+    {
       "name": "Seven of Nine",
       "has_image": true,
       "gender": "Female",
@@ -9932,6 +10052,12 @@
       "gender": "Female",
       "group": "Overwatch",
       "image": "images/Sombra.jpeg"
+    },
+    {
+      "name": "Sona",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "Songbird",
@@ -10723,6 +10849,12 @@
       "gender": "Female",
       "group": "DC",
       "image": "images/Thorn.jpeg"
+    },
+    {
+      "name": "Thresh",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
     },
     {
       "name": "Thumbelina",
@@ -11600,6 +11732,12 @@
       "image": "images/Yondu.jpeg"
     },
     {
+      "name": "Yone",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
+    },
+    {
       "name": "Yor Forger",
       "has_image": true,
       "gender": "Female",
@@ -11668,6 +11806,12 @@
       "gender": "Female",
       "group": "Final Fantasy",
       "image": "images/Yuna.jpeg"
+    },
+    {
+      "name": "Yunara",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     },
     {
       "name": "Yuno Gasai",
@@ -11789,6 +11933,12 @@
       "image": "images/Zenitsu Agatsuma.jpeg"
     },
     {
+      "name": "Zeri",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
+    },
+    {
       "name": "Zero (Code Geass)",
       "has_image": true,
       "gender": "Male",
@@ -11822,6 +11972,12 @@
       "gender": "Male",
       "group": "Final Fantasy",
       "image": "images/Zidane.jpeg"
+    },
+    {
+      "name": "Zilean",
+      "has_image": false,
+      "gender": "Male",
+      "group": "League of Legends"
     },
     {
       "name": "Zoey",
@@ -11864,6 +12020,12 @@
       "gender": "Male",
       "group": "Avatar: The Last Airbender",
       "image": "images/Zuko.jpeg"
+    },
+    {
+      "name": "Zyra",
+      "has_image": false,
+      "gender": "Female",
+      "group": "League of Legends"
     }
   ]
 }
