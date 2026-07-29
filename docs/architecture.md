@@ -884,6 +884,134 @@ Two follow-on hazards fixed at the same time, both in `publish.py`, which compar
 sanitiser itself creates: stripping characters can make two labels collide on one filename, and a
 collision is silent — both entries would show the same image and one would be wrong.
 
+### Contrapositive repair, requirement side (0.82.0)
+
+`_apply_constraints` has re-rolled a randomized **trigger** since 0.50.0 when an *exclusion*
+rule's target was locked — the locked "sleek bun" re-rolls the random buzz cut. The
+**requirement** branch never got the same treatment: it warned and kept, which is the right
+*outcome* for the lock but leaves the *output* incoherent. The user-visible symptom was two
+console lines every run:
+
+```
+'makeup_style=no makeup' wants 'lashes=natural bare' but 'lashes' is locked to
+'lash extension look'; keeping lock.
+```
+
+The lock did win — the message described the engine doing the right thing, while a bare-face
+style still rendered beside lash extensions. Re-rolling the *trigger* instead produces a makeup
+style that actually wants those lashes, and the warning disappears because the conflict does.
+Two more cases were silently shipping the same way: a locked `smile_type="toothy grin"` beside
+a randomly drawn `expression="stern"`, and a locked `hair_part` beside `hair_style="slicked
+back"`.
+
+Two details are load-bearing:
+
+- **`_requirement_pins()` is the ping-pong guard.** `gender=Male` *requires*
+  `makeup_style="no makeup"`, so repairing `makeup_style` there would be undone on the next
+  pass, forever. The guard skips the repair when another live requirement rule pins the
+  trigger, falling back to warn-and-keep. It is presentation-aware, so a `Feminine`/`Any`
+  wardrobe — where that rule is gated off and `makeup_style` genuinely randomizes — still
+  repairs. Removing the guard fails
+  `ContrapositiveRequirementTests::test_male_makeup_chain_still_warns_instead_of_ping_ponging`.
+- **The conflicting set is the union over EVERY locked target**, not just this rule's. Filtering
+  on one rule is the 0.78.0 exclusion bug in the other branch; the union converges in one pass.
+
+**Zero bias, zero seed drift**: the branch only runs when a target is in `locked`, so ordinary
+random output cannot move. Verified byte-identical over 900 unlocked prose strings (3 genders ×
+300 seeds) against a `git worktree` at the previous commit.
+
+### Fixture lighting: indoors is necessary, not sufficient (0.82.0)
+
+A real render came out *"set in a neighborhood pharmacy, under flickering firelight from a
+hearth."* `INDOOR_ONLY_LIGHTING` is a binary bucket, so three values that name a **physical
+fixture** — a hearth, a television, a stained-glass window — were legal in all ~139 indoor
+locations. A pharmacy has none of them.
+
+The fix has to be per-location, and a per-location rule may only remove a **whole** family. So
+each fixture value became its own single-variant family, and `LIGHTING_FAMILIES` went 5 → 10
+with every weight scaled **×6** (the lcm keeping each sub-weight an integer). Every one of the
+51 values keeps its **exact** prior probability; total 228 = 38×6.
+
+Doing that made it cheap to retire an approximation the bucket comment had admitted to since
+0.64.0 — *"only the mixed `artificial` and `neon` families contribute individual values, and
+each keeps a clear majority of its variants."* That majority hand-wave was **a real, accepted
+bias**: indoors, `neon` lost 2 of 8 variants while keeping its full 6/38 weight, inflating each
+of the 6 survivors by ~33% relative. Every location↔lighting bucket is now an exact union of
+whole families, pinned by `LightingBucketFamilyTests`.
+
+`HEARTH_LOCATIONS` / `SCREEN_GLOW_LOCATIONS` / `STAINED_GLASS_LOCATIONS` in `data/fields.py` are
+**allowlists**, which makes the safe default automatic: a newly added location is excluded from
+all three fixtures until someone deliberately opts it in, rather than silently inheriting a
+hearth. `data/constraints.py` emits one rule per indoor location naming the fixtures that
+location *lacks* (~136 rules, not the ~380 a per-pair rule would need — the engine already
+unions all firing exclusions on a target).
+
+**The general rule, extending the 0.81.0 one:** a location describes a PLACE; `lighting` owns
+the hour and the light — **and a lighting value that names an OBJECT is only possible where that
+object is.** Seeds drift for `lighting` (`rng.choices` sees 10 families, not 5).
+
+### The "set in ..." slot articles the location, and got it wrong twice (0.82.0)
+
+`_format_prose` built the clause as a blind `f"set in {_a(v)} {v}"`. That is correct for a
+common-noun location and wrong for two whole classes that had accumulated since:
+
+| Shipping output | Cause |
+|---|---|
+| "set in **a the** Brooklyn Bridge pedestrian walkway" | the value supplies its own article |
+| "set in **an a** Yosemite valley meadow" | same, with `_a` reading the leading "a" |
+| "set in **a** Trafalgar Square" | a bare proper name wants no article at all |
+| "set in **a** cracked salt flats" | plural head noun |
+
+`_location_clause()` handles all four: values whose first word is `a`/`an`/`the` pass through,
+`_NO_ARTICLE_LOCATIONS` covers proper names (capitalisation cannot decide this — "Buddhist
+temple hall" and "French bistro with mirrored walls" are capitalised and *do* want "a"), and
+everything else routes through the existing **`_article_if_singular`**, whose head-noun split
+already gets "a public library with tall bookshelves" right rather than articling on
+`bookshelves`.
+
+Fixed in the **engine**, not by rewording data: "the Grand Canyon south rim" is the correct way
+to name that place, and `user_options.json` is free text no validator can reach. Prose-only —
+no pool change, no RNG draw, no seed drift. `LocationArticleTests` pins it.
+
+### Growing a family-weighted field is the sanctioned way to add variety (0.82.0)
+
+0.82.0 grew four fields at once: `location` 204 → 260, `pose` 30 → 38, `expression` 39 → 45,
+`mood` 21 → 26. Because all four are in `FIELD_FAMILIES`, **the field-level distribution does
+not move at all** — a family's weight is frozen, so a new variant subdivides that family's
+share instead of inflating the field. This is the growth channel the family mechanism exists
+for, and it is why `outfit_style` (flat, so 14 → 19 would dilute every value from 7.1% to 5.3%)
+and `shot_type` (flat, 26 values) were **not** grown.
+
+Two traps this run surfaced:
+
+1. **A value-level probability pin freezes the pool size.** `PoseFamilyTests` asserted each pose
+   sat at a fixed probability, which also silently forbade *adding* one — it failed for the
+   wrong reason. Restated at the level the 0.66.0 split actually guarantees: family share
+   unchanged from the 0.65.0 baseline, plus internal uniformity, plus sub-family weights
+   proportional to size. Same correction `HairStyleFamilyTests` took at 0.81.0. **A baseline pin
+   should assert the invariant, not the current data.**
+2. **Adding into a split family breaks the split's own arithmetic.** The 0.66.0 gesture split
+   priced `gesture`/`gesture_garment`/`gesture_hair` proportional to variant count so all six
+   values stayed at 1/27. Adding one variant to two of the three made
+   `running one hand through the hair` 1.33× likelier than its siblings. Repriced ×2
+   (12/9/3 over 4/3/1 variants) so all eight sit at exactly 1/36 and the parent share is
+   untouched. **After adding to a sub-family, re-check the proportionality that justified the
+   split.**
+
+`location` additions carry two extra obligations, both test-enforced: a new outdoor value must
+join `OUTDOOR_LOCATIONS` (indoor is *derived*, so a miss silently buckets it indoors and starts
+drawing window light on a canyon rim), and **no family may span the indoor/outdoor boundary** —
+the giant-scale filter narrows `location` to outdoors and stays bias-free only because that
+drops seven whole families.
+
+**Do not re-add `server room with blinking racks`.** It shipped from 0.29.0 and was deliberately
+removed at 0.78.0 (`b201007`) as too dull; it is the one obvious-looking `work_industrial` gap
+that is a settled decision rather than an oversight. A note sits next to `LOCATION_FAMILIES`.
+
+`bedroom` and `bathroom` were added at explicit maintainer request, worded neutrally
+("tidy bedroom with a neatly made bed", "tiled bathroom with a large mirror") — no
+bed-as-focus phrasing, since the pack has no NSFW guard to fall back on.
+
 ## Gotchas cheat-sheet
 
 - **An extreme scale needs the SCENE, not just the prose (0.79.0).** "Colossal and fifty feet

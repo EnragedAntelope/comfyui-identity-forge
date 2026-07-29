@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1717 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1732 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (329)
 
@@ -534,7 +534,7 @@
 
 - **Kaori Miyazono** (F, prop)
 
-## Comics & Cartoons (223)
+## Comics & Cartoons (235)
 
 ### Adventure Time
 
@@ -747,6 +747,21 @@
 - **Sorceress** (F, prop)
 - **Teela** (F, prop)
 
+### Miraculous Ladybug
+
+- **Bunnyx** (F, prop)
+- **Carapace** (M, prop)
+- **Cat Noir** (M, +1 alt, prop)
+- **Hawk Moth** (M, +1 alt, prop)
+- **King Monkey** (M, prop)
+- **Ladybug** (F, prop)
+- **Mayura** (F, prop)
+- **Pegasus** (M)
+- **Queen Bee** (F, prop)
+- **Rena Rouge** (F, prop)
+- **Ryuko** (F, prop)
+- **Viperion** (M, prop)
+
 ### Monster High
 
 - **Abbey Bominable** (F)
@@ -951,7 +966,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (171)
+## DC (173)
 
 ### DC
 
@@ -1018,6 +1033,7 @@
 - **Gypsy** (F)
 - **Hal Jordan** (M)
 - **Harley Quinn** (F, +4 alt, prop)
+- **Hawk (DC)** (M)
 - **Hawkgirl** (F)
 - **Hawkman** (M, masked, prop)
 - **Hippolyta** (F)
@@ -1104,6 +1120,7 @@
 - **Tomar-Re** (M)
 - **Two-Face** (M, prop)
 - **Vixen** (F)
+- **Waverider** (M)
 - **Wildcat** (M, masked)
 - **Wonder Girl (Cassie Sandsmark)** (F)
 - **Wonder Woman** (F, prop)
@@ -2203,7 +2220,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (357)
+## Video Games (358)
 
 ### ARMS
 
@@ -2473,6 +2490,7 @@
 - **Seraphine** (F, prop)
 - **Sett** (M)
 - **Sona** (F, prop)
+- **Teemo** (M, tiny, masked, prop)
 - **Thresh** (M, masked, prop)
 - **Vi** (F)
 - **Yasuo** (M, prop)

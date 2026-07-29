@@ -540,6 +540,95 @@ class ContrapositiveConstraintTests(unittest.TestCase):
         self.assertEqual(hair.get("hair_length"), "buzzed very short")
 
 
+class ContrapositiveRequirementTests(unittest.TestCase):
+    """The requirement half of contrapositive repair (0.82.0).
+
+    Until 0.82.0 only *exclusion* rules re-rolled a randomized trigger; a
+    requirement rule whose target was locked just warned and left incoherent
+    output behind ("no makeup" beside a locked lash-extension look, a locked
+    toothy grin beside a "stern" expression). The lock still wins -- but now the
+    free side moves to agree with it, so the contradiction never renders.
+    """
+
+    @staticmethod
+    def _flat(js):
+        return {k: v for group in json.loads(js).values()
+                if isinstance(group, dict) for k, v in group.items()}
+
+    def test_locked_lashes_and_lips_reroll_makeup_style(self):
+        # The reported case: two deliberate locks vs. a random "no makeup" draw.
+        locked = {"lashes": "lash extension look", "lips_makeup": "classic red"}
+        for seed in range(80):
+            _, js = generate_character(seed, "Female", dict(locked))
+            flat = self._flat(js)
+            self.assertEqual(flat.get("lashes"), "lash extension look")
+            self.assertEqual(flat.get("lips_makeup"), "classic red")
+            self.assertNotEqual(
+                flat.get("makeup_style"), "no makeup",
+                f"bare-face style drawn beside locked lash extensions (seed {seed})")
+
+    def test_locked_smile_type_rerolls_contradicting_expression(self):
+        # expression -> smile_type is the same shape and was equally broken.
+        closed = {r["value"] for r in CONSTRAINT_RULES
+                  if r["type"] == "requirement" and r["field"] == "expression"
+                  and r["requires_value"] != "toothy grin"}
+        for seed in range(80):
+            _, js = generate_character(seed, "Female", {"smile_type": "toothy grin"})
+            flat = self._flat(js)
+            self.assertEqual(flat.get("smile_type"), "toothy grin")
+            self.assertNotIn(
+                flat.get("expression"), closed,
+                f"locked grin drew a closed-mouth expression (seed {seed})")
+
+    def test_locked_hair_part_rerolls_partless_style(self):
+        partless = {r["value"] for r in CONSTRAINT_RULES
+                    if r["type"] == "requirement" and r["field"] == "hair_style"
+                    and r["requires_field"] == "hair_part"}
+        for seed in range(60):
+            _, js = generate_character(seed, "Female", {"hair_part": "middle part"})
+            hair = json.loads(js)["Hair"]
+            self.assertEqual(hair.get("hair_part"), "middle part")
+            self.assertNotIn(
+                hair.get("hair_style"), partless,
+                f"locked part drew a part-less style (seed {seed})")
+
+    def test_male_makeup_chain_still_warns_instead_of_ping_ponging(self):
+        # gender=Male PINS makeup_style="no makeup", so re-rolling it would be
+        # undone every pass. _requirement_pins must block the repair here and
+        # fall back to warn-and-keep -- the lock still wins, and the loop
+        # terminates instead of churning to the iteration cap.
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            _, js = generate_character(
+                3, "Male", {"lips_makeup": "classic red"}, wardrobe="Match gender")
+        flat = self._flat(js)
+        self.assertEqual(flat.get("lips_makeup"), "classic red")
+        self.assertEqual(flat.get("makeup_style"), "no makeup")
+        self.assertIn("keeping lock", buf.getvalue())
+
+    def test_both_locked_still_warns_and_keeps(self):
+        # A user locking both sides of a genuine contradiction keeps both.
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            _, js = generate_character(
+                5, "Female",
+                {"makeup_style": "no makeup", "lips_makeup": "classic red"})
+        flat = self._flat(js)
+        self.assertEqual(flat.get("makeup_style"), "no makeup")
+        self.assertEqual(flat.get("lips_makeup"), "classic red")
+        self.assertIn("keeping lock", buf.getvalue())
+
+    def test_unlocked_output_is_untouched(self):
+        # The repair only runs when a target is locked, so ordinary random
+        # output must be bit-identical to the pre-0.82.0 engine. This is the
+        # bias gate: no locked field, no re-pick, no extra RNG draw.
+        for gender in ("Female", "Male", "Any"):
+            for seed in range(40):
+                a, _ = generate_character(seed, gender, {})
+                b, _ = generate_character(seed, gender, {})
+                self.assertEqual(a, b)
+
+
 class ConstraintTests(unittest.TestCase):
     def test_requirement_no_makeup_zeroes_subfields(self):
         _, js = generate_character(7, "Female", {"makeup_style": "no makeup"})
@@ -1288,6 +1377,75 @@ class LocationAndPoseTests(unittest.TestCase):
             self.assertNotIn("They is ", prose)
 
 
+class LocationArticleTests(unittest.TestCase):
+    """0.82.0: the "set in ..." slot must not article a value that already has one.
+
+    The slot was a blind ``f"set in {_a(v)} {v}"``, which is right for a common
+    noun but broke on every named landmark added later -- those carry their own
+    leading article. The prompt text had been shipping "set in **a the** Brooklyn
+    Bridge pedestrian walkway", "set in **an a** Yosemite valley meadow" and
+    "set in **a** Trafalgar Square".
+
+    Same contract as the 0.72.0 outfit-article sweep: a field's prose frame is
+    part of its definition.
+    """
+
+    def test_self_articled_and_proper_names_take_no_extra_article(self):
+        from nodes.identity_forge import _location_clause
+        cases = {
+            'the Brooklyn Bridge pedestrian walkway': 'the Brooklyn Bridge pedestrian walkway',
+            'a Yosemite valley meadow': 'a Yosemite valley meadow',
+            'the Grand Canyon south rim': 'the Grand Canyon south rim',
+            'Trafalgar Square': 'Trafalgar Square',
+            'neighborhood pharmacy': 'a neighborhood pharmacy',
+            'university lecture hall': 'a university lecture hall',
+            'open meadow': 'an open meadow',
+            'indoor ice rink': 'an indoor ice rink',
+        }
+        for value, expected in cases.items():
+            self.assertEqual(_location_clause(value), expected)
+
+    def test_plural_headed_locations_take_no_article(self):
+        # The other half of the same slot bug, older than the landmarks: the pool
+        # mixes singular and plural heads, so the blind article shipped "set in a
+        # cracked salt flats". The head split must survive a post-modifier, so a
+        # singular head with a plural tail still gets its article.
+        from nodes.identity_forge import _location_clause
+        for value in ('cracked salt flats', 'tide pools at low tide',
+                      'apple orchard rows', 'terraced rice paddies'):
+            self.assertEqual(_location_clause(value), value,
+                             f"plural head {value!r} was given an article")
+        for value, expected in (
+            ('public library with tall bookshelves', 'a public library with tall bookshelves'),
+            ('dance studio with mirrors', 'a dance studio with mirrors'),
+            ('boxing gym with hanging heavy bags', 'a boxing gym with hanging heavy bags'),
+        ):
+            self.assertEqual(_location_clause(value), expected,
+                             f"{value!r} articled on its tail instead of its head")
+
+    def test_no_shipped_location_renders_a_doubled_article(self):
+        from nodes.identity_forge import _location_clause
+        doubled = re.compile(r"^(?:a|an|the)\s+(?:a|an|the)\s", re.IGNORECASE)
+        offenders = [v for v in FIELD_DEFINITIONS["location"]["female_options"]
+                     if doubled.match(_location_clause(v))]
+        self.assertEqual(offenders, [], f"doubled article in 'set in ...': {offenders}")
+
+    def test_every_location_actually_appears_in_the_prose(self):
+        # Guards the fix from over-reaching: suppressing the article must never
+        # suppress the location itself.
+        for value in FIELD_DEFINITIONS["location"]["female_options"]:
+            prose, _ = generate_character(1, "Female", {"location": value})
+            self.assertIn("set in ", prose)
+            self.assertIn(value, prose, f"{value!r} vanished from the prose")
+
+    def test_no_article_list_names_only_real_locations(self):
+        from nodes.identity_forge import _NO_ARTICLE_LOCATIONS
+        pool = set(FIELD_DEFINITIONS["location"]["female_options"])
+        self.assertTrue(
+            _NO_ARTICLE_LOCATIONS <= pool,
+            f"_NO_ARTICLE_LOCATIONS names non-locations: {_NO_ARTICLE_LOCATIONS - pool}")
+
+
 class LocationLightingCoherenceTests(unittest.TestCase):
     """0.64.0: the light has to match where you are.
 
@@ -1344,6 +1502,129 @@ class LocationLightingCoherenceTests(unittest.TestCase):
                              ("outdoor-only", OUTDOOR_ONLY_LIGHTING),
                              ("void-allowed", VOID_ALLOWED_LIGHTING)):
             self.assertTrue(bucket <= pool, f"{name} names a non-option: {bucket - pool}")
+
+
+class FixtureLightingTests(unittest.TestCase):
+    """0.82.0: indoors is necessary but not sufficient for fixture lighting.
+
+    A hearth, a television and a stained-glass window are *objects*, so the
+    indoor/outdoor buckets alone let them land anywhere indoors -- the reported
+    render was "a neighborhood pharmacy, under flickering firelight from a
+    hearth". Each fixture value is now its own single-variant LIGHTING family so a
+    per-location rule removes it as a whole unit.
+    """
+
+    def test_fixture_light_only_lands_where_the_fixture_exists(self):
+        from data.fields import FIXTURE_LIGHTING
+        for seed in range(1200):
+            _, js = generate_character(seed, "Any", {})
+            setting = json.loads(js)["Setting & Shot"]
+            loc, lig = setting["location"], setting["lighting"]
+            if lig in FIXTURE_LIGHTING:
+                self.assertIn(
+                    loc, FIXTURE_LIGHTING[lig],
+                    f"{lig!r} drawn in {loc!r}, which has no such fixture (seed {seed})")
+
+    def test_allowlists_name_only_real_indoor_locations(self):
+        # A typo, or a location later renamed/removed, would silently make an
+        # allowlist entry dead -- the fixture would then be excluded everywhere.
+        from data.fields import FIXTURE_LIGHTING, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
+        pool = set(FIELD_DEFINITIONS["location"]["female_options"])
+        for light, places in FIXTURE_LIGHTING.items():
+            self.assertTrue(places, f"{light!r} has an empty allowlist")
+            self.assertTrue(places <= pool, f"{light!r} names non-locations: {places - pool}")
+            outdoors = places & (set(OUTDOOR_LOCATIONS) | set(STUDIO_BACKDROPS))
+            self.assertEqual(
+                outdoors, set(),
+                f"{light!r} is indoor-only but lists outdoor/backdrop places: {outdoors}")
+
+    def test_every_fixture_value_is_its_own_whole_family(self):
+        from data.fields import FIXTURE_LIGHTING, LIGHTING_FAMILIES
+        singletons = {tuple(d["variants"])[0] for d in LIGHTING_FAMILIES.values()
+                      if len(d["variants"]) == 1}
+        for light in FIXTURE_LIGHTING:
+            self.assertIn(
+                light, singletons,
+                f"{light!r} is excluded per-location but shares a family -- the "
+                f"exclusion would be a partial cull and concentrate that family's "
+                f"frozen weight onto the survivors")
+
+
+class LightingBucketFamilyTests(unittest.TestCase):
+    """Every location<->lighting bucket must be an exact union of WHOLE families.
+
+    ``_pick_family_weighted`` keeps a family's full frozen weight when it
+    intersects with the available pool, so culling *part* of a family dumps that
+    weight onto the survivors. Before 0.82.0 this held only "mostly": indoors,
+    ``neon`` lost 2 of 8 variants while keeping its full share, inflating each of
+    the 6 survivors by ~33% relative. The 0.82.0 split made every bucket exact.
+
+    **This is the test that catches a new lighting value put in a family whose
+    members do not share its bucket** -- at which point the guarantee lapses
+    silently and no other check would notice.
+    """
+
+    def _buckets(self):
+        from data.fields import (
+            FIXTURE_LIGHTING, INDOOR_ONLY_LIGHTING, OUTDOOR_ONLY_LIGHTING,
+            VOID_ALLOWED_LIGHTING,
+        )
+        allv = set(FIELD_DEFINITIONS["lighting"]["female_options"])
+        buckets = {
+            "OUTDOOR_ONLY_LIGHTING": set(OUTDOOR_ONLY_LIGHTING),
+            "INDOOR_ONLY_LIGHTING": set(INDOOR_ONLY_LIGHTING),
+            "not VOID_ALLOWED_LIGHTING": allv - set(VOID_ALLOWED_LIGHTING),
+        }
+        for light in FIXTURE_LIGHTING:
+            buckets[f"fixture {light!r}"] = {light}
+        return buckets
+
+    def test_no_bucket_partially_culls_a_family(self):
+        from data.fields import LIGHTING_FAMILIES
+        families = {f: set(d["variants"]) for f, d in LIGHTING_FAMILIES.items()}
+        for label, bucket in self._buckets().items():
+            for fam, variants in families.items():
+                if variants & bucket and not variants <= bucket:
+                    self.fail(
+                        f"bucket {label} cuts family {fam!r} in half "
+                        f"(in: {sorted(variants & bucket)}, "
+                        f"out: {sorted(variants - bucket)}) -- a partial cull "
+                        f"leaves {fam!r}'s full weight on the survivors")
+
+    def test_families_partition_the_lighting_pool(self):
+        from data.fields import LIGHTING_FAMILIES
+        seen = [v for d in LIGHTING_FAMILIES.values() for v in d["variants"]]
+        self.assertEqual(len(seen), len(set(seen)), "a lighting value is in two families")
+        self.assertEqual(set(seen), set(FIELD_DEFINITIONS["lighting"]["female_options"]))
+
+    def test_split_preserved_every_pre_split_share(self):
+        """The x6 rescale is only legitimate if no value's probability moved.
+
+        Baseline is the 0.81.0 family table, hardcoded so a future weight retune
+        has to be a deliberate act rather than an accident.
+        """
+        from data.fields import LIGHTING_FAMILIES
+        before = {  # 0.81.0: family -> (weight, variant count)
+            "daylight": (14, 17), "window": (4, 6), "artificial": (6, 9),
+            "neon": (6, 8), "studio": (8, 11),
+        }
+        parents = {
+            "daylight": "daylight", "window_general": "window",
+            "window_stained": "window", "artificial_open": "artificial",
+            "artificial_ceiling": "artificial", "artificial_hearth": "artificial",
+            "artificial_screen": "artificial", "neon_venue": "neon",
+            "neon_street": "neon", "studio": "studio",
+        }
+        self.assertEqual(set(parents), set(LIGHTING_FAMILIES),
+                         "a family was added/renamed without updating this baseline")
+        old_total = sum(w for w, _ in before.values())
+        new_total = sum(d["weight"] for d in LIGHTING_FAMILIES.values())
+        for fam, d in LIGHTING_FAMILIES.items():
+            pw, pn = before[parents[fam]]
+            self.assertAlmostEqual(
+                d["weight"] / new_total / len(d["variants"]),
+                pw / old_total / pn, places=12,
+                msg=f"family {fam!r} shifted its members' share off the 0.81.0 baseline")
 
 
 class RepickDistributionTests(unittest.TestCase):
@@ -1953,28 +2234,55 @@ class PoseFamilyTests(unittest.TestCase):
             for value in variants
         }
 
-    def test_split_preserves_every_pose_probability(self):
-        baseline_families = {
-            name: (weight, [f"{name}-{i}" for i in range(count)])
-            for name, (weight, count) in self._BASELINE.items()
-        }
-        baseline = self._marginals(baseline_families)
+    #: The three 0.66.0 gesture sub-families, and the parent whose share they split.
+    _GESTURE_SUBFAMILIES = ("gesture", "gesture_garment", "gesture_hair")
+
+    def test_split_preserves_every_family_share(self):
+        """The invariant the 0.66.0 split had to satisfy, stated at family level.
+
+        0.82.0 note: this used to pin each *value* to a fixed probability, which
+        also froze the pool size -- so adding a pose failed it for the wrong
+        reason. Growing a family-weighted field is the sanctioned, bias-free way
+        to add variety: the family's share is fixed, so a new variant subdivides
+        that share instead of inflating the field. The guarantee worth pinning is
+        therefore the FAMILY share (unchanged since 0.65.0) plus equiprobability
+        within each family -- both of which a bad weight tweak still breaks.
+        Same correction as `HairStyleFamilyTests` took at 0.81.0.
+        """
+        base_total = sum(w for w, _ in self._BASELINE.values())
+        cur_total = sum(fam["weight"] for fam in POSE_FAMILIES.values())
+
+        for family, (weight, _count) in self._BASELINE.items():
+            expected = weight / base_total
+            if family == "gesture":
+                # The split's whole point: the three parts still sum to the parent.
+                actual = sum(POSE_FAMILIES[f]["weight"] for f in self._GESTURE_SUBFAMILIES)
+            else:
+                actual = POSE_FAMILIES[family]["weight"]
+            self.assertAlmostEqual(
+                actual / cur_total, expected, places=12,
+                msg=f"family {family!r} share moved off the 0.65.0 baseline")
+
+    def test_every_family_is_internally_uniform(self):
+        # _pick_family_weighted draws a family, then a variant uniformly within
+        # it. Nothing else may bias the within-family pick.
         current = self._marginals(
             {name: (fam["weight"], fam["variants"]) for name, fam in POSE_FAMILIES.items()}
         )
-        # Same number of poses, and each still carries its old share.
-        self.assertEqual(len(current), len(baseline))
-        # Every pre-split gesture value sat at exactly 1/27; so must all three
-        # sub-families after the split.
-        for family in ("gesture", "gesture_garment", "gesture_hair"):
-            for value in POSE_FAMILIES[family]["variants"]:
-                self.assertAlmostEqual(current[value], 1 / 27, places=12, msg=value)
-        # And the untouched families are byte-for-byte where they were.
-        for family in ("standing", "seated", "leaning", "motion", "looking"):
-            weight, count = self._BASELINE[family]
-            expected = (weight / sum(w for w, _ in self._BASELINE.values())) / count
-            for value in POSE_FAMILIES[family]["variants"]:
-                self.assertAlmostEqual(current[value], expected, places=12, msg=value)
+        for name, fam in POSE_FAMILIES.items():
+            shares = {current[v] for v in fam["variants"]}
+            self.assertEqual(len(shares), 1, f"family {name!r} is not internally uniform")
+
+    def test_gesture_subfamily_weights_stay_proportional_to_size(self):
+        # The load-bearing arithmetic of the 0.66.0 split: sub-family weights must
+        # track variant counts, or splitting re-weights the values it split.
+        per_variant = {
+            f: POSE_FAMILIES[f]["weight"] / len(POSE_FAMILIES[f]["variants"])
+            for f in self._GESTURE_SUBFAMILIES
+        }
+        self.assertEqual(
+            len(set(round(v, 9) for v in per_variant.values())), 1,
+            f"gesture sub-families are no longer proportional to size: {per_variant}")
 
     def test_probabilities_sum_to_one(self):
         current = self._marginals(

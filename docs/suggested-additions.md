@@ -39,6 +39,35 @@ maintainer decision — worth recording so the bar is not misread as having drop
 
 **The shortlist is currently empty.** Add new candidates here as they are found.
 
+### Miraculous Ladybug — opened at 0.82.0
+
+A brand-new franchise (0 entries before), mapped into **Comics & Cartoons**. Twelve entries
+covering the full hero team and both principal villains:
+
+> Ladybug · Cat Noir · Hawk Moth · Mayura · Rena Rouge · Carapace · Queen Bee ·
+> Viperion · Ryuko · Pegasus · King Monkey · Bunnyx
+
+Two iconic variants ship as **alternates rather than separate entries**, per curation rule 2:
+**Chat Blanc** on Cat Noir (a dict alternate carrying its own `signature`, because the white
+hair and blue eyes must replace the blond — the Gwen Tennyson mechanism) and **Shadow Moth**
+on Hawk Moth (a plain-string alternate; only the costume changes).
+
+Deliberately **skipped**, so they are not re-proposed:
+
+| Candidate | Why skipped |
+|---|---|
+| Marinette Dupain-Cheng, Adrien Agreste (civilian) | Ordinary modern teen dress. Fails the "iconic *and* specific outfit" bar that also excluded Jessica Jones and Marion Ravenwood. The transformed looks carry them. |
+| Akumatized villains (Volpina, Antibug, Style Queen, Timebreaker, Miracle Queen…) | Mostly one-episode designs. Deep cuts outside the show's own audience; Chat Blanc is the exception and ships as an alternate. |
+| The kwamis (Tikki, Plagg, Wayzz…) | Palm-sized floating creatures with no worn look — curation rule 1, and the **Creature node** is the right home for that shape. |
+
+**The reusable lesson from writing them:** a whole cast in near-identical skintight suits makes
+the *shared* mechanics the risk, not the individual entries. Three traps recurred and are
+handled per-entry — a Miraculous worn at the throat needs `necklace: "no necklace"` (Cat Noir's
+bell, Ryuko's choker, Rena Rouge's pendant); one worn as a bracelet is left unnamed entirely
+(the Fern rule — no bracelet field exists to pin); and one that is a hair comb or glasses is
+safe to name, because `hair_accessory` and `accessories` *are* costume-suppressed. A domino
+mask is **never** `covers_face`: the eyes are covered, the face is not.
+
 ### League of Legends — the 0.81.0 expansion and where it stopped
 
 League went 15 → 38 entries. The maintainer explicitly offered the **full ~170-champion roster**
@@ -62,9 +91,28 @@ Deliberately **skipped**, so they are not re-proposed:
 | Candidate | Why skipped |
 |---|---|
 | Bard | A floating cosmic spirit with a chime-and-bell body. No worn garments at all — fails curation rule 1, the same test that excluded the bare-chested Record of Ragnarok cast. |
-| Yordles (Teemo, Lulu, Veigar, Poppy, Kennen…) | Small-child-bodied by design. Same rule that keeps Anya Forger and Beatrice off the roster. |
+| ~~Yordles (Teemo, Lulu, Veigar, Poppy, Kennen…)~~ | **Partly reversed at 0.82.0 — see below.** |
 | Sylas, Braum, Udyr, Volibear, Rammus, Malphite, Blitzcrank | Either shirtless with no describable garment, or a non-humanoid construct/elemental better served by the Creature node. |
 | Ryze, Swain, Viktor, Singed, Twisted Fate, Graves | Real looks, but each is a coat-and-trousers silhouette that would render as a generic robed or long-coated man without the name doing the work. Reconsider individually, not as a block. |
+
+#### The yordle skip was misapplied — Teemo ships (0.82.0)
+
+The 0.81.0 skip reasoned "small-child-bodied by design. Same rule that keeps Anya Forger and
+Beatrice off the roster." **That is the wrong rule for a yordle.** The child-bodied rule exists
+to keep human *children* off a costume roster; Teemo is not a child, he is a **mascot suit** —
+a furry animal head and body with a real, describable worn uniform over it. That is precisely
+the `covers_face` + `covers_body` + `mask` shape roughly 50 entries already ship on (Pikachu,
+Moogle, Bugs Bunny, the TMNT), and `size_scale: "tiny"` already handles a three-foot subject.
+
+`Teemo` ships with the Moogle scale precedent — the *upper* end of the tiny tier, worded
+self-contained ("tiny and barely three feet tall") with no reference object.
+
+**The rule itself still stands** for Anya Forger and Beatrice, who are human children in
+ordinary clothes. The distinction to apply next time: *is the subject a small person, or a
+person in a small-creature suit?* Only the first is excluded.
+
+The remaining yordles (Lulu, Veigar, Poppy, Kennen) stay parked — not because the rule
+excludes them, but as a scope decision. Reconsider individually.
 
 Two naming notes: `Gwen` was disambiguated because a bare "Gwen" sits beside `Gwen Tennyson` and
 `Spider-Gwen` in the dropdown; `Mel Medarda` is keyed on her full name because a bare "Mel" is not

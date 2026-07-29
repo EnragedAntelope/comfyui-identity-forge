@@ -610,8 +610,10 @@ COSPLAYERS: dict[str, dict] = {
         "covers_body": True,
         "covers_hair": True,
         "costume": "nothing but uniform, all-over blackened charcoal hide split by "
-                   "molten orange fissures, with fire streaming back from the head "
-                   "and shoulders in place of hair",
+                   "molten orange fissures that glow from within, wreathed head to "
+                   "foot in living flame that licks up the arms and streams back "
+                   "from the shoulders, with fire burning in place of hair and "
+                   "embers trailing from both hands",
         "eyes": "molten orange",
         "physique": {"body_type": "lean", "height": "tall"},
     },
@@ -735,6 +737,28 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "high ponytail"},
         "physique": {"body_type": "slim", "height": "short", "skin_tone": "brown"},
         "prop": "a makeshift rail-spike lightning gun crackling with current",
+    },
+    "Teemo": {
+        # 0.82.0: reopens the 0.81.0 "yordles are small-child-bodied" skip, which
+        # was misapplied here. That rule exists to keep human CHILDREN off the
+        # roster (Anya Forger, Beatrice); Teemo is a mascot suit, exactly like the
+        # ~50 animal entries that already ship on covers_body + covers_face + mask
+        # (Pikachu, Moogle, Bugs Bunny). Scale follows the Moogle precedent -- the
+        # upper end of the `tiny` tier, self-contained wording with no reference
+        # object for t2i to render beside him.
+        "franchise": "League of Legends",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "size_scale": "tiny",
+        "scale_prose": "tiny and barely three feet tall",
+        "mask": "an oversized round brimmed scout hat with flight goggles strapped "
+                "across the front, over a wide-eyed furry yordle face with a small "
+                "dark nose and large rounded ears",
+        "costume": "an olive and brown scout uniform with a buckled leather satchel, "
+                   "a broad belt, brown gloves and boots, over an even, all-over "
+                   "coat of soft tan-and-cream fur, on a tiny three-foot frame",
+        "prop": "a long hollow blowdart pipe",
     },
     "Thresh": {
         "franchise": "League of Legends",
@@ -6579,6 +6603,46 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "platinum blonde", "hair_length": "slightly past shoulders",
                       "hair_texture": "loosely wavy", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+    },
+    "Hawk (DC)": {
+        # 0.82.0. Keyed with the franchise even though nothing COLLIDES: a bare
+        # "Hawk" is unfindable beside Hawkgirl / Hawkman / Hawkeye / Hawks in a
+        # 1,700-row dropdown. The 0.77.0 label guard means the prose reads
+        # "Cosplaying as Hawk (DC)" rather than stuttering the franchise twice.
+        # The four existing Hawk* keys were deliberately NOT renamed to match --
+        # renaming a shipped key breaks every saved workflow that locked it and
+        # orphans its gallery image, for no user gain.
+        #
+        # Ships beside the existing `Dove`, whose entry is the deliberate visual
+        # opposite (white/pale blue, soft) -- so the two read as a pair.
+        # The hawk cowl encloses the scalp while the jaw and mouth show:
+        # covers_hair, not covers_face.
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_hair": True,
+        "costume": "a deep red bodysuit with white feather-like patterning down the "
+                   "arms, red gloves ending in blunt talon-tipped fingers, red "
+                   "boots, and a red hawk-head cowl with a sharp beaked brow and "
+                   "swept-back wing flares at the temples",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Waverider": {
+        # 0.82.0. Matthew Ryder, fused with the timestream in Armageddon 2001 --
+        # canon gives him a "flowing, fire-like" plume of hair, so the scalp is
+        # covered by the effect (covers_hair) and the plume lives in the costume
+        # prose, the same route Brand uses for his fire. Skin-native phrasing so
+        # the pale blue suppresses the randomized human tone and re-plants itself
+        # as the lead-sentence anchor; he is a humanoid with skin, so NOT
+        # covers_body (worn jewellery stays correct on him).
+        "franchise": "DC",
+        "gender": "Male",
+        "covers_hair": True,
+        "costume": "a deep blue bodysuit with a broad white chest panel and white "
+                   "shoulders, gold trim at the collar and belt, gold gauntlets and "
+                   "boots, over smooth, flawless pale blue skin, with a streaming "
+                   "white plume of temporal energy swept back in place of hair",
+        "eyes": "glowing white",
+        "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Fatality": {
         "franchise": "DC",
@@ -19488,6 +19552,204 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "loosely wavy", "hair_style": "worn down"},
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
     },
+    # --- Miraculous Ladybug (0.82.0) -----------------------------------------
+    # New franchise, mapped into Comics & Cartoons. The whole cast wears skintight
+    # animal-themed suits with DOMINO masks -- the eyes are covered, the face is
+    # not -- so `covers_face` is wrong for all of them (it would drop the entire
+    # Face group). Only Hawk Moth, whose silver mask encloses the scalp while the
+    # jaw shows, takes `covers_hair`.
+    #
+    # Three recurring traps handled per entry rather than globally:
+    #   * a Miraculous worn at the THROAT (Cat Noir's bell, Ryuko's choker, Rena
+    #     Rouge's fox pendant) needs `necklace: "no necklace"` -- `necklace` is not
+    #     in _COSTUME_SUPPRESSED_EXTRAS, so a randomized one renders beside it.
+    #   * a Miraculous worn as a BRACELET (Carapace, Viperion) is left out of the
+    #     costume prose entirely, the Fern rule: the Jewelry group is not
+    #     costume-suppressed either, and there is no bracelet field to pin.
+    #   * a Miraculous that is a hair comb (Queen Bee) or glasses (Pegasus) is safe
+    #     to name -- `hair_accessory` and `accessories` ARE costume-suppressed.
+    "Ladybug": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Female",
+        # The earrings ARE her Miraculous, so they are named -- which means the
+        # field has to be pinned or a second random pair renders alongside them.
+        "costume": "a skintight red bodysuit patterned all over with round black "
+                   "spots, matching red spotted gloves and boots, and a red domino "
+                   "mask spotted in black across the eyes, with small round black "
+                   "earrings",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "low pigtails", "eye_color": "bright blue",
+                      "earrings": "no earrings"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "light"},
+        "prop": "a red yo-yo spotted in black on a length of cord",
+    },
+    "Cat Noir": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Male",
+        # Chat Blanc is the akumatized white version -- a genuinely distinct,
+        # heavily cosplayed look, so it ships as an alternate rather than a
+        # near-duplicate entry. It carries its OWN signature (white hair, blue
+        # eyes) because a plain-string alternate would leave the blond hair on:
+        # the Gwen Tennyson precedent, and why `signature` is in _LOOK_OVERRIDE_KEYS.
+        "costume": "a glossy black skintight catsuit with a golden bell at the "
+                   "throat, black gloves and boots, a black domino mask, a pair of "
+                   "black cat ears, and a golden belt hanging behind like a tail",
+        "costumes": [
+            {
+                "costume": "a glossy pure-white skintight catsuit with a pale blue "
+                           "bell at the throat, white gloves and boots, a white "
+                           "domino mask, a pair of white cat ears, and a white belt "
+                           "hanging behind like a tail",
+                "signature": {"hair_color": "white", "hair_length": "very short",
+                              "hair_style": "windswept", "necklace": "no necklace",
+                              "facial_hair": "clean shaven"},
+                "eyes": "pale blue with cat-slit pupils",
+            },
+        ],
+        "eyes": "vivid green with cat-slit pupils",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "hair_style": "windswept", "necklace": "no necklace",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "slightly above average height",
+                     "skin_tone": "light"},
+        "prop": "a silver telescoping staff",
+    },
+    "Hawk Moth": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Male",
+        # The silver mask encloses the scalp but leaves the jaw and mouth showing:
+        # covers_hair, NOT covers_face.
+        "covers_hair": True,
+        "costume": "a light lavender-grey full bodysuit with a high dark collar and "
+                   "a silver butterfly brooch at the chest, dark purple gloves and "
+                   "boots, and a smooth silver mask covering the whole upper head "
+                   "and the eyes",
+        "costumes": [
+            "a dark purple and black full bodysuit with a high collar and a red "
+            "butterfly brooch at the chest, black gloves and boots, and a smooth "
+            "silver mask covering the whole upper head and the eyes",
+        ],
+        "signature": {"facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "fair"},
+        "prop": "a slim silver-topped cane",
+    },
+    "Mayura": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Female",
+        "costume": "a deep teal-blue bodysuit patterned with peacock eyespots, a "
+                   "high fanned feather collar, a layered peacock-tail bustle, teal "
+                   "gloves and boots, and a blue domino mask",
+        "signature": {"hair_color": "navy blue", "hair_length": "shoulder length",
+                      "hair_style": "sleek bun", "eye_color": "blue-gray"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a folding peacock-feather fan",
+    },
+    "Rena Rouge": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Female",
+        # The fox-tail pendant sits at the throat -> necklace pinned absent.
+        "costume": "an orange bodysuit with a white chest and white-tipped sleeves, "
+                   "a large bushy orange fox tail at the waist, orange fox ears, an "
+                   "orange domino mask, and a white fox-tail pendant at the throat",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "mid back",
+                      "hair_texture": "loosely wavy", "eye_color": "amber",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "brown"},
+        "prop": "a bamboo flute",
+    },
+    "Carapace": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Male",
+        # The shell is WORN on the back and detaches into his shield, so it follows
+        # the Zoro/Sagiri pattern: prop_costume strips it from the back exactly when
+        # the prop puts it in his hands, instead of rendering the shell twice.
+        # The turtle bracelet is deliberately unnamed (the Fern rule).
+        "covers_hair": True,
+        "costume": "a green and black bodysuit with a raised hood, a broad "
+                   "hexagon-patterned turtle shell strapped across the back, green "
+                   "bracers and boots, and a green domino mask",
+        "prop_costume": "a green and black bodysuit with a raised hood, green "
+                        "bracers and boots, and a green domino mask",
+        "signature": {"facial_hair": "clean shaven"},
+        "physique": {"body_type": "stocky", "height": "average height",
+                     "skin_tone": "dark brown"},
+        "prop": "a broad round green shield patterned in hexagons",
+    },
+    "Queen Bee": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Female",
+        "costume": "a yellow bodysuit banded with thick black stripes across the "
+                   "torso and legs, black gloves and boots, a black domino mask, and "
+                   "a yellow-and-black hair comb",
+        "signature": {"hair_color": "golden blonde", "hair_length": "mid back",
+                      "hair_style": "high ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "light"},
+        "prop": "a black and yellow spinning top on a cord",
+    },
+    "Viperion": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Male",
+        "costume": "a teal and black bodysuit textured in fine snake scales with a "
+                   "high collar, teal gloves and boots, and a teal domino mask",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "ear length",
+                      "hair_style": "natural and unstyled", "eye_color": "green",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "a teal lyre strung with fine wire",
+    },
+    "Ryuko": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Female",
+        # The dragon Miraculous is a choker -> necklace pinned absent.
+        "costume": "a deep red bodysuit textured in dragon scales with black and "
+                   "gold panelling, a stiff scaled shoulder mantle, red gloves and "
+                   "boots, a red domino mask, and a red dragon choker at the throat",
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "eye_color": "dark brown",
+                      "necklace": "no necklace"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "light"},
+        "prop": "a slim straight-bladed sword",
+    },
+    "Pegasus": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Male",
+        # The headpiece sweeps back over the whole scalp in a crest -> covers_hair.
+        "covers_hair": True,
+        "costume": "a dark navy bodysuit with silver panelling and a white horseshoe "
+                   "emblem at the chest, navy gloves and boots, a swept-back helmet "
+                   "crest like a mane, and round goggles over a navy domino mask",
+        "signature": {"facial_hair": "clean shaven"},
+        "physique": {"body_type": "average", "height": "average height",
+                     "skin_tone": "dark brown"},
+    },
+    "King Monkey": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Male",
+        "costume": "a red and white bodysuit with brown fur cuffs at the wrists and "
+                   "ankles, a long brown monkey tail at the waist, a red domino "
+                   "mask, and a gold circlet across the brow",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "natural and unstyled", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "skin_tone": "light medium"},
+        "prop": "a long golden staff",
+    },
+    "Bunnyx": {
+        "franchise": "Miraculous Ladybug",
+        "gender": "Female",
+        "costume": "a blue and white bodysuit with a white chest and a clock-face "
+                   "motif, tall blue rabbit ears, white gloves and boots, and a blue "
+                   "domino mask",
+        "signature": {"hair_color": "hot pink", "hair_length": "short pixie",
+                      "hair_style": "natural and unstyled", "eye_color": "gray-green"},
+        "physique": {"body_type": "toned", "height": "petite", "skin_tone": "fair"},
+        "prop": "a blue umbrella held closed",
+    },
 }
 
 
@@ -19600,7 +19862,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Sin City", "Dora the Explorer", "Voltron",
         "The Powerpuff Girls", "Danny Phantom", "Hey Arnold!", "South Park",
         "My Life as a Teenage Robot", "Bob's Burgers", "Inspector Gadget",
-        "Peanuts", "Strawberry Shortcake",
+        "Peanuts", "Strawberry Shortcake", "Miraculous Ladybug",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

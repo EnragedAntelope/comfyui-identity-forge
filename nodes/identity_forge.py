@@ -498,6 +498,46 @@ def _an(value: str, noun: str = "") -> str:
     return f"{_a(value)} {value}{tail}"
 
 
+#: Locations voiced with NO article at all. A bare proper name reads wrong with
+#: one ("set in a Trafalgar Square"), and unlike the self-articled landmarks it
+#: cannot be detected from the string -- "Buddhist temple hall" and "French bistro
+#: with mirrored walls" are also capitalised and DO want "a". Kept as an explicit
+#: list because the distinction is semantic, not orthographic.
+_NO_ARTICLE_LOCATIONS: frozenset[str] = frozenset(['Trafalgar Square'])
+
+
+def _location_clause(value: str) -> str:
+    """Render ``value`` for the "set in ..." slot, with the right article or none.
+
+    The slot used to be a blind ``f"set in {_a(v)} {v}"``, which was correct for
+    every common-noun location but broke on the named landmarks added later --
+    they carry their own leading article, so the prompt shipped "set in **a the**
+    Brooklyn Bridge pedestrian walkway", "set in **an a** Yosemite valley meadow"
+    and "set in **a** Trafalgar Square".
+
+    Same class of wart as the 0.72.0 ``outfit_description`` article sweep and
+    ``_article_if_singular``: the slot's sentence frame is part of the field's
+    contract. Fixed in the engine rather than by rewording the data, because
+    "the Grand Canyon south rim" is the *correct* way to name that place and
+    ``user_options.json`` is free text no validator can reach.
+
+    A second, older breakage shares the slot: the pool mixes singular and plural
+    heads ("neighborhood pharmacy" beside "cracked salt flats", "tide pools at low
+    tide", "terraced rice paddies"), so the blind article also shipped "set in a
+    cracked salt flats". ``_article_if_singular`` already solves exactly this for
+    the worn-item pools, head-noun split and all -- reused here rather than
+    reimplemented, so "a public library with tall bookshelves" still articles on
+    ``library`` and not on the trailing ``bookshelves``.
+
+    Prose-only: no pool change, no RNG draw, no seed drift.
+    """
+    if value in _NO_ARTICLE_LOCATIONS:
+        return value
+    if value.split(" ", 1)[0].lower() in ("a", "an", "the"):
+        return value  # the value supplies its own article
+    return _article_if_singular(value)
+
+
 def _prepend_descriptor(phrase: str, descriptor: str) -> str:
     """Prepend ``descriptor`` to ``phrase``, relocating the article ("a"/"an").
 
@@ -982,6 +1022,33 @@ def _randomize_fields(
     return resolved
 
 
+def _requirement_pins(
+    field: str, resolved: dict[str, str], presentation: str
+) -> bool:
+    """Is ``field`` currently pinned to a value by another live requirement rule?
+
+    The guard on the requirement-side contrapositive repair (0.82.0). Re-rolling a
+    trigger only helps when the trigger is free to move; if some *other* firing rule
+    pins it, the next iteration forces it straight back and the loop ping-pongs to
+    the iteration cap.
+
+    The concrete case is the makeup chain: ``gender=Male`` requires
+    ``makeup_style="no makeup"``, which in turn requires bare lashes/lips. With a
+    lash lock, repairing ``makeup_style`` would be undone on every pass. Note the
+    check is presentation-aware, so a ``Feminine``/``Any`` wardrobe -- where the
+    male-makeup rule is gated off and ``makeup_style`` genuinely randomizes -- does
+    allow the repair.
+    """
+    for rule in CONSTRAINT_RULES:
+        if rule["type"] != "requirement" or rule.get("requires_field") != field:
+            continue
+        if rule.get("presentation_gated") and presentation != "Masculine":
+            continue
+        if resolved.get(rule["field"]) == rule["value"]:
+            return True
+    return False
+
+
 def _apply_constraints(
     resolved: dict[str, str],
     gender: str,
@@ -1131,6 +1198,56 @@ def _apply_constraints(
                     # contradiction worth surfacing.
                     if _is_absent(required) and _is_absent(resolved.get(target)):
                         continue
+                    # Contrapositive repair, requirement side (0.82.0). The exclusion
+                    # branch above has re-rolled the randomized *trigger* since 0.50.0,
+                    # but the requirement branch only ever warned -- so a deliberate
+                    # lock lost to a random draw and said so twice per run:
+                    #
+                    #   'makeup_style=no makeup' wants 'lashes=natural bare' but
+                    #   'lashes' is locked to 'lash extension look'; keeping lock.
+                    #
+                    # The lock did win, so the message described the engine doing the
+                    # right thing -- while leaving the *output* incoherent (a bare-face
+                    # style beside lash extensions). Re-rolling the trigger instead
+                    # produces a makeup style that actually wants those lashes, and the
+                    # warning disappears because the conflict does. Same shape for a
+                    # locked smile_type against a contradicting random expression, and
+                    # a locked hair_part against 'slicked back'.
+                    trigger = rule["field"]
+                    trig_def = FIELD_DEFINITIONS.get(trigger)
+                    if (trig_def is not None and trigger not in locked
+                            and not trig_def.get("control")
+                            and not _requirement_pins(trigger, resolved, presentation)):
+                        # Union of every trigger value that would demand a different
+                        # value from ANY locked target -- not just this rule's target.
+                        # Filtering on one rule alone is the 0.78.0 exclusion bug in
+                        # the other branch: the replacement satisfies rule A and
+                        # violates rule B, and the loop ping-pongs to the iteration
+                        # cap. The union converges in a single pass.
+                        conflicting = set()
+                        for other in CONSTRAINT_RULES:
+                            if (other["type"] != "requirement"
+                                    or other["field"] != trigger):
+                                continue
+                            other_target = other["requires_field"]
+                            if other_target not in locked:
+                                continue
+                            if (other.get("presentation_gated")
+                                    and presentation != "Masculine"):
+                                continue
+                            want, have = other["requires_value"], resolved.get(other_target)
+                            if want == have or (_is_absent(want) and _is_absent(have)):
+                                continue
+                            conflicting.add(other["value"])
+                        pool = [v for v in _scale_coherent_pool(
+                            trigger,
+                            _build_option_pool(trigger, trig_def, gender, resolved),
+                            scale_class,
+                        ) if v not in conflicting]
+                        if pool:
+                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng)
+                            changed = True
+                            continue
                     warn(target, f"'{rule['field']}={rule['value']}' wants "
                                  f"'{target}={required}' but '{target}' is locked to "
                                  f"'{resolved.get(target)}'; keeping lock.")
@@ -1475,7 +1592,7 @@ def _format_prose(
     if g("expression"):
         scene.append(f"{poss} expression is {g('expression')}")
     if g("location"):
-        scene.append(f"set in {_a(g('location'))} {g('location')}")
+        scene.append(f"set in {_location_clause(g('location'))}")
     if g("lighting"):
         # lighting encodes time-of-day (golden hour / moonlight / midday sun), so the
         # separate time_of_day field was removed to avoid contradictions; season stands.

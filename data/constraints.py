@@ -43,13 +43,15 @@ from __future__ import annotations
 # package-relative inside ComfyUI, absolute when run standalone for tests.
 try:
     from .fields import (
-        FIELD_DEFINITIONS, INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS,
-        OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
+        FIELD_DEFINITIONS, FIXTURE_LIGHTING, INDOOR_ONLY_LIGHTING,
+        OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS,
+        VOID_ALLOWED_LIGHTING,
     )
 except ImportError:  # pragma: no cover -- standalone/test context
     from data.fields import (
-        FIELD_DEFINITIONS, INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS,
-        OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
+        FIELD_DEFINITIONS, FIXTURE_LIGHTING, INDOOR_ONLY_LIGHTING,
+        OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS,
+        VOID_ALLOWED_LIGHTING,
     )
 
 #: Hair styles that physically require enough length to braid, pin, or tie up.
@@ -362,10 +364,18 @@ _CLOSED_EXPRESSIONS = ["neutral", "serious", "stern", "intense gaze",
                        "pensive and thoughtful", "contemplative", "sultry",
                        "serene", "determined", "calm and composed", "at ease",
                        "steely", "focused", "brooding", "melancholic",
-                       "lost in thought", "wistful", "skeptical", "daydreaming"]
+                       "lost in thought", "wistful", "skeptical", "daydreaming",
+                       # 0.82.0 additions
+                       "defiant", "solemn", "unimpressed"]
 _SOFT_SMILE_EXPRESSIONS = ["subtle soft smile", "warm smile", "bright smile",
-                           "gentle smile"]
+                           "gentle smile",
+                           # 0.82.0: "quietly content" is a closed-lip smile;
+                           # "delighted" reads open-mouthed but is safest as a
+                           # broad smile rather than a full toothy grin.
+                           "quietly content", "delighted"]
 _OPEN_EXPRESSIONS = ["wide toothy grin", "laughing", "candid mid-laugh", "beaming"]
+# `sly` is deliberately left unbucketed, matching `smirking` -- a sly look works
+# with a closed mouth or a one-sided smile, so the draw stays free.
 for _expr in _CLOSED_EXPRESSIONS:
     CONSTRAINT_RULES.append({
         "type": "requirement", "field": "expression", "value": _expr,
@@ -560,3 +570,28 @@ for _backdrop in _VOID_BACKDROPS:
         "excludes_field": "lighting", "excludes_values": _VOID_EXCLUDED_LIGHTING,
         "reason": f"a {_backdrop} is a studio sweep: only studio lighting exists "
                   f"there, and every other value implies a place"})
+
+# Fixture lighting (0.82.0): indoors is necessary but not sufficient. A hearth, a
+# television and a stained-glass window are objects, so the rule is per-location
+# rather than per-bucket -- "a neighborhood pharmacy, under flickering firelight
+# from a hearth" is what prompted it.
+#
+# One rule per location listing every fixture that location LACKS, rather than one
+# rule per (location, fixture) pair: ~139 rules instead of ~380, and the engine
+# already unions all firing exclusions on a target, so a single combined rule
+# behaves identically. Each excluded value is its own single-variant LIGHTING
+# family, so every one of these is a whole-family drop and the surviving families
+# stay exactly proportional.
+#
+# Allowlist semantics mean a NEW location is excluded from all three fixtures
+# until it is deliberately added to a set in fields.py -- the safe default.
+for _loc in _INDOOR_LOCATIONS:
+    _absent_fixtures = sorted(
+        _light for _light, _places in FIXTURE_LIGHTING.items() if _loc not in _places
+    )
+    if _absent_fixtures:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "lighting", "excludes_values": _absent_fixtures,
+            "reason": f"'{_loc}' has no such fixture: a hearth, a television or a "
+                      f"stained-glass window has to actually be in the building"})
