@@ -1,13 +1,11 @@
 {
   "schema_version": 1,
   "gallery": "archetypes",
-  "generated": "2026-07-28T19:42:38.459405",
+  "generated": "2026-07-28T21:34:50.723274",
   "total_entries": 225,
-  "entries_with_images": 224,
-  "entries_missing_images": 1,
-  "missing": [
-    "Biker"
-  ],
+  "entries_with_images": 225,
+  "entries_missing_images": 0,
+  "missing": [],
   "entries": [
     {
       "name": "1940s Factory Worker",
@@ -319,9 +317,10 @@
     },
     {
       "name": "Biker",
-      "has_image": false,
+      "has_image": true,
       "gender": "any",
-      "group": "edgy alternative"
+      "group": "edgy alternative",
+      "image": "images/Biker.jpeg"
     },
     {
       "name": "Bollywood Heroine",
