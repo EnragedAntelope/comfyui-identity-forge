@@ -3645,6 +3645,95 @@ class TextureStyleCoherenceTests(unittest.TestCase):
             self.assertNotIn(flat.get("hair_texture"), self._NON_COILED, seed)
 
 
+class MascotScopeTests(unittest.TestCase):
+    """0.82.0: the `Mascot / full-suit` scope, proposed since 0.77.0 and now built.
+
+    Derived from `covers_body and covers_face` rather than a new schema key, so it
+    counts user_options.json additions and self-maintains. Being a filter over the
+    existing pool, it adds no entries and cannot shift any field's distribution.
+    """
+
+    def test_scope_matches_only_fully_encased_entries(self):
+        from nodes.identity_forge_cosplayer import _SPECIAL_SCOPES
+        pred = _SPECIAL_SCOPES["Mascot / full-suit"]
+        matched = [n for n, e in COSPLAYERS.items() if pred(e)]
+        self.assertGreater(len(matched), 50, "mascot pool suspiciously small")
+        for name in matched:
+            entry = COSPLAYERS[name]
+            self.assertTrue(entry.get("covers_body"), name)
+            self.assertTrue(entry.get("covers_face"), name)
+
+    def test_every_gender_combo_stays_in_scope(self):
+        # The 0.75.0 lesson: a scope bug lives in the INTERSECTION with gender, so
+        # walk the matrix rather than sampling one gender.
+        from nodes.identity_forge_cosplayer import _SPECIAL_SCOPES, build_cosplayer_json
+        pred = _SPECIAL_SCOPES["Mascot / full-suit"]
+        in_scope = {n for n, e in COSPLAYERS.items() if pred(e)}
+        for gender in ("Random — any", "Random — female", "Random — male"):
+            for seed in range(15):
+                meta = json.loads(build_cosplayer_json(
+                    gender, seed, random_scope="Mascot / full-suit"))["_meta"]
+                self.assertIn(
+                    meta["cosplay_of"], in_scope,
+                    f"{gender} seed {seed} escaped the mascot scope")
+
+
+class ComplexionSkinToneTests(unittest.TestCase):
+    """0.82.0: `peaches and cream` names a colour, not a surface quality.
+
+    Rendered output read "a 35-year-old Jamaican woman with ... deep ebony skin.
+    ... Her skin shows a peaches and cream complexion." The same contradiction is
+    recorded in the Ka D'Argo entry comment, but was only ever fixed *per entry*
+    by the body-paint suppression -- nothing handled the ordinary human case.
+
+    Scoped to one value on purpose: `clear` / `rosy` / `ruddy` / `sallow` describe
+    redness, pallor and clarity, all of which read on any skin tone.
+    """
+
+    def test_deep_tones_never_draw_a_pink_white_complexion(self):
+        from data.fields import DEEP_SKIN_TONES
+        for seed in range(600):
+            _, js = generate_character(seed, "Any", {})
+            flat = {k: v for g in json.loads(js).values()
+                    if isinstance(g, dict) for k, v in g.items()}
+            if flat.get("skin_tone") in DEEP_SKIN_TONES:
+                self.assertNotEqual(
+                    flat.get("complexion"), "peaches and cream",
+                    f"{flat.get('skin_tone')!r} skin with a peaches and cream "
+                    f"complexion (seed {seed})")
+
+    def test_the_value_survives_on_lighter_tones(self):
+        # A coherence rule that quietly deletes a value everywhere is a worse bug
+        # than the one it fixes.
+        from data.fields import DEEP_SKIN_TONES
+        seen = False
+        for seed in range(600):
+            _, js = generate_character(seed, "Any", {})
+            flat = {k: v for g in json.loads(js).values()
+                    if isinstance(g, dict) for k, v in g.items()}
+            if (flat.get("complexion") == "peaches and cream"
+                    and flat.get("skin_tone") not in DEEP_SKIN_TONES):
+                seen = True
+                break
+        self.assertTrue(seen, "'peaches and cream' no longer reachable at all")
+
+    def test_the_exclusion_is_bias_safe_because_complexion_is_flat(self):
+        # The whole-family rule does not apply here, and this is WHY: a flat field
+        # (no FIELD_FAMILIES entry, no weights map) re-picks flat-uniform over
+        # whatever survives. If complexion ever gains families or weights, this
+        # exclusion has to be re-argued.
+        from data.fields import FIELD_FAMILIES
+        self.assertNotIn("complexion", FIELD_FAMILIES)
+        self.assertIsNone(FIELD_DEFINITIONS["complexion"].get("weights"))
+        self.assertIsNone(FIELD_DEFINITIONS["complexion"].get("male_weights"))
+
+    def test_deep_tone_bucket_names_only_real_options(self):
+        from data.fields import DEEP_SKIN_TONES
+        pool = set(FIELD_DEFINITIONS["skin_tone"]["female_options"])
+        self.assertTrue(DEEP_SKIN_TONES <= pool,
+                        f"DEEP_SKIN_TONES names non-options: {DEEP_SKIN_TONES - pool}")
+
+
 class PhysiqueCoherenceTests(unittest.TestCase):
     """body_type <-> fitness_level exclusions: contradictory extremes can't be
     rolled together, while explicit locks still win."""
@@ -4070,7 +4159,7 @@ class AltCostumeTests(unittest.TestCase):
 
 
 class SpecialRandomScopeTests(unittest.TestCase):
-    """The attribute-based random scopes (Giant/Tiny/Non-human/Masked)."""
+    """The attribute-based random scopes (Giant/Tiny/Non-human/Masked/Mascot)."""
 
     def _pick(self, scope, seeds=40):
         names = set()
@@ -4081,9 +4170,14 @@ class SpecialRandomScopeTests(unittest.TestCase):
         return names
 
     def test_scopes_are_registered(self):
+        # The scope list is user-facing UI, so a change to it should be a
+        # deliberate edit here rather than something that slips in with a data
+        # tweak. `Mascot / full-suit` joined at 0.82.0; see MascotScopeTests.
+        # (Non-breaking: ComfyUI serialises a combo by its string value, so
+        # inserting an option does not move a saved workflow's selection.)
         self.assertEqual(set(_SPECIAL_SCOPES),
                          {"Giant characters", "Tiny characters",
-                          "Non-human / colored", "Masked"})
+                          "Non-human / colored", "Masked", "Mascot / full-suit"})
 
     def test_giant_scope_only_returns_giants(self):
         for name in self._pick("Giant characters"):

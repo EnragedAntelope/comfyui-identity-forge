@@ -1037,6 +1037,28 @@ SKIN_TONE_BANDS: dict[str, list[str]] = {
     "dark": ['caramel', 'brown', 'warm brown', 'dark brown', 'deep', 'ebony', 'deep ebony'],
 }
 
+# --- complexion <-> skin_tone coherence (0.82.0) -----------------------------
+# `complexion` is a surface quality, and most of its values (`clear`, `rosy`,
+# `ruddy`, `sallow`) read on any skin tone -- redness and pallor are visible
+# across the range. **`peaches and cream` is the exception**: it names a specific
+# pink-white colouring, so it directly contradicts a deep tone. Rendered output
+# read "a 35-year-old Jamaican woman with ... deep ebony skin. ... Her skin shows
+# a peaches and cream complexion."
+#
+# This is the same contradiction the Ka D'Argo entry comment records ("a Dominican
+# man ... light skin ... a peaches and cream complexion" above "weathered
+# bronze-red skin"). That case was only ever fixed *per entry*, by the body-paint
+# suppression; nothing handled the ordinary human case.
+#
+# Excluding it is bias-clean **because `complexion` is a flat field** -- no
+# FIELD_FAMILIES entry and no `weights` map -- so `_repick` draws flat-uniform
+# over whatever survives and the whole-family rule simply does not apply here.
+# Scoped as tightly as the evidence supports: one value, and only the tones where
+# it is genuinely impossible rather than merely unusual.
+DEEP_SKIN_TONES: frozenset[str] = frozenset([
+    'brown', 'warm brown', 'dark brown', 'deep', 'ebony', 'deep ebony',
+])
+
 #: Maps each ethnicity to a skin-tone band above. Approximate and intentionally
 #: generous/overlapping; intended only to avoid jarring defaults (e.g. an Irish
 #: subject rendered with deep ebony skin), never to pin an exact shade.

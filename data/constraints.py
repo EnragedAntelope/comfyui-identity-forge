@@ -43,15 +43,15 @@ from __future__ import annotations
 # package-relative inside ComfyUI, absolute when run standalone for tests.
 try:
     from .fields import (
-        FIELD_DEFINITIONS, FIXTURE_LIGHTING, INDOOR_ONLY_LIGHTING,
-        OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS,
-        VOID_ALLOWED_LIGHTING,
+        DEEP_SKIN_TONES, FIELD_DEFINITIONS, FIXTURE_LIGHTING,
+        INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING,
+        STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
     )
 except ImportError:  # pragma: no cover -- standalone/test context
     from data.fields import (
-        FIELD_DEFINITIONS, FIXTURE_LIGHTING, INDOOR_ONLY_LIGHTING,
-        OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING, STUDIO_BACKDROPS,
-        VOID_ALLOWED_LIGHTING,
+        DEEP_SKIN_TONES, FIELD_DEFINITIONS, FIXTURE_LIGHTING,
+        INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING,
+        STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
     )
 
 #: Hair styles that physically require enough length to braid, pin, or tie up.
@@ -585,6 +585,20 @@ for _backdrop in _VOID_BACKDROPS:
 #
 # Allowlist semantics mean a NEW location is excluded from all three fixtures
 # until it is deliberately added to a set in fields.py -- the safe default.
+# complexion <-> skin_tone (0.82.0). `peaches and cream` names a pink-white
+# colouring, not a surface quality, so it contradicts a deep tone outright --
+# real output read "deep ebony skin. ... Her skin shows a peaches and cream
+# complexion." The field is FLAT (no FIELD_FAMILIES entry, no `weights`), so
+# dropping one value re-picks flat-uniform over the other four and the
+# whole-family rule does not apply. `clear` / `rosy` / `ruddy` / `sallow` are
+# deliberately untouched: redness and pallor read on any skin tone.
+for _tone in sorted(DEEP_SKIN_TONES):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "skin_tone", "value": _tone,
+        "excludes_field": "complexion", "excludes_values": ["peaches and cream"],
+        "reason": f"'peaches and cream' is a pink-white colouring, not a surface "
+                  f"quality: it cannot describe {_tone} skin"})
+
 for _loc in _INDOOR_LOCATIONS:
     _absent_fixtures = sorted(
         _light for _light, _places in FIXTURE_LIGHTING.items() if _loc not in _places

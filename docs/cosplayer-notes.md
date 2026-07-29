@@ -59,8 +59,11 @@ you just toggle which one is active.
 The **`random_scope`** widget limits the `Random — any / female / male` picks. It offers
 three families, in this order:
 
-1. **Attribute scopes** — Giant characters, Tiny characters, Non-human / colored, Masked.
-   Filtered by a predicate over the entry (`_SPECIAL_SCOPES` in the node), not by franchise.
+1. **Attribute scopes** — Giant characters, Tiny characters, Non-human / colored, Masked,
+   Mascot / full-suit. Filtered by a predicate over the entry (`_SPECIAL_SCOPES` in the
+   node), not by franchise. *Mascot / full-suit* is derived from `covers_body and
+   covers_face` — a person inside a full creature suit (Pikachu, the TMNT, Godzilla,
+   Moogle, Teemo); around 109 entries that were previously findable only by luck.
 2. **Broad categories** — Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games,
    Fantasy & Literature, Movies & TV, Comics & Cartoons.
 3. **Single franchises** — `Franchise: Pokemon`, `Franchise: Final Fantasy`, … Derived at

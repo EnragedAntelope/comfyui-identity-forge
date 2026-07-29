@@ -244,7 +244,7 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   of any character's. `Any` rolls a coherent man or woman each run; pair it with `wardrobe: Any`
   for fully mixed-gender output. Locked / archetype / cosplayer values always win.
 - **Scope the random character.** On the Cosplayer node, `random_scope` narrows the `Random — …`
-  picks to an attribute (Giant, Tiny, Non-human / colored, Masked), a broad category (Anime &
+  picks to an attribute (Giant, Tiny, Non-human / colored, Masked, Mascot / full-suit), a broad category (Anime &
   Manga, Marvel, DC, …), or a single franchise. It combines with gender, and the console prints
   the in-scope pool size the first time you use a combination. If a franchise has nobody of the
   chosen gender, the **scope wins and the gender relaxes** — crossplay makes that valid anyway.

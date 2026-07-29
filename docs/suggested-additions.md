@@ -179,7 +179,12 @@ Gadget Hackwrench are the genuinely borderline pair, because both wear real,
 describable garments over an animal body; they would work as ordinary entries with
 `covers_body: True` if the animal head is written into a `mask`.
 
-### Proposed grouping/toggle (not built — needs a decision)
+### Grouping/toggle — **BUILT at 0.82.0**
+
+Shipped exactly as proposed below, one lambda. The pool is **109 entries** at the current
+roster (the "91" figure below was the count when this was written — it is derived, so it
+grows on its own). Verified across the full scope × gender matrix per the 0.75.0 lesson:
+109 / 8 / 101 for any / female / male, no out-of-scope leakage.
 
 Add a **`Mascot / full-suit`** attribute scope to the Cosplayer node's `random_scope`,
 derived from `covers_body and covers_face`:

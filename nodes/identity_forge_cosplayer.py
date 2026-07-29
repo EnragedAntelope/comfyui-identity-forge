@@ -128,11 +128,28 @@ def _scope_is_nonhuman(entry: dict) -> bool:
     return bool(_BODY_PAINT_RE.search(entry.get("costume", "")))
 
 
+def _scope_is_mascot(entry: dict) -> bool:
+    """A full head-and-body covering: a person inside a mascot/creature suit.
+
+    0.82.0, proposed in docs/suggested-additions.md and finally built. Derived
+    from the two flags rather than a new schema key, so it counts
+    ``user_options.json`` additions and self-maintains as the roster grows -- and
+    because it is a *filter over the existing pool* it adds no entries and cannot
+    shift any field's distribution. Bias-free by construction.
+
+    It earns its place on discoverability: ~90 entries carry both flags (Pikachu,
+    the TMNT, Bugs Bunny, Godzilla, Moogle, Teemo, ...) and there was no way to
+    find them short of luck.
+    """
+    return bool(entry.get("covers_body")) and bool(entry.get("covers_face"))
+
+
 _SPECIAL_SCOPES: "dict[str, Any]" = {
     "Giant characters": _scope_is_giant,
     "Tiny characters": _scope_is_tiny,
     "Non-human / colored": _scope_is_nonhuman,
     "Masked": _scope_is_masked,
+    "Mascot / full-suit": _scope_is_mascot,
 }
 
 #: Minimum roster size for a franchise to earn its own Random scope. The nine
@@ -676,7 +693,8 @@ if _COMFY_AVAILABLE:
                         default=_SCOPE_ANY,
                         tooltip="Limits the 'Random — …' picks. Attribute scopes come "
                                 "first (Giant / Tiny characters, Non-human / colored, "
-                                "Masked), then the broad categories (only Anime & Manga, "
+                                "Masked, Mascot / full-suit), then the broad "
+                                "categories (only Anime & Manga, "
                                 "only Marvel, …), then 'Franchise: …' entries for single "
                                 "franchises with enough characters to browse (Pokemon, "
                                 "Final Fantasy, Mortal Kombat, …). 'Any' = no limit. "

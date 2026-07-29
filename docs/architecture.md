@@ -1012,6 +1012,29 @@ that is a settled decision rather than an oversight. A note sits next to `LOCATI
 ("tidy bedroom with a neatly made bed", "tiled bathroom with a large mirror") — no
 bed-as-focus phrasing, since the pack has no NSFW guard to fall back on.
 
+### A flat field is where a partial cull is FINE (0.82.0)
+
+The whole-family rule is stated so emphatically elsewhere in this document that it is worth
+recording the boundary: **it only applies to `FIELD_FAMILIES` fields.** A flat field — no
+family entry, no `weights` map — re-picks flat-uniform over whatever survives an exclusion, so
+removing one value of five is bias-clean by construction.
+
+That is what made the `complexion` fix cheap. Real output read *"a 35-year-old Jamaican woman
+with … deep ebony skin. … Her skin shows a peaches and cream complexion."* `peaches and cream`
+names a pink-white **colouring**, not a surface quality, so it contradicts a deep tone outright;
+`clear` / `rosy` / `ruddy` / `sallow` describe redness, pallor and clarity and read on any tone.
+`DEEP_SKIN_TONES` in `data/fields.py` drives six generated exclusions.
+
+Measured over 20,000 renders: on deep tones the four survivors sit at 24.6–25.6% (uniform =
+25%), and on every other tone all five stay at 19.8–20.4% (uniform = 20%) — the value is
+preserved exactly where it is correct. `ComplexionSkinToneTests` pins the behaviour *and*
+asserts `complexion` is still flat, so the exclusion has to be re-argued if it ever gains
+families or weights.
+
+Note this contradiction was already recorded in the `Ka D'Argo` entry comment, but only ever
+fixed *per entry* by the body-paint suppression. **A per-entry workaround for a cross-field
+contradiction is a signal that the general rule is missing.**
+
 ## Gotchas cheat-sheet
 
 - **An extreme scale needs the SCENE, not just the prose (0.79.0).** "Colossal and fifty feet
