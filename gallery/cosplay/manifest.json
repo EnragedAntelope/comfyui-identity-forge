@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-07-28T21:33:52.016556",
-  "total_entries": 1717,
-  "entries_with_images": 1717,
+  "generated": "2026-07-29T21:53:22.876910",
+  "total_entries": 1732,
+  "entries_with_images": 1732,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1499,6 +1499,13 @@
       "image": "images/Bumblebee (Transformers).jpeg"
     },
     {
+      "name": "Bunnyx",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Miraculous Ladybug",
+      "image": "images/Bunnyx.jpeg"
+    },
+    {
       "name": "Buttercup",
       "has_image": true,
       "gender": "Female",
@@ -1695,6 +1702,13 @@
       "image": "images/Captain Rex.jpeg"
     },
     {
+      "name": "Carapace",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Miraculous Ladybug",
+      "image": "images/Carapace.jpeg"
+    },
+    {
       "name": "Cardassian",
       "has_image": true,
       "gender": "Male",
@@ -1756,6 +1770,13 @@
       "gender": "Female",
       "group": "Mortal Kombat",
       "image": "images/Cassie Cage.jpeg"
+    },
+    {
+      "name": "Cat Noir",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Miraculous Ladybug",
+      "image": "images/Cat Noir.jpeg"
     },
     {
       "name": "Catwoman",
@@ -4124,6 +4145,20 @@
       "image": "images/Hatsune Miku.jpeg"
     },
     {
+      "name": "Hawk (DC)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "DC",
+      "image": "images/Hawk (DC).jpeg"
+    },
+    {
+      "name": "Hawk Moth",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Miraculous Ladybug",
+      "image": "images/Hawk Moth.jpeg"
+    },
+    {
       "name": "Hawkeye",
       "has_image": true,
       "gender": "Male",
@@ -5517,6 +5552,13 @@
       "image": "images/King Kong.jpeg"
     },
     {
+      "name": "King Monkey",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Miraculous Ladybug",
+      "image": "images/King Monkey.jpeg"
+    },
+    {
       "name": "King Shark",
       "has_image": true,
       "gender": "Male",
@@ -5809,6 +5851,13 @@
       "gender": "Female",
       "group": "Cinderella",
       "image": "images/Lady Tremaine.jpeg"
+    },
+    {
+      "name": "Ladybug",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Miraculous Ladybug",
+      "image": "images/Ladybug.jpeg"
     },
     {
       "name": "Lae'zel",
@@ -6775,6 +6824,13 @@
       "gender": "Female",
       "group": "Pokemon",
       "image": "images/May.jpeg"
+    },
+    {
+      "name": "Mayura",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Miraculous Ladybug",
+      "image": "images/Mayura.jpeg"
     },
     {
       "name": "Maz Kanata",
@@ -8100,6 +8156,13 @@
       "image": "images/Pebbles Flintstone.jpeg"
     },
     {
+      "name": "Pegasus",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Miraculous Ladybug",
+      "image": "images/Pegasus.jpeg"
+    },
+    {
       "name": "Peggy Carter",
       "has_image": true,
       "gender": "Female",
@@ -8506,6 +8569,13 @@
       "image": "images/Quasimodo.jpeg"
     },
     {
+      "name": "Queen Bee",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Miraculous Ladybug",
+      "image": "images/Queen Bee.jpeg"
+    },
+    {
       "name": "Queen Beryl",
       "has_image": true,
       "gender": "Female",
@@ -8798,6 +8868,13 @@
       "gender": "Female",
       "group": "Re:Zero",
       "image": "images/Rem.jpeg"
+    },
+    {
+      "name": "Rena Rouge",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Miraculous Ladybug",
+      "image": "images/Rena Rouge.jpeg"
     },
     {
       "name": "Renji Abarai",
@@ -9155,6 +9232,13 @@
       "gender": "Male",
       "group": "Death Note",
       "image": "images/Ryuk.jpeg"
+    },
+    {
+      "name": "Ryuko",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Miraculous Ladybug",
+      "image": "images/Ryuko.jpeg"
     },
     {
       "name": "Ryuko Matoi",
@@ -10592,6 +10676,13 @@
       "image": "images/Teela.jpeg"
     },
     {
+      "name": "Teemo",
+      "has_image": true,
+      "gender": "Male",
+      "group": "League of Legends",
+      "image": "images/Teemo.jpeg"
+    },
+    {
       "name": "Tellah",
       "has_image": true,
       "gender": "Male",
@@ -11362,6 +11453,13 @@
       "image": "images/Viper.jpeg"
     },
     {
+      "name": "Viperion",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Miraculous Ladybug",
+      "image": "images/Viperion.jpeg"
+    },
+    {
       "name": "Vision",
       "has_image": true,
       "gender": "Male",
@@ -11451,6 +11549,13 @@
       "gender": "Male",
       "group": "Star Wars",
       "image": "images/Watto.jpeg"
+    },
+    {
+      "name": "Waverider",
+      "has_image": true,
+      "gender": "Male",
+      "group": "DC",
+      "image": "images/Waverider.jpeg"
     },
     {
       "name": "Wedge Antilles",
