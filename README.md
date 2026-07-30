@@ -237,9 +237,20 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   wins as always. Tiny characters get the lighter version: only the framings too wide to
   resolve them are dropped.
 - **The light matches the place.** Indoor locations never draw open-sky light and outdoor ones never
-  draw window or hearth light. The **location** stands and the light adapts; lock a light instead
-  and the location re-rolls to somewhere it can exist. Most locations are interiors, so set
-  `location_setting: Outdoor` when you want sunny, golden-hour looks.
+  draw window or hearth light, and a light naming a physical fixture — a hearth, a television, a
+  stained-glass window, a stage rig — only appears where that fixture exists. The **location**
+  stands and the light adapts; lock a light instead and the location re-rolls to somewhere it can
+  exist. Most locations are interiors, so set `location_setting: Outdoor` when you want sunny,
+  golden-hour looks. The pool includes named world landmarks (the Eiffel Tower plaza, Shibuya
+  Crossing, Uluru, the Cliffs of Moher) alongside everyday places.
+- **The outfit is built, not just picked.** `outfit_style` chooses a garment set, then
+  `clothing_color`, `clothing_pattern` and `footwear` are composed onto it — "a jewel-toned satin
+  slip gown with delicate straps, in strappy heels". Locking any of them changes the outfit, and
+  the shoes are kept plausible for the style (no slippers with a business suit). A garment that
+  names its own colour or shoes keeps them and the matching field steps aside. A costume from the
+  Cosplayer or Archetype node is a complete look and overrides all of this.
+- **Nothing is worn twice.** If a costume or outfit already names a necklace, earrings, a ring, a
+  bangle, a bag or a hat, the randomizer does not add a second one.
 - **Gender & crossplay.** The *person's* gender is the Identity Forge `gender` widget, independent
   of any character's. `Any` rolls a coherent man or woman each run; pair it with `wardrobe: Any`
   for fully mixed-gender output. Locked / archetype / cosplayer values always win.

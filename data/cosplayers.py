@@ -202,8 +202,15 @@ COSPLAYERS: dict[str, dict] = {
     "Android 18": {
         "franchise": "Dragon Ball",
         "gender": "Female",
+        # 0.83.0: "and gold hoop earrings" removed from the costume. The `earrings` pin
+        # below already guarantees the hoops, so naming them in the costume too rendered
+        # them twice ("...and gold hoop earrings. She has large bold gold hoops..."). The
+        # only entry on the whole roster where this survived the new worn-item de-dup
+        # rule, because a LOCKED field deliberately beats that rule -- so a pin plus a
+        # costume mention is the one combination it cannot fix for you. Pin OR prose,
+        # never both.
         "costume": "a blue denim vest over a black-and-white striped long-sleeve shirt, "
-                   "blue jeans, brown boots, and gold hoop earrings",
+                   "blue jeans, and brown boots",
         "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
                       "hair_style": "blunt bangs", "eye_color": "ice blue",
                       "earrings": "large bold gold hoops"},

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections import OrderedDict
+import re
 
 #: OrderedDict of all IdentityForge fields.
 #: Each entry has: group, female_options, male_options, optional.
@@ -218,8 +219,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # 'mullet' is male-only for the same pool-hygiene reason: T2I models
         # render the term as the masculine 80s cut, which reads as a costume
         # gag on a random female character (archetypes can still curate it).
-        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag'],
-        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag'],
+        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade'],
+        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade'],
         "optional": False
     }),
     ("hair_color_scope", {
@@ -388,8 +389,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # watch_type, over-representing it). Pocket square / statement belt keep variety.
         # No necklace here: the necklace field owns necklaces, so a "long pendant
         # necklace" accessory would double up. Hats/glasses/belts/scarf only.
-        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat'],
-        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat'],
+        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses'],
+        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses'],
         "optional": False
     }),
     ("expression", {
@@ -400,8 +401,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("location", {
         "group": 'Setting & Shot',
-        "female_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace overlooking the skyline', 'wide sandy beach', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'rolling desert dune', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street', 'rainy street with umbrellas', 'working harbor dock', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'open-air street food market', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'cracked salt flats', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop cocktail bar', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank', 'tidy bedroom with a neatly made bed', 'tiled bathroom with a large mirror', 'laundry room with stacked machines', 'narrow hallway lined with family photos', "children's playroom with toy bins", 'music room with an upright piano', 'bustling food court', 'taqueria with a tiled counter', 'French bistro with mirrored walls', 'juice bar with a chrome counter', 'barbecue joint with paper-lined trays', 'shopping mall concourse', 'bank lobby with teller windows', 'pet shop lined with aquariums', 'department store perfume counter', 'stationery and art supply shop', 'shoe repair and key cutting counter', 'boxing gym with hanging heavy bags', 'indoor ice rink', 'karaoke room with song menus', 'casino floor with card tables', 'empty theater stage with the curtain up', 'trampoline park with foam pits', 'Buddhist temple hall', 'Shinto shrine interior', 'school cafeteria', 'dentist office treatment room', 'prison visiting room', 'university dormitory room', 'newsroom with desks and monitors', 'blacksmith forge with an anvil', "tailor's workroom with dress forms", 'television studio control room', 'fishing trawler wheelhouse', 'glassblowing studio with a furnace', 'airplane cabin aisle', 'cable car cabin', 'cruise ship interior corridor', 'departure hall with a split-flap board', 'the back seat of a taxi', 'bus stop shelter', 'fire escape landing', 'construction site with scaffolding', 'outdoor basketball court with chain nets', 'city fountain plaza', 'pier with a Ferris wheel', 'community garden allotment', 'canal towpath', 'frozen lake surface', 'steaming hot spring pool', 'rolling wheat field', 'apple orchard rows', 'sea cave mouth', 'terraced rice paddies', 'basalt column coastline', 'high desert with joshua trees'],
-        "male_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace overlooking the skyline', 'wide sandy beach', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'rolling desert dune', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street', 'rainy street with umbrellas', 'working harbor dock', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'open-air street food market', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'cracked salt flats', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop cocktail bar', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank', 'tidy bedroom with a neatly made bed', 'tiled bathroom with a large mirror', 'laundry room with stacked machines', 'narrow hallway lined with family photos', "children's playroom with toy bins", 'music room with an upright piano', 'bustling food court', 'taqueria with a tiled counter', 'French bistro with mirrored walls', 'juice bar with a chrome counter', 'barbecue joint with paper-lined trays', 'shopping mall concourse', 'bank lobby with teller windows', 'pet shop lined with aquariums', 'department store perfume counter', 'stationery and art supply shop', 'shoe repair and key cutting counter', 'boxing gym with hanging heavy bags', 'indoor ice rink', 'karaoke room with song menus', 'casino floor with card tables', 'empty theater stage with the curtain up', 'trampoline park with foam pits', 'Buddhist temple hall', 'Shinto shrine interior', 'school cafeteria', 'dentist office treatment room', 'prison visiting room', 'university dormitory room', 'newsroom with desks and monitors', 'blacksmith forge with an anvil', "tailor's workroom with dress forms", 'television studio control room', 'fishing trawler wheelhouse', 'glassblowing studio with a furnace', 'airplane cabin aisle', 'cable car cabin', 'cruise ship interior corridor', 'departure hall with a split-flap board', 'the back seat of a taxi', 'bus stop shelter', 'fire escape landing', 'construction site with scaffolding', 'outdoor basketball court with chain nets', 'city fountain plaza', 'pier with a Ferris wheel', 'community garden allotment', 'canal towpath', 'frozen lake surface', 'steaming hot spring pool', 'rolling wheat field', 'apple orchard rows', 'sea cave mouth', 'terraced rice paddies', 'basalt column coastline', 'high desert with joshua trees'],
+        "female_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace overlooking the skyline', 'wide sandy beach', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'rolling desert dune', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street', 'rainy street with umbrellas', 'working harbor dock', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'open-air street food market', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'cracked salt flats', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop cocktail bar', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank', 'tidy bedroom with a neatly made bed', 'tiled bathroom with a large mirror', 'laundry room with stacked machines', 'narrow hallway lined with family photos', "children's playroom with toy bins", 'music room with an upright piano', 'bustling food court', 'taqueria with a tiled counter', 'French bistro with mirrored walls', 'juice bar with a chrome counter', 'barbecue joint with paper-lined trays', 'shopping mall concourse', 'bank lobby with teller windows', 'pet shop lined with aquariums', 'department store perfume counter', 'stationery and art supply shop', 'shoe repair and key cutting counter', 'boxing gym with hanging heavy bags', 'indoor ice rink', 'karaoke room with song menus', 'casino floor with card tables', 'empty theater stage with the curtain up', 'trampoline park with foam pits', 'Buddhist temple hall', 'Shinto shrine interior', 'school cafeteria', 'dentist office treatment room', 'prison visiting room', 'university dormitory room', 'newsroom with desks and monitors', 'blacksmith forge with an anvil', "tailor's workroom with dress forms", 'television studio control room', 'fishing trawler wheelhouse', 'glassblowing studio with a furnace', 'airplane cabin aisle', 'cable car cabin', 'cruise ship interior corridor', 'departure hall with a split-flap board', 'the back seat of a taxi', 'bus stop shelter', 'fire escape landing', 'construction site with scaffolding', 'outdoor basketball court with chain nets', 'city fountain plaza', 'pier with a Ferris wheel', 'community garden allotment', 'canal towpath', 'the Eiffel Tower plaza', 'Times Square', 'the Colosseum exterior', 'Shibuya Crossing', 'the Sydney Opera House forecourt', 'the Grand Canal in Venice', 'the Charles Bridge in Prague', 'the Bund waterfront in Shanghai', 'the Jemaa el-Fnaa square in Marrakech', 'the Zocalo in Mexico City', 'the India Gate lawns in Delhi', 'the Copacabana promenade in Rio', 'the Golden Gate Bridge viewpoint', 'frozen lake surface', 'steaming hot spring pool', 'rolling wheat field', 'apple orchard rows', 'sea cave mouth', 'terraced rice paddies', 'basalt column coastline', 'high desert with joshua trees', 'the red desert plain below Uluru', 'the Table Mountain plateau', 'the Iguazu Falls lookout', 'the Cliffs of Moher', 'the Halong Bay karst waters', 'the Mount Fuji foothills', 'the Plitvice lake boardwalks'],
+        "male_options": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'cozy home library', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'police station bullpen', 'courtroom', 'hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace overlooking the skyline', 'wide sandy beach', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'rolling desert dune', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street', 'rainy street with umbrellas', 'working harbor dock', 'riverside boardwalk', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'crumbling stone ruin', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'open-air street food market', 'home office with bookshelves', 'walk-in closet with mirrors', 'ramen shop counter', 'artisan bakery interior', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'climbing gym with colorful holds', 'dance studio with mirrors', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'alpine meadow with wildflowers', 'cracked salt flats', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop', 'ceramics studio with pottery wheels', 'rooftop cocktail bar', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank', 'tidy bedroom with a neatly made bed', 'tiled bathroom with a large mirror', 'laundry room with stacked machines', 'narrow hallway lined with family photos', "children's playroom with toy bins", 'music room with an upright piano', 'bustling food court', 'taqueria with a tiled counter', 'French bistro with mirrored walls', 'juice bar with a chrome counter', 'barbecue joint with paper-lined trays', 'shopping mall concourse', 'bank lobby with teller windows', 'pet shop lined with aquariums', 'department store perfume counter', 'stationery and art supply shop', 'shoe repair and key cutting counter', 'boxing gym with hanging heavy bags', 'indoor ice rink', 'karaoke room with song menus', 'casino floor with card tables', 'empty theater stage with the curtain up', 'trampoline park with foam pits', 'Buddhist temple hall', 'Shinto shrine interior', 'school cafeteria', 'dentist office treatment room', 'prison visiting room', 'university dormitory room', 'newsroom with desks and monitors', 'blacksmith forge with an anvil', "tailor's workroom with dress forms", 'television studio control room', 'fishing trawler wheelhouse', 'glassblowing studio with a furnace', 'airplane cabin aisle', 'cable car cabin', 'cruise ship interior corridor', 'departure hall with a split-flap board', 'the back seat of a taxi', 'bus stop shelter', 'fire escape landing', 'construction site with scaffolding', 'outdoor basketball court with chain nets', 'city fountain plaza', 'pier with a Ferris wheel', 'community garden allotment', 'canal towpath', 'the Eiffel Tower plaza', 'Times Square', 'the Colosseum exterior', 'Shibuya Crossing', 'the Sydney Opera House forecourt', 'the Grand Canal in Venice', 'the Charles Bridge in Prague', 'the Bund waterfront in Shanghai', 'the Jemaa el-Fnaa square in Marrakech', 'the Zocalo in Mexico City', 'the India Gate lawns in Delhi', 'the Copacabana promenade in Rio', 'the Golden Gate Bridge viewpoint', 'frozen lake surface', 'steaming hot spring pool', 'rolling wheat field', 'apple orchard rows', 'sea cave mouth', 'terraced rice paddies', 'basalt column coastline', 'high desert with joshua trees', 'the red desert plain below Uluru', 'the Table Mountain plateau', 'the Iguazu Falls lookout', 'the Cliffs of Moher', 'the Halong Bay karst waters', 'the Mount Fuji foothills', 'the Plitvice lake boardwalks'],
         "optional": False
     }),
     ("lighting", {
@@ -484,8 +485,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("footwear", {
         "group": 'Clothing',
-        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules'],
-        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules'],
+        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels'],
+        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels'],
         "optional": False
     }),
     ("clothing_color", {
@@ -605,7 +606,7 @@ FIELD_HELP: dict[str, str] = {
     "hair_color": "Limited to realistic shades unless the hair_color_scope control is set to 'Full spectrum'.",
     "hair_length": "Hair length. Styles that need more length are automatically excluded on short cuts.",
     "hair_texture": "Curl pattern and body - straight, wavy, coily, fine.",
-    "hair_style": "How the hair is worn. Styles needing gatherable length are dropped automatically on a pixie or a buzz cut.",
+    "hair_style": 'How the hair is worn. Styles needing gatherable length are dropped automatically on a pixie or a buzz cut, and the short barbered crops only appear on short hair.',
     "facial_hair": "Beard and moustache. Randomized only on male subjects.",
     "hair_part": "Where the hair is parted. Cleared automatically on a bald or buzzed head.",
     "hair_highlights": "Colour worked through the hair - balayage, streaks, frosted tips.",
@@ -633,13 +634,13 @@ FIELD_HELP: dict[str, str] = {
     # --- Clothing ---
     "outfit_style": "How dressed up, and for what occasion. Subculture and era themes live on the Archetype node instead.",
     "bag": "Bag carried. Dropped automatically when a costume is supplied.",
-    "accessories": "Hats, glasses, belts and scarves. Dropped automatically when a costume is supplied.",
-    "footwear": "Shoes. Overridden by a costume that specifies its own.",
-    "clothing_color": "Dominant colour of the outfit.",
-    "clothing_pattern": "Print or weave of the outfit.",
+    "accessories": 'Hats, glasses, gloves, belts and scarves. Dropped automatically when a costume is supplied, and gloves suppress nail polish and rings.',
+    "footwear": 'Shoes. Voiced with the generated outfit, so locking this actually changes the shoes. Narrowed to what the chosen outfit_style plausibly wears; a supplied costume overrides it.',
+    "clothing_color": 'Dominant palette of the outfit, voiced as an adjective in front of the garment ("a jewel-toned satin slip gown"). Yields to a garment that names its own colour.',
+    "clothing_pattern": 'Print or weave of the outfit. Yields to a garment that names its own (a denim or sequined piece), and a monochrome palette rules out multi-colour prints.',
     # --- Setting & Shot ---
-    "expression": "The face the subject is pulling.",
-    "location": "Where the shot happens. Narrow it with the location_setting control; a value locked here overrides that control.",
+    "expression": 'The face the subject is pulling. Dropped automatically behind a full mask or helmet, unless you lock it.',
+    "location": 'Where the shot happens, including named world landmarks. Narrow it with the location_setting control; a value locked here overrides that control.',
     "lighting": "Quality and source of the light. Automatically kept coherent with whether the location is indoors or out.",
     "shot_type": "The camera only - distance, height, angle and lens. Never scene content.",
     "season": "Time of year, which colours the setting and wardrobe.",
@@ -720,20 +721,20 @@ FIELD_HELP: dict[str, str] = {
 #: 375 -> 300/75, 756 -> 567/189, 210 -> 105/105) would add three more families for
 #: a sub-1pp correction. Do not "fix" this without re-measuring first.
 HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("loose_styled", {"weight": 350, "variants": ['worn down', 'slicked back', 'windswept', 'freshly blown out', 'tousled bedhead']}),
-    ("loose_natural", {"weight": 140, "variants": ['wet look', 'natural and unstyled']}),
-    ("loose_combover", {"weight": 70, "variants": ['comb over']}),
-    ("loose_mullet", {"weight": 70, "variants": ['mullet']}),
-    ("half-up", {"weight": 105, "variants": ['half up half down']}),
-    ("ponytail", {"weight": 210, "variants": ['high ponytail', 'low ponytail', 'side ponytail', 'braided ponytail']}),
-    ("bun_small", {"weight": 375, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'ballerina bun']}),
-    ("bun_gathered", {"weight": 150, "variants": ['updo', 'French twist']}),
-    ("braid_long", {"weight": 756, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids']}),
-    ("braid_short", {"weight": 189, "variants": ['cornrows', 'locs']}),
-    ("knots", {"weight": 210, "variants": ['space buns', 'bantu knots']}),
-    ("pigtails", {"weight": 105, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
-    ("texture", {"weight": 210, "variants": ['afro', 'twist-out']}),
-    ("bangs", {"weight": 210, "variants": ['curtain bangs', 'blunt bangs']}),
+    ("loose_styled", {"weight": 700, "variants": ['worn down', 'slicked back', 'windswept', 'freshly blown out', 'tousled bedhead']}),
+    ("loose_natural", {"weight": 280, "variants": ['wet look', 'natural and unstyled']}),
+    ("loose_combover", {"weight": 140, "variants": ['comb over']}),
+    ("loose_mullet", {"weight": 140, "variants": ['mullet']}),
+    ("half-up", {"weight": 210, "variants": ['half up half down']}),
+    ("ponytail", {"weight": 420, "variants": ['high ponytail', 'low ponytail', 'side ponytail', 'braided ponytail', 'bubble ponytail']}),
+    ("bun_small", {"weight": 750, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'ballerina bun']}),
+    ("bun_gathered", {"weight": 300, "variants": ['updo', 'French twist']}),
+    ("braid_long", {"weight": 1485, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'milkmaid braids', 'rope braid', 'braided bun']}),
+    ("braid_short", {"weight": 405, "variants": ['cornrows', 'locs', 'two-strand twists']}),
+    ("knots", {"weight": 420, "variants": ['space buns', 'bantu knots']}),
+    ("pigtails", {"weight": 210, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
+    ("texture", {"weight": 420, "variants": ['afro', 'twist-out', 'hair puff']}),
+    ("bangs", {"weight": 420, "variants": ['curtain bangs', 'blunt bangs', 'micro bangs']}),
     # 0.81.0: the ordinary-barbering gap. The pool had 40 ways to arrange hair and
     # no everyday BARBER cut at all -- no fade, undercut, pompadour, quiff or shag --
     # so any short-haired character fell back on "natural and unstyled" or a bun.
@@ -753,8 +754,27 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # groups must be excludable independently. As one family, culling four of five
     # variants would hand the whole family weight to the survivor -- the exact trap
     # documented for `loose` at 0.78.0. As two families each is dropped WHOLE.
-    ("barbered_short", {"weight": 280, "variants": ['fade', 'undercut', 'pompadour', 'quiff']}),
-    ("barbered_shag", {"weight": 70, "variants": ['shag']}),
+    ("barbered_short", {"weight": 560, "variants": ['fade', 'undercut', 'pompadour', 'quiff']}),
+    ("barbered_shag", {"weight": 140, "variants": ['shag']}),
+
+    # 0.83.0: the ONE hair_style change that is not free. `crew cut` / `textured crop` /
+    # `high-top fade` cannot join `barbered_short` (fade/undercut/pompadour/quiff)
+    # because their LENGTH GATE differs -- a crew cut at `chin length bob` is
+    # impossible, a quiff is not -- and culling part of barbered_short at mid lengths
+    # would concentrate that family's frozen weight on the survivors (the 0.64.0
+    # LIGHTING_FAMILIES trap). So they need their own family, and a NEW family
+    # enlarges the denominator: total 3500 -> 3570, so every other family loses 1.96%
+    # relative share. Accepted knowingly.
+    #
+    # WEIGHT 70 IS DELIBERATE AND BELOW CONVENTION. The house rule is weight ~ original
+    # variant count, and this field's rate is 3500/47 = 74.5 per variant, so three
+    # crops "should" carry 224 (and dilute everything by 6.0%). 70 is the smallest unit
+    # the field already uses (`barbered_shag`, `loose_combover`), which buys the smaller
+    # dilution at the price of each crop sitting 3.2x rarer than an average value. That
+    # is a feature here -- a crew cut and a high-top fade are specific looks, and
+    # keeping them rare stops the base node reading as barbered. **This is the first
+    # family priced below the per-variant rate; do not "fix" it in a weights audit.**
+    ("barbered_crop", {"weight": 140, "variants": ['crew cut', 'textured crop', 'high-top fade']}),
 ])
 
 #: hair_color families (0.41): shade neighbourhoods, weights = current family
@@ -885,22 +905,34 @@ GARMENT_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["gesture_garme
 # but `rng.choices` sees 10 families instead of 5, so a given seed can land on a
 # different value. Accepted, same precedent as 0.64.0 / 0.66.0 / 0.78.0 / 0.81.0.
 LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("daylight", {"weight": 84, "variants": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'moonlight with cool blue tones', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight']}),
+    ("daylight", {"weight": 924, "variants": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'moonlight with cool blue tones', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight']}),
     # Indoor daylight. The whole family is indoor-only, so it drops whole outdoors;
     # stained glass splits off because it additionally needs the *building* to have it.
-    ("window_general", {"weight": 20, "variants": ['soft window light from the side', 'backlit silhouette against bright window', 'light through venetian blinds casting stripes', 'warm sunlight streaming through a window', 'diffused skylight from above']}),
-    ("window_stained", {"weight": 4, "variants": ['light through stained glass casting colors']}),
+    ("window_general", {"weight": 220, "variants": ['soft window light from the side', 'backlit silhouette against bright window', 'light through venetian blinds casting stripes', 'warm sunlight streaming through a window', 'diffused skylight from above']}),
+    ("window_stained", {"weight": 44, "variants": ['light through stained glass casting colors']}),
     # Portable / open flame -- reads fine on a patio, at a campfire, on a terrace.
-    ("artificial_open", {"weight": 20, "variants": ['warm candlelight', 'warm incandescent lamp glow', 'warm string lights bokeh background', 'fire and flame warm flicker', 'warm lantern light']}),
+    ("artificial_open", {"weight": 220, "variants": ['warm candlelight', 'warm incandescent lamp glow', 'warm string lights bokeh background', 'fire and flame warm flicker', 'warm lantern light']}),
     # A ceiling fixture asserts a built interior: indoor-only, and now drops whole.
-    ("artificial_ceiling", {"weight": 8, "variants": ['cool LED overhead lighting', 'harsh fluorescent lighting']}),
+    ("artificial_ceiling", {"weight": 88, "variants": ['cool LED overhead lighting', 'harsh fluorescent lighting']}),
     # Fixture-specific: indoors AND only where that fixture plausibly exists.
-    ("artificial_hearth", {"weight": 4, "variants": ['flickering firelight from a hearth']}),
-    ("artificial_screen", {"weight": 4, "variants": ['flickering television glow in a dark room']}),
-    ("neon_venue", {"weight": 27, "variants": ['neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'golden bokeh lights in background', 'purple and teal neon wash', 'colored gel lighting']}),
+    ("artificial_hearth", {"weight": 44, "variants": ['flickering firelight from a hearth']}),
+    ("artificial_screen", {"weight": 44, "variants": ['flickering television glow in a dark room']}),
+    ("neon_venue", {"weight": 297, "variants": ['neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'golden bokeh lights in background', 'purple and teal neon wash', 'colored gel lighting']}),
     # Exterior street fixtures: outdoor-only, and now drop whole indoors.
-    ("neon_street", {"weight": 9, "variants": ['fog-diffused streetlamp glow', 'reflection off wet pavement']}),
-    ("studio", {"weight": 48, "variants": ['stage spotlight from above', 'dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
+    ("neon_street", {"weight": 99, "variants": ['fog-diffused streetlamp glow', 'reflection off wet pavement']}),
+    # 0.83.0 fixture split, same argument as the hearth/television/stained-glass
+    # values above: a "stage spotlight" asserts an overhead stage RIG, which is an
+    # object, not a light quality. Measured before this: it landed on outdoor
+    # locations in ~2% of outdoor renders ("stage spotlight from above" on
+    # `high desert with joshua trees`). The other ten values are deliberately left
+    # together -- Rembrandt / butterfly / split / soft-box / chiaroscuro / low key /
+    # three-point all describe the SHAPE of light on the face and are achievable on
+    # location with a reflector, so they are not fixture claims and need no allowlist.
+    # Weights: 48 -> 480 + 48, proportional at 10:1, hence the x11 rescale of every
+    # family in this map (480/10 == 48/1 == the old per-variant share). Total
+    # 2508 = 228 x 11. **Seeds drift for `lighting`** (11 families, not 10).
+    ("studio_shape", {"weight": 480, "variants": ['dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
+    ("studio_stage", {"weight": 48, "variants": ['stage spotlight from above']}),
 ])
 
 #: Location families. Each is entirely indoor, entirely outdoor, or entirely
@@ -920,16 +952,30 @@ LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 #: the one obvious-looking gap in `work_industrial` that is a settled decision, not
 #: an oversight.
 LOCATION_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("domestic", {"weight": 24, "variants": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'cozy home library', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'home office with bookshelves', 'walk-in closet with mirrors', 'tidy bedroom with a neatly made bed', 'tiled bathroom with a large mirror', 'laundry room with stacked machines', 'narrow hallway lined with family photos', "children's playroom with toy bins", 'music room with an upright piano']}),
-    ("food_drink", {"weight": 15, "variants": ['elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'ramen shop counter', 'artisan bakery interior', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'bustling food court', 'taqueria with a tiled counter', 'French bistro with mirrored walls', 'juice bar with a chrome counter', 'barbecue joint with paper-lined trays']}),
-    ("retail_services", {"weight": 16, "variants": ['neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'shopping mall concourse', 'bank lobby with teller windows', 'pet shop lined with aquariums', 'department store perfume counter', 'stationery and art supply shop', 'shoe repair and key cutting counter']}),
-    ("leisure_fitness", {"weight": 11, "variants": ['local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'climbing gym with colorful holds', 'dance studio with mirrors', 'ceramics studio with pottery wheels', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'boxing gym with hanging heavy bags', 'indoor ice rink', 'karaoke room with song menus', 'casino floor with card tables', 'empty theater stage with the curtain up', 'trampoline park with foam pits']}),
-    ("civic_institutional", {"weight": 17, "variants": ['university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'police station bullpen', 'courtroom', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'Buddhist temple hall', 'Shinto shrine interior', 'school cafeteria', 'dentist office treatment room', 'prison visiting room', 'university dormitory room']}),
-    ("work_industrial", {"weight": 7, "variants": ['corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'newsroom with desks and monitors', 'blacksmith forge with an anvil', "tailor's workroom with dress forms", 'television studio control room', 'fishing trawler wheelhouse', 'glassblowing studio with a furnace']}),
-    ("transit_travel", {"weight": 7, "variants": ['hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'airplane cabin aisle', 'cable car cabin', 'cruise ship interior corridor', 'departure hall with a split-flap board', 'the back seat of a taxi']}),
-    ("urban_outdoor", {"weight": 20, "variants": ['sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace overlooking the skyline', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street', 'rainy street with umbrellas', 'working harbor dock', 'riverside boardwalk', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'open-air street food market', 'crumbling stone ruin', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'rooftop cocktail bar', 'the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace', 'bus stop shelter', 'fire escape landing', 'construction site with scaffolding', 'outdoor basketball court with chain nets', 'city fountain plaza', 'pier with a Ferris wheel', 'community garden allotment', 'canal towpath']}),
-    ("nature_outdoor", {"weight": 15, "variants": ['wide sandy beach', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'rolling desert dune', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'alpine meadow with wildflowers', 'cracked salt flats', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank', 'frozen lake surface', 'steaming hot spring pool', 'rolling wheat field', 'apple orchard rows', 'sea cave mouth', 'terraced rice paddies', 'basalt column coastline', 'high desert with joshua trees']}),
-    ("studio", {"weight": 4, "variants": ['seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop']}),
+    ("domestic", {"weight": 8856, "variants": ['modern open-concept living room', 'mid-century modern living room', 'cozy farmhouse living room', 'bohemian eclectic living room', 'minimalist Scandinavian living room', 'dark moody Victorian parlor', 'cluttered grandparent living room', 'upscale penthouse living room with city view', 'rustic log cabin interior', '1970s wood-paneled den', 'sunny suburban kitchen', 'sleek modern kitchen with marble countertops', 'retro diner-style kitchen', 'cramped apartment kitchenette', 'farmhouse kitchen with open shelving', 'formal dining room with chandelier', 'mid-century dining room', 'casual breakfast nook', 'cozy home library', 'home garage workshop', 'suburban basement', 'cluttered home attic', 'sunlit sunroom', 'mudroom entryway', 'home office with bookshelves', 'walk-in closet with mirrors', 'tidy bedroom with a neatly made bed', 'tiled bathroom with a large mirror', 'laundry room with stacked machines', 'narrow hallway lined with family photos', "children's playroom with toy bins", 'music room with an upright piano']}),
+    ("food_drink", {"weight": 5535, "variants": ['elegant hotel dining room', 'small-town family diner', 'cozy corner coffee shop', 'upscale urban cafe', 'busy chain coffee shop', 'old-school greasy spoon', 'fine dining restaurant interior', 'dim sum restaurant', 'sushi bar counter', 'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge', 'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar', 'ramen shop counter', 'artisan bakery interior', 'gastropub with an open kitchen', 'tea house with low wooden tables', 'old-fashioned ice cream parlor', 'bustling food court', 'taqueria with a tiled counter', 'French bistro with mirrored walls', 'juice bar with a chrome counter', 'barbecue joint with paper-lined trays']}),
+    ("retail_services", {"weight": 5904, "variants": ['neighborhood pharmacy', 'small-town grocery store aisle', 'big box store warehouse aisle', 'corner bodega', 'upscale grocery market deli counter', 'farmers market indoor stall', 'cluttered antique shop', 'indie record store', 'cozy bookstore with reading nooks', 'dusty second-hand thrift store', 'luxury retail boutique', 'hair salon', 'nail salon', 'old-school barbershop', 'tattoo parlor', 'laundromat', 'flower shop interior', 'vintage camera store', 'indoor spice market stall', 'hardware store aisle', 'butcher shop counter', 'garden centre greenhouse aisle', 'bicycle repair shop', 'neighborhood dry cleaner counter', 'shopping mall concourse', 'bank lobby with teller windows', 'pet shop lined with aquariums', 'department store perfume counter', 'stationery and art supply shop', 'shoe repair and key cutting counter']}),
+    ("leisure_fitness", {"weight": 4059, "variants": ['local gym weight room', 'yoga studio with wood floors', 'indoor swimming pool', 'bowling alley', 'roller skating rink', 'high school gymnasium', 'movie theater lobby', 'backstage dressing room', 'concert hall backstage', 'recording studio', 'photography studio with backdrop', 'climbing gym with colorful holds', 'dance studio with mirrors', 'ceramics studio with pottery wheels', 'arcade with glowing cabinets', 'independent cinema auditorium', 'billiards hall', 'martial arts dojo', 'boxing gym with hanging heavy bags', 'indoor ice rink', 'karaoke room with song menus', 'casino floor with card tables', 'empty theater stage with the curtain up', 'trampoline park with foam pits']}),
+    ("civic_institutional", {"weight": 6273, "variants": ['university lecture hall', 'elementary school classroom', 'university library reading room', 'public library with tall bookshelves', 'museum gallery with white walls', 'natural history museum hall', 'art gallery opening night', 'grand cathedral interior', 'small chapel interior', 'mosque interior', 'synagogue interior', 'hospital room', 'hospital waiting room', "doctor's examination room", 'emergency room', 'police station bullpen', 'courtroom', 'planetarium dome interior', 'aquarium tunnel', 'science museum atrium', 'university chemistry laboratory', 'veterinary clinic exam room', 'city hall rotunda', 'community theatre auditorium', 'Buddhist temple hall', 'Shinto shrine interior', 'school cafeteria', 'dentist office treatment room', 'prison visiting room', 'university dormitory room']}),
+    ("work_industrial", {"weight": 2583, "variants": ['corporate open office', 'corner executive office', 'co-working space', 'cubicle farm', 'mission control room with monitor banks', 'factory floor', 'warehouse interior', 'woodworking workshop', "artist's painting studio", 'commercial kitchen', 'auto repair shop service bay', 'print shop with running presses', 'machine shop with lathes', 'brewery tank room', 'newsroom with desks and monitors', 'blacksmith forge with an anvil', "tailor's workroom with dress forms", 'television studio control room', 'fishing trawler wheelhouse', 'glassblowing studio with a furnace']}),
+    ("transit_travel", {"weight": 2583, "variants": ['hotel lobby with marble floors', 'grand hotel suite', 'budget motel room', 'airport departure gate', 'train station waiting area', 'subway car interior', 'parking garage', 'vintage train compartment', 'ferry passenger cabin', 'airport lounge', 'ferry terminal waiting hall', 'hotel conference room', 'long-distance bus station', 'airplane cabin aisle', 'cable car cabin', 'cruise ship interior corridor', 'departure hall with a split-flap board', 'the back seat of a taxi']}),
+    ("urban_outdoor", {"weight": 6560, "variants": ['sunny city park', 'tree-lined boulevard', 'cobblestone old-town street', 'rooftop terrace overlooking the skyline', 'quiet suburban backyard', 'urban alley with graffiti', 'neon-lit city street', 'rainy street with umbrellas', 'working harbor dock', 'riverside boardwalk', 'rooftop garden', 'busy city crosswalk', 'country dirt road', 'palm-lined promenade', 'stone bridge over a river', 'castle courtyard', 'outdoor amphitheater', 'poolside cabana', 'open-air street food market', 'crumbling stone ruin', 'pedestrian shopping street', 'graffiti-covered skate park', 'harbor with moored boats', 'rooftop cocktail bar', 'bus stop shelter', 'fire escape landing', 'construction site with scaffolding', 'outdoor basketball court with chain nets', 'city fountain plaza', 'pier with a Ferris wheel', 'community garden allotment', 'canal towpath']}),
+    # 0.83.0 landmark sub-family. The 4 named landmarks that shipped INSIDE
+    # urban_outdoor are split out at a weight proportional to their original
+    # count (6560:820 == 32:4), then grown 4 -> 17. The point of the split:
+    # landmark VARIETY rises while P(any landmark | urban) stays exactly 4/36.
+    # A plain add would have taken the famous-landmark concept from ~11% of urban
+    # scenes to ~27% -- more variety AND more frequency, i.e. overweighting a
+    # concept. Growing only the landmark side buys the first without the second.
+    ("urban_landmark", {"weight": 820, "variants": ['the Brooklyn Bridge pedestrian walkway', 'Trafalgar Square', 'the Spanish Steps in Rome', 'the Griffith Observatory terrace', 'the Eiffel Tower plaza', 'Times Square', 'the Colosseum exterior', 'Shibuya Crossing', 'the Sydney Opera House forecourt', 'the Grand Canal in Venice', 'the Charles Bridge in Prague', 'the Bund waterfront in Shanghai', 'the Jemaa el-Fnaa square in Marrakech', 'the Zocalo in Mexico City', 'the India Gate lawns in Delhi', 'the Copacabana promenade in Rio', 'the Golden Gate Bridge viewpoint']}),
+    ("nature_outdoor", {"weight": 5130, "variants": ['wide sandy beach', 'rocky coastal cliff', 'forest trail', 'mountain overlook', 'rolling desert dune', 'snowy pine forest', 'autumn park with falling leaves', 'flower field in bloom', 'sunlit vineyard', 'lavender field', 'botanical garden path', 'open meadow', 'lakeside pier', 'misty moor', 'cherry blossom grove', 'alpine meadow with wildflowers', 'cracked salt flats', 'mangrove boardwalk', 'bamboo forest path', 'tide pools at low tide', 'golden savanna with acacia trees', 'red rock desert arch', 'slot canyon with striated walls', 'geothermal geyser basin', 'redwood grove with towering trunks', 'alpine glacier lake', 'coastal lighthouse bluff', 'waterfall plunge pool', 'volcanic black sand beach', 'moss-draped rainforest trail', 'frozen lake surface', 'steaming hot spring pool', 'rolling wheat field', 'apple orchard rows', 'sea cave mouth', 'terraced rice paddies', 'basalt column coastline', 'high desert with joshua trees']}),
+    # 0.83.0, same device as urban_landmark (5130:405 == 38:3), grown 3 -> 10.
+    # Natural landmarks are deliberately fewer: the pool already ships generic
+    # equivalents of several famous ones (volcanic black sand beach ~ Iceland,
+    # basalt column coastline ~ the Giant's Causeway, rolling desert dune ~ the
+    # Sahara, alpine glacier lake ~ Banff), so those were skipped as near-dupes.
+    ("nature_landmark", {"weight": 405, "variants": ['the Grand Canyon south rim', 'a Yosemite valley meadow', 'a Zion canyon riverbank', 'the red desert plain below Uluru', 'the Table Mountain plateau', 'the Iguazu Falls lookout', 'the Cliffs of Moher', 'the Halong Bay karst waters', 'the Mount Fuji foothills', 'the Plitvice lake boardwalks']}),
+    ("studio", {"weight": 1476, "variants": ['seamless grey studio backdrop', 'solid white studio backdrop', 'solid black studio backdrop', 'chroma-key green screen backdrop']}),
 ])
 
 #: Registry of every field that uses the weighted two-tier random pick. Keyed by
@@ -946,80 +992,548 @@ FIELD_FAMILIES: OrderedDict[str, OrderedDict[str, dict]] = OrderedDict([
     ("location", LOCATION_FAMILIES),
 ])
 
+# =========================================================================
+# The wardrobe axis (0.83.0)
+# =========================================================================
+#
+# THE DEFECT THIS FIXES. ``OUTFIT_DESCRIPTIONS`` superseded ``footwear``,
+# ``clothing_color`` and ``clothing_pattern`` when it was added, and nobody retired
+# them. In the base node's normal path an outfit is ALWAYS generated, and the prose
+# only voiced those three when there was NO outfit — so for releases they were drawn
+# every render, never spoken, and written to the JSON where they contradicted the
+# prose:
+#
+#     prose : "She wears an ivory silk blouse with a high waisted skirt suit and
+#              slingback pumps."
+#     json  : footwear "ankle boots" / clothing_color "black monochrome"
+#
+# Locking them was worse than a no-op: the lock changed nothing visible but removed
+# RNG draws, so five unrelated fields silently moved. The widget looked like it worked.
+#
+# THE CONTRACT NOW. Every value in ``OUTFIT_DESCRIPTIONS`` is a GARMENT PHRASE:
+#   * garments and fabrics only — no footwear, no colour word, no pattern word, no
+#     jewellery, no bag, no hat. Those axes belong to the fields that own them.
+#   * NO leading article. The engine prefixes the palette adjective and then articles
+#     the whole phrase with ``_article_if_singular``, so a plural head still works.
+# ``validate_data.py`` enforces both, so the corpus cannot drift back.
+#
+# The engine composes:  {palette_adj} {garment}{pattern_tail}, in {footwear}
+#   -> "a jewel-toned satin slip gown with delicate straps, in strappy heels"
+#
+# BIAS: zero drift on the three fields. They were already drawn in this order from
+# these flat pools; making them RENDER consumes no extra RNG and moves no
+# distribution. Only the outfit string itself drifts per seed, because the pool grew.
+
+#: ``clothing_color`` value -> the adjective form used in front of a garment phrase.
+#: Every option must have an entry (validated) — a missing key would silently drop the
+#: palette from the prose, which is the exact class of bug this phase exists to kill.
+PALETTE_ADJECTIVES: dict[str, str] = {
+    'neutral tones': 'neutral-toned',
+    'black monochrome': 'monochrome black',
+    'white and cream': 'white-and-cream',
+    'earth tones': 'earth-toned',
+    'pastels': 'pastel',
+    'bold primary colors': 'bold primary-colored',
+    'jewel tones': 'jewel-toned',
+    'gradient ombre': 'ombre-gradient',
+    'all black': 'all-black',
+    'all white': 'all-white',
+    'mixed prints': 'mixed-print',
+}
+
+#: ``clothing_pattern`` value -> the phrase appended after a garment phrase (already
+#: including its leading space), or ``""`` to say nothing. Per-value rather than a
+#: blanket "with a {value} pattern" because the pool mixes true patterns (`plaid`,
+#: `floral`) with a surface quality (`subtle texture`) and a fabric (`denim`), and
+#: "with a denim pattern" is wrong. ``solid`` is deliberately silent: it is the
+#: default reading of any garment, so saying it only adds noise.
+#:
+#: **Every tail uses "in", never "with".** Garment phrases very often end in their own
+#: "with ..." clause ("satin slip gown with delicate straps"), and a "with" tail stacked
+#: onto that reads "...with delicate straps with a floral print". Caught in preview, and
+#: it is the same class of prose wart as the 0.82.0 doubled location article.
+PATTERN_TAILS: dict[str, str] = {
+    'solid': '',
+    'subtle texture': ' in a subtle texture',
+    'stripes': ' in stripes',
+    'plaid': ' in plaid',
+    'floral': ' in a floral print',
+    'animal print': ' in an animal print',
+    'geometric': ' in a geometric print',
+    'abstract': ' in an abstract print',
+    'camouflage': ' in camouflage',
+    'denim': ' in denim',
+}
+
 #: Outfit descriptions keyed by outfit_style, split into gendered buckets.
 #: The engine draws from ``unisex`` plus the bucket(s) selected by the wardrobe
 #: control, so a black-tie gown never lands on a male subject by default — yet a
 #: user can deliberately mix wardrobes for diversity.
+#:
+#: **Garment phrases only, no leading article** — see the contract note above.
 OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
-    "casual": {
-        "female": ['a cropped hoodie with high waisted joggers and running shoes', 'a fitted ribbed tank with mom jeans and white sneakers', 'an oversized cream sweater with high waisted straight leg jeans and canvas sneakers', 'a flowy floral sundress with white sneakers and a denim jacket', 'a cropped cardigan over a camisole with wide leg jeans and loafers', 'a striped boatneck tee with cuffed chinos and slip-on sneakers'],
-        "male": ['a plaid flannel shirt with dark jeans and brown leather boots', 'a striped long sleeve shirt with navy chinos and clean white sneakers', 'a relaxed linen button-up with khaki shorts and leather sandals', 'a henley shirt with corduroy pants and desert boots', 'a crewneck sweatshirt with slim jeans and skate shoes', 'a zip-up fleece over a plain tee with tapered joggers and trail sneakers'],
-        "unisex": ['a white fitted tee with light wash jeans, white sneakers, and a denim jacket', 'a black graphic tee with distressed jeans and chunky boots', 'a vintage band tee with cutoff shorts and combat boots', 'denim overalls over a fitted long sleeve with canvas sneakers'],
+    'casual': {
+        'female': [
+            'cropped hoodie with high-waisted joggers',
+            'fitted ribbed tank with mom jeans',
+            'oversized wool sweater with high-waisted straight-leg jeans',
+            'flowy cotton sundress under a denim jacket',
+            'cropped cardigan over a camisole with wide-leg jeans',
+            'boatneck jersey tee with cuffed chinos',
+            'slouchy linen shirt knotted over leggings',
+            'waffle-knit henley with corduroy trousers',
+            'fleece quarter-zip over a tank with track pants',
+            'cotton poplin shirtdress with a woven belt',
+            'brushed-cotton flannel over a fitted long sleeve with jeans',
+            'boxy crewneck sweatshirt with cargo trousers',
+        ],
+        'male': [
+            'brushed flannel shirt with straight-leg jeans',
+            'long-sleeve jersey tee with chinos',
+            'relaxed linen button-up with cotton shorts',
+            'henley shirt with corduroy pants',
+            'crewneck sweatshirt with slim jeans',
+            'zip-up fleece over a plain tee with tapered joggers',
+            'waffle-knit thermal with washed denim',
+            'cotton overshirt over a pocket tee with work trousers',
+            'lightweight merino crewneck with straight chinos',
+            'short-sleeve camp-collar shirt with relaxed jeans',
+            'hooded sweatshirt under a quilted vest with jeans',
+            'jersey polo with cuffed twill trousers',
+        ],
+        'unisex': [
+            'fitted cotton tee with jeans under a denim jacket',
+            'plain jersey tee with distressed jeans',
+            'vintage-wash tee with cutoff shorts',
+            'denim overalls over a fitted long sleeve',
+            'oversized rugby shirt with loose-fit jeans',
+            'cotton chore jacket over a tee with straight jeans',
+            'sweatshirt with drawstring cotton shorts',
+            'linen popover with rolled sleeves and loose trousers',
+        ],
     },
-    "smart casual": {
-        "female": ['a structured blazer over a silk blouse with straight leg trousers and pointed flats', 'a patterned midi dress with a cropped blazer and ankle boots', 'a wrap blouse with a pencil skirt and block heel pumps', 'a fine-knit turtleneck with pleated trousers and loafers', 'a sleeveless mock-neck top with tapered ankle trousers and mules'],
-        "male": ['a fitted navy blazer over a white oxford shirt with dark chinos and brown loafers', 'a charcoal merino sweater over a collared shirt with tailored trousers and derby shoes', 'a light blue button-down with tan chinos and suede loafers', 'a tailored vest over a crisp white tee with wide leg trousers and loafers', 'an unstructured cotton blazer over a merino polo with slim trousers and suede derbies'],
-        "unisex": ['a cream knit polo with high waisted trousers and minimal leather sneakers', 'a chambray shirt with tailored shorts and leather sandals'],
+    'smart casual': {
+        'female': [
+            'silk-blend blouse with tailored ankle trousers',
+            'midi shirtdress with a slim leather belt',
+            'cropped blazer over a fine-knit shell with cigarette pants',
+            'wrap blouse with a bias-cut midi skirt',
+            'fine-knit turtleneck with pleated trousers',
+            'soft-shouldered jacket over a camisole with wide-leg trousers',
+            'knitted polo shirt with tailored shorts',
+            'sleeveless shift dress with a cropped cardigan',
+            'tucked satin camisole with high-waisted twill trousers',
+            'longline waistcoat over a poplin shirt with slim trousers',
+        ],
+        'male': [
+            'unstructured cotton blazer over a merino polo with slim trousers',
+            'oxford shirt with rolled sleeves and chinos',
+            'fine-gauge crewneck over a collared shirt with wool trousers',
+            'knitted polo with pleated trousers',
+            'linen sport coat over a tee with tailored chinos',
+            'brushed-twill overshirt over a henley with straight trousers',
+            'merino quarter-zip with flat-front chinos',
+            'camp-collar silk shirt with tailored trousers',
+            'cotton-cashmere cardigan over an oxford with wool trousers',
+            'soft-shouldered blazer with dark selvedge denim',
+        ],
+        'unisex': [
+            'lightweight knit over a collared shirt with tapered trousers',
+            'unlined linen jacket with drawstring tailored trousers',
+            'fine merino crewneck with pleated wide-leg trousers',
+            'cotton twill blazer over a jersey tee with chinos',
+        ],
     },
-    "business casual": {
-        "female": ['a fitted sheath dress with a thin belt and closed toe pumps', 'a cardigan over a silk blouse with a knee length pencil skirt and low heels', 'a patterned blouse tucked into an a-line skirt with modest heels', 'a shift dress with a cropped jacket and classic pumps', 'a tie-neck blouse with tailored cigarette trousers and pointed flats'],
-        "male": ['a navy blazer, light blue dress shirt, charcoal dress pants, and black leather loafers', 'gray trousers, white oxford, and burgundy loafers', 'a turtleneck under a structured blazer with slim trousers and leather oxfords', 'a dress shirt with cuffed sleeves, dark jeans, a leather belt, and loafers', 'a houndstooth sport coat with an open-collar shirt, gray chinos, and monk strap shoes'],
-        "unisex": ['a tailored blazer with ankle length trousers and pointed toe flats', 'a ponte blazer with matching trousers and minimal sneakers'],
+    'business casual': {
+        'female': [
+            'fitted sheath dress with a thin belt',
+            'cardigan over a silk blouse with a knee-length pencil skirt',
+            'poplin blouse tucked into an A-line skirt',
+            'shift dress under a cropped jacket',
+            'crepe blouse with straight-leg tailored trousers',
+            'soft blazer over a shell top with cropped wool trousers',
+            'belted wrap dress in fine jersey',
+            'knitted twinset with a bias midi skirt',
+            'collarless jacket over a camisole with slim ankle trousers',
+            'pleated culottes with a tucked silk shirt',
+        ],
+        'male': [
+            'dress shirt with cuffed sleeves and pressed chinos',
+            'merino v-neck over a collared shirt with wool trousers',
+            'soft blazer over an oxford shirt with flat-front trousers',
+            'long-sleeve knitted polo with tailored chinos',
+            'poplin shirt with a fine-gauge cardigan and wool trousers',
+            'twill blazer with a button-down shirt and pressed chinos',
+            'brushed-cotton shirt with pleated wool trousers',
+            'sweater vest over a poplin shirt with tapered trousers',
+            'unlined wool jacket over a jersey polo with straight trousers',
+            'linen-blend shirt with tailored trousers and a leather belt',
+        ],
+        'unisex': [
+            'ponte blazer with matching tailored trousers',
+            'fine-knit crewneck with a collared shirt and wool trousers',
+            'unstructured jacket over a jersey top with pressed chinos',
+            'tailored waistcoat over a poplin shirt with straight trousers',
+        ],
     },
-    "business formal": {
-        "female": ['a tailored black blazer and matching trousers with a silk blouse and closed toe pumps', 'a navy pencil skirt suit with a cream shell top and pumps', 'a double breasted blazer with wide leg trousers and a silk camisole', 'a fitted black dress with a structured blazer, sheer tights, and pumps', 'an ivory silk blouse with a high waisted skirt suit and slingback pumps'],
-        "male": ['a black two piece suit with a white dress shirt, silk tie, and black oxfords', 'a navy pinstripe suit with a pale blue shirt, burgundy tie, and brown oxfords', 'a charcoal suit with a white spread collar shirt and black cap toe shoes', 'a light gray suit with a white shirt, navy tie, and brown brogues', 'a deep green flannel suit with a white shirt, knit tie, and black oxfords'],
-        "unisex": ['a subtle houndstooth suit with a white shirt and dark tie', 'a sharp black suit with a crisp white shirt and minimal accessories'],
+    'business formal': {
+        'female': [
+            'double-breasted blazer with wide-leg trousers and a silk camisole',
+            'tailored skirt suit with a silk shell',
+            'single-breasted trouser suit with a poplin shirt',
+            'sheath dress under a structured tailored jacket',
+            'peak-lapel jacket with a pencil skirt and a crepe blouse',
+            'three-piece trouser suit with a fine-knit shell',
+            'wool crepe dress with a matching tailored coat',
+            'collarless tailored jacket with straight trousers and a silk blouse',
+            'belted wool suit dress with sharp shoulders',
+            'long-line blazer with pressed wide trousers and a camisole',
+        ],
+        'male': [
+            'notch-lapel suit with a spread-collar shirt and a silk tie',
+            'peak-lapel double-breasted suit with a poplin shirt and a tie',
+            'three-piece wool suit with a waistcoat and a knitted tie',
+            'single-breasted worsted suit with a twill shirt and a tie',
+            'tailored suit with a pinned-collar shirt and a silk tie',
+            'sharp-shouldered suit with a poplin shirt and a grenadine tie',
+            'wool flannel suit with an oxford shirt and a wool tie',
+            'slim two-piece suit with a french-cuff shirt and a silk tie',
+            'double-breasted flannel suit with a spread-collar shirt',
+            'worsted suit with a waistcoat, poplin shirt and a silk tie',
+        ],
+        'unisex': [
+            'tailored suit with a crisp shirt and minimal detailing',
+            'structured two-piece suit with a fine-knit shell',
+            'sharply pressed suit with a poplin shirt and a slim tie',
+            'long-line tailored coat over a two-piece suit',
+        ],
     },
-    "evening formal": {
-        "female": ['a floor length black velvet gown with delicate straps and diamond stud earrings', 'an emerald green satin slip gown with strappy gold heels and a clutch', 'a burgundy floor length dress with a deep v back and chandelier earrings', 'a champagne sequined evening gown with a satin wrap and stiletto sandals', 'a navy ball gown with a structured bodice, full skirt, and pearl drop earrings', 'an off shoulder ruby mermaid gown with long satin gloves'],
-        "male": ['a classic black tuxedo with a crisp white shirt and black silk bow tie', 'a midnight blue tuxedo with black satin lapels and patent leather shoes', 'a white tie tailcoat with a wing collar shirt, white bow tie, and opera pumps', 'a charcoal three piece suit with a black tie and oxford shoes', 'an ivory dinner jacket with black trousers and a black bow tie', 'a burgundy velvet dinner jacket with black trousers and a black bow tie'],
-        "unisex": ['a sleek black formal ensemble with satin detailing and polished dress shoes', 'a tailored ivory evening suit with a silk shirt and patent shoes'],
+    'evening formal': {
+        'female': [
+            'floor-length velvet gown with delicate straps',
+            'floor-length crepe dress with a deep v back',
+            'ball gown with a structured bodice and a full skirt',
+            'off-shoulder mermaid gown with long satin gloves',
+            'sequined evening gown with a satin wrap',
+            'draped satin column gown with a draped neck',
+            'one-shoulder chiffon gown with a slit skirt',
+            'beaded silk gown with a high halter neck',
+            'tulle ballgown with an embroidered bodice',
+            'high-neck lace gown with a sweeping train',
+            'silk-faille gown with an asymmetric neckline',
+            'liquid-satin slip gown with a bias-cut skirt',
+        ],
+        'male': [
+            'classic tuxedo with a crisp shirt and a silk bow tie',
+            'dinner jacket with tuxedo trousers and a bow tie',
+            'velvet dinner jacket with tuxedo trousers and a bow tie',
+            'double-breasted tuxedo with a shawl-lapel jacket',
+            'peak-lapel tuxedo with a pleated-front shirt and a bow tie',
+            'midnight wool dinner suit with a cummerbund and a bow tie',
+            'shawl-collar dinner jacket with a marcella shirt',
+            'tailcoat with a wing-collar shirt and a white bow tie',
+            'silk-lapel tuxedo with a fly-front shirt and a bow tie',
+            'brocade dinner jacket with tuxedo trousers',
+        ],
+        'unisex': [
+            'sharply tailored dinner suit with a satin lapel',
+            'floor-length tailored cape over evening tailoring',
+            'high-shine satin tailoring with a bow tie',
+            'velvet tuxedo jacket with pressed evening trousers',
+        ],
     },
-    "cocktail semi-formal": {
-        "female": ['a little black cocktail dress with lace overlay and black heels', 'a burgundy wrap dress with gold hoop earrings and strappy heels', 'a metallic midi dress with a draped neckline and minimalist sandals', 'a deep green velvet wrap dress with a gold pendant necklace', 'a sequined top with high waisted trousers and pointed heels', 'a one shoulder cobalt satin dress with a thigh slit and silver heels'],
-        "male": ['a navy tailored suit with a light gray shirt and no tie', 'a charcoal blazer with black dress pants and an open collar white shirt', 'a black dress shirt with dark jeans and Chelsea boots', 'a burgundy blazer over a black tee with tailored trousers and loafers', 'a light gray double breasted blazer with a black turtleneck and tailored trousers'],
-        "unisex": ['a fitted blazer with a silk camisole and leather pants with heeled boots', 'a white blazer over a pastel sheath with nude shoes'],
+    'cocktail semi-formal': {
+        'female': [
+            'velvet wrap dress with a draped neckline',
+            'metallic midi dress with a draped neckline',
+            'sequined top with high-waisted tailored trousers',
+            'fit-and-flare crepe cocktail dress',
+            'bodice-seamed satin midi dress',
+            'pleated chiffon midi dress with a tie waist',
+            'beaded shell top with a bias satin skirt',
+            'tuxedo-style mini dress with sharp shoulders',
+            'asymmetric-hem jacquard cocktail dress',
+            'corseted midi dress in duchess satin',
+            'off-shoulder ruched jersey dress',
+            'feather-trimmed crepe cocktail dress',
+        ],
+        'male': [
+            'tailored suit with a fine-knit shirt and no tie',
+            'blazer with dress trousers and an open-collar shirt',
+            'double-breasted blazer with a turtleneck and tailored trousers',
+            'textured wool jacket with a silk shirt and pressed trousers',
+            'shawl-collar knit jacket with tailored trousers',
+            'velvet blazer over a fine merino crewneck with wool trousers',
+            'unstructured silk-blend jacket with a camp-collar shirt',
+            'slim suit with a knitted polo and a pocket square',
+            'cropped tuxedo jacket with slim tailored trousers',
+            'jacquard blazer with a poplin shirt and wool trousers',
+        ],
+        'unisex': [
+            'fitted blazer with a silk camisole and leather trousers',
+            'satin tailoring with a soft-collar shirt',
+            'textured cocktail jacket with pressed trousers',
+            'sharply cut jumpsuit in fluid crepe',
+        ],
     },
-    "streetwear": {
-        "female": ['a puffer jacket over a cropped top with biker shorts and platform sneakers', 'a mesh top under a sports bra with baggy jeans and statement sneakers', 'an oversized graphic tee dress with chunky sneakers and a crossbody bag', 'a cropped bomber over a bralette with cargo pants and high tops', 'a color-blocked windbreaker with a pleated tennis skirt and retro sneakers'],
-        "male": ['an oversized hoodie with cargo pants and chunky sneakers', 'a bomber jacket with a plain tee, ripped jeans, and skate shoes', 'a boxy graphic tee with wide leg jeans, high top sneakers, and a chain necklace', 'a baseball jersey over a turtleneck with loose jeans and bold sneakers', 'a longline tee under an open flannel shirt with tapered cargos and chunky retro sneakers'],
-        "unisex": ['a distressed denim jacket over a hoodie with joggers and retro sneakers', 'a bucket hat, oversized sweatshirt, track pants, and designer sneakers', 'a utility vest with layered long sleeves, tactical pants, and combat boots'],
+    'streetwear': {
+        'female': [
+            'puffer jacket over a cropped top with biker shorts',
+            'mesh long-sleeve over a sports bra with baggy jeans',
+            'oversized tee dress with a cropped hoodie',
+            'cropped bomber over a bralette with cargo trousers',
+            'windbreaker with a pleated tennis skirt',
+            'boxy varsity jacket over a ribbed tank with wide jeans',
+            'cropped puffer vest over a longline hoodie with joggers',
+            'oversized flannel over a crop top with parachute trousers',
+            'track jacket with a matching pleated skort',
+            'longline anorak over a fitted bodysuit with baggy denim',
+        ],
+        'male': [
+            'oversized hoodie with cargo trousers',
+            'bomber jacket over a plain tee with ripped jeans',
+            'boxy tee with wide-leg jeans',
+            'baseball jersey over a turtleneck with loose jeans',
+            'quilted vest over a longline hoodie with stacked denim',
+            'techwear shell jacket with tapered cargo trousers',
+            'oversized coach jacket with nylon track pants',
+            'half-zip fleece with wide corduroy trousers',
+            'longline tee under a cropped puffer with joggers',
+            'hooded flannel overshirt with baggy carpenter jeans',
+        ],
+        'unisex': [
+            'oversized sweatshirt with nylon track pants',
+            'boxy anorak over a longline tee with cargo trousers',
+            'cropped puffer with wide-leg jeans',
+            'zip-through hoodie under a canvas chore coat with joggers',
+            'relaxed coach jacket with parachute trousers',
+            'longline knit vest over a tee with loose denim',
+        ],
     },
-    "bohemian": {
-        "female": ['a flowing floral maxi dress with bell sleeves, leather sandals, and layered necklaces', 'an off shoulder ruffled top with a tiered maxi skirt and leather sandals', 'a crochet top with high waisted wide leg pants, a woven belt, and ankle boots', 'a velvet burnout maxi dress with a wide brim hat and layered rings', 'an embroidered peasant blouse with distressed denim shorts and gladiator sandals', 'a smocked prairie dress with tooled leather boots and turquoise jewelry'],
-        "male": ['an embroidered linen tunic with drawstring trousers and leather sandals', 'an open paisley shirt over a henley with flared cords and suede boots', 'a fringed suede jacket over a plain tee with relaxed jeans and boots', 'a collarless linen tunic shirt with rolled trousers and huarache sandals'],
-        "unisex": ['a kimono cardigan over a slip top with a fringe bag and beaded jewelry', 'patchwork layers with stacked bangles and hoop earrings', 'a tie dye tee with flowy palazzo pants and espadrilles'],
+    'bohemian': {
+        'female': [
+            'velvet burnout maxi dress',
+            'flowing maxi dress with bell sleeves',
+            'crochet top with high-waisted wide-leg trousers and a woven belt',
+            'smocked prairie dress with a tiered hem',
+            'embroidered peasant blouse with a broomstick skirt',
+            'gauzy tiered maxi skirt with a knotted linen blouse',
+            'quilted patchwork waistcoat over a gauze dress',
+            'fringed suede jacket over a slip dress',
+            'batik-wrap skirt with an embroidered cropped blouse',
+            'layered gauze tunic over flared linen trousers',
+            'hand-loomed shawl over a smocked midi dress',
+            'crinkled cotton kaftan with a corded belt',
+        ],
+        'male': [
+            'open linen shirt with loose drawstring trousers',
+            'embroidered tunic with wide linen trousers',
+            'crochet-panel overshirt with cropped linen trousers',
+            'gauze grandad-collar shirt with relaxed trousers',
+            'fringed suede jacket over a henley with flared jeans',
+            'hand-loomed poncho over a linen shirt',
+            'corduroy flares with a knitted open-weave sweater',
+            'kaftan-cut cotton shirt with drawstring trousers',
+        ],
+        'unisex': [
+            'kimono cardigan over a slip top',
+            'patchwork layers over a gauze shift',
+            'crinkled linen duster over wide drawstring trousers',
+            'open-weave knit poncho over a gauze tunic',
+            'embroidered waistcoat over a loose linen shirt',
+            'layered gauze scarves over a tiered cotton dress',
+        ],
     },
-    "athletic": {
-        "female": ['a fitted sports bra with high waisted leggings, running shoes, and a zip hoodie', 'a tennis skirt with a polo shirt, court shoes, and a visor', 'yoga pants with a cropped tank and grip socks', 'a racerback tank with bike shorts and cross training shoes', 'a one shoulder seamless top with flared leggings and lifting shoes'],
-        "male": ['a moisture wicking tank with athletic shorts, trainers, and a sweatband', 'a compression top with fitted shorts and cross training shoes', 'a gym tee with basketball shorts, a baseball cap, and athletic sneakers', 'a boxing tank with compression shorts and high top sneakers', 'a quarter-zip running top with split shorts and racing flats'],
-        "unisex": ['a tracksuit jacket with matching joggers and running shoes', 'a windbreaker with leggings and trail running shoes', 'a performance hoodie with joggers and cushioned trainers'],
+    'athletic': {
+        'female': [
+            'fitted crop top with high-rise leggings',
+            'racerback sports bra with running shorts',
+            'zip-up training jacket with full-length leggings',
+            'seamless athletic bodysuit',
+            'pleated tennis dress with a built-in short',
+            'cropped windbreaker with cycling shorts',
+            'compression tank with a pleated running skirt',
+            'longline sports bra with flared yoga trousers',
+            'quarter-zip base layer with thermal running tights',
+            'loose training tee over a bike short',
+        ],
+        'male': [
+            'compression shirt with training shorts',
+            'sports jersey with basketball shorts',
+            'moisture-wicking tee with tapered training joggers',
+            'sleeveless training top with mesh shorts',
+            'half-zip base layer with running tights',
+            'lightweight running singlet with split shorts',
+            'hooded training top with woven track pants',
+            'technical windbreaker with fitted training shorts',
+            'rash-guard long sleeve with board shorts',
+            'quarter-zip thermal with brushed-back joggers',
+        ],
+        'unisex': [
+            'moisture-wicking tee with training shorts',
+            'full tracksuit in brushed technical jersey',
+            'hooded shell over a base layer with training tights',
+            'sleeveless training top with woven joggers',
+            'packable running gilet over a long-sleeve base layer',
+            'mesh-panel tee with fitted training leggings',
+        ],
     },
-    "resort vacation": {
-        "female": ['a strapless floral sundress with a wide brim sun hat and wedge espadrilles', 'a maxi skirt with a halter top, gold sandals, and a woven bag', 'a sarong wrap with a bandeau swimsuit and shell jewelry', 'a crochet cover up over a one piece swimsuit with a straw hat', 'an off shoulder linen midi dress with flat leather sandals'],
-        "male": ['a linen camp shirt with tailored swim trunks and leather sandals', 'a polo shirt with chino shorts and boat shoes', 'a tropical print shirt with relaxed trousers and canvas slip ons', 'an open linen shirt over swim trunks with espadrilles', 'a terry cloth polo with pleated shorts and woven loafers'],
-        "unisex": ['a white linen button-up with high waisted shorts and leather sandals', 'a lightweight jumpsuit with open weave sandals', 'a breton stripe tee with white jeans and leather sandals'],
+    'resort vacation': {
+        'female': [
+            'sarong wrap over a bandeau swimsuit',
+            'crochet cover-up over a one-piece swimsuit',
+            'maxi skirt with a halter top',
+            'linen shirtdress worn open over a swimsuit',
+            'gauze kaftan with a knotted waist',
+            'cropped linen shirt with wide drawstring trousers',
+            'tiered cotton sundress with a smocked bodice',
+            'wrap-front linen playsuit',
+            'broderie-anglaise cover-up over a bikini',
+            'silk-blend camisole with flowing palazzo trousers',
+        ],
+        'male': [
+            'tropical camp-collar shirt with relaxed trousers',
+            'linen shirt worn open over swim shorts',
+            'short-sleeve resort shirt with tailored linen shorts',
+            'gauze grandad shirt with drawstring linen trousers',
+            'swim shorts with an unbuttoned linen overshirt',
+            'knitted polo with pleated linen shorts',
+            'seersucker shirt with cotton chino shorts',
+            'terry-cloth polo with tailored swim shorts',
+        ],
+        'unisex': [
+            'loose linen set with a camp-collar shirt and shorts',
+            'gauze cotton kaftan over swimwear',
+            'terry-towelling overshirt with drawstring shorts',
+            'crinkled linen shirt with wide-leg trousers',
+            'lightweight seersucker set with an open shirt',
+            'cotton robe worn open over swimwear',
+        ],
     },
-    "edgy alternative": {
-        "female": ['a fishnet top under a slip dress with platform boots and a choker', 'a corset top with a plaid skirt and thigh high boots', 'a mesh long sleeve under a crop top with vinyl pants and combat boots', 'a motorcycle jacket over a sheer blouse with leather pants and ankle boots', 'a harness top over a mesh tee with a bleached denim mini skirt and creepers'],
-        "male": ['a black leather jacket over a band tee with ripped skinny jeans and combat boots', 'a distressed black denim jacket with studded patches and black jeans', 'an oversized black hoodie with chains, cargo pants, and chunky boots', 'a graphic tee with a tartan kilt, fishnet sleeves, and boots', 'a long black trench coat over a mesh tank with waxed jeans and steel toe boots'],
-        "unisex": ['a denim vest with band patches, frayed shorts, and a studded belt', 'a black turtleneck with suspenders and platform loafers'],
+    'edgy alternative': {
+        'female': [
+            'fishnet top under a slip dress',
+            'cropped moto jacket over a ribbed tank with skinny jeans',
+            'corset top with a mesh long sleeve and vinyl trousers',
+            'distressed knit over a bodysuit with ripped denim',
+            'buckled pinafore over a fitted long sleeve',
+            'harness-detail top with wide leather trousers',
+            'asymmetric-hem mesh dress over a bodysuit',
+            'shredded oversized knit with cropped leggings',
+            'vinyl trench over a ribbed bodysuit',
+            'deconstructed tailored jacket with laddered tights and shorts',
+        ],
+        'male': [
+            'distressed denim jacket with studded patches and jeans',
+            'moto jacket over a ripped tee with skinny jeans',
+            'buckled leather jacket over a mesh long sleeve',
+            'deconstructed knit with tapered cargo trousers',
+            'vinyl-panel bomber with slim leather trousers',
+            'shredded oversized tee with buckled utility trousers',
+            'long leather coat over a ribbed tank with slim jeans',
+            'harness-strapped overshirt with distressed denim',
+        ],
+        'unisex': [
+            'denim vest with frayed shorts and a studded belt',
+            'layered mesh over a distressed knit with leather trousers',
+            'buckled utility harness over a shredded tee',
+            'asymmetric deconstructed jacket with laddered leggings',
+        ],
     },
-    "preppy": {
-        "female": ['a pleated tennis skirt with a cable knit sweater and leather loafers', 'a gingham shirt dress with a headband and ballet flats', 'a navy blazer with a pleated skirt, knee socks, and oxfords', 'a collared blouse under a sweater vest with tailored shorts and loafers', 'a belted shirtdress with a silk scarf, cardigan, and riding boots'],
-        "male": ['a polo shirt with a sweater tied over the shoulders, chinos, and boat shoes', 'an oxford shirt under a quarter-zip pullover with chinos and loafers', 'a navy blazer with a gingham shirt, khakis, and penny loafers', 'a striped rugby shirt with tailored shorts and deck shoes', 'a seersucker blazer with a pastel oxford shirt, white chinos, and loafers'],
-        "unisex": ['an argyle sweater vest over a collared shirt with chinos and loafers', 'a crisp white polo with pressed khakis and clean leather sneakers'],
+    'preppy': {
+        'female': [
+            'knife-pleated skirt with a fine-knit sweater',
+            'cable-knit sweater over a poplin shirt with tailored shorts',
+            'sleeveless polo dress with a knitted trim',
+            'quilted jacket over a rugby shirt with slim chinos',
+            'lambswool vest over a poplin shirt with a pleated skirt',
+            'blazer with a pleated tennis skirt and knee socks',
+            'shetland crewneck with straight chinos and a webbing belt',
+            'poplin shirtdress with a rope belt',
+            'knitted polo with a box-pleated midi skirt',
+            'cricket-trim cardigan over a shell top with tailored trousers',
+        ],
+        'male': [
+            'cable-knit sweater over an oxford shirt with chinos',
+            'quarter-zip lambswool sweater with pressed chinos',
+            'rugby shirt with straight-leg chinos and a webbing belt',
+            'blazer over a button-down shirt with cotton trousers',
+            'shetland crewneck over an oxford shirt with corduroys',
+            'quilted vest over a fine-knit sweater with chinos',
+            'cricket sweater with pleated cotton trousers',
+            'cotton camp shirt with tailored shorts',
+            'lambswool vest over a button-down with wool trousers',
+            'harrington jacket over a knitted polo with chinos',
+        ],
+        'unisex': [
+            'lambswool crewneck over a collared shirt with chinos',
+            'quilted field jacket over a cable-knit sweater',
+            'harrington jacket with pressed cotton trousers',
+            'knitted vest over an oxford shirt with tailored shorts',
+        ],
     },
-    "vintage retro": {
-        "female": ['a 1950s polka dot swing dress with a cinched waist and kitten heels', 'high waisted mom jeans with a tucked-in striped tee and cat eye sunglasses', '1970s flared corduroys with a fitted turtleneck and platform boots', 'a tea length floral dress with a cardigan and Mary Jane shoes', 'a 1960s mod shift dress with white go-go boots and a headband'],
-        "male": ['1950s rolled-cuff jeans with a white tee, leather jacket, and loafers', 'a tweed jacket with a knit tie, high waisted trousers, and brogues', 'a 1970s wide collar shirt with flared trousers and suede boots', 'a bowling shirt with cuffed chinos and canvas sneakers', '1940s pleated trousers with a tucked work shirt, suspenders, and cap toe boots'],
-        "unisex": ['high waisted trousers with suspenders, a tucked button-down, and oxfords', 'a retro track jacket with slim trousers and vintage trainers'],
+    'vintage retro': {
+        'female': [
+            'high-waisted mom jeans with a tucked-in jersey tee',
+            'swing dress with a full circle skirt and a cinched waist',
+            'fitted wiggle dress with a portrait collar',
+            'cropped cardigan over a halter sundress',
+            'wide-leg sailor trousers with a tucked blouse',
+            'shirtwaist dress with a pleated skirt and a fabric belt',
+            'boucle skirt suit with a boxy collarless jacket',
+            'corduroy pinafore over a ribbed roll-neck',
+            'empire-waist crepe dress with lantern sleeves',
+            'gabardine pencil skirt with a tucked short-sleeve knit',
+        ],
+        'male': [
+            'rolled-cuff jeans with a jersey tee and a leather jacket',
+            'bowling shirt with pleated gabardine trousers',
+            'knitted polo with high-waisted wide trousers',
+            'corduroy blazer over a roll-neck with flared trousers',
+            'double-pleated trousers with braces and a poplin shirt',
+            'boxy gabardine jacket with cuffed wool trousers',
+            'cardigan over a ribbed tank with high-waisted denim',
+            'safari-cut jacket with pleated cotton trousers',
+            'waffle henley with wide-cut workwear denim',
+            'shawl-collar cardigan with tapered wool trousers',
+        ],
+        'unisex': [
+            'boxy gabardine jacket with pleated trousers',
+            'knitted roll-neck with high-waisted wide trousers',
+            'corduroy blazer with cuffed straight denim',
+            'cropped harrington with rolled-cuff workwear jeans',
+        ],
     },
-    "loungewear": {
-        "female": ['a matching ribbed knit lounge set with fuzzy slippers', 'an oversized sweater dress with cozy socks', 'a soft camisole with drawstring lounge pants and a robe', 'a cropped sweatshirt with matching joggers and slides', 'a satin pajama set with plush slippers'],
-        "male": ['a waffle-knit henley with soft sweatpants and slippers', 'a plain crewneck with relaxed lounge pants and slides', 'a zip hoodie with jersey shorts and house slippers', 'a thermal long sleeve with plaid flannel pants and wool socks'],
-        "unisex": ['an oversized hoodie with matching sweatpants and thick socks', 'a flannel pajama set with a robe and slippers', 'a soft tee with cuffed sweatpants and bare feet', 'a chunky knit cardigan over a soft tee with fleece joggers and slipper socks'],
+    'loungewear': {
+        'female': [
+            'soft camisole with drawstring lounge trousers',
+            'ribbed lounge set with a cropped long sleeve and shorts',
+            'oversized waffle-knit sweatshirt with matching joggers',
+            'brushed-jersey nightdress with a wrap robe',
+            'cashmere-blend lounge set with wide-leg trousers',
+            'slouchy knitted cardigan over a rib tank with lounge shorts',
+            'modal pyjama set with a piped collar',
+            'fleece-lined hoodie with brushed jersey joggers',
+            'linen-blend lounge shirt with matching drawstring trousers',
+        ],
+        'male': [
+            'cotton robe over lounge trousers',
+            'brushed-jersey tee with drawstring lounge trousers',
+            'waffle-knit henley with fleece-back joggers',
+            'piped poplin pyjama set',
+            'hooded sweatshirt with brushed lounge shorts',
+            'modal lounge tee with matching wide trousers',
+            'shawl-collar knitted robe over a jersey lounge set',
+            'linen-blend lounge shirt with drawstring shorts',
+        ],
+        'unisex': [
+            'waffle-knit lounge set with a crewneck and joggers',
+            'brushed jersey hoodie with matching lounge trousers',
+            'cotton-modal pyjama set with a piped trim',
+            'oversized knitted robe over a jersey lounge set',
+            'fleece-back sweatshirt with drawstring lounge shorts',
+            'ribbed lounge set with a long sleeve and wide trousers',
+        ],
     },
 }
 
@@ -1105,6 +1619,16 @@ ETHNICITY_REGION: dict[str, str] = {
 
 #: Locations that are outdoors (everything else in the pool is indoor).
 OUTDOOR_LOCATIONS: frozenset[str] = frozenset([
+    # 0.83.0 landmarks. Registering them here is MANDATORY: the indoor bucket is
+    # DERIVED (all - OUTDOOR_LOCATIONS - STUDIO_BACKDROPS), so a missing entry would
+    # silently classify the Eiffel Tower as an interior and let it draw a hearth.
+    'the Eiffel Tower plaza', 'Times Square', 'the Colosseum exterior',
+    'Shibuya Crossing', 'the Sydney Opera House forecourt', 'the Grand Canal in Venice',
+    'the Charles Bridge in Prague', 'the Bund waterfront in Shanghai', 'the Jemaa el-Fnaa square in Marrakech',
+    'the Zocalo in Mexico City', 'the India Gate lawns in Delhi', 'the Copacabana promenade in Rio',
+    'the Golden Gate Bridge viewpoint', 'the red desert plain below Uluru', 'the Table Mountain plateau',
+    'the Iguazu Falls lookout', 'the Cliffs of Moher', 'the Halong Bay karst waters',
+    'the Mount Fuji foothills', 'the Plitvice lake boardwalks',
     'sunny city park', 'tree-lined boulevard', 'cobblestone old-town street',
     'rooftop terrace overlooking the skyline', 'wide sandy beach', 'rocky coastal cliff',
     'forest trail', 'mountain overlook', 'rolling desert dune',
@@ -1261,13 +1785,37 @@ STAINED_GLASS_LOCATIONS: frozenset[str] = frozenset([
     'university library reading room', 'public library with tall bookshelves',
 ])
 
+#: Places with an overhead stage RIG (0.83.0). The four studio backdrops are included
+#: deliberately and are load-bearing: ``studio_stage`` is carved out of the family that
+#: :data:`VOID_ALLOWED_LIGHTING` admits, so leaving them out would strip a void backdrop
+#: of a value it legitimately had. ``outdoor amphitheater`` is why this fixture is
+#: allowlisted across ALL locations rather than filed as indoor-only -- it is an outdoor
+#: place with a real stage. ``concert hall backstage`` is deliberately absent: backstage
+#: is not the stage.
+STAGE_LOCATIONS: frozenset[str] = frozenset([
+    *STUDIO_BACKDROPS,
+    'photography studio with backdrop', 'empty theater stage with the curtain up',
+    'outdoor amphitheater', 'community theatre auditorium',
+    'independent cinema auditorium', 'neon-lit nightclub',
+    'karaoke room with song menus', 'dance studio with mirrors',
+    'high school gymnasium',
+])
+
 #: {fixture lighting value -> the locations that have that fixture}. Consumed by
-#: data/constraints.py, which turns it into one exclusion rule per indoor location
-#: listing whichever fixtures that location lacks.
+#: data/constraints.py, which turns it into one exclusion rule per location listing
+#: whichever fixtures that location lacks.
+#:
+#: **The loop covers every location, not just the indoor ones (0.83.0).** The first three
+#: fixtures are also indoor-only, so for an outdoor location their rule is redundant with
+#: the bucket rule -- harmless, since the engine unions every firing exclusion on a
+#: target. Widening the loop is what lets ``studio_stage`` be allowlisted at
+#: ``outdoor amphitheater`` while still being excluded from a forest trail, using the ONE
+#: mechanism that already existed instead of a second one.
 FIXTURE_LIGHTING: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ('flickering firelight from a hearth', HEARTH_LOCATIONS),
     ('flickering television glow in a dark room', SCREEN_GLOW_LOCATIONS),
     ('light through stained glass casting colors', STAINED_GLASS_LOCATIONS),
+    ('stage spotlight from above', STAGE_LOCATIONS),
 ])
 
 #: The only lighting a void backdrop may draw: the ``studio`` family, exactly.
@@ -1286,6 +1834,125 @@ VOID_ALLOWED_LIGHTING: frozenset[str] = frozenset([
     'Rembrandt lighting',
 ])
 
+
+# =========================================================================
+# Worn-item / garment-phrase text contracts (0.83.0)
+# =========================================================================
+# These patterns are assertions about DATA -- what a costume or garment phrase
+# may and may not name -- so they live in the data layer with one source of
+# truth. nodes/identity_forge.py imports them to drive suppression at render
+# time; tests/validate_data.py imports them to gate the shipped corpus, which
+# keeps that module free of any node-layer import (it must run without ComfyUI).
+
+#: **The general rule ``_HAT_RE`` was a special case of (0.83.0).** If the resolved
+#: ``outfit_description`` already NAMES a worn item, the separately-randomized field for
+#: that item must not add a second one — "a gown … and diamond stud earrings" beside a
+#: randomized "medium gold hoops" is two sets of earrings in one prose string.
+#:
+#: Until 0.83.0 the engine enforced this for headwear only, and the other five items were
+#: patched **per entry**: 28 cosplayers hand-pin ``"necklace": "no necklace"`` because
+#: their costume names a neck ornament. A per-entry workaround for a cross-field
+#: contradiction means the general rule is missing — so here it is. The 28 pins STAY
+#: (they are explicit, they cost nothing, and removing one would add an RNG draw where a
+#: lock used to skip it and drift that character's seed). They are now belt-and-braces.
+#:
+#: **This does NOT reopen the 0.66.0 "has skin but wouldn't accessorise" decision.** That
+#: one asked *may jewellery be worn over a costume* — answered yes, do not re-flag. This
+#: asks *does the costume text already name this item*. Only the named field is dropped;
+#: every other jewellery field still draws, so a character whose costume names earrings
+#: can still get a necklace.
+#:
+#: Scope note, so the effect is not overclaimed: ``bag`` is ALREADY dropped for every
+#: cosplayer/archetype by ``_COSTUME_SUPPRESSED_EXTRAS`` (a locked outfit suppresses the
+#: carried extras wholesale), so the ``bag`` pattern only bites on an engine-GENERATED
+#: outfit. The five jewellery fields are the ones this genuinely fixes on the roster
+#: (~169 entries at 0.83.0), because jewellery is deliberately absent from that set.
+#:
+#: Every pattern below is tuned against real roster text; the traps are load-bearing and
+#: ``WornItemDeduplicationTests`` pins each one:
+#:   * ``rings`` must not fire on "earrings" (no word boundary inside the word), nor on a
+#:     PIERCING ("brow ring", "lip ring") or a non-jewellery ring ("tire ring", "halo
+#:     ring", "neck ring", "arm ring") — hence the fixed-width negative lookbehinds.
+#:   * ``bracelet`` must never match a bare "cuff": "cuffed chinos", "rolled-cuff jeans",
+#:     "ear cuff" and "arm cuff" are all real roster text and none is a bracelet.
+#:   * ``earrings`` must not fire on garment "studs" (Simon's gold-studded trench coat),
+#:     so a bare ``studs`` is deliberately NOT in the pattern — "stud earrings" is.
+#:   * ``bag`` must not fire on "baggy jeans" (safe: no boundary at "bag|gy"), and
+#:     ``clutch`` must not fire on the VERB ("arms raised to clutch the head" — Psyduck).
+WORN_ITEM_RES: "OrderedDict[str, re.Pattern[str]]" = OrderedDict([
+    ("necklace", re.compile(
+        r"\b(?:necklaces?|pendants?|chokers?|torcs?|torque|medallions?|amulets?|"
+        r"lockets?|dog tags|rosary)\b",
+        re.IGNORECASE)),
+    ("earrings", re.compile(
+        r"\b(?:earrings?|ear studs|stud earrings|hoops)\b",
+        re.IGNORECASE)),
+    ("rings", re.compile(
+        r"(?<!nose )(?<!brow )(?<!lip )(?<!ear )(?<!arm )(?<!neck )(?<!tire )"
+        r"(?<!halo )(?<!septum )\brings?\b",
+        re.IGNORECASE)),
+    ("bracelet", re.compile(
+        r"\b(?:bracelets?|bangles?|wrist cuffs?|wristbands?)\b",
+        re.IGNORECASE)),
+    ("other_jewelry", re.compile(
+        r"\b(?:anklets?|arm cuffs?|body chains?|brooch(?:es)?|waist chains?)\b",
+        re.IGNORECASE)),
+    ("bag", re.compile(
+        r"\b(?:bags?|totes?|backpacks?|purses?|satchels?|handbags?)\b"
+        r"|\bclutch(?:es)?\b(?!\s+(?:the|his|her|their|its|at|onto))",
+        re.IGNORECASE)),
+])
+
+#: --- The wardrobe axis (0.83.0) -----------------------------------------------------
+#:
+#: ``footwear`` / ``clothing_color`` / ``clothing_pattern`` were drawn every render and
+#: never voiced, because ``OUTFIT_DESCRIPTIONS`` superseded them and nobody retired them.
+#: They now compose with the generated outfit (see ``_compose_outfit_clause``). The four
+#: patterns below are the BACK-COMPAT half of that change.
+#:
+#: A ``user_options.json`` "outfits" section can register outfit strings, and any that
+#: already exist were written for the OLD contract: leading article, baked-in shoes and
+#: colours. Composing blindly onto those would produce "a jewel-toned a sleek white EVA
+#: suit ... in loafers" beside its own magnetic boots. Each guard fires EXACTLY in the
+#: collision case — when the string already names the thing — so a user's existing data
+#: degrades gracefully instead of breaking. The rewritten shipped corpus matches none of
+#: them, which ``validate_data.py`` enforces, so for shipped data every guard is inert.
+#:
+#: ``SHOE_RE`` does double duty: it is also the validator gate, so one pattern both
+#: protects user strings and keeps the corpus honest.
+#: Deliberately PLURAL-ONLY for the ambiguous stems, because every ``footwear`` pool
+#: value is plural and the singular forms collide with real garment vocabulary:
+#: "oxford shirt" (a fabric), "flat-front trousers", "bootcut jeans", "a boot-lace tie".
+#: The first draft matched ``oxfords?`` / ``flats?`` / ``boots?`` and false-positived on
+#: five shipped garment phrases, silently deleting their footwear clause. ``barefoot`` and
+#: the "<x> shoes" forms are the only singulars kept, and both are unambiguous.
+SHOE_RE = re.compile(
+    r"\b(?:shoes|sneakers|trainers|boots|booties|heels|pumps|loafers|flats|sandals|"
+    r"oxfords|slippers|wedges|mules|clogs|derbies|brogues|espadrilles|moccasins|"
+    r"stilettos|slingbacks|slides|cleats|high tops|mary janes|barefoot|bare feet)\b",
+    re.IGNORECASE,
+)
+#: Colour words that mean a garment phrase already states its own palette. Deliberately
+#: broad: a false positive only costs one clause, a false negative ships a contradiction.
+COLOUR_WORD_RE = re.compile(
+    r"\b(?:black|white|cream|ivory|navy|blue|red|green|pink|purple|violet|lavender|"
+    r"yellow|orange|brown|tan|beige|khaki|olive|grey|gray|charcoal|silver|gold|golden|"
+    r"burgundy|maroon|crimson|scarlet|emerald|sage|teal|turquoise|mustard|rust|camel|"
+    r"blush|champagne|ruby|amber|copper|bronze|indigo|magenta|coral|peach|mint|"
+    r"monochrome|pastel|neon|metallic|two-tone|color-blocked|colour-blocked)\b",
+    re.IGNORECASE,
+)
+#: Pattern / fabric-pattern words that mean the garment phrase already states its own.
+PATTERN_WORD_RE = re.compile(
+    r"\b(?:striped?|stripes|pinstripe[ds]?|plaid|tartan|check(?:ed|s)?|houndstooth|"
+    r"floral|paisley|polka[- ]dot(?:ted|s)?|animal print|leopard|zebra|snakeskin|"
+    r"camo(?:uflage)?|geometric|abstract|argyle|herringbone|tie-dye|denim|graphic|"
+    r"patterned|printed|sequined|sequin)\b",
+    re.IGNORECASE,
+)
+#: Leading article stripped from a garment phrase before the palette adjective is
+#: prefixed. The shipped corpus carries none; this exists for user-supplied strings.
+LEADING_ARTICLE_RE = re.compile(r"^(?:a|an|the)\s+", re.IGNORECASE)
 
 # Merge optional user-supplied options (./user_options.json in the pack root).
 # Kept last so it can extend any pool above; fails closed if absent/malformed.

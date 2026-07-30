@@ -37,6 +37,8 @@ Conventions
 """
 from __future__ import annotations
 
+from collections import OrderedDict
+
 # The location<->lighting rules below are generated from the option pools and the
 # coherence buckets rather than restating ~166 location strings here, which would
 # drift the moment a location is added. Dual import mirrors nodes/identity_forge.py:
@@ -68,6 +70,21 @@ _LONG_HAIR_STYLES: list[str] = [
     "braided ponytail", "messy bun", "sleek bun", "ballerina bun", "space buns",
     "pigtails", "high pigtails", "low pigtails", "curled pigtails", "braided pigtails",
     "half up half down", "twist-out", "afro", "cornrows", "bantu knots",
+    # 0.83.0 additions. This slotting is MANDATORY, not optional -- it is the rule
+    # `cornrows` and `bantu knots` escaped until 0.72.0. A milkmaid braid crosses the
+    # crown, a rope braid twists two sections, a braided bun wraps a braid, twists
+    # need sectionable length, and a bubble ponytail needs enough to tie repeatedly.
+    # `hair puff` is here for a BIAS reason, not only a physical one. My first pass left
+    # it out reasoning "a puff is a short-coil look like its family-mates afro and
+    # twist-out" -- but both of those ARE in this list, so omitting the puff culled 2 of 3
+    # in the `texture` family at buzz lengths and would have concentrated that family's
+    # full frozen weight onto the puff alone. Caught by
+    # HairStyleFamilyTests::test_impossible_length_style_pairs_are_whole_sub_families.
+    # It is also true physically: gathering coils into a puff needs more than a buzz.
+    # `micro bangs` is deliberately ABSENT -- it is handled by the bangs buzz rule
+    # below, as a whole family, which is the same requirement satisfied a different way.
+    "milkmaid braids", "rope braid", "braided bun", "two-strand twists",
+    "bubble ponytail", "hair puff",
 ]
 
 #: The four short barbered cuts (0.81.0). This list is EXACTLY the
@@ -77,6 +94,25 @@ _LONG_HAIR_STYLES: list[str] = [
 #: exclusion becomes a partial cull and concentrates the family's frozen weight on
 #: whatever is left. ``HairStyleFamilyTests`` pins the two lists together.
 _BARBERED_SHORT_STYLES: list[str] = ["fade", "undercut", "pompadour", "quiff"]
+
+#: The three short crops (0.83.0). EXACTLY the ``barbered_crop`` family in fields.py,
+#: for the same reason the list above mirrors ``barbered_short``: the rules exclude the
+#: WHOLE family, so a fourth crop added there must be added here or the exclusion
+#: becomes a partial cull. ``HairStyleFamilyTests`` pins the two together.
+#:
+#: Their length gate is the MIRROR of the barbered_short one, which is precisely why
+#: they could not join that family: a crop IS a very short cut, so it is legal at a buzz
+#: and impossible from ear length up, where a fade or quiff is legal at a buzz-adjacent
+#: length and only fails past the shoulders.
+_BARBERED_CROP_STYLES: list[str] = ["crew cut", "textured crop", "high-top fade"]
+
+#: Every length at which a crew cut / textured crop / high-top fade stops describing
+#: the hair. Derived from the pool so a new length cannot silently escape the gate.
+_CROP_IMPOSSIBLE_LENGTHS: tuple[str, ...] = (
+    "ear length", "chin length bob", "jaw length", "shoulder length",
+    "slightly past shoulders", "mid back", "lower back", "long", "very long",
+    "waist length", "hip length",
+)
 
 #: Lengths at which a fade / undercut / pompadour / quiff no longer describes the
 #: cut. Deliberately starts past the shoulders: an undercut or a quiff on
@@ -133,7 +169,10 @@ CONSTRAINT_RULES: list[dict] = [
     # remaining families stay exactly proportional -- the bias rule the lighting
     # buckets follow.
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
-     "excludes_field": "hair_style", "excludes_values": ["curtain bangs", "blunt bangs"],
+     "excludes_field": "hair_style",
+     # 0.83.0: `micro bangs` joined the family, so it MUST join this list -- the rule is
+     # only safe while it drops the bangs family whole.
+     "excludes_values": ["curtain bangs", "blunt bangs", "micro bangs"],
      "reason": "a buzz cut has no fringe to cut into bangs"},
     # 0.78.0: the other half of the buzz-cut fix, unblocked by splitting the
     # ``loose`` family in fields.py. These five need length to hold a style and a
@@ -175,7 +214,14 @@ CONSTRAINT_RULES: list[dict] = [
                          "curled pigtails", "braided pigtails",
                          "high ponytail", "low ponytail", "side ponytail",
                          "braided ponytail", "box braids", "bantu knots",
-                         "dutch braids", "crown braid"],
+                         "dutch braids", "crown braid",
+                         # 0.83.0. `two-strand twists` is deliberately NOT here:
+                         # like its family-mates `cornrows` and `locs` it is real at
+                         # pixie length, and the pixie list stays narrower than
+                         # _LONG_HAIR_STYLES on purpose. `hair puff` also stays
+                         # legal -- a coil puff at pixie length is a real look.
+                         "milkmaid braids", "rope braid", "braided bun",
+                         "bubble ponytail"],
      "reason": "a pixie cut is too short to braid or tie back"},
     # 0.81.0: the barbered cuts. Both groups are excluded as WHOLE families
     # (`barbered_short` = these four, `barbered_shag` = shag), which is the only
@@ -203,6 +249,16 @@ CONSTRAINT_RULES: list[dict] = [
          "reason": f"{length} hair is too short to cut into a shag's layers"}
         for length in ("buzzed very short", "very short", "short pixie")
     ],
+    # 0.83.0: barbered_crop, excluded as a WHOLE family at every length from ear
+    # length up. A crew cut is a very short cut by definition; a "chin length bob
+    # crew cut" is not a haircut. Legal at buzzed very short / very short / short
+    # pixie -- the three lengths the crops actually describe.
+    *[
+        {"type": "exclusion", "field": "hair_length", "value": length,
+         "excludes_field": "hair_style", "excludes_values": _BARBERED_CROP_STYLES,
+         "reason": f"{length} hair is far longer than a crew cut or crop describes"}
+        for length in _CROP_IMPOSSIBLE_LENGTHS
+    ],
 
     # Note: the "Natural only" hair scope is enforced during randomization (see
     # _build_option_pool), so randomized hair is always realistic. We do NOT add
@@ -213,10 +269,6 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "requirement", "field": "outfit_style", "value": "athletic",
      "requires_field": "bag", "requires_value": "no bag",
      "reason": "you do not carry a handbag to a workout"},
-    {"type": "exclusion", "field": "outfit_style", "value": "athletic",
-     "excludes_field": "footwear",
-     "excludes_values": ["heels", "loafers", "oxfords", "slippers", "sandals"],
-     "reason": "athletic wear pairs with trainers, not dress shoes"},
     {"type": "exclusion", "field": "outfit_style", "value": "athletic",
      "excludes_field": "necklace",
      "excludes_values": ["pearl strand", "statement necklace", "diamond pendant",
@@ -236,10 +288,6 @@ CONSTRAINT_RULES: list[dict] = [
      "excludes_field": "watch_type", "excludes_values": ["smart watch"],
      "reason": "a sportwatch clashes with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
-     "excludes_field": "footwear",
-     "excludes_values": ["sneakers", "slippers", "bare feet", "sandals"],
-     "reason": "black-tie dress calls for heels or oxfords"},
-    {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "bracelet", "excludes_values": ["leather wrap bracelet", "beaded bracelet"],
      "reason": "formal looks favour fine jewellery over everyday pieces"},
 
@@ -248,10 +296,6 @@ CONSTRAINT_RULES: list[dict] = [
      "excludes_values": ["cat eye sunglasses", "round sunglasses",
                          "baseball cap", "beret"],
      "reason": "playful accessories undercut a formal suit"},
-    {"type": "exclusion", "field": "outfit_style", "value": "business formal",
-     "excludes_field": "footwear",
-     "excludes_values": ["sneakers", "slippers", "bare feet", "sandals"],
-     "reason": "a formal suit calls for dress shoes"},
 
     {"type": "exclusion", "field": "outfit_style", "value": "edgy alternative",
      "excludes_field": "necklace",
@@ -467,6 +511,15 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     "other_jewelry": ["anklet", "body chain", "waist chain"],
     "rings": ["stacked thin bands", "delicate gemstone", "midi ring"],
     "bracelet": ["tennis bracelet", "charm bracelet", "bangle stack"],
+    # 0.83.0. `footwear` is a unisex pool, so feminine-coded shoes could always land on
+    # a random man -- they simply never RENDERED before this revision, which is why the
+    # trim was never needed. Caught in the preview pass: "a monochrome black tailored
+    # suit with a fine-knit shirt and no tie, in kitten heels" on a male subject. Gated
+    # on presentation like the jewellery trims, so a Feminine/"Any" wardrobe on a man
+    # keeps them available -- the whole point of that mechanism. `wedges` / `mules` /
+    # `heels` were in the pool before 0.83.0 and were already landing on men invisibly.
+    "footwear": ["heels", "kitten heels", "wedges", "mules", "ballet flats",
+                 "knee-high boots"],
     "hair_style": [
         "space buns", "pigtails", "high pigtails", "low pigtails", "curled pigtails",
         "braided pigtails", "updo", "French twist",
@@ -486,6 +539,7 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
 # structural/anatomical male defaults and always apply for a male character.
 _PRESENTATION_GATED_FIELDS: frozenset[str] = frozenset({
     "nails", "earrings", "necklace", "other_jewelry", "rings", "bracelet",
+    "footwear",   # 0.83.0 -- a wardrobe choice, not anatomy, so it gates like jewellery
 })
 for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
     CONSTRAINT_RULES.append({
@@ -539,6 +593,8 @@ for _backdrop in _VOID_BACKDROPS:
 # LIGHTING_FAMILIES boundaries wherever possible to keep the post-exclusion draw
 # proportional. See the commentary there for why.
 _ALL_LOCATIONS: list[str] = list(FIELD_DEFINITIONS["location"]["female_options"])
+_ALL_FOOTWEAR: list[str] = list(FIELD_DEFINITIONS["footwear"]["female_options"])
+_ALL_PATTERNS: list[str] = list(FIELD_DEFINITIONS["clothing_pattern"]["female_options"])
 _ALL_LIGHTING: list[str] = list(FIELD_DEFINITIONS["lighting"]["female_options"])
 
 # Void backdrops are indoor, but get the stricter studio-only rule below instead.
@@ -599,7 +655,109 @@ for _tone in sorted(DEEP_SKIN_TONES):
         "reason": f"'peaches and cream' is a pink-white colouring, not a surface "
                   f"quality: it cannot describe {_tone} skin"})
 
-for _loc in _INDOOR_LOCATIONS:
+# 0.83.0 widens this loop from _INDOOR_LOCATIONS to EVERY location, so the same
+# mechanism can carry `stage spotlight from above` -- a fixture that has to be
+# allowlisted at an OUTDOOR place (`outdoor amphitheater`) as well as excluded from
+# indoor places with no rig. For the three indoor-only fixtures an outdoor rule is
+# redundant with the bucket rule above; that is harmless, because the engine unions
+# every firing exclusion on a target.
+# =========================================================================
+# The wardrobe axis (0.83.0): footwear x outfit_style, and palette x pattern
+# =========================================================================
+#
+# `footwear` renders as of 0.83.0. Before that it was drawn and thrown away, so the
+# three rules that existed (athletic / business formal / evening formal) were silently
+# correct and invisible, and the other ELEVEN styles had no rule at all. Turning the
+# field on would immediately have started rendering slippers with a business suit.
+#
+# Those three hand-written rules were replaced by the ALLOWLIST below -- what each
+# style CAN wear rather than what it cannot. Two reasons. The old deny-lists were
+# incomplete in a way that is invisible on inspection (`athletic` denied heels,
+# loafers, oxfords, slippers and sandals but still permitted bare feet, wedges and
+# mules), and a deny-list silently admits every value added later -- the 12 -> 20
+# footwear growth in this same revision would have leaked `kitten heels` into
+# sportswear. An allowlist fails safe: a NEW shoe is excluded from every style until
+# it is deliberately listed, the same safety model as the fixture-lighting allowlists.
+#
+# BIAS: `footwear` is FLAT -- no FIELD_FAMILIES entry, no `weights` map -- so an
+# exclusion re-picks flat-uniform over the survivors. This is the case the 0.82.0
+# "a flat field is where a partial cull is FINE" note exists for; the whole-family
+# rule does not apply.
+FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
+    ("casual", frozenset([
+        'sneakers', 'loafers', 'boots', 'flats', 'sandals', 'ankle boots', 'mules',
+        'chelsea boots', 'combat boots', 'ballet flats', 'high-top sneakers',
+        'espadrilles'])),
+    ("smart casual", frozenset([
+        'sneakers', 'loafers', 'boots', 'heels', 'flats', 'oxfords', 'ankle boots',
+        'wedges', 'mules', 'chelsea boots', 'knee-high boots', 'ballet flats',
+        'derbies', 'kitten heels'])),
+    ("business casual", frozenset([
+        'loafers', 'heels', 'flats', 'oxfords', 'ankle boots', 'wedges', 'mules',
+        'chelsea boots', 'ballet flats', 'derbies', 'kitten heels'])),
+    ("business formal", frozenset([
+        'loafers', 'heels', 'oxfords', 'derbies', 'kitten heels', 'ankle boots'])),
+    ("evening formal", frozenset(['heels', 'oxfords', 'derbies', 'kitten heels'])),
+    ("cocktail semi-formal", frozenset([
+        'heels', 'oxfords', 'loafers', 'ankle boots', 'mules', 'derbies',
+        'kitten heels', 'knee-high boots'])),
+    ("streetwear", frozenset([
+        'sneakers', 'boots', 'ankle boots', 'combat boots', 'high-top sneakers',
+        'chelsea boots', 'mules'])),
+    ("bohemian", frozenset([
+        'sandals', 'boots', 'flats', 'ankle boots', 'wedges', 'mules', 'bare feet',
+        'espadrilles', 'ballet flats', 'knee-high boots'])),
+    ("athletic", frozenset(['sneakers', 'high-top sneakers'])),
+    ("resort vacation", frozenset([
+        'sandals', 'flats', 'wedges', 'mules', 'bare feet', 'espadrilles',
+        'sneakers', 'ballet flats'])),
+    ("edgy alternative", frozenset([
+        'boots', 'combat boots', 'ankle boots', 'chelsea boots', 'knee-high boots',
+        'heels', 'sneakers', 'high-top sneakers'])),
+    ("preppy", frozenset([
+        'loafers', 'oxfords', 'sneakers', 'flats', 'ankle boots', 'chelsea boots',
+        'ballet flats', 'derbies', 'espadrilles', 'kitten heels'])),
+    ("vintage retro", frozenset([
+        'loafers', 'oxfords', 'heels', 'flats', 'ankle boots', 'wedges', 'mules',
+        'derbies', 'kitten heels', 'ballet flats', 'chelsea boots'])),
+    ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats'])),
+])
+
+for _style, _allowed in FOOTWEAR_BY_STYLE.items():
+    _banned = sorted(set(_ALL_FOOTWEAR) - _allowed)
+    if _banned:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "outfit_style", "value": _style,
+            "excludes_field": "footwear", "excludes_values": _banned,
+            "reason": f"these shoes do not belong with {_style} dress"})
+
+# `mixed prints` is a PATTERN claim living in the colour field (a pre-existing wart, and
+# not worth a breaking rename), while `all black` / `all white` / `black monochrome` /
+# `white and cream` are MONOCHROME claims. Either way, composing them with a second,
+# multi-colour pattern renders a contradiction the preview caught immediately: "an
+# all-white quilted field jacket ... in denim" and "a mixed-print gown ... in a floral
+# print". Both fields are flat, so these culls re-pick flat-uniform.
+#
+# `stripes` and `subtle texture` are deliberately still allowed on a monochrome palette:
+# tonal stripes and a self-coloured texture are real, and an all-black pinstripe is a
+# staple. `solid` is allowed everywhere by construction.
+_MULTICOLOUR_PATTERNS: list[str] = [
+    'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'plaid',
+]
+for _colour in ('all black', 'all white', 'black monochrome', 'white and cream'):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "clothing_color", "value": _colour,
+        "excludes_field": "clothing_pattern", "excludes_values": _MULTICOLOUR_PATTERNS,
+        "reason": f"'{_colour}' is a monochrome palette: a multi-colour print "
+                  f"contradicts it outright"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "clothing_color", "value": 'mixed prints',
+    "excludes_field": "clothing_pattern",
+    "excludes_values": sorted(set(_ALL_PATTERNS) - {'solid'}),
+    "reason": "'mixed prints' already states the pattern; naming a second one "
+              "renders 'a mixed-print gown in a floral print'"})
+
+for _loc in _ALL_LOCATIONS:
     _absent_fixtures = sorted(
         _light for _light, _places in FIXTURE_LIGHTING.items() if _loc not in _places
     )
@@ -607,5 +765,5 @@ for _loc in _INDOOR_LOCATIONS:
         CONSTRAINT_RULES.append({
             "type": "exclusion", "field": "location", "value": _loc,
             "excludes_field": "lighting", "excludes_values": _absent_fixtures,
-            "reason": f"'{_loc}' has no such fixture: a hearth, a television or a "
-                      f"stained-glass window has to actually be in the building"})
+            "reason": f"'{_loc}' has no such fixture: a hearth, a television, a "
+                      f"stained-glass window or a stage rig has to actually be there"})

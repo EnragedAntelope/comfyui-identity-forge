@@ -663,6 +663,11 @@ Both were scoped at 0.77.0 after the maintainer asked whether more hairstyles or
 styles should be on offer. Both were **deliberately not built**. The reasoning is worth keeping,
 because the *shape* of the objection generalises to any future field-pool expansion.
 
+**`outfit_style` remains DEFERRED as a pool, and the register-vs-theme reasoning below still
+governs it — but 0.83.0 solved the underlying "not enough clothing variety" complaint a
+different way, by making `clothing_color` / `clothing_pattern` / `footwear` actually render and
+doubling the garment corpus. The pool stayed at 14. See "The wardrobe axis" above.**
+
 **`outfit_style` is a register axis, not a theme axis.** Its 14 values answer *how dressed up,
 for what occasion* — `casual` → `business formal` → `athletic` → `loungewear`. The obvious
 additions (goth, cottagecore, western, punk, y2k, utility/workwear) are **subculture and era
@@ -687,6 +692,11 @@ objection applies to half the list.** Splitting the candidates is the useful par
   adds only `comb over` and `mullet`** over the female pool, both of which are *more* era-coded
   than anything in this group — so masculine styling is simultaneously thin and skewed toward
   the dated end. This is the half worth revisiting.
+  **BUILT: all five at 0.81.0, plus `crew cut` / `textured crop` / `high-top fade` at 0.83.0**
+  (see the `barbered_crop` note above). The era/subculture half of this list is still
+  **rejected** and the reasoning still stands — 0.83.0 re-affirmed it while adding the
+  theme-free residue the wildcard sources surfaced (`milkmaid braids`, `rope braid`,
+  `braided bun`, `two-strand twists`, `bubble ponytail`, `micro bangs`, `hair puff`).
 
 If the second group is ever built, each value must be slotted into a `HAIR_STYLE_FAMILIES`
 family **and** into the `data/constraints.py` length lists (`_LONG_HAIR_STYLES`, the pixie
@@ -1035,6 +1045,243 @@ Note this contradiction was already recorded in the `Ka D'Argo` entry comment, b
 fixed *per entry* by the body-paint suppression. **A per-entry workaround for a cross-field
 contradiction is a signal that the general rule is missing.**
 
+### The worn-item de-duplication rule — what `_HAT_RE` was a special case of (0.83.0)
+
+The signal above was acted on. The engine had exactly **one** worn-item rule: `_HAT_RE`,
+*"if the outfit text names headwear, drop the randomized hat."* Built for hats, never
+generalised. Meanwhile **28 cosplayers hand-pinned `"necklace": "no necklace"`** because
+their costume names a neck ornament, and the base node's own outfit corpus had the same bug
+with no pins at all — 19 of its 180 strings named earrings, a necklace, rings, bangles or a
+bag while the engine drew those fields independently. `Boa Hancock` and `Shirahoshi` were
+measurably shipping two sets of earrings.
+
+`WORN_ITEM_RES` in `data/fields.py` generalises it to six fields (`necklace`, `earrings`,
+`rings`, `bracelet`, `other_jewelry`, `bag`). Lock-respecting, no RNG consumed, and it drops
+**only the named field** — a character whose costume names earrings can still get a necklace.
+
+Three things worth keeping:
+
+- **This does NOT reopen the closed 0.66.0 decision.** That asked *may jewellery be worn
+  over a costume* (answered yes, do not re-flag). This asks *does the costume text already
+  name this item*. Different question, different answer.
+- **The 28 pins stay.** They are explicit and cost nothing, and removing one would add an
+  RNG draw where a lock used to skip it, drifting that character's seed. They are now
+  belt-and-braces; the general rule is what catches the entry that forgets.
+- **Do not overclaim the scope.** `bag` is *already* dropped for every cosplayer/archetype
+  by `_COSTUME_SUPPRESSED_EXTRAS`, so the `bag` pattern only bites on an engine-generated
+  outfit. The five jewellery fields are what this genuinely fixes on the roster (~169
+  entries), because jewellery is deliberately absent from that set.
+
+The regexes are tuned against real roster text and the traps are load-bearing —
+`rings` must not fire on "earrings" (no word boundary inside the word) nor on a piercing
+("brow ring", "lip ring") nor a non-jewellery ring ("tire ring", "neck ring", "arm ring");
+`bracelet` must never match a bare "cuff" ("cuffed chinos", "ear cuff", "arm cuff");
+`earrings` must not fire on garment "studs"; `bag` must not fire on "baggy" or on `clutch`
+as a **verb** ("arms raised to clutch the head"). `WornItemDeduplicationTests` pins every one.
+
+### The wardrobe axis: three shipped widgets that did nothing (0.83.0)
+
+`OUTFIT_DESCRIPTIONS` superseded `footwear`, `clothing_color` and `clothing_pattern` when it
+was added, and **nobody retired them**. In the base node's normal path an outfit is *always*
+generated, and the prose only voiced those three when there was **no** outfit. So for
+releases they were drawn every render, never spoken, and written to the JSON where they
+contradicted the prose:
+
+```
+prose : "She wears an ivory silk blouse with a high waisted skirt suit and slingback pumps."
+json  : footwear "ankle boots" · clothing_color "black monochrome"
+```
+
+Locking one was **worse than a no-op**: it changed nothing visible but removed an RNG draw,
+so five unrelated fields silently moved. The widget looked like it worked.
+
+**The corpus contract.** Every `OUTFIT_DESCRIPTIONS` value is now a *garment phrase* —
+garments and fabrics only, **no leading article**. The engine composes:
+
+```
+{palette_adj} {garment}{pattern_tail}, in {footwear}
+  -> "a jewel-toned satin slip gown with delicate straps, in strappy heels"
+```
+
+`PALETTE_ADJECTIVES` (11) and `PATTERN_TAILS` (10) are explicit per-value maps, and
+`validate_data.py` fails if an option lacks an entry — a missing key would silently drop the
+clause, the exact class of bug being fixed. The corpus grew 180 → 351, each style's
+female/male/unisex bucket doubled in its existing ratio so no style or wardrobe bucket gains
+share. Fabric vocabulary is where "texture" variety lives; no new field was needed.
+
+Details that are easy to get wrong:
+
+- **Every pattern tail uses "in", never "with".** Garment phrases routinely end in their own
+  "with ..." clause, so a "with" tail rendered *"...with delicate straps with a floral
+  print"*. Caught in preview — same class as the 0.82.0 doubled location article.
+- **Order.** Palette is prefixed and the phrase articled *before* the tail is appended, so
+  `_article_if_singular` reads the garment's head noun ("gown"), not the tail's ("print").
+- **A lock beats a guard.** The guards below suppress an *unlocked* axis when the garment
+  already states it. A locked one is voiced anyway (striped denim is a real fabric) — the
+  alternative would leave the locked value in the JSON while omitting it from the prose,
+  putting back the very mismatch this removes.
+- **Hard vs soft contract.** `validate_data` hard-fails on a garment naming **footwear,
+  jewellery or a bag** (a duplicate *item*) and on a leading article. Colour and pattern
+  words are allowed: they are *modifiers*, so "sequined evening gown" or "denim overalls" is
+  a legitimate override, not drift. Measured at 0.83.0: 0.6% of strings state a colour, 4.8%
+  a pattern (nearly all genuinely denim).
+- **`_SHOE_RE` is plural-only for the ambiguous stems.** The first draft matched `oxfords?` /
+  `flats?` / `boots?` and false-positived on five shipped garment phrases ("oxford shirt",
+  "flat-front chinos"), silently deleting their footwear clause. Every `footwear` pool value
+  is plural, so plural-only is both tighter and sufficient.
+
+**Back-compat.** A `user_options.json` "outfits" section holds strings written for the old
+contract (article, baked-in shoes and colours). Four guards — `LEADING_ARTICLE_RE`,
+`SHOE_RE`, `COLOUR_WORD_RE`, `PATTERN_WORD_RE` — each fire *exactly* in the collision case,
+so user data degrades gracefully instead of rendering "a jewel-toned a sleek white EVA suit
+… in loafers". The shipped corpus matches none of them.
+
+**These patterns live in `data/fields.py`, not the node.** They are assertions about *data*,
+and `tests/validate_data.py` must stay free of node-layer imports (it has to run without
+ComfyUI). One source of truth, used by both.
+
+**BIAS: zero drift on the three fields.** They were already drawn in this order from these
+flat pools; making them render consumes no extra RNG and moves no distribution. Only the
+outfit string drifts per seed, because the pool grew.
+
+### `footwear × outfit_style` is an ALLOWLIST, not a deny-list (0.83.0)
+
+Turning `footwear` on activated three hand-written deny-lists (athletic / business formal /
+evening formal) and exposed that the other **eleven** styles had no rule at all. They were
+replaced by `FOOTWEAR_BY_STYLE` — what each style *can* wear. Two reasons, and both
+generalise:
+
+1. The deny-lists were incomplete in a way inspection does not reveal: `athletic` denied
+   heels, loafers, oxfords, slippers and sandals but still permitted **bare feet, wedges and
+   mules**.
+2. A deny-list silently admits every value added later. The 12 → 20 footwear growth in this
+   same revision would have leaked `kitten heels` into sportswear. An allowlist fails safe,
+   the same safety model as the fixture-lighting allowlists.
+
+`footwear`, `clothing_color` and `clothing_pattern` are all flat, so these culls re-pick
+flat-uniform — the case the "a flat field is where a partial cull is FINE" note exists for.
+A `clothing_color × clothing_pattern` rule was added alongside: a monochrome palette
+(`all black` / `all white` / …) rules out multi-colour prints, and `mixed prints` rules out
+naming a second pattern. Both came straight out of preview output.
+
+**Adding a hat or glove to `accessories` has required side-effects.** `_HAT_ACCESSORY_VALUES`
+must gain the hat (its own docstring said so; `GloveAccessoryTests` now enforces it
+mechanically), and gloves need `_GLOVE_ACCESSORY_VALUES` so nails and rings drop for them —
+`_GLOVE_RE` only ever scanned `outfit_description`. `fingerless gloves` is deliberately
+excluded, mirroring `_FINGERLESS_RE`. The glove check runs *after* the costume-extras
+suppression, so a glove that was itself just dropped cannot suppress anything.
+
+### Landmark sub-families: variety without frequency (0.83.0)
+
+`location` shipped 7 named landmarks, 4 inside `urban_outdoor` and 3 inside
+`nature_outdoor`. Adding more straight in would have kept every family share intact — that
+is what family weighting guarantees — while still taking the *famous landmark* concept from
+~11% of urban scenes to ~27%. **That is overweighting a concept even though no family share
+moved: the subtler half of the bias rule.**
+
+So each family was split into base + landmark at a weight proportional to the *original*
+counts, and only the landmark side grew (4 → 17 and 3 → 10, `location` 260 → 280).
+`P(any landmark)` is **exactly unchanged**; `P(a specific landmark)` falls, which is the point.
+
+Weights must stay positive **ints**, so the rescale is forced arithmetic: urban needs
+`20·s/36` integral (`s ≡ 0 mod 9`), nature needs `15·s/41` integral (`s ≡ 0 mod 41`), giving
+**`s = lcm(9,41) = 369`** and a total of `136 × 369 = 50184`. Large, but the same device as
+`hair_style`'s ×105 and `lighting`'s ×6, and `LandmarkFamilyTests` pins it.
+
+Two hard requirements for any new landmark:
+
+- **It must be added to `OUTDOOR_LOCATIONS`.** Indoor is *derived*
+  (`all − OUTDOOR_LOCATIONS − STUDIO_BACKDROPS`), so omitting it would silently classify the
+  Eiffel Tower as an interior and let it draw a hearth.
+- **A bare proper noun must be declared in `_NO_ARTICLE_LOCATIONS`** or it renders "set in a
+  Times Square". This cannot be derived: of the four capital-initial locations, `Trafalgar
+  Square` / `Times Square` / `Shibuya Crossing` are proper-noun *places* while `French
+  bistro with mirrored walls`, `Buddhist temple hall` and `Shinto shrine interior` open with
+  a capitalised *adjective* and still need "a". `LocationArticleTests` now asserts every
+  capital-initial location is declared in one bucket or the other, so adding one without
+  deciding fails the suite — deliberate friction, like `PoseGrammarTests`' opener allowlist.
+
+**Indoor landmarks are deliberately still open.** `civic_institutional` and `transit_travel`
+have *zero* landmarks, so there is nothing to split from and any add would be a frequency
+increase from zero, breaking the guarantee the whole device rests on. That needs its own
+decision, not a quiet append.
+
+### `stage spotlight` is a fixture, the other ten studio values are not (0.83.0)
+
+Measured: studio-family lighting landed on outdoor locations in **25.7%** of outdoor renders.
+Most of that is fine and was left alone — `Rembrandt`, `butterfly`, `split`, `soft-box`,
+`chiaroscuro`, `low key` and `three-point` describe the *shape of light on a face* and are
+achievable on location with a reflector. Only `stage spotlight from above` claims a physical
+**rig**, which is the `artificial_hearth` class from 0.82.0. It became its own single-variant
+family (`studio` 48 → `studio_shape` 480 + `studio_stage` 48, every lighting weight ×11,
+total `228 × 11 = 2508`) with a `STAGE_LOCATIONS` allowlist.
+
+The fixture loop in `constraints.py` was widened from `_INDOOR_LOCATIONS` to **every**
+location, so one mechanism can allowlist a rig at an *outdoor* place (`outdoor
+amphitheater`) while excluding it from a forest trail. For the three indoor-only fixtures the
+extra outdoor rule is redundant with the bucket rule — harmless, since the engine unions
+every firing exclusion. The four studio backdrops **must** be in `STAGE_LOCATIONS`:
+`studio_stage` is carved out of the family `VOID_ALLOWED_LIGHTING` admits, so omitting them
+would strip a void backdrop of a value it legitimately had.
+
+### `expression` under a full mask, and why it got its own block (0.83.0)
+
+A masked subject rendered *"He wears a plush yordle suit. … **His expression is steely.**"*
+for every release. The cause was mechanical, never a decision: `covers_face` drops the
+**Face / Hair / Makeup** groups, and `expression` lives in **Setting & Shot**.
+
+Fixed via `_CONCEALED_FACE_SOFT_FIELDS`, a **separate, lock-respecting** block. The existing
+group block ignores locks deliberately; making *that* lock-respecting would change output for
+~200 masked entries wherever a user locked a Face/Hair/Makeup field, which is its own
+decision and not a drive-by. A newly suppressed field instead enters with the house
+locked-wins semantics, matching the bald and full-shell blocks. `mood` stays — it describes
+the scene, not the face.
+
+### `barbered_crop`: the first family priced below the per-variant rate (0.83.0)
+
+Seven new hairstyles slotted into existing families (`milkmaid braids`, `rope braid`,
+`braided bun` → `braid_long`; `two-strand twists` → `braid_short`; `bubble ponytail` →
+`ponytail`; `micro bangs` → `bangs`; `hair puff` → `texture`). Those are **free**: a new
+variant subdivides its family and the field-level distribution does not move.
+
+`crew cut` / `textured crop` / `high-top fade` could **not** join `barbered_short`
+(fade/undercut/pompadour/quiff) because their **length gate is the mirror image**: a crop is
+legal at a buzz and impossible from ear length up, where a fade or quiff is legal at a buzz
+and only fails past the shoulders. Culling part of `barbered_short` at mid lengths would
+concentrate its frozen weight on the survivors — the 0.64.0 trap. So they need their own
+family, and a new family enlarges the denominator: **every other family loses 1.96% relative
+share**.
+
+Weight **70** (×2 = 140 after the rescale below) is deliberately *below* convention. The
+house rule is weight ∝ original variant count, and this field's rate is 3500/47 ≈ 74.5, so
+three crops "should" carry 224 and dilute everything by 6.0%. 70 is the smallest unit the
+field already uses (`barbered_shag`, `loose_combover`); it buys the smaller dilution at the
+price of each crop sitting ~3.2× rarer than an average value — which is *wanted*, since these
+are specific looks and rarity stops the base node reading as barbered.
+**Do not "fix" this in a weights audit**; `test_the_deliberately_rare_family_is_rare_on_purpose`
+pins it and explains why.
+
+Two traps this hit, both already documented and both hit anyway:
+
+1. **Adding into a split family breaks the split's own arithmetic** (the 0.82.0 pose trap).
+   Adding 3 to `braid_long` and 1 to `braid_short` made a `braid_short` variant 8.4% rarer
+   than a `braid_long` sibling. Repriced to 1485/405 over 11/3 variants — both exactly 135
+   per variant — which forced a **×2 rescale of every `hair_style` family** to stay integral.
+   Total 7140.
+2. **A length list omission is a partial cull.** `hair puff` was first left out of
+   `_LONG_HAIR_STYLES` on the reasoning "a puff is a short-coil look like afro and
+   twist-out" — but *both of those are in the list*, so the omission culled 2 of 3 in the
+   `texture` family at buzz lengths and would have dumped its full weight on the puff alone.
+   Same for `micro bangs` and the bangs buzz rule. This is the `cornrows` lesson (0.72.0)
+   recurring: **check the family, not just the physical plausibility.**
+
+`HairStyleFamilyTests::test_split_preserves_every_pre_split_family_share` was **restated** at
+0.83.0. It used to pin each pre-existing *value* to a fixed probability, which made the pool
+size part of the contract, so it failed on merely *adding* a hairstyle — for the wrong
+reason. That is 0.82.0's `PoseFamilyTests` trap, and the fix is the same: assert the
+guarantee the mechanism actually makes (family share × one uniform dilution, plus sub-family
+proportionality), never a frozen per-value number.
+
 ## Gotchas cheat-sheet
 
 - **An extreme scale needs the SCENE, not just the prose (0.79.0).** "Colossal and fifty feet
@@ -1083,12 +1330,16 @@ contradiction is a signal that the general rule is missing.**
   plate armour. The data is normalised to `armor` (enforced by `FullCoverSpellingTests`) and
   the regex now accepts `armou?r` everywhere, because `user_options.json` is free text that no
   validator can reach.
-- **A costume does NOT suppress jewellery (0.78.0).** `_COSTUME_SUPPRESSED_EXTRAS` covers
+- **A costume does NOT suppress jewellery, but naming one no longer doubles it
+  (0.78.0, fixed generally at 0.83.0).** `_COSTUME_SUPPRESSED_EXTRAS` still covers
   `bag` / `watch_type` / `hair_accessory` / `accessories` only — deliberately, since earrings
-  over a costume are coherent. So a costume string that *names* a necklace or earrings renders
-  a second, different set alongside it. Either stay off those nouns in costume prose, or pin
-  the field to its absent value in `signature` (`"necklace": "no necklace"`). Same shape as the
-  0.63.0 Charlotte Smoothie rule for any prose attribute shadowing a real field.
+  over a costume are coherent (the closed 0.66.0 decision). What changed is the *other* half:
+  a costume string that **names** a necklace, earrings, a ring, a bangle, a brooch or a bag no
+  longer renders a second, different one, because `WORN_ITEM_RES` drops the matching field.
+  Pinning `"necklace": "no necklace"` in `signature` is therefore **belt-and-braces, not a
+  requirement** — the 28 entries that do it keep it (removing a pin adds an RNG draw and
+  drifts that character's seed), but a new entry does not need it. Still worth wording costume
+  prose deliberately: the general rule is regex-based, so an unusual synonym can slip past it.
 - **Face colour and body colour cannot differ through the skin anchor alone (0.78.0).** The
   anchor plants one colour and `_format_prose` restates it on the face and hands, so Krusty's
   white greasepaint face over a yellow body rendered as a flat contradiction. The explicit
@@ -1329,6 +1580,9 @@ contradiction is a signal that the general rule is missing.**
   would double against a randomized one — the wart the gotchas warn about for `accessories` /
   `bag` / `hair_accessory`. Her butterfly hair clip *is* included, because `hair_accessory` **is**
   costume-suppressed and so cannot double. Worth checking per-item, not per-costume.
+  **Superseded at 0.83.0:** `WORN_ITEM_RES` now drops `bracelet` when the costume names one, so
+  the lotus bracelet could be written in. Left out anyway — this is a content call, not a bug,
+  and rewording a shipped costume changes that character's render for no functional gain.
 - **Costume prose must not hardcode a gendered pronoun (0.72.0).** `costume` is voiced verbatim
   after "She/He wears …", and the *person's* gender is the IdentityForge widget, not the
   character's — that is the whole basis of crossplay. Ten entries carried `her`/`his`/`she`/`he`

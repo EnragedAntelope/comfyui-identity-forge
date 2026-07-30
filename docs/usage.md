@@ -81,7 +81,17 @@ optional sections:
   `hair_color_scope`, `location_setting`) and the garment-coupled `outfit_style` /
   `outfit_description`.
 - **`outfits`** adds a whole new `outfit_style`, registering its garment text *and* the dropdown
-  entry together (so the style can never be picked without clothing). Buckets are `unisex`
+  entry together (so the style can never be picked without clothing).
+
+  **Write garment text as a garment phrase: garments and fabrics only, no leading article, and
+  no shoes, colour, jewellery or bag.** The engine composes the palette, the pattern and the
+  footwear onto it from their own fields — `"satin slip gown with delicate straps"` renders as
+  *"a jewel-toned satin slip gown with delicate straps, in strappy heels"*. Strings written the
+  old way (with an article and their own shoes) still work: the engine detects what a string
+  already states and skips that clause rather than doubling up. They simply will not gain the
+  new colour/pattern/footwear variety until reworded.
+
+  Buckets are `unisex`
   (always eligible) plus `female` / `male`, chosen by the `wardrobe` control; any subset works.
 - **`archetypes`** adds presets to the Archetype node (same `{field: value}` shape as the
   built-ins; `outfit_description` may use `{slot}` placeholders).
@@ -116,7 +126,7 @@ to check that your custom field values are valid options.
 | Hair | colour, length, texture, style, part, highlights, facial hair, accessory |
 | Makeup | style, eyeshadow, eyeliner, lashes, lips, blush, brows, contour, highlight, finish |
 | Jewelry & Nails | earrings, necklace, rings, bracelet, watch, other jewellery, piercings, nails |
-| Clothing | outfit style (a full outfit), footwear, colour, pattern, bag, accessories |
+| Clothing | outfit style (which picks a garment set), footwear, colour palette, pattern, bag, accessories — the palette, pattern and shoes are composed onto the garment, so locking any of them changes the outfit |
 | Setting & Shot | expression, pose, location (indoor/outdoor), lighting, season, framing, mood |
 
 ## Example

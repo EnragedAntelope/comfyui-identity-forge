@@ -22,6 +22,7 @@ if str(ROOT) not in sys.path:
 
 from data.fields import (
     FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
+    PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES, SHOE_RE, LEADING_ARTICLE_RE,
     ETHNICITY_REGION, STUDIO_BACKDROPS,
 )
 from data.constraints import CONSTRAINT_RULES
@@ -232,6 +233,63 @@ def validate() -> list[str]:
             available = len(buckets[bucket]) + len(buckets["unisex"])
             if available < 4:
                 errors.append(f"outfit style '{style}' ({bucket}): only {available} options")
+
+    # --- the 0.83.0 garment-only corpus contract ---------------------
+    # The three Clothing widgets (footwear / clothing_color / clothing_pattern) were
+    # drawn every render and never voiced, because OUTFIT_DESCRIPTIONS superseded them
+    # and nobody retired them. They now COMPOSE with the generated outfit, which only
+    # works while every shipped garment phrase leaves those axes to their own fields.
+    #
+    # Enforced here so the corpus cannot drift back. HARD rules only -- the axes with a
+    # dedicated field that would otherwise render a DUPLICATE ITEM:
+    #   * footwear   -> "gown ... and slingback pumps, in ankle boots"
+    #   * jewellery  -> two necklaces, two pairs of earrings
+    #   * bag        -> two bags
+    #   * article    -> "a jewel-toned a satin slip gown"
+    #
+    # Colour and pattern words are deliberately NOT hard errors. They are MODIFIERS, not
+    # items, so a garment naming its own is a legitimate override rather than a
+    # duplicate -- "sequined evening gown", "denim overalls", the white bow tie of
+    # white-tie dress. The engine's guards suppress that clause and pop the field, which
+    # keeps the JSON honest. Measured at 0.83.0: 0.6% of strings state a colour and 4.8%
+    # a pattern, nearly all of the latter being genuinely denim garments.
+    for style, buckets in OUTFIT_DESCRIPTIONS.items():
+        if style in USER_ADDED_OUTFIT_STYLES:
+            continue        # user strings keep the old contract; guards handle them
+        for bucket, items in buckets.items():
+            for item in items:
+                where = f"outfit '{style}' ({bucket}) {item!r}"
+                if not isinstance(item, str) or not item.strip():
+                    errors.append(f"{where}: empty garment phrase")
+                    continue
+                if not item.isascii():
+                    errors.append(f"{where}: must be plain ASCII")
+                if LEADING_ARTICLE_RE.match(item):
+                    errors.append(f"{where}: must NOT carry a leading article "
+                                  f"(the engine articles the composed phrase)")
+                if item != item.strip() or item.endswith((".", ",")):
+                    errors.append(f"{where}: no surrounding whitespace or trailing punctuation")
+                shoe = SHOE_RE.search(item)
+                if shoe:
+                    errors.append(f"{where}: names footwear ({shoe.group(0)!r}); the "
+                                  f"`footwear` field owns that axis")
+                for field, pattern in WORN_ITEM_RES.items():
+                    hit = pattern.search(item)
+                    if hit:
+                        errors.append(f"{where}: names a worn item ({hit.group(0)!r}); "
+                                      f"the `{field}` field owns that axis")
+
+    # Every palette / pattern option must have a phrasing entry, or the composed prose
+    # silently drops that clause -- the exact class of bug this phase exists to kill.
+    for field, table, label in (("clothing_color", PALETTE_ADJECTIVES, "PALETTE_ADJECTIVES"),
+                                ("clothing_pattern", PATTERN_TAILS, "PATTERN_TAILS")):
+        options = set(FIELD_DEFINITIONS.get(field, {}).get("female_options", []))
+        missing = sorted(options - set(table))
+        if missing:
+            errors.append(f"{label} is missing an entry for {missing}")
+        stale = sorted(set(table) - options)
+        if stale:
+            errors.append(f"{label} names non-options {stale}")
 
     # --- constraints: structure AND value validity -------------------
     if len(CONSTRAINT_RULES) < 15:

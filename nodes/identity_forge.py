@@ -32,6 +32,8 @@ try:
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
+        PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
+        SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
     from ..data.constraints import CONSTRAINT_RULES
 except ImportError:  # pragma: no cover — standalone/test context
@@ -39,6 +41,8 @@ except ImportError:  # pragma: no cover — standalone/test context
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
+        PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
+        SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
     from data.constraints import CONSTRAINT_RULES
 
@@ -146,6 +150,27 @@ _CONCEALED_FACE_GROUPS: frozenset[str] = frozenset({"Face", "Hair", "Makeup"})
 #: Individual head-worn fields (outside the above groups) a full mask also hides.
 _CONCEALED_FACE_FIELDS: frozenset[str] = frozenset({"earrings", "piercings"})
 
+#: Fields a full mask hides that are dropped **only when not explicitly locked** (0.83.0).
+#:
+#: ``expression`` is the case this exists for. It lives in ``Setting & Shot``, not in
+#: ``_CONCEALED_FACE_GROUPS``, so for every release a masked character has been rendering
+#: "He wears a plush yordle suit. He is standing with arms crossed. **His expression is
+#: steely.**" — a facial expression behind a moulded head. That was mechanical, never a
+#: decision.
+#:
+#: **Why this is a separate set rather than a line added to ``_CONCEALED_FACE_FIELDS``:**
+#: the group/field block above drops unconditionally, ignoring locks. Changing *that* to
+#: respect locks would alter output for ~200 masked entries wherever a user locked a
+#: Face/Hair/Makeup field, which is its own decision and not a drive-by. A newly
+#: suppressed field instead enters with the house "locked-wins" semantics — matching the
+#: bald (:data:`_BALD_SCALP_FIELDS`) and full-shell
+#: (:data:`_CONCEALED_SHELL_SKIN_FIELDS`) blocks, which both honour a lock.
+#:
+#: ``mood`` deliberately stays: it describes the scene's atmosphere, not the face, and
+#: reads fine over a mask. ``smile_type`` needs no entry — it is a Face field and the
+#: group block already drops it.
+_CONCEALED_FACE_SOFT_FIELDS: frozenset[str] = frozenset({"expression"})
+
 #: Field groups suppressed when a cosplayer sets ``covers_body`` — a full hard
 #: suit / armour / robot shell / exoskeleton leaves no bare skin for worn
 #: jewellery or nails, so a randomized necklace/bracelet/ring/polish would only
@@ -240,6 +265,21 @@ _HAT_RE = re.compile(
 )
 _HAT_ACCESSORY_VALUES: frozenset[str] = frozenset({
     "wide brim sun hat", "baseball cap", "beret", "woven hat",
+    # 0.83.0 additions to the accessories pool. Keeping this in sync is mandatory --
+    # the docstring above says so, and a missed entry means that hat can stack on a
+    # hooded or helmeted outfit. ``AccessoryHatSyncTests`` now enforces it mechanically
+    # rather than relying on someone reading the comment.
+    "flat cap", "bucket hat", "wool beanie",
+})
+
+#: ``accessories`` values that cover the hands (0.83.0). ``_GLOVE_RE`` has always scanned
+#: ``outfit_description``, but gloves became drawable from the ``accessories`` field in
+#: 0.83.0, and a randomized glove there hides the fingers exactly the same way — so nails
+#: and rings have to be dropped for it too, or polish renders on top of leather.
+#: ``fingerless gloves`` is deliberately NOT here: it exposes the fingers, the same
+#: carve-out ``_FINGERLESS_RE`` makes for costume text.
+_GLOVE_ACCESSORY_VALUES: frozenset[str] = frozenset({
+    "leather gloves", "long opera gloves",
 })
 
 #: Costume phrases that mean the whole body is encased in a hard shell — a robot /
@@ -277,6 +317,12 @@ _FULL_COVER_RE = re.compile(
 _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
     "bag", "watch_type", "hair_accessory", "accessories",
 })
+
+#: ``footwear`` values that need a whole replacement clause rather than the default
+#: "in <value>" -- "in bare feet" is clumsy where "barefoot" is idiomatic, and it is an
+#: adverb, so it takes no preposition at all. Keyed on the pool value so the option list
+#: is untouched (removing a shipped combo value is a soft break).
+_FOOTWEAR_CLAUSES: dict[str, str] = {"bare feet": "barefoot"}
 
 #: Garments with neither pockets nor a collar -- swimwear, a leotard / bodysuit, a
 #: gown, a toga. The two ``GARMENT_DEPENDENT_POSES`` ("hands in pockets", "touching
@@ -503,7 +549,19 @@ def _an(value: str, noun: str = "") -> str:
 #: cannot be detected from the string -- "Buddhist temple hall" and "French bistro
 #: with mirrored walls" are also capitalised and DO want "a". Kept as an explicit
 #: list because the distinction is semantic, not orthographic.
-_NO_ARTICLE_LOCATIONS: frozenset[str] = frozenset(['Trafalgar Square'])
+#: Locations that are bare proper nouns: they take NO article and supply none of their
+#: own, so ``_location_clause`` must leave them alone ("set in Times Square").
+#:
+#: This has to be a hand-maintained list and cannot be derived. Four locations start with
+#: a capital and they split two ways that no mechanical rule tells apart: these are
+#: proper-noun PLACES, while `French bistro with mirrored walls`, `Buddhist temple hall`
+#: and `Shinto shrine interior` open with a capitalised *adjective* and still need "a".
+#: ``LocationArticleTests`` therefore asserts every capital-initial location is declared
+#: in one bucket or the other, so a new one fails the suite until it is classified —
+#: deliberate friction, the same device as ``PoseGrammarTests``' opener allowlist.
+_NO_ARTICLE_LOCATIONS: frozenset[str] = frozenset([
+    'Trafalgar Square', 'Times Square', 'Shibuya Crossing',
+])
 
 
 def _location_clause(value: str) -> str:
@@ -1284,6 +1342,78 @@ def _resolve_outfit_description(
     return rng.choice(pool) if pool else ""
 
 
+def _compose_outfit_clause(
+    garment: str, resolved: dict[str, str], locked_clean: set[str]
+) -> str:
+    """Compose the generated outfit with its palette, pattern and footwear (0.83.0).
+
+    ``garment`` is a garment phrase from ``OUTFIT_DESCRIPTIONS`` — garments and fabrics
+    only, no leading article. Returns the finished clause for the "wears ..." slot, e.g.
+    ``"a jewel-toned satin slip gown with delicate straps, in strappy heels"``.
+
+    **Mutates ``resolved``**: any axis suppressed by a guard is popped, so ``prompt_json``
+    can never disagree with ``prompt_text`` again — that mismatch is the defect this
+    whole phase exists to fix. An explicitly locked field is never popped.
+
+    Order matters. The palette adjective is prefixed and the phrase articled *before* the
+    pattern tail is appended, so ``_article_if_singular`` reads the garment's head noun
+    ("gown") rather than the tail's ("print").
+
+    Called only for an outfit the ENGINE generated. A supplied costume (cosplayer /
+    archetype / user-typed) drops all three fields instead — that boundary is what keeps
+    this change non-breaking for the whole roster.
+    """
+    def _wanted(field: str, guard_fired: bool) -> str | None:
+        """The value to voice for ``field``, or ``None`` after suppressing it.
+
+        **A lock beats a guard.** Everywhere else in this engine an explicit lock survives
+        suppression, and here the alternative is not merely inconsistent — skipping the
+        clause while leaving the locked value in ``resolved`` would put the JSON back in
+        disagreement with the prose, which is the exact defect this phase removes. So a
+        locked field is voiced even when the garment already states that axis (striped
+        denim is a real fabric), and only an UNLOCKED value yields to the garment.
+        """
+        value = resolved.get(field)
+        if field in locked_clean:
+            return value if value and not _is_absent(value) else None
+        if guard_fired:
+            resolved.pop(field, None)
+            return None
+        return value if value and not _is_absent(value) else None
+
+    phrase = LEADING_ARTICLE_RE.sub("", garment).strip() or garment
+
+    # --- palette ------------------------------------------------------------------
+    colour = _wanted("clothing_color", bool(COLOUR_WORD_RE.search(phrase)))
+    if colour:
+        adjective = PALETTE_ADJECTIVES.get(colour)
+        if adjective:
+            phrase = f"{adjective} {phrase}"
+        else:                    # unmapped value: say nothing rather than guess
+            resolved.pop("clothing_color", None)
+
+    phrase = _article_if_singular(phrase)
+
+    # --- pattern ------------------------------------------------------------------
+    pattern = _wanted("clothing_pattern", bool(PATTERN_WORD_RE.search(phrase)))
+    if pattern:
+        tail = PATTERN_TAILS.get(pattern)
+        if tail:
+            phrase += tail
+        elif tail is None:       # unmapped value
+            resolved.pop("clothing_pattern", None)
+        # A mapped-but-EMPTY tail ("solid") is deliberate silence and the field stays:
+        # "solid" is true of the garment, it just does not need saying.
+
+    # --- footwear -----------------------------------------------------------------
+    shoes = _wanted("footwear", bool(SHOE_RE.search(phrase)))
+    if shoes:
+        override = _FOOTWEAR_CLAUSES.get(shoes)
+        phrase += f", {override}" if override else f", in {shoes}"
+
+    return phrase
+
+
 # ===========================================================================
 # Output formatting
 # ===========================================================================
@@ -1612,7 +1742,23 @@ def _format_prose(
     if scene:
         sentences.append(_join(scene) if len(scene) > 1 else scene[0])
 
-    text = ". ".join(s.strip() for s in sentences if s.strip())
+    # Capitalize each sentence's first letter (0.83.0). The join has always been a plain
+    # ". " and relied on every sentence opening with a pronoun or possessive -- which held
+    # only by luck. Each scene element after the first is a lowercase fragment ("set in",
+    # "under", "during", "the framing is", "with a ... mood"), so whenever `expression`
+    # was absent the whole scene sentence rendered lowercase:
+    #
+    #     "He is standing with feet planted wide. set in a retro diner-style kitchen, ..."
+    #
+    # This is LATENT AND PRE-0.83.0 -- locking `expression` to "None" reproduces it in
+    # every prior release. Suppressing `expression` under a full mask merely made it
+    # common (~200 masked entries) instead of rare, and the preview pass caught it.
+    # Fixed at the join so the whole CLASS is closed rather than the one instance: any
+    # future field that opens a sentence is covered. Prose-only, no RNG, and a no-op for
+    # every sentence that already began with a capital.
+    text = ". ".join(
+        (s[0].upper() + s[1:]) for s in (s.strip() for s in sentences) if s
+    )
     text = (text + ".") if text else ""
     if cosplay_label and text:
         return f"Cosplaying as {cosplay_label}: {text[0].lower() + text[1:]}"
@@ -1949,8 +2095,13 @@ def generate_character(
     # Drop them when a costume is set; the prose already omits them in that case.
     # When no costume is supplied, generate one from the random outfit_style.
     if _is_absent(resolved.get("outfit_description")):
-        resolved["outfit_description"] = _resolve_outfit_description(
-            resolved, gender, wardrobe, rng
+        # 0.83.0: the generated outfit is a GARMENT phrase, so the palette, pattern and
+        # footwear compose onto it instead of being drawn and thrown away. Mutates
+        # `resolved`, popping any axis a guard suppressed, so the JSON matches the prose.
+        garment = _resolve_outfit_description(resolved, gender, wardrobe, rng)
+        resolved["outfit_description"] = (
+            _compose_outfit_clause(garment, resolved, set(locked_clean))
+            if garment else garment
         )
     else:
         for field in ("outfit_style", "footwear", "clothing_color", "clothing_pattern"):
@@ -1966,10 +2117,6 @@ def generate_character(
     # none of which sit on the fingers, so gloves only suppress nails + the dedicated
     # rings field.
     outfit_text = resolved.get("outfit_description") or ""
-    if _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text):
-        for field in ("nails", "rings"):
-            if field not in locked_clean:
-                resolved.pop(field, None)
 
     # An outfit that already includes headwear can't stack a second hat from the
     # randomized ``accessories`` field ("a top hat … accessorized with wide brim
@@ -1980,6 +2127,19 @@ def generate_character(
             and resolved.get("accessories") in _HAT_ACCESSORY_VALUES
             and "accessories" not in locked_clean):
         resolved.pop("accessories", None)
+
+    # The same rule, generalized to every other worn item the costume can already name
+    # (0.83.0). See ``WORN_ITEM_RES``: a costume that spells out a pendant, earrings, a
+    # ring, a bangle, a brooch or a bag must not have a second one bolted on by the
+    # randomizer. Costs no RNG (the field is dropped after the fill) and respects an
+    # explicit lock, so a user who deliberately locks a necklace still gets it. Only the
+    # NAMED field is dropped — this is not the 0.66.0 group-level question.
+    for field, pattern in WORN_ITEM_RES.items():
+        if (field in resolved
+                and field not in locked_clean
+                and not _is_absent(resolved.get(field))
+                and pattern.search(outfit_text)):
+            resolved.pop(field, None)
 
     # A provided costume (archetype / cosplayer / a user-typed outfit) is a complete,
     # intentional look, so the engine should not bolt a random accessory *extra* onto
@@ -1992,6 +2152,24 @@ def generate_character(
     # outfit rolls headwear; jewellery stays, governed by the full-shell rule below.)
     if "outfit_description" in locked_clean:
         for field in _COSTUME_SUPPRESSED_EXTRAS:
+            if field not in locked_clean:
+                resolved.pop(field, None)
+
+    # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or ring
+    # would render on top of the glove (the reported bug). Two sources: the resolved
+    # outfit text, and -- since 0.83.0, when gloves joined the pool -- the `accessories`
+    # field. ``_FINGERLESS_RE`` opts out: fingerless gloves expose the fingers, so
+    # nails/rings should still show. A power ring worn OVER the glove (Green Lantern,
+    # Sinestro) is written into the costume prose, not the ``rings`` field, so it survives.
+    # ``other_jewelry`` holds only body pieces (anklet, arm cuff, body chain, ...), none of
+    # which sit on the fingers, so gloves suppress nails + the dedicated rings field only.
+    #
+    # Deliberately placed AFTER the costume-extras suppression above: a locked costume
+    # drops the random `accessories` draw entirely, and suppressing nails for a glove that
+    # was itself just dropped would be over-suppression from a value that never renders.
+    if ((_GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text))
+            or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES):
+        for field in ("nails", "rings"):
             if field not in locked_clean:
                 resolved.pop(field, None)
 
@@ -2039,6 +2217,11 @@ def generate_character(
         for field in list(resolved):
             if (FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_FACE_GROUPS
                     or field in _CONCEALED_FACE_FIELDS):
+                resolved.pop(field, None)
+        # 0.83.0: a facial expression behind a moulded head. Separate, lock-respecting
+        # block -- see _CONCEALED_FACE_SOFT_FIELDS for why it is not folded in above.
+        for field in _CONCEALED_FACE_SOFT_FIELDS:
+            if field not in locked_clean:
                 resolved.pop(field, None)
 
     # A hood / cowl / lekku covers only the scalp while the face shows: drop the Hair

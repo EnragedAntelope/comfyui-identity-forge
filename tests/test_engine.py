@@ -24,6 +24,7 @@ from data.fields import (
     HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
 )
 from data.constraints import CONSTRAINT_RULES
+from data.fields import WORN_ITEM_RES, SHOE_RE, PALETTE_ADJECTIVES, PATTERN_TAILS
 from nodes.identity_forge import (
     generate_character,
     merge_preset_documents,
@@ -39,6 +40,8 @@ from nodes.identity_forge import (
     _SET_ALL_NONE,
     _a,
     _prepend_descriptor,
+    _compose_outfit_clause,
+    _FOOTWEAR_CLAUSES,
     _article_if_singular,
     _format_prose,
 )
@@ -1327,13 +1330,31 @@ class LocationAndPoseTests(unittest.TestCase):
         # as indoor and starts drawing window light on a canyon rim. Nothing caught
         # that before -- the union check in validate_data.py only covers the families
         # against the option list. Pin the two outdoor families to the frozenset.
-        from data.fields import LOCATION_FAMILIES, OUTDOOR_LOCATIONS
-        expected = set(LOCATION_FAMILIES["urban_outdoor"]["variants"]) | set(
-            LOCATION_FAMILIES["nature_outdoor"]["variants"])
+        # 0.83.0: restated from a hardcoded two-family union to a DECLARED set of
+        # outdoor family names, because the landmark split took it from 2 families to 4
+        # and the old form would have to be edited by hand every time. Declaring the
+        # names still fails loudly if a new location family appears unclassified.
+        from data.fields import LOCATION_FAMILIES, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
+        outdoor_families = {"urban_outdoor", "urban_landmark",
+                            "nature_outdoor", "nature_landmark"}
+        studio_families = {"studio"}
+        self.assertTrue(
+            outdoor_families | studio_families <= set(LOCATION_FAMILIES),
+            "a declared location family no longer exists")
+        expected = {v for fam in outdoor_families
+                    for v in LOCATION_FAMILIES[fam]["variants"]}
         self.assertEqual(
             set(OUTDOOR_LOCATIONS), expected,
-            "OUTDOOR_LOCATIONS has drifted from the urban_outdoor / nature_outdoor "
-            "families; missing entries silently become indoor")
+            "OUTDOOR_LOCATIONS has drifted from the outdoor location families; "
+            "missing entries silently become indoor")
+        # Every remaining family must be entirely indoor -- this is what the
+        # `location_setting` scope and the whole lighting bucket argument rest on.
+        for fam, spec in LOCATION_FAMILIES.items():
+            if fam in outdoor_families or fam in studio_families:
+                continue
+            leaked = set(spec["variants"]) & (set(OUTDOOR_LOCATIONS) | set(STUDIO_BACKDROPS))
+            self.assertEqual(leaked, set(),
+                             f"family {fam!r} is meant to be indoor but leaks {leaked}")
 
     def test_no_location_bakes_in_a_time_of_day(self):
         """0.81.0: `time_of_day` was DELETED as a field because `lighting` owns it.
@@ -1377,6 +1398,108 @@ class LocationAndPoseTests(unittest.TestCase):
             self.assertNotIn("They is ", prose)
 
 
+class LandmarkFamilyTests(unittest.TestCase):
+    """0.83.0: landmark variety WITHOUT landmark frequency.
+
+    Adding famous landmarks straight into urban_outdoor / nature_outdoor would have kept
+    the field-level distribution intact (that is what family weighting guarantees) while
+    still taking the *famous landmark* concept from ~11% of urban scenes to ~27%. That is
+    overweighting a concept even though no family share moved -- the subtler half of the
+    bias rule. Splitting each family into base + landmark at a PROPORTIONAL weight and
+    growing only the landmark side buys variety at unchanged frequency.
+
+    Baseline is the 0.82.0 table, hardcoded so a future retune is a deliberate act.
+    """
+
+    #: 0.82.0: family -> (weight, variant count), pre-split.
+    BEFORE = {
+        "domestic": (24, 32), "food_drink": (15, 25), "retail_services": (16, 30),
+        "leisure_fitness": (11, 24), "civic_institutional": (17, 30),
+        "work_industrial": (7, 20), "transit_travel": (7, 18),
+        "urban_outdoor": (20, 36), "nature_outdoor": (15, 41), "studio": (4, 4),
+    }
+    #: The landmark counts the split was priced on -- NOT the current counts, which grow.
+    ORIGINAL_LANDMARKS = {"urban_landmark": 4, "nature_landmark": 3}
+    PARENTS = {
+        "urban_outdoor": "urban_outdoor", "urban_landmark": "urban_outdoor",
+        "nature_outdoor": "nature_outdoor", "nature_landmark": "nature_outdoor",
+    }
+
+    def test_every_family_share_is_unchanged(self):
+        from data.fields import LOCATION_FAMILIES
+        old_total = sum(w for w, _ in self.BEFORE.values())
+        new_total = sum(d["weight"] for d in LOCATION_FAMILIES.values())
+        for fam, spec in LOCATION_FAMILIES.items():
+            parent = self.PARENTS.get(fam, fam)
+            pw, pn = self.BEFORE[parent]
+            if fam in self.PARENTS:
+                # A split half must hold the parent's share x (its original count / pn).
+                own = (self.ORIGINAL_LANDMARKS[fam] if fam in self.ORIGINAL_LANDMARKS
+                       else pn - self.ORIGINAL_LANDMARKS[fam.split("_")[0] + "_landmark"])
+                expected = pw / old_total * own / pn
+            else:
+                expected = pw / old_total
+            self.assertAlmostEqual(
+                spec["weight"] / new_total, expected, places=12,
+                msg=f"family {fam!r} share moved off the 0.82.0 baseline")
+
+    def test_probability_of_any_landmark_is_unchanged(self):
+        """The whole point. Variety went up; frequency did not."""
+        from data.fields import LOCATION_FAMILIES
+        total = sum(d["weight"] for d in LOCATION_FAMILIES.values())
+        old_total = sum(w for w, _ in self.BEFORE.values())
+        for landmark, parent in (("urban_landmark", "urban_outdoor"),
+                                 ("nature_landmark", "nature_outdoor")):
+            pw, pn = self.BEFORE[parent]
+            before = pw / old_total * self.ORIGINAL_LANDMARKS[landmark] / pn
+            after = LOCATION_FAMILIES[landmark]["weight"] / total
+            self.assertAlmostEqual(after, before, places=12,
+                                   msg=f"P({landmark}) moved: {before} -> {after}")
+
+    def test_the_split_is_proportional_to_original_counts(self):
+        from data.fields import LOCATION_FAMILIES
+        for landmark, parent in (("urban_landmark", "urban_outdoor"),
+                                 ("nature_landmark", "nature_outdoor")):
+            nl = self.ORIGINAL_LANDMARKS[landmark]
+            nb = self.BEFORE[parent][1] - nl
+            wl = LOCATION_FAMILIES[landmark]["weight"]
+            wb = LOCATION_FAMILIES[parent]["weight"]
+            self.assertEqual(wb * nl, wl * nb,
+                             f"{landmark} split is not proportional ({wb}:{wl} vs {nb}:{nl})")
+
+    def test_weights_are_integers(self):
+        """validate_data requires positive ints, which is why the rescale is x369."""
+        from data.fields import LOCATION_FAMILIES
+        for fam, spec in LOCATION_FAMILIES.items():
+            self.assertIsInstance(spec["weight"], int, f"{fam} weight is not an int")
+            self.assertGreater(spec["weight"], 0)
+
+    def test_landmarks_grew(self):
+        from data.fields import LOCATION_FAMILIES
+        for landmark in self.ORIGINAL_LANDMARKS:
+            self.assertGreater(len(LOCATION_FAMILIES[landmark]["variants"]),
+                               self.ORIGINAL_LANDMARKS[landmark],
+                               f"{landmark} did not actually gain variety")
+
+    def test_landmarks_are_plain_ascii(self):
+        """user-facing prose and filenames: no accented characters (Zocalo, not Zócalo)."""
+        from data.fields import LOCATION_FAMILIES
+        for landmark in self.ORIGINAL_LANDMARKS:
+            for value in LOCATION_FAMILIES[landmark]["variants"]:
+                self.assertTrue(value.isascii(), f"{value!r} is not plain ASCII")
+
+    def test_indoor_landmarks_are_not_silently_present(self):
+        """Deliberately open: civic_institutional / transit_travel have ZERO landmarks,
+        so there is nothing to split from and any add would be a frequency increase from
+        zero -- breaking the guarantee this whole phase rests on. If indoor landmarks are
+        ever wanted they need their own decision, not a quiet append."""
+        from data.fields import LOCATION_FAMILIES, OUTDOOR_LOCATIONS
+        landmark_values = {v for fam in ("urban_landmark", "nature_landmark")
+                           for v in LOCATION_FAMILIES[fam]["variants"]}
+        self.assertTrue(landmark_values <= set(OUTDOOR_LOCATIONS),
+                        "every landmark must be outdoor; see the docstring")
+
+
 class LocationArticleTests(unittest.TestCase):
     """0.82.0: the "set in ..." slot must not article a value that already has one.
 
@@ -1404,6 +1527,46 @@ class LocationArticleTests(unittest.TestCase):
         }
         for value, expected in cases.items():
             self.assertEqual(_location_clause(value), expected)
+
+    #: Locations opening with a capitalised ADJECTIVE. They look like proper nouns to any
+    #: mechanical rule but still take an article ("a French bistro"). Declared here so the
+    #: test below can prove every capital-initial location was classified deliberately.
+    ARTICLED_CAPITALS = frozenset([
+        'French bistro with mirrored walls', 'Buddhist temple hall',
+        'Shinto shrine interior',
+    ])
+
+    def test_every_capitalised_location_is_classified(self):
+        """0.83.0 deliberate friction. A NEW proper-noun landmark that nobody adds to
+        ``_NO_ARTICLE_LOCATIONS`` would silently ship "set in a Times Square"; the older
+        tests only checked hand-listed cases and could never catch it. This closes that
+        gap: a capital-initial location must be declared either as a bare proper noun or
+        as a capitalised adjective, so adding one without deciding fails the suite."""
+        from nodes.identity_forge import _NO_ARTICLE_LOCATIONS
+        caps = {v for v in FIELD_DEFINITIONS["location"]["female_options"]
+                if v[:1].isupper()}
+        declared = set(_NO_ARTICLE_LOCATIONS) | set(self.ARTICLED_CAPITALS)
+        self.assertEqual(
+            caps - declared, set(),
+            "capital-initial location(s) not classified: add to _NO_ARTICLE_LOCATIONS "
+            "(a bare proper noun) or to ARTICLED_CAPITALS (a capitalised adjective)")
+        self.assertEqual(declared - caps, set(),
+                         "a declared location no longer exists in the pool")
+
+    def test_no_location_renders_a_broken_article(self):
+        """Sweep the LIVE pool, not a hand-picked sample: every rendered clause must
+        avoid a doubled article and must not article a bare proper noun."""
+        from nodes.identity_forge import _location_clause, _NO_ARTICLE_LOCATIONS
+        for value in FIELD_DEFINITIONS["location"]["female_options"]:
+            clause = _location_clause(value)
+            with self.subTest(location=value):
+                self.assertNotRegex(clause, r"^(?:a|an|the)\s+(?:a|an|the)\s",
+                                    f"doubled article: 'set in {clause}'")
+                if value in _NO_ARTICLE_LOCATIONS:
+                    self.assertEqual(clause, value,
+                                     f"proper noun was articled: 'set in {clause}'")
+                self.assertTrue(clause.endswith(value),
+                                f"{value!r} was mangled into {clause!r}")
 
     def test_plural_headed_locations_take_no_article(self):
         # The other half of the same slot bug, older than the landmarks: the pool
@@ -1525,18 +1688,44 @@ class FixtureLightingTests(unittest.TestCase):
                     loc, FIXTURE_LIGHTING[lig],
                     f"{lig!r} drawn in {loc!r}, which has no such fixture (seed {seed})")
 
-    def test_allowlists_name_only_real_indoor_locations(self):
+    #: Fixtures that exist outdoors too, so their allowlist may legitimately name an
+    #: outdoor or backdrop location. 0.83.0: a stage rig is the first such fixture --
+    #: `outdoor amphitheater` is a real outdoor stage, and the four studio backdrops
+    #: must stay because `studio_stage` is carved out of the family VOID_ALLOWED_LIGHTING
+    #: admits. Everything not listed here is an interior object and must stay indoors.
+    OUTDOOR_CAPABLE_FIXTURES = {"stage spotlight from above"}
+
+    def test_allowlist_entries_are_all_real_locations(self):
         # A typo, or a location later renamed/removed, would silently make an
         # allowlist entry dead -- the fixture would then be excluded everywhere.
-        from data.fields import FIXTURE_LIGHTING, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
+        # This half is universal and applies to every fixture, indoor or not.
+        from data.fields import FIXTURE_LIGHTING
         pool = set(FIELD_DEFINITIONS["location"]["female_options"])
         for light, places in FIXTURE_LIGHTING.items():
             self.assertTrue(places, f"{light!r} has an empty allowlist")
             self.assertTrue(places <= pool, f"{light!r} names non-locations: {places - pool}")
+
+    def test_interior_fixtures_stay_indoors(self):
+        """Restated at 0.83.0. The original test asserted this of EVERY fixture, which
+        was an incidental property of the 0.82.0 set (all three were interior objects),
+        not the invariant being protected. A hearth, a television and a stained-glass
+        window are still interior-only; a stage rig is not."""
+        from data.fields import FIXTURE_LIGHTING, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
+        for light, places in FIXTURE_LIGHTING.items():
+            if light in self.OUTDOOR_CAPABLE_FIXTURES:
+                continue
             outdoors = places & (set(OUTDOOR_LOCATIONS) | set(STUDIO_BACKDROPS))
             self.assertEqual(
                 outdoors, set(),
                 f"{light!r} is indoor-only but lists outdoor/backdrop places: {outdoors}")
+
+    def test_outdoor_capable_fixtures_are_declared_not_accidental(self):
+        """The exemption above must be opt-in: a NEW fixture that quietly names an
+        outdoor place should fail `test_interior_fixtures_stay_indoors`, not slip in."""
+        from data.fields import FIXTURE_LIGHTING
+        self.assertTrue(
+            self.OUTDOOR_CAPABLE_FIXTURES <= set(FIXTURE_LIGHTING),
+            "the exemption list names a fixture that no longer exists")
 
     def test_every_fixture_value_is_its_own_whole_family(self):
         from data.fields import FIXTURE_LIGHTING, LIGHTING_FAMILIES
@@ -1598,10 +1787,13 @@ class LightingBucketFamilyTests(unittest.TestCase):
         self.assertEqual(set(seen), set(FIELD_DEFINITIONS["lighting"]["female_options"]))
 
     def test_split_preserved_every_pre_split_share(self):
-        """The x6 rescale is only legitimate if no value's probability moved.
+        """Every rescale is only legitimate if no value's probability moved.
 
         Baseline is the 0.81.0 family table, hardcoded so a future weight retune
-        has to be a deliberate act rather than an accident.
+        has to be a deliberate act rather than an accident. It has now survived two
+        splits: x6 at 0.82.0 (the fixture split) and x11 at 0.83.0 (studio ->
+        studio_shape + studio_stage), total 228 x 11 = 2508. The point of the test is
+        that a value's per-variant share is STILL the 0.81.0 share after both.
         """
         from data.fields import LIGHTING_FAMILIES
         before = {  # 0.81.0: family -> (weight, variant count)
@@ -1613,7 +1805,10 @@ class LightingBucketFamilyTests(unittest.TestCase):
             "window_stained": "window", "artificial_open": "artificial",
             "artificial_ceiling": "artificial", "artificial_hearth": "artificial",
             "artificial_screen": "artificial", "neon_venue": "neon",
-            "neon_street": "neon", "studio": "studio",
+            "neon_street": "neon",
+            # 0.83.0: both halves of the studio split trace to the same 0.81.0 parent,
+            # which is exactly the 10:1 proportionality assertion.
+            "studio_shape": "studio", "studio_stage": "studio",
         }
         self.assertEqual(set(parents), set(LIGHTING_FAMILIES),
                          "a family was added/renamed without updating this baseline")
@@ -2695,56 +2890,108 @@ class HairStyleFamilyTests(unittest.TestCase):
              for name, fam in HAIR_STYLE_FAMILIES.items()}
         )
 
-    #: 0.81.0 added the barbering families. These are NOT splits -- they are genuinely
-    #: new values, so they must take share from somewhere. They take it uniformly:
-    #: weight 350 on a pre-existing 3150 means every older value keeps exactly
-    #: 3150/3500 = 9/10 of its former probability, and no family is singled out.
-    _ADDED_FAMILIES = ("barbered_short", "barbered_shag")
-    _DILUTION = 3150 / 3500
+    #: Families that are NOT splits -- genuinely new values, so they must take share from
+    #: somewhere. They take it uniformly, so no pre-existing family is singled out.
+    #:   0.81.0: barbered_short + barbered_shag, weight 350 on a pre-existing 3150, so
+    #:           every older value kept exactly 3150/3500 = 9/10 of its probability.
+    #:   0.83.0: barbered_crop, a further 70 on 3500, so 3500/3570 = 0.9804 on top.
+    #: Compounded: 0.9 x 0.9804 = 3150/3570.
+    _ADDED_FAMILIES = ("barbered_short", "barbered_shag", "barbered_crop")
+    _DILUTION = 3150 / 3570
 
-    def test_split_preserves_every_hair_style_probability(self):
-        """Every PRE-EXISTING style keeps its exact relative probability.
+    #: Added families priced at the field's ordinary "one everyday cut" rate, which is
+    #: what justifies their weights (see the next test). Expressed as a share of the
+    #: total so the assertion survives a rescale -- 0.83.0 doubled every weight to keep
+    #: the braid split's arithmetic integral.
+    _EVERYDAY_RATE_FAMILIES = ("barbered_short", "barbered_shag")
 
-        The 0.78.0 split had to be probability-neutral outright. Since 0.81.0 the
-        target is neutral *up to one uniform factor*: five new values were added, so
-        each old value is scaled by `_DILUTION` and by nothing else. A family that
-        drifted by any other amount would mean a weight was retuned by hand.
+    #: ``barbered_crop`` is DELIBERATELY priced below the per-variant rate: weight 70
+    #: (x2 = 140) over three variants, where the field's rate is ~74.5 (x2 = 149). That
+    #: buys a 1.96% dilution instead of 6.0%, at the price of each crop sitting ~3.2x
+    #: rarer than an average value -- which is wanted, since a crew cut and a high-top
+    #: fade are specific looks and keeping them rare stops the base node reading as
+    #: barbered. Declared here so a weights audit cannot mistake it for a mistake.
+    _DELIBERATELY_RARE_FAMILIES = ("barbered_crop",)
+
+    def test_split_preserves_every_pre_split_family_share(self):
+        """Every PRE-EXISTING family keeps its share, up to one uniform dilution.
+
+        **Restated at 0.83.0, at the level the mechanism actually guarantees.** This
+        test used to pin each pre-existing *value* to a fixed probability, which
+        silently made the pool size part of the contract -- so it failed on merely
+        ADDING a hairstyle, for the wrong reason. That is exactly the trap
+        ``PoseFamilyTests`` hit at 0.82.0, and the correction is the same: family
+        weighting promises that a new variant SUBDIVIDES its family's share, never that
+        `side braid` keeps a fixed number forever.
+
+        What is asserted instead is the real guarantee, in three parts:
+          1. each pre-split family's total share == its 0.77.0 share x `_DILUTION`;
+          2. variants are uniform WITHIN a family (`_marginals` computes it, so this is
+             about the data having no duplicate/empty families);
+          3. sub-family weights stay proportional to variant count (its own test).
+        A hand-retuned weight still fails this; a legitimate content addition does not.
         """
         baseline_total = sum(weight for weight, _ in self._BASELINE.values())
-        current = self._current()
-        added = {v for name in self._ADDED_FAMILIES
-                 for v in HAIR_STYLE_FAMILIES[name]["variants"]}
-        # A split moves values between families; only the 0.81.0 additions are new.
-        self.assertEqual(len(current) - len(added),
-                         sum(count for _, count in self._BASELINE.values()))
+        current_total = sum(fam["weight"] for fam in HAIR_STYLE_FAMILIES.values())
+
+        # Roll every post-split family back up into its pre-split origin.
+        rolled: dict[str, int] = {}
         for family, fam in HAIR_STYLE_FAMILIES.items():
             if family in self._ADDED_FAMILIES:
                 continue
             origin = self._DERIVED_FROM.get(family, family)
-            weight, count = self._BASELINE[origin]
-            expected = (weight / baseline_total) / count * self._DILUTION
-            for value in fam["variants"]:
-                self.assertAlmostEqual(
-                    current[value], expected, places=12,
-                    msg=f"{value} ({family}, from {origin})")
+            self.assertIn(origin, self._BASELINE,
+                          f"family {family!r} traces to unknown origin {origin!r}")
+            rolled[origin] = rolled.get(origin, 0) + fam["weight"]
+
+        self.assertEqual(set(rolled), set(self._BASELINE),
+                         "a pre-split family disappeared or was renamed")
+        for origin, weight in rolled.items():
+            baseline_weight, _ = self._BASELINE[origin]
+            self.assertAlmostEqual(
+                weight / current_total,
+                baseline_weight / baseline_total * self._DILUTION, places=12,
+                msg=f"family {origin!r} share drifted off the 0.77.0 baseline")
+
+    def test_added_families_account_for_exactly_the_dilution(self):
+        """The other half: the share taken by the added families must equal 1 -
+        `_DILUTION`. Together with the test above this pins the whole distribution
+        without freezing any pool size."""
+        total = sum(fam["weight"] for fam in HAIR_STYLE_FAMILIES.values())
+        added = sum(HAIR_STYLE_FAMILIES[name]["weight"]
+                    for name in self._ADDED_FAMILIES)
+        self.assertAlmostEqual(added / total, 1 - self._DILUTION, places=12)
 
     def test_each_barbered_cut_is_priced_like_an_existing_everyday_cut(self):
-        """The barbering weights are justified by a precedent, not picked freely.
+        """The 0.81.0 barbering weights are justified by a precedent, not picked freely.
 
-        `comb over` and `mullet` are the pack's existing "one ordinary everyday
-        cut" families (weight 70, one variant each). Every new barbered cut is
-        priced identically, which is the whole argument for 280 + 70.
+        `comb over` and `mullet` are the pack's existing "one ordinary everyday cut"
+        families (one variant each). Each 0.81.0 barbered cut is priced identically,
+        which is the whole argument for 280 + 70. Asserted against `mullet`'s live
+        probability rather than the literal 70, so a rescale (0.83.0 doubled every
+        weight for the braid split) does not falsify a claim that is still true.
         """
         current = self._current()
         reference = current["mullet"]
         self.assertAlmostEqual(current["comb over"], reference, places=12)
-        for name in self._ADDED_FAMILIES:
-            fam = HAIR_STYLE_FAMILIES[name]
-            self.assertAlmostEqual(
-                fam["weight"] / len(fam["variants"]), 70.0, places=9,
-                msg=f"{name} is not priced at 70 per variant")
-            for value in fam["variants"]:
+        for name in self._EVERYDAY_RATE_FAMILIES:
+            for value in HAIR_STYLE_FAMILIES[name]["variants"]:
                 self.assertAlmostEqual(current[value], reference, places=12, msg=value)
+
+    def test_the_deliberately_rare_family_is_rare_on_purpose(self):
+        """0.83.0. `barbered_crop` is the FIRST hair_style family priced below the
+        per-variant rate. That is a decision (1.96% dilution instead of 6.0%), not an
+        oversight, so it is pinned: below the everyday rate, and by roughly the factor
+        the decision was taken on. A weights audit that "fixes" this will fail here and
+        read the reason."""
+        current = self._current()
+        reference = current["mullet"]
+        for name in self._DELIBERATELY_RARE_FAMILIES:
+            for value in HAIR_STYLE_FAMILIES[name]["variants"]:
+                self.assertLess(current[value], reference,
+                                f"{value} is no longer deliberately rare")
+                self.assertAlmostEqual(reference / current[value], 3.0, places=6,
+                                       msg=f"{value} rarity factor drifted")
 
     def test_the_barbered_short_constraint_list_matches_its_family(self):
         """A partial cull would concentrate the family's frozen weight.
@@ -2759,6 +3006,12 @@ class HairStyleFamilyTests(unittest.TestCase):
             sorted(_BARBERED_SHORT_STYLES),
             sorted(HAIR_STYLE_FAMILIES["barbered_short"]["variants"]),
             "_BARBERED_SHORT_STYLES has drifted from the barbered_short family")
+        # 0.83.0: the crop family carries the same obligation, for the same reason.
+        from data.constraints import _BARBERED_CROP_STYLES
+        self.assertEqual(
+            sorted(_BARBERED_CROP_STYLES),
+            sorted(HAIR_STYLE_FAMILIES["barbered_crop"]["variants"]),
+            "_BARBERED_CROP_STYLES has drifted from the barbered_crop family")
 
     def test_a_barbered_cut_never_lands_on_hair_it_cannot_be_cut_into(self):
         from data.constraints import _BARBERED_SHORT_STYLES, _PAST_SHOULDER_LENGTHS
@@ -3470,6 +3723,269 @@ class FieldFamilyPickTests(unittest.TestCase):
         mean = 20000 / len(pool)
         self.assertTrue(all(c > 0 for c in counts.values()))
         self.assertTrue(max(counts.values()) < mean * 3)
+
+
+class MaskedExpressionTests(unittest.TestCase):
+    """0.83.0: a full mask hides the face, so a randomized `expression` must not render.
+
+    ``expression`` lives in ``Setting & Shot``, not in ``_CONCEALED_FACE_GROUPS``, so for
+    every release before this a masked character rendered "He wears a plush yordle suit.
+    ... His expression is steely." Mechanical, never a decision.
+    """
+
+    COSTUME = "a plush yordle suit with a bandolier and oversized boots"
+
+    def _setting(self, js):
+        return json.loads(js).get("Setting & Shot", {})
+
+    def test_masked_subject_has_no_expression(self):
+        for seed in range(200):
+            text, js = generate_character(
+                seed, "Male", {"outfit_description": self.COSTUME},
+                covers_face=True, covers_body=True)
+            self.assertNotIn("expression", self._setting(js),
+                             f"seed {seed} kept an expression behind a full mask")
+            self.assertNotIn("expression is", text, f"seed {seed}: {text}")
+
+    def test_unmasked_subject_still_has_one(self):
+        found = 0
+        for seed in range(60):
+            _, js = generate_character(seed, "Male", {})
+            if self._setting(js).get("expression"):
+                found += 1
+        self.assertEqual(found, 60, "expression must be untouched when the face shows")
+
+    def test_an_explicit_lock_still_wins(self):
+        """Locked-wins is the house semantics for a newly suppressed field -- matching
+        the bald and full-shell blocks, which both honour a lock."""
+        for seed in range(40):
+            text, js = generate_character(
+                seed, "Male",
+                {"outfit_description": self.COSTUME, "expression": "beaming"},
+                covers_face=True, covers_body=True)
+            self.assertEqual(self._setting(js).get("expression"), "beaming")
+            self.assertIn("expression is beaming", text)
+
+    def test_mood_is_deliberately_kept(self):
+        """mood describes the scene's atmosphere, not the face: it reads over a mask."""
+        found = 0
+        for seed in range(80):
+            _, js = generate_character(
+                seed, "Male", {"outfit_description": self.COSTUME},
+                covers_face=True, covers_body=True)
+            if self._setting(js).get("mood"):
+                found += 1
+        self.assertGreater(found, 0, "mood must survive a full mask")
+
+
+class FeralFitnessTests(unittest.TestCase):
+    """0.83.0: a beast has no gym habit.
+
+    ``body_type`` states a SHAPE and reads on anything; ``fitness_level``'s low values
+    state a human LIFESTYLE ("sedentary"), which a feral creature does not have.
+    """
+
+    def _body(self, js):
+        return json.loads(js).get("Body", {})
+
+    def _feral(self, seed):
+        from nodes.identity_forge_creature import build_creature_json
+        doc = json.loads(build_creature_json("Wolf", seed=seed, form="Feral (beast)"))
+        species = doc.get("_meta", {})
+        return generate_character(seed, "Any", {}, species={
+            "slots": doc.get("Species & Anatomy", {}),
+            "form": species.get("form", ""),
+            "suppress_groups": species.get("suppress_groups", []),
+            "suppress_fields": species.get("suppress_fields", []),
+        })
+
+    def test_feral_form_drops_fitness_level(self):
+        from nodes.identity_forge_creature import _FORM_SUPPRESS_FIELDS, _FORM_FERAL
+        self.assertIn("fitness_level", _FORM_SUPPRESS_FIELDS[_FORM_FERAL])
+
+    def test_shape_fields_are_deliberately_kept(self):
+        from nodes.identity_forge_creature import (
+            _FORM_SUPPRESS_FIELDS, _FORM_FERAL, _FORM_ANTHRO)
+        feral = _FORM_SUPPRESS_FIELDS[_FORM_FERAL]
+        self.assertNotIn("body_type", feral, "a shape reads fine on a beast")
+        self.assertNotIn("height", feral, "a towering creature reads fine")
+        self.assertEqual(_FORM_SUPPRESS_FIELDS[_FORM_ANTHRO], set(),
+                         "anthro is humanoid and keeps everything")
+
+
+class WornItemDeduplicationTests(unittest.TestCase):
+    """The generalization of the hat rule (0.83.0).
+
+    A costume that already NAMES a worn item must not have a second one bolted on by
+    the randomizer. Until 0.83.0 this was enforced for headwear only and patched per
+    entry for everything else (28 cosplayers hand-pin ``necklace: no necklace``).
+
+    The regex traps below are the load-bearing part: every one is real roster or corpus
+    text that a naive pattern gets wrong. Do NOT relax them without re-checking the
+    data -- a false positive silently deletes a field for a whole class of characters.
+    """
+
+    #: (field, costume text, expected-to-fire) -- the false-positive suite.
+    TRAPS = (
+        # rings must not fire on "earrings" (no word boundary inside the word) ...
+        ("rings", "a gown with delicate straps and diamond stud earrings", False),
+        ("rings", "a slip dress with chandelier earrings", False),
+        # ... nor on a PIERCING, nor on a non-jewellery "ring"
+        ("rings", "black jeans with studded wristbands, a brow ring and a nose stud", False),
+        ("rings", "a leather jacket with a lip ring", False),
+        ("rings", "a rubber suit with a tire ring around the waist", False),
+        ("rings", "a bronze collar and a heavy neck ring", False),
+        ("rings", "a bare chest with a gold arm ring", False),
+        # ... but must fire on an actual finger ring
+        ("rings", "a tweed coat with layered rings", True),
+        ("rings", "a plain hobbit shirt and the One Ring on a chain", True),
+        # bracelet must never match a bare "cuff"
+        ("bracelet", "a dress shirt with cuffed sleeves and chinos", False),
+        ("bracelet", "1950s rolled-cuff jeans with a white tee", False),
+        ("bracelet", "a bodysuit with an ear cuff", False),
+        ("bracelet", "a toga with a gold arm cuff", False),
+        ("bracelet", "french cuffs and a waistcoat", False),
+        ("bracelet", "a gi with blue wristbands and boots", True),
+        ("bracelet", "patchwork layers with stacked bangles", True),
+        ("bracelet", "a leotard with steel wrist cuffs", True),
+        # earrings must not fire on garment studs (Simon's trench coat)
+        ("earrings", "a long navy trench coat with gold studs and a spiral emblem", False),
+        ("earrings", "a leather jacket with studded patches and black jeans", False),
+        ("earrings", "a kimono with three gold earrings in one ear", True),
+        ("earrings", "a dress with pearl stud earrings", True),
+        # bag must not fire on "baggy", nor on "clutch" the VERB (Psyduck)
+        ("bag", "an oversized sweatshirt with baggy pants", False),
+        ("bag", "stubby webbed feet and small arms raised to clutch the head", False),
+        ("bag", "a satin slip gown with a clutch", True),
+        ("bag", "a tee dress with a crossbody bag", True),
+        ("bag", "a battered fedora and a leather satchel", True),
+        # necklace: a chain only counts at the neck
+        ("necklace", "a hauberk of chainmail over a padded gambeson", False),
+        ("necklace", "cargo pants with a key chain hanging from a belt loop", False),
+        ("necklace", "a wide red hat, a yellow scarf, and an 'O' medallion", True),
+        ("necklace", "a wolf-head amulet and studded-leather armor", True),
+        ("necklace", "a fishnet top under a slip dress with a choker", True),
+        # other_jewelry
+        ("other_jewelry", "a sailor collar with a heart-shaped brooch", True),
+        ("other_jewelry", "a linen wrap with silver anklets", True),
+        ("other_jewelry", "a dress shirt with cuffed sleeves", False),
+    )
+
+    def test_regex_traps(self):
+        for field, text, should_fire in self.TRAPS:
+            with self.subTest(field=field, text=text):
+                fired = bool(WORN_ITEM_RES[field].search(text))
+                self.assertEqual(
+                    fired, should_fire,
+                    f"{field} pattern {'fired' if fired else 'did not fire'} on {text!r}")
+
+    def test_every_pattern_field_is_a_real_field(self):
+        for field in WORN_ITEM_RES:
+            self.assertIn(field, FIELD_DEFINITIONS, f"{field} is not a real field")
+
+    def _clothing(self, js, field):
+        doc = json.loads(js)
+        for group in doc.values():
+            if isinstance(group, dict) and field in group:
+                return group[field]
+        return None
+
+    def _worn(self, js, field):
+        """True when the field would actually RENDER.
+
+        The rule deliberately skips a value that is already absent -- there is nothing
+        to de-duplicate, and popping it would change the JSON shape for no reason. So
+        the contract is "does not render", not "is missing from the JSON": an absent
+        token ("no necklace") is omitted from prose by ``_is_absent`` either way.
+        """
+        value = self._clothing(js, field)
+        return value is not None and not _is_absent(value)
+
+    def test_costume_naming_a_necklace_suppresses_the_random_one(self):
+        costume = ("a deep green velvet wrap dress with a gold pendant necklace "
+                   "and suede pumps")
+        for seed in range(120):
+            text, js = generate_character(seed, "Female",
+                                          {"outfit_description": costume},
+                                          accessory_density="Maximal")
+            self.assertFalse(self._worn(js, "necklace"),
+                             f"seed {seed} stacked a second neck ornament")
+            self.assertEqual(text.count("necklace"), 1,
+                             f"seed {seed}: {text}")
+
+    def test_costume_naming_earrings_suppresses_the_random_pair(self):
+        costume = "a floor length velvet gown with delicate straps and diamond stud earrings"
+        for seed in range(120):
+            text, js = generate_character(seed, "Female",
+                                          {"outfit_description": costume},
+                                          accessory_density="Maximal")
+            self.assertFalse(self._worn(js, "earrings"),
+                             f"seed {seed} stacked a second pair of earrings")
+            self.assertEqual(text.count("earrings"), 1, f"seed {seed}: {text}")
+
+    def test_other_jewellery_fields_still_draw(self):
+        """Only the NAMED field is dropped -- this is not the 0.66.0 group question."""
+        costume = "a velvet wrap dress with a gold pendant necklace and suede pumps"
+        seen = set()
+        for seed in range(200):
+            _, js = generate_character(seed, "Female",
+                                       {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            for field in ("earrings", "bracelet", "rings"):
+                if self._worn(js, field):
+                    seen.add(field)
+        self.assertEqual(seen, {"earrings", "bracelet", "rings"},
+                         "suppressing the named field must not suppress its siblings")
+
+    def test_an_explicit_lock_still_wins(self):
+        costume = "a velvet wrap dress with a gold pendant necklace and suede pumps"
+        for seed in range(40):
+            _, js = generate_character(
+                seed, "Female",
+                {"outfit_description": costume, "necklace": "pearl strand"})
+            self.assertEqual(self._clothing(js, "necklace"), "pearl strand",
+                             "a deliberate lock must survive the de-dup rule")
+
+    def test_a_plain_costume_keeps_all_its_jewellery(self):
+        """No named item -> nothing is dropped. The rule must be surgical."""
+        costume = "a charcoal wool overcoat over a fine-knit turtleneck and wool trousers"
+        seen = set()
+        for seed in range(200):
+            _, js = generate_character(seed, "Female",
+                                       {"outfit_description": costume},
+                                       accessory_density="Maximal")
+            for field in WORN_ITEM_RES:
+                if self._worn(js, field):
+                    seen.add(field)
+        # bag is suppressed for any LOCKED costume by _COSTUME_SUPPRESSED_EXTRAS, so it
+        # is legitimately absent here; every jewellery field must still appear.
+        self.assertEqual(seen, set(WORN_ITEM_RES) - {"bag"})
+
+    def test_no_prose_stacks_two_of_the_same_item(self):
+        """End-to-end sweep over the real roster: the bug this rule exists to kill."""
+        from nodes.identity_forge_cosplayer import build_cosplayer_json
+        names = sorted(COSPLAYERS)
+        offenders = []
+        for i, name in enumerate(names[::7]):        # ~247 characters, 3 seeds each
+            for seed in range(3):
+                doc = json.loads(build_cosplayer_json(name, seed=seed))
+                locked = {}
+                for group in doc.values():
+                    if isinstance(group, dict):
+                        locked.update({k: v for k, v in group.items()
+                                       if isinstance(v, str)})
+                meta = doc.get("_meta", {})
+                text, _ = generate_character(
+                    seed + i, "Female", locked,
+                    accessory_density="Maximal",
+                    covers_face=bool(meta.get("covers_face")),
+                    covers_body=bool(meta.get("covers_body")),
+                    covers_hair=bool(meta.get("covers_hair")))
+                # "She has <jewellery>" plus a costume that names the same class
+                if re.search(r"\bhas\b[^.]*\bearrings\b", text) and \
+                        re.search(r"\bwears\b[^.]*\bearrings\b", text):
+                    offenders.append((name, "earrings"))
+        self.assertEqual(offenders, [], f"stacked items: {offenders[:8]}")
 
 
 class HatSuppressionTests(unittest.TestCase):
@@ -4273,33 +4789,336 @@ class ModifierArticleTests(unittest.TestCase):
                 f"{name}: modifier stranded the costume's article")
 
 
-class OutfitArticleTests(unittest.TestCase):
-    """Random outfits read with an article, like costumes do (0.72.0).
+class WardrobeAxisTests(unittest.TestCase):
+    """0.83.0: three shipped widgets stopped being dead.
 
-    ``outfit_description`` is voiced verbatim after "She/He wears", and cosplayer
-    and archetype costumes supply their own leading article. The built-in outfit
-    pool never did, so the same prose slot rendered two grammars ("wears a gothic
-    black dress" vs "wears cropped hoodie with..."). Values with a plural / mass
-    head are correctly bare and are the documented exception.
+    ``footwear`` / ``clothing_color`` / ``clothing_pattern`` were drawn every render and
+    never voiced, because ``OUTFIT_DESCRIPTIONS`` superseded them and nobody retired
+    them. The JSON contradicted the prose on every render, and locking one changed
+    nothing visible while silently removing an RNG draw -- so five unrelated fields moved
+    and the widget looked like it worked.
     """
 
-    #: Heads that are mass or plural nouns, so "a ..." would be wrong.
-    _BARE_HEADS = ("overalls", "trousers", "jeans", "corduroys", "layers", "pants")
+    AXES = ("footwear", "clothing_color", "clothing_pattern")
 
-    def test_singular_headed_outfits_carry_an_article(self):
+    def _clothing(self, raw):
+        return json.loads(raw)["Clothing"]
+
+    def test_the_json_never_contradicts_the_prose(self):
+        """The headline fix. Any axis present in the JSON must appear in the outfit."""
+        for seed in range(300):
+            raw = generate_character(seed, "Female", {})[1]
+            c = self._clothing(raw)
+            outfit = c["outfit_description"]
+            with self.subTest(seed=seed):
+                if "footwear" in c and not _is_absent(c["footwear"]):
+                    # "bare feet" is voiced as the adverb "barefoot" (_FOOTWEAR_CLAUSES),
+                    # so compare against the rendered form, not the pool value.
+                    expected = _FOOTWEAR_CLAUSES.get(c["footwear"], c["footwear"])
+                    self.assertIn(expected, outfit,
+                                  f"footwear {c['footwear']!r} not in {outfit!r}")
+                if "clothing_color" in c and not _is_absent(c["clothing_color"]):
+                    self.assertIn(PALETTE_ADJECTIVES[c["clothing_color"]], outfit,
+                                  f"palette not rendered in {outfit!r}")
+
+    def test_a_locked_axis_actually_renders(self):
+        """The regression that motivated the whole phase."""
+        for seed in range(60):
+            locked = {"footwear": "combat boots", "clothing_color": "jewel tones",
+                      "clothing_pattern": "stripes"}
+            prose, raw = generate_character(seed, "Female", dict(locked))
+            outfit = self._clothing(raw)["outfit_description"]
+            with self.subTest(seed=seed):
+                self.assertIn("combat boots", outfit)
+                self.assertIn("jewel-toned", outfit)
+                self.assertIn("in stripes", outfit)
+                self.assertIn(outfit, prose)
+
+    def test_a_supplied_costume_still_drops_all_three(self):
+        """The boundary that keeps this non-breaking for 1,732 cosplayers and 225
+        archetypes: a provided costume is a complete look and composes nothing."""
+        costume = "a weathered brown leather jacket over a linen shirt"
+        for seed in range(60):
+            raw = generate_character(seed, "Male", {"outfit_description": costume})[1]
+            c = self._clothing(raw)
+            self.assertEqual(c["outfit_description"], costume)
+            for axis in self.AXES + ("outfit_style",):
+                self.assertNotIn(axis, c, f"{axis} leaked onto a supplied costume")
+
+    def test_solid_pattern_is_silent_but_kept(self):
+        """`solid` is true of any garment; saying it only adds noise. The field stays."""
+        raw = generate_character(0, "Female",
+                                {"clothing_pattern": "solid", "footwear": "loafers"})[1]
+        c = self._clothing(raw)
+        self.assertEqual(c["clothing_pattern"], "solid")
+        self.assertNotIn("solid", c["outfit_description"])
+
+    def test_bare_feet_renders_as_barefoot(self):
+        raw = generate_character(0, "Female",
+                                {"footwear": "bare feet", "outfit_style": "loungewear"})[1]
+        outfit = self._clothing(raw)["outfit_description"]
+        self.assertTrue(outfit.endswith(", barefoot"), outfit)
+        self.assertNotIn("in bare feet", outfit)
+
+    def test_pattern_tails_never_stack_a_second_with(self):
+        """Garment phrases routinely end in their own "with ..." clause, so a "with"
+        tail rendered "...with delicate straps with a floral print". Caught in preview."""
+        for value, tail in PATTERN_TAILS.items():
+            if tail:
+                self.assertTrue(tail.startswith(" in "),
+                                f"{value!r} tail must use 'in', not {tail!r}")
+
+    # --- back-compat with user_options.json outfit strings ------------------------
+    def test_guards_protect_an_old_contract_user_string(self):
+        """A user's existing outfit string has a leading article, its own shoes and its
+        own colour. Every guard must fire so it degrades gracefully, not doubles up."""
+        old_style = "a sleek white EVA suit with a mirrored visor and magnetic boots"
+        resolved = {"clothing_color": "jewel tones", "clothing_pattern": "plaid",
+                    "footwear": "loafers"}
+        out = _compose_outfit_clause(old_style, resolved, set())
+        self.assertNotIn("jewel-toned", out, "palette must yield to a stated colour")
+        self.assertNotIn("loafers", out, "footwear must yield to stated shoes")
+        self.assertNotRegex(out, r"^(?:a|an) (?:a|an|the) ", "article was doubled")
+        self.assertNotIn("clothing_color", resolved, "suppressed axis must be popped")
+        self.assertNotIn("footwear", resolved, "suppressed axis must be popped")
+
+    def test_a_lock_beats_a_guard(self):
+        """Locked-wins, consistently: a guard suppresses the CLAUSE but must not delete
+        a value the user explicitly chose, or the JSON would lose their choice."""
+        old_style = "a sleek white EVA suit with magnetic boots"
+        resolved = {"clothing_color": "jewel tones", "footwear": "loafers"}
+        _compose_outfit_clause(old_style, resolved, {"clothing_color", "footwear"})
+        self.assertEqual(resolved["clothing_color"], "jewel tones")
+        self.assertEqual(resolved["footwear"], "loafers")
+
+    def test_shoe_regex_does_not_false_positive_on_garments(self):
+        """The first draft matched `oxfords?` / `flats?` / `boots?` and silently deleted
+        the footwear clause of five shipped garment phrases."""
+        for garment in ("oxford shirt with rolled sleeves and chinos",
+                        "merino quarter-zip with flat-front chinos",
+                        "soft blazer over an oxford shirt with flat-front trousers",
+                        "bootcut denim with a jersey tee"):
+            self.assertIsNone(SHOE_RE.search(garment),
+                              f"SHOE_RE false-positived on {garment!r}")
+        for shoe in FIELD_DEFINITIONS["footwear"]["female_options"]:
+            self.assertIsNotNone(SHOE_RE.search(f"a dress and {shoe}"),
+                                 f"SHOE_RE does not recognise the pool value {shoe!r}")
+
+
+class GloveAccessoryTests(unittest.TestCase):
+    """0.83.0: gloves joined the `accessories` pool, so the glove rule had to follow.
+
+    ``_GLOVE_RE`` only ever scanned ``outfit_description``. A randomized glove drawn from
+    ``accessories`` hides the fingers exactly as well, so nails and rings must drop for
+    it too -- otherwise polish renders on top of leather, the original reported bug.
+    """
+
+    def _jewels(self, raw):
+        return json.loads(raw).get("Jewelry & Nails", {})
+
+    def test_gloves_from_accessories_suppress_nails_and_rings(self):
+        for glove in ("leather gloves", "long opera gloves"):
+            for seed in range(40):
+                raw = generate_character(seed, "Female", {"accessories": glove},
+                                         accessory_density="Maximal")[1]
+                j = self._jewels(raw)
+                with self.subTest(glove=glove, seed=seed):
+                    self.assertNotIn("nails", j)
+                    self.assertNotIn("rings", j)
+
+    def test_fingerless_gloves_keep_the_fingers_visible(self):
+        seen = set()
+        for seed in range(120):
+            raw = generate_character(seed, "Female", {"accessories": "fingerless gloves"},
+                                     accessory_density="Maximal")[1]
+            seen |= set(self._jewels(raw)) & {"nails", "rings"}
+        self.assertEqual(seen, {"nails", "rings"},
+                         "fingerless gloves expose the fingers; nails/rings must show")
+
+    def test_hat_accessory_values_stay_in_sync_with_the_pool(self):
+        """The docstring on _HAT_ACCESSORY_VALUES says keep it in sync with the pool.
+        0.83.0 makes that mechanical: a hat added to `accessories` and not to the set
+        can stack on a hooded or helmeted outfit."""
+        from nodes.identity_forge import _HAT_ACCESSORY_VALUES, _HAT_RE
+        pool = FIELD_DEFINITIONS["accessories"]["female_options"]
+        hats = {v for v in pool if _HAT_RE.search(v)}
+        self.assertEqual(
+            hats, set(_HAT_ACCESSORY_VALUES),
+            "_HAT_ACCESSORY_VALUES has drifted from the hat-like accessories values")
+
+    def test_glove_accessory_values_are_real_options(self):
+        from nodes.identity_forge import _GLOVE_ACCESSORY_VALUES, _GLOVE_RE
+        pool = set(FIELD_DEFINITIONS["accessories"]["female_options"])
+        self.assertTrue(set(_GLOVE_ACCESSORY_VALUES) <= pool)
+        for value in _GLOVE_ACCESSORY_VALUES:
+            self.assertIsNotNone(_GLOVE_RE.search(value))
+
+
+class FootwearStyleMatrixTests(unittest.TestCase):
+    """0.83.0: an ALLOWLIST per outfit_style, not a deny-list.
+
+    Before this, three styles had a hand-written deny-list and eleven had no rule at all
+    -- invisible while `footwear` never rendered. The deny-lists were also incomplete in
+    a way inspection does not reveal (`athletic` denied five dress shoes but still
+    permitted bare feet, wedges and mules), and a deny-list silently admits every value
+    added later: the 12 -> 20 growth in this same revision would have leaked `kitten
+    heels` into sportswear. An allowlist fails safe.
+    """
+
+    def test_every_style_is_covered(self):
+        from data.constraints import FOOTWEAR_BY_STYLE
+        self.assertEqual(set(FOOTWEAR_BY_STYLE),
+                         set(FIELD_DEFINITIONS["outfit_style"]["female_options"]),
+                         "a style has no footwear allowlist, so anything goes there")
+
+    def test_allowlists_name_only_real_shoes(self):
+        from data.constraints import FOOTWEAR_BY_STYLE
+        pool = set(FIELD_DEFINITIONS["footwear"]["female_options"])
+        for style, allowed in FOOTWEAR_BY_STYLE.items():
+            self.assertTrue(allowed, f"{style} allows no footwear at all")
+            self.assertTrue(allowed <= pool,
+                            f"{style} names non-shoes: {sorted(allowed - pool)}")
+
+    def test_every_shoe_is_wearable_somewhere(self):
+        """A value allowed by no style would be unreachable except by an explicit lock."""
+        from data.constraints import FOOTWEAR_BY_STYLE
+        reachable = set().union(*FOOTWEAR_BY_STYLE.values())
+        pool = set(FIELD_DEFINITIONS["footwear"]["female_options"])
+        self.assertEqual(pool - reachable, set(),
+                         "these shoes are allowed by no style and can never be drawn")
+
+    def test_no_render_pairs_a_shoe_with_a_style_that_forbids_it(self):
+        from data.constraints import FOOTWEAR_BY_STYLE
+        for seed in range(600):
+            for gender in ("Female", "Male"):
+                c = json.loads(generate_character(seed, gender, {})[1])["Clothing"]
+                style, shoe = c.get("outfit_style"), c.get("footwear")
+                if style and shoe and not _is_absent(shoe):
+                    self.assertIn(shoe, FOOTWEAR_BY_STYLE[style],
+                                  f"{shoe!r} with {style!r} at seed {seed}")
+
+    def test_slippers_and_bare_feet_stay_domestic(self):
+        from data.constraints import FOOTWEAR_BY_STYLE
+        for style, allowed in FOOTWEAR_BY_STYLE.items():
+            if "slippers" in allowed:
+                self.assertEqual(style, "loungewear",
+                                 "slippers belong to loungewear only")
+            if "bare feet" in allowed:
+                self.assertIn(style, ("loungewear", "resort vacation", "bohemian"),
+                              f"bare feet allowed with {style}")
+
+    #: Feminine-coded shoes trimmed from a masculine presentation (0.83.0).
+    FEMININE_SHOES = frozenset({"heels", "kitten heels", "wedges", "mules",
+                                "ballet flats", "knee-high boots"})
+
+    def test_a_masculine_presentation_draws_no_feminine_shoes(self):
+        """`footwear` is a unisex pool, so these could always land on a random man --
+        they simply never RENDERED before 0.83.0. Caught in the preview pass: "a
+        monochrome black tailored suit with a fine-knit shirt and no tie, in kitten
+        heels"."""
+        for wardrobe in ("Match gender", "Masculine"):
+            for seed in range(300):
+                c = json.loads(generate_character(seed, "Male", {},
+                                                  wardrobe=wardrobe)[1])["Clothing"]
+                self.assertNotIn(c.get("footwear"), self.FEMININE_SHOES,
+                                 f"{wardrobe} @ seed {seed}")
+
+    def test_a_femme_male_wardrobe_still_reaches_them(self):
+        """The gate is `presentation_gated`, like the jewellery trims: a deliberately
+        Feminine or Any wardrobe on a man keeps the feminine-coded pool intact. Gating
+        it any other way would break the femme-male look the 0.72.0 work opened up."""
+        for wardrobe in ("Feminine", "Any"):
+            seen = 0
+            for seed in range(300):
+                c = json.loads(generate_character(seed, "Male", {},
+                                                  wardrobe=wardrobe)[1])["Clothing"]
+                if c.get("footwear") in self.FEMININE_SHOES:
+                    seen += 1
+            self.assertGreater(seen, 0, f"{wardrobe} on a man reaches no feminine shoes")
+
+    def test_no_style_and_presentation_combination_empties_the_pool(self):
+        """The allowlist and the masculine trim compose. If any style's allowlist were
+        entirely feminine-coded, a masculine subject would have no legal shoe and the
+        engine would fall back to the unfiltered pool -- silently undoing both rules."""
+        from data.constraints import FOOTWEAR_BY_STYLE
+        for style, allowed in FOOTWEAR_BY_STYLE.items():
+            remaining = allowed - self.FEMININE_SHOES
+            self.assertTrue(remaining,
+                            f"{style} has no masculine-legal footwear at all")
+
+    def test_monochrome_palette_never_takes_a_multicolour_pattern(self):
+        for seed in range(600):
+            c = json.loads(generate_character(seed, "Female", {})[1])["Clothing"]
+            colour, pattern = c.get("clothing_color"), c.get("clothing_pattern")
+            if colour in ("all black", "all white", "black monochrome", "white and cream"):
+                self.assertNotIn(pattern, ("floral", "animal print", "geometric",
+                                           "abstract", "camouflage", "denim", "plaid"),
+                                 f"{colour!r} + {pattern!r} at seed {seed}")
+
+    def test_mixed_prints_never_names_a_second_pattern(self):
+        for seed in range(800):
+            c = json.loads(generate_character(seed, "Female", {})[1])["Clothing"]
+            if c.get("clothing_color") == "mixed prints":
+                self.assertIn(c.get("clothing_pattern", "solid"), ("solid", None),
+                              f"mixed prints + a second pattern at seed {seed}")
+
+
+class OutfitArticleTests(unittest.TestCase):
+    """Random outfits read with a correct article — now the ENGINE's job (0.83.0).
+
+    0.72.0 fixed a two-grammar prose slot ("wears a gothic black dress" vs "wears
+    cropped hoodie with...") by requiring every corpus value to carry its own leading
+    article. 0.83.0 **inverts that contract**: the corpus is garment-only and
+    article-less, because the engine now prefixes a palette adjective before articling
+    ("jewel tones" + "satin slip gown" -> "a jewel-toned satin slip gown"). A baked-in
+    article would render "a jewel-toned a satin slip gown".
+
+    The invariant being protected never changed — *the rendered prose must article
+    correctly*. Only the layer that owns it moved. So this test moved with it, and got
+    stronger: it sweeps hundreds of rendered strings instead of asserting on the data
+    and spot-checking one seed.
+    """
+
+    def test_corpus_carries_no_leading_article(self):
+        """The new contract. ``validate_data`` gates this too; kept here so the reason
+        is visible next to the prose assertions it enables."""
         for style, buckets in OUTFIT_DESCRIPTIONS.items():
             for bucket, values in buckets.items():
                 for value in values:
-                    head = re.split(r"\s+(?:with|over|under|and|in)\s+|,", value)[0]
-                    if head.split()[-1].lower().endswith(self._BARE_HEADS):
-                        continue
-                    self.assertRegex(
-                        value, r"^an? ",
-                        f"{style}/{bucket}: {value!r} needs a leading article")
+                    self.assertNotRegex(
+                        value, r"^(?:a|an|the)\s",
+                        f"{style}/{bucket}: {value!r} must not carry an article; the "
+                        f"engine articles the composed phrase")
 
-    def test_prose_renders_the_article(self):
-        prose, _ = generate_character(3, "Female", {})
-        self.assertRegex(prose, r"\b(?:She|He|They) wears? (?:an? |[a-z]+ (?:jeans|trousers|pants))")
+    def test_prose_articles_every_generated_outfit(self):
+        """Sweep: an article, or a legitimately bare plural/mass head.
+
+        The bare case is asserted against the RULE ``_article_if_singular`` documents --
+        the head noun's final "s" (ignoring "ss") -- rather than a hand-kept list of
+        plural words. A word list is the wrong shape here: the first draft of this test
+        listed twelve and still missed "layered gauze scarves", failing on correct engine
+        output. Testing the rule cannot drift as the corpus grows, and it still catches
+        the real defect (a singular head rendering with no article).
+        """
+        for seed in range(400):
+            for gender in ("Female", "Male", "Any"):
+                raw = generate_character(seed, gender, {})[1]
+                outfit = json.loads(raw)["Clothing"]["outfit_description"]
+                with self.subTest(seed=seed, gender=gender):
+                    if re.match(r"^(?:a|an) ", outfit):
+                        continue
+                    head = re.split(r"\s+(?:with|over|under|and|in)\s+|,", outfit)[0]
+                    last = head.split()[-1].lower()
+                    self.assertTrue(
+                        last.endswith("s") and not last.endswith("ss"),
+                        f"{outfit!r} has no article but its head {last!r} is singular")
+
+    def test_no_doubled_article_ever_renders(self):
+        for seed in range(400):
+            prose, _ = generate_character(seed, "Any", {})
+            self.assertNotRegex(
+                prose, r"wears? (?:a|an|the) (?:a|an|the) ",
+                f"doubled article at seed {seed}: {prose}")
 
 
 class PresentationGateTests(unittest.TestCase):
@@ -4617,10 +5436,25 @@ class FootwearPhrasingTests(unittest.TestCase):
                              f"'in {value}' is not a noun phrase")
 
     def test_bare_feet_renders(self):
+        """Case-insensitive since 0.83.0: sentence capitalisation happens at the join, so
+        this clause reads "In bare feet." when it is sentence-initial (which it is here,
+        with no outfit and no colour/pattern). The invariant is the FRAME -- "in <noun
+        phrase>", never "in barefoot" -- not the letter case."""
         prose = _format_prose(
             {"gender": "Female", "footwear": "bare feet",
              "outfit_description": "None"}, "Female")
-        self.assertIn("in bare feet", prose)
+        self.assertIn("in bare feet", prose.lower())
+        self.assertNotIn("in barefoot", prose.lower())
+
+    def test_the_composed_path_uses_the_adverb_instead(self):
+        """The 0.83.0 wardrobe axis voices it as ", barefoot" (no preposition) because it
+        is appended mid-sentence after a garment phrase, where "in bare feet" is clumsy.
+        Two different frames, both correct for their position."""
+        raw = generate_character(0, "Female",
+                                {"footwear": "bare feet",
+                                 "outfit_style": "loungewear"})[1]
+        outfit = json.loads(raw)["Clothing"]["outfit_description"]
+        self.assertTrue(outfit.endswith(", barefoot"), outfit)
 
 
 class EyePartPhrasingTests(unittest.TestCase):

@@ -108,11 +108,18 @@ _FORM_SUPPRESS_GROUPS: dict[str, set[str]] = {
     _FORM_SUBTLE: set(),
 }
 #: A feral (non-humanoid) form also drops the humanoid body proportions — a beast has
-#: no bust / waist / hips / shoulders. Build / height / fitness stay (a "powerful,
-#: towering" creature reads fine). Anthro keeps them (it is humanoid).
+#: no bust / waist / hips / shoulders. Build / height stay (a "powerful, towering"
+#: creature reads fine). Anthro keeps them all (it is humanoid).
+#:
+#: ``fitness_level`` joined at 0.83.0. The distinction is narrow and worth keeping
+#: straight: ``body_type`` states a *shape* ("athletic", "stocky") and reads on anything,
+#: but ``fitness_level``'s low values state a human *lifestyle* — a fire elemental
+#: described as "sedentary" or "lightly active" is asserting gym habits for a being that
+#: has none. Shape stays, lifestyle goes.
 _FORM_SUPPRESS_FIELDS: dict[str, set[str]] = {
     _FORM_ANTHRO: set(),
-    _FORM_FERAL: {"bust", "waist", "hips", "shoulder_width", "neck_length", "posture"},
+    _FORM_FERAL: {"bust", "waist", "hips", "shoulder_width", "neck_length", "posture",
+                  "fitness_level"},
     _FORM_SUBTLE: set(),
 }
 #: A creature head hides the human face/hair/makeup; an integument hides the skin.
