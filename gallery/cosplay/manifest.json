@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-07-29T21:53:22.876910",
-  "total_entries": 1732,
-  "entries_with_images": 1732,
+  "generated": "2026-07-31T21:31:32.427413",
+  "total_entries": 1734,
+  "entries_with_images": 1734,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -3513,6 +3513,13 @@
       "gender": "Male",
       "group": "Hell's Paradise",
       "image": "images/Gabimaru.jpeg"
+    },
+    {
+      "name": "Gadget Hackwrench",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Chip 'n Dale Rescue Rangers",
+      "image": "images/Gadget Hackwrench.jpeg"
     },
     {
       "name": "Gaia",
@@ -9442,6 +9449,13 @@
       "gender": "Male",
       "group": "DC",
       "image": "images/Sandman (Wesley Dodds).jpeg"
+    },
+    {
+      "name": "Sandy Cheeks",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Nickelodeon",
+      "image": "images/Sandy Cheeks.jpeg"
     },
     {
       "name": "Sandy Olsson",
