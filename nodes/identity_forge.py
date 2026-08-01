@@ -31,7 +31,8 @@ try:
     from ..data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
-        HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
+        HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
+        FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
@@ -40,7 +41,8 @@ except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
-        HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES,
+        HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
+        FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
@@ -146,6 +148,25 @@ _SPECIES_SLOT_ORDER: tuple[str, ...] = (
 #: helmet / featureless head hides the randomized face, hair and makeup, so
 #: describing them would only fight the costume at render time. Body and
 #: demographics stay (the person under the mask is still a real body).
+#:
+#: **A WIDGET lock wins over this block; a preset lock does not (0.84.0).** Until
+#: 0.84.0 the block dropped unconditionally, so on a masked character moving the
+#: ``hair_color`` widget off ``Random`` did nothing, silently — the dead-widget failure
+#: mode 0.83.0 closed for the wardrobe axis, and inconsistent with every other
+#: suppression in this module (bald, full-shell skin, ``expression``), all of which
+#: honour a lock.
+#:
+#: The fix keys off ``widget_locked``, **not** ``locked_clean``, and the distinction is
+#: load-bearing rather than fussy. ``locked_clean`` merges three sources: the user's own
+#: widget choices, a wired preset's authored ``signature`` / ``physique`` / ``eyes``
+#: values, and the Cosplayer builder's injected ``"None"`` suppressions. Only the first
+#: is a user decision. Measured on the shipped roster: **8 of 295** ``covers_face``
+#: entries carry a ``signature`` pin in a concealed field (Princess Leia, The Atom,
+#: Bo-Katan Kryze, Night Thrasher, Denji, Katana, Jane Foster Thor, Ermac) — and in every
+#: one the mask is an *alternate* costume, so honouring the pin would render Leia's side
+#: buns under the Boushh helmet. Honouring ``locked_clean`` here is therefore a
+#: regression, not a fix; honouring ``widget_locked`` changes **no** shipped entry until
+#: a user deliberately moves a widget.
 _CONCEALED_FACE_GROUPS: frozenset[str] = frozenset({"Face", "Hair", "Makeup"})
 #: Individual head-worn fields (outside the above groups) a full mask also hides.
 _CONCEALED_FACE_FIELDS: frozenset[str] = frozenset({"earrings", "piercings"})
@@ -158,13 +179,19 @@ _CONCEALED_FACE_FIELDS: frozenset[str] = frozenset({"earrings", "piercings"})
 #: steely.**" — a facial expression behind a moulded head. That was mechanical, never a
 #: decision.
 #:
-#: **Why this is a separate set rather than a line added to ``_CONCEALED_FACE_FIELDS``:**
-#: the group/field block above drops unconditionally, ignoring locks. Changing *that* to
-#: respect locks would alter output for ~200 masked entries wherever a user locked a
-#: Face/Hair/Makeup field, which is its own decision and not a drive-by. A newly
-#: suppressed field instead enters with the house "locked-wins" semantics — matching the
-#: bald (:data:`_BALD_SCALP_FIELDS`) and full-shell
-#: (:data:`_CONCEALED_SHELL_SKIN_FIELDS`) blocks, which both honour a lock.
+#: **Why this is still a separate set from ``_CONCEALED_FACE_FIELDS``:** only the
+#: membership differs now, not the semantics. Both blocks honour ``widget_locked`` as of
+#: 0.84.0, but this one exists because ``expression`` lives in ``Setting & Shot`` — it is
+#: not reachable by group, so it has to be named. Keeping it separate also keeps the
+#: reason visible: these are fields a mask hides *incidentally*, not fields that describe
+#: the head.
+#:
+#: 0.84.0 narrowed this from ``locked_clean`` to ``widget_locked`` so both blocks share
+#: one rule — *the mask hides the face; only your own widget overrides it*. Verified a
+#: no-op on shipped data: ``Harley Quinn`` is the only entry whose ``signature`` pins
+#: ``expression`` and she is not ``covers_face``, and **no archetype sets
+#: ``covers_face`` at all**. It is the future-proof half that matters — a masked entry
+#: that pins an expression would otherwise reintroduce the exact bug this closed.
 #:
 #: ``mood`` deliberately stays: it describes the scene's atmosphere, not the face, and
 #: reads fine over a mask. ``smile_type`` needs no entry — it is a Face field and the
@@ -325,8 +352,9 @@ _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
 _FOOTWEAR_CLAUSES: dict[str, str] = {"bare feet": "barefoot"}
 
 #: Garments with neither pockets nor a collar -- swimwear, a leotard / bodysuit, a
-#: gown, a toga. The two ``GARMENT_DEPENDENT_POSES`` ("hands in pockets", "touching
-#: the collar") assume a shirt or jacket, so they are as unperformable here as under
+#: gown, a toga. The three ``GARMENT_DEPENDENT_POSES`` ("hands in pockets", "touching
+#: the collar", "adjusting one cuff") assume a shirt or jacket, so they are as
+#: unperformable here as under
 #: a full hard shell and get dropped the same way. Conservative: only garments that
 #: clearly lack both (never a "suit"/"shirt"/"dress", which may have pockets).
 _POCKETLESS_GARMENT_RE = re.compile(
@@ -902,11 +930,19 @@ def _performable_poses(
     collarless garment — swimwear, a leotard, a gown, a toga — has neither either, so
     the garment gestures are dropped for it the same way (hands-in-pockets on a bikini).
 
-    Reads ``hair_length`` and ``outfit_description`` straight out of ``resolved``
-    rather than taking more parameters: ``pose`` is drawn after both (field indices
-    24/46 vs 67), so their final values — locked *or* randomized — are already in
-    hand. That also means an auto-detected shell (a randomly drawn plate-armour
-    outfit) is caught without the caller having to flag it.
+    A third assumption joined at 0.84.0: a pose that occupies **both hands** assumes the
+    hands are empty. With the Cosplayer node's signature prop switched on, the prose
+    rendered *"She is posing with hands in pockets, holding Mjolnir"* — measured at
+    **14.37%** of prop-enabled renders, across 468 of 1,732 cosplayers that carry a
+    ``prop``. One-handed poses are deliberately kept: the free hand holds the prop, which
+    is the natural reading, so only :data:`HAND_OCCUPIED_POSES` goes.
+
+    Reads ``hair_length``, ``outfit_description`` and ``held_item`` straight out of
+    ``resolved`` rather than taking more parameters: ``pose`` is drawn after all three
+    (field indices 24/46 vs 67, and ``held_item`` is a preset-only lock present from the
+    first line of :func:`_randomize_fields`), so their final values — locked *or*
+    randomized — are already in hand. That also means an auto-detected shell (a randomly
+    drawn plate-armour outfit) is caught without the caller having to flag it.
 
     Both bald routes count: the engine's own "bald" ``hair_length``, and the
     Cosplayer node's ``_BALD_SUPPRESS``, which locks the scalp fields to an *absent*
@@ -931,11 +967,14 @@ def _performable_poses(
         or bool(_FULL_COVER_RE.search(outfit))
         or bool(_POCKETLESS_GARMENT_RE.search(outfit))
     )
+    held = resolved.get("held_item")
     excluded: set[str] = set()
     if hair_hidden:
         excluded |= HAIR_DEPENDENT_POSES
     if garmentless:
         excluded |= GARMENT_DEPENDENT_POSES
+    if held and not _is_absent(held):
+        excluded |= HAND_OCCUPIED_POSES
     if not excluded:
         return pool
     return [p for p in pool if p not in excluded] or pool
@@ -979,9 +1018,16 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
       then draws the subject inside.
     * ``body_type`` -- must not simultaneously call the subject petite
       (:data:`_STATURE_BODY_TYPES`).
+    * ``pose`` -- must not require furniture (:data:`FURNITURE_DEPENDENT_POSES`). This
+      is a *consequence* of the location rule rather than an independent one: forcing
+      the scene outdoors leaves no seat to perch on the edge of. Added 0.84.0; an audit
+      of all 38 poses at giant scale found this to be the only genuinely impossible one
+      (`leaning against a wall` reads better at scale, not worse -- the wall becomes a
+      building).
 
-    Only the giant class takes all three; ``tiny`` takes the framing rule alone, in
-    its own lighter form (see :data:`_SHOTS_TOO_WIDE_FOR_TINY`).
+    Only the giant class takes all four; ``tiny`` takes the framing rule alone, in
+    its own lighter form (see :data:`_SHOTS_TOO_WIDE_FOR_TINY`). A three-foot subject
+    perched on the edge of a seat is fine, so the pose rule is giant-only.
 
     **This is called from the randomize loop, which has already skipped every locked
     field, so an explicit user lock is never narrowed** -- lock ``location`` to a
@@ -990,9 +1036,12 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
     the user asked for, and the 0.63.0 empty-studio-pool precedent is to keep the
     value rather than raise.
 
-    **BIAS.** All three fields are safe, each for its own reason. ``shot_type`` and
+    **BIAS.** All four fields are safe, each for its own reason. ``shot_type`` and
     ``body_type`` are flat -- no ``FIELD_FAMILIES`` entry, no ``weights`` map -- so a
-    narrowed pool stays uniform over the survivors. ``location`` *is* family-weighted,
+    narrowed pool stays uniform over the survivors. ``pose`` is family-weighted and
+    passes because ``FURNITURE_DEPENDENT_POSES`` is exactly the ``seated_perch`` family,
+    split out at 0.84.0 for this rule -- a WHOLE family, so the other eleven stay
+    proportional. ``location`` *is* family-weighted,
     and it passes because its families bucket perfectly: ``domestic``, ``food_drink``,
     ``retail_services``, ``leisure_fitness``, ``civic_institutional``,
     ``work_industrial`` and ``transit_travel`` are entirely indoor, while
@@ -1009,6 +1058,8 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
             return [v for v in pool if v in OUTDOOR_LOCATIONS] or pool
         if field_name == "body_type":
             return [v for v in pool if v not in _STATURE_BODY_TYPES] or pool
+        if field_name == "pose":
+            return [v for v in pool if v not in FURNITURE_DEPENDENT_POSES] or pool
     elif scale_class == "tiny":
         if field_name == "shot_type":
             return [v for v in pool if v not in _SHOTS_TOO_WIDE_FOR_TINY] or pool
@@ -1930,6 +1981,7 @@ def generate_character(
     gender_variants: dict[str, dict[str, str]] | None = None,
     size_scale: str = _SIZE_SCALE_AUTO,
     character_scale: str = "",
+    widget_locked: frozenset[str] | None = None,
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
@@ -1952,6 +2004,12 @@ def generate_character(
     ``covers_hair`` (set by a hooded / cowled / lekku cosplayer whose face still
     shows) drops only the randomized Hair group, so no "Her hair is ..." line
     contradicts the head covering while the face is still described.
+
+    ``widget_locked`` names the fields whose **widget on this node** the user moved off
+    ``"Random"``. It is deliberately narrower than ``locked``: see
+    :data:`_CONCEALED_FACE_GROUPS` for why the concealment blocks need to tell a user's
+    own choice apart from a wired preset's authored look. ``None`` (the default) means
+    "no widget locks", so every caller that does not pass it is unaffected.
 
     ``modifiers`` (set by a connected Modifier node) maps a field name or group
     header to a descriptor that is prepended to the matching resolved value(s),
@@ -1981,6 +2039,7 @@ def generate_character(
     location and build stay coherent with it.
     """
     rng = random.Random(seed)
+    widget_locked = widget_locked or frozenset()
     # "None" locks the *absent* state (optional fields only); keep it. Only
     # "Random" means "engine, choose". ``outfit_description`` is hidden but may
     # be supplied as a costume override, so it is allowed through.
@@ -2213,24 +2272,31 @@ def generate_character(
     # A full mask / helmet hides the face: drop the now-irrelevant face, hair and
     # makeup fields so neither prose nor JSON describes a face that contradicts
     # the costume. Done after constraints so nothing downstream expects them.
+    #
+    # 0.84.0: a WIDGET lock wins. Deliberately `widget_locked`, not `locked_clean` --
+    # see _CONCEALED_FACE_GROUPS for the eight entries that measurement caught.
     if covers_face:
         for field in list(resolved):
-            if (FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_FACE_GROUPS
-                    or field in _CONCEALED_FACE_FIELDS):
+            if ((FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_FACE_GROUPS
+                    or field in _CONCEALED_FACE_FIELDS)
+                    and field not in widget_locked):
                 resolved.pop(field, None)
-        # 0.83.0: a facial expression behind a moulded head. Separate, lock-respecting
-        # block -- see _CONCEALED_FACE_SOFT_FIELDS for why it is not folded in above.
+        # 0.83.0: a facial expression behind a moulded head. Separate block because
+        # `expression` is in Setting & Shot and so cannot be reached by group -- but the
+        # same widget-lock rule (0.84.0). See _CONCEALED_FACE_SOFT_FIELDS.
         for field in _CONCEALED_FACE_SOFT_FIELDS:
-            if field not in locked_clean:
+            if field not in widget_locked:
                 resolved.pop(field, None)
 
     # A hood / cowl / lekku covers only the scalp while the face shows: drop the Hair
     # group so no randomized hair contradicts the covering, but keep Face and Makeup.
     # (A character with both covers_face and covers_hair has its hair dropped by the
     # covers_face block above already; this just handles the face-visible case.)
+    # Widget locks win here for the same reason, and on the same evidence.
     if covers_hair:
         for field in list(resolved):
-            if FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_HAIR_GROUPS:
+            if (FIELD_DEFINITIONS.get(field, {}).get("group") in _CONCEALED_HAIR_GROUPS
+                    and field not in widget_locked):
                 resolved.pop(field, None)
 
     # A "bald" hair_length (locked or randomly drawn from the male pool) is
@@ -2649,11 +2715,26 @@ if _COMFY_AVAILABLE:
             set_all = kwargs.get("set_all_fields", _SET_ALL_OFF)
             locked = resolve_locked_fields(kwargs, archetype_locked, set_all)
 
+            # Which locks are the USER's own widget choices, as opposed to the wired
+            # character's authored look. `locked` above deliberately merges the two, but
+            # the concealment blocks need to tell them apart: a mask must hide a
+            # cosplayer's signature hair while still obeying a user who deliberately
+            # moved the hair_color widget. See _CONCEALED_FACE_GROUPS. Read straight
+            # from kwargs, so a `set_all_fields` reset (which writes "None" into fields
+            # the user never touched) correctly does not count as a widget lock.
+            widget_locked = frozenset(
+                name for name in FIELD_DEFINITIONS
+                if name not in _HIDDEN_FIELDS
+                and name not in _CONTROL_FIELDS
+                and kwargs.get(name, "Random") != "Random"
+            )
+
             prose, json_output = generate_character(
                 seed, gender, locked, hair_color_scope, wardrobe,
                 accessory_density, location_setting, cosplay_label, covers_face,
                 covers_body, covers_hair, modifiers, species, gender_variants,
                 kwargs.get("size_scale", _SIZE_SCALE_AUTO),
                 character_scale,
+                widget_locked=widget_locked,
             )
             return io.NodeOutput(prose, json_output)

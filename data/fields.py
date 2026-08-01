@@ -645,7 +645,7 @@ FIELD_HELP: dict[str, str] = {
     "shot_type": "The camera only - distance, height, angle and lens. Never scene content.",
     "season": "Time of year, which colours the setting and wardrobe.",
     "mood": "Overall emotional tone of the image.",
-    "pose": "What the body is doing. Poses that reach for hair or pockets are dropped when the character has neither.",
+    "pose": "What the body is doing. A pose needing something the subject lacks is dropped: hair or pockets to reach for, a free hand when a prop is held, a seat at giant scale. A lock wins.",
 }
 
 
@@ -842,34 +842,87 @@ MOOD_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 #: and e.g. standing 15/54 x 1/7 = 5/126 (was 5/18 x 1/7 = 5/126). Unchanged, value by
 #: value. `PoseFamilyTests` in tests/test_engine.py pins this — do not retune a weight
 #: here without updating that proof.
+#:
+#: 0.84.0 applied the SAME device four more times, in one rescale, for two fixes. The
+#: rule it implements is the one `studio_stage` established at 0.83.0: **a pose value the
+#: scene or the subject cannot support gets its own family, and the family is excluded
+#: whole.** A partial cull would leave the parent's frozen weight concentrated on the
+#: survivors.
+#:   * `seated_perch` — a giant is forced outdoors by `_scale_coherent_pool`, and there is
+#:     no seat outdoors. Audited: of 38 poses this is the ONLY one impossible at giant
+#:     scale (`leaning against a wall` reads better at scale, not worse).
+#:   * `standing_hands_bound` / `gesture_two_hands` / `gesture_pockets` — poses that
+#:     occupy BOTH hands, which contradict a Cosplayer node signature prop. Measured
+#:     before the fix at 14.37% of prop-enabled renders ("posing with hands in pockets,
+#:     holding Mjolnir"). One-handed poses stay legal: the other hand holds the prop.
+#: Splitting 9 variants 7/2 and 8/1 needs thirds, so every weight here is scaled x3 (a
+#: no-op on relative shares) to keep them integers. Per-variant share after the split is
+#: identical to before, family by family:
+#:   standing 70/7 = standing_hands_bound 20/2 = 10   (was 30/9 x 3 = 10)
+#:   seated   80/8 = seated_perch         10/1 = 10   (was 30/9 x 3 = 10)
+#:   gesture  18/2 = gesture_two_hands    18/2 =  9   (was 12/4 x 3 =  9)
+#:   gesture_garment 18/2 = gesture_pockets 9/1 =  9  (was  9/3 x 3 =  9)
+#: Total 324 = 108 x 3.
 POSE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("standing", {"weight": 30, "variants": ['standing naturally', 'standing with arms crossed', 'in a relaxed contrapposto stance', 'in a confident power pose', 'standing with arms relaxed at the sides', 'standing with weight on one leg', 'standing tall with shoulders back', 'standing with hands clasped behind the back', 'standing with feet planted wide']}),
-    ("seated", {"weight": 30, "variants": ['sitting relaxed', 'sitting upright', 'reclining', 'kneeling gracefully', 'crouching low', 'perched on the edge of a seat', 'sitting cross-legged', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other']}),
-    ("leaning", {"weight": 6, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
-    ("motion", {"weight": 6, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward', 'striding forward with purpose']}),
-    # Gestures that need only a body: safe for anyone, including a full shell.
-    ("gesture", {"weight": 12, "variants": ['posing with a hand on one hip', 'resting chin on one hand', 'holding both hands loosely clasped', 'stretching both arms overhead']}),
-    # Gestures that reach for a GARMENT — pockets, a collar. Nothing to grab on a
+    ("standing", {"weight": 70, "variants": ['standing naturally', 'in a relaxed contrapposto stance', 'in a confident power pose', 'standing with arms relaxed at the sides', 'standing with weight on one leg', 'standing tall with shoulders back', 'standing with feet planted wide']}),
+    # Standing poses that occupy BOTH hands/arms. Split out of `standing` so a held
+    # signature prop can drop them as a whole family. A new both-hands standing pose
+    # MUST go here, not in `standing`.
+    ("standing_hands_bound", {"weight": 20, "variants": ['standing with arms crossed', 'standing with hands clasped behind the back']}),
+    ("seated", {"weight": 80, "variants": ['sitting relaxed', 'sitting upright', 'reclining', 'kneeling gracefully', 'crouching low', 'sitting cross-legged', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other']}),
+    # The one seated pose that needs FURNITURE rather than the ground. Split out so the
+    # giant scale — which forces the scene outdoors — can drop it as a whole family.
+    # Everything else in `seated` works on the ground and stays available at any scale.
+    ("seated_perch", {"weight": 10, "variants": ['perched on the edge of a seat']}),
+    ("leaning", {"weight": 18, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
+    ("motion", {"weight": 18, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward', 'striding forward with purpose']}),
+    # Gestures that need only a body and leave ONE hand free: safe for anyone, including
+    # a full shell, and compatible with a held prop.
+    ("gesture", {"weight": 18, "variants": ['posing with a hand on one hip', 'resting chin on one hand']}),
+    # Gestures that occupy BOTH hands/arms — see `standing_hands_bound`.
+    ("gesture_two_hands", {"weight": 18, "variants": ['holding both hands loosely clasped', 'stretching both arms overhead']}),
+    # Gestures that reach for a GARMENT — a collar, a cuff. Nothing to grab on a
     # fur body, an armour shell or a droid chassis. A new garment-touching pose
-    # MUST go here, not in `gesture`: the suppression set is derived from this
-    # family, so a cuff-adjusting pose filed elsewhere would reach for a sleeve a
-    # mascot suit does not have.
-    ("gesture_garment", {"weight": 9, "variants": ['posing with hands in pockets', 'touching the collar with one hand', 'adjusting one cuff']}),
+    # MUST go here (or in `gesture_pockets`), not in `gesture`: the suppression set is
+    # derived from these families, so a cuff-adjusting pose filed elsewhere would reach
+    # for a sleeve a mascot suit does not have.
+    ("gesture_garment", {"weight": 18, "variants": ['touching the collar with one hand', 'adjusting one cuff']}),
+    # Garment-dependent AND both-hands: pockets need a garment to have pockets and both
+    # hands to be free. Its own family so each rule can drop it independently.
+    ("gesture_pockets", {"weight": 9, "variants": ['posing with hands in pockets']}),
     # Gestures that reach for SCALP HAIR. Nothing to touch under a helmet or on a
     # bald / masked / hooded head.
-    ("gesture_hair", {"weight": 3, "variants": ['running one hand through the hair']}),
-    ("looking", {"weight": 12, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully']}),
+    ("gesture_hair", {"weight": 9, "variants": ['running one hand through the hair']}),
+    ("looking", {"weight": 36, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully']}),
 ])
 
 #: Poses the engine drops when a character has no visible scalp hair (a full mask, a
-#: hood, or a bald head) and no worn garment (a full hard shell / non-skin body).
+#: hood, or a bald head), no worn garment (a full hard shell / non-skin body), or a
+#: signature prop already occupying both hands.
 #: Derived from POSE_FAMILIES rather than hand-listed so the two cannot drift apart,
 #: and deliberately whole families: dropping *part* of a family would leave its full
 #: weight concentrated on the survivors (the bias trap documented for LIGHTING_FAMILIES
 #: in 0.64.0). Removing a whole family instead leaves every other family's share
 #: proportionally intact.
 HAIR_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["gesture_hair"]["variants"])
-GARMENT_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["gesture_garment"]["variants"])
+#: Both garment families — `gesture_pockets` was split out of `gesture_garment` at
+#: 0.84.0 for the held-prop rule, and pockets are the *most* garment-dependent pose of
+#: all, so it must be unioned back in here or the split would silently let a mascot suit
+#: put its hands in pockets it does not have.
+GARMENT_DEPENDENT_POSES: frozenset[str] = frozenset(
+    POSE_FAMILIES["gesture_garment"]["variants"] + POSE_FAMILIES["gesture_pockets"]["variants"]
+)
+#: Poses that occupy BOTH hands or both arms, dropped when a Cosplayer node supplies a
+#: signature held prop (`held_item`). One-handed poses are deliberately absent: the free
+#: hand holds the prop, which is the natural reading.
+HAND_OCCUPIED_POSES: frozenset[str] = frozenset(
+    POSE_FAMILIES["standing_hands_bound"]["variants"]
+    + POSE_FAMILIES["gesture_two_hands"]["variants"]
+    + POSE_FAMILIES["gesture_pockets"]["variants"]
+)
+#: Poses that need furniture rather than the ground, dropped at giant scale (which forces
+#: an outdoor scene). Whole family, same reasoning as the two sets above.
+FURNITURE_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["seated_perch"]["variants"])
 
 #: 0.65.0: the `studio` family's former `'Dutch angle with hard shadows'` mixed a pure
 #: camera concept (Dutch angle = frame tilt) into a lighting field -- the same class of

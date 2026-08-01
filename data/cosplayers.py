@@ -1944,6 +1944,24 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "porcelain"},
     },
+    # Same shape as Sandy Cheeks: real, describable garments over an animal body, so an
+    # ordinary entry with covers_body + a mask rather than Creature-node material. Her
+    # blonde hair lives in the `mask` prose because covers_face drops the Hair group.
+    "Gadget Hackwrench": {
+        "franchise": "Chip 'n Dale Rescue Rangers",
+        "gender": "Female",
+        "covers_body": True,
+        "covers_face": True,
+        "size_scale": "tiny",
+        "scale_prose": "tiny and only a few inches tall",
+        "mask": "a light tan mouse face with a small pink nose, large round blue eyes "
+                "and big round ears, framed by a chin-length golden blonde bob, with "
+                "brass-rimmed aviator goggles pushed up on the forehead",
+        "costume": "a lavender mechanic's jumpsuit with a wide turned-down collar and "
+                   "rolled cuffs, over an even, all-over coat of light tan fur, with a "
+                   "long thin mouse tail, on a tiny few-inch frame",
+        "physique": {"body_type": "slim", "height": "very petite"},
+    },
     "Maleficent": {
         "franchise": "Sleeping Beauty",
         "gender": "Female",
@@ -9085,6 +9103,24 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "green-and-purple flowered shorts on a chunky pink starfish body",
         "mask": "a pink starfish face with small eyes and thick eyebrows",
         "physique": {"body_type": "plump", "height": "average height"},
+    },
+    # The "real garments over an animal body" shape: a describable worn look, so she is
+    # an ordinary roster entry rather than Creature-node material. covers_face because
+    # the head is a squirrel's, not a human's -- the clear dome shows it, it does not
+    # hide it. No size_scale: she is drawn at the same scale as SpongeBob and Patrick,
+    # neither of whom carries a tier.
+    "Sandy Cheeks": {
+        "franchise": "Nickelodeon",
+        "gender": "Female",
+        "covers_body": True,
+        "covers_face": True,
+        "mask": "a clear round glass diving helmet with a white flower emblem on the "
+                "front, over a light brown squirrel face with large front teeth, dark "
+                "round eyes and tufted cheeks",
+        "costume": "a white pressurised diving suit with a segmented collar ring, a "
+                   "utility belt, and white boots and gloves, over an even, all-over "
+                   "coat of light brown fur, with a large bushy squirrel tail",
+        "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Squidward": {
         "franchise": "Nickelodeon",
@@ -19798,7 +19834,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Big Hero 6", "The Incredibles", "Zootopia", "Star vs. the Forces of Evil",
         "Toy Story", "Lilo and Stitch", "Pinocchio",
         "The Hunchback of Notre Dame", "Atlantis: The Lost Empire", "Mary Poppins",
-        "Kim Possible", "Mickey Mouse & Friends",
+        "Kim Possible", "Mickey Mouse & Friends", "Chip 'n Dale Rescue Rangers",
         # Pixar and Walt Disney Animation titles group under Disney by precedent
         # (The Incredibles, Toy Story, Frozen are already here).
         "Inside Out", "Wreck-It Ralph",

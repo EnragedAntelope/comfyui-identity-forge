@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1732 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1734 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (329)
 
@@ -534,7 +534,7 @@
 
 - **Kaori Miyazono** (F, prop)
 
-## Comics & Cartoons (235)
+## Comics & Cartoons (236)
 
 ### Adventure Time
 
@@ -776,6 +776,7 @@
 - **Mr. Krabs** (M, masked)
 - **Patrick Star** (M, masked)
 - **Plankton** (M, tiny, masked)
+- **Sandy Cheeks** (F, masked)
 - **SpongeBob SquarePants** (M, masked)
 - **Squidward** (M, masked)
 
@@ -1156,7 +1157,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (96)
+## Disney (97)
 
 ### 101 Dalmatians
 
@@ -1201,6 +1202,10 @@
 ### Brave
 
 - **Merida** (F, prop)
+
+### Chip 'n Dale Rescue Rangers
+
+- **Gadget Hackwrench** (F, tiny, masked)
 
 ### Cinderella
 

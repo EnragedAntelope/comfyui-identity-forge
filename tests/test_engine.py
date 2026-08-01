@@ -21,7 +21,8 @@ if str(ROOT) not in sys.path:
 
 from data.fields import (
     FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES, HAIR_STYLE_FAMILIES,
-    HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
+    HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
+    FURNITURE_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
 )
 from data.constraints import CONSTRAINT_RULES
 from data.fields import WORN_ITEM_RES, SHOE_RE, PALETTE_ADJECTIVES, PATTERN_TAILS
@@ -2406,14 +2407,17 @@ class PoseGrammarTests(unittest.TestCase):
 
 
 class PoseFamilyTests(unittest.TestCase):
-    """The 0.66.0 gesture split must not move a single pose's probability.
+    """Every pose family split must leave the parent's share exactly where it was.
 
     Splitting a family re-weights its variants unless each sub-family's weight is
     proportional to its variant count. This pins the arithmetic against the
     pre-split baseline so a future weight tweak cannot silently bias the field.
+    Three rounds of splitting are covered: 0.66.0 (gesture -> 3), and 0.84.0
+    (standing -> 2, seated -> 2, gesture_garment -> 2 for the held-prop and giant
+    coherence rules).
     """
 
-    #: POSE_FAMILIES exactly as it stood at 0.65.0, before the gesture split.
+    #: POSE_FAMILIES exactly as it stood at 0.65.0, before any split.
     _BASELINE = {
         "standing": (5, 7), "seated": (5, 7), "leaning": (1, 3), "motion": (1, 3),
         "gesture": (4, 6), "looking": (2, 4),
@@ -2429,11 +2433,20 @@ class PoseFamilyTests(unittest.TestCase):
             for value in variants
         }
 
-    #: The three 0.66.0 gesture sub-families, and the parent whose share they split.
-    _GESTURE_SUBFAMILIES = ("gesture", "gesture_garment", "gesture_hair")
+    #: Every 0.65.0 family that has since been split, mapped to the sub-families that
+    #: now share its slice. A family absent here was never split.
+    _SUBFAMILIES = {
+        "gesture": ("gesture", "gesture_two_hands", "gesture_garment",
+                    "gesture_pockets", "gesture_hair"),
+        "standing": ("standing", "standing_hands_bound"),
+        "seated": ("seated", "seated_perch"),
+    }
+
+    def _parts(self, family):
+        return self._SUBFAMILIES.get(family, (family,))
 
     def test_split_preserves_every_family_share(self):
-        """The invariant the 0.66.0 split had to satisfy, stated at family level.
+        """The invariant every split had to satisfy, stated at family level.
 
         0.82.0 note: this used to pin each *value* to a fixed probability, which
         also froze the pool size -- so adding a pose failed it for the wrong
@@ -2449,14 +2462,34 @@ class PoseFamilyTests(unittest.TestCase):
 
         for family, (weight, _count) in self._BASELINE.items():
             expected = weight / base_total
-            if family == "gesture":
-                # The split's whole point: the three parts still sum to the parent.
-                actual = sum(POSE_FAMILIES[f]["weight"] for f in self._GESTURE_SUBFAMILIES)
-            else:
-                actual = POSE_FAMILIES[family]["weight"]
+            # The whole point of a split: the parts still sum to the parent's slice.
+            actual = sum(POSE_FAMILIES[f]["weight"] for f in self._parts(family))
             self.assertAlmostEqual(
                 actual / cur_total, expected, places=12,
                 msg=f"family {family!r} share moved off the 0.65.0 baseline")
+
+    def test_every_split_family_covers_its_parents_variants(self):
+        # A split must partition the parent, never lose or gain a value. Catches a
+        # variant moved between sub-families without a matching weight change, which
+        # `test_split_preserves_every_family_share` alone would not see.
+        for family, (_weight, _count) in self._BASELINE.items():
+            parts = self._parts(family)
+            merged = [v for f in parts for v in POSE_FAMILIES[f]["variants"]]
+            self.assertEqual(len(merged), len(set(merged)),
+                             f"{family!r} sub-families overlap")
+
+    def test_split_subfamily_weights_stay_proportional_to_size(self):
+        # The load-bearing arithmetic of every split: sub-family weights must track
+        # variant counts, or splitting re-weights the values it split.
+        for family, parts in self._SUBFAMILIES.items():
+            per_variant = {
+                f: POSE_FAMILIES[f]["weight"] / len(POSE_FAMILIES[f]["variants"])
+                for f in parts
+            }
+            self.assertEqual(
+                len({round(v, 9) for v in per_variant.values()}), 1,
+                f"{family!r} sub-families are no longer proportional to size: "
+                f"{per_variant}")
 
     def test_every_family_is_internally_uniform(self):
         # _pick_family_weighted draws a family, then a variant uniformly within
@@ -2468,17 +2501,6 @@ class PoseFamilyTests(unittest.TestCase):
             shares = {current[v] for v in fam["variants"]}
             self.assertEqual(len(shares), 1, f"family {name!r} is not internally uniform")
 
-    def test_gesture_subfamily_weights_stay_proportional_to_size(self):
-        # The load-bearing arithmetic of the 0.66.0 split: sub-family weights must
-        # track variant counts, or splitting re-weights the values it split.
-        per_variant = {
-            f: POSE_FAMILIES[f]["weight"] / len(POSE_FAMILIES[f]["variants"])
-            for f in self._GESTURE_SUBFAMILIES
-        }
-        self.assertEqual(
-            len(set(round(v, 9) for v in per_variant.values())), 1,
-            f"gesture sub-families are no longer proportional to size: {per_variant}")
-
     def test_probabilities_sum_to_one(self):
         current = self._marginals(
             {name: (fam["weight"], fam["variants"]) for name, fam in POSE_FAMILIES.items()}
@@ -2487,15 +2509,45 @@ class PoseFamilyTests(unittest.TestCase):
 
     def test_dependent_pose_sets_are_whole_families(self):
         # Partial-family exclusion is the documented bias trap: the family keeps its
-        # full weight and concentrates it on the survivors.
-        self.assertEqual(HAIR_DEPENDENT_POSES, frozenset(POSE_FAMILIES["gesture_hair"]["variants"]))
-        self.assertEqual(
-            GARMENT_DEPENDENT_POSES, frozenset(POSE_FAMILIES["gesture_garment"]["variants"])
-        )
+        # full weight and concentrates it on the survivors. Every suppression set the
+        # engine applies to `pose` must therefore be a union of WHOLE families.
+        by_family = {
+            name: frozenset(fam["variants"]) for name, fam in POSE_FAMILIES.items()
+        }
+        for label, sub_set in (
+            ("HAIR_DEPENDENT_POSES", HAIR_DEPENDENT_POSES),
+            ("GARMENT_DEPENDENT_POSES", GARMENT_DEPENDENT_POSES),
+            ("HAND_OCCUPIED_POSES", HAND_OCCUPIED_POSES),
+            ("FURNITURE_DEPENDENT_POSES", FURNITURE_DEPENDENT_POSES),
+        ):
+            covered = frozenset().union(
+                *(vs for vs in by_family.values() if vs <= sub_set)
+            ) if any(vs <= sub_set for vs in by_family.values()) else frozenset()
+            self.assertEqual(
+                sub_set, covered,
+                f"{label} is not a union of whole POSE_FAMILIES families -- a partial "
+                f"cull concentrates the parent family's frozen weight on the survivors")
+
+    def test_pockets_stay_garment_dependent_after_the_0_84_0_split(self):
+        # `gesture_pockets` was split out of `gesture_garment` for the held-prop rule.
+        # Pockets are the MOST garment-dependent pose of all, so the split must not
+        # quietly let a mascot suit put its hands in pockets it does not have.
+        self.assertIn("posing with hands in pockets", GARMENT_DEPENDENT_POSES)
+        self.assertIn("posing with hands in pockets", HAND_OCCUPIED_POSES)
+
+    def test_hand_occupied_set_holds_only_two_handed_poses(self):
+        # A one-handed pose must NOT be here: the free hand holds the prop, which is
+        # the natural reading and the reason the set is narrow.
+        for pose in ("posing with a hand on one hip", "resting chin on one hand",
+                     "touching the collar with one hand", "adjusting one cuff",
+                     "running one hand through the hair"):
+            self.assertNotIn(pose, HAND_OCCUPIED_POSES)
 
     def test_dependent_poses_are_real_field_options(self):
         options = set(FIELD_DEFINITIONS["pose"]["female_options"])
-        self.assertTrue((HAIR_DEPENDENT_POSES | GARMENT_DEPENDENT_POSES) <= options)
+        self.assertTrue(
+            (HAIR_DEPENDENT_POSES | GARMENT_DEPENDENT_POSES
+             | HAND_OCCUPIED_POSES | FURNITURE_DEPENDENT_POSES) <= options)
 
 
 class FieldHelpTests(unittest.TestCase):
@@ -3126,6 +3178,62 @@ class PerformablePoseTests(unittest.TestCase):
         self.assertFalse((HAIR_DEPENDENT_POSES | GARMENT_DEPENDENT_POSES) & set(got))
         self.assertTrue(got, "pool must never be emptied")
 
+    # --- 0.84.0: a held signature prop occupies the hands --------------------
+
+    def test_held_prop_drops_two_handed_poses(self):
+        resolved = {"hair_length": "long", "outfit_description": "a wool overcoat",
+                    "held_item": "Mjolnir, a short-handled war hammer"}
+        got = _performable_poses(self._pool(), resolved, False, False, False)
+        self.assertFalse(HAND_OCCUPIED_POSES & set(got))
+
+    def test_held_prop_keeps_one_handed_poses(self):
+        # The narrowness is the point -- the free hand holds the prop.
+        resolved = {"hair_length": "long", "outfit_description": "a wool overcoat",
+                    "held_item": "a bullwhip"}
+        got = _performable_poses(self._pool(), resolved, False, False, False)
+        for pose in ("posing with a hand on one hip", "resting chin on one hand",
+                     "running one hand through the hair", "adjusting one cuff"):
+            self.assertIn(pose, got)
+
+    def test_absent_held_item_changes_nothing(self):
+        # `held_item` is optional and preset-only; an absent value must not narrow.
+        base = {"hair_length": "long", "outfit_description": "a wool overcoat"}
+        expected = _performable_poses(self._pool(), base, False, False, False)
+        for absent in ("None", "none", ""):
+            got = _performable_poses(
+                self._pool(), {**base, "held_item": absent}, False, False, False
+            )
+            self.assertEqual(got, expected, f"held_item={absent!r} narrowed the pool")
+
+    def test_no_two_handed_pose_ever_renders_beside_a_held_prop(self):
+        # End to end through the engine, at the density that draws the most extras.
+        for seed in range(1200):
+            prose, _ = generate_character(
+                seed, "Female", {"held_item": "a bullwhip coiled in one hand"},
+                accessory_density="Maximal",
+            )
+            for pose in HAND_OCCUPIED_POSES:
+                self.assertNotIn(pose, prose, f"seed {seed}")
+
+    def test_thor_never_crosses_his_arms_while_holding_mjolnir(self):
+        # The reported shape, end to end through the real Cosplayer entry + prop toggle.
+        for seed in range(80):
+            flat = _parse_archetype_json(
+                build_cosplayer_json("Thor", seed, include_prop=True)
+            )
+            flat.pop(_COSPLAY_LABEL_KEY, None)
+            covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+            covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+            covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+            locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+            prose, _ = generate_character(
+                seed, "Any", locked, covers_face=covers_face,
+                covers_body=covers_body, covers_hair=covers_hair,
+            )
+            self.assertIn("holding", prose, f"seed {seed}")
+            for pose in HAND_OCCUPIED_POSES:
+                self.assertNotIn(pose, prose, f"seed {seed}")
+
     def test_moogle_never_runs_a_hand_through_its_hair(self):
         # The reported bug, end to end through the real Cosplayer entry.
         for seed in range(60):
@@ -3142,6 +3250,44 @@ class PerformablePoseTests(unittest.TestCase):
             self.assertNotIn("through the hair", prose, f"seed {seed}")
             self.assertNotIn("in pockets", prose, f"seed {seed}")
             self.assertNotIn("the collar", prose, f"seed {seed}")
+
+
+class GiantPoseTests(unittest.TestCase):
+    """A giant is forced outdoors, so it cannot perch on the edge of a seat (0.84.0)."""
+
+    def test_giant_never_perches_on_a_seat(self):
+        for seed in range(1500):
+            _, js = generate_character(seed, "Any", {}, size_scale="colossal")
+            pose = json.loads(js).get("Setting & Shot", {}).get("pose")
+            self.assertNotIn(pose, FURNITURE_DEPENDENT_POSES, f"seed {seed}")
+
+    def test_giant_can_still_sit(self):
+        # The fix must remove one variant, not the seated concept -- a giant sitting
+        # on the ground is a good image and the rest of `seated` stays legal.
+        seen = set()
+        for seed in range(1500):
+            _, js = generate_character(seed, "Any", {}, size_scale="colossal")
+            seen.add(json.loads(js).get("Setting & Shot", {}).get("pose"))
+        self.assertTrue(
+            seen & set(POSE_FAMILIES["seated"]["variants"]),
+            "the giant scale dropped the whole seated concept, not just the perch")
+
+    def test_tiny_keeps_the_perch(self):
+        # A three-foot subject on the edge of a seat is fine; the rule is giant-only.
+        seen = set()
+        for seed in range(1500):
+            _, js = generate_character(seed, "Any", {}, size_scale="tiny")
+            seen.add(json.loads(js).get("Setting & Shot", {}).get("pose"))
+        self.assertTrue(seen & FURNITURE_DEPENDENT_POSES)
+
+    def test_an_explicit_pose_lock_still_wins(self):
+        # _scale_coherent_pool runs inside the randomize loop, which has already
+        # skipped every locked field. A user who locks the perch gets the perch.
+        _, js = generate_character(
+            7, "Any", {"pose": "perched on the edge of a seat"}, size_scale="colossal"
+        )
+        self.assertEqual(
+            json.loads(js)["Setting & Shot"]["pose"], "perched on the edge of a seat")
 
 
 class CoversBodyTests(unittest.TestCase):
@@ -3755,16 +3901,39 @@ class MaskedExpressionTests(unittest.TestCase):
                 found += 1
         self.assertEqual(found, 60, "expression must be untouched when the face shows")
 
-    def test_an_explicit_lock_still_wins(self):
-        """Locked-wins is the house semantics for a newly suppressed field -- matching
-        the bald and full-shell blocks, which both honour a lock."""
+    def test_an_explicit_widget_lock_still_wins(self):
+        """A user's own widget beats the mask -- the house semantics, and the same rule
+        the Face/Hair/Makeup block took at 0.84.0.
+
+        0.84.0 restatement: this used to pass any `locked` entry and assert it won,
+        which conflated a user's widget with a wired preset's authored look. The
+        guarantee that is actually wanted is the narrower one, and the companion test
+        below pins the other half."""
+        for seed in range(40):
+            text, js = generate_character(
+                seed, "Male",
+                {"outfit_description": self.COSTUME, "expression": "beaming"},
+                covers_face=True, covers_body=True,
+                widget_locked=frozenset({"expression"}))
+            self.assertEqual(self._setting(js).get("expression"), "beaming")
+            self.assertIn("expression is beaming", text)
+
+    def test_a_preset_lock_does_not_win(self):
+        """The other half of the 0.84.0 rule: a wired character's authored value is
+        part of the costume the mask hides, so it must NOT survive."""
         for seed in range(40):
             text, js = generate_character(
                 seed, "Male",
                 {"outfit_description": self.COSTUME, "expression": "beaming"},
                 covers_face=True, covers_body=True)
-            self.assertEqual(self._setting(js).get("expression"), "beaming")
-            self.assertIn("expression is beaming", text)
+            self.assertNotIn("expression", self._setting(js), f"seed {seed}")
+            self.assertNotIn("expression is", text, f"seed {seed}")
+
+    def test_widget_lock_is_ignored_when_the_face_shows(self):
+        # widget_locked only ever *prevents* a suppression; it must never inject.
+        _, js = generate_character(
+            3, "Male", {}, widget_locked=frozenset({"expression"}))
+        self.assertIn("expression", self._setting(js))
 
     def test_mood_is_deliberately_kept(self):
         """mood describes the scene's atmosphere, not the face: it reads over a mask."""
@@ -3776,6 +3945,100 @@ class MaskedExpressionTests(unittest.TestCase):
             if self._setting(js).get("mood"):
                 found += 1
         self.assertGreater(found, 0, "mood must survive a full mask")
+
+
+class WidgetLockVersusConcealmentTests(unittest.TestCase):
+    """0.84.0: the mask hides the face; only the user's OWN widget overrides it.
+
+    Until 0.84.0 the `covers_face` group block and the `covers_hair` block dropped
+    unconditionally, so on a masked character moving the `hair_color` widget off
+    "Random" did nothing, silently -- the dead-widget failure mode 0.83.0 closed for
+    the wardrobe axis. The fix keys off `widget_locked`, NOT the merged `locked`
+    mapping: `locked` also carries a wired cosplayer's authored `signature`, and 8 of
+    the 295 `covers_face` entries pin a concealed field there (Princess Leia's side
+    buns under the Boushh helmet). Honouring those would be a regression.
+    """
+
+    COSTUME = "a sealed chrome helmet over a full armored bodysuit"
+
+    def _groups(self, js):
+        return json.loads(js)
+
+    def test_masked_subject_drops_hair_by_default(self):
+        for seed in range(60):
+            _, js = generate_character(
+                seed, "Female", {"outfit_description": self.COSTUME}, covers_face=True)
+            self.assertNotIn("Hair", self._groups(js), f"seed {seed}")
+            self.assertNotIn("Face", self._groups(js), f"seed {seed}")
+
+    def test_a_widget_lock_survives_the_mask(self):
+        for seed in range(40):
+            text, js = generate_character(
+                seed, "Female",
+                {"outfit_description": self.COSTUME, "hair_color": "auburn"},
+                covers_face=True, widget_locked=frozenset({"hair_color"}))
+            self.assertEqual(self._groups(js)["Hair"]["hair_color"], "auburn")
+            self.assertIn("auburn", text)
+
+    def test_a_preset_lock_does_not_survive_the_mask(self):
+        # The Princess Leia case: the same value, arriving from a signature pin.
+        for seed in range(40):
+            _, js = generate_character(
+                seed, "Female",
+                {"outfit_description": self.COSTUME, "hair_color": "auburn"},
+                covers_face=True)
+            self.assertNotIn("Hair", self._groups(js), f"seed {seed}")
+
+    def test_a_widget_lock_survives_a_hood(self):
+        for seed in range(40):
+            _, js = generate_character(
+                seed, "Female",
+                {"outfit_description": "a heavy grey travelling cloak with a deep hood",
+                 "hair_style": "low ponytail"},
+                covers_hair=True, widget_locked=frozenset({"hair_style"}))
+            self.assertEqual(self._groups(js)["Hair"]["hair_style"], "low ponytail")
+
+    def test_a_hood_still_drops_unlocked_hair(self):
+        for seed in range(40):
+            _, js = generate_character(
+                seed, "Female",
+                {"outfit_description": "a heavy grey travelling cloak with a deep hood"},
+                covers_hair=True)
+            self.assertNotIn("Hair", self._groups(js), f"seed {seed}")
+
+    def test_widget_locked_is_purely_additive(self):
+        # Every caller that does not pass it must be byte-identical -- the whole
+        # non-breaking argument for the new parameter rests on this.
+        for seed in range(120):
+            a = generate_character(seed, "Female", {})
+            b = generate_character(seed, "Female", {}, widget_locked=frozenset())
+            c = generate_character(seed, "Female", {}, widget_locked=None)
+            self.assertEqual(a, b)
+            self.assertEqual(a, c)
+
+    def test_every_shipped_masked_cosplayer_is_unchanged_by_default(self):
+        """The regression gate: with no widget locks, no masked entry may gain a face.
+
+        This is what makes the change safe to ship -- the 8 signature-pinning entries
+        are the ones that would break if `locked` had been used instead.
+        """
+        pinning = ["Princess Leia Organa", "The Atom", "Bo-Katan Kryze",
+                   "Night Thrasher", "Denji", "Katana", "Jane Foster Thor", "Ermac"]
+        for name in pinning:
+            for seed in range(25):
+                flat = _parse_archetype_json(build_cosplayer_json(name, seed))
+                flat.pop(_COSPLAY_LABEL_KEY, None)
+                covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+                covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+                covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+                if not covers_face:
+                    continue  # this seed rolled an unmasked alternate costume
+                locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+                _, js = generate_character(
+                    seed, "Any", locked, covers_face=covers_face,
+                    covers_body=covers_body, covers_hair=covers_hair)
+                self.assertNotIn("Hair", json.loads(js), f"{name} seed {seed}")
+                self.assertNotIn("Face", json.loads(js), f"{name} seed {seed}")
 
 
 class FeralFitnessTests(unittest.TestCase):

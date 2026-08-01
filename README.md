@@ -251,6 +251,14 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
   Cosplayer or Archetype node is a complete look and overrides all of this.
 - **Nothing is worn twice.** If a costume or outfit already names a necklace, earrings, a ring, a
   bangle, a bag or a hat, the randomizer does not add a second one.
+- **The pose fits the body.** Poses that reach for something the subject does not have are never
+  drawn: hair to run a hand through under a helmet, pockets on a mascot suit, a *free hand* when
+  a signature prop is switched on (no more "hands in pockets, holding Mjolnir"), or a seat to
+  perch on when the subject is fifty feet tall outdoors. Lock a pose and your choice wins.
+- **A mask hides the face — unless you say otherwise.** A full-mask character drops the randomized
+  face, hair, makeup and expression, so nothing contradicts the helmet. Set any of those widgets
+  yourself and it renders anyway: the character's own look stays hidden, your explicit choice does
+  not.
 - **Gender & crossplay.** The *person's* gender is the Identity Forge `gender` widget, independent
   of any character's. `Any` rolls a coherent man or woman each run; pair it with `wardrobe: Any`
   for fully mixed-gender output. Locked / archetype / cosplayer values always win.

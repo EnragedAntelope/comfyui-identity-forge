@@ -318,6 +318,49 @@ list; the working principles at the top of this file also apply):
 7. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
    `python scripts/generate_reference_docs.py`, and commit the refreshed reference index.
 
+#### Judgement calls that keep recurring
+
+Rules learned from curation passes, kept here rather than in the backlog file so they
+outlive any one candidate list.
+
+- **A small *person* is excluded; a person in a small-*creature* suit is not.** The
+  child-bodied rule (which keeps Anya Forger and Beatrice off the roster) was misapplied
+  to yordles once and had to be reversed. Teemo is not a child — he is a mascot suit: a
+  furry animal head and body with a real, describable uniform worn over it. That is the
+  `covers_face` + `covers_body` + `mask` shape roughly **50 entries already ship on**
+  (Pikachu, Moogle, Bugs Bunny, the TMNT, Mr. Krabs…), and `size_scale: "tiny"` handles
+  a three-foot subject. Ask *"is this a small person, or a person in a small-creature
+  suit?"* — only the first is excluded.
+- **Animal characters split three ways, not two.** (a) Quadrupeds with no worn look at
+  all (Appa, Simba, Luna) — **Creature node**, not the roster. (b) Full mascot suits
+  (Pikachu, Mr. Krabs) — ordinary entries, mechanism long settled. (c) Animals wearing
+  real garments (Sandy Cheeks, Gadget Hackwrench, Maid Marian) — also ordinary entries:
+  `covers_body: True` with the animal head written into `mask`. Only (a) is excluded, and
+  it is excluded for the worn-look rule, not for being an animal.
+- **A whole cast in near-identical suits makes the *shared* mechanics the risk**, not the
+  individual entries. Writing the Miraculous Ladybug team surfaced three that recurred
+  per-entry: a talisman worn **at the throat** needs `necklace: "no necklace"` (Cat Noir's
+  bell, Ryuko's choker, Rena Rouge's pendant); one worn **as a bracelet** is left unnamed
+  entirely, because no bracelet field exists to pin; one that is a **hair comb or
+  glasses** is safe to name, because `hair_accessory` and `accessories` *are*
+  costume-suppressed. And a **domino mask is never `covers_face`** — the eyes are
+  covered, the face is not.
+- **An iconic variant is an alternate, not a second entry** (rule 2). Two shapes: a plain
+  string in `costumes` when only the costume changes (Shadow Moth on Hawk Moth), and a
+  dict alternate carrying its own `signature` when a look-defining field must be replaced
+  (Chat Blanc's white hair and blue eyes over Cat Noir's blond — the Gwen Tennyson
+  mechanism).
+- **A key has to be findable in a 1,700-row dropdown.** Disambiguate collisions
+  (`Gwen (League of Legends)` beside `Gwen Tennyson` and `Spider-Gwen`), and prefer a full
+  name where a short one would be unsearchable (`Mel Medarda`, not `Mel`). A franchise
+  that spans a spin-off keeps its own string where the character is spin-off-only
+  (`Arcane` for Silco), while playable champions file under the parent.
+- **Never put a second figure in the frame.** A canonical look that requires attendants,
+  a partner or a companion is not usable — 0.63.0 deleted the over-the-shoulder shot type
+  for the same reason. Aphrodite (Record of Ragnarok) ships as a clothed Grecian reading
+  keeping her canon identifiers, because her canonical presentation is both unclothed and
+  attendant-supported.
+
 `COSPLAYERS: dict[name -> entry]`. Required: `franchise`, `gender` (`Female`/`Male` — SOURCE
 gender, used only to scope the `Random — female/male` picks; the *person's* gender is the
 IdentityForge widget, so crossplay works), `costume`. Optional: `signature` / `physique`
@@ -573,7 +616,13 @@ User additions are first-class (0.46.1):
 Design notes for ideas that were scoped but deliberately not built. Kept so the reasoning
 does not have to be rediscovered — and so a future decision starts from the real numbers.
 
-### Sequential / "cycle through the pool" pick mode (deferred 0.66.0)
+### Sequential / "cycle through the pool" pick mode (deferred 0.66.0, **DECIDED AGAINST 0.84.0**)
+
+**Closed on a maintainer decision — do not re-propose.** The design below is kept because it is
+sound and cheap; what killed it is that none of the three open questions has a good answer, and
+the feature's value (browsing a scope) does not justify either a second number widget or a
+knowingly unstable index. The `_announce_scope` pool-size print already gives users the
+"how big is this scope" information that motivated most of the ask.
 
 **The ask:** let a user walk a scope one character at a time instead of only picking randomly —
 e.g. contact-sheet every Star Wars character, or every Giant.
@@ -623,6 +672,14 @@ from 14 options to 40. Singletons are simply never offered. It needed **no new p
 it counts `user_options.json` additions and self-maintains as the roster grows. Current
 thresholds for a future re-tune: ≥3 chars → 94 franchises covering 1093 of 1296; ≥5 → 54 covering
 955; ≥8 → 30 covering 817 (27 after removing the category-named three).
+
+**Re-tuning `_FRANCHISE_SCOPE_MINIMUM` is DECIDED AGAINST (0.84.0) — do not re-propose.**
+The threshold stays at **8**. Lowering it trades a longer dropdown for scopes that are barely
+scopes: at ≥3 the control grows to ~94 franchise entries on top of the 14 attribute ones, and
+a three-character scope is close enough to picking the character by name that the *random* pick
+stops meaning anything. The numbers above are kept so the trade can be re-examined with real
+figures if the roster's shape ever changes materially — a *new argument*, not a repeat of the
+request.
 
 **Related pre-existing UX wart — legibility addressed in 0.68.0, correctness in 0.75.0.**
 `_resolve_character` used to fall back to the **full gender pool** silently when a (gender, scope)
@@ -702,8 +759,36 @@ If the second group is ever built, each value must be slotted into a `HAIR_STYLE
 family **and** into the `data/constraints.py` length lists (`_LONG_HAIR_STYLES`, the pixie
 exclusion) — the rule `cornrows` and `bantu knots` escaped until 0.72.0.
 
-Two genuine **archetype** gaps surfaced while checking this and are recorded here rather than
-acted on: there is no western/cowboy archetype and no biker archetype.
+Two **archetype** gaps were recorded here at 0.77.0 ("no western/cowboy archetype and no biker
+archetype"). **Both are now closed and the note was stale** — verified against the live
+225-archetype list: `Wild West Gunslinger`, `Rancher`, `Backyard Country Casual` and
+`Country Star` cover the western ground, and `Biker` ships. Kept as a line rather than
+deleted because a stale "gap" invites someone to fill it twice.
+
+### A bare-adjective `height` reads awkwardly in the lead sentence (open, noticed 0.84.0)
+
+Found in a preview pass, **pre-existing since the lead sentence was written** and unrelated to
+anything 0.84.0 changed. The lead joins `[body_type, height, skin_tone]`, and `height` is
+inserted verbatim:
+
+> Iron Man: *"a 22-year-old man with an average build **and short**."*
+> Thor: *"…with an average build, **short**, and medium skin."*
+
+Six of the nine `height` values are bare adjectives (`very petite`, `petite`, `short`, `tall`,
+`statuesque`, `very tall`); the other three are already noun phrases (`average height`,
+`slightly below/above average height`) and read correctly. It is most visible on a fully
+encased character, where `_CONCEALED_SHELL_SKIN_FIELDS` drops `skin_tone` and the list falls to
+two items, leaving a naked "and short".
+
+**Not fixed, deliberately.** It is cosmetic, and any fix rewrites the lead sentence of roughly
+two-thirds of *all* renders — this pack's output is a T2I prompt, so changing `short` to
+`a short stature` changes the conditioning tokens for every user, not just the phrasing. That
+is a bigger, standalone decision than a wording tidy-up looks like.
+
+**If it is ever taken on**, the constraint to respect: `height` is also the slot the
+`size_scale` / `scale_prose` override writes into (`"colossal and fifty feet tall"`), and those
+are hand-authored phrases that already read correctly. Any rewrapping must apply **only** to
+values present in `FIELD_DEFINITIONS["height"]`, never to free text.
 
 ### The `loose` hair_style family blocks the rest of the buzz-cut fix (CLOSED 0.78.0)
 
@@ -1201,10 +1286,12 @@ Two hard requirements for any new landmark:
   capital-initial location is declared in one bucket or the other, so adding one without
   deciding fails the suite — deliberate friction, like `PoseGrammarTests`' opener allowlist.
 
-**Indoor landmarks are deliberately still open.** `civic_institutional` and `transit_travel`
-have *zero* landmarks, so there is nothing to split from and any add would be a frequency
-increase from zero, breaking the guarantee the whole device rests on. That needs its own
-decision, not a quiet append.
+**Indoor landmarks: DECIDED AGAINST (0.84.0) — do not re-propose.** `civic_institutional` and
+`transit_travel` have *zero* landmarks, so there is nothing to split from: any add would raise
+the famous-landmark frequency **from zero**, which is precisely the overweighting this whole
+device exists to prevent. There is no version of the change that keeps the guarantee, so it is
+closed rather than parked. (Outdoor landmarks were only addable *because* seven already
+existed inside `urban_outdoor` / `nature_outdoor` to split away from.)
 
 ### `stage spotlight` is a fixture, the other ten studio values are not (0.83.0)
 
@@ -1230,12 +1317,9 @@ A masked subject rendered *"He wears a plush yordle suit. … **His expression i
 for every release. The cause was mechanical, never a decision: `covers_face` drops the
 **Face / Hair / Makeup** groups, and `expression` lives in **Setting & Shot**.
 
-Fixed via `_CONCEALED_FACE_SOFT_FIELDS`, a **separate, lock-respecting** block. The existing
-group block ignores locks deliberately; making *that* lock-respecting would change output for
-~200 masked entries wherever a user locked a Face/Hair/Makeup field, which is its own
-decision and not a drive-by. A newly suppressed field instead enters with the house
-locked-wins semantics, matching the bald and full-shell blocks. `mood` stays — it describes
-the scene, not the face.
+Fixed via `_CONCEALED_FACE_SOFT_FIELDS`, a **separate** block — separate because `expression`
+lives outside the concealed groups and so cannot be reached by group name. `mood` stays: it
+describes the scene, not the face. The lock semantics were finished at 0.84.0 (below).
 
 ### `barbered_crop`: the first family priced below the per-variant rate (0.83.0)
 
@@ -1282,6 +1366,93 @@ reason. That is 0.82.0's `PoseFamilyTests` trap, and the fix is the same: assert
 guarantee the mechanism actually makes (family share × one uniform dilution, plus sub-family
 proportionality), never a frozen per-value number.
 
+### A widget lock and a preset lock are not the same lock (0.84.0)
+
+The `covers_face` group block and the `covers_hair` block dropped their fields
+**unconditionally**, ignoring every lock — so on a masked character, moving the `hair_color`
+widget off `Random` did nothing, silently. That is the dead-widget failure mode 0.83.0 closed
+for the wardrobe axis, and it was inconsistent with every other suppression in the module
+(bald, full-shell skin, `expression`), all of which honour a lock.
+
+**The obvious fix is wrong, and measurement is what showed it.** 0.83.0 assumed
+"lock-respecting" meant honouring `locked_clean` and priced the change at "~200 masked entries
+change as a drive-by". But `locked_clean` merges three sources — the user's widget choices, a
+wired preset's authored `signature`/`physique`/`eyes`, and the Cosplayer builder's injected
+`"None"` suppressions — and only the first is a user decision. Of the **295** `covers_face`
+entries, **8** pin a concealed field in their `signature` (Princess Leia Organa, The Atom,
+Bo-Katan Kryze, Night Thrasher, Denji, Katana, Jane Foster Thor, Ermac), and in every one of
+those the mask is an *alternate* costume. Honouring `locked_clean` would render Leia's side
+buns under the Boushh helmet — a regression wearing a fix's clothes.
+
+So `generate_character` takes a keyword-only **`widget_locked: frozenset[str] | None`**, built
+in `execute` straight from `kwargs` (a field whose widget is not `"Random"`). The rule both
+blocks now share is one sentence: **the mask hides the face; only your own widget overrides
+it.** `_CONCEALED_FACE_SOFT_FIELDS` was narrowed from `locked_clean` to the same set so there
+is a single semantic — verified a no-op on shipped data (`Harley Quinn` is the only entry
+pinning `expression` and she is not masked; **no archetype sets `covers_face` at all**).
+
+Properties worth keeping in mind: the parameter defaults to empty, so every other caller —
+tests, gallery builders, the preview script — is **byte-identical** and the change is purely
+additive; and it consumes **no RNG**, because locked fields already skip the randomize loop, so
+this only decides whether an already-drawn value survives to the output.
+
+**The generalisable rule:** when a suppression needs to "respect locks", first ask *whose*
+lock. A pack that injects preset values into the same mapping as user choices has two
+different things in one dict, and the coherence rules almost always mean the user's.
+
+### Two pose contradictions, one rescale (0.84.0)
+
+Both are the `studio_stage` shape from 0.83.0 — *a value naming a physical thing the scene or
+the subject does not have gets its own family, and the family is excluded whole* — and both
+were bundled into a single `POSE_FAMILIES` rescale so the seed drift is paid **once**.
+
+1. **A giant cannot perch on the edge of a seat.** `_scale_coherent_pool` already forces a
+   giant outdoors, and there is no seat outdoors. An audit of all 38 poses at giant scale
+   found this to be the *only* genuinely impossible one — `leaning against a wall` reads
+   **better** at scale, since the wall becomes a building. `pose` therefore joins `shot_type`,
+   `location` and `body_type` in `_scale_coherent_pool`, giant-only: a three-foot subject on a
+   seat edge is fine, so `tiny` is untouched.
+2. **A held prop cannot share a hand with a two-handed pose.** With the Cosplayer node's prop
+   toggle on, the prose rendered *"She is posing with hands in pockets, holding Mjolnir"* and
+   *"holding both hands loosely clasped, holding Mjolnir"*. **468 of 1,732** cosplayers carry
+   a `prop`; measured over 4,000 renders, **14.37%** of prop-enabled output hit this (analytic
+   14.51%). `_performable_poses` gained a third branch, needing **no new parameter** —
+   `held_item` is a `_PRESET_HIDDEN_FIELDS` lock, so it is in `resolved` from the first line
+   of `_randomize_fields`, exactly like the `hair_length` and `outfit_description` it already
+   reads.
+
+**The exclusion is deliberately narrow.** Only *both*-handed poses go
+(`standing with arms crossed`, `standing with hands clasped behind the back`, `holding both
+hands loosely clasped`, `stretching both arms overhead`, `posing with hands in pockets`).
+One-handed poses stay legal — `resting chin on one hand`, `adjusting one cuff`,
+`running one hand through the hair` — because the free hand holds the prop, which is the
+natural reading and a better image than dropping them.
+
+**The arithmetic.** Four families split; `standing` and `seated` are 30/9 per variant so they
+need thirds, which makes **×3** the scale that closes all four:
+
+```
+standing 30/9  ->  standing 70/7  + standing_hands_bound 20/2   (10 per variant)
+seated   30/9  ->  seated   80/8  + seated_perch         10/1   (10)
+gesture  12/4  ->  gesture  18/2  + gesture_two_hands    18/2   ( 9)
+gesture_garment 9/3 -> gesture_garment 18/2 + gesture_pockets 9/1 ( 9)
+leaning 18/3 · motion 18/4 · gesture_hair 9/1 · looking 36/5
+total 324 = 108 x 3
+```
+
+Verified analytically: no value lost, worst per-value probability delta **3.5e-18**, and each
+of the four exclusion sets is an *exact* union of whole families with the survivors staying
+proportional to within float noise.
+
+**One trap the split sets, and the fix for it.** `gesture_pockets` was carved out of
+`gesture_garment`, so `GARMENT_DEPENDENT_POSES` had to be re-derived as the **union** of both
+— pockets are the most garment-dependent pose there is, and leaving the derivation alone would
+have quietly let a mascot suit put its hands in pockets it does not have. Any future split of
+a family that some suppression set is derived from carries the same hazard:
+**check every set derived from a family before you split it.**
+`PoseFamilyTests::test_dependent_pose_sets_are_whole_families` now asserts *every* pose
+suppression set is a union of whole families, so a partial cull cannot be introduced silently.
+
 ## Gotchas cheat-sheet
 
 - **An extreme scale needs the SCENE, not just the prose (0.79.0).** "Colossal and fifty feet
@@ -1291,8 +1462,10 @@ proportionality), never a frozen per-value number.
   location 25.9% of the time — a giant that could actually read as giant was about 1 render in
   14, and ~7% called the subject "petite" in the same sentence as the scale phrase.
   `_scale_coherent_pool` narrows three fields when a giant tier is active: `shot_type` to
-  `_SCALE_SHOWING_SHOTS`, `location` to `OUTDOOR_LOCATIONS`, and `body_type` away from
-  `_STATURE_BODY_TYPES`. `tiny` gets only the light framing rule. It runs inside the randomize
+  `_SCALE_SHOWING_SHOTS`, `location` to `OUTDOOR_LOCATIONS`, `body_type` away from
+  `_STATURE_BODY_TYPES`, and (0.84.0) `pose` away from `FURNITURE_DEPENDENT_POSES` — a
+  consequence of the location rule, since forcing the scene outdoors leaves no seat to perch
+  on. `tiny` gets only the light framing rule. It runs inside the randomize
   loop, which has already skipped every locked field, **so an explicit user lock is never
   narrowed**; an empty result falls back to the unfiltered pool (the 0.63.0 empty-studio-pool
   precedent — warn and keep, never raise).
