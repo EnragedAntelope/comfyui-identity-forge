@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-07-31T21:31:32.427413",
-  "total_entries": 1734,
-  "entries_with_images": 1734,
+  "generated": "2026-08-03T23:43:50.455383",
+  "total_entries": 1737,
+  "entries_with_images": 1737,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -2344,6 +2344,13 @@
       "gender": "Male",
       "group": "DC",
       "image": "images/Darkseid.jpeg"
+    },
+    {
+      "name": "Darkwing Duck",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Darkwing Duck",
+      "image": "images/Darkwing Duck.jpeg"
     },
     {
       "name": "Darna",
@@ -6567,6 +6574,13 @@
       "image": "images/Mai Shiranui.jpeg"
     },
     {
+      "name": "Maid Marian",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Robin Hood (1973)",
+      "image": "images/Maid Marian.jpeg"
+    },
+    {
       "name": "Majin Buu",
       "has_image": true,
       "gender": "Male",
@@ -9631,6 +9645,13 @@
       "gender": "Male",
       "group": "Star Wars",
       "image": "images/Scout Trooper.jpeg"
+    },
+    {
+      "name": "Scrooge McDuck",
+      "has_image": true,
+      "gender": "Male",
+      "group": "DuckTales",
+      "image": "images/Scrooge McDuck.jpeg"
     },
     {
       "name": "Sebastian Shaw",
