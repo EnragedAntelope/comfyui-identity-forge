@@ -61,6 +61,14 @@ the coin-flip (locking a beard yields a man); otherwise it is an even 50/50. For
 mixed-gender output, set `wardrobe: Any` together with `gender: Any` — that keeps both feature
 pools unioned and uses neutral *they/them* pronouns.
 
+## Pairing with a rendering pack
+
+`prose` is a plain string, so it composes with any downstream node that takes text —
+notably [Stylebook](https://github.com/EnragedAntelope/comfyui-stylebook), which adds
+medium, lighting, colour grade, era, finish and mood on top. When pairing the two, set
+`lighting` and `mood` here to `None` so the two packs don't each state the same axis;
+see the [README](../README.md#using-with-stylebook) for the full split.
+
 ## Custom options
 
 Add your own choices without editing the source (they survive updates): copy
@@ -127,7 +135,7 @@ to check that your custom field values are valid options.
 | Makeup | style, eyeshadow, eyeliner, lashes, lips, blush, brows, contour, highlight, finish |
 | Jewelry & Nails | earrings, necklace, rings, bracelet, watch, other jewellery, piercings, nails |
 | Clothing | outfit style (which picks a garment set), footwear, colour palette, pattern, bag, accessories — the palette, pattern and shoes are composed onto the garment, so locking any of them changes the outfit |
-| Setting & Shot | expression, pose, location (indoor/outdoor), lighting, season, framing, mood |
+| Setting & Shot | expression, pose, location (indoor/outdoor), lighting, season, framing, composition, mood |
 
 ## Example
 

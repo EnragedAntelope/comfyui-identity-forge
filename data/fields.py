@@ -425,8 +425,17 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # (rear views existed, low/high angles existed, neither combined).
         # Most values leave subject orientation unstated, which text-to-image models
         # render frontally -- a deliberate, retained bias toward facing the camera.
-        "female_options": ['extreme close-up on face', 'close-up portrait', 'medium close-up from chest up', 'medium shot from waist up', 'cowboy shot from mid-thigh up', 'full body shot', 'full body shot with environment visible', 'wide shot with subject at center', 'wide shot with subject off-center', 'extreme wide establishing shot', 'straight-on eye level', 'slightly above eye level', 'high angle looking down', "steep overhead bird's-eye view", 'low angle looking up', "worm's-eye view from ground", 'slight Dutch angle', 'three-quarter angle facing left', 'three-quarter angle facing right', 'side profile', 'from slightly behind and to the side', 'view from directly behind', 'from behind and slightly below, looking up toward subject', 'from above and behind, looking down toward subject', 'fish-eye wide lens distortion', 'telephoto compressed perspective'],
-        "male_options": ['extreme close-up on face', 'close-up portrait', 'medium close-up from chest up', 'medium shot from waist up', 'cowboy shot from mid-thigh up', 'full body shot', 'full body shot with environment visible', 'wide shot with subject at center', 'wide shot with subject off-center', 'extreme wide establishing shot', 'straight-on eye level', 'slightly above eye level', 'high angle looking down', "steep overhead bird's-eye view", 'low angle looking up', "worm's-eye view from ground", 'slight Dutch angle', 'three-quarter angle facing left', 'three-quarter angle facing right', 'side profile', 'from slightly behind and to the side', 'view from directly behind', 'from behind and slightly below, looking up toward subject', 'from above and behind, looking down toward subject', 'fish-eye wide lens distortion', 'telephoto compressed perspective'],
+        #
+        # 0.85.0 amendment: 'selfie framing at arm's length' is the one deliberate
+        # exception to "camera-only, no second object". It still names only a camera
+        # distance/position, not a phone or an arm holding one -- the difference from the
+        # deleted "shot through a doorway" class is that a selfie does not put anything
+        # *between* the camera and the subject, and this pack's whole frame is already "a
+        # photographed cosplayer", so arm's-length is a coherent camera position rather
+        # than an intruding object. Guarded by a pose exclusion in constraints.py so it
+        # never draws a both-hands-occupied pose (see gesture_pockets/gesture_two_hands).
+        "female_options": ['extreme close-up on face', 'close-up portrait', 'medium close-up from chest up', 'medium shot from waist up', 'cowboy shot from mid-thigh up', 'full body shot', 'full body shot with environment visible', 'wide shot with subject at center', 'wide shot with subject off-center', 'extreme wide establishing shot', 'selfie framing at arm\'s length', 'straight-on eye level', 'slightly above eye level', 'high angle looking down', "steep overhead bird's-eye view", 'low angle looking up', "worm's-eye view from ground", 'slight Dutch angle', 'three-quarter angle facing left', 'three-quarter angle facing right', 'side profile', 'from slightly behind and to the side', 'view from directly behind', 'from behind and slightly below, looking up toward subject', 'from above and behind, looking down toward subject', 'fish-eye wide lens distortion', 'telephoto compressed perspective'],
+        "male_options": ['extreme close-up on face', 'close-up portrait', 'medium close-up from chest up', 'medium shot from waist up', 'cowboy shot from mid-thigh up', 'full body shot', 'full body shot with environment visible', 'wide shot with subject at center', 'wide shot with subject off-center', 'extreme wide establishing shot', 'selfie framing at arm\'s length', 'straight-on eye level', 'slightly above eye level', 'high angle looking down', "steep overhead bird's-eye view", 'low angle looking up', "worm's-eye view from ground", 'slight Dutch angle', 'three-quarter angle facing left', 'three-quarter angle facing right', 'side profile', 'from slightly behind and to the side', 'view from directly behind', 'from behind and slightly below, looking up toward subject', 'from above and behind, looking down toward subject', 'fish-eye wide lens distortion', 'telephoto compressed perspective'],
         "optional": False
     }),
     ("shoulder_width", {
@@ -528,8 +537,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # weight, zero bias impact) to "standing with arms relaxed at the sides",
         # "touching the collar with one hand" and "holding both hands loosely
         # clasped". `PoseGrammarTests` pins the rule for new values.
-        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully'],
-        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully'],
+        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera'],
+        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera'],
         "optional": True
     }),
     ("held_item", {
@@ -557,6 +566,32 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "optional": False,
         "control": True
     }),
+    ("composition", {
+        "group": 'Setting & Shot',
+        # Frame LAYOUT only -- where the subject sits within the frame, never distance,
+        # height, angle or lens (that is shot_type's axis; the two would otherwise
+        # restate each other) and never a physical object (0.63.0 deleted doorway /
+        # window / foliage framing from shot_type for exactly that reason -- an object
+        # in the frame that the model has to invent). Every value reads after
+        # "composed with ...". Deliberately absent from FIELD_FAMILIES, like shot_type:
+        # a flat field, so any coherence exclusion (see constraints.py) re-picks
+        # uniform rather than concentrating weight on survivors.
+        "female_options": ['the subject on a rule-of-thirds line', 'centered symmetry',
+                            'the subject small against open negative space',
+                            'a tight crop and little headroom',
+                            'leading lines drawing the eye to the subject',
+                            'a low horizon line and open sky above',
+                            'a high horizon line and a sliver of sky',
+                            'the subject filling most of the frame'],
+        "male_options": ['the subject on a rule-of-thirds line', 'centered symmetry',
+                          'the subject small against open negative space',
+                          'a tight crop and little headroom',
+                          'leading lines drawing the eye to the subject',
+                          'a low horizon line and open sky above',
+                          'a high horizon line and a sliver of sky',
+                          'the subject filling most of the frame'],
+        "optional": False
+    }),
 ])
 
 #: Per-field help, shown as the tooltip on that field's dropdown (0.78.0).
@@ -569,9 +604,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
 #: node, so these say what the field means and flag any engine behaviour that will
 #: surprise someone (automatic suppression, cross-field effects, gender defaults).
 #:
-#: Keep them ONE short sentence. Missing keys fall back to the generic text, and
-#: tests/validate_data.py checks that every key names a real field and that every
-#: user-visible field has an entry.
+#: Keep them short -- one sentence naming the field, plus at most one more only when
+#: there is a genuine cross-field or cross-pack behaviour to flag (as with ethnicity,
+#: skin_tone, height and lighting/mood below). Missing keys fall back to the generic
+#: text, and tests/validate_data.py checks that every key names a real field and that
+#: every user-visible field has an entry.
 FIELD_HELP: dict[str, str] = {
     # --- Demographics ---
     "age": "Apparent age in years.",
@@ -641,10 +678,11 @@ FIELD_HELP: dict[str, str] = {
     # --- Setting & Shot ---
     "expression": 'The face the subject is pulling. Dropped automatically behind a full mask or helmet, unless you lock it.',
     "location": 'Where the shot happens, including named world landmarks. Narrow it with the location_setting control; a value locked here overrides that control.',
-    "lighting": "Quality and source of the light. Automatically kept coherent with whether the location is indoors or out.",
+    "lighting": "Quality and source of the light. Automatically kept coherent with whether the location is indoors or out. Set to 'None' if a downstream rendering pack owns this axis.",
     "shot_type": "The camera only - distance, height, angle and lens. Never scene content.",
+    "composition": "Where the subject sits within the frame - layout, not camera position. Kept coherent with shot_type.",
     "season": "Time of year, which colours the setting and wardrobe.",
-    "mood": "Overall emotional tone of the image.",
+    "mood": "Overall emotional tone of the image. Set to 'None' if a downstream rendering pack owns this axis.",
     "pose": "What the body is doing. A pose needing something the subject lacks is dropped: hair or pockets to reach for, a free hand when a prop is held, a seat at giant scale. A lock wins.",
 }
 
@@ -893,7 +931,11 @@ POSE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # Gestures that reach for SCALP HAIR. Nothing to touch under a helmet or on a
     # bald / masked / hooded head.
     ("gesture_hair", {"weight": 9, "variants": ['running one hand through the hair']}),
-    ("looking", {"weight": 36, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully']}),
+    # 0.85.0: two eye-contact variants grown in place (family weight unchanged, only
+    # the per-value share shifts) -- the documented bias-safe channel for adding to an
+    # existing family. Closes the gap where the pack had no way to state eye contact
+    # at all.
+    ("looking", {"weight": 36, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera']}),
 ])
 
 #: Poses the engine drops when a character has no visible scalp hair (a full mask, a

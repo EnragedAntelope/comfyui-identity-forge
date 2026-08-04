@@ -9017,6 +9017,51 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a black dog face with long droopy ears, two buck teeth, and kind eyes",
         "physique": {"body_type": "lean", "height": "very tall"},
     },
+    "Maid Marian": {
+        "franchise": "Robin Hood (1973)",
+        "gender": "Female",
+        # A vixen, not a human -- same shape as Nick Wilde: covers_body for the fur (not
+        # skin), covers_face for the muzzle, the head detail lives in mask so a veil can
+        # be described in costume without duplicating it.
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "a pale pink long-sleeved gown under a lavender open-front overdress "
+                   "cinched with a rope belt, and a cream veil draped over the head that "
+                   "leaves the ears free, over an even, all-over coat of russet-red fur "
+                   "with a long bushy tail",
+        "mask": "a russet-red fox head with a cream muzzle and chin, tall pointed ears, "
+                "and blue eyes",
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Scrooge McDuck": {
+        "franchise": "DuckTales",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "a knee-length blue frock coat with red cuffs and a gold button at "
+                   "the collar, a black top hat, and red spats, over an even, all-over "
+                   "coat of white feathers, and no trousers",
+        "mask": "a white duck head with a yellow-orange bill, round wire-rimmed "
+                "pince-nez glasses, bushy white eyebrows, and blue eyes",
+        "physique": {"body_type": "stocky", "height": "short", "age": "70"},
+        "prop": "a wooden cane with a curved handle",
+    },
+    "Darkwing Duck": {
+        "franchise": "Darkwing Duck",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an electric purple long coat falling past the knee with gold "
+                   "buttons down the front and on each cuff, over a teal turtleneck "
+                   "sweater, a purple silk cape lined in magenta, purple gloves and "
+                   "tall purple boots, and an oversized blue-grey fedora with a black "
+                   "band, over an even, all-over coat of white feathers, and no "
+                   "trousers",
+        "mask": "a white duck head with an orange bill, and a dark purple domino mask "
+                "over the eyes",
+        "physique": {"body_type": "stocky", "height": "short"},
+        "prop": "a gas gun styled like an old-fashioned pistol",
+    },
     "Genie": {
         "franchise": "Aladdin",
         "gender": "Male",
@@ -19835,6 +19880,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Toy Story", "Lilo and Stitch", "Pinocchio",
         "The Hunchback of Notre Dame", "Atlantis: The Lost Empire", "Mary Poppins",
         "Kim Possible", "Mickey Mouse & Friends", "Chip 'n Dale Rescue Rangers",
+        "Robin Hood (1973)", "DuckTales", "Darkwing Duck",
         # Pixar and Walt Disney Animation titles group under Disney by precedent
         # (The Incredibles, Toy Story, Frozen are already here).
         "Inside Out", "Wreck-It Ralph",

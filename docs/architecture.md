@@ -96,6 +96,72 @@ fully offline. The engine half of every node is a pure function importable witho
 (that's how the tests run headless). Pillow is required *only* by the gallery publishing
 scripts, which are maintainer tooling and never imported by a node.
 
+## A working "Fix node (recreate)"
+
+That menu entry is not a ComfyUI feature. ComfyUI-Manager contributes it, and on frontend
+1.47 its implementation throws partway through:
+
+```
+TypeError: t.findInputSlot is not a function
+  at LGraphNode.connect
+  at node_info_copy   (node_fixer.js, reconnecting the inputs)
+```
+
+Node ids are strings now. Manager calls `src.connect(slot, dest.id, name)`, and `connect`
+only resolves its second argument to a node when that argument is a *number*, so a string
+id sails past the lookup and `connect` calls `findInputSlot` on it. The callback creates
+the replacement first and removes the original last, so the exception leaves both on the
+canvas: the original still wired up, the replacement floating unconnected on top of it.
+That is the whole of the reported bug, and it is not specific to this pack — it happens to
+any node with a connected input, in any pack (reported upstream; see the issue link in
+`docs/worklog/2026-08-03-revision-0.85.md`).
+
+`js/identity_forge_recreate.js` installs a correct one for Identity Forge nodes and takes
+the broken entry out of their menu. Nothing global is patched. Ported from
+[comfyui-stylebook](https://github.com/EnragedAntelope/comfyui-stylebook)'s
+`stylebook_recreate.js`, which diagnosed and fixed the same bug first.
+
+Three rules make a recreate correct, and each is a bug avoided:
+
+1. **Pass the node object to `connect()`, never its id.** Ids are strings.
+2. **Restore widget values by name, never by index.** Recreating a node is what you do
+   *because* the schema changed, so an index-based copy writes every value into the wrong
+   widget from the first added or removed input onward. A value that is no longer valid
+   for a combo is dropped and reported, not forced: writing an invalid value produces a
+   node that fails prompt validation over something the user never chose.
+3. **Reconnect by slot name, never slot number**, for the same reason.
+
+Remove the original *before* reconnecting. An input holds one link, so reconnecting first
+fights the link still attached to the old node.
+
+The menu entry is installed as an own property on the node instance, not as another
+prototype wrapper. Every pack that adds menu entries wraps the prototype, and the last
+wrapper installed runs its additions last; an instance property shadows the whole chain,
+so we always see the finished option list regardless of extension load order.
+
+**One addition beyond the Stylebook port, specific to this pack's widget shape.** The main
+node rebuilds `node.widgets` into ~66 field combos plus ten button widgets (two master
+buttons, one collapse header per field group — see `js/identity_forge.js`
+`setupIdentityForge`), and picking a `gender` swaps the option list of six other widgets
+via a wrapped callback. `copyWidgetValues` skips button widgets outright (a toggled
+collapse header's *name* changes at runtime, which would otherwise report every collapsed
+group as a dropped widget on every recreate), and after copying values the recreate
+re-invokes the fresh node's `gender` widget callback so the gender-divergent widgets'
+option lists get re-scoped to the restored gender — a value copy alone restores the
+correct *value* but leaves the fresh node's default "Any" pool as the *option list* until
+the user touches gender again.
+
+**A known, narrow limitation, inherited from the port rather than introduced by it.** If
+a widget has been right-click-converted to an input socket *and* has something wired
+into it, the fresh node reverts that widget to its normal, unconverted form, so the link
+finds no matching socket and is silently dropped (no console warning — `snapshotLinks`'s
+reconnect loop only guards `slot >= 0`). Verified live against the `stylebook_with_
+identity_forge` example, whose `IdentityForge` node has `seed`/`gender`/`wardrobe`/
+`set_all_fields` converted this way (none actually linked in that file, so the case
+itself wasn't triggered, only confirmed by inspection). Not fixed here — Stylebook's own
+`stylebook_recreate.js` has the identical gap and it has not been a reported problem
+there either.
+
 ## Nodes & data flow
 
 The four preset nodes each emit a grouped-JSON **`character_json`** string and chain through
@@ -1452,6 +1518,46 @@ a family that some suppression set is derived from carries the same hazard:
 **check every set derived from a family before you split it.**
 `PoseFamilyTests::test_dependent_pose_sets_are_whole_families` now asserts *every* pose
 suppression set is a union of whole families, so a partial cull cannot be introduced silently.
+
+### A second camera axis, a selfie, and eye contact (0.85.0)
+
+Pairing with a downstream rendering pack ([Stylebook](https://github.com/EnragedAntelope/comfyui-stylebook))
+surfaced a real gap in the "camera-only" doctrine `shot_type` has carried since 0.63.0: distance,
+height, angle and lens say nothing about *layout* — where the subject sits inside the frame. Two
+`shot_type` values (`wide shot with subject at center` / `off-center`) had already leaked layout
+into the camera field, which was the tell.
+
+**`composition`** is the new field for exactly that: rule-of-thirds, centered symmetry, negative
+space, a tight crop, leading lines, a low/high horizon, filling the frame. Flat like `shot_type`
+(absent from `FIELD_FAMILIES`) for the same reason — any coherence exclusion re-picks uniform. Two
+rules bound the value list, both inherited from why `shot_type` looks the way it does: no physical
+object (the 0.63.0 lesson — an object in frame is something the model has to invent) and no camera
+restatement (that is `shot_type`'s axis, and a second statement of it renders twice). Seven
+generated `CONSTRAINT_RULES` keep the two fields from contradicting each other (a tight shot
+excludes the four layouts that presuppose an environment; a centered/off-center shot excludes its
+direct opposite; a wide establishing shot excludes the two tight-crop layouts) — see the loops at
+the tail of `constraints.py`.
+
+**`selfie framing at arm's length`** joins `shot_type` as one deliberate exception to
+"camera-only, no second object": it still names only a camera position, not a phone or an arm, and
+unlike the deleted doorway/window/foliage values it puts nothing *between* camera and subject —
+the frame is already "a photographed cosplayer". It reuses the *existing* `HAND_OCCUPIED_POSES`
+constant (built for the 0.84.0 held-prop rule) rather than a hand-listed subset: `_performable_poses`
+now drops that whole set when `shot_type` is the selfie value, exactly as it already does when a
+signature prop occupies a hand. One more generated rule excludes the environment-dependent
+`composition` values under a selfie, reusing the same list the tight-shot rule uses.
+
+**Eye contact** had no field at all — a real gap, since Stylebook's own README already credits
+Identity Forge with owning it. Two variants, `looking directly into the camera` and
+`looking off past the camera`, were grown into the existing `looking` `POSE_FAMILIES` entry in
+place (family weight unchanged, 5 -> 7 variants) — the documented bias-safe channel, not a new
+family and not a re-weight.
+
+**On the Stylebook pairing itself: docs and tooltips only, no default change.** `lighting` and
+`mood` keep defaulting to `Random` — most users run this pack standalone, and `lighting` in
+particular drives 165 generated location-coherence rules that would otherwise sit unused. The
+README gets a short "Using with Stylebook" section mirroring Stylebook's own, and both fields'
+`FIELD_HELP` gained one extra sentence pointing at `None` when a downstream pack owns the axis.
 
 ## Gotchas cheat-sheet
 

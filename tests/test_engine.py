@@ -32,6 +32,7 @@ from nodes.identity_forge import (
     resolve_locked_fields,
     _pick_family_weighted,
     _performable_poses,
+    _SELFIE_SHOT_TYPE,
     _randomize_fields,
     _is_absent,
     _parse_archetype_json,
@@ -734,7 +735,7 @@ class OutputFormatTests(unittest.TestCase):
 
     def test_none_excludes_non_optional_field(self):
         # Any field (even non-optional scene fields) can be omitted via "None".
-        scene = {f: "None" for f in ("location", "lighting", "shot_type",
+        scene = {f: "None" for f in ("location", "lighting", "shot_type", "composition",
                                      "season", "mood", "expression", "pose")}
         prose, js = generate_character(9, "Female", scene)
         self.assertNotIn("Setting & Shot", json.loads(js))
@@ -1666,6 +1667,74 @@ class LocationLightingCoherenceTests(unittest.TestCase):
                              ("outdoor-only", OUTDOOR_ONLY_LIGHTING),
                              ("void-allowed", VOID_ALLOWED_LIGHTING)):
             self.assertTrue(bucket <= pool, f"{name} names a non-option: {bucket - pool}")
+
+
+class CompositionTests(unittest.TestCase):
+    """0.85.0: composition is frame layout, shot_type is the camera.
+
+    Both fields are flat (absent from FIELD_FAMILIES), so every coherence
+    exclusion in constraints.py re-picks uniform rather than concentrating
+    weight -- verified here the same way LocationLightingCoherenceTests
+    verifies the lighting buckets.
+    """
+
+    #: Values that presuppose an environment behind the subject.
+    _ENVIRONMENT_DEPENDENT = frozenset({
+        'the subject small against open negative space',
+        'leading lines drawing the eye to the subject',
+        'a low horizon line and open sky above',
+        'a high horizon line and a sliver of sky',
+    })
+    _TIGHT_SHOTS = frozenset({
+        'extreme close-up on face', 'close-up portrait', 'medium close-up from chest up',
+    })
+    _WIDE_ENVIRONMENT_SHOTS = frozenset({
+        'full body shot with environment visible', 'extreme wide establishing shot',
+    })
+
+    def test_every_composition_value_completes_composed_with(self):
+        for gendered in ("female_options", "male_options"):
+            for value in FIELD_DEFINITIONS["composition"][gendered]:
+                with self.subTest(value=value):
+                    self.assertTrue(value and value[0].islower(), value)
+
+    def test_composition_values_name_no_camera_or_object_terms(self):
+        # A layout value must never restate shot_type's axis (distance/angle/lens)
+        # or introduce a physical object into frame (the 0.63.0 shot_type lesson).
+        banned = ("camera", "lens", "angle", "shot", "doorway", "window",
+                  "mirror", "foliage")
+        for gendered in ("female_options", "male_options"):
+            for value in FIELD_DEFINITIONS["composition"][gendered]:
+                for word in banned:
+                    self.assertNotIn(word, value, f"{value!r} contains {word!r}")
+
+    def _pairs(self, n=600):
+        for seed in range(n):
+            for scope in ("Any indoor/outdoor", "Indoor", "Outdoor", "Studio / solid backdrop"):
+                _, js = generate_character(seed, "Any", {}, location_setting=scope)
+                setting = json.loads(js)["Setting & Shot"]
+                yield setting["shot_type"], setting["composition"]
+
+    def test_tight_shots_never_draw_environment_dependent_composition(self):
+        for shot, comp in self._pairs():
+            if shot in self._TIGHT_SHOTS:
+                self.assertNotIn(comp, self._ENVIRONMENT_DEPENDENT, f"{shot!r} / {comp!r}")
+
+    def test_wide_environment_shots_never_draw_tight_composition(self):
+        tight_compositions = {"a tight crop and little headroom",
+                               "the subject filling most of the frame"}
+        for shot, comp in self._pairs():
+            if shot in self._WIDE_ENVIRONMENT_SHOTS:
+                self.assertNotIn(comp, tight_compositions, f"{shot!r} / {comp!r}")
+
+    def test_centered_and_off_center_shots_never_contradict_composition(self):
+        for shot, comp in self._pairs():
+            if shot == "wide shot with subject at center":
+                self.assertNotIn(comp, {"the subject on a rule-of-thirds line",
+                                         "the subject small against open negative space"},
+                                  f"{shot!r} / {comp!r}")
+            if shot == "wide shot with subject off-center":
+                self.assertNotEqual(comp, "centered symmetry", f"{shot!r} / {comp!r}")
 
 
 class FixtureLightingTests(unittest.TestCase):
@@ -3204,6 +3273,31 @@ class PerformablePoseTests(unittest.TestCase):
                 self._pool(), {**base, "held_item": absent}, False, False, False
             )
             self.assertEqual(got, expected, f"held_item={absent!r} narrowed the pool")
+
+    # --- 0.85.0: a selfie occupies one hand, same as a held prop -------------
+
+    def test_selfie_shot_type_drops_two_handed_poses(self):
+        resolved = {"hair_length": "long", "outfit_description": "a wool overcoat",
+                    "shot_type": _SELFIE_SHOT_TYPE}
+        got = _performable_poses(self._pool(), resolved, False, False, False)
+        self.assertFalse(HAND_OCCUPIED_POSES & set(got))
+
+    def test_non_selfie_shot_type_changes_nothing(self):
+        base = {"hair_length": "long", "outfit_description": "a wool overcoat"}
+        expected = _performable_poses(self._pool(), base, False, False, False)
+        got = _performable_poses(
+            self._pool(), {**base, "shot_type": "close-up portrait"}, False, False, False
+        )
+        self.assertEqual(got, expected)
+
+    def test_no_two_handed_pose_ever_renders_beside_a_selfie(self):
+        for seed in range(600):
+            _, js = generate_character(
+                seed, "Any", {"shot_type": _SELFIE_SHOT_TYPE}, location_setting="Any indoor/outdoor")
+            setting = json.loads(js)["Setting & Shot"]
+            pose = setting.get("pose")
+            if pose:
+                self.assertNotIn(pose, HAND_OCCUPIED_POSES, f"seed {seed}: {pose!r}")
 
     def test_no_two_handed_pose_ever_renders_beside_a_held_prop(self):
         # End to end through the engine, at the density that draws the most extras.
@@ -5822,6 +5916,36 @@ class NewRosterEntryTests(unittest.TestCase):
             for word in shape_words:
                 if not _is_absent(word):
                     self.assertNotIn(f"{word} eyes", eye_clause, f"{name}: {eye_clause}")
+
+
+class FunnyAnimalRosterTests(unittest.TestCase):
+    """The 0.85.0 additions: Maid Marian, Scrooge McDuck, Darkwing Duck.
+
+    Each is a distinct franchise (deliberately not folded into "Mickey Mouse
+    & Friends", which would cross ``_FRANCHISE_SCOPE_MINIMUM`` and add an
+    unplanned ``random_scope`` option) -- guard that every one resolves to a
+    real category rather than the silent Movies & TV fallback.
+    """
+
+    _ADDED = ("Maid Marian", "Scrooge McDuck", "Darkwing Duck")
+
+    def test_entries_exist_and_are_mapped(self):
+        from data.cosplayers import (get_cosplayer_category, get_cosplayer_categories,
+                                     _FRANCHISE_CATEGORY)
+        categories = set(get_cosplayer_categories())
+        for name in self._ADDED:
+            self.assertIn(name, COSPLAYERS, name)
+            franchise = COSPLAYERS[name]["franchise"]
+            self.assertIn(franchise, _FRANCHISE_CATEGORY,
+                          f"{name}: '{franchise}' is not in the category map")
+            self.assertIn(get_cosplayer_category(franchise), categories, name)
+
+    def test_held_props_are_not_also_worn(self):
+        """Scrooge's cane and Darkwing's gas gun must not double-describe in costume."""
+        for name, prop_word in (("Scrooge McDuck", "cane"), ("Darkwing Duck", "gas gun")):
+            entry = COSPLAYERS[name]
+            self.assertNotIn(prop_word, entry["costume"], name)
+            self.assertIn(prop_word, entry["prop"], name)
 
 
 class FranchiseLabelTests(unittest.TestCase):

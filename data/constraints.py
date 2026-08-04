@@ -767,3 +767,53 @@ for _loc in _ALL_LOCATIONS:
             "excludes_field": "lighting", "excludes_values": _absent_fixtures,
             "reason": f"'{_loc}' has no such fixture: a hearth, a television, a "
                       f"stained-glass window or a stage rig has to actually be there"})
+
+# --- composition <-> shot_type coherence (0.85.0) -----------------------------------
+# `composition` is frame LAYOUT (where the subject sits), `shot_type` is camera distance
+# / height / angle / lens. Both are flat fields (absent from FIELD_FAMILIES, no `weights`
+# map), so every exclusion below re-picks uniform rather than concentrating weight on
+# survivors -- the same reasoning that already governs shot_type's own exclusions.
+_ENVIRONMENT_DEPENDENT_COMPOSITIONS = [
+    'the subject small against open negative space',
+    'leading lines drawing the eye to the subject',
+    'a low horizon line and open sky above',
+    'a high horizon line and a sliver of sky',
+]
+_TIGHT_SHOT_TYPES = [
+    'extreme close-up on face', 'close-up portrait', 'medium close-up from chest up',
+]
+for _shot in _TIGHT_SHOT_TYPES:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "shot_type", "value": _shot,
+        "excludes_field": "composition",
+        "excludes_values": list(_ENVIRONMENT_DEPENDENT_COMPOSITIONS),
+        "reason": "a tight shot leaves no environment in frame to compose"})
+
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "shot_type", "value": "wide shot with subject at center",
+    "excludes_field": "composition",
+    "excludes_values": ["the subject on a rule-of-thirds line",
+                         "the subject small against open negative space"],
+    "reason": "the shot type already states the subject is centered"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "shot_type", "value": "wide shot with subject off-center",
+    "excludes_field": "composition", "excludes_values": ["centered symmetry"],
+    "reason": "the shot type already states the subject is off-center"})
+
+_WIDE_ENVIRONMENT_SHOTS = ['full body shot with environment visible',
+                           'extreme wide establishing shot']
+for _shot in _WIDE_ENVIRONMENT_SHOTS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "shot_type", "value": _shot,
+        "excludes_field": "composition",
+        "excludes_values": ["a tight crop and little headroom",
+                             "the subject filling most of the frame"],
+        "reason": "a wide establishing shot cannot also be a tight crop"})
+
+# A selfie is framed like the other tight shots -- little to no environment in view --
+# so it shares the tight-shot exclusion above rather than a hand-rolled duplicate list.
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "shot_type", "value": "selfie framing at arm's length",
+    "excludes_field": "composition",
+    "excludes_values": list(_ENVIRONMENT_DEPENDENT_COMPOSITIONS),
+    "reason": "an arm's-length selfie leaves no environment in frame to compose"})

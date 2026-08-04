@@ -79,5 +79,11 @@ Open. No decision has been made either way.
 
 | # | Question | Where it stands |
 |---|---|---|
-| 1 | **Funny animals that genuinely wear clothes** — Maid Marian, Scrooge McDuck, Darkwing Duck. | Neither skipped nor queued. They pass the worn-look bar (unlike the quadrupeds above) and the mechanism is proven — `Sandy Cheeks` and `Gadget Hackwrench` ship on exactly this shape. The open half is **scope**: how many funny-animal entries the roster wants, not whether one is possible. |
-| 2 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
+| 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
+
+**Closed at 0.85.0:** Maid Marian, Scrooge McDuck and Darkwing Duck shipped — the funny-animal
+question resolved at exactly those three, not an open-ended class. `Robin Hood (1973)`,
+`DuckTales` and `Darkwing Duck` are registered as their own Disney sub-franchises (not folded
+into `Mickey Mouse & Friends`, which would have crossed `_FRANCHISE_SCOPE_MINIMUM` and added an
+unplanned `random_scope` option). A further funny-animal batch needs a fresh case, same as any
+other candidate.

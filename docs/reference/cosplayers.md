@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1734 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1737 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (329)
 
@@ -1157,7 +1157,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (97)
+## Disney (100)
 
 ### 101 Dalmatians
 
@@ -1212,6 +1212,14 @@
 - **Cinderella** (F)
 - **Fairy Godmother** (F, prop)
 - **Lady Tremaine** (F)
+
+### Darkwing Duck
+
+- **Darkwing Duck** (M, masked, prop)
+
+### DuckTales
+
+- **Scrooge McDuck** (M, masked, prop)
 
 ### Frozen
 
@@ -1285,6 +1293,10 @@
 ### Pocahontas
 
 - **Pocahontas** (F)
+
+### Robin Hood (1973)
+
+- **Maid Marian** (F, masked)
 
 ### Sleeping Beauty
 

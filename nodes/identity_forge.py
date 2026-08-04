@@ -69,6 +69,11 @@ _HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_item"})
 #: override and a cosplayer's signature prop). Everything else hidden is engine-only.
 _PRESET_HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_item"})
 
+#: The one shot_type value that occupies a hand (holding the camera at arm's length),
+#: same as a held prop. Read by _performable_poses so a selfie never draws a
+#: both-hands pose.
+_SELFIE_SHOT_TYPE: str = "selfie framing at arm's length"
+
 #: Field groups that are cosmetic and anatomically gender-neutral: an *explicitly
 #: locked* value here (from an archetype/cosplayer preset) survives a downstream
 #: gender override, because a man can wear bold glam just as a woman can. This lets
@@ -937,6 +942,11 @@ def _performable_poses(
     ``prop``. One-handed poses are deliberately kept: the free hand holds the prop, which
     is the natural reading, so only :data:`HAND_OCCUPIED_POSES` goes.
 
+    A fourth, 0.85.0: ``shot_type`` locked to the selfie framing assumes the same thing
+    a held prop does — one hand is occupied holding the camera at arm's length, so
+    :data:`HAND_OCCUPIED_POSES` drops for the same reason, reusing the existing set
+    rather than hand-listing a selfie-specific subset.
+
     Reads ``hair_length``, ``outfit_description`` and ``held_item`` straight out of
     ``resolved`` rather than taking more parameters: ``pose`` is drawn after all three
     (field indices 24/46 vs 67, and ``held_item`` is a preset-only lock present from the
@@ -973,7 +983,7 @@ def _performable_poses(
         excluded |= HAIR_DEPENDENT_POSES
     if garmentless:
         excluded |= GARMENT_DEPENDENT_POSES
-    if held and not _is_absent(held):
+    if (held and not _is_absent(held)) or resolved.get("shot_type") == _SELFIE_SHOT_TYPE:
         excluded |= HAND_OCCUPIED_POSES
     if not excluded:
         return pool
@@ -1785,6 +1795,8 @@ def _format_prose(
         # "from slightly behind…", "shot through a doorway") and "a/an" + value
         # reads badly or doubles "shot".
         scene.append(f"the framing is {g('shot_type')}")
+    if g("composition"):
+        scene.append(f"composed with {g('composition')}")
     # Skip mood when it merely restates the expression (e.g. expression "confident"
     # + "confident mood"); expression is the face, mood the scene -- only redundant
     # when identical.
@@ -1796,8 +1808,8 @@ def _format_prose(
     # Capitalize each sentence's first letter (0.83.0). The join has always been a plain
     # ". " and relied on every sentence opening with a pronoun or possessive -- which held
     # only by luck. Each scene element after the first is a lowercase fragment ("set in",
-    # "under", "during", "the framing is", "with a ... mood"), so whenever `expression`
-    # was absent the whole scene sentence rendered lowercase:
+    # "under", "during", "the framing is", "composed with", "with a ... mood"), so
+    # whenever `expression` was absent the whole scene sentence rendered lowercase:
     #
     #     "He is standing with feet planted wide. set in a retro diner-style kitchen, ..."
     #

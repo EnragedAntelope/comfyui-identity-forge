@@ -88,7 +88,8 @@ const FIELD_TO_GROUP = {
   "clothing_pattern": "Clothing",
   "season": "Setting & Shot",
   "mood": "Setting & Shot",
-  "pose": "Setting & Shot"
+  "pose": "Setting & Shot",
+  "composition": "Setting & Shot"
 };
 const GENDER_POOLS = {
   "bust": {

@@ -219,6 +219,20 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 
 ---
 
+## Using with Stylebook
+
+[Stylebook](https://github.com/EnragedAntelope/comfyui-stylebook) describes the
+*rendering*: medium, lighting, colour grade, era, finish and mood. Identity Forge
+describes the *subject* — who or what is in the picture, and where the camera is:
+framing, shot type, composition, pose, expression and eye contact. Connect Identity
+Forge's `prose` output into Stylebook's `user_prompt` and chain Stylebook downstream.
+
+Stylebook owns lighting and mood, so set both to `None` here when pairing the two packs
+— otherwise you get two descriptions competing for the same axis. See Stylebook's
+`examples/stylebook_with_identity_forge.json` for a ready-to-run workflow.
+
+---
+
 ## Must-know
 
 - **Seed** auto-randomizes each run; set it to *fixed* to reproduce a character. Not written to the JSON.
@@ -289,8 +303,10 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 
 - **A `NoneType` error (or a missing/blank widget) after updating.** A node's fields are built when
   it is created, so a node on a saved graph can hold a stale widget after an update changes the
-  options. **Recreate the node** - or delete and re-add it -  and the error clears. You may have to
-  reselect any locked values after recreation (but it's worth it, because that means improvement!).
+  options. Right-click the node and choose **Fix node (recreate)** and the error clears — every
+  widget value and every link is preserved (this pack ships its own working recreate; ComfyUI-
+  Manager's own version of that menu entry can fail on the current frontend — see
+  [docs/architecture.md](docs/architecture.md#a-working-fix-node-recreate)).
   
 ---
 
