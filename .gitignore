@@ -9,6 +9,9 @@ __pycache__/
 # User-supplied dropdown options (keep local; survives git pull)
 user_options.json
 
+# Node (dev-only frontend test harness, tests/frontend/)
+node_modules/
+
 # OS / editor
 .DS_Store
 Thumbs.db

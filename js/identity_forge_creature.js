@@ -54,7 +54,15 @@ function showWidget(w) {
   if (!w.__hidden) return;
   w.__hidden = false;
   w.type = w.__origType;
-  w.computeSize = w.__origComputeSize;
+  // See js/identity_forge.js's showWidget for why this is a delete, not a
+  // reassignment to undefined: a widget that never had its own computeSize
+  // must come back with no computeSize property at all, not an own
+  // property holding undefined.
+  if (w.__origComputeSize) {
+    w.computeSize = w.__origComputeSize;
+  } else {
+    delete w.computeSize;
+  }
   w.__origType = null;
   w.__origComputeSize = null;
 }

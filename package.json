@@ -1,0 +1,15 @@
+{
+  "name": "comfyui-identity-forge-frontend-tests",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only harness for tests/frontend/*.test.mjs. Not part of the shipped pack (see .comfyignore).",
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "scripts": {
+    "test:frontend": "node --import ./tests/frontend/hooks.mjs --test \"tests/frontend/*.test.mjs\""
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1"
+  }
+}

@@ -229,7 +229,8 @@ Forge's `prose` output into Stylebook's `user_prompt` and chain Stylebook downst
 
 Stylebook owns lighting and mood, so set both to `None` here when pairing the two packs
 — otherwise you get two descriptions competing for the same axis. See Stylebook's
-`examples/stylebook_with_identity_forge.json` for a ready-to-run workflow.
+[`examples/stylebook_with_identity_forge.json`](https://github.com/EnragedAntelope/comfyui-stylebook/blob/main/examples/stylebook_with_identity_forge.json)
+for a ready-to-run workflow.
 
 ---
 
@@ -334,13 +335,22 @@ examples in [user_options.example.json](user_options.example.json).
 The engine runs without ComfyUI:
 
 ```bash
-python tests/validate_data.py            # data integrity
-python -m unittest discover -s tests -v  # engine + integration tests
+python tests/validate_data.py                 # data integrity
+python -m unittest discover -s tests -t . -v  # engine + integration tests
 ```
 
 `js/identity_forge.js` embeds data generated from `data/fields.py` by
 `scripts/generate_js_data.py` — rerun it (and commit the result) after changing the field set
 or the gender-divergent pools; CI's `--check` catches a stale commit.
+
+A jsdom suite exercises the real, unmodified frontend files outside a browser (wiring,
+collapse/expand, gender pool swaps, the vault dialog, "Fix node (recreate)") — see
+[docs/architecture.md](docs/architecture.md) for what it does and doesn't catch.
+
+```bash
+npm ci
+npm run test:frontend
+```
 
 ## License
 

@@ -2,7 +2,7 @@
 
 Pure-stdlib ``unittest`` so it runs without ComfyUI installed:
 
-    python -m unittest discover -s tests -v
+    python -m unittest discover -s tests -t . -v
 """
 from __future__ import annotations
 
@@ -735,8 +735,16 @@ class OutputFormatTests(unittest.TestCase):
 
     def test_none_excludes_non_optional_field(self):
         # Any field (even non-optional scene fields) can be omitted via "None".
-        scene = {f: "None" for f in ("location", "lighting", "shot_type", "composition",
-                                     "season", "mood", "expression", "pose")}
+        # Derived from FIELD_DEFINITIONS' own group membership rather than
+        # hand-listed: a hand-listed set can't know about a field added after
+        # it was written (0.85.0 had to add `composition` here by hand, and
+        # nothing guarded the next one until now).
+        from nodes.identity_forge import _CONTROL_FIELDS, _HIDDEN_FIELDS
+        scene = {
+            name: "None" for name, meta in FIELD_DEFINITIONS.items()
+            if meta["group"] == "Setting & Shot"
+            and name not in _CONTROL_FIELDS and name not in _HIDDEN_FIELDS
+        }
         prose, js = generate_character(9, "Female", scene)
         self.assertNotIn("Setting & Shot", json.loads(js))
         for word in ("set in", "the framing is", "mood", "expression is"):

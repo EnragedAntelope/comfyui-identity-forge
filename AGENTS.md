@@ -19,8 +19,8 @@ A character creator and person generator for ComfyUI. Builds coherent, seed-repr
 | `data/` | Cosplayers, creatures, templates, constraints, fields, user options |
 | `nodes/` | Engine + main node, cosplayer/creature/archetype/modifier nodes, vault save/load |
 | `js/` | ComfyUI frontend extensions (widgets, preview, vault UI) |
-| `tests/` | Data validation, engine tests, creature tests, vault tests, gallery tests |
-| `scripts/` | Reference doc generator, JS data sync generator |
+| `tests/` | Data validation, engine/creature/vault/gallery tests, a `comfy_api` stub (`comfy_stub/`) so node classes define outside ComfyUI, and a jsdom frontend suite (`frontend/`) |
+| `scripts/` | Reference doc generator, JS data sync generator, frontend schema fixture generator |
 | `docs/` | Usage, architecture (deep reference), cosplayer/creature notes |
 | `gallery/` | Sample render manifests and build scripts (images on `gh-pages` only) |
 
@@ -30,8 +30,12 @@ A character creator and person generator for ComfyUI. Builds coherent, seed-repr
 # Validate data integrity
 python tests/validate_data.py
 
-# Run all tests
-python -m pytest tests/
+# Run all tests (pytest does NOT work here -- it imports comfy_api before the
+# stub in tests/__init__.py can register; -t . is required, see Conventions)
+python -m unittest discover -s tests -t . -v
+
+# Frontend jsdom suite (separate toolchain: npm ci once, then this)
+npm run test:frontend
 
 # Regenerate reference docs after data changes
 python scripts/generate_reference_docs.py
@@ -39,8 +43,13 @@ python scripts/generate_reference_docs.py
 # Regenerate JS data block (GROUP_ORDER/FIELD_TO_GROUP/GENDER_POOLS)
 python scripts/generate_js_data.py
 
-# Check reference docs are in sync (CI/pre-commit)
+# Regenerate the frontend test fixture after a node schema change
+python scripts/dump_frontend_fixtures.py
+
+# Check reference docs / JS data / frontend fixture are in sync (CI/pre-commit)
 python scripts/generate_reference_docs.py --check
+python scripts/generate_js_data.py --check
+python scripts/dump_frontend_fixtures.py --check
 ```
 
 ## Conventions & gotchas
@@ -51,12 +60,15 @@ python scripts/generate_reference_docs.py --check
 - The data modules are large — always grep existing keys before adding a character/creature/archetype.
 - Test fake keys in secret-scan must be realistic but contain "EXAMPLE" to hit the allowlist.
 - Gallery images live ONLY on `gh-pages`; the manifest is rebuilt from published files (never deletes).
+- Always run tests with `-t .` (`unittest discover -s tests -t . -v`). Without it, `tests/__init__.py` — which registers the `comfy_api` stub before any node module can import it — never runs first, and node-class-dependent tests silently behave as if ComfyUI were unavailable.
+- After a node schema change (`define_schema()` in `nodes/*.py`): also run `python scripts/dump_frontend_fixtures.py` and commit the refreshed `tests/frontend/fixtures/nodes.json`.
 
 ## Security
 
 This file is **public-safe by default**. Never add local paths, credentials, personal data, infrastructure details, or subscription info.
 
-Before pushing: `pwsh scripts/check-agents-md.ps1 AGENTS.md CLAUDE.md` — must exit 0.
+Before pushing: run the maintainer's AGENTS.md denylist checker (kept outside this repo,
+not a tracked file here) against `AGENTS.md` and `CLAUDE.md` — it must exit 0.
 
 Deep design rationale, working principles, and data schemas: `docs/architecture.md`.
 

@@ -2,7 +2,7 @@
 
 Pure-stdlib ``unittest`` so it runs without ComfyUI installed:
 
-    python -m unittest discover -s tests -v
+    python -m unittest discover -s tests -t . -v
 """
 from __future__ import annotations
 

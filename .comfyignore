@@ -1,0 +1,18 @@
+# Exclude development-only files from the published registry archive.
+# .comfyignore layers on top of .gitignore, so anything already
+# gitignored is excluded automatically. This drops files we keep in git
+# (GitHub, and so a git-clone install, is unaffected either way) but do
+# not want inside the Registry install package.
+
+tests/
+scripts/
+gallery/
+.github/
+package.json
+package-lock.json
+node_modules/
+
+# docs/ is NOT excluded: docs/usage.md, docs/architecture.md,
+# docs/cosplayer-notes.md, docs/creature-notes.md, docs/suggested-additions.md
+# and docs/reference/*.md are all linked from README.md. docs/worklog is
+# gitignored, so it never reaches the package anyway.

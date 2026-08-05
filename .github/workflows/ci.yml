@@ -35,11 +35,18 @@ jobs:
         # nothing needs installing — the standard library is enough.
         run: python tests/validate_data.py
       - name: Run the test suite
-        run: python -m unittest discover -s tests -v
+        # -t . makes `tests` a genuine subpackage of the repo root, which is
+        # what guarantees tests/__init__.py (the comfy_api stub registration)
+        # runs before any test_*.py file imports a node module. Without it,
+        # `discover` imports test files as bare top-level modules and the
+        # package __init__ never runs first.
+        run: python -m unittest discover -s tests -t . -v
       - name: Check generated reference docs are current
         run: python scripts/generate_reference_docs.py --check
       - name: Check generated frontend data is current
         run: python scripts/generate_js_data.py --check
+      - name: Check generated frontend fixtures are current
+        run: python scripts/dump_frontend_fixtures.py --check
 
   lint:
     name: Lint
@@ -60,3 +67,24 @@ jobs:
         run: pip install "ruff==0.15.11"
       - name: Lint
         run: python -m ruff check .
+
+  frontend:
+    name: Frontend smoke tests
+    runs-on: ubuntu-latest
+    # A SEPARATE job for the same reason `lint` is: the `test` job's
+    # dependency-free property (stdlib only) is itself being asserted, and
+    # this job's own devDependency (jsdom) must never leak into it.
+    steps:
+      - name: Check out code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Set up Node
+        # Pinned to an immutable commit SHA (v6.5.0). Re-verify and bump when
+        # updating: git ls-remote https://github.com/actions/setup-node refs/tags/v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          # registerHooks (tests/frontend/hooks.mjs) needs >=22.15.0 / >=23.5.0.
+          node-version: "24"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run frontend tests
+        run: npm run test:frontend

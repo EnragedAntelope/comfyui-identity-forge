@@ -533,7 +533,17 @@ function showWidget(w) {
   if (!w.__hidden) return;
   w.__hidden = false;
   w.type = w.__origType;
-  w.computeSize = w.__origComputeSize;
+  // A widget that never had its own computeSize saved `undefined` here.
+  // Reassigning `w.computeSize = undefined` still leaves it as an *own*
+  // property (value undefined), which some layout checks treat differently
+  // from the property being absent entirely -- delete it instead so a
+  // re-expanded widget is indistinguishable from one that was never
+  // collapsed.
+  if (w.__origComputeSize) {
+    w.computeSize = w.__origComputeSize;
+  } else {
+    delete w.computeSize;
+  }
   w.__origType = null;
   w.__origComputeSize = null;
 }

@@ -232,15 +232,33 @@ function recreateNode(node) {
   // reconnecting first would fight the link that is still attached.
   graph.remove(node);
 
+  // A link whose slot the fresh node doesn't expose -- most commonly a
+  // widget the user converted to an input socket (right-click "Convert to
+  // input"), which a freshly created node always reverts to a plain widget.
+  // Silently dropping it would leave a graph that looks fixed but has quietly
+  // lost a connection; name it instead, same as the dropped-widgets warning
+  // below.
+  const unresolvedLinks = [];
   for (const link of links.inputs) {
     const slot = fresh.findInputSlot(link.name);
     // The node object, never its id. Ids are strings, and connect() only
     // resolves numbers.
     if (slot >= 0) link.origin.connect(link.originSlot, fresh, slot);
+    else unresolvedLinks.push(link.name);
   }
   for (const link of links.outputs) {
     const slot = fresh.findOutputSlot(link.name);
     if (slot >= 0) fresh.connect(slot, link.target, link.targetSlot);
+    else unresolvedLinks.push(link.name);
+  }
+
+  if (unresolvedLinks.length) {
+    warn(
+      "recreated " + type + ", but these connections could not be restored " +
+      "-- the fresh node no longer exposes a matching input/output slot " +
+      "(likely a widget that was converted to a socket, which a fresh node " +
+      "always reverts to a plain widget): " + unresolvedLinks.join(", ")
+    );
   }
 
   if (dropped.length) {

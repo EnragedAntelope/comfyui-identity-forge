@@ -2,7 +2,7 @@
 
 Pure-stdlib ``unittest`` so it runs without ComfyUI, torch or PIL installed:
 
-    python -m unittest discover -s tests -v
+    python -m unittest discover -s tests -t . -v
 
 The storage engine takes an explicit ``vault_root`` and an already-decoded
 thumbnail, so these tests drive it against a throwaway temp directory with a tiny

@@ -665,7 +665,10 @@ User additions are first-class (0.46.1):
   archetype value must be a real field option; mask rules; creature structure (allowed keys:
   `class`, `palette`, `palette_pool`, slots; non-empty strings, `palette_pool` a non-empty list
   of strings); studio-backdrop/skin-tone/ethnicity affinity maps.
-- `python -m unittest discover -s tests -v` — engine + creature + vault (headless).
+- `python -m unittest discover -s tests -t . -v` — engine + creature + vault (headless). The
+  `-t .` is load-bearing: see "Frontend smoke tests" below.
+- `npm run test:frontend` — jsdom tests against the real, unmodified `js/*.js` files. See
+  "Frontend smoke tests" below for what this layer is and its honest limits.
 - **Version:** bump `pyproject.toml` on every functional commit — **minor** for feature/content,
   **patch** for fixes (standing order).
 - **JS regen:** `js/identity_forge.js` embeds a `GROUP_ORDER` / `FIELD_TO_GROUP` / `GENDER_POOLS`
@@ -673,9 +676,55 @@ User additions are first-class (0.46.1):
   `data/fields.py`; rerun it and commit the result after changing the field set or the
   gender-divergent pools. `--check` exits non-zero if the committed JS is stale (CI-enforced);
   `tests/test_js_sync.py` guards the same invariant independently.
-- **CI:** `.github/workflows/ci.yml` runs `validate_data.py`, the unittest suite, and both
-  `--check` generators on every push/PR — the three checks above are enforced automatically,
-  not just documented here.
+- **Frontend fixture regen:** `python scripts/dump_frontend_fixtures.py` rebuilds
+  `tests/frontend/fixtures/nodes.json` from live `define_schema()` output; rerun and commit
+  after any schema change. `--check` is CI-enforced.
+- **CI:** `.github/workflows/ci.yml` runs `validate_data.py`, the unittest suite, all three
+  `--check` generators, and (in a separate job) the frontend jsdom suite on every push/PR.
+
+### Frontend smoke tests
+
+Everything above runs headless and never opens a browser — and until 0.86.0, every node
+class in `nodes/*.py` was never even *defined* outside ComfyUI (each sits behind its own
+`try: from comfy_api.latest import io / except ImportError`), so nothing could exercise the
+UI layer in `js/*.js` at all. Three layers close that gap, ported from
+`comfyui-stylebook`'s identical harness with one real adaptation:
+
+**Layer A — a `comfy_api.latest.io` stub** (`tests/comfy_stub/`), registered real-first /
+stub-fallback in `tests/__init__.py`. This is what lets every node class actually define
+outside ComfyUI at all. **`-t .` is load-bearing**: `tests/__init__.py` only runs before
+every `test_*.py` file when `unittest discover` is invoked with `-t .` (making `tests` a
+genuine subpackage of the repo root); without it, `discover` imports test files as bare
+top-level modules and the stub registration never happens first, so any node module a test
+imports first permanently locks in `_COMFY_AVAILABLE = False` for the rest of the run.
+
+**Layer B — jsdom tests** (`tests/frontend/*.test.mjs`, run via `npm run test:frontend`)
+importing the real, unmodified `js/*.js` files, via a `node --import ./tests/frontend/hooks.mjs`
+module-resolution hook that redirects `scripts/app.js` / `scripts/api.js` imports to local
+stubs. **The one real adaptation from Stylebook**: three of this pack's four extensions
+(`identity_forge.ui`, `identity_forge.creature.ui`, `identity_forge.vault`) hook
+`beforeRegisterNodeDef`, not `nodeCreated` — only `identity_forge.recreate` uses the latter.
+`tests/frontend/fake_node.mjs`'s `driveBeforeRegisterNodeDef` builds a fake `nodeType`
+*class* with a real `.prototype`, awaits `ext.beforeRegisterNodeDef(FakeType, {name: nodeId})`
+against it, and `createNode` then invokes the now-wrapped `prototype.onNodeCreated` on a
+fixture-built fake node instance — exactly what ComfyUI does when a node is dropped on the
+canvas. Each test is pinned to a real or latent bug (reintroduce → confirm red → restore →
+confirm green), not generic coverage.
+
+**Layer C — `scripts/dump_frontend_fixtures.py`** writes `tests/frontend/fixtures/nodes.json`:
+per node, its widgets in real `define_schema()` order, fully derived (no hand-listing) by
+walking live schema output and using the `Input`/`WidgetInput` split from the Layer A stub to
+tell a real widget from a link-only socket (`force_input=True`, or a type with no `default`
+attribute at all — this pack's only such type is `Image.Input`). This is what makes the tests
+mean something: a Python field with no `FIELD_TO_GROUP` entry on the JS side genuinely fails
+`main_node.test.mjs`, not just a hand-typed fixture agreeing with a hand-typed test.
+`tests/test_frontend_fixture_sync.py` and `--check` both guard against a stale fixture.
+
+**Honest limits** — say this explicitly wherever this harness is documented: jsdom has no
+layout engine, so `clientWidth`/`clientHeight` read 0, and anything depending on real layout
+(CSS, drag/drop, DOM-widget pixel positions) cannot be exercised here. This catches wiring,
+visibility, serialization and dialog logic — the class of bug that has actually shipped —
+not painting. **It does not replace opening the page in a real browser before a release.**
 
 ## Considered and deferred
 
