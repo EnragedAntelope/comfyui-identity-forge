@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1737 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1738 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (329)
 
@@ -1370,7 +1370,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (69)
+## Fantasy & Literature (70)
 
 ### Anne of Green Gables
 
@@ -1480,6 +1480,7 @@
 - **Samwise Gamgee** (M)
 - **Saruman** (M, prop)
 - **Sauron** (M, giant, masked)
+- **Witch-King of Angmar** (M, masked, prop)
 
 ### The Wizard of Oz
 

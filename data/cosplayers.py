@@ -5547,6 +5547,20 @@ COSPLAYERS: dict[str, dict] = {
         "scale_prose": "enormously tall and towering",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
+    "Witch-King of Angmar": {
+        "franchise": "The Lord of the Rings",
+        "gender": "Male",
+        # Chief of the Nazgul; the only one whose face is fully sealed behind an iron mask (no eye slits, no visible skin). Spiked iron crown helm is the visual signature that distinguishes him from Sauron's own helm. Size: very tall, NOT giant -- the Witch-king is the tallest Nazgul (~7 ft) but human-scaled, unlike Sauron.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "layered black mithril plate armor with overlapping articulated plates, "
+                   "and a long flowing black cloak that drapes from the shoulders to the ground",
+        "mask": "an iron crown helm ringed with tall jagged spikes, fitted over a "
+                "featureless iron face mask with no visible eyes or mouth",
+        "physique": {"body_type": "lean", "height": "very tall"},
+        "prop": "a long iron war flail with a heavy spiked mace head trailing on a "
+                "length of dark chain",
+    },
     "Galadriel": {
         "franchise": "The Lord of the Rings",
         "gender": "Female",
