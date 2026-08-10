@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-08-10T03:17:22.200702",
-  "total_entries": 1812,
-  "entries_with_images": 1812,
+  "generated": "2026-08-10T17:17:01.092259",
+  "total_entries": 1826,
+  "entries_with_images": 1826,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1443,6 +1443,13 @@
       "image": "images/Bridget.jpeg"
     },
     {
+      "name": "Brienne of Tarth",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Game of Thrones",
+      "image": "images/Brienne of Tarth.jpeg"
+    },
+    {
       "name": "Brigitte",
       "has_image": true,
       "gender": "Female",
@@ -1469,6 +1476,13 @@
       "gender": "Male",
       "group": "One Piece",
       "image": "images/Brook.jpeg"
+    },
+    {
+      "name": "Brotherhood of Steel Knight",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Fallout",
+      "image": "images/Brotherhood of Steel Knight.jpeg"
     },
     {
       "name": "Bruce Wayne",
@@ -1868,6 +1882,13 @@
       "gender": "Male",
       "group": "Dragon Ball",
       "image": "images/Cell.jpeg"
+    },
+    {
+      "name": "Cersei Lannister",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Game of Thrones",
+      "image": "images/Cersei Lannister.jpeg"
     },
     {
       "name": "Cervantes de Leon",
@@ -2407,6 +2428,20 @@
       "gender": "Male",
       "group": "Marvel",
       "image": "images/Daredevil.jpeg"
+    },
+    {
+      "name": "Dark Magician",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Yu-Gi-Oh!",
+      "image": "images/Dark Magician.jpeg"
+    },
+    {
+      "name": "Dark Magician Girl",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Yu-Gi-Oh!",
+      "image": "images/Dark Magician Girl.jpeg"
     },
     {
       "name": "Dark Trooper",
@@ -3100,6 +3135,13 @@
       "gender": "Female",
       "group": "Pokemon",
       "image": "images/Elesa.jpeg"
+    },
+    {
+      "name": "Eleven",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Stranger Things",
+      "image": "images/Eleven.jpeg"
     },
     {
       "name": "Eliot",
@@ -5279,6 +5321,13 @@
       "image": "images/Jolyne Cujoh.jpeg"
     },
     {
+      "name": "Jon Snow",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Game of Thrones",
+      "image": "images/Jon Snow.jpeg"
+    },
+    {
       "name": "Jon Talbain",
       "has_image": true,
       "gender": "Male",
@@ -7253,6 +7302,13 @@
       "image": "images/Meliodas.jpeg"
     },
     {
+      "name": "Melisandre",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Game of Thrones",
+      "image": "images/Melisandre.jpeg"
+    },
+    {
       "name": "Menat",
       "has_image": true,
       "gender": "Female",
@@ -8072,6 +8128,13 @@
       "image": "images/Nick Fury.jpeg"
     },
     {
+      "name": "Nick Valentine",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Fallout",
+      "image": "images/Nick Valentine.jpeg"
+    },
+    {
       "name": "Nick Wilde",
       "has_image": true,
       "gender": "Male",
@@ -8217,6 +8280,13 @@
       "gender": "Female",
       "group": "Kill la Kill",
       "image": "images/Nui Harime.jpeg"
+    },
+    {
+      "name": "Nurse (Silent Hill)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Silent Hill",
+      "image": "images/Nurse (Silent Hill).jpeg"
     },
     {
       "name": "Nurse Joy",
@@ -9815,6 +9885,13 @@
       "image": "images/Samurai Jack.jpeg"
     },
     {
+      "name": "Samus Aran (Power Suit)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Metroid",
+      "image": "images/Samus Aran (Power Suit).jpeg"
+    },
+    {
       "name": "Samwise Gamgee",
       "has_image": true,
       "gender": "Male",
@@ -10732,6 +10809,13 @@
       "image": "images/Spiral.jpeg"
     },
     {
+      "name": "Splicer",
+      "has_image": true,
+      "gender": "Male",
+      "group": "BioShock",
+      "image": "images/Splicer.jpeg"
+    },
+    {
       "name": "Splinter",
       "has_image": true,
       "gender": "Male",
@@ -11306,6 +11390,13 @@
       "image": "images/The Fourth Doctor.jpeg"
     },
     {
+      "name": "The Ghoul",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Fallout",
+      "image": "images/The Ghoul.jpeg"
+    },
+    {
       "name": "The Great Gazoo",
       "has_image": true,
       "gender": "Male",
@@ -11360,6 +11451,13 @@
       "gender": "Male",
       "group": "Universal Monsters",
       "image": "images/The Mummy.jpeg"
+    },
+    {
+      "name": "The Night King",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Game of Thrones",
+      "image": "images/The Night King.jpeg"
     },
     {
       "name": "The Penguin",
