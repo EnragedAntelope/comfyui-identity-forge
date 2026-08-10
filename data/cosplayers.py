@@ -8786,10 +8786,13 @@ COSPLAYERS: dict[str, dict] = {
         # Four arms LEAD the costume. Buried mid-sentence they rendered as two -- the
         # same positional problem the mask had, and other multi-armed entries only
         # render correctly because they state it early.
-        "costume": "four thick arms in two pairs on a towering, slab-bellied frame, "
-                   "wearing a grubby short-sleeved cook's tunic under a heavily "
-                   "grease-stained apron with a dish towel tucked into the waist tie, "
-                   "over uniform, all-over mottled green-tan hide",
+        # "all four sleeves" carries the arm count as a GARMENT detail, which both
+        # reads correctly after "He wears" and states it early. Leading with the bare
+        # arms produced "He wears four thick arms ... wearing a tunic".
+        "costume": "a grubby short-sleeved cook's tunic with all four sleeves rolled "
+                   "to the elbow over two pairs of thick arms, a heavily grease-stained "
+                   "apron with a dish towel tucked into the waist tie, on a towering, "
+                   "slab-bellied frame, over uniform, all-over mottled green-tan hide",
         "mask": "a broad Besalisk head with a bony crest running back over the bald "
                 "skull, a heavy pendulous wattle of loose skin hanging from the chin "
                 "and throat, small dark deep-set eyes under a low brow, and a wide "
@@ -8807,7 +8810,8 @@ COSPLAYERS: dict[str, dict] = {
         # global rule -- that is a roster-wide coherence question, noted in the
         # worklog, not a side effect of one likeness fix.
         "signature": {"age": "60", "body_type": "plus size", "height": "very tall",
-                      "waist": "full"},
+                      "waist": "full", "shoulder_width": "very broad",
+                      "neck_length": "thick", "bust": "broad"},
     },
     "Hondo Ohnaka": {
         "franchise": "Star Wars",

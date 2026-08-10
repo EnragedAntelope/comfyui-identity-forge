@@ -3097,5 +3097,6 @@ if _COMFY_AVAILABLE:
                 kwargs.get("size_scale", _SIZE_SCALE_AUTO),
                 character_scale,
                 widget_locked=widget_locked,
+                mask_text=mask_text,
             )
             return io.NodeOutput(prose, json_output)

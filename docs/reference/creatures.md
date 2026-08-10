@@ -3,7 +3,7 @@
 
 # Creature reference
 
-**234 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**233 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
 ## Mammals (44)
 
@@ -203,7 +203,7 @@
 - **radial alien** (pale coral)
 - **reptilian alien** (venom-green)
 
-## Mythic & Fantasy (40)
+## Mythic & Fantasy (39)
 
 - **banshee** (spectral pale grey)
 - **basilisk** (venomous green)
@@ -238,7 +238,6 @@
 - **satyr** (earthy brown)
 - **selkie** (wet seal grey)
 - **sphinx** (sandstone-gold)
-- **tanuki** (warm grizzled brown)
 - **tengu** (deep red)
 - **thunderbird** (storm-cloud grey)
 - **unicorn** (pearl-white)

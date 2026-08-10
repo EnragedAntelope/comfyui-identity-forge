@@ -2500,7 +2500,7 @@
         "rendered": "pre-existing"
       },
       "Dexter Jettster": {
-        "hash": "5a444e74f0f7642d",
+        "hash": "fea93a92bf331365",
         "rendered": "2026-08-10"
       },
       "Dhalsim": {
@@ -4502,7 +4502,8 @@
       },
       "Larfleeze": {
         "hash": "10b2f8002a2d34b0",
-        "rendered": "2026-08-10"
+        "rendered": "2026-08-10",
+        "seed": 866590982850219579
       },
       "Lascivious": {
         "hash": "f773489d40595fca",
@@ -8319,7 +8320,7 @@
         "rendered": "pre-existing"
       },
       "bison": {
-        "hash": "0ca6883d344ff6ed",
+        "hash": "6366ea3fbe3e722e",
         "rendered": "2026-08-10"
       },
       "blob alien": {
@@ -8491,8 +8492,9 @@
         "rendered": "pre-existing"
       },
       "emu": {
-        "hash": "a5cc7362dda09d2d",
-        "rendered": "2026-08-10"
+        "hash": "f0a79f470d3148ac",
+        "rendered": "2026-08-10",
+        "seed": 1148675299249476738
       },
       "energy being": {
         "hash": "2f521678d2893b42",
@@ -8599,7 +8601,7 @@
         "rendered": "2026-08-09"
       },
       "hammerhead shark": {
-        "hash": "f2f174d42565dbb0",
+        "hash": "6f7a391d1c1ca335",
         "rendered": "2026-08-10"
       },
       "harpy": {
@@ -8692,7 +8694,7 @@
         "rendered": "pre-existing"
       },
       "kiwi": {
-        "hash": "b997d0139fd3ca12",
+        "hash": "9ab17b7fbd1f5a5c",
         "rendered": "2026-08-10"
       },
       "koala": {
@@ -8752,7 +8754,7 @@
         "rendered": "pre-existing"
       },
       "magpie": {
-        "hash": "a02855383a355eed",
+        "hash": "5fed819b5842fda3",
         "rendered": "2026-08-10"
       },
       "mallard duck": {
@@ -8792,7 +8794,7 @@
         "rendered": "pre-existing"
       },
       "moose": {
-        "hash": "6b4504df3d5f9061",
+        "hash": "76a708c7351d3694",
         "rendered": "2026-08-10"
       },
       "moss golem": {
@@ -8888,7 +8890,7 @@
         "rendered": "pre-existing"
       },
       "pelican": {
-        "hash": "fc6ab2e28b3a638d",
+        "hash": "2419428b28cc1f80",
         "rendered": "2026-08-10"
       },
       "penguin": {
@@ -9095,10 +9097,6 @@
         "hash": "e303d5f12dc3077e",
         "rendered": "pre-existing"
       },
-      "tanuki": {
-        "hash": "9424df3c076f3c72",
-        "rendered": "2026-08-10"
-      },
       "tarantula": {
         "hash": "2767ccdc583e3e25",
         "rendered": "pre-existing"
@@ -9201,7 +9199,7 @@
       }
     }
   },
-  "generated": "2026-08-10T15:04:03",
+  "generated": "2026-08-10T17:06:12",
   "render": {
     "cfg": 1,
     "height": 2432,
