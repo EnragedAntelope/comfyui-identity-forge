@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "archetypes",
-  "generated": "2026-08-09T22:35:20.338645",
-  "total_entries": 231,
-  "entries_with_images": 231,
+  "generated": "2026-08-10T17:17:06.589211",
+  "total_entries": 238,
+  "entries_with_images": 238,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -167,6 +167,13 @@
       "gender": "Male",
       "group": "evening formal",
       "image": "images/Ancient Roman Patrician.jpeg"
+    },
+    {
+      "name": "Andean Cholita",
+      "has_image": true,
+      "gender": "Female",
+      "group": "vintage retro",
+      "image": "images/Andean Cholita.jpeg"
     },
     {
       "name": "Angelic Being",
@@ -349,6 +356,13 @@
       "gender": "Female",
       "group": "evening formal",
       "image": "images/Bridal Portrait.jpeg"
+    },
+    {
+      "name": "Buddhist Monk",
+      "has_image": true,
+      "gender": "any",
+      "group": "casual",
+      "image": "images/Buddhist Monk.jpeg"
     },
     {
       "name": "Butcher",
@@ -631,6 +645,13 @@
       "image": "images/Fencer.jpeg"
     },
     {
+      "name": "Fighter Pilot",
+      "has_image": true,
+      "gender": "any",
+      "group": "athletic",
+      "image": "images/Fighter Pilot.jpeg"
+    },
+    {
       "name": "Figure Skater",
       "has_image": true,
       "gender": "Any",
@@ -799,6 +820,13 @@
       "image": "images/Highland Scot.jpeg"
     },
     {
+      "name": "Hockey Goalie",
+      "has_image": true,
+      "gender": "any",
+      "group": "athletic",
+      "image": "images/Hockey Goalie.jpeg"
+    },
+    {
       "name": "Holy Paladin",
       "has_image": true,
       "gender": "Male",
@@ -937,6 +965,13 @@
       "gender": "Female",
       "group": "",
       "image": "images/Masquerade Guest.jpeg"
+    },
+    {
+      "name": "Matador",
+      "has_image": true,
+      "gender": "Male",
+      "group": "evening formal",
+      "image": "images/Matador.jpeg"
     },
     {
       "name": "McBling Socialite",
@@ -1380,6 +1415,13 @@
       "image": "images/Streamer.jpeg"
     },
     {
+      "name": "Sumo Wrestler",
+      "has_image": true,
+      "gender": "Male",
+      "group": "athletic",
+      "image": "images/Sumo Wrestler.jpeg"
+    },
+    {
       "name": "Superhero",
       "has_image": true,
       "gender": "any",
@@ -1581,6 +1623,13 @@
       "gender": "Male",
       "group": "edgy alternative",
       "image": "images/Werewolf Hunter.jpeg"
+    },
+    {
+      "name": "Whirling Dervish",
+      "has_image": true,
+      "gender": "Male",
+      "group": "evening formal",
+      "image": "images/Whirling Dervish.jpeg"
     },
     {
       "name": "Wild West Gunslinger",
