@@ -89,7 +89,10 @@ const FIELD_TO_GROUP = {
   "season": "Setting & Shot",
   "mood": "Setting & Shot",
   "pose": "Setting & Shot",
-  "composition": "Setting & Shot"
+  "composition": "Setting & Shot",
+  "tattoos": "Body",
+  "legwear": "Clothing",
+  "tattoo_placement": "Body"
 };
 const GENDER_POOLS = {
   "bust": {
@@ -249,6 +252,8 @@ const GENDER_POOLS = {
       "crew cut",
       "textured crop",
       "high-top fade",
+      "side-swept bangs",
+      "wispy bangs",
       "None"
     ],
     "Male": [
@@ -310,6 +315,8 @@ const GENDER_POOLS = {
       "crew cut",
       "textured crop",
       "high-top fade",
+      "side-swept bangs",
+      "wispy bangs",
       "None"
     ],
     "Any": [
@@ -369,6 +376,8 @@ const GENDER_POOLS = {
       "crew cut",
       "textured crop",
       "high-top fade",
+      "side-swept bangs",
+      "wispy bangs",
       "comb over",
       "mullet",
       "None"
@@ -493,6 +502,38 @@ const GENDER_POOLS = {
       "mod 1960s eye makeup",
       "gothic dark makeup",
       "club makeup",
+      "None"
+    ]
+  },
+  "legwear": {
+    "Female": [
+      "Random",
+      "sheer black tights",
+      "opaque black tights",
+      "opaque cream tights",
+      "fishnet tights",
+      "patterned tights",
+      "sheer stockings",
+      "ribbed knee-high socks",
+      "over-the-knee socks",
+      "slouchy ankle socks",
+      "None"
+    ],
+    "Male": [
+      "Random",
+      "None"
+    ],
+    "Any": [
+      "Random",
+      "sheer black tights",
+      "opaque black tights",
+      "opaque cream tights",
+      "fishnet tights",
+      "patterned tights",
+      "sheer stockings",
+      "ribbed knee-high socks",
+      "over-the-knee socks",
+      "slouchy ankle socks",
       "None"
     ]
   }

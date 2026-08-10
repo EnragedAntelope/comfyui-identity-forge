@@ -219,8 +219,10 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # 'mullet' is male-only for the same pool-hygiene reason: T2I models
         # render the term as the masculine 80s cut, which reads as a costume
         # gag on a random female character (archetypes can still curate it).
-        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade'],
-        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade'],
+        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade',
+                            'side-swept bangs', 'wispy bangs'],
+        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade',
+                            'side-swept bangs', 'wispy bangs'],
         "optional": False
     }),
     ("hair_color_scope", {
@@ -389,8 +391,23 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # watch_type, over-representing it). Pocket square / statement belt keep variety.
         # No necklace here: the necklace field owns necklaces, so a "long pendant
         # necklace" accessory would double up. Hats/glasses/belts/scarf only.
-        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses'],
-        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses'],
+        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses', 'round wire-rim eyeglasses', 'cat-eye eyeglasses', 'browline eyeglasses'],
+        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses', 'round wire-rim eyeglasses', 'cat-eye eyeglasses', 'browline eyeglasses'],
+        # 0.90.0 added three everyday eyeglass frames, closing a gap the archetype
+        # conventions had been working around ("everyday eyeglasses aren't an
+        # accessories option -- put them in costume prose instead"). Straight
+        # appending would have taken the EYEWEAR CONCEPT from 6/24 (25%) of the pool
+        # to 9/27 (33%). This field has no FIELD_FAMILIES entry, so no family-share
+        # check would have caught that -- it is the same trap documented for the
+        # landmark locations, where every family share held and the concept still got
+        # commoner. These weights hold all nine eyewear values at a combined
+        # 6/24 = 25%: 18 non-eyewear at 1.0 plus 9 eyewear at 2/3 = 6.0. Variety
+        # triples; the odds of a character wearing glasses do not move.
+        "weights": {'classic black sunglasses': 2/3, 'cat eye sunglasses': 2/3,
+                    'round sunglasses': 2/3, 'aviator sunglasses': 2/3,
+                    'reading glasses pushed up on head': 2/3,
+                    'clear-framed glasses': 2/3, 'round wire-rim eyeglasses': 2/3,
+                    'cat-eye eyeglasses': 2/3, 'browline eyeglasses': 2/3},
         "optional": False
     }),
     ("expression", {
@@ -506,8 +523,18 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("clothing_pattern", {
         "group": 'Clothing',
-        "female_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim'],
-        "male_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim'],
+        "female_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'polka dot', 'houndstooth', 'paisley', 'pinstripe', 'gingham', 'tie-dye'],
+        "male_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'polka dot', 'houndstooth', 'paisley', 'pinstripe', 'gingham', 'tie-dye'],
+        # 0.90.0 grew this 10 -> 16. A bare append would have dropped the PLAIN
+        # concept ('solid' + 'subtle texture') from 2/10 = 20% of characters to
+        # 2/16 = 12.5%, quietly dressing everyone in busier clothes. These weights
+        # hold plain at exactly 20%: 2 plain at 1.0 plus 14 patterned at 4/7 = 8.0,
+        # so plain keeps its 2/10 share and the six new patterns subdivide the
+        # PATTERNED half only.
+        "weights": {'stripes': 4/7, 'plaid': 4/7, 'floral': 4/7, 'animal print': 4/7,
+                    'geometric': 4/7, 'abstract': 4/7, 'camouflage': 4/7, 'denim': 4/7,
+                    'polka dot': 4/7, 'houndstooth': 4/7, 'paisley': 4/7,
+                    'pinstripe': 4/7, 'gingham': 4/7, 'tie-dye': 4/7},
         "optional": False
     }),
     ("season", {
@@ -591,6 +618,98 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
                           'a high horizon line and a sliver of sky',
                           'the subject filling most of the frame'],
         "optional": False
+    }),
+
+    # ======================================================================
+    # APPENDED AT 0.90.0 -- and the position is load-bearing twice over.
+    # ======================================================================
+    # These three belong to the Body and Clothing groups, so by the convention
+    # above they "should" sit up with their neighbours. They are appended at the
+    # END instead, deliberately, for two independent reasons:
+    #
+    # 1. SERIALIZATION. `define_schema` emits one widget per entry in this dict's
+    #    insertion order, and ComfyUI stores `widgets_values` positionally. Adding
+    #    a field mid-dict would shift every widget after it, so a workflow saved
+    #    before 0.90.0 would reload with its values one slot out. Appending leaves
+    #    every existing index untouched; an old workflow simply has no value for
+    #    these three and they take their "Random" default. There is deliberately
+    #    NO migration notice for this -- nothing is migrated, and a banner on every
+    #    load of an older workflow is an irritant, not a service.
+    #    UI position is unaffected: js/identity_forge.js rebuilds node.widgets into
+    #    group order from FIELD_TO_GROUP, so these still render inside Body and
+    #    Clothing where they belong.
+    #
+    # 2. DRAW ORDER. A field's pool filter can only read fields drawn BEFORE it
+    #    (the same constraint documented on _performable_poses). All three gate on
+    #    `outfit_description` and `footwear`, so they must be drawn after them --
+    #    which appending guarantees. The order WITHIN this block also matters:
+    #    `legwear` must precede `tattoo_placement`, because a leg tattoo is only
+    #    offered when the leg is both uncovered by clothing and not hidden under
+    #    opaque legwear.
+    ("tattoos", {
+        "group": 'Body',
+        # Style and scale in one value, on purpose. A separate colour field would
+        # let the randomizer roll "blackwork" against "pastel colour", and would
+        # cost a third widget for no expressive gain. Placement is separate because
+        # it is the one axis that has to be gated on what the clothes actually show.
+        # 'no tattoos' is the absent token: it starts with "no ", so _is_absent()
+        # hides it from the widget and omits it from prose, and _EXTRA_ABSENCE
+        # drives it to ~85% so tattoos read as a distinguishing feature rather than
+        # a default -- the same treatment skin_details and freckles already get.
+        "female_options": ['no tattoos', 'a small fine-line black tattoo',
+                            'a delicate minimalist tattoo', 'an ornamental geometric tattoo',
+                            'a bold traditional tattoo in red and black',
+                            'a dense blackwork tattoo', 'a floral illustrative tattoo',
+                            'a soft watercolor tattoo', 'a fine dotwork tattoo',
+                            'a small script lettering tattoo',
+                            'a neo-traditional colour tattoo',
+                            'a few scattered small tattoos'],
+        "male_options": ['no tattoos', 'a small fine-line black tattoo',
+                          'a delicate minimalist tattoo', 'an ornamental geometric tattoo',
+                          'a bold traditional tattoo in red and black',
+                          'a dense blackwork tattoo', 'a floral illustrative tattoo',
+                          'a soft watercolor tattoo', 'a fine dotwork tattoo',
+                          'a small script lettering tattoo',
+                          'a neo-traditional colour tattoo',
+                          'a few scattered small tattoos'],
+        "optional": True
+    }),
+    ("legwear", {
+        "group": 'Clothing',
+        # Only ever voiced when the outfit actually shows leg (skirt / dress / gown /
+        # shorts / playsuit); _wearable_legwear forces the absent token otherwise, so
+        # tights never render under jeans. That is a WHOLE-pool suppression rather
+        # than a partial cull, so there is no family weight to concentrate -- and the
+        # field carries no FIELD_FAMILIES entry, so the draw is flat either way.
+        # Male pool is the absent token alone: under trousers legwear is invisible,
+        # and inventing male values that render as nothing would be dishonest.
+        "female_options": ['no visible legwear', 'sheer black tights',
+                            'opaque black tights', 'opaque cream tights',
+                            'fishnet tights', 'patterned tights', 'sheer stockings',
+                            'ribbed knee-high socks', 'over-the-knee socks',
+                            'slouchy ankle socks'],
+        "male_options": ['no visible legwear'],
+        "optional": True
+    }),
+    ("tattoo_placement", {
+        "group": 'Body',
+        # Gated by _visible_tattoo_placements: forearm/hand/wrist drop under long
+        # sleeves, thigh/calf drop unless the leg is bare AND legwear is absent or
+        # sheer, collarbone drops on a high neckline. Neck, behind-ear, upper-arm and
+        # shoulder-blade survive every outfit, so the pool can never empty.
+        # Flat field, no FIELD_FAMILIES entry: a partial cull re-picks uniformly
+        # among the survivors instead of concentrating a frozen family weight.
+        "female_options": ['on one forearm', 'across the back of one hand',
+                            'on the inner wrist', 'on the side of the neck',
+                            'behind one ear', 'across the collarbone',
+                            'on one upper arm', 'across one shoulder blade',
+                            'down one thigh', 'on one calf'],
+        "male_options": ['on one forearm', 'across the back of one hand',
+                          'on the inner wrist', 'on the side of the neck',
+                          'behind one ear', 'across the collarbone',
+                          'on one upper arm', 'across one shoulder blade',
+                          'down one thigh', 'on one calf'],
+        "optional": True
     }),
 ])
 
@@ -684,6 +803,9 @@ FIELD_HELP: dict[str, str] = {
     "season": "Time of year, which colours the setting and wardrobe.",
     "mood": "Overall emotional tone of the image. Set to 'None' if a downstream rendering pack owns this axis.",
     "pose": "What the body is doing. A pose needing something the subject lacks is dropped: hair or pockets to reach for, a free hand when a prop is held, a seat at giant scale. A lock wins.",
+    "tattoos": "Body ink - style and how much of it. Deliberately uncommon at random, and scaled by the accessory density control. Where it sits is tattoo_placement.",
+    "legwear": "Tights, stockings or socks. Only rendered when the outfit actually shows leg, so it never appears under trousers. Feminine wardrobe only.",
+    "tattoo_placement": "Where the tattoo sits. Placements the clothing would hide are dropped automatically - no forearm ink under long sleeves, no thigh ink under a skirt-less outfit or opaque tights.",
 }
 
 
@@ -772,7 +894,24 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("knots", {"weight": 420, "variants": ['space buns', 'bantu knots']}),
     ("pigtails", {"weight": 210, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
     ("texture", {"weight": 420, "variants": ['afro', 'twist-out', 'hair puff']}),
-    ("bangs", {"weight": 420, "variants": ['curtain bangs', 'blunt bangs', 'micro bangs']}),
+    # 0.90.0 adds 'side-swept bangs' and 'wispy bangs'. Pure Mode A into a
+    # PRE-EXISTING family (not a split, and bangs carry no hair_length restriction),
+    # so the frozen weight is simply subdivided and the field-level distribution does
+    # not move at all. Total weight stays 7140; `bangs` keeps its 0.058824 share.
+    #
+    # Two siblings were proposed and deliberately REJECTED, both for arithmetic
+    # rather than taste -- and both were caught by HairStyleFamilyTests, not by eye:
+    #   * 'hime cut' -> loose_styled. loose_styled is a SPLIT sub-family, so adding a
+    #     sixth variant broke the loose split's proportionality (140 vs 116.67 per
+    #     variant). It also needs long hair, which would make any length exclusion a
+    #     PARTIAL cull of the sub-family and concentrate its frozen weight on the
+    #     survivors. It needs its own sub-family, i.e. a reprice.
+    #   * 'wolf cut' -> barbered_shag, an ADDED family pinned to the field's
+    #     "everyday cut" rate; growing it needs the family repriced AND the _DILUTION
+    #     constant restated.
+    # Both are recorded in docs/suggested-additions.md rather than forced through.
+    ("bangs", {"weight": 420, "variants": ['curtain bangs', 'blunt bangs', 'micro bangs',
+                                           'side-swept bangs', 'wispy bangs']}),
     # 0.81.0: the ordinary-barbering gap. The pool had 40 ways to arrange hair and
     # no everyday BARBER cut at all -- no fade, undercut, pompadour, quiff or shag --
     # so any short-haired character fell back on "natural and unstyled" or a bun.
@@ -1158,6 +1297,15 @@ PATTERN_TAILS: dict[str, str] = {
     'abstract': ' in an abstract print',
     'camouflage': ' in camouflage',
     'denim': ' in denim',
+    # 0.90.0. Each reads after a garment phrase, so the article has to suit the noun
+    # ("in a paisley print", but "in gingham"). validate_data.py requires an entry
+    # here for every clothing_pattern value -- it caught all six being missing.
+    'polka dot': ' in polka dots',
+    'houndstooth': ' in houndstooth',
+    'paisley': ' in a paisley print',
+    'pinstripe': ' in pinstripes',
+    'gingham': ' in gingham',
+    'tie-dye': ' in tie-dye',
 }
 
 #: Outfit descriptions keyed by outfit_style, split into gendered buckets.

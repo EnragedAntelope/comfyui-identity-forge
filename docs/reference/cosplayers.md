@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1812 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1826 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (342)
+## Anime & Manga (344)
 
 ### Akame ga Kill
 
@@ -575,6 +575,8 @@
 
 ### Yu-Gi-Oh!
 
+- **Dark Magician** (M, prop)
+- **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
 ## Comics & Cartoons (238)
@@ -1105,11 +1107,11 @@
 - **Kid Flash** (M)
 - **Killer Croc** (M, giant, masked)
 - **Killer Frost** (F)
-- **Kilowog** (M)
+- **Kilowog** (M, masked)
 - **King Shark** (M, giant, masked)
 - **Kyle Rayner** (M)
 - **Lady Shiva** (F)
-- **Larfleeze** (M)
+- **Larfleeze** (M, masked)
 - **Lex Luthor** (M)
 - **Liberty Belle** (F)
 - **Lightning Lad** (M)
@@ -1442,7 +1444,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (72)
+## Fantasy & Literature (77)
 
 ### Anne of Green Gables
 
@@ -1490,7 +1492,12 @@
 
 ### Game of Thrones
 
+- **Brienne of Tarth** (F, prop)
+- **Cersei Lannister** (F)
 - **Daenerys Targaryen** (F)
+- **Jon Snow** (M, prop)
+- **Melisandre** (F)
+- **The Night King** (M)
 
 ### Harry Potter
 
@@ -1757,7 +1764,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (187)
+## Movies & TV (188)
 
 ### A Nightmare on Elm Street
 
@@ -2085,6 +2092,10 @@
 - **Vulcan** (M)
 - **Worf** (M, prop)
 
+### Stranger Things
+
+- **Eleven** (F)
+
 ### The Addams Family
 
 - **Cousin Itt** (M, masked)
@@ -2335,7 +2346,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (398)
+## Video Games (404)
 
 ### ARMS
 
@@ -2363,6 +2374,7 @@
 ### BioShock
 
 - **Big Daddy** (M, giant, masked)
+- **Splicer** (M, masked)
 
 ### BloodRayne
 
@@ -2505,6 +2517,9 @@
 
 ### Fallout
 
+- **Brotherhood of Steel Knight** (M, masked)
+- **Nick Valentine** (M)
+- **The Ghoul** (M, masked, prop)
 - **Vault Dweller** (M)
 
 ### Final Fantasy
@@ -2680,6 +2695,7 @@
 
 ### Metroid
 
+- **Samus Aran (Power Suit)** (F, masked)
 - **Zero Suit Samus** (F)
 
 ### Mirror's Edge
@@ -2761,7 +2777,7 @@
 - **Ann Takamaki** (F)
 - **Futaba Sakura** (F)
 - **Haru Okumura** (F)
-- **Joker (Persona 5)** (M)
+- **Joker (Persona)** (M)
 - **Makoto Niijima** (F)
 - **Mitsuru Kirijo** (F, prop)
 - **Naoto Shirogane** (F)
@@ -2793,6 +2809,7 @@
 
 ### Silent Hill
 
+- **Nurse (Silent Hill)** (F, masked)
 - **Pyramid Head** (M, masked, prop)
 
 ### Sonic the Hedgehog

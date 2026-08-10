@@ -23,7 +23,21 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-**Empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
+**Two `hair_style` values, blocked on arithmetic rather than taste (0.90.0).** Both
+were written, tested, and backed out when `HairStyleFamilyTests` failed — recorded
+here with the exact cost so a future pass can decide whether to pay it.
+
+| Candidate | What it needs |
+|---|---|
+| **hime cut** | Its natural home is `loose_styled`, which is a **split** sub-family — adding a sixth variant broke the `loose` split's proportionality (140 vs 116.67 per variant). It also requires long hair, so any length exclusion would be a *partial* cull of the sub-family and would concentrate its frozen weight on the survivors. Needs its own sub-family and a reprice of the whole `loose` group. |
+| **wolf cut** | Belongs in `barbered_shag`, an **added** family pinned to the field's "everyday cut" rate. Growing it needs the family repriced *and* `_DILUTION` in `HairStyleFamilyTests` restated. |
+
+The two that *did* ship (`side-swept bangs`, `wispy bangs`) went into `bangs` — a
+pre-existing, non-split family with no length restriction — so the total weight stayed
+7140 and no share moved at all. That is the difference between a cheap addition and an
+expensive one, and it is not visible from the option list.
+
+**Everything else: empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
@@ -105,6 +119,7 @@ Open. No decision has been made either way.
 
 | # | Question | Where it stands |
 |---|---|---|
+| 2 | **Costume text that asserts a body trait against an unpinned random field.** A costume reading "on a hulking frame" can render beside "a very slim build" in the same sentence, because `physique` applies only in Full-character mode while `costume` renders in both. | Measured at 0.90.0, **33 entries** (`Colossus`, `Gollum`, `Jabba the Hutt`, `Space Marine`, `Brook`, …). Not swept, for two reasons. First, the `signature` / `physique` split is *deliberate* — the schema says physique is Full-mode-only, so a randomly-built person wearing the costume is the intended behaviour, and most of the 33 are mascot suits where the suit supplies the bulk regardless of the wearer. Second, a naive regex reported **171** and was wrong: "tiny" on `Trinity` and `Neo` is their *sunglasses*, "enormous" on `Edna Mode` is her *lashes*. Requiring the adjective to modify a body noun cut it to 33. **If this is ever taken up, measure it again from scratch — do not trust the 171.** The four entries fixed at 0.90.0 (`Dexter Jettster`, `Figrin D'an`, `Ithorian`, plus the new Fallout/GoT entries) pin the trait in `signature`, which applies in both modes; that is the pattern to follow. |
 | 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
 
 **Closed at 0.88.0 — the creature face-colour question (was #2).** The proposal was an engine

@@ -1047,6 +1047,27 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
+    # The armored counterpart to Zero Suit Samus, which had shipped alone. Sealed
+    # suit -> the settled covers_face + covers_body + mask route, and no `signature`
+    # (nothing of the wearer shows). Key parenthesised because the two Samus entries
+    # would otherwise collide; the parenthetical names a VERSION, which the 0.90.0
+    # franchise-key rule allows.
+    "Samus Aran (Power Suit)": {
+        "franchise": "Metroid",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a smooth rounded orange helmet with a wide green wraparound visor "
+                "and three small forward-facing lamps above it",
+        # The arm cannon is ATTACHED, not held -- prop text is voiced after
+        # "holding ...", which a fused weapon arm cannot be. Same call as the Vault
+        # Dweller's forearm computer, so this entry ships no prop.
+        "costume": "a sealed suit of rounded orange-and-red plate armor with enormous "
+                   "spherical shoulder pauldrons, segmented gauntlets and thigh "
+                   "plating, a yellow-green midsection, and a wide cylindrical energy "
+                   "cannon fused in place of one forearm",
+        "signature": {"body_type": "athletic", "height": "tall"},
+    },
     "Zero Suit Samus": {
         "franchise": "Metroid",
         "gender": "Female",
@@ -1655,6 +1676,78 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "platinum white", "hair_length": "waist length",
                       "hair_style": "dutch braids"},
         "physique": {"body_type": "slender", "height": "petite", "skin_tone": "fair"},
+    },
+    # Game of Thrones, added 0.90.0. The franchise had shipped exactly one entry
+    # against a very large cast; these five were chosen because each reads without
+    # the franchise name doing the work -- black furs, an ice crown, a red gown,
+    # blue plate, a black-and-silver coronation gown. Six entries total stays under
+    # _FRANCHISE_SCOPE_MINIMUM, so no new random_scope option and no schema change.
+    "Jon Snow": {
+        "franchise": "Game of Thrones",
+        "gender": "Male",
+        "costume": "a heavy black wool cloak with a thick shaggy black fur mantle "
+                   "across the shoulders, a studded black boiled-leather jerkin over "
+                   "a dark quilted tunic, wide leather belts and gauntlets, dark "
+                   "trousers, and tall worn boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
+                      "hair_texture": "curly", "facial_hair": "short beard",
+                      "eye_color": "dark gray", "body_type": "lean",
+                      "height": "average height", "skin_tone": "fair"},
+        "prop": "a longsword with a pale wolf's-head pommel and a dark leather grip",
+    },
+    "The Night King": {
+        "franchise": "Game of Thrones",
+        "gender": "Male",
+        # covers_hair rather than covers_face: the crown is fused to a bald skull and
+        # encloses the scalp, but the face is the point and must stay visible. The
+        # skin marker carries the corpse-blue colour; the eyes are set free-text
+        # because no eye_color option is anywhere near this.
+        "covers_hair": True,
+        "costume": "a jagged crown of pale ice spikes fused directly to a hairless "
+                   "skull, layered dark blue-grey scaled armor over a long ragged "
+                   "hide robe, and heavy plated shoulders, over smooth, flawless "
+                   "pale corpse-blue skin",
+        "eyes": "glacial ice blue",
+        "signature": {"body_type": "lean", "height": "very tall"},
+    },
+    "Melisandre": {
+        "franchise": "Game of Thrones",
+        "gender": "Female",
+        # The ruby choker is the whole tell, so `necklace` is pinned off -- a random
+        # pendant beside it is the documented doubling trap.
+        "costume": "a floor-length deep red gown of layered silk with long hanging "
+                   "sleeves and a high slashed neckline, a wide gathered belt, and a "
+                   "heavy choker set with one large blood-red ruby at the throat",
+        "signature": {"hair_color": "copper", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy", "hair_style": "worn down",
+                      "necklace": "no necklace", "body_type": "slender",
+                      "height": "average height", "skin_tone": "fair"},
+    },
+    "Brienne of Tarth": {
+        "franchise": "Game of Thrones",
+        "gender": "Female",
+        # "plate armor" is the literal phrase _FULL_COVER_RE matches, so the
+        # jewellery/nail suppression fires without needing covers_body (the head is
+        # bare, so covers_body would be wrong anyway).
+        "costume": "a full suit of blue-grey steel plate armor with segmented "
+                   "pauldrons and articulated gauntlets, worn over a quilted blue "
+                   "gambeson with a heavy leather sword belt and tall riding boots",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "short pixie",
+                      "hair_texture": "fine and wispy", "eye_color": "pale blue",
+                      "body_type": "athletic", "height": "very tall",
+                      "skin_tone": "fair"},
+        "prop": "a longsword with a gilded lion-head pommel and a rippled blade",
+    },
+    "Cersei Lannister": {
+        "franchise": "Game of Thrones",
+        "gender": "Female",
+        "costume": "a severe floor-length black gown of structured leather and silk "
+                   "with a high standing collar, sculpted metal shoulder pauldrons, "
+                   "silver chain detailing across the chest, and long fitted sleeves",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "green",
+                      "age": "45", "body_type": "slim",
+                      "height": "average height", "skin_tone": "fair"},
     },
     "Xena": {
         "franchise": "Xena: Warrior Princess",
@@ -5080,12 +5173,27 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "a black-and-green Green Lantern uniform with a circular lantern emblem and a "
-                   "glowing green power ring worn on the finger, over an even, all-over coat of "
-                   "pink-grey ridged Bolovaxian skin, with a heavy tusked underbite and small "
-                   "pointed ears, on a massive muscular frame",
+        # covers_face + mask, per the non-human recipe. Without it the engine kept
+        # describing a full randomized HUMAN face over a Bolovaxian -- "his face is
+        # round with a prominent brow ridge forehead, barely defined cheekbones, a
+        # strong jawline and a slightly cleft chin" -- while the costume separately
+        # mentioned tusks and pointed ears. The head belongs in `mask`, which is
+        # "what the head looks like", not a worn object.
+        "covers_face": True,
+        "mask": "a broad hairless Bolovaxian head of ridged pink-grey hide with a heavy "
+                "overhanging brow, a flat wide nose, small pointed ears set low, and a "
+                "jutting underbite with two thick tusks rising over the upper lip",
+        "costume": "a black-and-green Green Lantern uniform with a circular lantern "
+                   "emblem on the chest, green boots and a glowing green power ring "
+                   "worn on the finger, over an even, all-over coat of pink-grey "
+                   "ridged Bolovaxian skin, on a massive muscular frame",
         "eyes": "solid pink",
-        "physique": {"body_type": "stocky", "height": "very tall"},
+        # In `signature` so the bulk survives costume-only mode, and shoulders/waist/
+        # chest pinned because the costume says "massive muscular frame" and the
+        # random fields were rolling "a very slim build ... a narrow waist" against it.
+        "signature": {"body_type": "stocky", "height": "very tall",
+                      "shoulder_width": "very broad", "waist": "wide",
+                      "bust": "muscular", "fitness_level": "muscular"},
     },
     "Tomar-Re": {
         "franchise": "DC",
@@ -5137,11 +5245,22 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
-        "costume": "tattered orange Agent Orange robes with a glowing orange power ring worn on "
-                   "the finger, over uniform, all-over leathery orange skin, with a gaunt "
-                   "hunched frame, pointed ears, and a wide jagged grin",
+        # Same fix as Kilowog: the alien head was being overwritten by a randomized
+        # human face while the costume mentioned the ears and grin in passing.
+        "covers_face": True,
+        "mask": "a gaunt hairless orange head with sunken cheeks drawn tight over the "
+                "skull, long backswept pointed ears, a flat slitted nose, and an "
+                "enormous wide grin crowded with small jagged teeth",
+        "costume": "tattered layered orange Agent Orange robes over a bare leathery "
+                   "chest, with a glowing orange power ring worn on the finger, over "
+                   "uniform, all-over leathery orange skin, on a gaunt hunched frame",
         "eyes": "glowing orange",
-        "physique": {"body_type": "lean", "height": "average height"},
+        # "gaunt hunched frame" is asserted in the costume, so the matching fields are
+        # pinned rather than left to roll a broad-shouldered, very fit Larfleeze.
+        "signature": {"body_type": "very slim", "height": "tall",
+                      "shoulder_width": "sloped", "waist": "very narrow",
+                      "bust": "flat", "fitness_level": "sedentary",
+                      "posture": "slightly hunched"},
     },
     "Brainiac": {
         "franchise": "DC",
@@ -5524,6 +5643,21 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "bright blue"},
         "physique": {"body_type": "petite and slim", "height": "very petite", "skin_tone": "fair"},
         "prop": "a kitchen knife",
+    },
+    # Silent Hill had shipped only Pyramid Head. The Bubble Head Nurse is the
+    # franchise's other unmistakable silhouette and shares nothing with him.
+    "Nurse (Silent Hill)": {
+        "franchise": "Silent Hill",
+        "gender": "Female",
+        # covers_face carries the wrapped head; the whole point of the design is that
+        # there is no face under the gauze, so a randomized one would destroy it.
+        "covers_face": True,
+        "mask": "a head wrapped entirely in filthy blood-soaked gauze bandages with "
+                "no face visible beneath them, lolling to one side",
+        "costume": "a short grimy white nurse's dress stained with dried blood, "
+                   "buttoned tight over the chest with a stiff collar, a small white "
+                   "cap pinned to the wrapped head, and scuffed white shoes",
+        "signature": {"body_type": "slim", "height": "average height"},
     },
     "Pyramid Head": {
         "franchise": "Silent Hill",
@@ -8268,12 +8402,28 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "simple flowing robes, with brown leathery skin",
-        "mask": "a brown leathery Ithorian head on a long curving hammerhead neck rising "
-                "to a domed crown, with small dark wide-set eyes",
-        "signature": {},
+        # Costume was "simple flowing robes, with brown leathery skin" -- no garment
+        # detail, and the skin phrase was not in either canonical marker form, so the
+        # colour never got restated onto the visible hands. "uniform, all-over
+        # <colour> <material>" is the textured form and fixes both.
+        "costume": "long heavy flowing robes in undyed cream and grey with a deep "
+                   "cowl-like collar standing away from the neck, wide draping "
+                   "sleeves and a broad wrapped sash, over uniform, all-over brown "
+                   "leathery hide",
+        # The two mouths are the species' defining feature and were missing entirely;
+        # so was the forward curve of the hammer. Eyes sit on the ENDS of the
+        # crossbar, not merely "wide-set".
+        "mask": "a brown leathery Ithorian head on a long neck curving forward into a "
+                "broad T-shaped hammer crown, a small dark eye set at each outer end "
+                "of the crossbar, no visible nose, and a second mouth on either side "
+                "of the throat below the head",
+        # Was `physique` with an empty `signature`, so in costume-only mode the build
+        # randomized and a tall slim Ithorian rendered as "a very slim build and
+        # average height". signature applies in both modes.
+        # neck_length pinned: the long neck IS the species, and the random field was
+        # rolling "an elegant neck" / "a short neck" against the mask's description.
+        "signature": {"body_type": "slim", "height": "tall", "neck_length": "long"},
         "body_paint": True,
-        "physique": {"body_type": "slim", "height": "tall"},
     },
     "Max Rebo": {
         "franchise": "Star Wars",
@@ -8517,10 +8667,23 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a tidy dark cantina-band suit over a slender body",
-        "mask": "a Bith face: a large pink hairless dome of a head with huge black almond "
-                "eyes, a flat folded nose, and a small downturned mouth",
-        "physique": {"body_type": "slim", "height": "average height"},
+        # Was rendering as "a 22-year-old Armenian man ... medium skin" under the Bith
+        # head: covers_face drops the Face group but NOT ethnicity/skin_tone, so the
+        # costume needs the "smooth, flawless <colour> skin" marker (_BODY_PAINT_RE)
+        # to suppress them and carry the pale Bith colour onto the visible hands.
+        # Costume kept deliberately unsaturated: the band's matching stage dress is
+        # documented only as "somber in tone", so naming a specific colour would be
+        # inventing canon. The high collar, waist sash and layered tunic are visible
+        # on screen and are what make the silhouette read as the cantina band.
+        "costume": "a somber matching cantina-band uniform of a high-collared tunic "
+                   "over a darker underlayer with a wide wrapped waist sash, with long "
+                   "slender fingers, over smooth, flawless pale pink skin",
+        "mask": "a Bith head: a large hairless cranium bulging high and wide over a "
+                "small face, huge black lidless almond eyes, no external nose beyond "
+                "a flat folded ridge, and a small lipless downturned mouth",
+        # In `signature`, not `physique`: signature applies in both modes, physique
+        # only in Full-character mode. See the note on Dexter Jettster.
+        "signature": {"body_type": "slim", "height": "average height"},
         "prop": "a gleaming silver kloo-horn wind instrument",
     },
     "Duros": {
@@ -8610,10 +8773,38 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a stained cook's apron over a huge four-armed Besalisk body",
-        "mask": "a Besalisk face with a row of fleshy chin wattles, small eyes, and a broad "
-                "toothy mouth",
-        "physique": {"body_type": "plus size", "height": "very tall"},
+        # The hide is the body, so there is no bare skin for randomized jewellery,
+        # nails, accessories or a bag to sit on -- covers_body drops all of those
+        # (it was rendering "He has a diamond pendant" on a four-armed diner cook).
+        # With covers_face it also drops the stray human skin_tone.
+        "covers_body": True,
+        # The bulk is stated in the COSTUME, not just physique: physique renders only
+        # in Full-character mode, while costume renders in BOTH, so a costume-only
+        # Dexter was coming out as an average-build, short man in an apron.
+        # "uniform, all-over ... hide" is the _BODY_PAINT_RE marker -- without it the
+        # engine kept randomizing an ethnicity and skin tone onto a Besalisk.
+        "costume": "a grubby short-sleeved cook's tunic under a heavily grease-stained "
+                   "apron with a dish towel tucked into the waist tie, worn on a "
+                   "towering, slab-bellied frame with two pairs of thick arms and "
+                   "uniform, all-over mottled green-tan hide",
+        "mask": "a broad Besalisk head with a bony crest running back over the bald "
+                "skull, a heavy pendulous wattle of loose skin hanging from the chin "
+                "and throat, small dark deep-set eyes under a low brow, and a wide "
+                "mouth showing blunt teeth and two stubby upturned lower tusks",
+        # Build/height/age sit in `signature`, NOT `physique`, and deliberately: per
+        # the schema note at the top of this file, signature applies in BOTH modes
+        # while physique applies only in Full-character mode. Dex's bulk and age are
+        # the character, not incidental body randomization -- as `physique` they
+        # vanished in costume-only mode and he rendered as a 22-year-old, very slim,
+        # very petite man wearing a "towering, slab-bellied" apron. No `physique`
+        # key: it would only duplicate these three.
+        # `waist` is pinned because the costume says "slab-bellied": there is no
+        # body_type -> waist constraint in the engine, so "plus size" can and did roll
+        # "a narrow waist" in the same sentence. Pinned here rather than adding a
+        # global rule -- that is a roster-wide coherence question, noted in the
+        # worklog, not a side effect of one likeness fix.
+        "signature": {"age": "60", "body_type": "plus size", "height": "very tall",
+                      "waist": "full"},
     },
     "Hondo Ohnaka": {
         "franchise": "Star Wars",
@@ -8954,6 +9145,20 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a yellow circular head with a wide wedge-shaped open mouth and two "
                 "small round eyes",
         "physique": {"body_type": "plump", "height": "average height"},
+    },
+    # BioShock had shipped only Big Daddy. The Splicer is the other half of Rapture's
+    # visual identity and is a completely different shape -- ruined period formalwear
+    # under a delicate painted mask, not a diving suit.
+    "Splicer": {
+        "franchise": "BioShock",
+        "gender": "Male",
+        "covers_face": True,
+        "mask": "a cracked white porcelain rabbit mask with long upright ears, painted "
+                "rosy cheeks and a small red smile, hiding the whole face",
+        "costume": "a moth-eaten formal waistcoat over a filthy collarless dress "
+                   "shirt with the sleeves torn away, frayed pinstriped trousers held "
+                   "up with braces, mismatched leather gloves, and battered brogues",
+        "signature": {"body_type": "lean", "height": "average height"},
     },
     "Big Daddy": {
         "franchise": "BioShock",
@@ -19939,6 +20144,34 @@ COSPLAYERS: dict[str, dict] = {
     },
 
     # --- Yu-Gi-Oh! --------------------------------------------------------
+    # Yu-Gi-Oh! had shipped only Yami Yugi. These two are the franchise's signature
+    # monsters. They share a hat SHAPE and nothing else -- different colourway,
+    # silhouette and gender -- which is a wider gap than the Blue Beetle pair the
+    # roster already carries.
+    "Dark Magician Girl": {
+        "franchise": "Yu-Gi-Oh!",
+        "gender": "Female",
+        "costume": "a short blue-and-pink segmented armored dress with a rounded "
+                   "breastplate and flared hip plates, matching rounded shoulder "
+                   "guards, a tall conical pink-and-blue wizard's hat curling over at "
+                   "the tip, and blue armored thigh-high boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "mid back",
+                      "hair_texture": "loosely wavy", "eye_color": "green",
+                      "body_type": "slim", "height": "average height",
+                      "skin_tone": "fair"},
+        "prop": "a short pale blue spiral wand with a rounded tip",
+    },
+    "Dark Magician": {
+        "franchise": "Yu-Gi-Oh!",
+        "gender": "Male",
+        "costume": "a suit of layered indigo and violet segmented armor with tall "
+                   "flared shoulder plates and a high pointed horned helm framing the "
+                   "face, close-fitting violet sleeves and armored boots",
+        "signature": {"hair_color": "emerald green", "hair_length": "shoulder length",
+                      "hair_texture": "pin straight", "eye_color": "green",
+                      "body_type": "lean", "height": "very tall"},
+        "prop": "a long green spiral staff with a curled tip",
+    },
     "Yami Yugi": {
         "franchise": "Yu-Gi-Oh!",
         "gender": "Male",
@@ -20024,6 +20257,25 @@ COSPLAYERS: dict[str, dict] = {
     },
 
     # --- Squid Game -------------------------------------------------------
+    # Stranger Things, new franchise at 0.90.0 with a single entry. Ordinary
+    # garments, but iconic AND specific -- the same bar that admitted Sandy Olsson
+    # and Mia Wallace. Vecna and the Demogorgon were declined: no worn garments at
+    # all, which is Creature-node shape.
+    "Eleven": {
+        "franchise": "Stranger Things",
+        "gender": "Female",
+        # The nosebleed is written last and deliberately as its own trailing clause:
+        # a facial marking buried mid-list is the failure mode that made Judy
+        # Alvarez's face tattoo vanish at 0.88.0.
+        "costume": "a pale pink pinafore dress with a wide white collar over a "
+                   "long-sleeved white blouse, an oversized blue satin bomber jacket, "
+                   "white tube socks with coloured stripes, and white sneakers, with "
+                   "a thin trickle of fresh blood running from one nostril",
+        "signature": {"hair_color": "dark brown", "hair_length": "buzzed very short",
+                      "makeup_style": "no makeup", "age": "18",
+                      "body_type": "petite and slim", "height": "petite",
+                      "skin_tone": "fair"},
+    },
     "Seong Gi-hun": {
         "franchise": "Squid Game",
         "gender": "Male",
@@ -20096,9 +20348,12 @@ COSPLAYERS: dict[str, dict] = {
                      "skin_tone": "medium olive"},
     },
 
-    # --- Persona 5 --------------------------------------------------------
-    # Key parenthesized: `Joker` (DC) already ships.
-    "Joker (Persona 5)": {
+    # --- Persona ----------------------------------------------------------
+    # Key parenthesized: `Joker` (DC) already ships. The disambiguator names the
+    # franchise as this pack groups it -- see the curation checklist rule on
+    # parentheticals. It is deliberately NOT `(Persona 5)`: installments are not
+    # separate franchises here, so a key naming one would contradict the roster.
+    "Joker (Persona)": {
         "franchise": "Persona",
         "gender": "Male",
         # A domino mask covers the eyes, not the face - not covers_face.
@@ -20310,6 +20565,81 @@ COSPLAYERS: dict[str, dict] = {
                    "legs and a large yellow number stencilled across the back, a brown "
                    "leather utility belt hung with pouches, sturdy laced work boots, and "
                    "a bulky green-screened computer unit strapped to one forearm",
+    },
+    # Fallout, added 0.90.0. Three looks that share no silhouette with the Vault
+    # Dweller or each other: a hairless noseless gunslinger, a sealed suit of power
+    # armor, and a trenchcoated synth detective.
+    #
+    # Lucy MacLean was considered and DECLINED: her Vault 33 jumpsuit is the Vault
+    # Dweller costume almost word for word, which is the duplicate signature the
+    # roster bar exists to catch.
+    "The Ghoul": {
+        "franchise": "Fallout",
+        "gender": "Male",
+        # covers_face is load-bearing, not decoration. Without it the engine emits a
+        # full randomized face -- including "a straight nose" -- on a character whose
+        # single most recognizable feature is that he has no nose at all. The mask
+        # slot carries the head instead. covers_face also drops the Hair group, which
+        # is correct: ghouls are entirely hairless.
+        "covers_face": True,
+        "mask": "a hairless ghoul head with no nose at all, only a raw open cavity "
+                "between the eyes, dry mottled grey-tan skin drawn tight and split "
+                "over the cheekbones, a lipless mouth exposing the teeth and gums, "
+                "and pale sunken eyes ringed in dark hollows",
+        # The textured form of the skin-native marker ("uniform, all-over <colour>
+        # <material>"), which suppresses the randomized ethnicity/skin_tone/complexion
+        # and restates the colour on the face and hands. The Edward Scissorhands
+        # caveat (that the marker also suppresses skin_details) does not bite here:
+        # every mark this character needs is written out above rather than drawn.
+        "costume": "a long dust-caked oilskin duster over a collarless shirt and worn "
+                   "trousers, a red neckerchief knotted at the throat, a wide-brimmed "
+                   "weathered hat, a tooled leather gunbelt with a low-slung holster "
+                   "and loops of brass cartridges, tall scuffed riding boots, over "
+                   "uniform, all-over mottled grey-tan ruined skin",
+        # Age pinned: a 200-year-old gunslinger free-rolling to "a 22-year-old" is
+        # the demographics gap the archetypes already guard against.
+        "signature": {"age": "45", "body_type": "lean", "height": "tall"},
+        "prop": "a long-barrelled revolver with a worn walnut grip",
+    },
+    "Brotherhood of Steel Knight": {
+        "franchise": "Fallout",
+        "gender": "Male",
+        # Sealed power armor: the settled covers_face + mask + covers_body route the
+        # Space Marine and Sister of Battle already take. `signature` is omitted --
+        # nothing of the wearer shows. "power armor" is spelled American to satisfy
+        # test_roster_uses_one_spelling, and "plate armor" is the literal phrase
+        # _FULL_COVER_RE looks for, so the full-shell suppression actually fires.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a bulbous riveted steel helmet with a narrow horizontal eye slit lit "
+                "from within, a stubby filtered breathing snout, and a headlamp "
+                "bolted above the brow",
+        "costume": "a towering suit of bulky welded plate armor in scratched military "
+                   "green, with hydraulic pistons along the limbs, a hunched powered "
+                   "backpack unit, oversized armored gauntlets and boots, and a "
+                   "winged sword-and-gears emblem stencilled on one pauldron",
+        # covers_body keeps Body/Demographics on purpose ("there is still a body,
+        # and the silhouette has a height/build") -- so the suit still needs one,
+        # or a "towering suit" renders on "an average build and short".
+        "signature": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Nick Valentine": {
+        "franchise": "Fallout",
+        "gender": "Male",
+        # NOT covers_face: the synthetic damage is partial -- the exposed jaw and
+        # cheek plating read against an otherwise human face, and hiding the whole
+        # head would lose that contrast. Described in the costume as prosthetic
+        # detail instead, with no skin marker (the intact half is ordinary skin).
+        "costume": "a rumpled belted trenchcoat over a waistcoat, a loosened tie and a "
+                   "grubby striped shirt, a snap-brim fedora, and a scuffed synthetic "
+                   "jaw and cheek where the artificial skin has torn away to bare "
+                   "yellowed plating and wiring, with one skeletal metal hand",
+        "eyes": "luminous yellow",
+        # body_type/height pinned: a hardboiled synth detective was rolling
+        # "a softly curved build, slightly below average height".
+        "signature": {"hair_color": "salt and pepper", "hair_length": "very short",
+                      "facial_hair": "clean shaven", "skin_tone": "pale",
+                      "age": "45", "body_type": "lean", "height": "tall"},
     },
     "Inuyasha": {
         "franchise": "Inuyasha",
@@ -20747,7 +21077,7 @@ COSPLAYERS: dict[str, dict] = {
     # Phantom Thief costumes, Aigis' android body, Mitsuru's fur coat and
     # Naoto's detective look. The school-uniform cast is deliberately not
     # shipped (see the backlog). Keys are civilian names, which are unique
-    # and searchable; "Joker (Persona 5)" uses the code name only because his
+    # and searchable; "Joker (Persona)" uses the code name only because his
     # civilian name differs across media.
     #
     # Installments are NOT split into "Persona 3"/"4"/"5" franchises: the pack
@@ -20977,6 +21307,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
         "Rise of the Guardians", "The Ring", "Ghostbusters", "Edward Scissorhands",
         "Monsters vs. Aliens", "The Boys", "Braveheart", "V for Vendetta",
+        "Stranger Things",
         "FernGully", "An American Tail", "The Iron Giant", "King Kong", "Ultraman",
         "McDonald's", "Wendy's", "Kool-Aid", "Michelin", "Big Boy", "Planters",
         "KFC", "Green Giant", "Pillsbury", "Mr. Clean", "Cap'n Crunch", "Kellogg's",

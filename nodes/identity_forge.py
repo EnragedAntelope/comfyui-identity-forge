@@ -69,6 +69,27 @@ _HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_item"})
 #: override and a cosplayer's signature prop). Everything else hidden is engine-only.
 _PRESET_HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_item"})
 
+#: Fields drawn AFTER the main randomization loop, because their pool depends on the
+#: finished ``outfit_description`` -- and for a randomly generated character that
+#: string does not exist yet while the loop is running. It is composed afterwards,
+#: from ``outfit_style``, in :func:`generate_character`.
+#:
+#: This bit us for real: gating ``legwear`` and ``tattoo_placement`` inside the loop
+#: read an empty outfit every time, so legwear never appeared at all (0 in 2,000) and
+#: forearm tattoos rendered under blazers. The symptom looked like two bad regexes;
+#: the cause was one ordering mistake. Note that :func:`_performable_poses` reads the
+#: same key from inside the loop and therefore only ever sees a PRESET costume -- for
+#: a randomly generated outfit its garment check is inert. That is pre-existing and
+#: is left alone here, but it is the same trap.
+#: ``tattoos`` is here for a different reason from the other two: it needs no outfit
+#: at all, but drawing it inside the loop would consume RNG *before*
+#: ``_resolve_outfit_description``, shifting the outfit -- and therefore the whole
+#: character -- for every existing seed. Deferring all three puts every new draw
+#: after the last pre-existing one, so an identical seed yields an identical
+#: character plus the new clauses. Verified, not assumed: see the seed-stability
+#: check in tests/test_engine.py.
+_DEFERRED_FIELDS: frozenset[str] = frozenset({"tattoos", "legwear", "tattoo_placement"})
+
 #: The one shot_type value that occupies a hand (holding the camera at arm's length),
 #: same as a held prop. Read by _performable_poses so a selfie never draws a
 #: both-hands pose.
@@ -92,7 +113,7 @@ _SET_ALL_NONE = "All to None"
 #: connected Cosplayer node's ``_meta`` through the parsed-archetype dict.
 _COSPLAY_LABEL_KEY = "__cosplay_label__"
 
-#: Trailing "(...)" disambiguator on a roster key, e.g. "Joker (Persona 5)".
+#: Trailing "(...)" disambiguator on a roster key, e.g. "Blue Beetle (Ted Kord)".
 _KEY_PARENTHETICAL_RE = re.compile(r"^(?P<base>.*?)\s*\((?P<paren>[^()]+)\)\s*$")
 
 
@@ -108,10 +129,15 @@ def _name_already_carries_franchise(name: str, franchise: str) -> bool:
     "Joker (Persona 5) (Persona)". Three shapes, one test:
 
     * the parenthetical IS the franchise -- "Jinx (League of Legends)";
-    * either is a more specific form of the other -- "Joker (Persona 5)" under the
-      series franchise "Persona", and "Mai (Avatar)" under "Avatar: The Last
-      Airbender";
+    * either is a more specific form of the other -- "Mai (Avatar)" under
+      "Avatar: The Last Airbender";
     * the base name already says it -- "Ms. Marvel", "Duke Nukem".
+
+    The *narrower* direction of the second shape ("Joker (Persona 5)" under the
+    series franchise "Persona") no longer occurs in the roster: 0.90.0 renamed that
+    key to "Joker (Persona)" and added a ``validate_data.py`` rule forbidding a
+    parenthetical that extends its franchise. The branch below still handles it, as
+    defence in depth for data that has not been validated yet.
 
     Both the prefix test and the base-name test are word-bounded on purpose: a bare
     substring check would fire on any name that happened to contain a short
@@ -399,8 +425,14 @@ _FULL_COVER_RE = re.compile(
 #: Jewellery/nails are NOT here: they sit on the body and are governed by the shell
 #: rule (a full shell drops the whole Jewelry & Nails group), and a character may
 #: coherently wear earrings or a ring over a costume.
+#: ``legwear`` joins them at 0.90.0 for the doubling reason rather than the
+#: anachronism one: an authored costume that already says "grey thigh-high stockings"
+#: (Lucy) or "knee-high socks" (the school-uniform entries) would otherwise get a
+#: second, contradicting pair randomized on top of it. Tattoos deliberately do NOT
+#: join -- ink sits on the body under the costume, the same argument that keeps
+#: jewellery out of this set.
 _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
-    "bag", "watch_type", "hair_accessory", "accessories",
+    "bag", "watch_type", "hair_accessory", "accessories", "legwear",
 })
 
 #: ``footwear`` values that need a whole replacement clause rather than the default
@@ -540,6 +572,18 @@ _WARDROBE_BY_GENDER: dict[str, str] = {
 #: (necklace, earrings). Freckles/marks lean mostly-absent so they read as a
 #: distinguishing feature, not a default.
 _EXTRA_ABSENCE: dict[str, tuple[str, float]] = {
+    # 0.90.0. Leans further absent than anything else here: tattoos should read as
+    # a distinguishing feature on a minority of characters, not as a house style.
+    # Routing rarity through this table rather than a `weights` map is deliberate --
+    # it makes the accessory_density control govern tattoos for free ("None" strips
+    # them, "Maximal" makes them common), which a weights map would not.
+    # tattoo_placement is NOT listed: it is cascaded off `tattoos` by
+    # _visible_tattoo_placements, so giving it an independent absence roll would
+    # only desynchronise the pair.
+    "tattoos": ("no tattoos", 0.85),
+    # Whole-pool suppressed by _wearable_legwear whenever the outfit covers the leg,
+    # so this probability only governs the bare-leg case.
+    "legwear": ("no visible legwear", 0.55),
     "freckles_density": ("none", 0.72),
     "skin_details": ("no notable marks", 0.60),
     "bag": ("no bag", 0.65),
@@ -621,7 +665,18 @@ def _a(word: str) -> str:
         return "an"
     if first.startswith(_CONSONANT_VOWEL_PREFIXES):
         return "a"
-    return "an" if first[:1] in "aeiou" else "a"
+    # Numerals are read aloud, so the article follows the SPOKEN first sound, not
+    # the digit: "an 18-year-old", "an 8-foot drop", "an 80s revival". Only a
+    # leading 8 (eight / eighty / eight hundred) and the exact teens 11 and 18
+    # (eleven / eighteen) take "an" -- 110 is "one hundred ten" and takes "a", so
+    # this is deliberately not a blanket "starts with 1 or 8" test.
+    leading_digits = re.match(r"\d+", first)
+    if leading_digits:
+        digits = leading_digits.group()
+        return "an" if digits.startswith("8") or digits in ("11", "18") else "a"
+    # `first[:1] in "aeiou"` is True for the EMPTY string (every string contains
+    # ""), so an empty input returned "an". Guarded explicitly.
+    return "an" if first[:1] and first[0] in "aeiou" else "a"
 
 
 def _an(value: str, noun: str = "") -> str:
@@ -1043,6 +1098,163 @@ def _performable_poses(
     return [p for p in pool if p not in excluded] or pool
 
 
+#: Garments that leave the leg bare or mostly bare, so legwear and leg tattoos can
+#: actually be seen. Matched against the resolved ``outfit_description`` text, the
+#: same technique ``_POCKETLESS_GARMENT_RE`` already uses to gate poses -- the engine
+#: has no structured garment model, and inventing one for two fields would cost far
+#: more than it returns. Conservative by construction: anything not matched here is
+#: treated as covering the leg, so the failure mode is a missing option rather than
+#: tights rendered under a pair of jeans.
+_BARE_LEG_RE = re.compile(
+    r"\b(?:skirt|skort|dress|gown|shorts|playsuit|romper|leotard|unitard|bodysuit|"
+    r"swimsuit|swimwear|bikini|monokini|kaftan|caftan|sundress|tunic|toga|"
+    r"pinafore|kilt|sarong)s?\b",
+    re.IGNORECASE,
+)
+
+#: Sleeves that reach the wrist, hiding a forearm / wrist / hand tattoo. Same
+#: conservative posture as ``_BARE_LEG_RE``, but inverted: here a MATCH removes
+#: options, so over-matching costs variety while under-matching would print ink
+#: onto a covered arm. Listed garments are ones that are long-sleeved by
+#: definition; ambiguous words ("shirt", "top") are deliberately absent because
+#: they are as often short-sleeved.
+_LONG_SLEEVE_RE = re.compile(
+    r"\b(?:blazer|suit|tuxedo|coat|jacket|cardigan|sweater|sweatshirt|hoodie|"
+    r"jumper|turtleneck|roll-neck|pullover|anorak|windbreaker|parka|robe|"
+    r"long sleeve|long-sleeve|long-sleeved|bell sleeves|wide sleeves|"
+    # Added after a sample render put a forearm tattoo under "a quarter-zip base
+    # layer": these are long-sleeved by definition and the first pass missed them.
+    r"quarter-zip|half-zip|zip-up|zip-through|base layer|thermal|henley|"
+    r"flannel|overshirt|fleece|crewneck|poncho|duster|trench|kaftan|caftan)s?\b",
+    re.IGNORECASE,
+)
+
+#: Hems that reach past the thigh (and, for the longest, past the calf too), so a
+#: leg tattoo under them is covered even though the garment technically "shows leg".
+#: Split from ``_BARE_LEG_RE`` rather than folded into it because the two answer
+#: different questions: a maxi skirt still takes tights (they are seen when it
+#: moves), but it does hide a thigh tattoo completely.
+_LONG_HEM_RE = re.compile(
+    r"\b(?:maxi|floor-length|ankle-length|full-length|midi|long skirt|"
+    r"broomstick|tiered maxi)\b",
+    re.IGNORECASE,
+)
+
+#: Necklines that sit high enough to cover a collarbone tattoo.
+_HIGH_NECK_RE = re.compile(
+    r"\b(?:turtleneck|roll-neck|high-neck|high neck|mock neck|crewneck|"
+    r"high collar|standing collar|halter)s?\b",
+    re.IGNORECASE,
+)
+
+#: Legwear opaque enough to hide a thigh or calf tattoo underneath it.
+_OPAQUE_LEGWEAR_RE = re.compile(r"\b(?:opaque|patterned|ribbed|over-the-knee)\b",
+                                re.IGNORECASE)
+
+#: Footwear that already covers the calf, so knee-high / over-the-knee legwear
+#: would be layered invisibly underneath it.
+_TALL_BOOT_RE = re.compile(r"\b(?:knee-high|thigh-high|over-the-knee)\b", re.IGNORECASE)
+
+
+def _wearable_legwear(pool: list[str], resolved: dict[str, str]) -> list[str]:
+    """Drop legwear the outfit would hide, or the footwear would swallow.
+
+    Two independent gates:
+
+    * **The outfit has to show leg at all.** Trousers, jeans and chinos hide tights
+      completely, and naming a hidden garment in a t2i prompt does not add detail --
+      it adds a contradiction the model has to resolve, usually by inventing a
+      visible pair. When the leg is covered the whole pool goes, not part of it, so
+      no share is concentrated on survivors (the partial-cull trap that
+      ``FIELD_FAMILIES`` weights make dangerous elsewhere; ``legwear`` has no family
+      entry, but whole-pool suppression is the honest shape regardless).
+    * **Tall boots already cover the calf.** Knee-high socks under knee-high boots
+      is not wrong so much as invisible, so those two values drop when the footwear
+      reaches the knee.
+
+    Returns ``[]`` when nothing is wearable; the caller's ``optional`` branch turns
+    that into ``"None"``.
+    """
+    outfit = resolved.get("outfit_description") or ""
+    if not _BARE_LEG_RE.search(outfit):
+        return []
+    footwear = resolved.get("footwear") or ""
+    if _TALL_BOOT_RE.search(footwear):
+        pool = [v for v in pool if not _TALL_BOOT_RE.search(v) and "knee" not in v.lower()]
+    return pool
+
+
+def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> list[str]:
+    """Drop tattoo placements the character's clothing would cover.
+
+    A tattoo the viewer cannot see is worse than no tattoo: the phrase still steers
+    the image, so "a floral tattoo down one thigh" on a character in jeans pushes the
+    model toward showing a thigh. This is the concrete failure the field was gated
+    for from the start, rather than a refinement bolted on afterwards.
+
+    Cascades off ``tattoos`` first -- a placement with nothing to place is dropped
+    entirely. ``tattoos`` is drawn earlier (it is appended above ``legwear`` and
+    ``tattoo_placement`` in ``FIELD_DEFINITIONS``), so its value is already settled.
+
+    Neck, behind-ear, upper-arm and shoulder-blade placements are never dropped, so
+    the pool cannot empty while a tattoo exists. Flat field, no family weight, so
+    culling re-picks uniformly among the survivors.
+    """
+    tattoo = resolved.get("tattoos")
+    if not tattoo or _is_absent(tattoo):
+        return []
+    outfit = resolved.get("outfit_description") or ""
+    legwear = resolved.get("legwear") or ""
+    excluded: set[str] = set()
+    if _LONG_SLEEVE_RE.search(outfit):
+        excluded |= {"on one forearm", "across the back of one hand", "on the inner wrist"}
+    # Three ways a leg tattoo ends up invisible: the garment covers the leg, the
+    # garment shows leg but its hem still reaches past the thigh (a maxi skirt --
+    # caught in a sample render), or opaque legwear covers what the hem does not.
+    leg_bare = bool(_BARE_LEG_RE.search(outfit)) and not _LONG_HEM_RE.search(outfit)
+    leg_covered_by_legwear = bool(legwear) and not _is_absent(legwear) and \
+        bool(_OPAQUE_LEGWEAR_RE.search(legwear))
+    if not leg_bare or leg_covered_by_legwear:
+        excluded |= {"down one thigh", "on one calf"}
+    if _HIGH_NECK_RE.search(outfit):
+        excluded.add("across the collarbone")
+    if not excluded:
+        return pool
+    return [p for p in pool if p not in excluded]
+
+
+def _resolve_deferred_fields(
+    resolved: dict[str, str], gender: str, accessory_density: str, rng: random.Random
+) -> None:
+    """Draw :data:`_DEFERRED_FIELDS` now that ``outfit_description`` is final.
+
+    Mirrors the main loop's tail exactly -- same pool build, same
+    :func:`_maybe_absent` density roll, same ``optional`` fallback -- so these two
+    fields behave like every other field except for *when* they are drawn.
+
+    Called after the outfit clause is composed, so it runs at the very end of the
+    draw order. Nothing is drawn after it, which is why adding these fields cannot
+    shift any pre-existing field's random values: an identical seed produces an
+    identical character, plus or minus the new clauses.
+    """
+    for field_name in FIELD_DEFINITIONS:
+        if field_name not in _DEFERRED_FIELDS or field_name in resolved:
+            continue
+        field_def = FIELD_DEFINITIONS[field_name]
+        pool = _build_option_pool(field_name, field_def, gender, resolved)
+        if field_name == "legwear":
+            pool = _wearable_legwear(pool, resolved)
+        elif field_name == "tattoo_placement":
+            pool = _visible_tattoo_placements(pool, resolved)
+        forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
+        if forced_absent is not None:
+            resolved[field_name] = forced_absent
+        elif pool:
+            resolved[field_name] = _weighted_choice(field_def, pool, gender, rng)
+        elif field_def["optional"]:
+            resolved[field_name] = "None"
+
+
 def _scale_class(widget_tier: str, character_tier: str | None) -> str:
     """Resolve the active scale class: ``"giant"``, ``"tiny"`` or ``""`` (none).
 
@@ -1165,6 +1377,8 @@ def _randomize_fields(
     for field_name, field_def in FIELD_DEFINITIONS.items():
         if field_name in _HIDDEN_FIELDS or field_name in _CONTROL_FIELDS:
             continue
+        if field_name in _DEFERRED_FIELDS:
+            continue  # needs the finished outfit; drawn by _resolve_deferred_fields
         if field_name in resolved:  # locked
             continue
 
@@ -1173,6 +1387,10 @@ def _randomize_fields(
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
         elif field_name == "pose":
             pool = _performable_poses(pool, resolved, covers_face, covers_body, covers_hair)
+        elif field_name == "legwear":
+            pool = _wearable_legwear(pool, resolved)
+        elif field_name == "tattoo_placement":
+            pool = _visible_tattoo_placements(pool, resolved)
         if scale_class:
             pool = _scale_coherent_pool(field_name, pool, scale_class)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
@@ -1519,6 +1737,16 @@ def _compose_outfit_clause(
         # A mapped-but-EMPTY tail ("solid") is deliberate silence and the field stays:
         # "solid" is true of the garment, it just does not need saying.
 
+    # --- legwear ------------------------------------------------------------------
+    # Sits between the garment and the shoes because that is the order it is worn in,
+    # and reads as "a pleated skirt ..., with opaque black tights, in ankle boots".
+    # No guard is passed: _wearable_legwear has already forced the absent token for
+    # any outfit that covers the leg, so by the time the clause is built there is
+    # nothing left to suppress -- and a lock still wins, exactly as it does above.
+    hose = _wanted("legwear", False)
+    if hose:
+        phrase += f", with {hose}"
+
     # --- footwear -----------------------------------------------------------------
     shoes = _wanted("footwear", bool(SHOE_RE.search(phrase)))
     if shoes:
@@ -1591,9 +1819,13 @@ def _format_prose(
     # --- Demographics + body core --------------------------------------
     lead_bits = [b for b in (f"{g('age')}-year-old" if g("age") else "", g("ethnicity")) if b]
     lead_tail = _words(*lead_bits, subject_noun)
-    # Creature subjects pick their article ("An anthropomorphic …"); the human
-    # default keeps the original literal "A " to avoid disturbing existing output.
-    lead = f"{_a(lead_tail).capitalize()} {lead_tail}" if species_lead else "A " + lead_tail
+    # Both branches now pick the article from the text. The human branch used to
+    # hardcode "A " to avoid disturbing existing output, which shipped "A Armenian
+    # woman" (18 of 92 ethnicities start with a vowel, and they lead whenever age is
+    # omitted) and "a 18-year-old". Prose-only: no RNG draw moves, so no seed drift,
+    # and entry_hash covers the entry dict rather than the prose, so no gallery
+    # image is invalidated by this.
+    lead = f"{_a(lead_tail).capitalize()} {lead_tail}"
     core = []
     if g("body_type"):
         core.append(_an(g("body_type"), "build"))
@@ -1725,6 +1957,19 @@ def _format_prose(
         skin.append(f"{g('freckles_density')} freckles")
     if skin:
         sentences.append(f"{poss} skin shows " + _join(skin))
+
+    # --- Tattoos --------------------------------------------------------
+    # Its OWN sentence, deliberately, rather than another item on the end of the
+    # clothing list. A marking appended to a long garment list is the failure that
+    # made Judy Alvarez's face tattoo and the Kabuki Actor's kumadori fail to
+    # render -- by the time the model reaches it, sixty tokens of clothing have
+    # already claimed the pixels. It also has to stand apart from the skin sentence
+    # above because that sentence is Face-group and disappears behind a mask, while
+    # body ink does not.
+    if g("tattoos"):
+        placement = g("tattoo_placement")
+        sentences.append(f"{subj} {has} {g('tattoos')}"
+                         + (f" {placement}" if placement else ""))
 
     # --- Hair -----------------------------------------------------------
     # "bald" is a head state, not a hair description — voice it as its own
@@ -2223,6 +2468,12 @@ def generate_character(
         # footwear compose onto it instead of being drawn and thrown away. Mutates
         # `resolved`, popping any axis a guard suppressed, so the JSON matches the prose.
         garment = _resolve_outfit_description(resolved, gender, wardrobe, rng)
+        # Three-step, and the order is forced. `legwear` gates on the garment, and
+        # the composed clause then VOICES legwear -- so it has to be drawn between
+        # picking the garment and composing around it. Parking the raw garment in
+        # `resolved` first is what lets the deferred draw see it.
+        resolved["outfit_description"] = garment or ""
+        _resolve_deferred_fields(resolved, gender, accessory_density, rng)
         resolved["outfit_description"] = (
             _compose_outfit_clause(garment, resolved, set(locked_clean))
             if garment else garment
@@ -2230,6 +2481,11 @@ def generate_character(
     else:
         for field in ("outfit_style", "footwear", "clothing_color", "clothing_pattern"):
             resolved.pop(field, None)
+        # A preset costume is already a finished outfit string, so the deferred
+        # fields can gate on it directly. legwear is suppressed for costumes further
+        # down (_COSTUME_SUPPRESSED_EXTRAS); tattoo_placement still resolves, because
+        # ink under a costume is coherent.
+        _resolve_deferred_fields(resolved, gender, accessory_density, rng)
 
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or
     # ring would render on top of the glove (the reported bug). Force the finger

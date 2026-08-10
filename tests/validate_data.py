@@ -431,6 +431,34 @@ def validate() -> list[str]:
                         f"costumes overlap {overlap:.0%}. Refine the existing entry "
                         f"instead of adding a second.")
 
+    # --- cosplayers: a parenthetical must not name a narrower franchise ---
+    # A key's trailing "(...)" disambiguator may ABBREVIATE the entry's franchise
+    # ("Mai (Avatar)" under "Avatar: The Last Airbender") or name a character,
+    # alter ego, team or medium ("Blue Beetle (Ted Kord)", "Duke Nukem (video
+    # game)"). It may never be a LONGER string that begins with the franchise:
+    # that names an installment the pack has deliberately consolidated, so the
+    # dropdown would contradict docs/reference/cosplayers.md. "Joker (Persona 5)"
+    # under the franchise "Persona" was the one shipped violation, fixed at
+    # 0.90.0 by renaming the key to "Joker (Persona)".
+    #
+    # Word-bounded on purpose, matching _name_already_carries_franchise: a bare
+    # startswith would fire on "Persona" vs a hypothetical "Personal ...".
+    for name, entry in COSPLAYERS.items():
+        franchise = entry.get("franchise", "")
+        match = re.match(r"^.*?\s*\(([^()]+)\)\s*$", name)
+        if not franchise or not match:
+            continue
+        paren = match.group(1)
+        if paren == franchise:
+            continue
+        if paren.casefold().startswith(franchise.casefold()) and \
+                paren[len(franchise):len(franchise) + 1] in ("", " ", ":", "-"):
+            errors.append(
+                f"cosplayer '{name}': the parenthetical '{paren}' names something "
+                f"narrower than its franchise '{franchise}'. Installments are not "
+                f"separate franchises here -- use '({franchise})' so the key agrees "
+                f"with docs/reference/cosplayers.md.")
+
     # --- cosplayers: costume/signature/physique validity -------------
     if len(COSPLAYERS) < 50:
         errors.append(f"COSPLAYERS has {len(COSPLAYERS)}; need >= 50")

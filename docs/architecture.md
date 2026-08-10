@@ -382,6 +382,22 @@ list; the working principles at the top of this file also apply):
 6. **Disambiguate colliding keys.** A name that clashes with an existing dict key needs a
    parenthetical key (`"Christie (Dead or Alive)"`, `"Red (Pokemon)"`); duplicate keys
    silently collapse and `validate_data` flags them.
+   **A parenthetical may never name something narrower than the entry's `franchise`.**
+   It may *abbreviate* the franchise (`"Mai (Avatar)"` under `Avatar: The Last
+   Airbender`), or name a character, alter ego, team, version or medium
+   (`"Blue Beetle (Ted Kord)"`, `"Obi-Wan Kenobi (Force Ghost)"`, `"Duke Nukem (video
+   game)"`). It must not name an *installment* of a franchise this pack has
+   consolidated — the dropdown would then contradict `docs/reference/cosplayers.md`,
+   which is the roster's public face. `"Joker (Persona 5)"` under the franchise
+   `Persona` was the one shipped violation, renamed to `"Joker (Persona)"` at 0.90.0;
+   `validate_data.py` now rejects any parenthetical that extends its franchise.
+   Strict *equality* was considered and rejected: it would force
+   `"Mai (Avatar: The Last Airbender)"` and `"Duke Nukem (Duke Nukem)"`, which reads
+   worse in the dropdown than the problem it solves.
+   Renaming a key is cheap on the data side but **not** free on the gallery side:
+   images are keyed on the entry name, so a rename must also move the file on
+   `gh-pages` and rename the key in `gallery/render_manifest.json`. The `entry_hash`
+   covers the entry *dict*, not the key, so no re-render is needed.
 7. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
    `python scripts/generate_reference_docs.py`, and commit the refreshed reference index.
 
@@ -804,6 +820,87 @@ ComfyUI is off turns CI red until it is re-rendered. That is the enforcement, no
 
 **Order of operations, once:** `--seed-manifest` must be run and committed **before** new
 content lands, or seeding silently blesses unrendered entries as `"pre-existing"`.
+
+### Adding a field without breaking saved workflows (0.90.0)
+
+`tattoos`, `legwear` and `tattoo_placement` are the first genuinely new *widgets* the
+node has grown in a long time, and the mechanism is worth stating once because the
+obvious placement is the wrong one.
+
+**Append at the end of `FIELD_DEFINITIONS`, never next to the field's group-mates.**
+`define_schema` emits one COMBO per entry in that dict's insertion order, and ComfyUI
+stores `widgets_values` **positionally**. A field inserted mid-dict shifts every widget
+after it, so a workflow saved before the change reloads with its values one slot out —
+silently, and on every node. Appending leaves every existing index untouched; an older
+workflow simply has no value for the new trailing widgets and they take their `Random`
+default.
+
+This costs nothing in UI terms, because `js/identity_forge.js` **rebuilds
+`node.widgets` into group order** from `FIELD_TO_GROUP` / `GROUP_ORDER` before the user
+sees anything. Serialization order and visual order are already decoupled; the append
+just uses that fact. So `tattoos` sits in Body and `legwear` in Clothing on screen while
+living at the end of the dict on disk.
+
+Proved against the real thing rather than argued: the running pre-0.90.0 instance
+reports 74 widgets, the new schema 77, and the first 74 names match index for index.
+
+**Do not add a migration notice.** There is nothing to migrate — that is the whole
+point of appending — and a banner that fires on every load of an older workflow is an
+irritant, not a service. (The recreate-reconnect warning in `js/` is a different thing:
+it reports a real, actionable loss.)
+
+**Second constraint, same answer.** A field's pool filter can only read fields drawn
+*before* it. All three gate on `outfit_description`, so they must be drawn after it —
+which appending also guarantees. But `outfit_description` is composed **after
+`_randomize_fields` returns** for a randomly generated character, so "later in the dict"
+is not late enough: gating inside the loop reads an empty string. Hence
+`_DEFERRED_FIELDS`, drawn in `_resolve_deferred_fields` once the outfit exists.
+
+Deferring bought a third property for free: because every new draw now happens after
+every pre-existing one, **no existing seed changes**. Verified by diffing 600 generated
+characters against the previous commit — every difference is an added clause, none is a
+different person.
+
+Note in passing: `_performable_poses` reads `outfit_description` from inside the loop
+too, so for a *randomly generated* outfit its garment check is inert; it only ever sees
+a preset costume. Pre-existing, not fixed here, and flagged on `_DEFERRED_FIELDS`.
+
+### Gating a field on what the clothes actually show (0.90.0)
+
+A tattoo the viewer cannot see is worse than no tattoo, because the phrase still steers
+the image: "a floral tattoo down one thigh" on a character in jeans pushes the model
+toward showing a thigh. `legwear` has the same problem in reverse — tights named under
+trousers are a contradiction the model resolves by inventing a visible pair.
+
+There is no structured garment model and building one for two fields would cost far more
+than it returns, so both gate on **regexes over the resolved outfit text**, the technique
+`_POCKETLESS_GARMENT_RE` already uses for poses: `_BARE_LEG_RE`, `_LONG_SLEEVE_RE`,
+`_LONG_HEM_RE`, `_HIGH_NECK_RE`, `_OPAQUE_LEGWEAR_RE`, `_TALL_BOOT_RE`.
+
+Two rules that keep this honest:
+
+- **Conservative in the safe direction.** For legwear, anything not matched as
+  leg-baring is treated as covering, so a miss costs a missing option rather than a
+  contradiction. For sleeves the polarity inverts — a match *removes* options — so
+  ambiguous words (`shirt`, `top`) are deliberately excluded; they are as often
+  short-sleeved.
+- **A cull must never empty the pool.** Four placements (neck, behind-ear, upper-arm,
+  shoulder-blade) are unreachable by every rule, pinned by a test, so a character in a
+  turtleneck, blazer and trousers still has somewhere to put a tattoo.
+
+`legwear` is *whole-pool* suppressed when the leg is covered, not partially culled —
+the shape that cannot concentrate a frozen family weight. Neither field carries a
+`FIELD_FAMILIES` entry, so `tattoo_placement`'s partial cull re-picks uniformly among
+survivors, which is the documented "a flat field is where a partial cull is FINE" case.
+
+Rarity runs through `_EXTRA_ABSENCE` (`tattoos` at 0.85), **not** a `weights` map. That
+was a deliberate change of approach: routing it through the absence table makes the
+existing `accessory_density` control govern tattoos for free — "None" strips them,
+"Maximal" makes them common — which a weights map could not do.
+
+Finally, the tattoo gets **its own sentence**, not another item on the clothing list.
+A marking appended to a long garment list is exactly what made Judy Alvarez's face
+tattoo and the Kabuki Actor's kumadori fail to render.
 
 ## Considered and deferred
 
@@ -1786,6 +1883,12 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   appearing as a whole word in the base name. Both tests are **word-bounded** — a bare
   substring check fires on any name containing a short franchise string, and a bare prefix
   check lets a one-letter parenthetical swallow a long franchise.
+- **…and the seventh key was a data bug, not just a label bug (0.90.0).** Suppressing the
+  stutter made `Joker (Persona 5)` *render* correctly while leaving the dropdown claiming an
+  installment the pack does not group by. Renamed to `Joker (Persona)`, and the shape is now
+  rejected by `validate_data.py` rather than merely papered over at the label layer — see
+  curation checklist rule 6. Six of the seven keys were legitimate all along; only this one
+  needed the data to change.
 
   **It is deliberately scoped to keys that carry a `(...)` disambiguator**, which is what the
   0.77.0 rule is about. It does *not* touch an eponymous key whose franchise repeats it —

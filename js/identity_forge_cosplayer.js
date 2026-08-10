@@ -197,7 +197,8 @@ const COSPLAYER_FRANCHISES = {
     "Honey Lemon"
   ],
   "BioShock": [
-    "Big Daddy"
+    "Big Daddy",
+    "Splicer"
   ],
   "Black Butler": [
     "Ciel Phantomhive",
@@ -750,6 +751,9 @@ const COSPLAYER_FRANCHISES = {
     "Thumbelina"
   ],
   "Fallout": [
+    "Brotherhood of Steel Knight",
+    "Nick Valentine",
+    "The Ghoul",
     "Vault Dweller"
   ],
   "Family Guy": [
@@ -877,7 +881,12 @@ const COSPLAYER_FRANCHISES = {
     "Storm Shadow"
   ],
   "Game of Thrones": [
-    "Daenerys Targaryen"
+    "Brienne of Tarth",
+    "Cersei Lannister",
+    "Daenerys Targaryen",
+    "Jon Snow",
+    "Melisandre",
+    "The Night King"
   ],
   "Geico": [
     "Geico Gecko"
@@ -1460,6 +1469,7 @@ const COSPLAYER_FRANCHISES = {
     "Solid Snake"
   ],
   "Metroid": [
+    "Samus Aran (Power Suit)",
     "Zero Suit Samus"
   ],
   "Michelin": [
@@ -1693,7 +1703,7 @@ const COSPLAYER_FRANCHISES = {
     "Ann Takamaki",
     "Futaba Sakura",
     "Haru Okumura",
-    "Joker (Persona 5)",
+    "Joker (Persona)",
     "Makoto Niijima",
     "Mitsuru Kirijo",
     "Naoto Shirogane",
@@ -1884,6 +1894,7 @@ const COSPLAYER_FRANCHISES = {
     "Shrek"
   ],
   "Silent Hill": [
+    "Nurse (Silent Hill)",
     "Pyramid Head"
   ],
   "Sin City": [
@@ -2113,6 +2124,9 @@ const COSPLAYER_FRANCHISES = {
     "Peridot",
     "Steven Universe",
     "Topaz"
+  ],
+  "Stranger Things": [
+    "Eleven"
   ],
   "Strawberry Shortcake": [
     "Strawberry Shortcake"
@@ -2599,6 +2613,8 @@ const COSPLAYER_FRANCHISES = {
     "Yusuke Urameshi"
   ],
   "Yu-Gi-Oh!": [
+    "Dark Magician",
+    "Dark Magician Girl",
     "Yami Yugi"
   ],
   "Zootopia": [

@@ -171,8 +171,12 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style",
      # 0.83.0: `micro bangs` joined the family, so it MUST join this list -- the rule is
-     # only safe while it drops the bangs family whole.
-     "excludes_values": ["curtain bangs", "blunt bangs", "micro bangs"],
+     # only safe while it drops the bangs family whole. 0.90.0: `side-swept bangs` and
+     # `wispy bangs` joined for exactly the same reason, and the test caught their
+     # absence immediately (3 of 5 culled instead of 5 of 5). This list must stay
+     # EXACTLY the `bangs` family in fields.py.
+     "excludes_values": ["curtain bangs", "blunt bangs", "micro bangs",
+                         "side-swept bangs", "wispy bangs"],
      "reason": "a buzz cut has no fringe to cut into bangs"},
     # 0.78.0: the other half of the buzz-cut fix, unblocked by splitting the
     # ``loose`` family in fields.py. These five need length to hold a style and a

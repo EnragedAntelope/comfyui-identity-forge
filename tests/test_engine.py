@@ -32,6 +32,14 @@ from nodes.identity_forge import (
     resolve_locked_fields,
     _pick_family_weighted,
     _performable_poses,
+    _BARE_LEG_RE,
+    _LONG_SLEEVE_RE,
+    _HIGH_NECK_RE,
+    _OPAQUE_LEGWEAR_RE,
+    _TALL_BOOT_RE,
+    _DEFERRED_FIELDS,
+    _visible_tattoo_placements,
+    _wearable_legwear,
     _SELFIE_SHOT_TYPE,
     _randomize_fields,
     _is_absent,
@@ -5982,6 +5990,9 @@ class FranchiseLabelTests(unittest.TestCase):
         "Ms. Marvel (Kamala Khan) (Marvel)", "Ms. Marvel (Sharon Ventura) (Marvel)",
         "Duke Nukem (video game) (Duke Nukem)" -- all long-shipped -- and
         "Joker (Persona 5) (Persona)", created by merging the Persona installments.
+        That last key was renamed to "Joker (Persona)" at 0.90.0, so the roster no
+        longer contains the shape at all -- but the guard stays, because this test
+        walks whatever COSPLAYERS happens to hold.
         """
         offenders = []
         for name, entry in COSPLAYERS.items():
@@ -6006,8 +6017,12 @@ class FranchiseLabelTests(unittest.TestCase):
         """
         self.assertFalse(_name_already_carries_franchise("Shrek", "Shrek"))
         self.assertFalse(_name_already_carries_franchise("Sterling Archer", "Archer"))
-        # ...while the disambiguated forms are all suppressed.
-        for name, franchise in (("Joker (Persona 5)", "Persona"),
+        # ...while the disambiguated forms are all suppressed. "Joker (Persona 5)"
+        # is kept as a SHAPE case only -- no roster key looks like that since
+        # 0.90.0, and validate_data.py now rejects one, but the helper must still
+        # collapse it if it ever sees it.
+        for name, franchise in (("Joker (Persona)", "Persona"),
+                                ("Joker (Persona 5)", "Persona"),
                                 ("Mai (Avatar)", "Avatar: The Last Airbender"),
                                 ("Ms. Marvel (Kamala Khan)", "Marvel"),
                                 ("Duke Nukem (video game)", "Duke Nukem"),
@@ -6018,6 +6033,210 @@ class FranchiseLabelTests(unittest.TestCase):
                                 ("Terra (Teen Titans)", "DC"),
                                 ("Homura Akemi (Devil)", "Madoka Magica")):
             self.assertFalse(_name_already_carries_franchise(name, franchise), name)
+
+
+class ConceptShareTests(unittest.TestCase):
+    """Growing a flat field must not make its CONCEPTS commoner (0.90.0).
+
+    ``FIELD_FAMILIES`` protects a *field's* distribution, but neither of these two
+    fields has a families entry, so nothing structural stops a content addition from
+    quietly shifting the odds of a whole idea -- the trap already documented for the
+    landmark locations, where every family share held and "famous landmark" still
+    went from ~11% to ~27% of urban scenes.
+
+    Asserted analytically rather than by sampling: a Monte Carlo run cannot tell
+    0.25 from 0.26 without an impractical number of draws, and these are exact.
+    """
+
+    def _share(self, field: str, predicate) -> float:
+        definition = FIELD_DEFINITIONS[field]
+        pool = definition["female_options"]
+        weights = definition.get("weights", {})
+        total = sum(weights.get(value, 1) for value in pool)
+        return sum(weights.get(value, 1) for value in pool if predicate(value)) / total
+
+    def test_eyewear_keeps_its_pre_0_90_share(self):
+        """Three eyeglass frames were added; P(wearing glasses) must not move.
+
+        Pre-0.90.0 the pool held 6 eyewear values out of 24. A bare append would
+        have made it 9 of 27 -- a third of all accessories instead of a quarter.
+        """
+        self.assertAlmostEqual(
+            self._share("accessories", lambda v: "glass" in v), 6 / 24, places=9,
+            msg="the eyewear concept drifted; reprice the weights map",
+        )
+
+    def test_plain_clothing_keeps_its_pre_0_90_share(self):
+        """Six patterns were added; the odds of PLAIN clothing must not fall.
+
+        2 of 10 before, and a bare append would have made it 2 of 16 -- dressing
+        everyone in busier clothes without a single family share moving.
+        """
+        self.assertAlmostEqual(
+            self._share("clothing_pattern",
+                        lambda v: v in ("solid", "subtle texture")), 2 / 10, places=9,
+            msg="the plain-clothing concept drifted; reprice the weights map",
+        )
+
+    def test_every_clothing_pattern_has_a_prose_tail(self):
+        """A pattern with no PATTERN_TAILS entry is dropped silently at compose time.
+
+        validate_data.py enforces this too; pinned here because all six new patterns
+        were initially missing and the coupling is not obvious from either file.
+        """
+        missing = sorted(set(FIELD_DEFINITIONS["clothing_pattern"]["female_options"])
+                         - set(PATTERN_TAILS))
+        self.assertEqual(missing, [], f"patterns with no prose tail: {missing}")
+
+
+class TattooAndLegwearTests(unittest.TestCase):
+    """The two fields added at 0.90.0, and the invariants that make them safe.
+
+    Both are gated on the finished ``outfit_description``, which for a randomly
+    generated character does not exist until *after* the main randomization loop --
+    the ordering mistake that made legwear appear 0 times in 2,000 draws and printed
+    forearm tattoos under blazers. These tests pin the fix, not the symptom.
+    """
+
+    #: Placements that must survive every outfit, so the pool can never empty while
+    #: a tattoo exists. Anything here is unreachable by all three cull rules.
+    _ALWAYS_AVAILABLE = {
+        "on the side of the neck", "behind one ear",
+        "on one upper arm", "across one shoulder blade",
+    }
+
+    def _flat(self, payload: str) -> dict:
+        out: dict = {}
+        for value in json.loads(payload).values():
+            if isinstance(value, dict):
+                out.update(value)
+        return out
+
+    def test_the_new_fields_are_drawn_last_so_no_seed_drifts(self):
+        """Every new draw happens after every pre-existing one.
+
+        This is what lets 0.90.0 add two fields without changing the person any
+        existing seed produces. If a future field is inserted into
+        FIELD_DEFINITIONS *before* these, or one of these is un-deferred, the extra
+        RNG call shifts the outfit draw and every seed silently yields someone else.
+        """
+        names = list(FIELD_DEFINITIONS)
+        for field in _DEFERRED_FIELDS:
+            self.assertIn(field, names)
+        deferred_positions = [names.index(f) for f in _DEFERRED_FIELDS]
+        other_positions = [i for i, n in enumerate(names) if n not in _DEFERRED_FIELDS]
+        self.assertGreater(
+            min(deferred_positions), max(other_positions),
+            "the deferred fields must sit at the very end of FIELD_DEFINITIONS; "
+            "anything drawn after them would have its seed shifted",
+        )
+
+    def test_a_tattoo_is_never_placed_where_the_clothes_cover_it(self):
+        """The whole point of the placement gate, over a real sample."""
+        offenders = []
+        for seed in range(600):
+            for gender in ("Female", "Male"):
+                resolved = self._flat(generate_character(seed, gender, {})[1])
+                placement = resolved.get("tattoo_placement")
+                outfit = resolved.get("outfit_description") or ""
+                legwear = resolved.get("legwear") or ""
+                tattoo = resolved.get("tattoos")
+                if not placement or placement == "None":
+                    continue
+                if not tattoo or _is_absent(tattoo):
+                    offenders.append((seed, gender, "placement with no tattoo"))
+                    continue
+                if placement in ("on one forearm", "across the back of one hand",
+                                 "on the inner wrist") and _LONG_SLEEVE_RE.search(outfit):
+                    offenders.append((seed, gender, f"{placement} under {outfit[:40]}"))
+                if placement in ("down one thigh", "on one calf"):
+                    if not _BARE_LEG_RE.search(outfit):
+                        offenders.append((seed, gender, f"{placement} under {outfit[:40]}"))
+                    if legwear and _OPAQUE_LEGWEAR_RE.search(legwear):
+                        offenders.append((seed, gender, f"{placement} under {legwear}"))
+                if placement == "across the collarbone" and _HIGH_NECK_RE.search(outfit):
+                    offenders.append((seed, gender, f"collarbone under {outfit[:40]}"))
+        self.assertEqual(offenders, [], f"covered tattoos: {offenders[:5]}")
+
+    def test_legwear_only_appears_when_the_outfit_shows_leg(self):
+        offenders = []
+        for seed in range(600):
+            for gender in ("Female", "Male"):
+                resolved = self._flat(generate_character(seed, gender, {})[1])
+                legwear = resolved.get("legwear")
+                if not legwear or legwear == "None" or _is_absent(legwear):
+                    continue
+                outfit = resolved.get("outfit_description") or ""
+                if not _BARE_LEG_RE.search(outfit):
+                    offenders.append((seed, gender, legwear, outfit[:45]))
+                if gender == "Male":
+                    offenders.append((seed, "male pool leaked", legwear))
+                if "knee" in legwear and _TALL_BOOT_RE.search(resolved.get("footwear") or ""):
+                    offenders.append((seed, gender, legwear, resolved.get("footwear")))
+        self.assertEqual(offenders, [], f"legwear contradictions: {offenders[:5]}")
+
+    def test_the_placement_pool_can_never_empty_while_a_tattoo_exists(self):
+        """Four placements are unreachable by every cull, by construction.
+
+        Without this the gates could combine -- long sleeves plus trousers plus a
+        turtleneck -- to cull the pool to nothing, and a tattoo would be described
+        with no location at all.
+        """
+        worst_case = {
+            "tattoos": "a dense blackwork tattoo",
+            # long sleeves + covered legs + high neck, i.e. every cull firing at once
+            "outfit_description": "a wool turtleneck sweater under a tailored blazer "
+                                  "with pressed trousers",
+            "legwear": "opaque black tights",
+        }
+        pool = list(FIELD_DEFINITIONS["tattoo_placement"]["female_options"])
+        survivors = _visible_tattoo_placements(pool, worst_case)
+        self.assertTrue(survivors, "every placement was culled at once")
+        self.assertEqual(set(survivors), self._ALWAYS_AVAILABLE)
+
+    def test_no_tattoo_means_no_placement(self):
+        pool = list(FIELD_DEFINITIONS["tattoo_placement"]["female_options"])
+        for absent in ("no tattoos", "None", ""):
+            self.assertEqual(
+                _visible_tattoo_placements(pool, {"tattoos": absent}), [],
+                f"placement survived an absent tattoo ({absent!r})",
+            )
+
+    def test_legwear_is_suppressed_entirely_by_a_covering_outfit(self):
+        """Whole-pool suppression, not a partial cull.
+
+        A partial cull of a family-weighted field concentrates the family's frozen
+        weight on the survivors. ``legwear`` carries no family entry, but taking the
+        whole pool is still the honest shape and is pinned here so a later change
+        cannot quietly turn it into a partial one.
+        """
+        pool = list(FIELD_DEFINITIONS["legwear"]["female_options"])
+        self.assertEqual(
+            _wearable_legwear(pool, {"outfit_description": "straight-leg jeans "
+                                                           "with a jersey tee"}), [])
+        kept = _wearable_legwear(pool, {"outfit_description": "a pleated tennis skirt",
+                                        "footwear": "sneakers"})
+        self.assertEqual(kept, pool)
+
+    def test_tattoos_stay_uncommon(self):
+        """Rarity is the maintainer's explicit requirement, so it is asserted.
+
+        Routed through _EXTRA_ABSENCE rather than a `weights` map so the
+        accessory_density control governs it; this pins the resulting rate.
+        """
+        self.assertIn("tattoos", _EXTRA_ABSENCE)
+        inked = 0
+        total = 0
+        for seed in range(800):
+            for gender in ("Female", "Male"):
+                resolved = self._flat(generate_character(seed, gender, {})[1])
+                tattoo = resolved.get("tattoos")
+                total += 1
+                if tattoo and not _is_absent(tattoo):
+                    inked += 1
+        rate = inked / total
+        self.assertLess(rate, 0.25, f"tattoos are too common at {rate:.1%}")
+        self.assertGreater(rate, 0.04, f"tattoos are effectively unreachable at {rate:.1%}")
 
 
 if __name__ == "__main__":
