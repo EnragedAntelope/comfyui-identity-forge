@@ -8857,7 +8857,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Video game mascots / icons --------------------------------------
     "Sonic the Hedgehog": {
-        "franchise": "Sega",
+        "franchise": "Sonic the Hedgehog",
         "gender": "Male",
         "covers_body": True,
         "covers_face": True,
@@ -8946,11 +8946,13 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Pac-Man": {
-        "franchise": "Namco",
+        "franchise": "Pac-Man",
         "gender": "Male",
+        "covers_body": True,
         "covers_face": True,
         "costume": "a round bright-yellow disc-shaped body",
-        "mask": "a yellow circular face with a wide open wedge mouth and a single dot eye",
+        "mask": "a yellow circular head with a wide wedge-shaped open mouth and two "
+                "small round eyes",
         "physique": {"body_type": "plump", "height": "average height"},
     },
     "Big Daddy": {
@@ -19909,7 +19911,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Horizon", "Hitman", "Hellblade", "Doom", "Portal", "Silent Hill", "Darkstalkers",
         "The King of Fighters", "Bayonetta", "Divinity: Original Sin", "World of Warcraft",
         "StarCraft", "Borderlands", "Dragon Age", "Kid Icarus", "ARMS", "System Shock",
-        "Sega", "Namco", "BioShock", "The Last of Us", "Crash Bandicoot", "LittleBigPlanet",
+        "Sonic the Hedgehog", "Pac-Man", "BioShock", "The Last of Us", "Crash Bandicoot",
+        "LittleBigPlanet",
         "Pikmin", "Dead or Alive", "Lollipop Chainsaw", "Duke Nukem",
         "Fire Emblem", "NieR", "BloodRayne", "Mirror's Edge", "Cyberpunk: Edgerunners",
         "Bloodborne", "Celeste", "Half-Life", "Remember Me", "Dragon's Lair",
