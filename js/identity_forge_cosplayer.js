@@ -2710,6 +2710,56 @@ function setupCosplayer(node) {
   }
 }
 
+/**
+ * Widgets added in a release after the workflow being loaded was saved, newest first.
+ *
+ * `franchise_filter` was added at 0.89.0 with `serialize: false`, on the reasoning
+ * that a non-serializing widget cannot disturb `widgets_values`. **That is true when
+ * writing and false when reading.** Measured on a live instance: this node has 8
+ * widgets, two of them non-serializing, and `serialize()` still emits **8** values --
+ * one per entry in `node.widgets`. `configure()` reads them back the same way.
+ *
+ * So a workflow saved before 0.89.0 carries 7 values, the node now has 8 widgets, and
+ * the filter sits at index 1 -- every widget after `character` was restored one slot
+ * out. Reported by the maintainer, who had to recreate each Cosplayer node by hand.
+ *
+ * Same table and same repair as `FIELDS_ADDED_BY_RELEASE` in identity_forge.js; the
+ * two nodes hit the identical trap from opposite directions (a JS-inserted view widget
+ * here, a Python-appended input there).
+ */
+const WIDGETS_ADDED_BY_RELEASE = [
+  [FILTER_WIDGET], // 0.89.0
+];
+
+/**
+ * Pad a legacy `widgets_values` so each value lands on the widget that saved it.
+ *
+ * Length is the only signal the array carries, so the match must be exact: an
+ * unrecognised length is left untouched rather than guessed at, because a wrong guess
+ * scrambles a workflow silently instead of failing loudly. Silent on success -- the
+ * values end up correct, so there is nothing for the user to act on.
+ */
+function padLegacyCosplayerValues(node, values) {
+  const total = (node.widgets || []).length;
+  if (!Array.isArray(values) || values.length >= total) return values;
+  const padded = values.slice();
+  for (const added of WIDGETS_ADDED_BY_RELEASE) {
+    if (padded.length + added.length > total) continue;
+    const slots = added
+      .map((name) => (node.widgets || []).findIndex((w) => w.name === name))
+      .filter((i) => i > -1)
+      .sort((a, b) => a - b);
+    if (slots.length !== added.length) continue;
+    // Ascending: each splice shifts what follows, so low-to-high keeps later
+    // indices correct as we go.
+    for (const slot of slots) {
+      padded.splice(slot, 0, node.widgets[slot]?.value ?? ANY);
+    }
+    if (padded.length === total) break;
+  }
+  return padded.length === total ? padded : values;
+}
+
 app.registerExtension({
   name: "identity_forge.cosplayer.ui",
   async beforeRegisterNodeDef(nodeType, nodeData) {
@@ -2723,6 +2773,24 @@ app.registerExtension({
         console.error("[IdentityForgeCosplayer] franchise filter setup failed", err);
       }
       return result;
+    };
+
+    // `configure`, not `onConfigure`: LiteGraph applies widgets_values and only then
+    // calls onConfigure, so by then the values are already in the wrong widgets.
+    // onNodeCreated has run by now, so the filter exists and can be located by name.
+    const configure = nodeType.prototype.configure;
+    nodeType.prototype.configure = function (info) {
+      try {
+        if (info && Array.isArray(info.widgets_values)) {
+          info = {
+            ...info,
+            widgets_values: padLegacyCosplayerValues(this, info.widgets_values),
+          };
+        }
+      } catch (err) {
+        console.error("[IdentityForgeCosplayer] legacy widget mapping failed", err);
+      }
+      return configure ? configure.apply(this, [info]) : undefined;
     };
   },
 });
