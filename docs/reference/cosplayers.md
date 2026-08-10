@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1738 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1766 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (329)
+## Anime & Manga (338)
 
 ### Akame ga Kill
 
@@ -37,6 +37,11 @@
 - **Casca** (F, +1 alt)
 - **Griffith** (M)
 - **Guts** (M, prop)
+
+### Black Butler
+
+- **Ciel Phantomhive** (M)
+- **Sebastian Michaelis** (M)
 
 ### Black Lagoon
 
@@ -233,6 +238,12 @@
 
 - **Saeko Busujima** (F, prop)
 
+### Hunter x Hunter
+
+- **Gon Freecss** (M)
+- **Hisoka Morow** (M)
+- **Kurapika** (M)
+
 ### JoJo's Bizarre Adventure
 
 - **Dio Brando** (M)
@@ -287,6 +298,10 @@
 ### Michiko & Hatchin
 
 - **Michiko Malandro** (F)
+
+### Mobile Suit Gundam
+
+- **Char Aznable** (M)
 
 ### Monogatari
 
@@ -471,6 +486,10 @@
 - **Sailor Venus** (F)
 - **Tuxedo Mask** (M, prop)
 
+### Solo Leveling
+
+- **Sung Jinwoo** (M)
+
 ### Speed Racer
 
 - **Speed Racer** (M)
@@ -524,6 +543,10 @@
 - **Rize Kamishiro** (F)
 - **Touka Kirishima** (F)
 
+### Trigun
+
+- **Vash the Stampede** (M)
+
 ### Vocaloid
 
 - **Hatsune Miku** (F)
@@ -534,7 +557,11 @@
 
 - **Kaori Miyazono** (F, prop)
 
-## Comics & Cartoons (236)
+### Yu-Gi-Oh!
+
+- **Yami Yugi** (M)
+
+## Comics & Cartoons (238)
 
 ### Adventure Time
 
@@ -676,6 +703,10 @@
 
 - **Caitlin Fairchild** (F)
 
+### Hazbin Hotel
+
+- **Alastor** (M, prop)
+
 ### Hellboy
 
 - **Abe Sapien** (M, masked)
@@ -807,6 +838,10 @@
 - **Morty Smith** (M)
 - **Rick Sanchez** (M, prop)
 - **Summer Smith** (F)
+
+### Samurai Jack
+
+- **Samurai Jack** (M, prop)
 
 ### Sheena, Queen of the Jungle
 
@@ -1157,7 +1192,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (100)
+## Disney (105)
 
 ### 101 Dalmatians
 
@@ -1212,6 +1247,10 @@
 - **Cinderella** (F)
 - **Fairy Godmother** (F, prop)
 - **Lady Tremaine** (F)
+
+### Coco
+
+- **Hector Rivera** (M, masked, prop)
 
 ### Darkwing Duck
 
@@ -1348,6 +1387,12 @@
 - **Prince Eric** (M)
 - **Ursula** (F)
 
+### The Nightmare Before Christmas
+
+- **Jack Skellington** (M, masked)
+- **Oogie Boogie** (M, masked)
+- **Sally** (F)
+
 ### The Princess and the Frog
 
 - **Dr. Facilier** (M)
@@ -1360,6 +1405,10 @@
 - **Jessie (Toy Story)** (F)
 - **Woody** (M)
 
+### Up
+
+- **Carl Fredricksen** (M, prop)
+
 ### Wreck-It Ralph
 
 - **Vanellope von Schweetz** (F)
@@ -1370,7 +1419,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (70)
+## Fantasy & Literature (72)
 
 ### Anne of Green Gables
 
@@ -1391,6 +1440,11 @@
 - **The Cat in the Hat** (M, masked, prop)
 - **The Grinch** (M)
 - **The Lorax** (M)
+
+### Dune
+
+- **Lady Jessica** (F)
+- **Paul Atreides** (M, prop)
 
 ### Fairy Tales
 
@@ -1680,7 +1734,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (179)
+## Movies & TV (185)
 
 ### A Nightmare on Elm Street
 
@@ -1761,6 +1815,12 @@
 
 - **Coraline** (F, +1 alt)
 - **Other Mother** (F)
+
+### Doctor Who
+
+- **The Fourth Doctor** (M)
+- **The Tenth Doctor** (M, prop)
+- **Weeping Angel** (F, masked)
 
 ### Duolingo
 
@@ -1969,6 +2029,12 @@
 
 - **Eris** (F)
 - **Sinbad** (M, prop)
+
+### Squid Game
+
+- **Front Man** (M, masked)
+- **Pink Guard** (M, masked)
+- **Seong Gi-hun** (M)
 
 ### Star Trek
 
@@ -2238,7 +2304,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (358)
+## Video Games (362)
 
 ### ARMS
 
@@ -2247,6 +2313,10 @@
 ### Arcane
 
 - **Silco** (M)
+
+### Assassin's Creed
+
+- **Ezio Auditore** (M)
 
 ### Baldur's Gate 3
 
@@ -2286,11 +2356,19 @@
 
 - **Crash Bandicoot** (M)
 
+### Cyberpunk 2077
+
+- **Johnny Silverhand** (M)
+
 ### Cyberpunk: Edgerunners
 
 - **David Martinez** (M)
 - **Lucy** (F)
 - **Rebecca (Cyberpunk)** (F, prop)
+
+### Dark Souls
+
+- **Solaire of Astora** (M, prop)
 
 ### Darkstalkers
 
@@ -2583,10 +2661,6 @@
 - **Sub-Zero** (M)
 - **Tanya** (F, prop)
 
-### Namco
-
-- **Pac-Man** (M, masked)
-
 ### NieR
 
 - **Kaine** (F, prop)
@@ -2621,6 +2695,14 @@
 - **Widowmaker** (F, prop)
 - **Zarya** (F, giant)
 
+### Pac-Man
+
+- **Pac-Man** (M, masked)
+
+### Persona 5
+
+- **Joker (Persona 5)** (M)
+
 ### Pikmin
 
 - **Captain Olimar** (M, tiny)
@@ -2645,13 +2727,13 @@
 - **Leon S. Kennedy** (M)
 - **Nemesis** (M, giant, masked)
 
-### Sega
-
-- **Sonic the Hedgehog** (M, masked)
-
 ### Silent Hill
 
 - **Pyramid Head** (M, masked, prop)
+
+### Sonic the Hedgehog
+
+- **Sonic the Hedgehog** (M, masked)
 
 ### Soul Calibur
 

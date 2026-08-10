@@ -3121,6 +3121,115 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             },
         },
     },
+
+    # --- 0.87.0: six archetypes opening ground nothing else covers ---------
+    # Chosen so no existing concept cluster grows. The craft cluster (Potter,
+    # Glassblower, Watchmaker, Jeweler, Tailor, Calligrapher, Toymaker,
+    # Carpenter, Stonemason, Welder) and the sports cluster are both already
+    # dense and deliberately get nothing. Costumes live in _COSTUMES.
+    "Kabuki Actor": {
+        # Japanese theatrical, distinct from Geisha (courtesan dress, white face,
+        # no wig-and-kumadori) and Samurai (armor). The kumadori is painted, so
+        # makeup_style is pinned deliberately rather than left to randomize.
+        "ethnicity": "Japanese",
+        # `makeup_style` MUST be "no makeup" here, not a glam value. Pinning
+        # "editorial makeup" cascaded nine explicit western-cosmetic sub-fields
+        # (smoky eyeshadow, cat eye, red lip, blush, contour, highlighter...)
+        # into the prompt ahead of one kumadori phrase, and the render came back
+        # as a smoky eye with no kumadori at all. An authored PAINTED face needs
+        # the cascade suppressed so only the authored paint survives.
+        "makeup_style": "no makeup",
+        "skin_tone": "porcelain",
+        "hair_color": ["jet black", "raven black"],
+        "hair_length": ["long", "very long"],
+        "hair_style": ["updo", "top knot"],
+        "expression": ["intense gaze", "steely"],
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "location": ["empty theater stage with the curtain up", "concert hall backstage"],
+        "lighting": ["stage spotlight from above", "warm candlelight"],
+        "shot_type": ["medium shot from waist up", "medium close-up from chest up"],
+        "mood": "commanding",
+    },
+    "Volcanologist": {
+        # A silvered proximity suit. Nothing else in the roster is aluminized,
+        # and Firefighter's turnout gear is the closest miss.
+        # Sealed headgear: pin no makeup (which cascades every cosmetic
+        # sub-field absent) and keep the hair plain, the same way Astronaut,
+        # Firefighter and Race Car Driver do. One costume variant wears the
+        # hood back so a face can read - the Beekeeper shape.
+        "makeup_style": "no makeup",
+        "hair_length": ["very short", "ear length"],
+        "hair_style": "natural and unstyled",
+        "expression": ["determined", "focused"],
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "location": ["rocky coastal cliff", "red rock desert arch"],
+        "lighting": ["harsh desert sun", "fire and flame warm flicker"],
+        "shot_type": "full body shot",
+        "mood": "intense",
+    },
+    "Hazmat Technician": {
+        # Sealed containment. Surgeon is scrubs and an open face; Plague Doctor
+        # is a beaked leather mask. Neither is a taped, hooded, respirator suit.
+        # Same sealed-headgear handling as Volcanologist above.
+        "makeup_style": "no makeup",
+        "hair_length": ["very short", "ear length"],
+        "hair_style": "natural and unstyled",
+        "expression": ["focused", "calm and composed"],
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "location": ["warehouse interior", "factory floor"],
+        "lighting": ["cool LED overhead lighting", "single neon light from one side"],
+        "shot_type": "full body shot",
+        "mood": "intense",
+    },
+    "Marching Band Drum Major": {
+        # Ceremonial performance uniform: the plumed shako and frogged jacket
+        # are the look, and nothing else in the roster wears either.
+        "expression": ["confident", "determined"],
+        "posture": "upright",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "location": ["outdoor amphitheater", "high school gymnasium"],
+        "lighting": ["harsh overhead midday sun", "high key bright even lighting"],
+        "shot_type": "full body shot",
+        "mood": "triumphant",
+    },
+    "Yeoman Warder": {
+        # Ceremonial state dress. The ruff and Tudor bonnet put it nowhere near
+        # Royal Guard or Palace Guard.
+        "ethnicity": "English",
+        "gender": "Male",
+        "facial_hair": ["full beard", "short beard", "mutton chops"],
+        "hair_color": ["salt and pepper", "silver", "gray-streaked dark hair"],
+        "hair_length": "very short",
+        "expression": ["stern", "confident"],
+        "posture": "upright",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "location": ["castle courtyard", "cobblestone old-town street"],
+        "lighting": ["overcast diffused daylight", "soft morning light"],
+        "shot_type": "full body shot",
+        "mood": "commanding",
+    },
+    "Trawler Deckhand": {
+        # Working maritime, as against Sea Captain (braided coat), Navy Sailor
+        # (dress uniform) and Deep Sea Diver (helmet). Oilskins and waders.
+        "complexion": "ruddy",
+        "expression": ["determined", "at ease"],
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "location": ["working harbor dock", "harbor with moored boats"],
+        "lighting": ["overcast diffused daylight", "blue hour twilight"],
+        "shot_type": ["full body shot", "medium shot from waist up"],
+        "mood": "moody",
+    },
 }
 
 
@@ -3396,6 +3505,19 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Fencer": "a white fencing jacket with a plastron and a metallic lame over-vest, white breeches and long socks, a wire-mesh mask tucked under one arm, and a slender epee in hand",
     "Alpine Skier": "a sleek {color} insulated ski suit with a competitor's bib, reflective goggles pushed up on the forehead, padded gloves, and ski poles in hand",
     "Rapper": "an oversized {color} graphic hoodie under a puffer vest, baggy jeans, box-fresh high-top sneakers, layered gold chains, and a snapback cap",
+    # --- 0.87.0 additions ---
+    "Kabuki Actor": ["a chalk-white painted face with bold red-and-black kumadori lines striping the brow and cheeks, above layered {jewel_tone} silk kabuki robes with vastly oversized square sleeves and a stiff brocade sash",
+     "a stark white-painted face with heavy crimson kumadori lines drawn from the eyes and mouth, above a heavy {color} embroidered kabuki over-robe with trailing hems, padded shoulders, and a wide stiffened obi"],
+    "Volcanologist": ["a silvered aluminized proximity suit with a sealed hood and a gold-tinted visor, thick reflective gauntlets, and heavy heat-resistant boots",
+     "a full aluminized heat suit that mirrors the light, worn with the hood thrown back and the gold visor pushed up, reflective gauntlets, and a webbing harness across the chest"],
+    "Hazmat Technician": ["a white taped-seam containment coverall with a sealed hood, a full-face respirator with a round filter cartridge, doubled blue nitrile gloves taped at the wrists, and rubber overboots",
+     "a {color} hazmat coverall with the hood pushed back and the full-face respirator hanging loose at the chest, an air line coiled over one shoulder, taped glove cuffs, and heavy rubber boots"],
+    "Marching Band Drum Major": ["a {team_color} frogged military-cut band jacket with gold braid and a high collar, white gauntlets, white trousers with a side stripe, and a tall plumed shako, carrying a long ceremonial mace",
+     "a white frogged drum major's jacket with {team_color} facings and heavy gold braid, a sash across the chest, white gauntlets and trousers, and a towering feathered shako"],
+    "Yeoman Warder": ["a scarlet-and-gold Tudor tunic with vertical gold banding and a royal cypher on the chest, a starched white ruff at the neck, red knee breeches with red stockings, buckled black shoes, and a flat black Tudor bonnet",
+     "a dark blue and red undress Tudor tunic with gold trim and a crowned cypher, a white ruff, matching breeches and stockings, and a flat black Tudor bonnet"],
+    "Trawler Deckhand": ["bright orange oilskin bib waders over a heavy knitted sweater, an oilskin jacket with the hood down, a wide-brimmed sou'wester hat, and thick rubber gloves",
+     "yellow oilskin bib-and-brace waders over a {menswear_color} flannel shirt, a scuffed oilskin smock, a sou'wester tied under the chin, and heavy rubber deck boots"],
 }
 for _name, _costume in _COSTUMES.items():
     if _name in ARCHETYPES:

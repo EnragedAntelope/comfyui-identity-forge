@@ -19854,6 +19854,401 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "toned", "height": "petite", "skin_tone": "fair"},
         "prop": "a blue umbrella held closed",
     },
+
+    # === 0.87.0 franchise-gap pass ========================================
+    # Eighteen franchises that had no representation at all. Every one stays
+    # well under _FRANCHISE_SCOPE_MINIMUM (8), so no new random_scope option
+    # appears and define_schema() output is unchanged.
+
+    # --- Hunter x Hunter --------------------------------------------------
+    "Hisoka Morow": {
+        "franchise": "Hunter x Hunter",
+        "gender": "Male",
+        "costume": "a fitted pale pink two-piece with a red heart across the chest and a "
+                   "matching spade motif, loose matching trousers, and flat white shoes, "
+                   "with a green star painted on one cheek and a violet teardrop below "
+                   "the other eye",
+        "signature": {"hair_color": "bright red", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "amber",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Gon Freecss": {
+        "franchise": "Hunter x Hunter",
+        "gender": "Male",
+        "costume": "a green zip-up jacket with a high collar over a white undershirt, "
+                   "matching green shorts, and green boots",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "hair_style": "windswept",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "slightly below average height",
+                     "skin_tone": "warm tan"},
+    },
+    "Kurapika": {
+        "franchise": "Hunter x Hunter",
+        "gender": "Male",
+        "costume": "a deep blue sleeveless tabard with gold trim worn over a white "
+                   "long-sleeved shirt, matching blue trousers, and a pair of ornate "
+                   "blue drop earrings",
+        # The textbook free-text eye case: the scarlet eyes are the character.
+        # Setting signature.eye_color as well would fight this override.
+        "eyes": "vivid scarlet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "jaw length",
+                      "hair_style": "worn down", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+
+    # --- Trigun -----------------------------------------------------------
+    "Vash the Stampede": {
+        "franchise": "Trigun",
+        "gender": "Male",
+        # The prosthetic arm is worn, so it stays in the costume rather than
+        # becoming a prop that would then be drawn a second time in his hand.
+        "costume": "a long red duster coat with a raised collar over a buckled black "
+                   "bodysuit, round orange-lensed sunglasses, and a polished silver "
+                   "prosthetic left arm",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "very short",
+                      "hair_style": "quiff", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "fair"},
+    },
+
+    # --- Black Butler -----------------------------------------------------
+    "Sebastian Michaelis": {
+        "franchise": "Black Butler",
+        "gender": "Male",
+        "costume": "a black double-breasted tailcoat over a grey waistcoat and a white "
+                   "wing-collar shirt with a black tie, black trousers, and white gloves",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_style": "worn down", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Ciel Phantomhive": {
+        "franchise": "Black Butler",
+        "gender": "Male",
+        # The eyepatch is worn and covers one eye only: the face is not covered,
+        # so this is not a covers_face entry and carries no mask.
+        "costume": "a dark blue Victorian frock coat with black frogging over a white "
+                   "shirt with a ribbon tie, matching blue shorts, knee-high socks, "
+                   "buckled ankle boots, and a black eyepatch over one eye",
+        "signature": {"hair_color": "ash brown", "hair_length": "ear length",
+                      "hair_style": "worn down", "eye_color": "deep blue",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "slim", "height": "slightly below average height",
+                     "skin_tone": "very pale"},
+    },
+
+    # --- Yu-Gi-Oh! --------------------------------------------------------
+    "Yami Yugi": {
+        "franchise": "Yu-Gi-Oh!",
+        "gender": "Male",
+        # The Millennium Puzzle is WORN at the neck, so it stays in the costume
+        # with no prop - a prop would render a second one in his hand.
+        "costume": "a blue Domino High school blazer over a white shirt, matching blue "
+                   "trousers, and a large golden inverted-pyramid pendant hanging from a "
+                   "heavy chain at the neck, with golden bangs framing the face",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "hair_style": "windswept",
+                      "eye_color": "violet-gray", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "slim", "height": "slightly below average height",
+                     "skin_tone": "light"},
+    },
+
+    # --- Mobile Suit Gundam -----------------------------------------------
+    "Char Aznable": {
+        "franchise": "Mobile Suit Gundam",
+        "gender": "Male",
+        # A half mask over the upper face only. Same reading as a domino mask:
+        # the eyes are covered, the face is not, so no covers_face and no mask key.
+        "costume": "a red Zeon officer's uniform with a high-collared tunic and gold "
+                   "piping, a short flared cape over one shoulder, black gloves, tall "
+                   "black boots, and a gold-and-black visored half mask covering the "
+                   "upper face",
+        "signature": {"hair_color": "golden blonde", "hair_length": "ear length",
+                      "hair_style": "worn down", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Solo Leveling ----------------------------------------------------
+    "Sung Jinwoo": {
+        "franchise": "Solo Leveling",
+        "gender": "Male",
+        "costume": "a floor-length black shadow monarch coat with a high flared collar, "
+                   "dark segmented pauldrons at the shoulders, black gloves, and heavy "
+                   "black boots",
+        "eyes": "faintly glowing violet",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "textured crop", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Doctor Who -------------------------------------------------------
+    "The Fourth Doctor": {
+        "franchise": "Doctor Who",
+        "gender": "Male",
+        "costume": "a wide-brimmed brown felt hat, a long brown tweed frock coat over a "
+                   "waistcoat and a loose cravat, baggy trousers, and an enormously long "
+                   "multicoloured striped knitted scarf wound round the neck and trailing "
+                   "to the floor",
+        "signature": {"hair_color": "warm brown", "hair_length": "shoulder length",
+                      "hair_texture": "curly", "hair_style": "natural and unstyled",
+                      "eye_color": "blue-gray", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "fair"},
+    },
+    "The Tenth Doctor": {
+        "franchise": "Doctor Who",
+        "gender": "Male",
+        "costume": "a brown pinstripe suit with a matching waistcoat over an "
+                   "open-collared shirt, a long tan overcoat, and white low-top trainers",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_texture": "thick and voluminous", "hair_style": "quiff",
+                      "eye_color": "dark brown", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slim silver sonic screwdriver with a glowing blue tip",
+    },
+    "Weeping Angel": {
+        "franchise": "Doctor Who",
+        "gender": "Female",
+        # Stone all the way through, face included: covers_face carries the head
+        # and covers_body the rest, so no human skin tone reports under it. The
+        # canonical hands-over-the-face is a POSE and is deliberately not encoded -
+        # the pack owns pose.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "uniform, all-over weathered grey stone carved into draping classical "
+                   "robes with deep folds, and a pair of great stone wings feathered in "
+                   "carved detail rising from the shoulders",
+        "mask": "a weathered grey stone face with blank carved eyes, severe sharply cut "
+                "features, and stone hair carved in stiff waves",
+        "physique": {"body_type": "average", "height": "tall"},
+    },
+
+    # --- Squid Game -------------------------------------------------------
+    "Seong Gi-hun": {
+        "franchise": "Squid Game",
+        "gender": "Male",
+        "costume": "a teal-green tracksuit with white piping down the sleeves and legs, "
+                   "the number 456 printed large on the chest and back, and white sneakers",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_style": "tousled bedhead", "eye_color": "nearly black",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "average", "height": "average height",
+                     "skin_tone": "light"},
+    },
+    "Front Man": {
+        "franchise": "Squid Game",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a long black hooded overcoat with a high collar, black trousers, and "
+                   "black leather gloves",
+        "mask": "a featureless glossy black geometric mask of faceted angular planes with "
+                "no visible eyes",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Pink Guard": {
+        "franchise": "Squid Game",
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a fuchsia-pink hooded jumpsuit zipped to the throat, a black belt at "
+                   "the waist, and black boots",
+        # One shape, stated. Offering alternatives inside a single string renders
+        # all of them at once.
+        "mask": "a smooth matte black mask bearing a single white circle at its centre",
+        "physique": {"body_type": "athletic", "height": "average height"},
+    },
+
+    # --- Dune -------------------------------------------------------------
+    "Paul Atreides": {
+        "franchise": "Dune",
+        "gender": "Male",
+        "costume": "a ribbed charcoal Fremen stillsuit with catchpockets and tubing "
+                   "across the chest, a nose tube fitted below the nostrils, and scuffed "
+                   "desert boots",
+        "eyes": "solid luminous blue",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_texture": "curly", "facial_hair": "stubble"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "warm tan"},
+        "prop": "a milky white crysknife with a curved bone blade",
+    },
+    "Lady Jessica": {
+        "franchise": "Dune",
+        "gender": "Female",
+        # The hood and veil enclose the scalp while the face still shows, so this
+        # is covers_hair and no signature hair is locked under it.
+        "covers_hair": True,
+        "costume": "a floor-length black Bene Gesserit robe with wide sleeves and a "
+                   "draped hood and veil enclosing the head",
+        "signature": {"eye_color": "green"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Assassin's Creed -------------------------------------------------
+    "Ezio Auditore": {
+        "franchise": "Assassin's Creed",
+        "gender": "Male",
+        "covers_hair": True,
+        "costume": "white hooded assassin's robes with a red sash at the waist, a short "
+                   "cape over one shoulder, leather bracers with concealed blades, "
+                   "gloves, and knee-high boots, the beaked hood drawn fully over the head",
+        "signature": {"eye_color": "dark brown", "facial_hair": "short beard"},
+        "physique": {"body_type": "athletic", "height": "tall",
+                     "skin_tone": "medium olive"},
+    },
+
+    # --- Persona 5 --------------------------------------------------------
+    # Key parenthesized: `Joker` (DC) already ships.
+    "Joker (Persona 5)": {
+        "franchise": "Persona 5",
+        "gender": "Male",
+        # A domino mask covers the eyes, not the face - not covers_face.
+        "costume": "a long black tailcoat with a high collar over a grey V-neck, black "
+                   "trousers, red gloves, black-and-white high-top sneakers, and a white "
+                   "domino mask across the eyes",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_texture": "curly", "hair_style": "tousled bedhead",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "slim", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- Dark Souls -------------------------------------------------------
+    "Solaire of Astora": {
+        "franchise": "Dark Souls",
+        "gender": "Male",
+        "costume": "a knee-length chainmail hauberk beneath a white surcoat blazoned "
+                   "with a golden sunburst, a belted tabard, steel gauntlets, and mail "
+                   "chausses over leather boots",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "ear length",
+                      "eye_color": "bright blue", "facial_hair": "stubble"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a tall kite shield painted with a golden sunburst",
+    },
+
+    # --- Cyberpunk 2077 ---------------------------------------------------
+    # Its own sub-franchise beside the existing `Cyberpunk: Edgerunners`.
+    "Johnny Silverhand": {
+        "franchise": "Cyberpunk 2077",
+        "gender": "Male",
+        # The chrome arm is worn, so it stays in the costume.
+        "costume": "a black sleeveless tank top under an open dark jacket, black jeans, "
+                   "heavy boots, aviator sunglasses with red lenses, military dog tags on "
+                   "a ball chain, and a polished chrome prosthetic left arm",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_texture": "slightly wavy", "hair_style": "worn down",
+                      "facial_hair": "stubble"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- The Nightmare Before Christmas -----------------------------------
+    "Jack Skellington": {
+        "franchise": "The Nightmare Before Christmas",
+        "gender": "Male",
+        # Bone, not skin, from head to foot: covers_face for the skull and
+        # covers_body for the frame. Tall and thin is a physique, not a scale
+        # tier - size_scale is for giants and the genuinely tiny.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a black pinstripe tailcoat and matching trousers hanging on an "
+                   "impossibly thin bare skeletal frame, with a bat-shaped bow tie at "
+                   "the collar",
+        "mask": "a smooth white skull head with large hollow black eye sockets and a "
+                "long stitched grin",
+        "physique": {"body_type": "very slim", "height": "very tall"},
+    },
+    "Sally": {
+        "franchise": "The Nightmare Before Christmas",
+        "gender": "Female",
+        # Face visible, so the skin colour is written skin-native and anchored -
+        # "body paint" wording renders a streaky coat over a human tone.
+        "costume": "a patchwork dress sewn from mismatched scraps of faded fabric, over "
+                   "smooth, flawless pale blue skin crossed by dark stitched seams at the "
+                   "wrists, elbows and throat",
+        "skin": "pale blue",
+        # Stitched rag-doll hands: a randomized manicure lands on them otherwise,
+        # and nothing suppresses `nails` here (no gloves, no shell).
+        "signature": {"hair_color": "bright red", "hair_length": "waist length",
+                      "hair_texture": "wavy", "hair_style": "worn down",
+                      "eye_color": "nearly black", "nails": "bare nails"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Oogie Boogie": {
+        "franchise": "The Nightmare Before Christmas",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a lumpy, bulging body of coarse stitched burlap with rough seams down "
+                   "the sides and short sack-cloth arms and legs",
+        "mask": "a lumpy burlap sack head with a wide stitched mouth and two hollow dark "
+                "eye holes",
+        "physique": {"body_type": "plus size", "height": "tall"},
+    },
+
+    # --- Coco -------------------------------------------------------------
+    # Full name: `Hector Barbossa` already ships, and a bare "Hector" would be
+    # unfindable beside him in the dropdown.
+    "Hector Rivera": {
+        "franchise": "Coco",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a threadbare white shirt with a frayed collar under a battered "
+                   "rust-red jacket, patched trousers held up by a rope belt, worn boots, "
+                   "and a broad-brimmed straw hat, all hanging loose on a bare skeletal "
+                   "frame",
+        "mask": "a white skull face with deep hollow eye sockets, a fine crack across the "
+                "brow, and delicate painted calavera markings in orange and red across "
+                "the cheekbones",
+        "physique": {"body_type": "very slim", "height": "tall"},
+        "prop": "a battered wooden guitar with a worn soundboard",
+    },
+
+    # --- Up ---------------------------------------------------------------
+    "Carl Fredricksen": {
+        "franchise": "Up",
+        "gender": "Male",
+        "costume": "a brown tweed jacket over a buttoned white shirt with a blue-striped "
+                   "bow tie, high-waisted brown trousers held by braces, and thick "
+                   "black-rimmed square glasses",
+        "signature": {"age": "70", "hair_color": "white", "hair_length": "very short",
+                      "hair_style": "natural and unstyled", "eyebrows": "bushy",
+                      "eye_color": "pale blue", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "stocky", "height": "short", "skin_tone": "fair"},
+        "prop": "a wooden walking cane with a tennis ball fitted over its tip",
+    },
+
+    # --- Samurai Jack -----------------------------------------------------
+    "Samurai Jack": {
+        "franchise": "Samurai Jack",
+        "gender": "Male",
+        "costume": "a plain white gi with wide sleeves and a matching white obi, loose "
+                   "white trousers, and wooden geta sandals",
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_style": "top knot", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "medium"},
+        "prop": "a slender black-handled katana",
+    },
+
+    # --- Hazbin Hotel -----------------------------------------------------
+    "Alastor": {
+        "franchise": "Hazbin Hotel",
+        "gender": "Male",
+        # Face visible on ashen skin, so the colour is anchored explicitly. The
+        # permanent grin is pinned rather than left to randomize - it is the
+        # single most recognisable thing about him.
+        "costume": "a red pinstripe frock coat with a high collar over a black shirt and "
+                   "a red bow tie, black-and-red striped trousers, black boots, a gold "
+                   "monocle on a fine chain, and a pair of branching deer antlers rising "
+                   "from the head, over smooth, flawless ashen grey skin with solid black "
+                   "sclera",
+        "skin": "ashen grey",
+        "eyes": "glowing red",
+        "signature": {"hair_color": "deep red", "hair_length": "very short",
+                      "hair_style": "textured crop", "expression": "wide toothy grin",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "very tall"},
+        "prop": "a tall wooden cane topped with an old radio microphone",
+    },
 }
 
 
@@ -19882,6 +20277,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Food Wars", "Amagi Brilliant Park", "Prison School",
         "Berserk", "Future Diary", "Ergo Proxy", "Highschool of the Dead",
         "Rosario + Vampire", "Michiko & Hatchin", "Your Lie in April", "Noragami",
+        "Hunter x Hunter", "Trigun", "Black Butler", "Yu-Gi-Oh!",
+        "Mobile Suit Gundam", "Solo Leveling",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
@@ -19899,7 +20296,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Robin Hood (1973)", "DuckTales", "Darkwing Duck",
         # Pixar and Walt Disney Animation titles group under Disney by precedent
         # (The Incredibles, Toy Story, Frozen are already here).
-        "Inside Out", "Wreck-It Ralph",
+        "Inside Out", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
     ),
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
@@ -19916,14 +20313,15 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Pikmin", "Dead or Alive", "Lollipop Chainsaw", "Duke Nukem",
         "Fire Emblem", "NieR", "BloodRayne", "Mirror's Edge", "Cyberpunk: Edgerunners",
         "Bloodborne", "Celeste", "Half-Life", "Remember Me", "Dragon's Lair",
-        "Elden Ring", "Space Ace",
+        "Elden Ring", "Space Ace", "Assassin's Creed", "Persona 5", "Dark Souls",
+        "Cyberpunk 2077",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
         "Anne of Green Gables", "Pippi Longstocking", "The Wizard of Oz", "Fairy Tales",
         "Literature", "Folklore", "Legend", "Dr. Seuss", "Winnie the Pooh",
         "Charlie and the Chocolate Factory", "The BFG", "Fantastic Mr Fox",
-        "Conan the Barbarian", "Nancy Drew", "Little House on the Prairie",
+        "Conan the Barbarian", "Nancy Drew", "Little House on the Prairie", "Dune",
     ),
     "Movies & TV": (
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
@@ -19947,7 +20345,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Matrix", "Kill Bill", "Underworld", "Beetlejuice", "Labyrinth",
         "The Crow", "Blade Runner", "Tron", "The Rocky Horror Picture Show",
         "Grease", "Pulp Fiction", "James Bond", "The Girl with the Dragon Tattoo",
-        "Farscape",
+        "Farscape", "Doctor Who", "Squid Game",
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.
@@ -19968,7 +20366,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Sin City", "Dora the Explorer", "Voltron",
         "The Powerpuff Girls", "Danny Phantom", "Hey Arnold!", "South Park",
         "My Life as a Teenage Robot", "Bob's Burgers", "Inspector Gadget",
-        "Peanuts", "Strawberry Shortcake", "Miraculous Ladybug",
+        "Peanuts", "Strawberry Shortcake", "Miraculous Ladybug", "Samurai Jack",
+        "Hazbin Hotel",
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**225 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**231 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -116,6 +116,7 @@
 - **Gymnast** -- athletic
 - **Hair Metal Rocker** [Any]
 - **Halfling Rogue** -- casual
+- **Hazmat Technician** -- athletic
 - **Highland Scot** [Male]
 - **Holy Paladin** [Male] -- business formal
 - **Human Knight** [Male] -- business formal
@@ -124,12 +125,14 @@
 - **Jeweler** -- business casual
 - **Judge** -- business formal
 - **K-Pop Idol**
+- **Kabuki Actor** -- evening formal
 - **Kawaii Street Fashion** [Female]
 - **Librarian** [Female] -- smart casual
 - **Lifeguard** [Male] -- athletic
 - **Luchador** [Male] -- athletic
 - **Lumberjack** [Male]
 - **Mad Scientist** [Male]
+- **Marching Band Drum Major** -- evening formal
 - **Mardi Gras Reveler** [Any]
 - **Mariachi Charro** [Male]
 - **Marine Biologist** [Female] -- casual
@@ -211,6 +214,7 @@
 - **Toymaker** -- vintage retro
 - **Train Conductor** -- business casual
 - **Trapeze Artist** -- athletic
+- **Trawler Deckhand** -- athletic
 - **Trial Lawyer** -- business formal
 - **Tribal Shaman** -- bohemian
 - **Trucker** -- casual
@@ -220,6 +224,7 @@
 - **Victorian Dandy** [Male] -- evening formal
 - **Victorian Lady** [Female] -- evening formal
 - **Viking Shieldmaiden** [Female] -- edgy alternative
+- **Volcanologist** -- athletic
 - **Warlock** [Female] -- edgy alternative
 - **Wasteland Survivor** -- edgy alternative
 - **Watchmaker** -- business casual
@@ -229,4 +234,5 @@
 - **Winemaker** -- casual
 - **Witch Hunter** [Male] -- edgy alternative
 - **Y2K Mall Casual** [Female]
+- **Yeoman Warder** [Male] -- evening formal
 - **Yoga Instructor** [Female] -- athletic

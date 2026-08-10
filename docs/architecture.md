@@ -726,6 +726,70 @@ layout engine, so `clientWidth`/`clientHeight` read 0, and anything depending on
 visibility, serialization and dialog logic — the class of bug that has actually shipped —
 not painting. **It does not replace opening the page in a real browser before a release.**
 
+## The gallery render pipeline (0.87.0)
+
+`scripts/render_gallery.py` renders, records and publishes one image per roster entry, and
+`gallery/render_manifest.json` records a content hash per entry so a skipped or stale image
+fails CI. Before it existed, every new entry was rendered by hand from one of the three
+checked-in workflows and drag-dropped onto `update_gallery.bat`, and nothing anywhere noticed
+when that was forgotten. Adding an entry is now: write it → `--missing --publish` → done, and
+forgetting turns the build red.
+
+**Prompts are resolved in-process, and the posted graph contains none of this pack's nodes.**
+This is the load-bearing design decision, so it is worth stating why the obvious approach does
+not work. An entry name is a **dropdown widget value** on `IdentityForgeCosplayer` /
+`…Creature` / `…Archetype`, and ComfyUI caches its data layer at startup — a running instance
+would reject a brand-new name at `/prompt` validation until it was restarted, and would need
+this pack installed to know the name at all. So the script registers the `comfy_api` stub the
+way `tests/__init__.py` does, imports the real node classes, calls their `execute()` in the
+order the workflows wire them (preset → engine), and posts a plain Krea2 graph whose
+`CLIPTextEncode` is fed the finished literal string. The target instance never has to know the
+entry exists: no restart, no install, nothing synced anywhere. Calling the node classes rather
+than re-implementing the plumbing is deliberate — see the `generate_character` footguns above;
+an image that does not represent what the node emits is worse than no image.
+
+**The graph ends in `PreviewImage`, not `SaveImage`.** Preview output goes to ComfyUI's temp
+directory, is fetched straight back over `GET /view?…&type=temp`, and is cleared by ComfyUI on
+its own, so a run leaves someone else's instance exactly as it was found. `--save-originals`
+switches to `SaveImage` (`type=output`) when full-resolution originals are wanted on the
+ComfyUI side; `SaveImage` numbers from the highest existing counter, so it adds files and never
+replaces one. Images are always fetched over HTTP, never read off the instance's filesystem —
+which also keeps a remote instance workable.
+
+**Render settings are read, not transcribed.** Model filenames, LoRA strengths, latent size,
+sampler, scheduler, steps, cfg and the photographic style prefix are all parsed out of
+`gallery/cosplay/Krea2_IdentityForge_CharacterCycle.json`, which is already committed and
+already published. One source of truth, nothing new written down about anyone's local setup,
+and updating that workflow updates the renderer. A gitignored `scripts/render_config.json` and
+then CLI flags override it. A missing file or absent node fails loudly naming the exact key —
+never a guessed default, and **never a substring match on a model name**: the sibling
+`comfyui-stylebook` pipeline did exactly that and rendered a whole gallery off the wrong Turbo
+merge, plausible enough that nobody noticed until it was published. Preflight checks every
+model, `sampler_name` and `scheduler` against live `/object_info` before the first queue.
+
+**Render settings are excluded from the entry hash, on purpose.** Stylebook folds its render
+settings into each tile's hash, which is right there because every tile was produced under
+recorded settings. Here, ~2,150 images predate this pipeline and were rendered by hand under
+settings nobody wrote down, so folding settings in would mark every entry stale on day one.
+Changing the model is therefore a deliberate, manual re-render. Do not "fix" this.
+
+**Queue etiquette.** `POST /prompt` carries `{"front": true}`, which inserts at position 0 of
+`queue_pending`, leaves already-queued jobs untouched and does not interrupt the running job.
+`/interrupt` and `DELETE /queue` are never called — the queue may not be ours. `--back` opts
+out. The default target is `http://127.0.0.1:8288`, the disposable test instance, not the
+primary one.
+
+**`--check` is the gate**: network-free, stdlib-only, no ComfyUI, wired into the dependency-free
+CI job. It reports **missing** (in the data layer, absent from the manifest), **stale** (hash
+differs) and **orphan** (in the manifest, gone from the data layer — prune it in the same commit
+that removed the entry), and prints a real runnable remediation command. It is manifest-only by
+design: `gallery/.render_out` is scratch and never reaches a clone, so testing for a file on
+disk would report every entry missing in CI. **Accepted cost:** editing an entry's text while
+ComfyUI is off turns CI red until it is re-rendered. That is the enforcement, not a bug.
+
+**Order of operations, once:** `--seed-manifest` must be run and committed **before** new
+content lands, or seeding silently blesses unrendered entries as `"pre-existing"`.
+
 ## Considered and deferred
 
 Design notes for ideas that were scoped but deliberately not built. Kept so the reasoning
@@ -2001,3 +2065,38 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   documented suppressions only worked when calling `generate_character` directly, not through the
   node.) Tests that exercise suppression must route through `resolve_locked_fields`, not pass the
   flat preset dict straight in (see `SuppressionLockSurvivalTests`).
+- **A node pack cannot render a brand-new dropdown value against a running ComfyUI (0.87.0).**
+  The data layer is cached at startup, so `/prompt` validation rejects a name added since. There
+  is exactly one no-restart path: resolve the prompt in-process from this repo and post a graph
+  containing none of this pack's nodes. It also removes any need to install or sync the pack onto
+  the target instance. See "The gallery render pipeline" above.
+- **A committed workflow JSON's own `inputs` array is the authority on its widget order, not
+  `define_schema()` (0.87.0).** All three `Krea2_IdentityForge_*Cycle.json` downloads predated the
+  `composition` field, and each also carried ten stale trailing `widgets_values`. Aligning the
+  value array against the *current* schema made `composition` appear to be present and correctly
+  positioned in every one of them — it was not; the check that actually works is comparing the
+  file's own `[i["name"] for i in node["inputs"] if "widget" in i]` against schema order. The
+  frontend tolerates trailing extras silently, so nothing surfaces until someone reads the file.
+- **`dump_frontend_fixtures.py --check` goes stale on a pure content addition (0.87.0).** The
+  fixture embeds the Cosplayer/Creature/Archetype dropdown option lists, so adding entries changes
+  it even when no schema changed. That is expected: regenerate and commit it, then read the diff —
+  if the only change is names appended to `IdentityForgeCosplayer[0].options` and `random_scope` is
+  untouched, no franchise crossed `_FRANCHISE_SCOPE_MINIMUM` and nothing breaking happened.
+- **A sealed-headgear archetype must pin `makeup_style: "no makeup"` (0.87.0).** Hazmat Technician
+  first rendered heavy glam, a cat eye and a fade *under a full-face respirator and a sealed hood*.
+  The existing sealed archetypes never surfaced this only because they are `gender: "Male"`
+  (Firefighter, Race Car Driver), where the global male rule already forces no makeup. Pin it
+  explicitly on any `gender: "Any"` archetype whose head is enclosed, keep the hair plain, and
+  follow the Beekeeper/Welder convention of offering one costume variant with the headgear pushed
+  back so a face can read at all.
+- **A creature's FACE has no colour anchor (0.87.0, known gap).** `palette` is prepended to
+  `integument` only, never to `head`, so an anthropomorphic creature whose identity is its
+  *pallor* renders with an ordinary healthy face — the creature-layer equivalent of the
+  green-body/pale-face bug that `_format_prose` already fixes on the cosplayer side by restating
+  the colour on the face. `jiangshi` surfaced it: "greyed corpse-blue" reached the body and the
+  face came back as a living woman wearing a paper talisman. Colour-free intensifiers in the
+  `head` slot (`bloodless`, `waxen`, `sunken`, `hollow-cheeked`) help and are the correct
+  workaround today, because naming a colour in a slot would break the colour-free convention —
+  but they do not fully win against a photographic style prefix. The real fix is a creature-side
+  face-colour restatement mirroring `_format_prose`; it is deliberately not in 0.87.0, which
+  added no new mechanisms.

@@ -280,9 +280,17 @@ def entry_hash(kind: str, name: str) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
-def entry_seed(name: str) -> int:
-    """Deterministic per entry, so the same entry always re-renders the same person."""
-    return int(hashlib.sha256(name.encode("utf-8")).hexdigest()[:15], 16)
+def entry_seed(name: str, reroll: int = 0) -> int:
+    """Deterministic per entry, so the same entry always re-renders the same person.
+
+    ``reroll`` re-draws a single bad tile without touching the data. The seed
+    decides the pose, framing and lighting as well as the person, so a tile can
+    come out technically correct and still be useless - a masked character shot
+    in profile against a window shows neither the mask nor the face. A non-zero
+    reroll is recorded in the manifest as an explicit ``seed``, because a tile
+    nobody can reproduce is worse than a tile nobody likes.
+    """
+    return int(hashlib.sha256(name.encode("utf-8")).hexdigest()[:15], 16) + reroll
 
 
 def _blank_manifest() -> dict:
@@ -416,7 +424,7 @@ def _forge_kwargs(forge_class: Any, character_json: str, seed: int) -> dict[str,
     return kwargs
 
 
-def resolve_prose(kind: str, name: str) -> str:
+def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
     """The prose the node pack itself would emit for this entry.
 
     Calls the real node classes in the order the workflows wire them - preset
@@ -432,7 +440,7 @@ def resolve_prose(kind: str, name: str) -> str:
     from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
     from nodes.identity_forge_creature import IdentityForgeCreature
 
-    seed = entry_seed(name)
+    seed = entry_seed(name, reroll)
     if kind == "cosplay":
         _check_options(IdentityForgeCosplayer, COSPLAYER_WIDGETS)
         preset = IdentityForgeCosplayer.execute(
@@ -649,11 +657,12 @@ def _load_normalize_name():
 
 
 def render_one(client: ComfyClient, kind: str, name: str, settings: dict[str, Any],
-               normalize_name, front: bool, save_originals: bool) -> bool:
+               normalize_name, front: bool, save_originals: bool,
+               reroll: int = 0) -> bool:
     stem = normalize_name(name)
-    prose = resolve_prose(kind, name)
+    prose = resolve_prose(kind, name, reroll)
     graph = build_graph(
-        positive_prompt(prose, settings), entry_seed(name), settings,
+        positive_prompt(prose, settings), entry_seed(name, reroll), settings,
         save_originals, stem,
     )
     prompt_id = client.submit(graph, front=front)
@@ -771,6 +780,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--save-originals", action="store_true",
                         help="Use SaveImage (type=output) instead of PreviewImage, so "
                              "full-resolution originals are kept on the ComfyUI side.")
+    parser.add_argument("--reroll", type=int, default=0, metavar="N",
+                        help="Re-draw a bad tile with a shifted seed, without touching "
+                             "the data. Recorded in the manifest as an explicit seed.")
     parser.add_argument("--back", action="store_true",
                         help="Queue at the back instead of front-of-queue.")
     parser.add_argument("--url", default=DEFAULT_URL,
@@ -843,13 +855,13 @@ def main(argv: list[str] | None = None) -> int:
 
         if args.dry_run:
             for kind, name in targets:
-                prose = resolve_prose(kind, name)
-                print(f"\n=== {kind} / {name}  (seed {entry_seed(name)}) ===")
+                prose = resolve_prose(kind, name, args.reroll)
+                print(f"\n=== {kind} / {name}  (seed {entry_seed(name, args.reroll)}) ===")
                 print(positive_prompt(prose, settings))
             print(f"\n--- graph for {targets[0][1]} ---")
             print(json.dumps(
-                build_graph(positive_prompt(resolve_prose(*targets[0]), settings),
-                            entry_seed(targets[0][1]), settings,
+                build_graph(positive_prompt(resolve_prose(*targets[0], args.reroll), settings),
+                            entry_seed(targets[0][1], args.reroll), settings,
                             args.save_originals, targets[0][1]),
                 indent=2,
             ))
@@ -886,10 +898,12 @@ def main(argv: list[str] | None = None) -> int:
         for position, (kind, name) in enumerate(targets, 1):
             print(f"[{position}/{len(targets)}] {kind} / {name}")
             if render_one(client, kind, name, settings, normalize_name,
-                          front=not args.back, save_originals=args.save_originals):
-                manifest["entries"].setdefault(kind, {})[name] = {
-                    "hash": entry_hash(kind, name), "rendered": today,
-                }
+                          front=not args.back, save_originals=args.save_originals,
+                          reroll=args.reroll):
+                record = {"hash": entry_hash(kind, name), "rendered": today}
+                if args.reroll:
+                    record["seed"] = entry_seed(name, args.reroll)
+                manifest["entries"].setdefault(kind, {})[name] = record
                 touched.add(kind)
                 done += 1
             else:

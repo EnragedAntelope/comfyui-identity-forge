@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-08-06T22:42:10.724156",
-  "total_entries": 1738,
-  "entries_with_images": 1738,
+  "generated": "2026-08-09T22:35:06.286686",
+  "total_entries": 1766,
+  "entries_with_images": 1766,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -223,6 +223,13 @@
       "gender": "Male",
       "group": "DC",
       "image": "images/Alan Scott.jpeg"
+    },
+    {
+      "name": "Alastor",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Hazbin Hotel",
+      "image": "images/Alastor.jpeg"
     },
     {
       "name": "Albedo (Overlord)",
@@ -1716,6 +1723,13 @@
       "image": "images/Cardassian.jpeg"
     },
     {
+      "name": "Carl Fredricksen",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Up",
+      "image": "images/Carl Fredricksen.jpeg"
+    },
+    {
       "name": "Carmen Sandiego",
       "has_image": true,
       "gender": "Female",
@@ -1826,6 +1840,13 @@
       "gender": "Male",
       "group": "DC",
       "image": "images/Ch'p.jpeg"
+    },
+    {
+      "name": "Char Aznable",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Mobile Suit Gundam",
+      "image": "images/Char Aznable.jpeg"
     },
     {
       "name": "Charizard",
@@ -1994,6 +2015,13 @@
       "gender": "Female",
       "group": "Street Fighter",
       "image": "images/Chun-Li.jpeg"
+    },
+    {
+      "name": "Ciel Phantomhive",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Black Butler",
+      "image": "images/Ciel Phantomhive.jpeg"
     },
     {
       "name": "Cinderella",
@@ -3242,6 +3270,13 @@
       "image": "images/Evil-Lyn.jpeg"
     },
     {
+      "name": "Ezio Auditore",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Assassin's Creed",
+      "image": "images/Ezio Auditore.jpeg"
+    },
+    {
       "name": "Fairy Godmother",
       "has_image": true,
       "gender": "Female",
@@ -3457,6 +3492,13 @@
       "gender": "Male",
       "group": "The Hunchback of Notre Dame",
       "image": "images/Frollo.jpeg"
+    },
+    {
+      "name": "Front Man",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Squid Game",
+      "image": "images/Front Man.jpeg"
     },
     {
       "name": "Frost",
@@ -3879,6 +3921,13 @@
       "image": "images/Gomez Addams.jpeg"
     },
     {
+      "name": "Gon Freecss",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Hunter x Hunter",
+      "image": "images/Gon Freecss.jpeg"
+    },
+    {
       "name": "Gonk Droid",
       "has_image": true,
       "gender": "Male",
@@ -4222,6 +4271,13 @@
       "image": "images/Hector Barbossa.jpeg"
     },
     {
+      "name": "Hector Rivera",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Coco",
+      "image": "images/Hector Rivera.jpeg"
+    },
+    {
       "name": "Heihachi Mishima",
       "has_image": true,
       "gender": "Male",
@@ -4318,6 +4374,13 @@
       "gender": "Male",
       "group": "Big Hero 6",
       "image": "images/Hiro Hamada.jpeg"
+    },
+    {
+      "name": "Hisoka Morow",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Hunter x Hunter",
+      "image": "images/Hisoka Morow.jpeg"
     },
     {
       "name": "Historia Reiss",
@@ -4719,6 +4782,13 @@
       "image": "images/Jack Frost.jpeg"
     },
     {
+      "name": "Jack Skellington",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Nightmare Before Christmas",
+      "image": "images/Jack Skellington.jpeg"
+    },
+    {
       "name": "Jack Sparrow",
       "has_image": true,
       "gender": "Male",
@@ -5034,11 +5104,25 @@
       "image": "images/Johnny Cage.jpeg"
     },
     {
+      "name": "Johnny Silverhand",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Cyberpunk 2077",
+      "image": "images/Johnny Silverhand.jpeg"
+    },
+    {
       "name": "Joker",
       "has_image": true,
       "gender": "Male",
       "group": "DC",
       "image": "images/Joker.jpeg"
+    },
+    {
+      "name": "Joker (Persona 5)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Persona 5",
+      "image": "images/Joker (Persona 5).jpeg"
     },
     {
       "name": "Jolly Green Giant",
@@ -5741,6 +5825,13 @@
       "image": "images/Kung Lao.jpeg"
     },
     {
+      "name": "Kurapika",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Hunter x Hunter",
+      "image": "images/Kurapika.jpeg"
+    },
+    {
       "name": "Kurumi Tokisaki",
       "has_image": true,
       "gender": "Female",
@@ -5830,6 +5921,13 @@
       "gender": "Female",
       "group": "Resident Evil",
       "image": "images/Lady Dimitrescu.jpeg"
+    },
+    {
+      "name": "Lady Jessica",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Dune",
+      "image": "images/Lady Jessica.jpeg"
     },
     {
       "name": "Lady Maria",
@@ -8002,6 +8100,13 @@
       "image": "images/Omni-Man.jpeg"
     },
     {
+      "name": "Oogie Boogie",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Nightmare Before Christmas",
+      "image": "images/Oogie Boogie.jpeg"
+    },
+    {
       "name": "Oola",
       "has_image": true,
       "gender": "Female",
@@ -8075,7 +8180,7 @@
       "name": "Pac-Man",
       "has_image": true,
       "gender": "Male",
-      "group": "Namco",
+      "group": "Pac-Man",
       "image": "images/Pac-Man.jpeg"
     },
     {
@@ -8133,6 +8238,13 @@
       "gender": "Male",
       "group": "Nickelodeon",
       "image": "images/Patrick Star.jpeg"
+    },
+    {
+      "name": "Paul Atreides",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Dune",
+      "image": "images/Paul Atreides.jpeg"
     },
     {
       "name": "Paul Bunyan",
@@ -8273,6 +8385,13 @@
       "gender": "Male",
       "group": "Hellraiser",
       "image": "images/Pinhead.jpeg"
+    },
+    {
+      "name": "Pink Guard",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Squid Game",
+      "image": "images/Pink Guard.jpeg"
     },
     {
       "name": "Pinocchio",
@@ -9430,6 +9549,13 @@
       "image": "images/Salama.jpeg"
     },
     {
+      "name": "Sally",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Nightmare Before Christmas",
+      "image": "images/Sally.jpeg"
+    },
+    {
       "name": "Sam Manson",
       "has_image": true,
       "gender": "Female",
@@ -9442,6 +9568,13 @@
       "gender": "Female",
       "group": "The Ring",
       "image": "images/Samara.jpeg"
+    },
+    {
+      "name": "Samurai Jack",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Samurai Jack",
+      "image": "images/Samurai Jack.jpeg"
     },
     {
       "name": "Samwise Gamgee",
@@ -9654,6 +9787,13 @@
       "image": "images/Scrooge McDuck.jpeg"
     },
     {
+      "name": "Sebastian Michaelis",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Black Butler",
+      "image": "images/Sebastian Michaelis.jpeg"
+    },
+    {
       "name": "Sebastian Shaw",
       "has_image": true,
       "gender": "Male",
@@ -9687,6 +9827,13 @@
       "gender": "Female",
       "group": "Hellblade",
       "image": "images/Senua.jpeg"
+    },
+    {
+      "name": "Seong Gi-hun",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Squid Game",
+      "image": "images/Seong Gi-hun.jpeg"
     },
     {
       "name": "Seong Mi-na",
@@ -10130,6 +10277,13 @@
       "image": "images/Sokka.jpeg"
     },
     {
+      "name": "Solaire of Astora",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Dark Souls",
+      "image": "images/Solaire of Astora.jpeg"
+    },
+    {
       "name": "Soldier 76",
       "has_image": true,
       "gender": "Male",
@@ -10182,7 +10336,7 @@
       "name": "Sonic the Hedgehog",
       "has_image": true,
       "gender": "Male",
-      "group": "Sega",
+      "group": "Sonic the Hedgehog",
       "image": "images/Sonic the Hedgehog.jpeg"
     },
     {
@@ -10557,6 +10711,13 @@
       "image": "images/Sunfire (Exiles).jpeg"
     },
     {
+      "name": "Sung Jinwoo",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Solo Leveling",
+      "image": "images/Sung Jinwoo.jpeg"
+    },
+    {
       "name": "Supergirl",
       "has_image": true,
       "gender": "Female",
@@ -10830,6 +10991,13 @@
       "image": "images/The Flash.jpeg"
     },
     {
+      "name": "The Fourth Doctor",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Doctor Who",
+      "image": "images/The Fourth Doctor.jpeg"
+    },
+    {
       "name": "The Great Gazoo",
       "has_image": true,
       "gender": "Male",
@@ -10926,6 +11094,13 @@
       "gender": "Male",
       "group": "The Spirit",
       "image": "images/The Spirit.jpeg"
+    },
+    {
+      "name": "The Tenth Doctor",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Doctor Who",
+      "image": "images/The Tenth Doctor.jpeg"
     },
     {
       "name": "The Terminator",
@@ -11376,6 +11551,13 @@
       "image": "images/Vanellope von Schweetz.jpeg"
     },
     {
+      "name": "Vash the Stampede",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Trigun",
+      "image": "images/Vash the Stampede.jpeg"
+    },
+    {
       "name": "Vega",
       "has_image": true,
       "gender": "Male",
@@ -11607,6 +11789,13 @@
       "image": "images/Wednesday Addams.jpeg"
     },
     {
+      "name": "Weeping Angel",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Doctor Who",
+      "image": "images/Weeping Angel.jpeg"
+    },
+    {
       "name": "Wendy",
       "has_image": true,
       "gender": "Female",
@@ -11829,6 +12018,13 @@
       "gender": "Female",
       "group": "Hell's Paradise",
       "image": "images/Yamada Asaemon Sagiri.jpeg"
+    },
+    {
+      "name": "Yami Yugi",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Yu-Gi-Oh!",
+      "image": "images/Yami Yugi.jpeg"
     },
     {
       "name": "Yasuo",

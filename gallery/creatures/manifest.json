@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "creatures",
-  "generated": "2026-07-28T20:18:06.136254",
-  "total_entries": 195,
-  "entries_with_images": 195,
+  "generated": "2026-08-09T22:35:26.213574",
+  "total_entries": 209,
+  "entries_with_images": 209,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -34,6 +34,13 @@
       "gender": "any",
       "group": "Insects & Arachnids",
       "image": "images/ant.jpeg"
+    },
+    {
+      "name": "avian alien",
+      "has_image": true,
+      "gender": "any",
+      "group": "Aliens",
+      "image": "images/avian alien.jpeg"
     },
     {
       "name": "axolotl",
@@ -533,6 +540,13 @@
       "image": "images/gryphon.jpeg"
     },
     {
+      "name": "hag",
+      "has_image": true,
+      "gender": "any",
+      "group": "Monsters",
+      "image": "images/hag.jpeg"
+    },
+    {
       "name": "harpy",
       "has_image": true,
       "gender": "any",
@@ -631,11 +645,25 @@
       "image": "images/jellyfish.jpeg"
     },
     {
+      "name": "jiangshi",
+      "has_image": true,
+      "gender": "any",
+      "group": "Monsters",
+      "image": "images/jiangshi.jpeg"
+    },
+    {
       "name": "kangaroo",
       "has_image": true,
       "gender": "any",
       "group": "Mammals",
       "image": "images/kangaroo.jpeg"
+    },
+    {
+      "name": "kelp folk",
+      "has_image": true,
+      "gender": "any",
+      "group": "Plant & Fungal",
+      "image": "images/kelp folk.jpeg"
     },
     {
       "name": "kelpie",
@@ -713,6 +741,13 @@
       "gender": "any",
       "group": "Monsters",
       "image": "images/lich.jpeg"
+    },
+    {
+      "name": "lichen folk",
+      "has_image": true,
+      "gender": "any",
+      "group": "Plant & Fungal",
+      "image": "images/lichen folk.jpeg"
     },
     {
       "name": "lion",
@@ -862,6 +897,13 @@
       "image": "images/newt.jpeg"
     },
     {
+      "name": "nudibranch",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "image": "images/nudibranch.jpeg"
+    },
+    {
       "name": "octopus",
       "has_image": true,
       "gender": "any",
@@ -923,6 +965,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/panda.jpeg"
+    },
+    {
+      "name": "pangolin",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/pangolin.jpeg"
     },
     {
       "name": "parrot",
@@ -988,11 +1037,25 @@
       "image": "images/praying mantis.jpeg"
     },
     {
+      "name": "pteranodon",
+      "has_image": true,
+      "gender": "any",
+      "group": "Reptiles & Amphibians",
+      "image": "images/pteranodon.jpeg"
+    },
+    {
       "name": "pufferfish",
       "has_image": true,
       "gender": "any",
       "group": "Marine Life",
       "image": "images/pufferfish.jpeg"
+    },
+    {
+      "name": "puffin",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/puffin.jpeg"
     },
     {
       "name": "pumpkin head",
@@ -1021,6 +1084,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/raccoon.jpeg"
+    },
+    {
+      "name": "radial alien",
+      "has_image": true,
+      "gender": "any",
+      "group": "Aliens",
+      "image": "images/radial alien.jpeg"
     },
     {
       "name": "raptor",
@@ -1142,6 +1212,13 @@
       "image": "images/shark.jpeg"
     },
     {
+      "name": "shoebill",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/shoebill.jpeg"
+    },
+    {
       "name": "skeleton",
       "has_image": true,
       "gender": "any",
@@ -1198,11 +1275,25 @@
       "image": "images/stag.jpeg"
     },
     {
+      "name": "stag beetle",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/stag beetle.jpeg"
+    },
+    {
       "name": "starfish",
       "has_image": true,
       "gender": "any",
       "group": "Marine Life",
       "image": "images/starfish.jpeg"
+    },
+    {
+      "name": "stick insect",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/stick insect.jpeg"
     },
     {
       "name": "sunflower folk",
@@ -1301,6 +1392,13 @@
       "gender": "any",
       "group": "Birds",
       "image": "images/vulture.jpeg"
+    },
+    {
+      "name": "walrus",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "image": "images/walrus.jpeg"
     },
     {
       "name": "wasp",

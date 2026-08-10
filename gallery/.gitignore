@@ -6,4 +6,6 @@ images/
 missing.txt
 orphans.txt
 extra.txt
-gallery/.render_out/
+# Scratch renders from scripts/render_gallery.py. Fetched from ComfyUI, then
+# published to gh-pages by publish.py - never committed to main.
+.render_out/

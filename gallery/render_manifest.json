@@ -445,6 +445,10 @@
         "hash": "1ab8ca5ad1208cf4",
         "rendered": "pre-existing"
       },
+      "Hazmat Technician": {
+        "hash": "ccc50fc62df75ba2",
+        "rendered": "2026-08-09"
+      },
       "Highland Scot": {
         "hash": "880cbcd38a12bddf",
         "rendered": "pre-existing"
@@ -477,6 +481,10 @@
         "hash": "fc978378173ef841",
         "rendered": "pre-existing"
       },
+      "Kabuki Actor": {
+        "hash": "a30d1412351e7681",
+        "rendered": "2026-08-09"
+      },
       "Kawaii Street Fashion": {
         "hash": "9dfa58f8d59f656b",
         "rendered": "pre-existing"
@@ -500,6 +508,10 @@
       "Mad Scientist": {
         "hash": "51b048e2933775e9",
         "rendered": "pre-existing"
+      },
+      "Marching Band Drum Major": {
+        "hash": "b0c119efd10e0a34",
+        "rendered": "2026-08-09"
       },
       "Mardi Gras Reveler": {
         "hash": "b76f3d79ec28f202",
@@ -825,6 +837,10 @@
         "hash": "b1776f58e3a7c5ad",
         "rendered": "pre-existing"
       },
+      "Trawler Deckhand": {
+        "hash": "13e7a769737a4c21",
+        "rendered": "2026-08-09"
+      },
       "Trial Lawyer": {
         "hash": "43f653827eb4a7c0",
         "rendered": "pre-existing"
@@ -861,6 +877,10 @@
         "hash": "9d4f3b429c6c08de",
         "rendered": "pre-existing"
       },
+      "Volcanologist": {
+        "hash": "05250ac9b040abae",
+        "rendered": "2026-08-09"
+      },
       "Warlock": {
         "hash": "1de2148882df958f",
         "rendered": "pre-existing"
@@ -896,6 +916,10 @@
       "Y2K Mall Casual": {
         "hash": "ca26873c406fcfca",
         "rendered": "pre-existing"
+      },
+      "Yeoman Warder": {
+        "hash": "8fb60d16aeb4d00f",
+        "rendered": "2026-08-09"
       },
       "Yoga Instructor": {
         "hash": "e13badc4ca7c1c59",
@@ -1026,6 +1050,10 @@
       "Alan Scott": {
         "hash": "2497d85709f4b5fc",
         "rendered": "pre-existing"
+      },
+      "Alastor": {
+        "hash": "ecd9741051c35d50",
+        "rendered": "2026-08-09"
       },
       "Albedo (Overlord)": {
         "hash": "b7b3e23e447712df",
@@ -1879,6 +1907,10 @@
         "hash": "e94b2fafb730fa16",
         "rendered": "pre-existing"
       },
+      "Carl Fredricksen": {
+        "hash": "f738231845ce9103",
+        "rendered": "2026-08-09"
+      },
       "Carmen Sandiego": {
         "hash": "e8be866071f86f8a",
         "rendered": "pre-existing"
@@ -1942,6 +1974,10 @@
       "Ch'p": {
         "hash": "6f8c350bf01446c2",
         "rendered": "pre-existing"
+      },
+      "Char Aznable": {
+        "hash": "35757cd843b3f5a3",
+        "rendered": "2026-08-09"
       },
       "Charizard": {
         "hash": "5854a1f9eeedda64",
@@ -2038,6 +2074,10 @@
       "Chun-Li": {
         "hash": "ab951aa5afeb2437",
         "rendered": "pre-existing"
+      },
+      "Ciel Phantomhive": {
+        "hash": "274ec031b1823937",
+        "rendered": "2026-08-09"
       },
       "Cinderella": {
         "hash": "df55d21a55cb8a84",
@@ -2751,6 +2791,10 @@
         "hash": "80caa0ba38a4bcdd",
         "rendered": "pre-existing"
       },
+      "Ezio Auditore": {
+        "hash": "b18e0f8d08bae359",
+        "rendered": "2026-08-09"
+      },
       "Fairy Godmother": {
         "hash": "5edcbbca9c51e6c5",
         "rendered": "pre-existing"
@@ -2874,6 +2918,11 @@
       "Frollo": {
         "hash": "b54af558e1edf93c",
         "rendered": "pre-existing"
+      },
+      "Front Man": {
+        "hash": "1ce60f830d7bdddf",
+        "rendered": "2026-08-09",
+        "seed": 460892466519788000
       },
       "Frost": {
         "hash": "7c557211e07f0fdc",
@@ -3115,6 +3164,10 @@
         "hash": "63039804c6d1a439",
         "rendered": "pre-existing"
       },
+      "Gon Freecss": {
+        "hash": "7d175febab16c487",
+        "rendered": "2026-08-09"
+      },
       "Gonk Droid": {
         "hash": "884b772b583356fe",
         "rendered": "pre-existing"
@@ -3311,6 +3364,10 @@
         "hash": "19b854395618b6dd",
         "rendered": "pre-existing"
       },
+      "Hector Rivera": {
+        "hash": "03c70482edf2256c",
+        "rendered": "2026-08-09"
+      },
       "Heihachi Mishima": {
         "hash": "2be39a9c4ac467ae",
         "rendered": "pre-existing"
@@ -3366,6 +3423,10 @@
       "Hiro Hamada": {
         "hash": "d1abc1ee6e48fabb",
         "rendered": "pre-existing"
+      },
+      "Hisoka Morow": {
+        "hash": "b87db3a583ea32cd",
+        "rendered": "2026-08-09"
       },
       "Historia Reiss": {
         "hash": "727190eac55419ef",
@@ -3595,6 +3656,10 @@
         "hash": "101266f9ff6f9e70",
         "rendered": "pre-existing"
       },
+      "Jack Skellington": {
+        "hash": "0a8df25142f6b9eb",
+        "rendered": "2026-08-09"
+      },
       "Jack Sparrow": {
         "hash": "6e15f71007786936",
         "rendered": "pre-existing"
@@ -3775,9 +3840,17 @@
         "hash": "eb74580af78c7d9f",
         "rendered": "pre-existing"
       },
+      "Johnny Silverhand": {
+        "hash": "ccbcc2632a81e39d",
+        "rendered": "2026-08-09"
+      },
       "Joker": {
         "hash": "a681100e597814f7",
         "rendered": "pre-existing"
+      },
+      "Joker (Persona 5)": {
+        "hash": "44633272b0f9fe73",
+        "rendered": "2026-08-09"
       },
       "Jolly Green Giant": {
         "hash": "946f74ce7404ec9b",
@@ -4179,6 +4252,10 @@
         "hash": "e10b52fd61ff53b6",
         "rendered": "pre-existing"
       },
+      "Kurapika": {
+        "hash": "c1c15a70f34be1bd",
+        "rendered": "2026-08-09"
+      },
       "Kurumi Tokisaki": {
         "hash": "0f9755e3f9c41d48",
         "rendered": "pre-existing"
@@ -4230,6 +4307,10 @@
       "Lady Dimitrescu": {
         "hash": "7fbcc3fc71f38262",
         "rendered": "pre-existing"
+      },
+      "Lady Jessica": {
+        "hash": "1b7984f10765c0c4",
+        "rendered": "2026-08-09"
       },
       "Lady Maria": {
         "hash": "b3306d7f19c9424e",
@@ -5471,6 +5552,10 @@
         "hash": "b5a488309b93e73d",
         "rendered": "pre-existing"
       },
+      "Oogie Boogie": {
+        "hash": "c36a05094cdfca43",
+        "rendered": "2026-08-09"
+      },
       "Oola": {
         "hash": "cb0e5cc0922c8672",
         "rendered": "pre-existing"
@@ -5546,6 +5631,10 @@
       "Patrick Star": {
         "hash": "ecaf474487ef4196",
         "rendered": "pre-existing"
+      },
+      "Paul Atreides": {
+        "hash": "9716165700962675",
+        "rendered": "2026-08-09"
       },
       "Paul Bunyan": {
         "hash": "2c55ecb412f8a62e",
@@ -5626,6 +5715,10 @@
       "Pinhead": {
         "hash": "0ed11f67851ef723",
         "rendered": "pre-existing"
+      },
+      "Pink Guard": {
+        "hash": "6e335bd5509c3480",
+        "rendered": "2026-08-09"
       },
       "Pinocchio": {
         "hash": "3ed956884573ea1d",
@@ -6287,6 +6380,10 @@
         "hash": "0de7abf6fd6ed311",
         "rendered": "pre-existing"
       },
+      "Sally": {
+        "hash": "450bf728f4301fd7",
+        "rendered": "2026-08-09"
+      },
       "Sam Manson": {
         "hash": "705589c6a5fa86e2",
         "rendered": "pre-existing"
@@ -6294,6 +6391,10 @@
       "Samara": {
         "hash": "da6dca420d0ec3bf",
         "rendered": "pre-existing"
+      },
+      "Samurai Jack": {
+        "hash": "c0755194d4ef3176",
+        "rendered": "2026-08-09"
       },
       "Samwise Gamgee": {
         "hash": "a2ea56cf5818120e",
@@ -6415,6 +6516,10 @@
         "hash": "22dd738c3c3cc71a",
         "rendered": "pre-existing"
       },
+      "Sebastian Michaelis": {
+        "hash": "010bb8cbf9ffb822",
+        "rendered": "2026-08-09"
+      },
       "Sebastian Shaw": {
         "hash": "fda111045122ec44",
         "rendered": "pre-existing"
@@ -6434,6 +6539,10 @@
       "Senua": {
         "hash": "60d31a29fa166c90",
         "rendered": "pre-existing"
+      },
+      "Seong Gi-hun": {
+        "hash": "bc306d822a49e059",
+        "rendered": "2026-08-09"
       },
       "Seong Mi-na": {
         "hash": "c1556dafaf9e4d51",
@@ -6687,6 +6796,10 @@
         "hash": "a1217b454eba5fdb",
         "rendered": "pre-existing"
       },
+      "Solaire of Astora": {
+        "hash": "ccb37ea82dabcfa4",
+        "rendered": "2026-08-09"
+      },
       "Soldier 76": {
         "hash": "dc5db096b9549af5",
         "rendered": "pre-existing"
@@ -6931,6 +7044,10 @@
         "hash": "1e0b74c9a3957b93",
         "rendered": "pre-existing"
       },
+      "Sung Jinwoo": {
+        "hash": "b3e1e49b649468a4",
+        "rendered": "2026-08-09"
+      },
       "Supergirl": {
         "hash": "cb524e35dc84516c",
         "rendered": "pre-existing"
@@ -7087,6 +7204,10 @@
         "hash": "04b376b9ca127347",
         "rendered": "pre-existing"
       },
+      "The Fourth Doctor": {
+        "hash": "d572c1d478f78208",
+        "rendered": "2026-08-09"
+      },
       "The Great Gazoo": {
         "hash": "798aa555ce803384",
         "rendered": "pre-existing"
@@ -7142,6 +7263,10 @@
       "The Spirit": {
         "hash": "8cce83d9cdc1e8b3",
         "rendered": "pre-existing"
+      },
+      "The Tenth Doctor": {
+        "hash": "703f23cbbc9e966b",
+        "rendered": "2026-08-09"
       },
       "The Terminator": {
         "hash": "b78fc9b8b1786e30",
@@ -7399,6 +7524,10 @@
         "hash": "9a52e0890d8f633e",
         "rendered": "pre-existing"
       },
+      "Vash the Stampede": {
+        "hash": "e140ddcb6e3a8caa",
+        "rendered": "2026-08-09"
+      },
       "Vega": {
         "hash": "bee540c34f674578",
         "rendered": "pre-existing"
@@ -7531,6 +7660,10 @@
         "hash": "755c431bcc2d473e",
         "rendered": "pre-existing"
       },
+      "Weeping Angel": {
+        "hash": "7b5ce74cd5ad88bb",
+        "rendered": "2026-08-09"
+      },
       "Wendy": {
         "hash": "7b3039c65c2fb266",
         "rendered": "pre-existing"
@@ -7658,6 +7791,10 @@
       "Yamada Asaemon Sagiri": {
         "hash": "6408c070b565eaa9",
         "rendered": "pre-existing"
+      },
+      "Yami Yugi": {
+        "hash": "ad454d24f9ee91d1",
+        "rendered": "2026-08-09"
       },
       "Yasuo": {
         "hash": "8c4dc29b4eda6ff4",
@@ -7872,6 +8009,10 @@
       "ant": {
         "hash": "d841001ee710f84f",
         "rendered": "pre-existing"
+      },
+      "avian alien": {
+        "hash": "f3dfeb0e36d2c908",
+        "rendered": "2026-08-09"
       },
       "axolotl": {
         "hash": "058772a1fffb0077",
@@ -8157,6 +8298,10 @@
         "hash": "ac3280b6e0b3259f",
         "rendered": "pre-existing"
       },
+      "hag": {
+        "hash": "e83b698252ce8e40",
+        "rendered": "2026-08-09"
+      },
       "harpy": {
         "hash": "221ba63625155d56",
         "rendered": "pre-existing"
@@ -8213,9 +8358,18 @@
         "hash": "fa8f18fcf83965be",
         "rendered": "pre-existing"
       },
+      "jiangshi": {
+        "hash": "6c4ecbd01fcbfa39",
+        "rendered": "2026-08-09",
+        "seed": 706203882188518301
+      },
       "kangaroo": {
         "hash": "d376fd3c17b1ffb1",
         "rendered": "pre-existing"
+      },
+      "kelp folk": {
+        "hash": "2ab40cdb6b70e26f",
+        "rendered": "2026-08-09"
       },
       "kelpie": {
         "hash": "4c9d432d7c012fd3",
@@ -8260,6 +8414,10 @@
       "lich": {
         "hash": "5ff629b0f41928b5",
         "rendered": "pre-existing"
+      },
+      "lichen folk": {
+        "hash": "4d7753a0e85119d2",
+        "rendered": "2026-08-09"
       },
       "lion": {
         "hash": "bb1ff84ab795e1cb",
@@ -8345,6 +8503,10 @@
         "hash": "51fa52f05ca1fa3f",
         "rendered": "pre-existing"
       },
+      "nudibranch": {
+        "hash": "cd28e6039a53ae12",
+        "rendered": "2026-08-09"
+      },
       "octopus": {
         "hash": "3fcdae8a07762dd5",
         "rendered": "pre-existing"
@@ -8380,6 +8542,10 @@
       "panda": {
         "hash": "844ab3045052b086",
         "rendered": "pre-existing"
+      },
+      "pangolin": {
+        "hash": "89376bf9260c6e5c",
+        "rendered": "2026-08-09"
       },
       "parrot": {
         "hash": "89aceef82c0c09b4",
@@ -8417,9 +8583,17 @@
         "hash": "912a61dd14fc6078",
         "rendered": "pre-existing"
       },
+      "pteranodon": {
+        "hash": "dc70ad815ebd6aae",
+        "rendered": "2026-08-09"
+      },
       "pufferfish": {
         "hash": "7fdc139d20d73fae",
         "rendered": "pre-existing"
+      },
+      "puffin": {
+        "hash": "791333a83ead0f20",
+        "rendered": "2026-08-09"
       },
       "pumpkin head": {
         "hash": "5bb83b50c17c99d2",
@@ -8436,6 +8610,10 @@
       "raccoon": {
         "hash": "2c8d66269d9d4db1",
         "rendered": "pre-existing"
+      },
+      "radial alien": {
+        "hash": "1f409422ad6355b1",
+        "rendered": "2026-08-09"
       },
       "raptor": {
         "hash": "4b5df4a5c0fce24e",
@@ -8505,6 +8683,10 @@
         "hash": "9b5a99f0fe35efdc",
         "rendered": "pre-existing"
       },
+      "shoebill": {
+        "hash": "790332f725708776",
+        "rendered": "2026-08-09"
+      },
       "skeleton": {
         "hash": "66b2020b833f71a1",
         "rendered": "pre-existing"
@@ -8537,9 +8719,17 @@
         "hash": "14ba5c2381d78c7d",
         "rendered": "pre-existing"
       },
+      "stag beetle": {
+        "hash": "230f0892c46436e7",
+        "rendered": "2026-08-09"
+      },
       "starfish": {
         "hash": "6ac61904b91f9c39",
         "rendered": "pre-existing"
+      },
+      "stick insect": {
+        "hash": "27a3d2b9cc0ac007",
+        "rendered": "2026-08-09"
       },
       "sunflower folk": {
         "hash": "c1ff1172928aaca3",
@@ -8597,6 +8787,10 @@
         "hash": "0bbe754f27a739dc",
         "rendered": "pre-existing"
       },
+      "walrus": {
+        "hash": "80df64a6a3c0edf8",
+        "rendered": "2026-08-09"
+      },
       "wasp": {
         "hash": "8c32a403fef57783",
         "rendered": "pre-existing"
@@ -8639,8 +8833,17 @@
       }
     }
   },
-  "generated": "2026-08-09T20:44:26",
-  "render": {},
+  "generated": "2026-08-09T22:32:55",
+  "render": {
+    "cfg": 1,
+    "height": 2432,
+    "lora_name": "krea2\\krea2_turbo_r64_bf16.safetensors",
+    "sampler_name": "er_sde",
+    "scheduler": "bong_tangent",
+    "steps": 10,
+    "unet_name": "krea2\\krea2_raw_int8_convrot.safetensors",
+    "width": 1664
+  },
   "schema_version": 1,
   "seed_formula": "int(sha256(name)[:15], 16)"
 }

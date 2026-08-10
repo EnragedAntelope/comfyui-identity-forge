@@ -23,8 +23,27 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-*Nothing is currently queued.* Add candidates here with the case for them, then move
-them to "Decided against" or ship them.
+Each of these was researched during the 0.87.0 franchise-gap pass and deliberately
+not shipped, so the next session does not repeat the survey.
+
+| Candidate | The case |
+|---|---|
+| **The Sonic cast** — Shadow, Amy Rose, Dr. Eggman | `Sonic the Hedgehog` ships alone. All three are the mascot-suit shape ~50 entries already run on (`covers_face` + `covers_body` + `mask`), so the mechanism is settled; Eggman is the cleanest of them, being a plain human in a red coat with goggles and a moustache. 0.85.0 closed the funny-animal class "pending a fresh case", and a cast expansion is exactly that — it needs its own written argument, not a ride-along. Tails and Knuckles are weaker: another two-tone furry silhouette each. |
+| **The rest of the Pixar gap** — Monsters Inc., Ratatouille, Turning Red | Toy Story, The Incredibles, Inside Out, Big Hero 6 and Brave ship; Coco and Up joined them at 0.87.0 (Hector Rivera, Carl Fredricksen). Sulley and Mike are mascot-suit shapes; Remy is a quadruped with no worn look (Creature node); Mei's red panda form is the same question. Each needs deciding on its own merits. |
+| Castlevania — Alucard, a Belmont | Two strong, distinct worn looks (high-collared black coat; layered hunter's leathers) in a franchise with none. |
+| Fallout — a Vault Dweller | The blue-and-yellow vault suit is unmistakable, and the Pip-Boy is a clean `prop` + `prop_costume` pair since it is worn on the forearm. |
+| Power Rangers | Helmet = `covers_face` + `mask`. The Miraculous lesson applies directly: a whole cast in near-identical suits makes the **shared** mechanics the risk, not any one entry. Ship one or two, not a team. |
+| Inuyasha; Yu Yu Hakusho; Ranma 1/2; Hellsing | Four anime franchises with no representation and one obvious lead each. |
+| Sakura Kinomoto (Cardcaptor Sakura) | Key must be the full name — four other Sakuras already ship. |
+| Gravity Falls; Encanto; Hocus Pocus | Distinct, describable looks; no franchise representation. |
+| Marty McFly (Back to the Future); The Dude (The Big Lebowski) | Both are ordinary modern dress carried entirely by one specific garment (the puffer vest; the cardigan). Borderline against the "iconic *and* specific outfit" bar — decide deliberately. |
+| Elphaba (Wicked) | Note `Wicked Witch of the West` already ships under The Wizard of Oz, so this is a variant question as much as a new entry. |
+
+**Researched and skipped — do not re-survey.** Valorant, Apex Legends, Destiny,
+Monster Hunter, Warhammer 40K, Skyrim, Splatoon, Animal Crossing, Undertale, FNAF,
+Cuphead, Among Us, Minecraft. Each is an armoured, abstract or mascot silhouette
+that would render as something generic without the name doing the work — the same
+reason Ryze, Swain and Viktor were declined below.
 
 ---
 
@@ -79,6 +98,7 @@ Open. No decision has been made either way.
 
 | # | Question | Where it stands |
 |---|---|---|
+| 2 | **A creature face-colour restatement**, mirroring what `_format_prose` already does for cosplayers. | `palette` reaches `integument` but never `head`, so a creature whose identity is its pallor or hue renders an ordinary human face. Found on `jiangshi` at 0.87.0 and worked around with colour-free intensifiers in the `head` slot, which only partly wins. This is an engine change, not a data one — see the gotcha in `architecture.md`. |
 | 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
 
 **Closed at 0.85.0:** Maid Marian, Scrooge McDuck and Darkwing Duck shipped — the funny-animal

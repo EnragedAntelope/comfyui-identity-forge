@@ -62,8 +62,9 @@ class CheckPassesTests(unittest.TestCase):
         for kind, records in manifest["entries"].items():
             for name, record in records.items():
                 self.assertEqual(
-                    set(record) - {"hash", "rendered"}, set(),
-                    f"{kind}/{name} records more than a hash and a date",
+                    set(record) - {"hash", "rendered", "seed"}, set(),
+                    f"{kind}/{name} records more than a hash, a date and an "
+                    f"optional re-rolled seed",
                 )
 
 

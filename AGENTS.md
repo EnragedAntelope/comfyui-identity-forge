@@ -6,12 +6,12 @@ A character creator and person generator for ComfyUI. Builds coherent, seed-repr
 
 ## Current state
 
-_Last verified: 2026-08-08_
+_Last verified: 2026-08-09_
 
-- **Status:** in active development, released at v0.86.1 (`pyproject.toml`). Published to the Comfy Registry via `.github/workflows/publish_action.yml`, which fires on a `pyproject.toml` version change on `main` — bump the version on every functional commit or the release never ships. CI (`.github/workflows/ci.yml`) is deliberately dependency-free.
-- **Works:** the constraint engine resolving dropdowns into coherent prose plus structured JSON, seed-reproducible; the four preset layer nodes (Archetype, Creature, Modifier, Cosplayer); searchable dropdown widgets, live preview and the save/load vault in `js/`; Stylebook interop and the composition axis; a jsdom frontend suite alongside the Python one; generated reference docs and JS data with `--check` modes wired into the gate.
+- **Status:** in active development, released at v0.87.0 (`pyproject.toml`). Published to the Comfy Registry via `.github/workflows/publish_action.yml`, which fires on a `pyproject.toml` version change on `main` — bump the version on every functional commit or the release never ships. CI (`.github/workflows/ci.yml`) is deliberately dependency-free.
+- **Works:** the constraint engine resolving dropdowns into coherent prose plus structured JSON, seed-reproducible; the four preset layer nodes (Archetype, Creature, Modifier, Cosplayer); searchable dropdown widgets, live preview and the save/load vault in `js/`; Stylebook interop and the composition axis; a jsdom frontend suite alongside the Python one; generated reference docs and JS data with `--check` modes wired into the gate. **New at 0.87.0:** `scripts/render_gallery.py` renders a roster entry's gallery image by driving a running ComfyUI over HTTP and publishes it, and `gallery/render_manifest.json` + `--check` fail CI when an entry's text changes without a re-render (see architecture.md → "The gallery render pipeline").
 - **In progress:** roster and coherence curation is the ongoing work, not a milestone — each release adds characters/creatures/archetypes and closes coherence bugs found by rendering them. `docs/suggested-additions.md` is the live backlog (under consideration / decided against / still to consider).
-- **Known gaps / next steps:** work the "Under consideration" and "Still to consider" sections of `docs/suggested-additions.md`; **`pytest` does not work here** — it imports `comfy_api` before the stub can register, so use `python -m unittest discover -s tests -t . -v` (the `-t .` is load-bearing); gallery images live only on `gh-pages`, so a `main`-only checkout cannot preview them.
+- **Known gaps / next steps:** work the "Under consideration" and "Still to consider" sections of `docs/suggested-additions.md`; **`pytest` does not work here** — it imports `comfy_api` before the stub can register, so use `python -m unittest discover -s tests -t . -v` (the `-t .` is load-bearing); gallery images live only on `gh-pages`, so a `main`-only checkout cannot preview them; **editing an entry's text while ComfyUI is off turns CI red** until `render_gallery.py` re-renders it — that is the gate working as intended, not a bug.
 - **Deep docs:** `docs/architecture.md` (deep reference — read before engine or data changes), `docs/usage.md`, `docs/cosplayer-notes.md`, `docs/creature-notes.md`, `docs/suggested-additions.md` (backlog), `docs/reference/*.md` (generated).
 
 ## Architecture in 60 seconds
@@ -30,7 +30,7 @@ _Last verified: 2026-08-08_
 | `nodes/` | Engine + main node, cosplayer/creature/archetype/modifier nodes, vault save/load |
 | `js/` | ComfyUI frontend extensions (widgets, preview, vault UI) |
 | `tests/` | Data validation, engine/creature/vault/gallery tests, a `comfy_api` stub (`comfy_stub/`) so node classes define outside ComfyUI, and a jsdom frontend suite (`frontend/`) |
-| `scripts/` | Reference doc generator, JS data sync generator, frontend schema fixture generator |
+| `scripts/` | Reference doc generator, JS data sync generator, frontend schema fixture generator, gallery renderer + hash gate |
 | `docs/` | Usage, architecture (deep reference), cosplayer/creature notes |
 | `gallery/` | Sample render manifests and build scripts (images on `gh-pages` only) |
 

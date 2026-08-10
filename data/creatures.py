@@ -2292,6 +2292,213 @@ CREATURES: dict[str, dict] = {
         "tail": "a long streaming waterweed tail",
         "extras": "constant rivulets of water running from the coat",
     },
+
+    # === 0.87.0: weighted into the SMALLEST classes ========================
+    # Mythic & Fantasy (the largest at 34) deliberately gets nothing, so this
+    # pass improves class balance rather than skewing it further. Every
+    # `integument` here is colour-free: colour lives in palette/palette_pool.
+
+    # --- Aliens ----------------------------------------------------------
+    "radial alien": {
+        # A genuinely new BODY PLAN, not another humanoid variant: five-fold
+        # symmetry means there is no front, so nothing else in the class reads
+        # like it.
+        "class": "Aliens", "palette": "pale coral",
+        "palette_pool": ["pale coral", "deep violet", "chalk white", "dusty rose"],
+        "head": "a domed central crown ringed by five sensory lobes, with no face and no front",
+        "eyes": "five unblinking lidless eyes spaced evenly around the crown",
+        "integument": "a smooth rubbery hide over a five-fold radially symmetric body",
+        "arms": "five identical tapering limbs radiating from the trunk",
+        "hands": "clusters of small prehensile finger-tendrils at each limb tip",
+        "legs_feet": "a ring of stubby muscular pads that walk in any direction",
+        "extras": "slow rotating movement with no forward facing",
+    },
+    "avian alien": {
+        # The one vertebrate silhouette the class lacks.
+        "class": "Aliens", "palette": "iridescent indigo",
+        "palette_pool": ["iridescent indigo", "ash grey", "bronze-sheened green",
+                         "bone white"],
+        "head": "a narrow crested head tapering into a long keratinous beak",
+        "eyes": "large side-set eyes with vertical slit pupils",
+        "integument": "a sleek covering of fine overlapping quills",
+        "arms": "long jointed arms folded like furled wings",
+        "hands": "three-fingered grasping claws",
+        "legs_feet": "backward-jointed legs ending in scaled grasping talons",
+        "wings": "sweeping quilled wings that fold flat along the back",
+        "tail": "a stiff fan of long steering quills",
+    },
+
+    # --- Plant & Fungal ---------------------------------------------------
+    "kelp folk": {
+        # Aquatic growth habit: no overlap with moss golem, fern folk or
+        # bramble folk, all of which are terrestrial.
+        "class": "Plant & Fungal", "palette": "deep olive",
+        "palette_pool": ["deep olive", "amber brown", "dark bottle green"],
+        "head": "a head of long streaming kelp blades over a smooth stipe-like skull",
+        "eyes": "flat glossy eyes like water-worn pebbles",
+        "integument": "a slick rubbery body of broad kelp blades layered over a fibrous stalk",
+        "arms": "long ribboning frond arms",
+        "hands": "splayed blade-tipped hands",
+        "legs_feet": "a gripping holdfast of tangled root-like anchors",
+        "extras": "clusters of gas-filled floats along the shoulders",
+    },
+    "lichen folk": {
+        # Crustose growth: a flat, encrusting habit nothing else in the roster
+        # has, and distinct from moss golem's stone-and-moss build.
+        "class": "Plant & Fungal", "palette": "pale sage",
+        "palette_pool": ["pale sage", "sulphur yellow", "chalky grey-green",
+                         "rust orange"],
+        "head": "a flattened head crusted with ruffled foliose plates",
+        "eyes": "small sunken eyes set deep in the crust",
+        "integument": "a body encrusted in flaking, papery lichen plates over a "
+                      "slow-growing frame",
+        "arms": "stiff branching arms furred with crustose growth",
+        "hands": "blunt scaled hands rimmed with curling margins",
+        "legs_feet": "squat spreading feet fused to whatever they stand on",
+        "extras": "tiny cup-shaped fruiting bodies scattered across the shoulders",
+    },
+
+    # --- Insects & Arachnids ---------------------------------------------
+    "stag beetle": {
+        # Mandible-forward: rhinoceros beetle and scarab beetle are HORNED,
+        # which is a different head entirely.
+        "class": "Insects & Arachnids", "palette": "deep mahogany",
+        "palette_pool": ["deep mahogany", "glossy jet", "burnished copper"],
+        "head": "a broad armored head carrying enormous branched antler-like mandibles",
+        "eyes": "small bulbous compound eyes set wide",
+        "integument": "a thick lacquered carapace",
+        "arms": "short heavily plated arms",
+        "hands": "hooked gripping claws",
+        "legs_feet": "spurred clinging legs",
+        "wings": "hardened wing-cases over folded flight wings",
+    },
+    "stick insect": {
+        # Camouflage and limb elongation - a body plan nothing else covers.
+        "class": "Insects & Arachnids", "palette": "twig brown",
+        "palette_pool": ["twig brown", "leaf green", "lichen grey"],
+        "head": "a tiny elongated head with long fine antennae",
+        "eyes": "minute dark eyes set far back",
+        "integument": "an extremely elongated twig-like body of knobbled segments",
+        "arms": "impossibly long thin arms held out straight",
+        "hands": "delicate hooked claspers",
+        "legs_feet": "spindly stilt legs that fold flat against the body",
+        "extras": "a slow swaying motion that mimics a branch in the wind",
+    },
+
+    # --- Monsters ---------------------------------------------------------
+    "jiangshi": {
+        # Stiff-armed Qing-robed hopping undead: not a vampire (aristocratic,
+        # fanged, fluid) and not a zombie (shambling, rotted).
+        "class": "Monsters", "palette": "greyed corpse-blue",
+        # The palette is prepended to `integument` only, never to `head`, so a
+        # creature's FACE has no colour anchor at all - the creature-layer
+        # equivalent of the green-body/pale-face bug. "corpse face" rendered as
+        # a healthy woman wearing a paper slip. Pallor has to be carried by
+        # colour-FREE words in the head slot itself (bloodless, waxen, sunken);
+        # naming a colour here would break the colour-free slot convention.
+        "head": "a bloodless, waxen corpse face, sunken and hollow-cheeked, the jaw slack and expressionless, a long yellow paper talisman pasted down the brow",
+        "eyes": "clouded milky eyes with no life in them",
+        "integument": "stiff, desiccated corpse skin drawn tight over the bones",
+        "arms": "arms locked straight out in front and held rigid",
+        "hands": "hooked stiffened fingers with long dark nails",
+        "legs_feet": "stiff unbending legs that move in short hops",
+        "extras": "a long queue braid and a faint drifting chill",
+    },
+    "hag": {
+        # The crone archetype. Banshee is Mythic & Fantasy and incorporeal.
+        "class": "Monsters", "palette": "sallow grey-green",
+        "palette_pool": ["sallow grey-green", "bruised purple-grey", "bog brown"],
+        "head": "a hunched crone's head with a hooked nose, jutting chin and matted hair",
+        "eyes": "small yellowed eyes glittering under heavy lids",
+        "integument": "deeply furrowed warty skin sagging from the frame",
+        "arms": "gnarled knotted arms",
+        "hands": "long bony fingers ending in cracked talons",
+        "legs_feet": "bowed spindly legs with splayed clawed feet",
+        "extras": "a permanent stoop and a mouthful of broken teeth",
+    },
+
+    # --- Birds ------------------------------------------------------------
+    "shoebill": {
+        # The class has no massive-billed wader.
+        "class": "Birds", "palette": "slate grey",
+        "head": "a heavy head dominated by an enormous clog-shaped hooked bill",
+        "eyes": "pale staring forward-set eyes",
+        "integument": "coarse loose plumage",
+        "arms": "long feathered arms",
+        "hands": "clawed grasping hands",
+        "legs_feet": "very long stilt legs ending in broad splayed toes",
+        "wings": "huge broad soaring wings",
+        "extras": "a motionless statue-still stance",
+    },
+    "puffin": {
+        # No auk in the class, and the silhouette is unmistakable.
+        "class": "Birds", "palette": "black and white",
+        "head": "a rounded head with a tall deep triangular bill banded in bright colour",
+        "eyes": "small dark eyes ringed with red rims and grey face patches",
+        "integument": "dense waterproof plumage",
+        "arms": "short stubby feathered arms",
+        "hands": "small clawed hands",
+        "legs_feet": "short webbed orange feet set far back",
+        "wings": "short rapid whirring wings",
+    },
+
+    # --- Marine Life ------------------------------------------------------
+    "nudibranch": {
+        # Frilled soft body: nothing else in the class is a shell-less sea slug.
+        "class": "Marine Life", "palette": "electric blue and orange",
+        "palette_pool": ["electric blue and orange", "shocking pink and yellow",
+                         "white with crimson tips", "violet with gold trim"],
+        "head": "a soft blunt head crowned with a pair of feathery rhinophore antennae",
+        "eyes": "tiny simple eyespots at the base of the antennae",
+        "integument": "a soft shell-less body covered in waving finger-like cerata",
+        "arms": "boneless rippling arms fringed with frills",
+        "hands": "soft flanged paddle-hands",
+        "legs_feet": "a broad gliding muscular foot",
+        "extras": "a plume of gills flowering from the back",
+    },
+    "walrus": {
+        # Seal is present; a tusked pinniped is a different shape entirely.
+        "class": "Marine Life", "palette": "ruddy brown",
+        "palette_pool": ["ruddy brown", "pale pink-grey", "weathered tan"],
+        "head": "a massive whiskered head with two long downward tusks",
+        "eyes": "small deep-set bloodshot eyes",
+        "integument": "thick wrinkled blubbery hide",
+        "arms": "enormously heavy flipper arms",
+        "hands": "broad clawed flipper-hands",
+        "legs_feet": "short hind flippers under a bulky lower body",
+        "extras": "a dense bristling moustache of stiff whiskers",
+    },
+
+    # --- Mammals ----------------------------------------------------------
+    "pangolin": {
+        # New INTEGUMENT ground: overlapping keratin scales, which nothing else
+        # in the class has.
+        "class": "Mammals", "palette": "warm bronze",
+        "palette_pool": ["warm bronze", "dark olive brown", "pale sand"],
+        "head": "a small tapered head with a narrow toothless snout and tiny ears",
+        "eyes": "small dark eyes with heavy protective lids",
+        "integument": "an armour of large overlapping keratin scales",
+        "arms": "short powerful digging arms",
+        "hands": "long curved excavating claws",
+        "legs_feet": "sturdy plantigrade hind feet",
+        "tail": "a long heavy scaled prehensile tail",
+        "extras": "an extremely long sticky tongue",
+    },
+
+    # --- Reptiles & Amphibians -------------------------------------------
+    "pteranodon": {
+        # The class's first prehistoric flyer, and the first to use the wings
+        # slot: raptor, T. rex and triceratops are all grounded.
+        "class": "Reptiles & Amphibians", "palette": "bone white",
+        "palette_pool": ["bone white", "slate blue-grey", "sandy ochre"],
+        "head": "a long toothless beaked head balanced by a great backswept crest",
+        "eyes": "keen forward-set eyes above the beak",
+        "integument": "a taut hide covered in fine pycnofibres",
+        "arms": "elongated wing-arms with one vastly extended finger",
+        "hands": "three small hooked free claws at the wing's leading edge",
+        "legs_feet": "slim clawed hind legs",
+        "wings": "enormous leathery membrane wings spanning far beyond the body",
+    },
 }
 
 

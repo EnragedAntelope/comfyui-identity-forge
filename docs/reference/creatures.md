@@ -3,9 +3,9 @@
 
 # Creature reference
 
-**195 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**209 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
-## Mammals (33)
+## Mammals (34)
 
 - **bat** (dusky brown)
 - **bear** (deep brown)
@@ -29,6 +29,7 @@
 - **lynx** (silvery grey)
 - **otter** (warm brown)
 - **panda** (black and white)
+- **pangolin** (warm bronze)
 - **rabbit** (dove-grey)
 - **raccoon** (salt-and-pepper grey)
 - **rat** (dusty brown)
@@ -41,7 +42,7 @@
 - **wolf** (slate-grey)
 - **zebra** (black-and-white)
 
-## Birds (22)
+## Birds (24)
 
 - **cardinal** (vivid crimson)
 - **cockatoo** (white with a sulphur crest)
@@ -60,13 +61,15 @@
 - **parrot** (scarlet and blue)
 - **peacock** (jewel-blue and green)
 - **penguin** (black and white)
+- **puffin** (black and white)
 - **raven** (iridescent black)
 - **rooster** (iridescent black and orange)
+- **shoebill** (slate grey)
 - **swan** (pure white)
 - **toucan** (black and white)
 - **vulture** (sooty brown)
 
-## Reptiles & Amphibians (21)
+## Reptiles & Amphibians (22)
 
 - **alligator** (dark olive)
 - **axolotl** (pale pink)
@@ -81,6 +84,7 @@
 - **komodo dragon** (muddy grey-brown)
 - **monitor lizard** (muddy grey-green)
 - **newt** (olive and orange)
+- **pteranodon** (bone white)
 - **python** (tan and brown)
 - **raptor** (mottled green and brown)
 - **rattlesnake** (sandy tan)
@@ -90,7 +94,7 @@
 - **triceratops** (slate grey-green)
 - **tyrannosaurus rex** (mottled olive-green)
 
-## Insects & Arachnids (17)
+## Insects & Arachnids (19)
 
 - **ant** (reddish black)
 - **butterfly** (sunset-orange)
@@ -107,10 +111,12 @@
 - **scarab beetle** (iridescent emerald)
 - **scorpion** (sand-amber)
 - **snail** (soft grey)
+- **stag beetle** (deep mahogany)
+- **stick insect** (twig brown)
 - **tarantula** (dusky brown)
 - **wasp** (black and yellow)
 
-## Marine Life (21)
+## Marine Life (23)
 
 - **anglerfish** (abyssal black)
 - **clownfish** (bright orange)
@@ -124,6 +130,7 @@
 - **mantis shrimp** (iridescent blue and green)
 - **narwhal** (mottled blue-grey)
 - **nautilus** (cream and russet)
+- **nudibranch** (electric blue and orange)
 - **octopus** (mottled coral-red)
 - **orca** (black and white)
 - **pufferfish** (sandy beige)
@@ -132,9 +139,10 @@
 - **shark** (steel-blue)
 - **squid** (pearly mauve)
 - **starfish** (coral orange)
+- **walrus** (ruddy brown)
 - **whale** (slate blue-grey)
 
-## Monsters (17)
+## Monsters (19)
 
 - **demon** (ember-red)
 - **eldritch horror** (void-violet)
@@ -142,6 +150,8 @@
 - **gargoyle** (weathered stone-grey)
 - **ghost** (pale spectral white)
 - **goblin** (sickly green)
+- **hag** (sallow grey-green)
+- **jiangshi** (greyed corpse-blue)
 - **lich** (bone-white and sickly green)
 - **mummy** (dusty bandage-beige)
 - **ogre** (mottled green-grey)
@@ -154,9 +164,10 @@
 - **wraith** (shadow black)
 - **zombie** (ashen grey-green)
 
-## Aliens (15)
+## Aliens (17)
 
 - **android** (matte white and chrome)
+- **avian alien** (iridescent indigo)
 - **biomechanical alien** (gunmetal and chrome)
 - **blob alien** (translucent cyan)
 - **cephalopod alien** (deep violet)
@@ -170,6 +181,7 @@
 - **insectoid xeno** (obsidian black)
 - **plant alien** (verdant teal)
 - **porcelain cyborg** (porcelain white)
+- **radial alien** (pale coral)
 - **reptilian alien** (venom-green)
 
 ## Mythic & Fantasy (34)
@@ -209,7 +221,7 @@
 - **wyvern** (slate grey)
 - **yeti** (snow white)
 
-## Plant & Fungal (15)
+## Plant & Fungal (17)
 
 - **bamboo folk** (jade green)
 - **bramble folk** (thorny dark green)
@@ -218,6 +230,8 @@
 - **cordyceps thrall** (ashen grey)
 - **fern folk** (deep forest green)
 - **flower folk** (blossom-pink)
+- **kelp folk** (deep olive)
+- **lichen folk** (pale sage)
 - **lotus folk** (serene pink-jade)
 - **mandrake** (muddy tan)
 - **moss golem** (mossy green)
