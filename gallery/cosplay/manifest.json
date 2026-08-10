@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-08-09T22:35:06.286686",
-  "total_entries": 1766,
-  "entries_with_images": 1766,
+  "generated": "2026-08-10T00:47:30.470700",
+  "total_entries": 1812,
+  "entries_with_images": 1812,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -155,6 +155,13 @@
       "image": "images/Ahsoka Tano.jpeg"
     },
     {
+      "name": "Aigis",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Aigis.jpeg"
+    },
+    {
       "name": "Ainz Ooal Gown",
       "has_image": true,
       "gender": "Male",
@@ -302,6 +309,20 @@
       "image": "images/Alphonse Elric.jpeg"
     },
     {
+      "name": "Alucard (Castlevania)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Castlevania",
+      "image": "images/Alucard (Castlevania).jpeg"
+    },
+    {
+      "name": "Alucard (Hellsing)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Hellsing",
+      "image": "images/Alucard (Hellsing).jpeg"
+    },
+    {
       "name": "Alyx Vance",
       "has_image": true,
       "gender": "Female",
@@ -426,6 +447,13 @@
       "gender": "Female",
       "group": "Invincible",
       "image": "images/Anissa.jpeg"
+    },
+    {
+      "name": "Ann Takamaki",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Ann Takamaki.jpeg"
     },
     {
       "name": "Anna",
@@ -790,6 +818,13 @@
       "gender": "Female",
       "group": "Darkstalkers",
       "image": "images/Baby Bonnie Hood (B.B. Hood).jpeg"
+    },
+    {
+      "name": "Baiken",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Baiken.jpeg"
     },
     {
       "name": "Bakugo",
@@ -1401,6 +1436,13 @@
       "image": "images/Bride of Frankenstein.jpeg"
     },
     {
+      "name": "Bridget",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Bridget.jpeg"
+    },
+    {
       "name": "Brigitte",
       "has_image": true,
       "gender": "Female",
@@ -1441,6 +1483,13 @@
       "gender": "Female",
       "group": "Record of Ragnarok",
       "image": "images/Brunhilde.jpeg"
+    },
+    {
+      "name": "Bruno Madrigal",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Encanto",
+      "image": "images/Bruno Madrigal.jpeg"
     },
     {
       "name": "Bubbles",
@@ -2108,6 +2157,13 @@
       "image": "images/Commander Shepard.jpeg"
     },
     {
+      "name": "Commissar",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Warhammer 40,000",
+      "image": "images/Commissar.jpeg"
+    },
+    {
       "name": "Conan the Barbarian",
       "has_image": true,
       "gender": "Male",
@@ -2542,6 +2598,13 @@
       "image": "images/Demitri Maximoff.jpeg"
     },
     {
+      "name": "Demoman (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Demoman (Team Fortress 2).jpeg"
+    },
+    {
       "name": "Dengar",
       "has_image": true,
       "gender": "Male",
@@ -2666,6 +2729,13 @@
       "gender": "Female",
       "group": "The Fifth Element",
       "image": "images/Diva Plavalaguna.jpeg"
+    },
+    {
+      "name": "Dizzy",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Dizzy.jpeg"
     },
     {
       "name": "Doctor Blight",
@@ -2820,6 +2890,13 @@
       "gender": "Male",
       "group": "Kim Possible",
       "image": "images/Dr. Drakken.jpeg"
+    },
+    {
+      "name": "Dr. Eggman",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Sonic the Hedgehog",
+      "image": "images/Dr. Eggman.jpeg"
     },
     {
       "name": "Dr. Facilier",
@@ -3081,6 +3158,13 @@
       "image": "images/Elmer Fudd.jpeg"
     },
     {
+      "name": "Elphelt Valentine",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Elphelt Valentine.jpeg"
+    },
+    {
       "name": "Elroy Jetson",
       "has_image": true,
       "gender": "Male",
@@ -3149,6 +3233,13 @@
       "gender": "Male",
       "group": "Energizer",
       "image": "images/Energizer Bunny.jpeg"
+    },
+    {
+      "name": "Engineer (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Engineer (Team Fortress 2).jpeg"
     },
     {
       "name": "Eowyn",
@@ -3534,6 +3625,13 @@
       "gender": "Female",
       "group": "Genshin Impact",
       "image": "images/Furina.jpeg"
+    },
+    {
+      "name": "Futaba Sakura",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Futaba Sakura.jpeg"
     },
     {
       "name": "Future Trunks",
@@ -4201,6 +4299,13 @@
       "image": "images/Harry Potter.jpeg"
     },
     {
+      "name": "Haru Okumura",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Haru Okumura.jpeg"
+    },
+    {
       "name": "Hatsune Miku",
       "has_image": true,
       "gender": "Female",
@@ -4262,6 +4367,13 @@
       "gender": "Male",
       "group": "Masters of the Universe",
       "image": "images/He-Man.jpeg"
+    },
+    {
+      "name": "Heavy (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Heavy (Team Fortress 2).jpeg"
     },
     {
       "name": "Hector Barbossa",
@@ -4544,6 +4656,13 @@
       "image": "images/Hwoarang.jpeg"
     },
     {
+      "name": "I-No",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/I-No.jpeg"
+    },
+    {
       "name": "IG-88",
       "has_image": true,
       "gender": "Male",
@@ -4649,6 +4768,13 @@
       "image": "images/Inspector Gadget.jpeg"
     },
     {
+      "name": "Inuyasha",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Inuyasha",
+      "image": "images/Inuyasha.jpeg"
+    },
+    {
       "name": "Invincible",
       "has_image": true,
       "gender": "Male",
@@ -4710,6 +4836,13 @@
       "gender": "Female",
       "group": "Dragon Age",
       "image": "images/Isabela.jpeg"
+    },
+    {
+      "name": "Isabela Madrigal",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Encanto",
+      "image": "images/Isabela Madrigal.jpeg"
     },
     {
       "name": "Issei Hyoudou",
@@ -4801,6 +4934,13 @@
       "gender": "Male",
       "group": "Record of Ragnarok",
       "image": "images/Jack the Ripper (Record of Ragnarok).jpeg"
+    },
+    {
+      "name": "Jack-O' Valentine",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Jack-O' Valentine.jpeg"
     },
     {
       "name": "Jade (Jennifer-Lynn Hayden)",
@@ -5121,7 +5261,7 @@
       "name": "Joker (Persona 5)",
       "has_image": true,
       "gender": "Male",
-      "group": "Persona 5",
+      "group": "Persona",
       "image": "images/Joker (Persona 5).jpeg"
     },
     {
@@ -5200,6 +5340,13 @@
       "gender": "Male",
       "group": "Judge Dredd",
       "image": "images/Judge Dredd.jpeg"
+    },
+    {
+      "name": "Judy Alvarez",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Cyberpunk 2077",
+      "image": "images/Judy Alvarez.jpeg"
     },
     {
       "name": "Judy Hopps",
@@ -5846,6 +5993,13 @@
       "image": "images/Kwame.jpeg"
     },
     {
+      "name": "Ky Kiske",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Guilty Gear",
+      "image": "images/Ky Kiske.jpeg"
+    },
+    {
       "name": "Kyle Broflovski",
       "has_image": true,
       "gender": "Male",
@@ -6469,6 +6623,13 @@
       "image": "images/Luigi.jpeg"
     },
     {
+      "name": "Luisa Madrigal",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Encanto",
+      "image": "images/Luisa Madrigal.jpeg"
+    },
+    {
       "name": "Luke Cage",
       "has_image": true,
       "gender": "Male",
@@ -6721,6 +6882,13 @@
       "image": "images/Mako Mankanshoku.jpeg"
     },
     {
+      "name": "Makoto Niijima",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Makoto Niijima.jpeg"
+    },
+    {
       "name": "Maleficent",
       "has_image": true,
       "gender": "Female",
@@ -6861,6 +7029,13 @@
       "image": "images/Martian Manhunter.jpeg"
     },
     {
+      "name": "Marty McFly",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Back to the Future",
+      "image": "images/Marty McFly.jpeg"
+    },
+    {
       "name": "Marv",
       "has_image": true,
       "gender": "Male",
@@ -6945,6 +7120,13 @@
       "image": "images/May.jpeg"
     },
     {
+      "name": "May (Guilty Gear)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/May (Guilty Gear).jpeg"
+    },
+    {
       "name": "Mayura",
       "has_image": true,
       "gender": "Female",
@@ -6964,6 +7146,13 @@
       "gender": "Female",
       "group": "Medaka Box",
       "image": "images/Medaka Kurokami.jpeg"
+    },
+    {
+      "name": "Medic (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Medic (Team Fortress 2).jpeg"
     },
     {
       "name": "Medusa",
@@ -7225,6 +7414,13 @@
       "image": "images/Milim Nava.jpeg"
     },
     {
+      "name": "Millia Rage",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Millia Rage.jpeg"
+    },
+    {
       "name": "Minato Namikaze",
       "has_image": true,
       "gender": "Male",
@@ -7258,6 +7454,13 @@
       "gender": "Female",
       "group": "KPop Demon Hunters",
       "image": "images/Mira.jpeg"
+    },
+    {
+      "name": "Mirabel Madrigal",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Encanto",
+      "image": "images/Mirabel Madrigal.jpeg"
     },
     {
       "name": "Mirajane Strauss",
@@ -7342,6 +7545,13 @@
       "gender": "Female",
       "group": "Demon Slayer",
       "image": "images/Mitsuri Kanroji.jpeg"
+    },
+    {
+      "name": "Mitsuru Kirijo",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Mitsuru Kirijo.jpeg"
     },
     {
       "name": "Moana",
@@ -7713,6 +7923,13 @@
       "gender": "Female",
       "group": "Lilo and Stitch",
       "image": "images/Nani Pelekai.jpeg"
+    },
+    {
+      "name": "Naoto Shirogane",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Naoto Shirogane.jpeg"
     },
     {
       "name": "Naruto Uzumaki",
@@ -8618,6 +8835,13 @@
       "image": "images/Professor X.jpeg"
     },
     {
+      "name": "Psycho (Borderlands)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Borderlands",
+      "image": "images/Psycho (Borderlands).jpeg"
+    },
+    {
       "name": "Psyduck",
       "has_image": true,
       "gender": "Male",
@@ -8672,6 +8896,13 @@
       "gender": "Male",
       "group": "Marvel",
       "image": "images/Pyro.jpeg"
+    },
+    {
+      "name": "Pyro (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Pyro (Team Fortress 2).jpeg"
     },
     {
       "name": "Pyron",
@@ -8875,6 +9106,13 @@
       "gender": "Female",
       "group": "Bleach",
       "image": "images/Rangiku Matsumoto.jpeg"
+    },
+    {
+      "name": "Ranma Saotome",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Ranma 1/2",
+      "image": "images/Ranma Saotome.jpeg"
     },
     {
       "name": "Ranni the Witch",
@@ -10144,6 +10382,13 @@
       "image": "images/Simon.jpeg"
     },
     {
+      "name": "Simon Belmont",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Castlevania",
+      "image": "images/Simon Belmont.jpeg"
+    },
+    {
       "name": "Sinbad",
       "has_image": true,
       "gender": "Male",
@@ -10184,6 +10429,13 @@
       "gender": "Female",
       "group": "The Boys",
       "image": "images/Sister Sage.jpeg"
+    },
+    {
+      "name": "Sister of Battle",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Warhammer 40,000",
+      "image": "images/Sister of Battle.jpeg"
     },
     {
       "name": "Skarlet",
@@ -10242,6 +10494,13 @@
       "image": "images/Snake Plissken.jpeg"
     },
     {
+      "name": "Sniper (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Sniper (Team Fortress 2).jpeg"
+    },
+    {
       "name": "Snorlax",
       "has_image": true,
       "gender": "Male",
@@ -10275,6 +10534,13 @@
       "gender": "Male",
       "group": "Avatar: The Last Airbender",
       "image": "images/Sokka.jpeg"
+    },
+    {
+      "name": "Sol Badguy",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Guilty Gear",
+      "image": "images/Sol Badguy.jpeg"
     },
     {
       "name": "Solaire of Astora",
@@ -10389,6 +10655,13 @@
       "image": "images/Space Ace.jpeg"
     },
     {
+      "name": "Space Marine",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Warhammer 40,000",
+      "image": "images/Space Marine.jpeg"
+    },
+    {
       "name": "Spawn",
       "has_image": true,
       "gender": "Male",
@@ -10471,6 +10744,13 @@
       "gender": "Male",
       "group": "Nickelodeon",
       "image": "images/SpongeBob SquarePants.jpeg"
+    },
+    {
+      "name": "Spy (Team Fortress 2)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Team Fortress 2",
+      "image": "images/Spy (Team Fortress 2).jpeg"
     },
     {
       "name": "Squall",
@@ -10697,6 +10977,13 @@
       "image": "images/Sukuna.jpeg"
     },
     {
+      "name": "Sumire Yoshizawa",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Persona",
+      "image": "images/Sumire Yoshizawa.jpeg"
+    },
+    {
       "name": "Summer Smith",
       "has_image": true,
       "gender": "Female",
@@ -10865,6 +11152,13 @@
       "image": "images/Tauntaun.jpeg"
     },
     {
+      "name": "Tech-Priest",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Warhammer 40,000",
+      "image": "images/Tech-Priest.jpeg"
+    },
+    {
       "name": "Teela",
       "has_image": true,
       "gender": "Female",
@@ -10919,6 +11213,13 @@
       "gender": "Male",
       "group": "The King of Fighters",
       "image": "images/Terry Bogard.jpeg"
+    },
+    {
+      "name": "Testament",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Guilty Gear",
+      "image": "images/Testament.jpeg"
     },
     {
       "name": "Thanos",
@@ -10982,6 +11283,13 @@
       "gender": "Male",
       "group": "The Boys",
       "image": "images/The Deep.jpeg"
+    },
+    {
+      "name": "The Dude",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Big Lebowski",
+      "image": "images/The Dude.jpeg"
     },
     {
       "name": "The Flash",
@@ -11556,6 +11864,13 @@
       "gender": "Male",
       "group": "Trigun",
       "image": "images/Vash the Stampede.jpeg"
+    },
+    {
+      "name": "Vault Dweller",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Fallout",
+      "image": "images/Vault Dweller.jpeg"
     },
     {
       "name": "Vega",
@@ -12158,6 +12473,13 @@
       "gender": "Female",
       "group": "Future Diary",
       "image": "images/Yuno Gasai.jpeg"
+    },
+    {
+      "name": "Yusuke Urameshi",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Yu Yu Hakusho",
+      "image": "images/Yusuke Urameshi.jpeg"
     },
     {
       "name": "Yuzuriha",
