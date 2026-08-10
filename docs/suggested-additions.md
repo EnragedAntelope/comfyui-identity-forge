@@ -23,27 +23,23 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-Each of these was researched during the 0.87.0 franchise-gap pass and deliberately
-not shipped, so the next session does not repeat the survey.
-
-| Candidate | The case |
-|---|---|
-| **The Sonic cast** — Shadow, Amy Rose, Dr. Eggman | `Sonic the Hedgehog` ships alone. All three are the mascot-suit shape ~50 entries already run on (`covers_face` + `covers_body` + `mask`), so the mechanism is settled; Eggman is the cleanest of them, being a plain human in a red coat with goggles and a moustache. 0.85.0 closed the funny-animal class "pending a fresh case", and a cast expansion is exactly that — it needs its own written argument, not a ride-along. Tails and Knuckles are weaker: another two-tone furry silhouette each. |
-| **The rest of the Pixar gap** — Monsters Inc., Ratatouille, Turning Red | Toy Story, The Incredibles, Inside Out, Big Hero 6 and Brave ship; Coco and Up joined them at 0.87.0 (Hector Rivera, Carl Fredricksen). Sulley and Mike are mascot-suit shapes; Remy is a quadruped with no worn look (Creature node); Mei's red panda form is the same question. Each needs deciding on its own merits. |
-| Castlevania — Alucard, a Belmont | Two strong, distinct worn looks (high-collared black coat; layered hunter's leathers) in a franchise with none. |
-| Fallout — a Vault Dweller | The blue-and-yellow vault suit is unmistakable, and the Pip-Boy is a clean `prop` + `prop_costume` pair since it is worn on the forearm. |
-| Power Rangers | Helmet = `covers_face` + `mask`. The Miraculous lesson applies directly: a whole cast in near-identical suits makes the **shared** mechanics the risk, not any one entry. Ship one or two, not a team. |
-| Inuyasha; Yu Yu Hakusho; Ranma 1/2; Hellsing | Four anime franchises with no representation and one obvious lead each. |
-| Sakura Kinomoto (Cardcaptor Sakura) | Key must be the full name — four other Sakuras already ship. |
-| Gravity Falls; Encanto; Hocus Pocus | Distinct, describable looks; no franchise representation. |
-| Marty McFly (Back to the Future); The Dude (The Big Lebowski) | Both are ordinary modern dress carried entirely by one specific garment (the puffer vest; the cardigan). Borderline against the "iconic *and* specific outfit" bar — decide deliberately. |
-| Elphaba (Wicked) | Note `Wicked Witch of the West` already ships under The Wizard of Oz, so this is a variant question as much as a new entry. |
+**Empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
+real case shipped, and everything else was closed into [Decided against](#decided-against)
+rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends, Destiny,
-Monster Hunter, Warhammer 40K, Skyrim, Splatoon, Animal Crossing, Undertale, FNAF,
+Monster Hunter, Skyrim, Splatoon, Animal Crossing, Undertale, FNAF,
 Cuphead, Among Us, Minecraft. Each is an armoured, abstract or mascot silhouette
 that would render as something generic without the name doing the work — the same
 reason Ryze, Swain and Viktor were declined below.
+
+> **Warhammer 40K was removed from that list at 0.88.0 and shipped.** The original skip
+> treated the whole setting as uniformly armoured silhouettes. That is true of two of the
+> four that shipped (`Space Marine`, `Sister of Battle`, which take the settled
+> `covers_face` + `mask` route), but not the other two: `Tech-Priest` is hooded robes and
+> augmetics and `Commissar` is a greatcoat and peaked cap — cloth silhouettes that read
+> correctly without the name doing the work. That is the new argument; the rest of the
+> skipped list still stands on the old one.
 
 ---
 
@@ -68,6 +64,14 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Adam, Heracles, Raiden Tameemon, Zeus (Record of Ragnarok) | Fight bare-chested in plain shorts or a loincloth. No describable worn look. |
 | Thor, Poseidon, Hermes (Record of Ragnarok) | The names collide with far better-known Marvel/DC keys already shipping, and these designs are not distinctive enough to earn a disambiguated key. |
 | Qin Shi Huang, Nikola Tesla, Sasaki Kojiro, Beelzebub, Hajun | Deep cuts outside the series' own audience. |
+| Shadow, Amy Rose, Tails, Knuckles (Sonic) | `Dr. Eggman` shipped at 0.88.0 as the one clean case — a plain human in a red coat. The other four are each another two-tone furry mascot silhouette, which is the ride-along 0.85.0 closed the funny-animal class against. |
+| Sakura Kinomoto (Cardcaptor Sakura) | Closed unshipped. Four other Sakuras already ship, and the magical-girl-in-a-school-uniform shape is well covered. |
+| Elphaba (Wicked) | `Wicked Witch of the West` already ships under The Wizard of Oz and carries the green-skinned witch silhouette. A second one is a variant, not a new look. |
+| Chie Satonaka, Yukiko Amagi, Rise Kujikawa, Yukari Takeba, Fuuka Yamagishi (Persona) | School uniform plus one coloured jacket. That is the exact shape flagged below as the roster's softest already-shipped entries — adding five more of it would move the bar, not meet it. The Persona entries that shipped at 0.88.0 all have a distinct non-uniform silhouette. |
+| Scout, Soldier (Team Fortress 2) | The seven that shipped each carry a silhouette that reads alone. Scout is a backwards baseball cap over a t-shirt and Soldier is a generic helmeted soldier — both need the franchise name to do the work. |
+| The rest of the Guilty Gear cast — Potemkin, Faust, Chipp Zanuff, Nagoriyuki, Ramlethal, Axl Low | The curated eleven already cover every distinct silhouette in the cast. This is the League ceiling applied early: a franchise stops where more entries stop adding new visual ground. |
+| Ork Boyz, Necrons (Warhammer 40,000) | No worn look — a hulking green brute and a skeletal metal automaton. **Creature node** shape, the same call as Appa and Simba. |
+| Chaos Space Marines, Aeldari Farseers (Warhammer 40,000) | More armour. The four that shipped were chosen because two of them are cloth; these would re-add exactly the silhouette the original skip was right about. |
 
 ### Whole classes
 
@@ -77,6 +81,9 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | The kwamis (Tikki, Plagg, Wayzz…) | Palm-sized floating creatures with no worn look. Creature-node shape. |
 | Quadrupeds with no worn look — Appa, Momo, Luna, Artemis, Nala, Simba, Baloo, Shere Khan, Yogi Bear, Tom & Jerry, Courage, Reptar | No garments to describe. The **Creature node** already covers this ground exactly, rendering an animal form slot by slot. |
 | The full ~170-champion League roster | Offered and declined. ~155 adds would make League the largest franchise in the pack and take Video Games to ~28%, letting one game steer the global Random pool. The curated 15 → 38 expansion is where it stops. |
+| The rest of the Pixar gap — Monsters Inc., Ratatouille, Turning Red | Closed unshipped at 0.88.0. Sulley and Mike are mascot-suit shapes already covered ~50 times over; Remy is a quadruped with no worn look (**Creature node**); Mei's red panda form is the same question. None brings new visual ground. |
+| Power Rangers | Closed unshipped. This is the Miraculous case at its worst — a whole cast in the same suit in different colours, where the shared mechanics are the risk and no single entry earns its place. |
+| Gravity Falls; Hocus Pocus | Closed unshipped at 0.88.0 when the row they shared with Encanto was split. Encanto had four distinct silhouettes; these two are ordinary modern dress and period costume respectively, carried by the ensemble rather than by any one look. |
 
 ### Already ship under another name — check before proposing
 
@@ -98,8 +105,18 @@ Open. No decision has been made either way.
 
 | # | Question | Where it stands |
 |---|---|---|
-| 2 | **A creature face-colour restatement**, mirroring what `_format_prose` already does for cosplayers. | `palette` reaches `integument` but never `head`, so a creature whose identity is its pallor or hue renders an ordinary human face. Found on `jiangshi` at 0.87.0 and worked around with colour-free intensifiers in the `head` slot, which only partly wins. This is an engine change, not a data one — see the gotcha in `architecture.md`. |
 | 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
+
+**Closed at 0.88.0 — the creature face-colour question (was #2).** The proposal was an engine
+change restating `palette` on the `head` slot, mirroring `_format_prose`. Measurement killed it:
+**186 of 209 creature heads are anatomically fused animal heads** (muzzle, beak, mandibles,
+carapace, ruff), where head and body are one continuous material and the model carries the
+integument colour across unaided — which is why the roster renders correctly today. Only 23 heads
+are human-shaped, and of those 5 already name a colour, 6 name a non-skin material or have no face
+at all (`radial alien`, `wraith`), and 3 *should* have a human face (`centaur`, `satyr`, `sphinx`).
+The real risk set was six entries, fixed as data at 0.88.0 by adding colour-free material words to
+`flesh golem`, `troll`, `manticore` and `yeti` (`ghost` and `leprechaun` already self-described).
+**Do not re-propose the engine change from the "systemic" premise** — it was measured and it is not.
 
 **Closed at 0.85.0:** Maid Marian, Scrooge McDuck and Darkwing Duck shipped — the funny-animal
 question resolved at exactly those three, not an open-ended class. `Robin Hood (1973)`,

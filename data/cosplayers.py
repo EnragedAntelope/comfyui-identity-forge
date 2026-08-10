@@ -10550,7 +10550,7 @@ COSPLAYERS: dict[str, dict] = {
     # bracelet's gem and the gauntlet's gem are the same is the origin's plot point,
     # not set dressing. Razor tendrils are equally iconic and were also absent.
     # Two deliberate calls:
-    #  * Armour coverage canonically scales with the threat (less against mortals,
+    #  * Armor coverage canonically scales with the threat (less against mortals,
     #    full plate against demons). The bladed-bikini extreme is the Turner-era cover
     #    convention rather than universal canon — kept, because it is the look the
     #    character is recognised by and therefore the one a cosplayer builds.
@@ -20099,7 +20099,7 @@ COSPLAYERS: dict[str, dict] = {
     # --- Persona 5 --------------------------------------------------------
     # Key parenthesized: `Joker` (DC) already ships.
     "Joker (Persona 5)": {
-        "franchise": "Persona 5",
+        "franchise": "Persona",
         "gender": "Male",
         # A domino mask covers the eyes, not the face - not covers_face.
         "costume": "a long black tailcoat with a high collar over a grey V-neck, black "
@@ -20249,6 +20249,642 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "very tall"},
         "prop": "a tall wooden cane topped with an old radio microphone",
     },
+
+    # =====================================================================
+    # Added batch: franchise gaps closed from the backlog's "Under
+    # consideration" list. Each of these was a franchise with no
+    # representation at all, or a one-entry franchise missing its obvious
+    # second look.
+    # =====================================================================
+    "Dr. Eggman": {
+        "franchise": "Sonic the Hedgehog",
+        "gender": "Male",
+        # An ordinary human, not a mascot suit -- no covers_face. "bald" is written into
+        # the costume so the builder's scalp-hair suppressor fires; facial_hair only
+        # offers a bare "mustache", so the walrus shape and colour live in the prose.
+        "costume": "a red military-style frock coat with wide yellow cuffs and gold "
+                   "buttons, black tapered trousers, white gloves and heavy black boots, "
+                   "and blue pince-nez goggles pushed up onto the brow, on a bald head "
+                   "above an enormous bushy orange-brown walrus mustache",
+        "signature": {"facial_hair": "mustache", "eye_color": "dark brown"},
+        "physique": {"body_type": "chubby", "height": "average height", "skin_tone": "fair"},
+    },
+    "Alucard (Castlevania)": {
+        "franchise": "Castlevania",
+        "gender": "Male",
+        # Key disambiguated against "Alucard (Hellsing)" below -- two different
+        # characters, same name, both shipping in this batch.
+        "costume": "a high-collared black leather coat with gold clasps and a deep red "
+                   "lining over a white ruffled shirt and cravat, black gloves, a wide "
+                   "buckled belt, and tall black boots",
+        "eyes": "deep amber",
+        "signature": {"hair_color": "platinum white", "hair_length": "very long",
+                      "hair_texture": "pin straight"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
+        "prop": "a slender silver longsword with a cross-shaped guard and a blue gem set "
+                "in the pommel",
+    },
+    "Simon Belmont": {
+        "franchise": "Castlevania",
+        "gender": "Male",
+        # The whip is kept entirely out of the costume rather than coiled on the belt, so
+        # no prop_costume is needed -- it only exists when the prop toggle is on.
+        "costume": "layered brown leather hunter's armor with a single studded shoulder "
+                   "pauldron, a brown cloth headband tied at the brow, leather bracers "
+                   "and a wide buckled belt, a fur-trimmed half-cape, and tall boots",
+        "signature": {"hair_color": "warm brown", "hair_length": "long",
+                      "hair_texture": "wavy", "eye_color": "medium brown"},
+        "physique": {"body_type": "toned", "height": "tall", "skin_tone": "fair"},
+        "prop": "a long leather whip with segmented steel links running down its length",
+    },
+    "Vault Dweller": {
+        "franchise": "Fallout",
+        # gender is only a Random-scoping bucket; the Vault Dweller is deliberately
+        # unnamed and unsexed in canon, so this value carries no other meaning.
+        "gender": "Male",
+        # The wrist computer is WORN, not held, so it stays in the costume permanently and
+        # the entry ships no prop -- prop text is voiced after "holding ...", which a
+        # forearm-mounted unit cannot be. signature/physique are omitted on purpose so the
+        # person underneath fully randomizes, which is the whole idea of the character.
+        "costume": "a snug blue jumpsuit with bright yellow piping down the sleeves and "
+                   "legs and a large yellow number stencilled across the back, a brown "
+                   "leather utility belt hung with pouches, sturdy laced work boots, and "
+                   "a bulky green-screened computer unit strapped to one forearm",
+    },
+    "Inuyasha": {
+        "franchise": "Inuyasha",
+        "gender": "Male",
+        # The dog ears sit above the scalp hair rather than replacing it, so this is NOT
+        # covers_hair -- the long silver hair is the other half of the silhouette.
+        "costume": "a loose red fire-rat robe of a wide-sleeved haori and matching hakama "
+                   "tied with a cloth sash, bare feet, and a pair of pointed white dog "
+                   "ears standing upright on top of the head",
+        "eyes": "molten gold",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_texture": "pin straight"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+        "prop": "a massive fanged sword with a broad curved blade and a cloth-wrapped hilt",
+    },
+    "Yusuke Urameshi": {
+        "franchise": "Yu Yu Hakusho",
+        "gender": "Male",
+        "costume": "a green gakuran school uniform with a stiff mandarin collar and gold "
+                   "buttons over a white shirt, matching green trousers, and black shoes",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "light"},
+    },
+    "Ranma Saotome": {
+        "franchise": "Ranma 1/2",
+        "gender": "Male",
+        # Male form only. The girl-form swap cannot be a costumes alternate: alternates
+        # never carry gender, which is an entry-level key, so a second entry would be the
+        # only way to represent it -- and that would be one character filling two rows.
+        "costume": "a red Chinese-style silk shirt with a mandarin collar and knotted frog "
+                   "fastenings, loose black kung-fu trousers gathered at the ankle, a "
+                   "cloth sash, and flat black cloth slippers",
+        "signature": {"hair_color": "near black", "hair_length": "shoulder length",
+                      "hair_style": "braided ponytail", "eye_color": "blue-gray"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "light"},
+    },
+    "Alucard (Hellsing)": {
+        "franchise": "Hellsing",
+        "gender": "Male",
+        # The round orange glasses are worn eyewear, not a mask -- the face reads clearly
+        # through them, so no covers_face.
+        "costume": "a long red trench coat with a broad-shouldered cape worn over a red "
+                   "suit and a black cravat, white gloves marked with a black sigil across "
+                   "each back, a wide-brimmed red fedora, heavy black boots, and small "
+                   "round orange-tinted glasses",
+        "eyes": "blood red",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "wavy"},
+        "physique": {"body_type": "lean", "height": "very tall", "skin_tone": "very pale"},
+        "prop": "a huge long-barrelled silver handgun with an ornately engraved slide",
+    },
+    "Mirabel Madrigal": {
+        "franchise": "Encanto",
+        "gender": "Female",
+        "costume": "a white cotton blouse with puffed short sleeves and a wide embroidered "
+                   "yoke of butterflies and candles, a long layered teal-green skirt "
+                   "densely embroidered with flowers and geometric bands, a woven belt, "
+                   "round green-rimmed glasses, and flat leather huarache sandals",
+        "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
+                      "hair_texture": "curly", "hair_style": "worn down",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "average", "height": "short", "skin_tone": "caramel"},
+    },
+    "Luisa Madrigal": {
+        "franchise": "Encanto",
+        "gender": "Female",
+        # Her build IS the character, so the powerful frame is stated in the costume prose
+        # as well as the physique -- physique only applies in Full-character mode, and a
+        # costume-only Luisa without the shoulders is not Luisa.
+        "costume": "a pale blue-lilac off-shoulder top with a ruffled neckline and an "
+                   "embroidered floral yoke, a long white skirt with a coloured hem band, "
+                   "a woven sash, gold hoop earrings, and a wide blue ribbon tying up the "
+                   "hair, on a powerfully built frame with broad shoulders and heavily "
+                   "muscled arms",
+        "signature": {"hair_color": "warm brown", "hair_length": "long",
+                      "hair_texture": "wavy", "hair_style": "sleek bun",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "caramel"},
+    },
+    "Isabela Madrigal": {
+        "franchise": "Encanto",
+        "gender": "Female",
+        # Full name required: "Isabela" (Dragon Age) already ships.
+        "costume": "a long flowing purple gown with a fitted bodice and a wide ruffled "
+                   "skirt embroidered with trailing vines and flowers, gold bangles and "
+                   "drop earrings, and fresh flowers woven through the hair",
+        "signature": {"hair_color": "dark brown", "hair_length": "waist length",
+                      "hair_texture": "wavy", "hair_style": "worn down",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "caramel"},
+    },
+    "Bruno Madrigal": {
+        "franchise": "Encanto",
+        "gender": "Male",
+        # The hollow-eyed pallor rides on complexion rather than a makeup field -- he is
+        # not made up, he is worn out.
+        "costume": "a loose hooded green ruana poncho patterned with hourglass motifs worn "
+                   "over a beige linen shirt and dark trousers, a braided rope belt, a "
+                   "small woven satchel, and flat leather sandals",
+        "signature": {"hair_color": "dark brown", "hair_length": "ear length",
+                      "hair_texture": "curly", "facial_hair": "short beard",
+                      "complexion": "sallow", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "caramel"},
+    },
+    "Marty McFly": {
+        "franchise": "Back to the Future",
+        "gender": "Male",
+        # Ordinary modern dress carried by one garment, so the vest leads the costume --
+        # the same shape that admitted Sandy Olsson and Mia Wallace.
+        "costume": "an orange-red quilted puffer vest worn open over a blue denim jacket, "
+                   "a checked shirt and a white tee, blue jeans, red-and-white high-top "
+                   "trainers, and a wristwatch on each wrist",
+        "signature": {"hair_color": "medium brown", "hair_length": "ear length",
+                      "hair_style": "worn down", "eye_color": "medium brown"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "The Dude": {
+        "franchise": "The Big Lebowski",
+        "gender": "Male",
+        "costume": "a heavy brown-and-cream patterned Cowichan cardigan worn open over a "
+                   "loose faded t-shirt, baggy striped pyjama trousers, rubber jelly "
+                   "sandals, and round amber-tinted sunglasses",
+        "signature": {"hair_color": "medium brown", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "facial_hair": "full beard",
+                      "eye_color": "medium brown"},
+        "physique": {"body_type": "average", "height": "tall", "skin_tone": "light"},
+    },
+
+    # =====================================================================
+    # Added batch: Guilty Gear. Curated to eleven -- every distinct
+    # silhouette in the cast, and no further. At eleven the franchise crosses
+    # _FRANCHISE_SCOPE_MINIMUM and earns its own "Franchise: Guilty Gear"
+    # random_scope entry.
+    # =====================================================================
+    "Sol Badguy": {
+        "franchise": "Guilty Gear",
+        "gender": "Male",
+        "costume": "a black leather jacket with red trim and a high collar hung with heavy "
+                   "belt straps, a red headband tied across the brow, fingerless gloves, "
+                   "dark trousers with a wide studded belt, and heavy boots",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "long",
+                      "hair_style": "windswept", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
+        "prop": "a blunt fire-scored greatsword with a boxy notched blade and a small "
+                "lever set into the hilt",
+    },
+    "Ky Kiske": {
+        "franchise": "Guilty Gear",
+        "gender": "Male",
+        "costume": "a white and blue longcoat with gold trim and a cross emblem at the "
+                   "breast, a short blue cape, white gauntlets, a wide belt, and tall "
+                   "white boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_style": "low ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+        "prop": "a slim straight sword crackling with pale blue lightning along the blade",
+    },
+    "May (Guilty Gear)": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        # Key disambiguated: "May" (Pokemon) already ships.
+        "costume": "an oversized orange pirate captain's coat worn as a dress over a white "
+                   "shirt, a huge black captain's hat with a wide brim and a white skull "
+                   "badge, a red neckerchief, white gloves, and tall boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_texture": "wavy", "hair_style": "worn down",
+                      "eye_color": "medium brown"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "fair"},
+        "prop": "an enormous ship's anchor swung on a length of heavy chain",
+    },
+    "Millia Rage": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        # The hair is the weapon, so its length is pinned rather than left to randomize.
+        "costume": "a black leather bodysuit dress with a high thigh slit and a long white "
+                   "hip cape, elbow-length black gloves, and thigh-high boots",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "hair_style": "worn down",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Baiken": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        # One-armed and one-eyed. Both are written as worn detail -- an empty hanging
+        # sleeve and an eyepatch -- because neither maps to a body or eye field, and the
+        # eyes key must stay a plain colour noun phrase.
+        "costume": "a deep red kimono worn open at one shoulder with one long sleeve "
+                   "hanging empty at the side, a wide sash, a black eyepatch over one eye, "
+                   "and straw sandals",
+        "signature": {"hair_color": "hot pink", "hair_length": "very long",
+                      "hair_style": "high ponytail", "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+        "prop": "a slender curved katana held one-handed in a reverse grip",
+    },
+    "Bridget": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        # Roger the teddy bear is deliberately omitted -- a companion in the frame breaks
+        # the one-figure rule, the same reason the over-the-shoulder shot type went.
+        "costume": "a blue and white hooded outfit cut like a habit with gold trim and "
+                   "handcuff-shaped clasps, a pointed blue hood framing the face, white "
+                   "gloves, and heavy blue boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+        "prop": "a large steel yo-yo running out on a long taut cord",
+    },
+    "I-No": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        "costume": "a wide-brimmed red witch's hat, a black leather corset-bodysuit with a "
+                   "deep plunging front, a long red hip cape, elbow-length black gloves, "
+                   "and thigh-high black boots",
+        "eyes": "blood red",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_texture": "wavy"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair"},
+        "prop": "a white electric guitar with a scalloped body, held by the neck",
+    },
+    "Testament": {
+        "franchise": "Guilty Gear",
+        # Testament is canonically nonbinary. This key is only a Random-scoping bucket
+        # (there is no neutral value) and carries no other meaning; the value follows the
+        # Strive design being described.
+        "gender": "Female",
+        "costume": "a black high-collared coat-dress with a deep red lining and long split "
+                   "panels, dark arm wraps, a wide belt, and thigh-high black boots",
+        "eyes": "crimson",
+        "signature": {"hair_color": "emerald green", "hair_length": "very long",
+                      "hair_texture": "pin straight"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
+        "prop": "a long curved scythe trailing a fine length of thread from its blade",
+    },
+    "Elphelt Valentine": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        "costume": "a white bridal dress with a lace bodice and a short flared skirt, a "
+                   "short veil headpiece pinned into the hair, white lace gloves, a lace "
+                   "garter at one thigh, ribbons at the shoulders, and white ankle boots",
+        "signature": {"hair_color": "baby pink", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "eye_color": "green"},
+        "physique": {"body_type": "curvy", "height": "average height",
+                     "skin_tone": "fair"},
+        "prop": "an ornate white shotgun with gold filigree worked along the barrel",
+    },
+    "Jack-O' Valentine": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        "covers_face": True,
+        "costume": "an orange and black jester-witch outfit with long pointed sleeves and "
+                   "a flared scalloped skirt, orange and black striped stockings, and "
+                   "pointed boots",
+        "mask": "a carved jack-o'-lantern helmet with triangular glowing eye slots and a "
+                "jagged grinning mouth",
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Dizzy": {
+        "franchise": "Guilty Gear",
+        "gender": "Female",
+        # The wings are described as worn asymmetric prosthetics and deliberately not
+        # personified -- in canon they are separate beings, and giving them faces would
+        # put a second figure in the frame.
+        "costume": "a white and blue dress with a high collar and a large blue ribbon at "
+                   "the back, white thigh-high boots, and an asymmetric pair of prosthetic "
+                   "wings rising from the shoulders, one broad and white-feathered and the "
+                   "other dark and leathery, with a long scaled tail",
+        "eyes": "deep crimson",
+        "signature": {"hair_color": "teal", "hair_length": "very long",
+                      "hair_texture": "wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "curvy", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+
+    # =====================================================================
+    # Added batch: Team Fortress 2. The cast is deliberately differentiated
+    # by silhouette, which is why it is not the Power Rangers case -- but the
+    # class names are bare common nouns, unfindable in an 1,800-row dropdown
+    # and colliding with "Pyro" (Marvel) and the "Soldier" archetype, so the
+    # whole set is parenthesised uniformly. RED team livery throughout.
+    # Scout and Soldier are deliberately not shipped (see the backlog).
+    # =====================================================================
+    "Heavy (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        "gender": "Male",
+        "costume": "a heavy brown padded vest over a dark red long-sleeved shirt with the "
+                   "sleeves pushed up, a bandolier of large-calibre rounds across the "
+                   "chest, fingerless leather gloves, dark trousers and worn boots, on a "
+                   "bald head",
+        "signature": {"facial_hair": "clean shaven", "eye_color": "medium brown"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
+    },
+    "Pyro (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        # Canonically of unknown gender; this key is only a Random-scoping bucket.
+        "gender": "Male",
+        "covers_face": True,
+        "costume": "a dark red fire-retardant suit of heavy overalls and a thick jacket, "
+                   "oversized asbestos gloves, heavy rubber boots, and a fuel tank harness "
+                   "strapped across the back",
+        "mask": "a black rubber gas mask with two round glass lenses and a ribbed filter "
+                "cannister at the mouth",
+        "physique": {"body_type": "average", "height": "average height"},
+    },
+    "Spy (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        "gender": "Male",
+        # The balaclava encloses the scalp but leaves the face open, so this is
+        # covers_hair, never covers_face.
+        "covers_hair": True,
+        "costume": "a dark red pinstripe three-piece suit with a waistcoat and tie, black "
+                   "leather dress gloves, polished shoes, and a red balaclava pulled over "
+                   "the head leaving the face open",
+        "signature": {"facial_hair": "mustache", "eye_color": "blue-gray"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "a butterfly knife flicked open in one hand",
+    },
+    "Demoman (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        "gender": "Male",
+        "costume": "a black eyepatch over one eye, a dark red flak vest over a work shirt "
+                   "with the sleeves rolled back, bandoliers of grenades crossed over the "
+                   "chest, heavy trousers and scuffed boots",
+        "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
+                      "facial_hair": "short beard", "eye_color": "dark brown"},
+        "physique": {"body_type": "average", "height": "average height",
+                     "skin_tone": "dark brown"},
+    },
+    "Sniper (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        "gender": "Male",
+        "costume": "a wide-brimmed slouch hat with a leather band, aviator sunglasses, a "
+                   "dark red short-sleeved shirt under a pouch-laden vest, a leather arm "
+                   "guard on one forearm, and dusty boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "medium brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "tan"},
+        "prop": "a long bolt-action rifle with a mounted telescopic scope",
+    },
+    "Engineer (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        "gender": "Male",
+        # The wrench is kept off the tool belt so the prop does not render twice.
+        "costume": "a yellow hardhat with goggles pushed up onto the brim, brown canvas "
+                   "overalls over a dark red shirt, heavy work gloves, and a tool belt "
+                   "hung with pouches and a coiled cable",
+        "signature": {"facial_hair": "clean shaven", "eye_color": "medium brown"},
+        "physique": {"body_type": "average", "height": "average height",
+                     "skin_tone": "fair"},
+        "prop": "a heavy adjustable pipe wrench",
+    },
+    "Medic (Team Fortress 2)": {
+        "franchise": "Team Fortress 2",
+        "gender": "Male",
+        "costume": "a white lab coat worn open over a dark red shirt and a black tie, red "
+                   "rubber surgical gloves, round wire-rimmed glasses, dark trousers and "
+                   "boots, and a backpack harness of tanks and tubing",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "slicked back", "eye_color": "blue-gray"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+
+    # =====================================================================
+    # Added batch: Warhammer 40,000. This reopens a documented skip. The
+    # original argument was that 40K is uniformly armored silhouettes that
+    # would read generic without the name; two of these four are cloth -- a
+    # robed Tech-Priest and a greatcoated Commissar -- and the two armored
+    # ones take the settled covers_face + mask route.
+    # =====================================================================
+    "Space Marine": {
+        "franchise": "Warhammer 40,000",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        # Not size_scale "giant" -- that is building-high. The bulk is stated in the
+        # costume prose so it survives Costume-only mode, where physique never applies.
+        "costume": "a full suit of deep blue ceramite power armor with oversized shoulder "
+                   "pauldrons edged in gold and marked with chapter heraldry, a laurelled "
+                   "breastplate, ribbed black joint seals, purity seal parchments hanging "
+                   "from wax stamps, and a heavy backpack of exhaust vents, on a hugely "
+                   "broad and towering frame",
+        "mask": "a blue ceramite helm with a narrow horizontal eye slit glowing red and a "
+                "grilled vox mouthpiece",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Sister of Battle": {
+        "franchise": "Warhammer 40,000",
+        "gender": "Female",
+        # Head bare inside a cloth coif: the coif encloses the scalp (covers_hair) but the
+        # face reads clearly, so the randomized face is deliberately kept.
+        "covers_hair": True,
+        "costume": "a suit of black and white power armor with a red-lined tabard falling "
+                   "to the knee, gold fleur-de-lys iconography across the breastplate, an "
+                   "ornate corseted plate waist, layered pauldrons, purity seal "
+                   "parchments, armored boots, and a white cloth coif framing the face",
+        "signature": {"eye_color": "green"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a boltgun, a boxy heavy-calibre rifle with an ornate gold-chased casing",
+    },
+    "Tech-Priest": {
+        "franchise": "Warhammer 40,000",
+        # Gender is largely erased by the augmetics; this key is a scoping bucket only.
+        "gender": "Male",
+        "covers_face": True,
+        "covers_hair": True,
+        "costume": "deep red hooded robes over layered mechanical vestments, brass and "
+                   "burnished steel augmetic limbs with exposed pistons, a nest of "
+                   "segmented mechadendrite cables arching from the back, a cog-toothed "
+                   "skull icon at the breast, and heavy boots",
+        "mask": "a deep crimson hood shadowing a brass rebreather grille that covers the "
+                "whole face, with a single glowing optic lens",
+    },
+    "Commissar": {
+        "franchise": "Warhammer 40,000",
+        "gender": "Male",
+        "costume": "a long black greatcoat with gold frogging across the chest and a "
+                   "crimson sash at the waist, a peaked cap bearing a gold winged-skull "
+                   "badge, black leather gloves, and high polished boots",
+        "signature": {"hair_color": "near black", "hair_length": "very short",
+                      "eye_color": "gray"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "an ornate heavy-calibre pistol with a gold-chased barrel and a skull "
+                "motif worked into the grip",
+    },
+
+    # =====================================================================
+    # Added batch: Persona. Gated on a distinct non-uniform silhouette -- the
+    # Phantom Thief costumes, Aigis' android body, Mitsuru's fur coat and
+    # Naoto's detective look. The school-uniform cast is deliberately not
+    # shipped (see the backlog). Keys are civilian names, which are unique
+    # and searchable; "Joker (Persona 5)" uses the code name only because his
+    # civilian name differs across media.
+    #
+    # Installments are NOT split into "Persona 3"/"4"/"5" franchises: the pack
+    # combines numbered installments under the series (Final Fantasy spans FF6
+    # to FF14, Dragon Age spans two games, likewise Mass Effect and Resident
+    # Evil). The pre-existing "Persona 5" string was the lone outlier and was
+    # folded in here. Installment per look: Aigis and Mitsuru Kirijo are
+    # Persona 3, Naoto Shirogane is Persona 4, and Ann Takamaki, Makoto
+    # Niijima, Futaba Sakura, Haru Okumura and Sumire Yoshizawa are the
+    # Persona 5 Phantom Thief costumes.
+    # =====================================================================
+    "Aigis": {
+        "franchise": "Persona",
+        "gender": "Female",
+        # Android shell: skin-native wording on the plating, so skin_tone is omitted and
+        # the engine anchors the surface instead of randomizing a human tone under it.
+        "costume": "a slim android body of uniform, all-over white and pale blue mechanical "
+                   "plating with visible joint seams and exposed hydraulic pistons at the "
+                   "elbows and knees, red accent panels at the shoulders, and rounded "
+                   "headphone-like units covering the ears",
+        "signature": {"hair_color": "light blonde", "hair_length": "short pixie",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "short"},
+    },
+    "Mitsuru Kirijo": {
+        "franchise": "Persona",
+        "gender": "Female",
+        "costume": "a long white fur-collared coat worn open over a black school uniform "
+                   "of a fitted jacket and a short plaid skirt, a red armband on one "
+                   "sleeve, and black thigh-high boots",
+        "signature": {"hair_color": "deep red", "hair_length": "long",
+                      "hair_texture": "wavy", "hair_style": "worn down",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slim fencing rapier with a swept basket hilt",
+    },
+    "Naoto Shirogane": {
+        "franchise": "Persona",
+        "gender": "Female",
+        "costume": "a navy-blue peaked detective's cap, an oversized navy double-breasted "
+                   "jacket over a white shirt and a red tie, dark shorts, black stockings, "
+                   "and lace-up boots",
+        "signature": {"hair_color": "navy blue", "hair_length": "short pixie",
+                      "eye_color": "dark gray"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "fair"},
+    },
+    "Ann Takamaki": {
+        "franchise": "Persona",
+        "gender": "Female",
+        # The cat mask covers the eyes, not the face -- a domino mask is never covers_face.
+        "costume": "a full red latex catsuit with a zipped front and a high collar, red "
+                   "gloves, thigh-high red boots, a pink cat-eared mask across the eyes, "
+                   "and a long red tail",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_style": "high pigtails", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Makoto Niijima": {
+        "franchise": "Persona",
+        "gender": "Female",
+        "costume": "a silver-grey armored biker suit with blue panel accents and a high "
+                   "collar, matching gloves and knee-high boots, a studded belt, and a "
+                   "steel visor mask across the eyes",
+        "eyes": "deep red",
+        "signature": {"hair_color": "light chestnut", "hair_length": "chin length bob"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    "Futaba Sakura": {
+        "franchise": "Persona",
+        "gender": "Female",
+        "costume": "a black and green skintight bodysuit with the hood pulled up, an "
+                   "orange visor-goggle headset covering the eyes, green gloves, and heavy "
+                   "black boots",
+        "signature": {"hair_color": "orange", "hair_length": "waist length",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "fair"},
+    },
+    "Haru Okumura": {
+        "franchise": "Persona",
+        "gender": "Female",
+        "costume": "a burgundy musketeer coat with a high collar, gold trim and wide cuffs, "
+                   "a wide-brimmed hat with a long plume, black gloves, thigh-high boots, "
+                   "and a black beaked mask across the upper face",
+        "signature": {"hair_color": "light chestnut", "hair_length": "chin length bob",
+                      "hair_texture": "curly", "eye_color": "light brown"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Sumire Yoshizawa": {
+        "franchise": "Persona",
+        "gender": "Female",
+        "costume": "a red and black leotard with a high collar and a large red ribbon at "
+                   "the chest, black gloves and thigh-high boots, and a red mask across "
+                   "the eyes",
+        "eyes": "deep red",
+        "signature": {"hair_color": "deep red", "hair_length": "very long",
+                      "hair_style": "high ponytail"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+
+    # --- Singles into franchises that already ship -------------------------
+    "Psycho (Borderlands)": {
+        "franchise": "Borderlands",
+        "gender": "Male",
+        # Key parenthesised: a bare "Psycho" identifies nothing in the dropdown.
+        "covers_face": True,
+        "costume": "a bare tattooed torso crossed with leather strap harnesses, tattered "
+                   "dark trousers held up with rope, mismatched heavy boots, and "
+                   "fingerless gloves",
+        "mask": "a stitched bandage-cloth mask wrapped over the whole head with a crude "
+                "grinning mouth painted across it",
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "prop": "a crude buzz axe with a jagged circular blade bolted to a pipe haft",
+    },
+    "Judy Alvarez": {
+        "franchise": "Cyberpunk 2077",
+        "gender": "Female",
+        # makeup_style is pinned for the same reason Aloy, Senua and Typhoid Mary pin it:
+        # a randomized glam cascade gets its own sentence right after the face
+        # description and buries an authored facial marking mentioned later in the
+        # costume clause. Measured, not guessed -- the first render came back with full
+        # soft glam and no face tattoo at all.
+        "costume": "a cropped jacket patterned with braided-cord and geometric embroidery "
+                   "worn over a black crop top, dungaree straps hanging loose from "
+                   "wide-legged trousers, chrome ports set into the forearms, heavy "
+                   "boots, dark geometric tattoos inked high on one cheek beneath the "
+                   "eye, and a dense colourful tattoo sleeve covering the opposite arm "
+                   "and shoulder",
+        "signature": {"hair_color": "teal", "hair_length": "chin length bob",
+                      "hair_style": "undercut", "eye_color": "dark brown",
+                      "makeup_style": "no makeup"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "warm tan"},
+    },
 }
 
 
@@ -20279,6 +20915,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Rosario + Vampire", "Michiko & Hatchin", "Your Lie in April", "Noragami",
         "Hunter x Hunter", "Trigun", "Black Butler", "Yu-Gi-Oh!",
         "Mobile Suit Gundam", "Solo Leveling",
+        "Inuyasha", "Yu Yu Hakusho", "Ranma 1/2", "Hellsing",
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
@@ -20297,6 +20934,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         # Pixar and Walt Disney Animation titles group under Disney by precedent
         # (The Incredibles, Toy Story, Frozen are already here).
         "Inside Out", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
+        "Encanto",
     ),
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
@@ -20313,8 +20951,12 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Pikmin", "Dead or Alive", "Lollipop Chainsaw", "Duke Nukem",
         "Fire Emblem", "NieR", "BloodRayne", "Mirror's Edge", "Cyberpunk: Edgerunners",
         "Bloodborne", "Celeste", "Half-Life", "Remember Me", "Dragon's Lair",
-        "Elden Ring", "Space Ace", "Assassin's Creed", "Persona 5", "Dark Souls",
+        "Elden Ring", "Space Ace", "Assassin's Creed", "Persona", "Dark Souls",
         "Cyberpunk 2077",
+        "Castlevania", "Fallout", "Guilty Gear", "Team Fortress 2",
+        # Warhammer 40,000 is tabletop-first and the pack has no tabletop category;
+        # Video Games is the least-surprising home given the franchise's game presence.
+        "Warhammer 40,000",
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -20346,6 +20988,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Crow", "Blade Runner", "Tron", "The Rocky Horror Picture Show",
         "Grease", "Pulp Fiction", "James Bond", "The Girl with the Dragon Tattoo",
         "Farscape", "Doctor Who", "Squid Game",
+        "Back to the Future", "The Big Lebowski",
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.

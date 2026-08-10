@@ -49,7 +49,7 @@ from nodes.identity_forge import (
 )
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
-    _MODIFIERS_KEY, _VARIANTS_KEY,
+    _MODIFIERS_KEY, _VARIANTS_KEY, _name_already_carries_franchise,
 )
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
@@ -5973,6 +5973,51 @@ class FranchiseLabelTests(unittest.TestCase):
             if e.get("franchise", "").strip().lower() in self._GENERIC
         )
         self.assertEqual(offenders, [], f"generic franchise labels: {offenders}")
+
+    def test_a_disambiguated_key_never_stutters_its_franchise(self):
+        """0.77.0's rule, enforced for real (0.88.0).
+
+        It was implemented as an exact ``endswith("(<franchise>)")`` test, which only
+        catches a parenthetical that *is* the franchise. Four keys stuttered past it:
+        "Ms. Marvel (Kamala Khan) (Marvel)", "Ms. Marvel (Sharon Ventura) (Marvel)",
+        "Duke Nukem (video game) (Duke Nukem)" -- all long-shipped -- and
+        "Joker (Persona 5) (Persona)", created by merging the Persona installments.
+        """
+        offenders = []
+        for name, entry in COSPLAYERS.items():
+            franchise = entry.get("franchise", "")
+            if not franchise or "(" not in name:
+                continue  # eponymous keys are out of scope; see the helper's docstring
+            label = (name if _name_already_carries_franchise(name, franchise)
+                     else f"{name} ({franchise})")
+            head, _, tail = label.rpartition(" (")
+            if tail[:-1] and tail[:-1].casefold() in head.casefold():
+                offenders.append(label)
+        self.assertEqual(offenders, [], f"stuttering cosplay labels: {offenders}")
+
+    def test_the_rule_is_scoped_to_disambiguated_keys_only(self):
+        """An eponymous key keeps its franchise suffix.
+
+        Broadening the rule to "Shrek (Shrek)" would rewrite 91 more entries' prose
+        and silently invalidate their published gallery images, because entry_hash
+        hashes the entry dict and cannot see a prose-only change. That is a separate
+        decision with a re-render bill, not a side effect -- pinned here so it is not
+        "tidied up" by accident.
+        """
+        self.assertFalse(_name_already_carries_franchise("Shrek", "Shrek"))
+        self.assertFalse(_name_already_carries_franchise("Sterling Archer", "Archer"))
+        # ...while the disambiguated forms are all suppressed.
+        for name, franchise in (("Joker (Persona 5)", "Persona"),
+                                ("Mai (Avatar)", "Avatar: The Last Airbender"),
+                                ("Ms. Marvel (Kamala Khan)", "Marvel"),
+                                ("Duke Nukem (video game)", "Duke Nukem"),
+                                ("Jinx (League of Legends)", "League of Legends")):
+            self.assertTrue(_name_already_carries_franchise(name, franchise), name)
+        # An unrelated parenthetical must still get the franchise appended.
+        for name, franchise in (("Nova (Frankie Raye)", "Marvel"),
+                                ("Terra (Teen Titans)", "DC"),
+                                ("Homura Akemi (Devil)", "Madoka Magica")):
+            self.assertFalse(_name_already_carries_franchise(name, franchise), name)
 
 
 if __name__ == "__main__":

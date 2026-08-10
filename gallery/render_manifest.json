@@ -1011,6 +1011,10 @@
         "hash": "f16f6a1f4c013818",
         "rendered": "pre-existing"
       },
+      "Aigis": {
+        "hash": "7240b15de145859d",
+        "rendered": "2026-08-10"
+      },
       "Ainz Ooal Gown": {
         "hash": "54fe4c4bf257f8d7",
         "rendered": "pre-existing"
@@ -1095,6 +1099,14 @@
         "hash": "8a5f5986e9df6e26",
         "rendered": "pre-existing"
       },
+      "Alucard (Castlevania)": {
+        "hash": "628e8067073edd86",
+        "rendered": "2026-08-10"
+      },
+      "Alucard (Hellsing)": {
+        "hash": "a2b80c568d3d2908",
+        "rendered": "2026-08-10"
+      },
       "Alyx Vance": {
         "hash": "508bd335f3ca34a8",
         "rendered": "pre-existing"
@@ -1166,6 +1178,10 @@
       "Anissa": {
         "hash": "a1e45fbb70c09e25",
         "rendered": "pre-existing"
+      },
+      "Ann Takamaki": {
+        "hash": "be19c4906dd84ab3",
+        "rendered": "2026-08-10"
       },
       "Anna": {
         "hash": "58261e23ad975860",
@@ -1374,6 +1390,10 @@
       "Baby Bonnie Hood (B.B. Hood)": {
         "hash": "913c578632137854",
         "rendered": "pre-existing"
+      },
+      "Baiken": {
+        "hash": "a76558427554a7ab",
+        "rendered": "2026-08-10"
       },
       "Bakugo": {
         "hash": "a367d279eb96dd5e",
@@ -1723,6 +1743,10 @@
         "hash": "331d77abf51289bd",
         "rendered": "pre-existing"
       },
+      "Bridget": {
+        "hash": "e9e880e25149f0d6",
+        "rendered": "2026-08-10"
+      },
       "Brigitte": {
         "hash": "41c0a5d7bb6d8075",
         "rendered": "pre-existing"
@@ -1746,6 +1770,10 @@
       "Brunhilde": {
         "hash": "90471f5e79627ccf",
         "rendered": "pre-existing"
+      },
+      "Bruno Madrigal": {
+        "hash": "d41404c24612147d",
+        "rendered": "2026-08-10"
       },
       "Bubbles": {
         "hash": "d2d6331900f31634",
@@ -2127,6 +2155,10 @@
         "hash": "37717ffa3b3e3c69",
         "rendered": "pre-existing"
       },
+      "Commissar": {
+        "hash": "cf944564327f1646",
+        "rendered": "2026-08-10"
+      },
       "Conan the Barbarian": {
         "hash": "78b66a75523685f7",
         "rendered": "pre-existing"
@@ -2375,6 +2407,10 @@
         "hash": "e4d098b5130e6bd1",
         "rendered": "pre-existing"
       },
+      "Demoman (Team Fortress 2)": {
+        "hash": "3db312eb2e176eb8",
+        "rendered": "2026-08-10"
+      },
       "Dengar": {
         "hash": "6f3b9e4323360bf1",
         "rendered": "pre-existing"
@@ -2446,6 +2482,10 @@
       "Diva Plavalaguna": {
         "hash": "a8f00fb958507c00",
         "rendered": "pre-existing"
+      },
+      "Dizzy": {
+        "hash": "824851d9dd3cbec4",
+        "rendered": "2026-08-10"
       },
       "Doctor Blight": {
         "hash": "21a9328dff87d410",
@@ -2535,6 +2575,10 @@
         "hash": "0a38b8291d601cc4",
         "rendered": "pre-existing"
       },
+      "Dr. Eggman": {
+        "hash": "ffcf9c36bb5cb451",
+        "rendered": "2026-08-10"
+      },
       "Dr. Facilier": {
         "hash": "172b2e5d71ac7d96",
         "rendered": "pre-existing"
@@ -2589,7 +2633,7 @@
       },
       "Duke Nukem (video game)": {
         "hash": "09c047f2ca4031d9",
-        "rendered": "pre-existing"
+        "rendered": "2026-08-10"
       },
       "Duolingo Owl": {
         "hash": "6434c99352fec8cd",
@@ -2683,6 +2727,10 @@
         "hash": "85a914980a00ccea",
         "rendered": "pre-existing"
       },
+      "Elphelt Valentine": {
+        "hash": "647c2d847bc6643f",
+        "rendered": "2026-08-10"
+      },
       "Elroy Jetson": {
         "hash": "ba3093defbbaf956",
         "rendered": "pre-existing"
@@ -2722,6 +2770,10 @@
       "Energizer Bunny": {
         "hash": "96308efff430cfa6",
         "rendered": "pre-existing"
+      },
+      "Engineer (Team Fortress 2)": {
+        "hash": "cca9bda6165aba50",
+        "rendered": "2026-08-10"
       },
       "Eowyn": {
         "hash": "54a56018bb35b739",
@@ -2943,6 +2995,10 @@
       "Furina": {
         "hash": "6ba41afe0b7951ae",
         "rendered": "pre-existing"
+      },
+      "Futaba Sakura": {
+        "hash": "d3ac05dc9b45207d",
+        "rendered": "2026-08-10"
       },
       "Future Trunks": {
         "hash": "a423140fdb810c21",
@@ -3324,6 +3380,10 @@
         "hash": "e837a6ff2c542049",
         "rendered": "pre-existing"
       },
+      "Haru Okumura": {
+        "hash": "7e5934df70ba03bc",
+        "rendered": "2026-08-10"
+      },
       "Hatsune Miku": {
         "hash": "5a8baca60c8d6db5",
         "rendered": "pre-existing"
@@ -3359,6 +3419,10 @@
       "He-Man": {
         "hash": "5a6fe3598db94a00",
         "rendered": "pre-existing"
+      },
+      "Heavy (Team Fortress 2)": {
+        "hash": "86262801e2df15d1",
+        "rendered": "2026-08-10"
       },
       "Hector Barbossa": {
         "hash": "19b854395618b6dd",
@@ -3520,6 +3584,10 @@
         "hash": "06c73fec2f38ff1d",
         "rendered": "pre-existing"
       },
+      "I-No": {
+        "hash": "310eb43a0305cae0",
+        "rendered": "2026-08-10"
+      },
       "IG-88": {
         "hash": "5192fba94f7a554a",
         "rendered": "pre-existing"
@@ -3580,6 +3648,10 @@
         "hash": "8addf49ed56c2acd",
         "rendered": "pre-existing"
       },
+      "Inuyasha": {
+        "hash": "3f957731d6c9f1eb",
+        "rendered": "2026-08-10"
+      },
       "Invincible": {
         "hash": "4a8b6075a4f11a10",
         "rendered": "pre-existing"
@@ -3615,6 +3687,10 @@
       "Isabela": {
         "hash": "7c876da830db189e",
         "rendered": "pre-existing"
+      },
+      "Isabela Madrigal": {
+        "hash": "7bc3f23a110902ec",
+        "rendered": "2026-08-10"
       },
       "Issei Hyoudou": {
         "hash": "41fdc1c0d6faf725",
@@ -3667,6 +3743,10 @@
       "Jack the Ripper (Record of Ragnarok)": {
         "hash": "d5a839e16c4d6fa6",
         "rendered": "pre-existing"
+      },
+      "Jack-O' Valentine": {
+        "hash": "7590f67386fb96e1",
+        "rendered": "2026-08-10"
       },
       "Jade (Jennifer-Lynn Hayden)": {
         "hash": "0b550ea42c1503b2",
@@ -3849,8 +3929,8 @@
         "rendered": "pre-existing"
       },
       "Joker (Persona 5)": {
-        "hash": "44633272b0f9fe73",
-        "rendered": "2026-08-09"
+        "hash": "6c705a9ed9ff7fc0",
+        "rendered": "2026-08-10"
       },
       "Jolly Green Giant": {
         "hash": "946f74ce7404ec9b",
@@ -3895,6 +3975,10 @@
       "Judge Dredd": {
         "hash": "facb59769e84e9b0",
         "rendered": "pre-existing"
+      },
+      "Judy Alvarez": {
+        "hash": "dfed0c0ff89d701c",
+        "rendered": "2026-08-10"
       },
       "Judy Hopps": {
         "hash": "46f82459c4e8a813",
@@ -4264,6 +4348,10 @@
         "hash": "24959fa07cdfcc76",
         "rendered": "pre-existing"
       },
+      "Ky Kiske": {
+        "hash": "64c24315396482e0",
+        "rendered": "2026-08-10"
+      },
       "Kyle Broflovski": {
         "hash": "0f8013a613fe1258",
         "rendered": "pre-existing"
@@ -4620,6 +4708,10 @@
         "hash": "57044616d287a49c",
         "rendered": "pre-existing"
       },
+      "Luisa Madrigal": {
+        "hash": "b41eea361bd6bd50",
+        "rendered": "2026-08-10"
+      },
       "Luke Cage": {
         "hash": "e2dceaa7a20b2732",
         "rendered": "pre-existing"
@@ -4764,6 +4856,10 @@
         "hash": "3db2b09c2402d718",
         "rendered": "pre-existing"
       },
+      "Makoto Niijima": {
+        "hash": "b68c8aa8a414ee68",
+        "rendered": "2026-08-10"
+      },
       "Maleficent": {
         "hash": "d76f252879a3c971",
         "rendered": "pre-existing"
@@ -4844,6 +4940,10 @@
         "hash": "1bf448c1ef43b49c",
         "rendered": "pre-existing"
       },
+      "Marty McFly": {
+        "hash": "232cf26ba5f13cf5",
+        "rendered": "2026-08-10"
+      },
       "Marv": {
         "hash": "5d37c969797de3e8",
         "rendered": "pre-existing"
@@ -4892,6 +4992,10 @@
         "hash": "c690122638e29847",
         "rendered": "pre-existing"
       },
+      "May (Guilty Gear)": {
+        "hash": "4b584c8eb77deac6",
+        "rendered": "2026-08-10"
+      },
       "Mayura": {
         "hash": "c717b7098a19a42d",
         "rendered": "pre-existing"
@@ -4903,6 +5007,10 @@
       "Medaka Kurokami": {
         "hash": "a26971c226902b70",
         "rendered": "pre-existing"
+      },
+      "Medic (Team Fortress 2)": {
+        "hash": "5a7efa1d5093cf57",
+        "rendered": "2026-08-10"
       },
       "Medusa": {
         "hash": "984674ffce87832a",
@@ -5052,6 +5160,10 @@
         "hash": "703b6c4343b65e94",
         "rendered": "pre-existing"
       },
+      "Millia Rage": {
+        "hash": "d622acd877648eff",
+        "rendered": "2026-08-10"
+      },
       "Minato Namikaze": {
         "hash": "cd3145e4020c7cd6",
         "rendered": "pre-existing"
@@ -5071,6 +5183,10 @@
       "Mira": {
         "hash": "4d31b807eb7c78e4",
         "rendered": "pre-existing"
+      },
+      "Mirabel Madrigal": {
+        "hash": "2bcc2f96d3009af4",
+        "rendered": "2026-08-10"
       },
       "Mirajane Strauss": {
         "hash": "d89870bb2d1c9a02",
@@ -5119,6 +5235,10 @@
       "Mitsuri Kanroji": {
         "hash": "fabe006933739e15",
         "rendered": "pre-existing"
+      },
+      "Mitsuru Kirijo": {
+        "hash": "021e18cd7764847c",
+        "rendered": "2026-08-10"
       },
       "Moana": {
         "hash": "58df07d61ed6f236",
@@ -5254,11 +5374,11 @@
       },
       "Ms. Marvel (Kamala Khan)": {
         "hash": "8494bb2222f5e2e4",
-        "rendered": "pre-existing"
+        "rendered": "2026-08-10"
       },
       "Ms. Marvel (Sharon Ventura)": {
         "hash": "6cd454f9551a9e11",
-        "rendered": "pre-existing"
+        "rendered": "2026-08-10"
       },
       "Mt. Lady": {
         "hash": "46672664b677b4f7",
@@ -5331,6 +5451,10 @@
       "Nani Pelekai": {
         "hash": "ca41d2b77298169f",
         "rendered": "pre-existing"
+      },
+      "Naoto Shirogane": {
+        "hash": "d8d6828fdd5d5876",
+        "rendered": "2026-08-10"
       },
       "Naruto Uzumaki": {
         "hash": "5f505bee74a2884a",
@@ -5848,6 +5972,10 @@
         "hash": "d83691986a521222",
         "rendered": "pre-existing"
       },
+      "Psycho (Borderlands)": {
+        "hash": "538241b643a5a4d6",
+        "rendered": "2026-08-10"
+      },
       "Psyduck": {
         "hash": "adccee839e813953",
         "rendered": "pre-existing"
@@ -5879,6 +6007,10 @@
       "Pyro": {
         "hash": "d621e1339d361a94",
         "rendered": "pre-existing"
+      },
+      "Pyro (Team Fortress 2)": {
+        "hash": "23b6be5d66aabe96",
+        "rendered": "2026-08-10"
       },
       "Pyron": {
         "hash": "1c0eefefbcd81dbe",
@@ -5995,6 +6127,10 @@
       "Rangiku Matsumoto": {
         "hash": "7bb64d655a315306",
         "rendered": "pre-existing"
+      },
+      "Ranma Saotome": {
+        "hash": "80ab6bebff39ddf9",
+        "rendered": "2026-08-10"
       },
       "Ranni the Witch": {
         "hash": "15b2c6f74bf470c2",
@@ -6720,6 +6856,10 @@
         "hash": "f12946f12fdce10c",
         "rendered": "pre-existing"
       },
+      "Simon Belmont": {
+        "hash": "15f6e06a4611b760",
+        "rendered": "2026-08-10"
+      },
       "Sinbad": {
         "hash": "77a1636c2a88feed",
         "rendered": "pre-existing"
@@ -6743,6 +6883,10 @@
       "Sister Sage": {
         "hash": "9638610a495ed3e6",
         "rendered": "pre-existing"
+      },
+      "Sister of Battle": {
+        "hash": "3bc43be806c88efc",
+        "rendered": "2026-08-10"
       },
       "Skarlet": {
         "hash": "7a8f6c0eaebd4412",
@@ -6776,6 +6920,10 @@
         "hash": "6bbdb37c8f460c4f",
         "rendered": "pre-existing"
       },
+      "Sniper (Team Fortress 2)": {
+        "hash": "31c4c4ffe86e2b74",
+        "rendered": "2026-08-10"
+      },
       "Snorlax": {
         "hash": "c494dcfee6646ca0",
         "rendered": "pre-existing"
@@ -6795,6 +6943,10 @@
       "Sokka": {
         "hash": "a1217b454eba5fdb",
         "rendered": "pre-existing"
+      },
+      "Sol Badguy": {
+        "hash": "4591716186480002",
+        "rendered": "2026-08-10"
       },
       "Solaire of Astora": {
         "hash": "ccb37ea82dabcfa4",
@@ -6860,6 +7012,10 @@
         "hash": "d5aea5dbeacc7a98",
         "rendered": "pre-existing"
       },
+      "Space Marine": {
+        "hash": "f98f003781489ac6",
+        "rendered": "2026-08-10"
+      },
       "Spawn": {
         "hash": "765a8fa5a9b9729c",
         "rendered": "pre-existing"
@@ -6907,6 +7063,10 @@
       "SpongeBob SquarePants": {
         "hash": "b5d9bf710c8a2ba6",
         "rendered": "pre-existing"
+      },
+      "Spy (Team Fortress 2)": {
+        "hash": "fdc45975e9119b33",
+        "rendered": "2026-08-10"
       },
       "Squall": {
         "hash": "81ed64a291a78784",
@@ -7036,6 +7196,10 @@
         "hash": "db1bbc532dbe8d61",
         "rendered": "pre-existing"
       },
+      "Sumire Yoshizawa": {
+        "hash": "3fa4f13edeb1cbfc",
+        "rendered": "2026-08-10"
+      },
       "Summer Smith": {
         "hash": "7c5be619930dc8d7",
         "rendered": "pre-existing"
@@ -7132,6 +7296,10 @@
         "hash": "8cb6a768f7fcbaa6",
         "rendered": "pre-existing"
       },
+      "Tech-Priest": {
+        "hash": "bbf1ac0d4d827208",
+        "rendered": "2026-08-10"
+      },
       "Teela": {
         "hash": "2ac3f99103773127",
         "rendered": "pre-existing"
@@ -7163,6 +7331,10 @@
       "Terry Bogard": {
         "hash": "326fe8447006eb1a",
         "rendered": "pre-existing"
+      },
+      "Testament": {
+        "hash": "a92faf7148899a70",
+        "rendered": "2026-08-10"
       },
       "Thanos": {
         "hash": "0564bb834204e6ef",
@@ -7199,6 +7371,10 @@
       "The Deep": {
         "hash": "fe0f2e52bc4c355d",
         "rendered": "pre-existing"
+      },
+      "The Dude": {
+        "hash": "a2b459438ac53189",
+        "rendered": "2026-08-10"
       },
       "The Flash": {
         "hash": "04b376b9ca127347",
@@ -7527,6 +7703,10 @@
       "Vash the Stampede": {
         "hash": "e140ddcb6e3a8caa",
         "rendered": "2026-08-09"
+      },
+      "Vault Dweller": {
+        "hash": "63707b13666ef46e",
+        "rendered": "2026-08-10"
       },
       "Vega": {
         "hash": "bee540c34f674578",
@@ -7871,6 +8051,10 @@
       "Yuno Gasai": {
         "hash": "a6e58a888df850ab",
         "rendered": "pre-existing"
+      },
+      "Yusuke Urameshi": {
+        "hash": "d67408027a76ba6a",
+        "rendered": "2026-08-10"
       },
       "Yuzuriha": {
         "hash": "afd26bbb6d446b5c",
@@ -8223,8 +8407,8 @@
         "rendered": "pre-existing"
       },
       "flesh golem": {
-        "hash": "281f1183b7a3ce16",
-        "rendered": "pre-existing"
+        "hash": "550d42e10b04e870",
+        "rendered": "2026-08-10"
       },
       "flower folk": {
         "hash": "28394fa416f1c48e",
@@ -8448,8 +8632,8 @@
         "rendered": "pre-existing"
       },
       "manticore": {
-        "hash": "0af8f1b33f3a2924",
-        "rendered": "pre-existing"
+        "hash": "ae0e455ff57dc828",
+        "rendered": "2026-08-10"
       },
       "mantis shrimp": {
         "hash": "3915f6725bcbe0c4",
@@ -8768,8 +8952,8 @@
         "rendered": "pre-existing"
       },
       "troll": {
-        "hash": "8e6117a36b652d73",
-        "rendered": "pre-existing"
+        "hash": "604e325275d99f85",
+        "rendered": "2026-08-10"
       },
       "tyrannosaurus rex": {
         "hash": "db854fe3b1931d34",
@@ -8820,8 +9004,8 @@
         "rendered": "pre-existing"
       },
       "yeti": {
-        "hash": "91d0e9c82197673a",
-        "rendered": "pre-existing"
+        "hash": "474a5078cf40550e",
+        "rendered": "2026-08-10"
       },
       "zebra": {
         "hash": "5bda4f9680cd380f",
@@ -8833,7 +9017,7 @@
       }
     }
   },
-  "generated": "2026-08-09T22:32:55",
+  "generated": "2026-08-10T03:15:59",
   "render": {
     "cfg": 1,
     "height": 2432,

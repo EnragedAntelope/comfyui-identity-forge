@@ -92,6 +92,59 @@ _SET_ALL_NONE = "All to None"
 #: connected Cosplayer node's ``_meta`` through the parsed-archetype dict.
 _COSPLAY_LABEL_KEY = "__cosplay_label__"
 
+#: Trailing "(...)" disambiguator on a roster key, e.g. "Joker (Persona 5)".
+_KEY_PARENTHETICAL_RE = re.compile(r"^(?P<base>.*?)\s*\((?P<paren>[^()]+)\)\s*$")
+
+
+def _name_already_carries_franchise(name: str, franchise: str) -> bool:
+    """True when appending ``(franchise)`` to ``name`` would stutter.
+
+    The 0.77.0 rule ("a franchise-disambiguated key must not restate its franchise
+    in the label") was enforced with an exact ``endswith("(<franchise>)")`` test,
+    which only catches the case where the parenthetical *is* the franchise. Three
+    shipped keys stuttered through that test for years -- "Ms. Marvel (Kamala Khan)
+    (Marvel)", "Ms. Marvel (Sharon Ventura) (Marvel)" and "Duke Nukem (video game)
+    (Duke Nukem)" -- and merging the Persona installments at 0.88.0 added a fourth,
+    "Joker (Persona 5) (Persona)". Three shapes, one test:
+
+    * the parenthetical IS the franchise -- "Jinx (League of Legends)";
+    * either is a more specific form of the other -- "Joker (Persona 5)" under the
+      series franchise "Persona", and "Mai (Avatar)" under "Avatar: The Last
+      Airbender";
+    * the base name already says it -- "Ms. Marvel", "Duke Nukem".
+
+    Both the prefix test and the base-name test are word-bounded on purpose: a bare
+    substring check would fire on any name that happened to contain a short
+    franchise string, and a bare prefix check would let a one-letter parenthetical
+    swallow a long franchise.
+
+    **Scope, deliberately narrow.** Everything past the exact-match test applies only
+    to keys that actually carry a "(...)" disambiguator -- which is what the 0.77.0
+    rule is about. It does NOT touch an *eponymous* key whose franchise repeats it
+    ("Shrek" under "Shrek", "Godzilla" under "Godzilla", "Sterling Archer" under
+    "Archer"). Those render as "Shrek (Shrek)", which is redundant but has shipped
+    that way for many releases, and broadening the rule to cover them would rewrite
+    91 more entries' prose -- silently invalidating 91 published gallery images,
+    since ``entry_hash`` hashes the entry dict and cannot see a prose-only change.
+    That is a separate decision with a real re-render bill attached, not a
+    side effect of this fix.
+
+    Prose-only -- no RNG draw here, so no seed drift.
+    """
+    if name.endswith(f"({franchise})"):
+        return True
+    match = _KEY_PARENTHETICAL_RE.match(name)
+    if not match:
+        return False
+    folded = franchise.casefold()
+    paren = match.group("paren").casefold()
+    # Whichever is shorter must be a whole-word prefix of the longer.
+    short, long = sorted((paren, folded), key=len)
+    if re.match(rf"{re.escape(short)}\b", long):
+        return True
+    base = match.group("base").casefold()
+    return re.search(rf"\b{re.escape(folded)}\b", base) is not None
+
 #: Reserved key carrying a cosplayer's ``covers_face`` flag (see below) through
 #: the parsed-archetype dict, the same way the cosplay label travels.
 _COVERS_FACE_KEY = "__covers_face__"
@@ -2444,7 +2497,7 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                 named = isinstance(franchise, str) and bool(franchise)
                 flat[_COSPLAY_LABEL_KEY] = (
                     f"{cosplay_of} ({franchise})"
-                    if named and not cosplay_of.endswith(f"({franchise})")
+                    if named and not _name_already_carries_franchise(cosplay_of, franchise)
                     else cosplay_of
                 )
             if meta.get("covers_face"):

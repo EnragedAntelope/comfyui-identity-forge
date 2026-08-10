@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1766 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1812 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (338)
+## Anime & Manga (342)
 
 ### Akame ga Kill
 
@@ -226,6 +226,10 @@
 - **Yamada Asaemon Sagiri** (F, prop)
 - **Yuzuriha** (F, +2 alt)
 
+### Hellsing
+
+- **Alucard (Hellsing)** (M, prop)
+
 ### High School DxD
 
 - **Akeno Himejima** (F, +1 alt)
@@ -243,6 +247,10 @@
 - **Gon Freecss** (M)
 - **Hisoka Morow** (M)
 - **Kurapika** (M)
+
+### Inuyasha
+
+- **Inuyasha** (M, prop)
 
 ### JoJo's Bizarre Adventure
 
@@ -444,6 +452,10 @@
 - **Mari Kurihara** (F)
 - **Meiko Shiraki** (F, +1 alt)
 
+### Ranma 1/2
+
+- **Ranma Saotome** (M)
+
 ### Rascal Does Not Dream of Bunny Girl Senpai
 
 - **Mai Sakurajima** (F)
@@ -556,6 +568,10 @@
 ### Your Lie in April
 
 - **Kaori Miyazono** (F, prop)
+
+### Yu Yu Hakusho
+
+- **Yusuke Urameshi** (M)
 
 ### Yu-Gi-Oh!
 
@@ -1192,7 +1208,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M, prop)
 
-## Disney (105)
+## Disney (109)
 
 ### 101 Dalmatians
 
@@ -1259,6 +1275,13 @@
 ### DuckTales
 
 - **Scrooge McDuck** (M, masked, prop)
+
+### Encanto
+
+- **Bruno Madrigal** (M)
+- **Isabela Madrigal** (F)
+- **Luisa Madrigal** (F)
+- **Mirabel Madrigal** (F)
 
 ### Frozen
 
@@ -1734,7 +1757,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (185)
+## Movies & TV (187)
 
 ### A Nightmare on Elm Street
 
@@ -1760,6 +1783,10 @@
 ### Attack of the 50 Foot Woman
 
 - **The 50 Foot Woman** (F, giant)
+
+### Back to the Future
+
+- **Marty McFly** (M)
 
 ### Battlestar Galactica
 
@@ -2067,6 +2094,10 @@
 - **Uncle Fester** (M, prop)
 - **Wednesday Addams** (F)
 
+### The Big Lebowski
+
+- **The Dude** (M)
+
 ### The Boys
 
 - **A-Train** (M, +1 alt)
@@ -2304,7 +2335,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (362)
+## Video Games (398)
 
 ### ARMS
 
@@ -2346,7 +2377,13 @@
 - **Handsome Jack** (M)
 - **Lilith (Borderlands)** (F)
 - **Mad Moxxi** (F)
+- **Psycho (Borderlands)** (M, masked, prop)
 - **Tiny Tina** (F, prop)
+
+### Castlevania
+
+- **Alucard (Castlevania)** (M, prop)
+- **Simon Belmont** (M, prop)
 
 ### Celeste
 
@@ -2359,6 +2396,7 @@
 ### Cyberpunk 2077
 
 - **Johnny Silverhand** (M)
+- **Judy Alvarez** (F)
 
 ### Cyberpunk: Edgerunners
 
@@ -2465,6 +2503,10 @@
 
 - **Captain Falcon** (M, masked)
 
+### Fallout
+
+- **Vault Dweller** (M)
+
 ### Final Fantasy
 
 - **Aerith Gainsborough** (F, prop)
@@ -2515,6 +2557,20 @@
 
 - **Freya** (F)
 - **Kratos** (M, prop)
+
+### Guilty Gear
+
+- **Baiken** (F, prop)
+- **Bridget** (F, prop)
+- **Dizzy** (F)
+- **Elphelt Valentine** (F, prop)
+- **I-No** (F, prop)
+- **Jack-O' Valentine** (F, masked)
+- **Ky Kiske** (M, prop)
+- **May (Guilty Gear)** (F, prop)
+- **Millia Rage** (F)
+- **Sol Badguy** (M, prop)
+- **Testament** (F, prop)
 
 ### Half-Life
 
@@ -2699,9 +2755,17 @@
 
 - **Pac-Man** (M, masked)
 
-### Persona 5
+### Persona
 
+- **Aigis** (F)
+- **Ann Takamaki** (F)
+- **Futaba Sakura** (F)
+- **Haru Okumura** (F)
 - **Joker (Persona 5)** (M)
+- **Makoto Niijima** (F)
+- **Mitsuru Kirijo** (F, prop)
+- **Naoto Shirogane** (F)
+- **Sumire Yoshizawa** (F)
 
 ### Pikmin
 
@@ -2733,6 +2797,7 @@
 
 ### Sonic the Hedgehog
 
+- **Dr. Eggman** (M)
 - **Sonic the Hedgehog** (M, masked)
 
 ### Soul Calibur
@@ -2817,6 +2882,16 @@
 
 - **SHODAN** (F)
 
+### Team Fortress 2
+
+- **Demoman (Team Fortress 2)** (M)
+- **Engineer (Team Fortress 2)** (M, prop)
+- **Heavy (Team Fortress 2)** (M)
+- **Medic (Team Fortress 2)** (M)
+- **Pyro (Team Fortress 2)** (M, masked)
+- **Sniper (Team Fortress 2)** (M, prop)
+- **Spy (Team Fortress 2)** (M, prop)
+
 ### Tekken
 
 - **Anna Williams** (F)
@@ -2869,6 +2944,13 @@
 ### Tomb Raider
 
 - **Lara Croft** (F, prop)
+
+### Warhammer 40,000
+
+- **Commissar** (M, prop)
+- **Sister of Battle** (F, prop)
+- **Space Marine** (M, masked)
+- **Tech-Priest** (M, masked)
 
 ### World of Warcraft
 

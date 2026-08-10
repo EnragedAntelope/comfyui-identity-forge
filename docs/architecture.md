@@ -421,6 +421,20 @@ outlive any one candidate list.
   name where a short one would be unsearchable (`Mel Medarda`, not `Mel`). A franchise
   that spans a spin-off keeps its own string where the character is spin-off-only
   (`Arcane` for Silco), while playable champions file under the parent.
+- **A cast of bare common nouns gets parenthesised as a set (0.88.0).** The dropdown shows the
+  entry key and nothing else — no franchise. `Heavy`, `Medic`, `Spy`, `Sniper` identify nothing
+  in an 1,800-row list, and two of the nine Team Fortress 2 classes collide outright (`Pyro` with
+  the Marvel entry, `Soldier` with an archetype). So the whole shipped set is parenthesised
+  uniformly rather than only the two collisions — a half-parenthesised cast is worse than either
+  consistent choice. This extends rule 6 rather than replacing it: a *unique* generic key
+  (`Stormtrooper`, `Jawa`, `Vault Dweller`) still stands alone, because it is already findable.
+- **Numbered installments file under the series, not the number (0.88.0).** `Final Fantasy` spans
+  FF6 to FF14, `Dragon Age` spans two games, likewise `Mass Effect` and `Resident Evil`. A
+  pre-existing `Persona 5` string was the lone outlier and was folded into `Persona` at 0.88.0,
+  which also took the series past `_FRANCHISE_SCOPE_MINIMUM` and earned it a browsable scope that
+  three separate 2/1/6-entry strings never could. A digit that is part of the *title*
+  (`Cyberpunk 2077`, `Team Fortress 2`, `Ranma 1/2`, `Warhammer 40,000`) is not an installment
+  index and stays.
 - **Never put a second figure in the frame.** A canonical look that requires attendants,
   a partner or a companion is not usable — 0.63.0 deleted the over-the-shoulder shot type
   for the same reason. Aphrodite (Record of Ragnarok) ships as a clothed Grecian reading
@@ -1759,6 +1773,27 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   26 shipped keys, which would have broken every saved workflow that locked one. Prose-only,
   zero RNG draws, no seed drift. The disambiguation convention itself is unchanged — keep using
   `Christie (Dead or Alive)`; the label just no longer stutters.
+- **…and that `endswith` guard only caught the exact case (0.88.0).** It tests whether the
+  parenthetical *is* the franchise, so four keys kept stuttering straight through it for
+  releases: `Ms. Marvel (Kamala Khan) (Marvel)` and `Ms. Marvel (Sharon Ventura) (Marvel)`
+  (the franchise is in the *base name*), `Duke Nukem (video game) (Duke Nukem)` (same), and
+  `Mai (Avatar) (Avatar: The Last Airbender)` / `Jeanne d'Arc (Fate) (Fate/Grand Order)` /
+  `Rebecca (Cyberpunk) (Cyberpunk: Edgerunners)` (the parenthetical is a *shorter form* of the
+  franchise). Merging the Persona installments added a seventh, `Joker (Persona 5) (Persona)`,
+  which is how it was noticed. `_name_already_carries_franchise()` now tests three shapes:
+  exact match, either string being a whole-word prefix of the other, and the franchise
+  appearing as a whole word in the base name. Both tests are **word-bounded** — a bare
+  substring check fires on any name containing a short franchise string, and a bare prefix
+  check lets a one-letter parenthetical swallow a long franchise.
+
+  **It is deliberately scoped to keys that carry a `(...)` disambiguator**, which is what the
+  0.77.0 rule is about. It does *not* touch an eponymous key whose franchise repeats it —
+  `Shrek (Shrek)`, `Godzilla (Godzilla)`, `Sterling Archer (Archer)`. Broadening it there is a
+  one-line change that rewrites **91 more entries' prose**, and because `entry_hash` hashes the
+  entry dict and cannot see a prose-only change, the gate would *not* flag them — 91 published
+  gallery images would silently stop matching their prompt. That is a separate decision with a
+  real re-render bill, not a side effect, and `test_the_rule_is_scoped_to_disambiguated_keys_only`
+  pins it so it is not "tidied up" by accident.
 - **Count the family before adding a coherence exclusion (0.77.0).** Whether an "obviously
   correct" exclusion is safe depends entirely on whether it removes a **whole**
   `FIELD_FAMILIES` family. Excluding `curtain bangs` + `blunt bangs` on a buzz cut is safe
@@ -2089,14 +2124,28 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   explicitly on any `gender: "Any"` archetype whose head is enclosed, keep the hair plain, and
   follow the Beekeeper/Welder convention of offering one costume variant with the headgear pushed
   back so a face can read at all.
-- **A creature's FACE has no colour anchor (0.87.0, known gap).** `palette` is prepended to
-  `integument` only, never to `head`, so an anthropomorphic creature whose identity is its
-  *pallor* renders with an ordinary healthy face — the creature-layer equivalent of the
-  green-body/pale-face bug that `_format_prose` already fixes on the cosplayer side by restating
-  the colour on the face. `jiangshi` surfaced it: "greyed corpse-blue" reached the body and the
-  face came back as a living woman wearing a paper talisman. Colour-free intensifiers in the
-  `head` slot (`bloodless`, `waxen`, `sunken`, `hollow-cheeked`) help and are the correct
-  workaround today, because naming a colour in a slot would break the colour-free convention —
-  but they do not fully win against a photographic style prefix. The real fix is a creature-side
-  face-colour restatement mirroring `_format_prose`; it is deliberately not in 0.87.0, which
-  added no new mechanisms.
+- **A creature's FACE has no colour anchor — measured and scoped down (0.88.0).** `palette` is
+  prepended to `integument` only, never to `head`. This was logged at 0.87.0 as a systemic gap
+  needing an engine-side restatement mirroring `_format_prose`. **It is not systemic, and the
+  engine fix was rejected at 0.88.0 after measuring it.**
+
+  The cosplayer green-body/pale-face bug happens because a *human face under paint* is a
+  separable region with a strong default — ordinary human skin — to fall back on. That
+  precondition only holds where the creature's head is human-shaped. **186 of 209 creature heads
+  are anatomically fused animal heads** (muzzle, beak, mandibles, carapace, ruff, antennae): head
+  and body are one continuous material, so the model carries the integument colour across
+  unaided. That is why the roster renders correctly today.
+
+  Of the 23 human-shaped heads: 5 already name a colour or material (`jiangshi`, `porcelain
+  cyborg`, `tiger`, `red panda`, `bramble folk`); 6 name a non-skin material or have no face at
+  all (`android`, `chrome-flesh cyborg`, `treant`, `mandrake`, `radial alien` — "no face and no
+  front" — and `wraith` — "a hooded void"); and 3 *should* read as a human face (`centaur`,
+  `satyr`, `sphinx`). The genuine risk set was six entries, closed as **data** at 0.88.0 by
+  adding colour-free material words to `flesh golem`, `troll`, `manticore` and `yeti`.
+
+  **The authoring rule this leaves behind:** a creature whose head is human-shaped must tie that
+  head to the body's material with a **colour-free** word (`waxen`, `furred to the jaw`, `sheathed
+  in the same warty hide`, `framed in the same shaggy fur`). Never name a colour in a slot — the
+  slots are colour-free precisely so `palette` can recolour them. An engine-side restatement
+  would also have silently invalidated ~189 published gallery images, because `entry_hash` hashes
+  the entry dict and cannot see a prose-only change.

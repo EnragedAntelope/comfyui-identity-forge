@@ -963,8 +963,11 @@ CREATURES: dict[str, dict] = {
     },
     "flesh golem": {
         "class": "Monsters", "palette": "sallow green-grey",
-        "palette_pool": ["sallow green-grey", "livid patchwork pale", "bruised grey"],
-        "head": "a heavy stitched-together head with mismatched features and bolts",
+        # "livid patchwork pale" was in the pool and stuttered against the integument
+        # below -- "livid patchwork pale patchwork stitched skin". A palette value
+        # carries the COLOUR only; the pattern rides in the slot text.
+        "palette_pool": ["sallow green-grey", "livid pale", "bruised grey"],
+        "head": "a heavy stitched-together head, waxen and slack, the skin seamed with coarse black sutures across the brow and jaw, mismatched features set crooked, and iron bolts driven into the neck",
         "eyes": "dull asymmetric eyes",
         "integument": "patchwork stitched skin over a hulking frame",
         "arms": "huge mismatched arms",
@@ -1406,7 +1409,7 @@ CREATURES: dict[str, dict] = {
     "troll": {
         "class": "Monsters", "palette": "mossy grey-green",
         "palette_pool": ["mossy grey-green", "river-stone grey", "muddy brown"],
-        "head": "a lumpen brutish head with a heavy brow and underbite tusks",
+        "head": "a lumpen brutish head sheathed in the same warty hide, with a heavy brow and underbite tusks",
         "eyes": "small dull eyes",
         "integument": "thick warty rubbery hide",
         "arms": "enormous long dangling arms",
@@ -1517,7 +1520,7 @@ CREATURES: dict[str, dict] = {
     "manticore": {
         "class": "Mythic & Fantasy", "palette": "blood red",
         "palette_pool": ["blood red", "tawny brown"],
-        "head": "a near-human leonine face with three rows of teeth",
+        "head": "a near-human leonine face furred to the jaw, with three rows of teeth",
         "eyes": "cruel amber eyes",
         "integument": "a dense lion-like pelt",
         "arms": "muscular clawed arms",
@@ -1539,7 +1542,7 @@ CREATURES: dict[str, dict] = {
     },
     "yeti": {
         "class": "Mythic & Fantasy", "palette": "snow white",
-        "head": "a broad apish head with a heavy brow and a wide flat nose",
+        "head": "a broad apish head framed in the same shaggy fur, with a heavy brow and a wide flat nose",
         "eyes": "deep-set pale blue eyes",
         "integument": "a thick shaggy coat of long fur",
         "arms": "enormous powerful arms",
