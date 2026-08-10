@@ -8783,10 +8783,13 @@ COSPLAYERS: dict[str, dict] = {
         # Dexter was coming out as an average-build, short man in an apron.
         # "uniform, all-over ... hide" is the _BODY_PAINT_RE marker -- without it the
         # engine kept randomizing an ethnicity and skin tone onto a Besalisk.
-        "costume": "a grubby short-sleeved cook's tunic under a heavily grease-stained "
-                   "apron with a dish towel tucked into the waist tie, worn on a "
-                   "towering, slab-bellied frame with two pairs of thick arms and "
-                   "uniform, all-over mottled green-tan hide",
+        # Four arms LEAD the costume. Buried mid-sentence they rendered as two -- the
+        # same positional problem the mask had, and other multi-armed entries only
+        # render correctly because they state it early.
+        "costume": "four thick arms in two pairs on a towering, slab-bellied frame, "
+                   "wearing a grubby short-sleeved cook's tunic under a heavily "
+                   "grease-stained apron with a dish towel tucked into the waist tie, "
+                   "over uniform, all-over mottled green-tan hide",
         "mask": "a broad Besalisk head with a bony crest running back over the bald "
                 "skull, a heavy pendulous wattle of loose skin hanging from the chin "
                 "and throat, small dark deep-set eyes under a low brow, and a wide "

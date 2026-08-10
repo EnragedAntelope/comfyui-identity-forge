@@ -175,6 +175,20 @@ def _name_already_carries_franchise(name: str, franchise: str) -> bool:
 #: the parsed-archetype dict, the same way the cosplay label travels.
 _COVERS_FACE_KEY = "__covers_face__"
 
+#: Reserved key carrying a masked character's HEAD description, kept out of the
+#: costume string on purpose (0.90.0).
+#:
+#: It used to be comma-appended to the costume, so "a head wrapped entirely in
+#: blood-soaked gauze bandages" arrived as the SIXTH item of a "He wears ..."
+#: garment list -- and t2i models rendered the clothes and ignored the head. The
+#: maintainer's render review caught it on six entries at once (Silent Hill Nurse,
+#: The Ghoul, Figrin D'an, Ithorian, Larfleeze, Dexter Jettster), every one of them
+#: reading as an ordinary person in a costume.
+#:
+#: Same failure and same remedy as the tattoo clause: a description that competes
+#: with a long clothing list loses, so it gets its own sentence.
+_MASK_KEY = "__mask__"
+
 #: Reserved key carrying a cosplayer's ``covers_body`` flag through the parsed dict
 #: (a full hard suit / armour / robot shell / exoskeleton — no skin for worn
 #: jewellery to sit on).
@@ -1783,6 +1797,7 @@ def _species_subject(species: dict, gender: str) -> str:
 def _format_prose(
     resolved: dict[str, str], gender: str, cosplay_label: str | None = None,
     species: dict | None = None, hands_visible: bool = True,
+    mask_text: str | None = None,
 ) -> str:
     """Build a natural-language description from resolved field values.
 
@@ -2045,6 +2060,21 @@ def _format_prose(
     if jewelry:
         sentences.append(f"{subj} {has} " + _join(_dedupe(jewelry)))
 
+    # --- The head, for a masked character -------------------------------
+    # BEFORE the clothing, and in its own sentence. Until 0.90.0 the mask was
+    # comma-appended to the costume string, so it arrived as the last item of a
+    # "He wears ..." garment list -- and the model rendered the garments and
+    # ignored the head. Six entries were reported at once from a render review
+    # (Silent Hill Nurse, The Ghoul, Figrin D'an, Ithorian, Larfleeze, Dexter
+    # Jettster), each rendering as an ordinary person wearing a costume.
+    #
+    # Position is the fix, not wording: leading the description with the head
+    # gives it its own weight instead of making it compete with five garments.
+    # "has" rather than "wears" because a mask slot describes what the head IS
+    # (an alien skull, a bandaged stump), not something worn on top of it.
+    if mask_text:
+        sentences.append(f"{subj} {has} {mask_text}")
+
     # --- Clothing -------------------------------------------------------
     # outfit_description already includes shoes/colour/pattern, so the separate
     # footwear/colour/pattern fields are only voiced when there is no full outfit.
@@ -2292,6 +2322,12 @@ def generate_character(
     size_scale: str = _SIZE_SCALE_AUTO,
     character_scale: str = "",
     widget_locked: frozenset[str] | None = None,
+    # APPENDED, not inserted mid-signature. `execute` calls this positionally, so a
+    # parameter added in the middle silently shifts every argument after it -- it put
+    # a string into `gender_variants` and crashed on `.get`. The same shape as the
+    # widgets_values shift fixed twice already this release: positional interfaces
+    # tolerate appends and nothing else.
+    mask_text: str | None = None,
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
@@ -2663,7 +2699,7 @@ def generate_character(
         _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text)
     )
     prose = _format_prose(resolved, gender, cosplay_label, species,
-                          hands_visible=not hands_covered)
+                          hands_visible=not hands_covered, mask_text=mask_text)
     json_output = _format_json(
         resolved, gender, hair_color_scope, wardrobe, cosplay_label, species
     )
@@ -2758,6 +2794,9 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                 )
             if meta.get("covers_face"):
                 flat[_COVERS_FACE_KEY] = "1"
+            head = meta.get("mask")
+            if isinstance(head, str) and head:
+                flat[_MASK_KEY] = head
             if meta.get("covers_body"):
                 flat[_COVERS_BODY_KEY] = "1"
             if meta.get("covers_hair"):
@@ -2993,6 +3032,7 @@ if _COMFY_AVAILABLE:
             archetype = _parse_archetype_json(kwargs.get("archetype_json", ""))
             cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
             covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
+            mask_text = archetype.pop(_MASK_KEY, None)
             covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
             covers_hair = bool(archetype.pop(_COVERS_HAIR_KEY, None))
             character_scale = archetype.pop(_SCALE_TIER_KEY, "") or ""

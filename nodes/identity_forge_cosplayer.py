@@ -570,8 +570,11 @@ def build_cosplayer_json(
     # appearing in both. Entries without one are unaffected (worn stays worn).
     if include_prop and entry.get("prop") and entry.get("prop_costume"):
         costume = entry["prop_costume"]
-    if covers and not unmask and entry.get("mask"):
-        costume = f"{costume}, {entry['mask']}"
+    # The head travels in `_meta` rather than being glued onto the costume, so the
+    # engine can give it its own sentence ahead of the clothing. Appending it here
+    # made it the last item of a "He wears ..." list, where t2i models reliably
+    # ignored it -- see the note on `_MASK_KEY` in identity_forge.py.
+    head_text = entry["mask"] if (covers and not unmask and entry.get("mask")) else None
 
     # The costume drives IdentityForge's hidden outfit_description override; the
     # signature look (hair/eyes) is always applied; physique only in Full mode.
@@ -599,6 +602,8 @@ def build_cosplayer_json(
         ("covers_body", covers_body),
         ("covers_hair", covers_hair),
     ])
+    if head_text:
+        document["_meta"]["mask"] = head_text
     size_scale = entry.get("size_scale", "")
     if size_scale:
         document["_meta"]["size_scale"] = size_scale

@@ -57,6 +57,7 @@ from nodes.identity_forge import (
 )
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
+    _MASK_KEY,
     _MODIFIERS_KEY, _VARIANTS_KEY, _name_already_carries_franchise,
 )
 from nodes.identity_forge_archetype import build_archetype_json
@@ -1123,11 +1124,12 @@ class CosplayerTests(unittest.TestCase):
                 self.assertNotIn(group, doc, f"{group} should be suppressed")
             self.assertNotIn("His face", prose)
             self.assertNotIn("His hair", prose)
-            # The costume is present with the mask re-attached (default mode).
+            # The costume is present; the mask rides in _meta from 0.90.0 (see
+            # test_unmask_drops_mask_and_reveals_face) rather than being appended.
             entry = COSPLAYERS["Spider-Man"]
             self.assertEqual(
                 doc["Clothing"]["outfit_description"],
-                f"{entry['costume']}, {entry['mask']}",
+                entry["costume"],
             )
 
     def test_unmasked_character_keeps_face_and_hair(self):
@@ -1145,13 +1147,18 @@ class CosplayerTests(unittest.TestCase):
         default = json.loads(build_cosplayer_json("Spider-Man", 0, mask_mode=_MASK_DEFAULT))
         unmasked = json.loads(build_cosplayer_json("Spider-Man", 0, mask_mode=_MASK_OFF))
 
+        # 0.90.0: the mask travels in _meta, NOT glued onto outfit_description.
+        # Appended, it arrived as the last item of a "He wears ..." garment list and
+        # t2i models rendered the clothes and ignored the head -- six entries were
+        # reported that way from one render review. The engine now gives it its own
+        # sentence ahead of the clothing.
         self.assertTrue(default["_meta"]["covers_face"])
-        self.assertEqual(
-            default["Clothing"]["outfit_description"],
-            f"{entry['costume']}, {entry['mask']}",
-        )
+        self.assertEqual(default["_meta"]["mask"], entry["mask"])
+        self.assertEqual(default["Clothing"]["outfit_description"], entry["costume"])
+        self.assertNotIn(entry["mask"], default["Clothing"]["outfit_description"])
 
         self.assertFalse(unmasked["_meta"]["covers_face"])
+        self.assertNotIn("mask", unmasked["_meta"])
         self.assertEqual(unmasked["Clothing"]["outfit_description"], entry["costume"])
         self.assertNotIn(entry["mask"], unmasked["Clothing"]["outfit_description"])
 
@@ -1161,6 +1168,34 @@ class CosplayerTests(unittest.TestCase):
         locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
         _, js = generate_character(1, "Male", locked, covers_face=False)
         self.assertIn("Hair", json.loads(js))
+
+    def test_the_mask_is_voiced_as_its_own_sentence_before_the_clothing(self):
+        """0.90.0. The head must not compete with a garment list.
+
+        Regression for six entries reported from one render review -- the Silent
+        Hill Nurse rendering as an ordinary nurse, The Ghoul with a normal face,
+        Figrin D'an, the Ithorian, Larfleeze and Dexter Jettster all reading as
+        people in costumes. The mask text was correct and present the whole time;
+        it was simply the last item of "He wears a, b, c, d, e, <the head>".
+        """
+        raw = build_cosplayer_json("Spider-Man", 0, mask_mode=_MASK_DEFAULT)
+        flat = _parse_archetype_json(raw)
+        mask_text = flat.pop(_MASK_KEY, None)
+        self.assertTrue(mask_text, "the mask never reached the engine")
+        label = flat.pop(_COSPLAY_LABEL_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        flat.pop(_COVERS_BODY_KEY, None)
+        flat.pop(_COVERS_HAIR_KEY, None)
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        prose, _ = generate_character(1, "Male", locked, cosplay_label=label,
+                                      mask_text=mask_text, covers_face=covers_face)
+        sentences = [s.strip() for s in prose.split(". ")]
+        head_at = next(i for i, s in enumerate(sentences) if mask_text in s)
+        wears_at = next(i for i, s in enumerate(sentences) if " wears " in s)
+        self.assertLess(head_at, wears_at,
+                        "the head must be described BEFORE the clothing")
+        # ...and as its own sentence, not tacked onto the garment list.
+        self.assertNotIn(" wears ", sentences[head_at])
 
     def test_unmask_is_noop_for_face_visible_character(self):
         # A character with no mask is identical in Default and Unmask modes.

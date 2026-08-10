@@ -3276,8 +3276,9 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         # The mawashi is the entire garment; naming the bare torso keeps the model
         # from inventing a shirt under it.
         "outfit_description": "a broad {jewel_tone} silk mawashi belt wound many times around the "
-                              "waist and between the legs, worn on an otherwise bare heavy "
-                              "frame, with bare feet",
+                              "waist and between the legs, worn on an otherwise bare, "
+                              "immense, heavy-bellied and thickly-built frame, with bare "
+                              "feet",
         "accessories": "no accessories",
         "bag": "no bag",
         "expression": "focused",
