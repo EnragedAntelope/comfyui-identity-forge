@@ -679,6 +679,67 @@ function applyGender(node, gender) {
   node.setDirtyCanvas(true, true);
 }
 
+/**
+ * Fields added in a release AFTER the workflow being loaded was saved, newest
+ * release first. Each entry is one release's additions.
+ *
+ * **Why this exists.** `widgets_values` is a positional array and ComfyUI restores it
+ * 1:1 against `node.widgets` -- INCLUDING the buttons and group headers this file
+ * inserts, and regardless of `serialize: false`, which is honoured in neither
+ * direction. `setupIdentityForge` then re-sorts `node.widgets` into group order, so a
+ * field appended at the end of FIELD_DEFINITIONS does NOT land at the end of the
+ * array the loader indexes into: `tattoos` sits in Body, at position 25 of 88.
+ *
+ * The consequence, measured against a real 0.89.0-shaped array on a live instance:
+ * 60 of 85 widgets restored one or more slots out. Appending in Python is necessary
+ * but NOT sufficient, and a fixture that only compares schema key order cannot see
+ * it -- that check passes while the node is broken.
+ *
+ * The pack learned this the expensive way at 0.89.0, when the Cosplayer node's
+ * `franchise_filter` was added with `serialize: false` on the reasoning that a
+ * non-serializing widget cannot disturb `widgets_values`. That is true when WRITING
+ * and false when READING, and every existing Cosplayer node had to be recreated.
+ */
+const FIELDS_ADDED_BY_RELEASE = [
+  ["tattoos", "tattoo_placement", "legwear"], // 0.90.0
+];
+
+/**
+ * Pad a legacy `widgets_values` so each value lands on the widget that saved it.
+ *
+ * Walks releases newest-first, and for each one whose additions exactly account for
+ * the shortfall, splices this node's default into the slot every new widget occupies
+ * *now*. Length is the only signal available (the array carries no names), so the
+ * match has to be exact: a length that corresponds to no known release is left
+ * untouched rather than guessed at, because a wrong guess silently scrambles a
+ * workflow instead of failing.
+ *
+ * Deliberately silent. There is no toast, banner or console warning: the values are
+ * restored correctly, so there is nothing for the user to act on, and a notice that
+ * fires on every load of an older workflow is an irritant.
+ */
+function padLegacyWidgetValues(node, values) {
+  const total = (node.widgets || []).length;
+  if (!Array.isArray(values) || values.length >= total) return values;
+
+  let padded = values.slice();
+  for (const added of FIELDS_ADDED_BY_RELEASE) {
+    if (padded.length + added.length > total) continue;
+    const slots = added
+      .map((name) => (node.widgets || []).findIndex((w) => w.name === name))
+      .filter((i) => i > -1)
+      .sort((a, b) => a - b);
+    if (slots.length !== added.length) continue;
+    // Ascending order matters: each splice shifts everything after it, so inserting
+    // low-to-high keeps the later indices correct as we go.
+    for (const slot of slots) {
+      padded.splice(slot, 0, node.widgets[slot]?.value ?? "Random");
+    }
+    if (padded.length === total) break;
+  }
+  return padded.length === total ? padded : values;
+}
+
 app.registerExtension({
   name: "identity_forge.ui",
   async beforeRegisterNodeDef(nodeType, nodeData) {
@@ -692,6 +753,22 @@ app.registerExtension({
         console.error("[IdentityForge] frontend setup failed:", err);
       }
       return result;
+    };
+
+    // Must wrap `configure` itself, not `onConfigure`: LiteGraph applies
+    // widgets_values and THEN calls onConfigure, so by then the damage is done.
+    // `onNodeCreated` has already run at this point, so node.widgets is built and
+    // grouped and the new fields can be located by name.
+    const configure = nodeType.prototype.configure;
+    nodeType.prototype.configure = function (info) {
+      try {
+        if (info && Array.isArray(info.widgets_values)) {
+          info = { ...info, widgets_values: padLegacyWidgetValues(this, info.widgets_values) };
+        }
+      } catch (err) {
+        console.error("[IdentityForge] legacy widget mapping failed:", err);
+      }
+      return configure ? configure.apply(this, [info]) : undefined;
     };
   },
 });
