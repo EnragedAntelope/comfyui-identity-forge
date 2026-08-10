@@ -3834,7 +3834,7 @@
       },
       "Jeanne d'Arc (Fate)": {
         "hash": "3a1876127179ff69",
-        "rendered": "pre-existing"
+        "rendered": "2026-08-10"
       },
       "Jedah Dohma": {
         "hash": "7de23098100bf94f",
@@ -4818,7 +4818,7 @@
       },
       "Mai (Avatar)": {
         "hash": "ad28f6368388e9bf",
-        "rendered": "pre-existing"
+        "rendered": "2026-08-10"
       },
       "Mai Sakurajima": {
         "hash": "1085ae080cceb51b",
@@ -6174,7 +6174,7 @@
       },
       "Rebecca (Cyberpunk)": {
         "hash": "abfb3563f386c6bd",
-        "rendered": "pre-existing"
+        "rendered": "2026-08-10"
       },
       "Red (Pokemon)": {
         "hash": "94731a84f5bf637d",
@@ -9017,7 +9017,7 @@
       }
     }
   },
-  "generated": "2026-08-10T03:15:59",
+  "generated": "2026-08-10T03:17:20",
   "render": {
     "cfg": 1,
     "height": 2432,

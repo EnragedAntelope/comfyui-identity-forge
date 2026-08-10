@@ -44,6 +44,7 @@ from nodes.identity_forge import (  # noqa: E402
 )
 
 _JS_PATH = ROOT / "js" / "identity_forge.js"
+_COSPLAYER_JS_PATH = ROOT / "js" / "identity_forge_cosplayer.js"
 _START = "// >>> GENERATED DATA"
 _END = "// <<< GENERATED DATA <<<"
 _HEADER = (
@@ -103,6 +104,49 @@ def render_block() -> str:
     ])
 
 
+def _builtin_cosplayer_franchises() -> dict[str, list[str]]:
+    """``{franchise: [character names]}`` for the BUILT-IN roster only.
+
+    Read by parsing the ``COSPLAYERS`` literal out of ``data/cosplayers.py`` with
+    ``ast`` rather than importing it. That is deliberate and load-bearing: importing
+    the module runs ``apply_user_cosplayers(COSPLAYERS)`` at the bottom of it, which
+    merges the local ``user_options.json`` in place — so an import-based generator
+    would bake a maintainer's private characters into a committed, published file.
+    The AST sees only what is written in the source.
+
+    User-added characters are therefore absent from this map, which is the right
+    failure mode: the frontend treats an unknown name as unfiltered and always shows
+    it, so a user entry can never be hidden by the filter.
+    """
+    import ast
+
+    source = (ROOT / "data" / "cosplayers.py").read_text(encoding="utf-8")
+    by_franchise: dict[str, list[str]] = {}
+    for node in ast.walk(ast.parse(source)):
+        if not (isinstance(node, ast.AnnAssign)
+                and getattr(node.target, "id", "") == "COSPLAYERS"):
+            continue
+        for key, value in zip(node.value.keys, node.value.values):
+            franchise = ""
+            for entry_key, entry_value in zip(value.keys, value.values):
+                if (isinstance(entry_key, ast.Constant) and entry_key.value == "franchise"
+                        and isinstance(entry_value, ast.Constant)):
+                    franchise = entry_value.value
+            if franchise:
+                by_franchise.setdefault(franchise, []).append(key.value)
+    return {f: sorted(names) for f, names in sorted(by_franchise.items())}
+
+
+def render_cosplayer_block() -> str:
+    """The generated block for ``js/identity_forge_cosplayer.js``."""
+    return "\n".join([
+        _HEADER,
+        "const COSPLAYER_FRANCHISES = "
+        f"{json.dumps(_builtin_cosplayer_franchises(), indent=2, ensure_ascii=False)};",
+        _END,
+    ])
+
+
 def _splice(source: str, block: str) -> str:
     """Replace the existing marker region in ``source`` with ``block``."""
     start = source.index(_START)
@@ -116,27 +160,33 @@ def main(argv: list[str] | None = None) -> int:
                         help="Verify the committed JS matches data/fields.py (exit 1 if stale).")
     args = parser.parse_args(argv)
 
-    source = _JS_PATH.read_text(encoding="utf-8")
-    if _START not in source or _END not in source:
-        print(f"ERROR: marker comments not found in {_JS_PATH.name}; "
-              f"expected a region delimited by {_START!r} … {_END!r}.")
-        return 2
+    targets = (
+        (_JS_PATH, render_block, "data/fields.py"),
+        (_COSPLAYER_JS_PATH, render_cosplayer_block, "data/cosplayers.py"),
+    )
+    stale = False
+    for path, render, origin in targets:
+        source = path.read_text(encoding="utf-8")
+        if _START not in source or _END not in source:
+            print(f"ERROR: marker comments not found in {path.name}; "
+                  f"expected a region delimited by {_START!r} … {_END!r}.")
+            return 2
 
-    updated = _splice(source, render_block())
-    rel = _JS_PATH.relative_to(ROOT)
-    if args.check:
-        if updated != source:
-            print(f"{rel} is STALE relative to data/fields.py.")
-            print("Regenerate with: python scripts/generate_js_data.py")
-            return 1
-        print(f"{rel} generated data is up to date.")
-        return 0
-    if updated != source:
-        _JS_PATH.write_text(updated, encoding="utf-8")
-        print(f"wrote {rel}")
-    else:
-        print(f"{rel} already up to date")
-    return 0
+        updated = _splice(source, render())
+        rel = path.relative_to(ROOT)
+        if args.check:
+            if updated != source:
+                print(f"{rel} is STALE relative to {origin}.")
+                print("Regenerate with: python scripts/generate_js_data.py")
+                stale = True
+            else:
+                print(f"{rel} generated data is up to date.")
+        elif updated != source:
+            path.write_text(updated, encoding="utf-8")
+            print(f"wrote {rel}")
+        else:
+            print(f"{rel} already up to date")
+    return 1 if stale else 0
 
 
 if __name__ == "__main__":

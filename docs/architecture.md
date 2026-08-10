@@ -42,13 +42,14 @@ data/        cosplayers.py · creatures.py · fields.py · templates.py (archety
 nodes/       identity_forge.py (engine + main node) · identity_forge_cosplayer.py
              · identity_forge_creature.py · identity_forge_archetype.py
              · identity_forge_modifier.py · identity_forge_vault_{save,load}.py
-js/          identity_forge.js · identity_forge_creature.js · identity_forge_vault.js
-             (ComfyUI frontend extensions)
+js/          identity_forge.js · identity_forge_cosplayer.js · identity_forge_creature.js
+             · identity_forge_vault.js (ComfyUI frontend extensions)
 tests/       validate_data.py (static integrity) · test_engine.py · test_creature.py
              · test_vault.py · preview_cosplayer.py
 scripts/     generate_reference_docs.py (regenerates docs/reference/*.md)
              · generate_js_data.py (regenerates the GROUP_ORDER/FIELD_TO_GROUP/GENDER_POOLS
-               block in js/identity_forge.js)
+               block in js/identity_forge.js, and the COSPLAYER_FRANCHISES block in
+               js/identity_forge_cosplayer.js)
 docs/        usage.md · cosplayer-notes.md · creature-notes.md · architecture.md (this file)
              · reference/ (GENERATED indexes — see below)
 ```
@@ -1794,6 +1795,37 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   gallery images would silently stop matching their prompt. That is a separate decision with a
   real re-render bill, not a side effect, and `test_the_rule_is_scoped_to_disambiguated_keys_only`
   pins it so it is not "tidied up" by accident.
+- **The franchise filter is a view, not an input (0.89.0).** With ~1,800 bare names in one
+  flat combo and no franchise shown anywhere, a user who remembers a *look* had nothing to
+  narrow by. The obvious fix — decorating each option as `"Ann Takamaki — Persona"` — is not
+  available: `io.Combo.Input` has no display/value split, so the option text **is** the stored
+  value, and ComfyUI validates combo values at `/prompt` (the same fact that forces
+  `render_gallery.py` to resolve prompts in-process). Decorating them would invalidate the
+  character stored in every saved workflow.
+
+  So `js/identity_forge_cosplayer.js` adds a `franchise_filter` combo with **`serialize:
+  false`**, the same mechanism the main node's group headers and bulk buttons already use.
+  ComfyUI skips non-serializing widgets when writing `widgets_values`, so the serialized array
+  is byte-identical to before the file existed — a workflow saved by an older version loads
+  unchanged, and one saved now opens on an older version. There is **no schema change**, so
+  `define_schema()` and `tests/frontend/fixtures/nodes.json` are untouched; this is why the
+  filter did *not* need appending at the end of the input list as a compatibility compromise,
+  and could be placed where it belongs, directly under `character`.
+  `tests/frontend/cosplayer.test.mjs` asserts the `widgets_values` claim directly rather than
+  assuming it.
+
+  Two UX invariants it must not break, both tested: filtering never changes the current
+  selection (an out-of-franchise pick stays selected *and* stays in the list), and the
+  `None` / `Random —` sentinels survive every filter. Every filter is derived from a pristine
+  snapshot of the option list, never from the currently-filtered one, so narrowing is always
+  reversible. `random_scope` is a different control and is untouched — it limits what the
+  `Random —` entries roll on the backend; the filter only limits what the dropdown shows.
+
+  The generated map is built by **AST-parsing** `data/cosplayers.py`, not importing it:
+  importing runs `apply_user_cosplayers(COSPLAYERS)` and would bake a maintainer's private
+  `user_options.json` characters into a committed, published file. A user-added character is
+  therefore absent from the map, which is the right failure mode — the frontend treats an
+  unknown name as unfiltered and always shows it.
 - **Count the family before adding a coherence exclusion (0.77.0).** Whether an "obviously
   correct" exclusion is safe depends entirely on whether it removes a **whole**
   `FIELD_FAMILIES` family. Excluding `curtain bangs` + `blunt bangs` on a buzz cut is safe
