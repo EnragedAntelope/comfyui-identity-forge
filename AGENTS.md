@@ -60,6 +60,11 @@ python scripts/dump_frontend_fixtures.py
 python scripts/generate_reference_docs.py --check
 python scripts/generate_js_data.py --check
 python scripts/dump_frontend_fixtures.py --check
+
+# Check every roster entry's gallery image matches its current text (CI).
+# Network-free. Rendering the ones it reports needs a running ComfyUI:
+#   python scripts/render_gallery.py --missing --save-originals --publish
+python scripts/render_gallery.py --check
 ```
 
 ## Conventions & gotchas
