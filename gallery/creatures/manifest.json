@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "creatures",
-  "generated": "2026-08-10T03:13:45.644666",
-  "total_entries": 209,
-  "entries_with_images": 209,
+  "generated": "2026-08-10T17:17:13.772200",
+  "total_entries": 233,
+  "entries_with_images": 233,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -13,6 +13,13 @@
       "gender": "any",
       "group": "Reptiles & Amphibians",
       "image": "images/alligator.jpeg"
+    },
+    {
+      "name": "alpaca",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/alpaca.jpeg"
     },
     {
       "name": "android",
@@ -85,11 +92,25 @@
       "image": "images/bear.jpeg"
     },
     {
+      "name": "beaver",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/beaver.jpeg"
+    },
+    {
       "name": "biomechanical alien",
       "has_image": true,
       "gender": "any",
       "group": "Aliens",
       "image": "images/biomechanical alien.jpeg"
+    },
+    {
+      "name": "bison",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/bison.jpeg"
     },
     {
       "name": "blob alien",
@@ -132,6 +153,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/camel.jpeg"
+    },
+    {
+      "name": "capybara",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/capybara.jpeg"
     },
     {
       "name": "cardinal",
@@ -281,6 +309,13 @@
       "image": "images/crystalline alien.jpeg"
     },
     {
+      "name": "cuttlefish",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "image": "images/cuttlefish.jpeg"
+    },
+    {
       "name": "cyclops",
       "has_image": true,
       "gender": "any",
@@ -337,6 +372,13 @@
       "image": "images/dryad.jpeg"
     },
     {
+      "name": "dullahan",
+      "has_image": true,
+      "gender": "any",
+      "group": "Monsters",
+      "image": "images/dullahan.jpeg"
+    },
+    {
       "name": "eagle",
       "has_image": true,
       "gender": "any",
@@ -363,6 +405,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/elephant.jpeg"
+    },
+    {
+      "name": "emu",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/emu.jpeg"
     },
     {
       "name": "energy being",
@@ -547,6 +596,13 @@
       "image": "images/hag.jpeg"
     },
     {
+      "name": "hammerhead shark",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "image": "images/hammerhead shark.jpeg"
+    },
+    {
       "name": "harpy",
       "has_image": true,
       "gender": "any",
@@ -638,6 +694,13 @@
       "image": "images/insectoid xeno.jpeg"
     },
     {
+      "name": "jackalope",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "image": "images/jackalope.jpeg"
+    },
+    {
       "name": "jellyfish",
       "has_image": true,
       "gender": "any",
@@ -657,6 +720,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/kangaroo.jpeg"
+    },
+    {
+      "name": "kappa",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "image": "images/kappa.jpeg"
     },
     {
       "name": "kelp folk",
@@ -685,6 +755,13 @@
       "gender": "any",
       "group": "Mythic & Fantasy",
       "image": "images/kitsune.jpeg"
+    },
+    {
+      "name": "kiwi",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/kiwi.jpeg"
     },
     {
       "name": "koala",
@@ -720,6 +797,13 @@
       "gender": "any",
       "group": "Insects & Arachnids",
       "image": "images/ladybug.jpeg"
+    },
+    {
+      "name": "lemur",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/lemur.jpeg"
     },
     {
       "name": "leopard",
@@ -778,6 +862,13 @@
       "image": "images/lynx.jpeg"
     },
     {
+      "name": "magpie",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/magpie.jpeg"
+    },
+    {
       "name": "mallard duck",
       "has_image": true,
       "gender": "any",
@@ -813,6 +904,13 @@
       "image": "images/mantis shrimp.jpeg"
     },
     {
+      "name": "meerkat",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/meerkat.jpeg"
+    },
+    {
       "name": "merfolk",
       "has_image": true,
       "gender": "any",
@@ -832,6 +930,13 @@
       "gender": "any",
       "group": "Reptiles & Amphibians",
       "image": "images/monitor lizard.jpeg"
+    },
+    {
+      "name": "moose",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/moose.jpeg"
     },
     {
       "name": "moss golem",
@@ -995,6 +1100,13 @@
       "image": "images/pegasus.jpeg"
     },
     {
+      "name": "pelican",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/pelican.jpeg"
+    },
+    {
       "name": "penguin",
       "has_image": true,
       "gender": "any",
@@ -1021,6 +1133,20 @@
       "gender": "any",
       "group": "Aliens",
       "image": "images/plant alien.jpeg"
+    },
+    {
+      "name": "platypus",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/platypus.jpeg"
+    },
+    {
+      "name": "poison dart frog",
+      "has_image": true,
+      "gender": "any",
+      "group": "Reptiles & Amphibians",
+      "image": "images/poison dart frog.jpeg"
     },
     {
       "name": "porcelain cyborg",
@@ -1070,6 +1196,13 @@
       "gender": "any",
       "group": "Reptiles & Amphibians",
       "image": "images/python.jpeg"
+    },
+    {
+      "name": "qilin",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "image": "images/qilin.jpeg"
     },
     {
       "name": "rabbit",
@@ -1205,6 +1338,13 @@
       "image": "images/seal.jpeg"
     },
     {
+      "name": "selkie",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "image": "images/selkie.jpeg"
+    },
+    {
       "name": "shark",
       "has_image": true,
       "gender": "any",
@@ -1224,6 +1364,13 @@
       "gender": "any",
       "group": "Monsters",
       "image": "images/skeleton.jpeg"
+    },
+    {
+      "name": "skunk",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/skunk.jpeg"
     },
     {
       "name": "slime",
@@ -1296,6 +1443,13 @@
       "image": "images/stick insect.jpeg"
     },
     {
+      "name": "stone golem",
+      "has_image": true,
+      "gender": "any",
+      "group": "Monsters",
+      "image": "images/stone golem.jpeg"
+    },
+    {
       "name": "sunflower folk",
       "has_image": true,
       "gender": "any",
@@ -1322,6 +1476,13 @@
       "gender": "any",
       "group": "Mythic & Fantasy",
       "image": "images/tengu.jpeg"
+    },
+    {
+      "name": "thunderbird",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "image": "images/thunderbird.jpeg"
     },
     {
       "name": "tiger",
@@ -1434,6 +1595,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/wolf.jpeg"
+    },
+    {
+      "name": "wolverine",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/wolverine.jpeg"
     },
     {
       "name": "wraith",
