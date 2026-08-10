@@ -3230,6 +3230,185 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": ["full body shot", "medium shot from waist up"],
         "mood": "moody",
     },
+
+    # ======================================================================
+    # Added 0.90.0. Seven silhouettes with no existing coverage. Costumes are
+    # inline rather than in `_COSTUMES` (which OVERRIDES an inline value at
+    # import), and every uniformed/on-duty entry locks "bag": "no bag" so the bag
+    # field cannot randomize a handbag onto someone working.
+    # ======================================================================
+    "Matador": {
+        "gender": "Male",
+        "ethnicity": "Spanish",
+        "body_type": "lean",
+        "height": "average height",
+        "fitness_level": "very fit",
+        "hair_color": ["jet black", "near black", "dark brown"],
+        "hair_length": "very short",
+        "hair_style": "slicked back",
+        "skin_tone": "olive",
+        "outfit_style": "evening formal",
+        "outfit_description": "a traje de luces of a short {jewel_tone} bolero jacket stiff with "
+                              "gold bullion embroidery and heavy shoulder fringe, a matching "
+                              "embroidered waistcoat, high-waisted knee-length breeches, pink "
+                              "stockings, flat black slippers, and a black montera hat",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "steely",
+        "location": "outdoor amphitheater",
+        "lighting": "harsh overhead midday sun",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+    },
+    "Sumo Wrestler": {
+        "gender": "Male",
+        "ethnicity": "Japanese",
+        "body_type": "plus size",
+        "height": "tall",
+        "waist": "full",
+        "fitness_level": "lightly active",
+        "hair_color": ["jet black", "raven black"],
+        "hair_length": "shoulder length",
+        "hair_style": "top knot",
+        "facial_hair": "clean shaven",
+        "skin_tone": "light medium",
+        "outfit_style": "athletic",
+        # The mawashi is the entire garment; naming the bare torso keeps the model
+        # from inventing a shirt under it.
+        "outfit_description": "a broad {jewel_tone} silk mawashi belt wound many times around the "
+                              "waist and between the legs, worn on an otherwise bare heavy "
+                              "frame, with bare feet",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "focused",
+        "location": "martial arts dojo",
+        "lighting": "diffused skylight from above",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+    },
+    "Hockey Goalie": {
+        "body_type": "athletic",
+        "height": "average height",
+        "fitness_level": "athletic",
+        "outfit_style": "athletic",
+        "outfit_description": "bulky {color} goaltender pads strapped over the legs, a heavily "
+                              "padded chest protector under a loose team jersey, an oversized "
+                              "blocker on one hand and a deep catching glove on the other, and "
+                              "a painted cage-fronted goalie mask",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "determined",
+        "location": "indoor ice rink",
+        "lighting": "cool LED overhead lighting",
+        "shot_type": "full body shot",
+        "mood": "intense",
+    },
+    "Fighter Pilot": {
+        "body_type": "athletic",
+        "height": "average height",
+        "fitness_level": "very fit",
+        "outfit_style": "athletic",
+        "outfit_description": "a {earth_tone} flight suit zipped to the throat, an anti-g garment "
+                              "laced over the thighs and belly, a torso harness of heavy webbing "
+                              "and buckles, gloved hands, and a visored helmet with an oxygen "
+                              "mask clipped across the face",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "confident",
+        "lighting": "harsh overhead midday sun",
+        "shot_type": ["full body shot", "medium shot from waist up"],
+        "mood": "self-assured",
+    },
+    "Buddhist Monk": {
+        "age": ["40", "50", "60"],
+        "body_type": "lean",
+        "height": "average height",
+        "hair_length": "bald",
+        "facial_hair": "clean shaven",
+        "makeup_style": "no makeup",
+        "outfit_style": "casual",
+        "outfit_description": "layered saffron and deep maroon kasaya robes, one shoulder left "
+                              "bare and the cloth gathered over the opposite arm, worn with "
+                              "simple sandals",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "earrings": "no earrings",
+        "nails": "natural short nails",
+        "expression": "serene",
+        "location": "Buddhist temple hall",
+        "lighting": "warm candlelight",
+        "shot_type": ["full body shot", "medium shot from waist up"],
+        "mood": "tranquil",
+    },
+    "Whirling Dervish": {
+        "gender": "Male",
+        "ethnicity": "Turkish",
+        "body_type": "lean",
+        "height": "average height",
+        "facial_hair": ["short beard", "clean shaven"],
+        "outfit_style": "evening formal",
+        # The skirt flaring under rotation is the whole image; stated as a worn
+        # property rather than as a pose, which the pose field owns.
+        "outfit_description": "a tall camel-felt sikke hat, a long white tennure gown whose "
+                              "full skirt flares wide in a circle, a fitted white jacket, and a "
+                              "black hirka cloak slipped from the shoulders",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "serene",
+        "location": "community theatre auditorium",
+        "lighting": "dramatic single overhead spotlight",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+    },
+    # Bolivian Aymara and Quechua women's dress -- a living, self-identified style
+    # with real pride attached (cholita fashion shows, wrestlers, climbers), and
+    # the same class as the shipped Babushka, Italian Nonna, Geisha, Mariachi
+    # Charro, Gaucho, Sapeur and Highland Scot. Written as the actual garments
+    # rather than as a caricature: the bowler is worn tilted and small, the pollera
+    # is layered and heavy, the manta is a shawl, the braids are joined at the ends.
+    "Andean Cholita": {
+        "gender": "Female",
+        "ethnicity": "Bolivian",
+        "age": ["40", "50", "60"],
+        "body_type": "stocky",
+        "height": "short",
+        "hair_color": ["jet black", "raven black"],
+        "hair_length": "waist length",
+        "hair_style": "braided pigtails",
+        "hair_part": "center part",
+        "hair_highlights": "none",
+        # Large hoops are authentic; the unpinned field rolled an "industrial
+        # earring", which is a modern piercing rather than this style's jewellery.
+        "earrings": ["large bold gold hoops", "medium gold hoops", "long drop earrings"],
+        "skin_tone": "warm tan",
+        "eye_color": "dark brown",
+        # Same pins as Babushka and Italian Nonna: without them the engine put
+        # "heavy glam, dramatic falsies, coral lip colour" and salon money-piece
+        # highlights on a traditional look, and rolled deep blue eyes on a
+        # Bolivian woman. Jewellery has its own fields and is NOT covered by
+        # `accessories`, so the modern pieces have to be pinned off individually.
+        "makeup_style": "no makeup",
+        "necklace": "no necklace",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "nails": "natural short nails",
+        "outfit_style": "vintage retro",
+        "outfit_description": "a small bowler hat perched high and tilted on the head, a "
+                              "brightly embroidered {jewel_tone} manta shawl pinned at the chest, a "
+                              "many-layered pollera skirt falling to mid-calf over stiff "
+                              "petticoats, and flat buckled shoes",
+        "accessories": "no accessories",
+        "expression": "calm and composed",
+        "location": "open-air street food market",
+        "lighting": "golden hour sunlight",
+        "shot_type": ["full body shot", "medium shot from waist up"],
+        "mood": "radiant",
+    },
 }
 
 

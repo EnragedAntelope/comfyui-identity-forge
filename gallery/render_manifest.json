@@ -1747,6 +1747,10 @@
         "hash": "e9e880e25149f0d6",
         "rendered": "2026-08-10"
       },
+      "Brienne of Tarth": {
+        "hash": "7551142897365b06",
+        "rendered": "2026-08-10"
+      },
       "Brigitte": {
         "hash": "41c0a5d7bb6d8075",
         "rendered": "pre-existing"
@@ -1762,6 +1766,10 @@
       "Brook": {
         "hash": "a8218c147ce2ca39",
         "rendered": "pre-existing"
+      },
+      "Brotherhood of Steel Knight": {
+        "hash": "6de03f16f8a58ea9",
+        "rendered": "2026-08-10"
       },
       "Bruce Wayne": {
         "hash": "2d9e1acfd642d83f",
@@ -1990,6 +1998,10 @@
       "Cell": {
         "hash": "0d026fac3f718e5d",
         "rendered": "pre-existing"
+      },
+      "Cersei Lannister": {
+        "hash": "2cbf67896a9d5be5",
+        "rendered": "2026-08-10"
       },
       "Cervantes de Leon": {
         "hash": "cf20a0d5f6e4b30c",
@@ -2299,6 +2311,14 @@
         "hash": "1764b8113c72bd2e",
         "rendered": "pre-existing"
       },
+      "Dark Magician": {
+        "hash": "cde410a9bab3a933",
+        "rendered": "2026-08-10"
+      },
+      "Dark Magician Girl": {
+        "hash": "ccc6aed164e32730",
+        "rendered": "2026-08-10"
+      },
       "Dark Trooper": {
         "hash": "bb814007694278a4",
         "rendered": "pre-existing"
@@ -2452,8 +2472,8 @@
         "rendered": "pre-existing"
       },
       "Dexter Jettster": {
-        "hash": "b2ca99300179554a",
-        "rendered": "pre-existing"
+        "hash": "5fba11ef32b36152",
+        "rendered": "2026-08-10"
       },
       "Dhalsim": {
         "hash": "0b0f2658aaa254a1",
@@ -2695,6 +2715,10 @@
         "hash": "99514790ac9220f2",
         "rendered": "pre-existing"
       },
+      "Eleven": {
+        "hash": "16c26d56b0e434e2",
+        "rendered": "2026-08-10"
+      },
       "Eliot": {
         "hash": "b19a60fa1083f062",
         "rendered": "pre-existing"
@@ -2888,8 +2912,8 @@
         "rendered": "pre-existing"
       },
       "Figrin D'an": {
-        "hash": "73f6e3f2c304dcc4",
-        "rendered": "pre-existing"
+        "hash": "bf75710652d5b8b7",
+        "rendered": "2026-08-10"
       },
       "Finn": {
         "hash": "a765ddd6951c6734",
@@ -3705,8 +3729,8 @@
         "rendered": "pre-existing"
       },
       "Ithorian": {
-        "hash": "71f0e6e66407c9b2",
-        "rendered": "pre-existing"
+        "hash": "1a3db1df94753c01",
+        "rendered": "2026-08-10"
       },
       "Ivy Valentine": {
         "hash": "5f4f1e04af76f746",
@@ -3939,6 +3963,10 @@
       "Jolyne Cujoh": {
         "hash": "d7949dd9ba3d8f1f",
         "rendered": "pre-existing"
+      },
+      "Jon Snow": {
+        "hash": "bf6594215a02ea15",
+        "rendered": "2026-08-10"
       },
       "Jon Talbain": {
         "hash": "3f836e9735f09c4d",
@@ -4205,8 +4233,8 @@
         "rendered": "pre-existing"
       },
       "Kilowog": {
-        "hash": "f4fad81d9f46e14f",
-        "rendered": "pre-existing"
+        "hash": "6e26d85a44dc259b",
+        "rendered": "2026-08-10"
       },
       "Kim Possible": {
         "hash": "b4ba6fad1489a847",
@@ -4445,8 +4473,8 @@
         "rendered": "pre-existing"
       },
       "Larfleeze": {
-        "hash": "46d7948810a07671",
-        "rendered": "pre-existing"
+        "hash": "10b2f8002a2d34b0",
+        "rendered": "2026-08-10"
       },
       "Lascivious": {
         "hash": "f773489d40595fca",
@@ -5068,6 +5096,10 @@
         "hash": "f7ecc4ebb6e9baff",
         "rendered": "pre-existing"
       },
+      "Melisandre": {
+        "hash": "6cc4da6bad62afa8",
+        "rendered": "2026-08-10"
+      },
       "Menat": {
         "hash": "09e890fc8fe492b7",
         "rendered": "pre-existing"
@@ -5536,6 +5568,10 @@
         "hash": "730d774f507fbd0a",
         "rendered": "pre-existing"
       },
+      "Nick Valentine": {
+        "hash": "d409100ddc92af87",
+        "rendered": "2026-08-10"
+      },
       "Nick Wilde": {
         "hash": "4a2e1d6936becc21",
         "rendered": "pre-existing"
@@ -5619,6 +5655,10 @@
       "Nui Harime": {
         "hash": "820aae7ed1059f78",
         "rendered": "pre-existing"
+      },
+      "Nurse (Silent Hill)": {
+        "hash": "16111082d4fa36c1",
+        "rendered": "2026-08-10"
       },
       "Nurse Joy": {
         "hash": "f2f0c1c4307a2ba9",
@@ -6532,6 +6572,10 @@
         "hash": "c0755194d4ef3176",
         "rendered": "2026-08-09"
       },
+      "Samus Aran (Power Suit)": {
+        "hash": "3ac9a96678538cd4",
+        "rendered": "2026-08-10"
+      },
       "Samwise Gamgee": {
         "hash": "a2ea56cf5818120e",
         "rendered": "pre-existing"
@@ -7056,6 +7100,10 @@
         "hash": "73573edbede03476",
         "rendered": "pre-existing"
       },
+      "Splicer": {
+        "hash": "53025aeddf549f89",
+        "rendered": "2026-08-10"
+      },
       "Splinter": {
         "hash": "fd8331ac3c6682d7",
         "rendered": "pre-existing"
@@ -7384,6 +7432,10 @@
         "hash": "d572c1d478f78208",
         "rendered": "2026-08-09"
       },
+      "The Ghoul": {
+        "hash": "ff5237e9f22c48e6",
+        "rendered": "2026-08-10"
+      },
       "The Great Gazoo": {
         "hash": "798aa555ce803384",
         "rendered": "pre-existing"
@@ -7415,6 +7467,10 @@
       "The Mummy": {
         "hash": "7cc482018d752502",
         "rendered": "pre-existing"
+      },
+      "The Night King": {
+        "hash": "0713bc75ab1a9299",
+        "rendered": "2026-08-10"
       },
       "The Penguin": {
         "hash": "99a08e148fbfe648",
@@ -9017,7 +9073,7 @@
       }
     }
   },
-  "generated": "2026-08-10T03:17:20",
+  "generated": "2026-08-10T14:35:44",
   "render": {
     "cfg": 1,
     "height": 2432,

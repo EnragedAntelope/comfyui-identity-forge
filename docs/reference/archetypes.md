@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**231 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**238 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -28,6 +28,7 @@
 - **Alchemist** -- vintage retro
 - **Alpine Skier** -- athletic
 - **Ancient Roman Patrician** [Male] -- evening formal
+- **Andean Cholita** [Female] -- vintage retro
 - **Angelic Being** [Female] -- evening formal
 - **Arcane Wizard** [Male] -- bohemian
 - **Archaeologist** [Female] -- casual
@@ -54,6 +55,7 @@
 - **Bosozoku** [Male] -- edgy alternative
 - **Boxer** [Male] -- athletic
 - **Bridal Portrait** [Female] -- evening formal
+- **Buddhist Monk** -- casual
 - **Butcher** -- casual
 - **Butler** -- business formal
 - **Cabaret Witch** [Female] -- evening formal
@@ -94,6 +96,7 @@
 - **Falconer** -- smart casual
 - **Farmer** [Male] -- casual
 - **Fencer** -- athletic
+- **Fighter Pilot** -- athletic
 - **Figure Skater** [Any]
 - **Firefighter** [Male] -- athletic
 - **Flamenco Dancer** [Female]
@@ -118,6 +121,7 @@
 - **Halfling Rogue** -- casual
 - **Hazmat Technician** -- athletic
 - **Highland Scot** [Male]
+- **Hockey Goalie** -- athletic
 - **Holy Paladin** [Male] -- business formal
 - **Human Knight** [Male] -- business formal
 - **Indie Sleaze** -- edgy alternative
@@ -138,6 +142,7 @@
 - **Marine Biologist** [Female] -- casual
 - **Martial Artist** -- athletic
 - **Masquerade Guest** [Female]
+- **Matador** [Male] -- evening formal
 - **McBling Socialite** [Female] -- streetwear
 - **Mechanic** [Male] -- edgy alternative
 - **Medieval Peasant** -- casual
@@ -201,6 +206,7 @@
 - **Stonemason** -- casual
 - **Storm Chaser** -- casual
 - **Streamer** -- streetwear
+- **Sumo Wrestler** [Male] -- athletic
 - **Superhero** -- athletic
 - **Supervillain** -- evening formal
 - **Surfer** [Male] -- resort vacation
@@ -230,6 +236,7 @@
 - **Watchmaker** -- business casual
 - **Welder** -- casual
 - **Werewolf Hunter** [Male] -- edgy alternative
+- **Whirling Dervish** [Male] -- evening formal
 - **Wild West Gunslinger** [Male] -- vintage retro
 - **Winemaker** -- casual
 - **Witch Hunter** [Male] -- edgy alternative
