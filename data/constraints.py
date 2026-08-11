@@ -148,8 +148,8 @@ CONSTRAINT_RULES: list[dict] = [
      "requires_field": "highlight", "requires_value": "none",
      "reason": "bare face has no highlighter"},
     {"type": "exclusion", "field": "makeup_style", "value": "no makeup",
-     "excludes_field": "skin_finish", "excludes_values": ["full coverage matte"],
-     "reason": "full-coverage matte is a foundation finish, impossible bare-faced"},
+     "excludes_field": "skin_finish", "excludes_values": ["full coverage matte", "matte finish", "dewy skin"],
+     "reason": "these are foundation or cosmetic finishes, impossible bare-faced"},
 
     # --- Hair length gates which styles are physically possible -----------
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
@@ -402,6 +402,54 @@ CONSTRAINT_RULES.append({
     "excludes_field": "skin_finish",
     "excludes_values": ["matte finish", "full coverage matte", "dewy skin"],
     "reason": "dewy makeup style conflicts with matte finishes and doubles 'dewy skin'"})
+
+# Glam makeup styles require visible cosmetics on every axis -- bare or absent
+# sub-field values contradict an intentionally dramatic look. The natural-makeup
+# block above already gates fantasy/high-drama values out of natural styles;
+# this gate does the reverse: it prevents bare cosmetics from landing under glam.
+_GLAM_MAKEUP = [
+    "full glam", "bold glam", "heavy glam",
+    "editorial makeup", "gothic dark makeup", "club makeup",
+    "vintage 1950s pin-up makeup", "mod 1960s eye makeup",
+    "soft everyday glam", "soft glam",
+]
+_BARE_EYE_MAKEUP = ["no eyeshadow"]
+_BARE_EYELINER = ["no eyeliner"]
+_BARE_LASHES = ["natural bare"]
+_BARE_LIPS = ["bare natural lips"]
+_NO_BLUSH = ["no blush"]
+_NO_CONTOUR = ["none"]
+_NO_HIGHLIGHT = ["none"]
+for _style in _GLAM_MAKEUP:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "eye_makeup", "excludes_values": _BARE_EYE_MAKEUP,
+        "reason": f"'{_style}' requires visible eyeshadow; bare eyes contradicts it"})
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "eyeliner", "excludes_values": _BARE_EYELINER,
+        "reason": f"'{_style}' requires visible eyeliner; bare liner contradicts it"})
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "lashes", "excludes_values": _BARE_LASHES,
+        "reason": f"'{_style}' requires mascara or falsies; bare lashes contradict it"})
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "lips_makeup", "excludes_values": _BARE_LIPS,
+        "reason": f"'{_style}' requires visible lip colour; bare lips contradict it"})
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "blush", "excludes_values": _NO_BLUSH,
+        "reason": f"'{_style}' expects visible blush; bare cheeks contradict it"})
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "contour", "excludes_values": _NO_CONTOUR,
+        "reason": f"'{_style}' expects contouring; an untouched face contradicts it"})
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "makeup_style", "value": _style,
+        "excludes_field": "highlight", "excludes_values": _NO_HIGHLIGHT,
+        "reason": f"'{_style}' expects highlight; bare skin contradicts it"})
+
 
 # Expression drives the mouth/smile state so the rendered smile_type never
 # contradicts the face (smile_type is the single mouth field now -- teeth_visibility

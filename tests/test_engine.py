@@ -793,7 +793,8 @@ class OutputFormatTests(unittest.TestCase):
         cases = (("Female", "satin ribbon tied in hair", "tied in her hair"),
                  ("Male", "bandana tied over hair", "over his hair"))
         for gender, acc, expected in cases:
-            prose, _ = generate_character(42, gender, {"hair_accessory": acc})
+            prose, _ = generate_character(42, gender, {"hair_accessory": acc,
+                                                              "hair_length": "jaw length"})
             self.assertIn(expected, prose)
             self.assertNotIn("tied in hair", prose)
             self.assertNotIn("tied over hair", prose)

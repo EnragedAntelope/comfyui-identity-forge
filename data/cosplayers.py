@@ -2740,6 +2740,26 @@ COSPLAYERS: dict[str, dict] = {
                    "green hair",
         "signature": {"hair_color": "emerald green", "hair_length": "jaw length",
                       "hair_style": "slicked back"},
+        "costumes": [
+            {
+                "costume": "a long dark purple overcoat with wide notched lapels over a "
+                           "hexagon-patterned shirt and a dark green vest, messy shoulder-length "
+                           "hair dyed a dull chemical green, and thickly smeared chalky white "
+                           "face paint with dark smudged eye makeup framing a carved red "
+                           "Glasgow-smile scar",
+                "signature": {"hair_color": "dirty blonde", "hair_length": "shoulder length",
+                              "hair_style": "tousled bedhead"},
+            },
+            {
+                "costume": "a bright red three-piece suit with a yellow waistcoat over a "
+                           "lime-green button-down shirt, messy shoulder-length hair dyed a "
+                           "muted green, and full theatrical clown makeup with white face "
+                           "paint, a wide hand-painted red grin curving up both cheeks, and two "
+                           "blue diamond shapes painted above each eye",
+                "signature": {"hair_color": "medium brown", "hair_length": "shoulder length",
+                              "hair_style": "tousled bedhead"},
+            },
+        ],
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "Bane": {

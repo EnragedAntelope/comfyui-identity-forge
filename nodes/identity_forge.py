@@ -1401,10 +1401,6 @@ def _randomize_fields(
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
         elif field_name == "pose":
             pool = _performable_poses(pool, resolved, covers_face, covers_body, covers_hair)
-        elif field_name == "legwear":
-            pool = _wearable_legwear(pool, resolved)
-        elif field_name == "tattoo_placement":
-            pool = _visible_tattoo_placements(pool, resolved)
         if scale_class:
             pool = _scale_coherent_pool(field_name, pool, scale_class)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
@@ -1992,20 +1988,21 @@ def _format_prose(
     # already dropped the other scalp-hair fields for a bald head.
     if g("hair_length") == "bald":
         sentences.append(f"{poss} head is bald")
-    hair_desc = ("" if g("hair_length") == "bald"
+    is_bald = g("hair_length") == "bald"
+    hair_desc = ("" if is_bald
                  else _words(g("hair_length"), g("hair_texture"), g("hair_color")))
     if hair_desc:
         s = f"{poss} hair is {hair_desc}"
         if g("hair_style"):
             s += f", {g('hair_style')}"
         sentences.append(s)
-    elif g("hair_style"):
+    elif g("hair_style") and not is_bald:
         sentences.append(f"{poss} hair is {g('hair_style')}")
     hair_extra = []
-    if g("hair_part"):
+    if g("hair_part") and not is_bald:
         part = g("hair_part")
         hair_extra.append(_an(part, "" if "part" in part else "part"))
-    if g("hair_highlights"):
+    if g("hair_highlights") and not is_bald:
         hl = g("hair_highlights")
         hair_extra.append(hl if "highlight" in hl else f"{hl} highlights")
     if g("facial_hair"):
@@ -2013,7 +2010,7 @@ def _format_prose(
         # Mass/plural values ("stubble", "mutton chops") read naturally bare;
         # the singular pieces ("full beard", "mustache") take an article.
         hair_extra.append(fh if fh in ("stubble", "mutton chops") else _an(fh))
-    if g("hair_accessory"):
+    if g("hair_accessory") and not is_bald:
         acc = g("hair_accessory")
         # "... in/over hair" values are placement phrases; voice them with the
         # possessive ("tied in her hair") so they don't read as a bare "tied in
@@ -2697,7 +2694,7 @@ def generate_character(
     # full shell hide them, and their nails were already dropped above.
     hands_covered = full_shell or bool(
         _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text)
-    )
+    ) or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES
     prose = _format_prose(resolved, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text)
     json_output = _format_json(
