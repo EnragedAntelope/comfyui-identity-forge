@@ -1908,14 +1908,26 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
 
   So `js/identity_forge_cosplayer.js` adds a `franchise_filter` combo with **`serialize:
   false`**, the same mechanism the main node's group headers and bulk buttons already use.
-  ComfyUI skips non-serializing widgets when writing `widgets_values`, so the serialized array
-  is byte-identical to before the file existed — a workflow saved by an older version loads
-  unchanged, and one saved now opens on an older version. There is **no schema change**, so
-  `define_schema()` and `tests/frontend/fixtures/nodes.json` are untouched; this is why the
-  filter did *not* need appending at the end of the input list as a compatibility compromise,
-  and could be placed where it belongs, directly under `character`.
-  `tests/frontend/cosplayer.test.mjs` asserts the `widgets_values` claim directly rather than
-  assuming it.
+  There is **no schema change**, so `define_schema()` and `tests/frontend/fixtures/nodes.json`
+  are untouched, and the filter sits where it belongs, directly under `character`.
+
+  > **The compatibility claim originally written here was wrong, and it cost the maintainer
+  > every Cosplayer node in their workflows (corrected 0.90.0).** It read: "ComfyUI skips
+  > non-serializing widgets when writing `widgets_values`, so the serialized array is
+  > byte-identical … a workflow saved by an older version loads unchanged." The first half is
+  > true and the second does not follow. **`serialize: false` is honoured when WRITING and
+  > ignored when READING.** Measured on a live instance: this node has 8 widgets, two of them
+  > non-serializing, and `serialize()` still emits **8** values — one per `node.widgets` entry —
+  > with `configure()` reading them back the same way. A workflow saved before 0.89.0 carries 7
+  > values against 8 widgets with the filter at index 1, so every widget after `character` was
+  > restored one slot out.
+  >
+  > `tests/frontend/cosplayer.test.mjs` did assert the claim rather than assume it — but only
+  > the **write** path, which is the half that holds. Asserting half a round trip is how a
+  > wrong claim survives a green suite. 0.90.0 added a `configure` wrapper
+  > (`padLegacyCosplayerValues`) that splices the filter's default into its slot when the
+  > incoming array is exactly one short, and the same repair on the main node. See
+  > "Adding a field without breaking saved workflows".
 
   Two UX invariants it must not break, both tested: filtering never changes the current
   selection (an out-of-franchise pick stays selected *and* stays in the list), and the
