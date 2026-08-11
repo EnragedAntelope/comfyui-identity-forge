@@ -1101,7 +1101,7 @@
 - **Jinx (Teen Titans)** (F)
 - **John Constantine** (M)
 - **John Stewart** (M)
-- **Joker** (M)
+- **Joker** (M, +2 alt)
 - **Katana** (F, masked, prop)
 - **Katma Tui** (F)
 - **Kid Flash** (M)
