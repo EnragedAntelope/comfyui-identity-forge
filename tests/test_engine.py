@@ -460,6 +460,32 @@ class HairScopeTests(unittest.TestCase):
         _, js = generate_character(1, "Female", {}, "Full spectrum")
         self.assertEqual(json.loads(js)["_meta"]["hair_color_scope"], "Full spectrum")
 
+    def test_preset_meta_cannot_set_the_scope(self):
+        """An upstream preset's ``_meta.hair_color_scope`` is NOT honoured (0.91.1).
+
+        ``_parse_archetype_json`` used to copy it into the flat preset document,
+        where ``execute``'s ``_CONTROL_FIELDS`` filter then dropped it -- dead
+        plumbing that read like a working feature. The scope is widget-owned: it
+        has no defer sentinel (unlike gender's "Any"), and the main node writes the
+        resolved scope into its own prompt_json ``_meta``, which is what the vault
+        stores -- so honouring it would let a recalled character silently override
+        the user's widget. Pin both halves: the key never reaches the parsed
+        document, and gender in the same ``_meta`` still does.
+        """
+        doc = json.dumps({"_meta": {"hair_color_scope": "Full spectrum",
+                                    "gender": "Female"}})
+        flat = _parse_archetype_json(doc)
+        self.assertNotIn("hair_color_scope", flat)
+        self.assertEqual(flat.get("gender"), "Female")
+        # ... and end to end: the widget's "Natural only" still holds.
+        natural = set(FIELD_DEFINITIONS["hair_color"]["natural_hair_colors"])
+        locked, _, _, _ = _node_locked(doc)
+        for seed in range(40):
+            _, js = generate_character(seed, "Female", locked, "Natural only")
+            colour = json.loads(js)["Hair"].get("hair_color")
+            if colour is not None:
+                self.assertIn(colour, natural, f"seed {seed}")
+
     def test_default_scope_is_natural_only(self):
         # generate_character defaults to Natural only, so random hair stays realistic.
         natural = set(FIELD_DEFINITIONS["hair_color"]["natural_hair_colors"])

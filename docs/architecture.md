@@ -203,6 +203,16 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
 
 - **Control fields** carry `"control": True` (`gender`, `hair_color_scope`, `location_setting`):
   read from their toggle, never randomized, never described. `_CONTROL_FIELDS` collects them.
+  They are **widget-owned**: `execute` filters `_CONTROL_FIELDS` out of `archetype_locked`, so a
+  preset cannot set one from its `_meta`. `gender` is the single exception, and only because its
+  widget has an explicit `"Any"` defer sentinel — `execute` reads it back by name. `_parse_archetype_json`
+  copied `hair_color_scope` alongside it until 0.91.1 and it never arrived (dead plumbing that
+  read like a feature); wiring it up would need a defer sentinel on the widget first, and would
+  make a vault-recalled character — whose stored `_meta` carries the scope the main node wrote —
+  silently override the user's toggle. `tests/test_engine.py::HairScopeTests` pins it.
+  A user's `user_options.json` `hair_color` additions extend the option pools but not
+  `natural_hair_colors`, so they are randomizable only under `Full spectrum` (documented in
+  `docs/usage.md` and `data/user_options.py`); lockable by hand under either scope.
 - **Hidden fields** (`outfit_description`, `held_item`): free-form prose locks, no widget;
   `_HIDDEN_FIELDS` / `_PRESET_HIDDEN_FIELDS`.
 - **Gender-divergent fields** are the only ones whose female/male pools differ: **`bust`,

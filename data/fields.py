@@ -179,10 +179,17 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "optional": False
     }),
     ("hair_color", {
+        # ``natural_hair_colors`` is the ONLY extra key the engine reads here: the
+        # "Natural only" hair_color_scope filters the randomization pool through it
+        # (_build_option_pool). It is a subset of the option pool, and the filter
+        # fails OPEN if the key ever goes missing (no key = no filter = full
+        # spectrum), so validate_data.py pins both its presence and its membership.
+        # A "full_spectrum_hair_colors" twin shipped here until 0.91.1 and was read
+        # by nothing -- the full spectrum IS the option pool. Do not re-add it.
         "group": 'Hair',
         "female_options": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips'],
         "male_options": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips'],
-        "optional": False, "natural_hair_colors": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair'], "full_spectrum_hair_colors": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips']
+        "optional": False, "natural_hair_colors": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair']
     }),
     ("hair_length", {
         "group": 'Hair',

@@ -2758,9 +2758,23 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
     for key, value in data.items():
         if key == "_meta":
             meta = value if isinstance(value, dict) else {}
-            for control in ("gender", "hair_color_scope"):
-                if isinstance(meta.get(control), str):
-                    flat[control] = meta[control]
+            # `gender` is the one control a preset may set: the widget's "Any"
+            # is an explicit defer-to-the-preset sentinel, and `execute` reads it
+            # back out of the parsed document by name.
+            #
+            # `hair_color_scope` was copied here too until 0.91.1 and never
+            # arrived: `execute` builds `archetype_locked` with `name not in
+            # _CONTROL_FIELDS`, which drops it before the engine sees it (measured:
+            # an upstream "Full spectrum" left 0/200 seeds with a fantasy shade).
+            # It is deliberately NOT wired up. The scope widget has no defer
+            # sentinel -- its default "Natural only" is indistinguishable from a
+            # deliberate user choice -- and the main node writes the resolved scope
+            # into its own prompt_json `_meta`, which is exactly what the vault
+            # stores, so honouring it would make every recalled character silently
+            # override the user's widget. Adding it back needs an explicit
+            # "Auto (preset)" option on the widget first.
+            if isinstance(meta.get("gender"), str):
+                flat["gender"] = meta["gender"]
             # Per-gender variant look blocks from a merged archetype. Kept under a
             # reserved key (not real fields) so the locked-field loops never treat
             # them as locks; applied in generate_character after the gender is fixed.

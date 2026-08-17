@@ -163,6 +163,33 @@ def validate() -> list[str]:
         if not FIELD_DEFINITIONS.get(control, {}).get("control"):
             errors.append(f"control field '{control}' missing or not marked control=True")
 
+    # --- hair_color's "Natural only" scope key (0.91.1) ---------------
+    # The scope control filters the hair_color randomization pool through
+    # ``natural_hair_colors`` (nodes/identity_forge.py _build_option_pool). Two
+    # ways that can rot silently, so both are pinned here:
+    #   1. The filter FAILS OPEN -- `field_def.get("natural_hair_colors", base)`
+    #      means a missing/renamed key is not an error, it is "no filter at all",
+    #      and "Natural only" would quietly start emitting fantasy shades.
+    #   2. A value that drifts out of the option pool is simply unreachable.
+    # A "full_spectrum_hair_colors" twin also shipped in the field until 0.91.1,
+    # read by nothing (the full spectrum IS the option pool) -- the last rule keeps
+    # a dead lookalike from being re-added and mistaken for a live one.
+    _hair = FIELD_DEFINITIONS.get("hair_color", {})
+    natural = _hair.get("natural_hair_colors")
+    if not natural:
+        errors.append("hair_color: missing 'natural_hair_colors' -- the 'Natural only' "
+                      "scope filter fails open without it (every fantasy shade returns)")
+    else:
+        stray = sorted(set(natural) - _options("hair_color"))
+        if stray:
+            errors.append(f"hair_color: natural_hair_colors values not in the option "
+                          f"pool (unreachable): {stray}")
+    dead = sorted(k for k in _hair
+                  if k.endswith("_hair_colors") and k != "natural_hair_colors")
+    if dead:
+        errors.append(f"hair_color: {dead} is not read by the engine -- "
+                      f"'natural_hair_colors' is the only scope key")
+
     # --- weighted families: each must partition its field's options exactly ---
     # The weighted random picker (_pick_family_weighted) draws from FIELD_FAMILIES;
     # if a field's families drift from its flat option list, some values become

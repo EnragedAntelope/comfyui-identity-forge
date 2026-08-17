@@ -87,7 +87,10 @@ optional sections:
 
 - **`fields`** extends a dropdown's options — any field except the control toggles (`gender`,
   `hair_color_scope`, `location_setting`) and the garment-coupled `outfit_style` /
-  `outfit_description`.
+  `outfit_description`. A custom **`hair_color`** is only drawn at random under
+  `Full spectrum`: the `Natural only` scope filters the pool through the shipped
+  realistic-shade list, which your additions are not part of. They stay selectable by
+  hand under either scope.
 - **`outfits`** adds a whole new `outfit_style`, registering its garment text *and* the dropdown
   entry together (so the style can never be picked without clothing).
 
