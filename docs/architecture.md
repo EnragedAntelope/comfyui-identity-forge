@@ -2306,3 +2306,136 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   slots are colour-free precisely so `palette` can recolour them. An engine-side restatement
   would also have silently invalidated ~189 published gallery images, because `entry_hash` hashes
   the entry dict and cannot see a prose-only change.
+
+### Both contrapositive repairs must share one ban list (0.92.0)
+
+The 0.82.0 note above ends on the right principle — *"the conflicting set is the union over
+EVERY locked target, not just this rule's"* — and applies it one dimension short. Each branch
+built its union over every locked *target* but only over its own rule **type**: the exclusion
+branch collected `type == "exclusion"`, the requirement branch collected `type ==
+"requirement"`. Neither could see the other's bans on the same trigger, so each repair handed
+the other precisely the value it would reject on the next pass.
+
+For a male character with a bold eyeliner locked, the two sets partition the entire five-value
+`makeup_style` pool between them:
+
+```
+male pool            barely there / classic no-makeup / fresh-faced dewy /
+                     soft natural / no makeup
+exclusion branch     bans the four naturals   -> leaves only "no makeup"
+requirement branch   bans "no makeup"         -> leaves only the four naturals
+union of both bans   covers the whole pool
+```
+
+That is a closed cycle, not a near miss. The loop ran to `_MAX_CONSTRAINT_ITERATIONS` and
+emitted whichever half of the cycle the 12th pass happened to hold, so a character came out
+wearing `makeup_style: "no makeup"` beside nude lipstick, lash extensions, laminated brows and
+dewy skin. Measured at **40 of 40 seeds** for each of 14 lock values (the bold `eye_makeup`,
+`eyeliner` and `lashes` entries) under gender `Male` with wardrobe `Feminine` or `Any` — which
+is exactly the deliberately-femme male look the wardrobe axis was built for (0.83.0). Under
+`Match gender` the same lock produced the honest warn-and-keep, because `_requirement_pins`
+blocked the repair there; the guard was doing its job, it just could not see this shape.
+
+`_conflicting_trigger_values()` now builds the set once, over both rule types and every locked
+target, and both branches call it. When every candidate is banned the pool comes back empty,
+the repair is correctly abandoned, and control falls through to the existing `warn()` — the
+lock wins, the trigger keeps a value coherent with everything else, and the user is told.
+
+**Zero bias, zero drift on free runs.** The set is a strict superset of what each branch
+computed before, and `_repick` consumes the same RNG regardless of pool contents, so no seed
+moves except where the broader ban removes the candidate that was about to be wrongly chosen.
+Pinned by `ConstraintRepairDeadlockTests`, whose `test_union_covers_the_whole_male_makeup_pool`
+asserts the mechanism directly rather than the symptom.
+
+### "Downstream wins" has to cover `_meta`, not just fields (0.92.0)
+
+Every preset node's docstring promises the same contract — *"this node wins on overlap"* — and
+`merge_preset_documents` honoured it key by key, which silently means *only for keys the
+downstream node actually writes*. Two classes of reserved key escaped:
+
+- **Costume state.** The Cosplayer node writes `covers_face` / `covers_body` / `covers_hair`
+  unconditionally, including when false, precisely so a downstream node overrides an upstream
+  one. `mask` and `size_scale` were only written when present, so they survived the merge.
+  Chaining Cosplayer "Iron Man" → Cosplayer "Hermione Granger" correctly reset `covers_face`
+  to false and still rendered *"She has a faceplate with narrow glowing eye slits"* over the
+  Hogwarts uniform. Via Godzilla it also leaked `size_scale: giant` **and** the authored
+  `scale_prose` sitting in `height`, so Hermione arrived "colossal and hundreds of feet tall"
+  with the scene pools narrowed to suit a scale she did not have. The Archetype, Creature and
+  Modifier nodes write *none* of the five, so Cosplayer → Archetype leaked all of them at once:
+  a ballerina in a tutu with Iron Man's faceplate, no face, no hair and no jewellery.
+- **`_meta.variants`.** A per-gender archetype ships its two looks there, and
+  `generate_character` folds the matching block into `locked_clean` *after* the merged locks,
+  so it beat everything downstream. Archetype "Battle Bard" → Cosplayer "Hermione Granger"
+  merged the Hogwarts uniform correctly into `Clothing` and then rendered the Bard's velvet
+  doublet, speakeasy, string lights and cheerful mood over it — still labelled "Cosplaying as
+  Hermione Granger". **34 archetypes carry variants.**
+
+Both are fixed in `merge_preset_documents`, because that is where the precedence contract
+lives; fixing it there covers every node pairing at once, including hand-authored documents,
+instead of patching each emitter. Two rules:
+
+- A document supplying its own `outfit_description` replaces the *look*, so the upstream's
+  `_COSTUME_META_KEYS` are stale and are dropped — along with the upstream `height` when
+  `size_scale` goes, since the validator guarantees the two ship together.
+- A variant look may only fill fields the downstream document leaves open. It still wins over
+  its **own** archetype's base value, which is the point of the feature (`Regency Aristocrat`
+  sets `bag` in both) — the oracle is the downstream document's fields, not the merged ones.
+
+`_parse_archetype_json` additionally gates its `mask` read on `covers_face`: a mask describes a
+head that is *hidden*, so voicing it on a face-visible character is never right. Belt and
+braces for documents the merge never saw. `ChainedPresetPrecedenceTests` covers both rules and
+the negative cases (a Modifier downstream must **not** invalidate anything; a solo document
+must pass through untouched).
+
+### `prompt_json` is what the vault stores, so it has to be self-describing (0.92.0)
+
+Vault Save writes IdentityForge's `prompt_json` to disk and Vault Load feeds it straight back
+into `archetype_json` — the node's stated promise being that *"a single saved document captures
+the whole character regardless of how the graph was wired"*. It did not, for two reasons that
+compounded:
+
+- `_format_json` wrote only `gender`, `hair_color_scope`, `wardrobe` and `cosplay_of` into
+  `_meta`. The concealment state lived on the *Cosplayer* document and never reached this one,
+  so recall restored Iron Man's costume but not the reasons it hid anything: the faceplate
+  sentence vanished and a full randomized face, hair and makeup were generated under the
+  armour, with a stray ethnicity and skin tone on a fully-encased character.
+- `group_fields` strips `"None"`, which is exactly the token the Cosplayer builder injects to
+  suppress a field. She-Hulk's `ethnicity: "None"` did not survive, and a randomized ethnicity
+  reappeared under the body paint — the failure 0.78.0 added that suppression to fix.
+
+`_format_json` now records the five costume keys plus an `omitted` list of *explicitly* locked
+absences. Recall needed no changes on the load side: `_parse_archetype_json` already read the
+costume keys and now re-injects `omitted` as `"None"` locks. **All 1,827 cosplayers round-trip
+byte-identically at a different recall seed**, which is the real assertion — if the document is
+complete, the seed cannot matter, because everything meaningful is locked.
+
+Only emitted when actually in play, so an ordinary character's `_meta` is unchanged
+(`VaultRoundTripTests::test_a_plain_character_records_nothing_extra` pins the exact key list).
+`omitted` deliberately excludes a field that merely randomized to nothing — that is not a
+decision worth restoring.
+
+### The pose gate could not see a generated outfit (0.92.0)
+
+`_performable_poses` runs inside the randomize loop, where `pose` (field index 67) is drawn
+long before a *generated* `outfit_description` exists — it is composed after the loop ends. So
+its `_POCKETLESS_GARMENT_RE` and `_FULL_COVER_RE` tests read an empty string and the whole
+`GARMENT_DEPENDENT_POSES` gate was inert for random outfits. The `_DEFERRED_FIELDS` docstring
+has named this trap since 0.90.0 ("that is pre-existing and is left alone here, but it is the
+same trap"); measurement made the case to close it: of 324 random outfits matching
+`_POCKETLESS_GARMENT_RE` in 6,000 runs, **26 (8.0%)** drew a pockets/collar gesture — *"a
+pastel off-shoulder mermaid gown with long satin gloves"* while *"posing with hands in
+pockets"*. The hair half of the same function was always correct, because `hair_length` (index
+24) settles first: bald characters drew a hair-touching pose 0 times in 6,000 runs.
+
+**Deferral is the obvious fix and the wrong one.** Moving `pose` into `_DEFERRED_FIELDS`
+relocates a draw from the middle of the stream, so every existing seed would resolve to a
+different pose *and* different tattoos/legwear — silently invalidating every published gallery
+image exactly as the 0.90.0 prose change did, with `entry_hash` unable to flag it. That is the
+same append-only reasoning `_DEFERRED_FIELDS` itself documents, applied to its own remedy.
+
+`_repair_pose` instead runs at the very end of the draw order, after
+`_resolve_deferred_fields`, and **consumes no RNG unless the pose is genuinely unperformable** —
+the pool-membership test is free. A seed only changes when its pose was already wrong, and even
+then nothing downstream shifts, because nothing downstream draws. A preset costume was already
+in `resolved` during the loop, so this is a verified no-op across the whole cosplayer and
+archetype roster.

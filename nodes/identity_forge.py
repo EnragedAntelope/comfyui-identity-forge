@@ -206,6 +206,16 @@ _COVERS_HAIR_KEY = "__covers_hair__"
 #: :func:`_scale_coherent_pool`). Travels exactly like the ``covers_*`` flags.
 _SCALE_TIER_KEY = "__scale_tier__"
 
+#: ``_meta`` keys that describe the *worn costume* rather than the document as a
+#: whole, so a downstream node that supplies its own ``outfit_description`` makes
+#: every one of them stale. Read by :func:`merge_preset_documents`, which is where
+#: the "downstream wins" contract is enforced -- see its docstring for the leaks
+#: this closes (Iron Man's faceplate rendering over a Hogwarts uniform, Godzilla's
+#: scale on Hermione, a masked cosplayer suppressing an archetype's whole face).
+_COSTUME_META_KEYS: tuple[str, ...] = (
+    "covers_face", "covers_body", "covers_hair", "mask", "size_scale",
+)
+
 #: Top-level section name a Modifier node adds to the chained preset document,
 #: holding ``{field_or_group: descriptor}`` style modifiers.
 _MODIFIERS_DOC_KEY = "_modifiers"
@@ -585,6 +595,17 @@ _WARDROBE_BY_GENDER: dict[str, str] = {
 #: rare items (bag, accessories) lean more absent than everyday jewellery
 #: (necklace, earrings). Freckles/marks lean mostly-absent so they read as a
 #: distinguishing feature, not a default.
+#:
+#: **The probability is a FLOOR, not the realized rate.** :func:`_maybe_absent` rolls
+#: first, and when it declines the field still draws from a pool that *contains* the
+#: absent value, so it can come up absent a second way. The realized rate is therefore
+#: ``base + (1 - base) / len(pool)``, plus whatever the constraint engine's masculine
+#: trims add on top: measured over 6,000 runs, ``other_jewelry`` 0.50 -> 0.63,
+#: ``hair_highlights`` 0.45 -> 0.59, ``watch_type`` 0.60 -> 0.66. That is the intended
+#: shape (these are floors below which an extra never falls) and the shipped rates are
+#: the ones the roster was curated against, so the numbers are not being "corrected" --
+#: but the table used to read as if the base *were* the outcome, which it never was.
+#: ``ExtraAbsenceFloorTests`` pins the relationship so it stays true as pools grow.
 _EXTRA_ABSENCE: dict[str, tuple[str, float]] = {
     # 0.90.0. Leans further absent than anything else here: tattoos should read as
     # a distinguishing feature on a minority of characters, not as a house style.
@@ -1269,6 +1290,61 @@ def _resolve_deferred_fields(
             resolved[field_name] = "None"
 
 
+def _repair_pose(
+    resolved: dict[str, str],
+    gender: str,
+    locked: set[str],
+    covers_face: bool,
+    covers_body: bool,
+    covers_hair: bool,
+    scale_class: str,
+    rng: random.Random,
+) -> None:
+    """Re-pick ``pose`` if the finished outfit made the drawn one unperformable.
+
+    :func:`_performable_poses` runs inside the randomize loop, where ``pose`` (field
+    index 67) is drawn long before a *generated* ``outfit_description`` exists — it is
+    composed after the loop ends. So its garment tests read an empty string, and the
+    whole ``GARMENT_DEPENDENT_POSES`` gate was inert for every randomly generated
+    outfit. The ``_DEFERRED_FIELDS`` note has named this trap for two releases; this
+    closes it. Measured before the fix: of 324 random outfits matching
+    ``_POCKETLESS_GARMENT_RE`` in 6,000 runs, **26 (8.0%)** drew a pockets/collar
+    gesture -- "a pastel off-shoulder mermaid gown with long satin gloves" while
+    "posing with hands in pockets".
+
+    **Why a repair rather than deferral.** Moving ``pose`` into
+    :data:`_DEFERRED_FIELDS` is the obvious fix and the wrong one: it relocates a draw
+    that sits in the middle of the stream, so every existing seed would resolve to a
+    different pose *and* different tattoos/legwear -- silently invalidating every
+    published gallery image, exactly as the 0.90.0 prose change did, and
+    ``entry_hash`` could not flag it. Repairing after the fact costs nothing instead.
+    This runs at the very end of the draw order (after
+    :func:`_resolve_deferred_fields`, and nothing is drawn later), and **consumes no
+    RNG at all unless the pose is genuinely unperformable** -- the pool membership
+    test is free. So a seed only changes when its pose was already wrong, and even
+    then nothing downstream shifts, because nothing downstream draws.
+
+    A preset costume was already in ``resolved`` during the loop, so its poses were
+    filtered correctly the first time and this is a no-op for the whole cosplayer and
+    archetype roster. An explicit lock is skipped, as everywhere else.
+    """
+    if "pose" in locked:
+        return
+    current = resolved.get("pose")
+    if not current or _is_absent(current):
+        return
+    field_def = FIELD_DEFINITIONS["pose"]
+    pool = _performable_poses(
+        _build_option_pool("pose", field_def, gender, resolved),
+        resolved, covers_face, covers_body, covers_hair,
+    )
+    if scale_class:
+        pool = _scale_coherent_pool("pose", pool, scale_class)
+    if current in pool or not pool:
+        return  # still performable (or nothing better on offer) -- no RNG spent
+    resolved["pose"] = _repick("pose", field_def, pool, gender, rng)
+
+
 def _scale_class(widget_tier: str, character_tier: str | None) -> str:
     """Resolve the active scale class: ``"giant"``, ``"tiny"`` or ``""`` (none).
 
@@ -1331,14 +1407,21 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
     passes because ``FURNITURE_DEPENDENT_POSES`` is exactly the ``seated_perch`` family,
     split out at 0.84.0 for this rule -- a WHOLE family, so the other eleven stay
     proportional. ``location`` *is* family-weighted,
-    and it passes because its families bucket perfectly: ``domestic``, ``food_drink``,
-    ``retail_services``, ``leisure_fitness``, ``civic_institutional``,
-    ``work_industrial`` and ``transit_travel`` are entirely indoor, while
-    ``urban_outdoor`` and ``nature_outdoor`` are entirely outdoor. Filtering to
-    outdoors therefore drops seven WHOLE families and leaves the surviving two
-    proportional to each other (20 : 15) -- the whole-unit drop the family-weight rule
-    requires, never the partial cull that concentrates a frozen weight. This is also
-    why the shipped ``location_setting: Outdoor`` control has never skewed anything.
+    and it passes because its twelve families bucket perfectly: ``domestic``,
+    ``food_drink``, ``retail_services``, ``leisure_fitness``, ``civic_institutional``,
+    ``work_industrial`` and ``transit_travel`` are entirely indoor; ``urban_outdoor``,
+    ``urban_landmark``, ``nature_outdoor`` and ``nature_landmark`` are entirely
+    outdoor; ``studio`` is neither and is already excluded by every
+    ``location_setting`` except its own. Filtering to outdoors therefore drops eight
+    WHOLE families and leaves the surviving four proportional to each other -- the
+    whole-unit drop the family-weight rule requires, never the partial cull that
+    concentrates a frozen weight. This is also why the shipped
+    ``location_setting: Outdoor`` control has never skewed anything.
+
+    (The family list above was written when there were nine and went stale as the
+    roster grew; it is re-verified mechanically by ``LocationFamilyBucketTests``, so
+    a future family that straddles the boundary fails the suite rather than quietly
+    skewing a giant's scenery.)
     """
     if scale_class == "giant":
         if field_name == "shot_type":
@@ -1449,6 +1532,67 @@ def _requirement_pins(
     return False
 
 
+def _conflicting_trigger_values(
+    trigger: str, resolved: dict[str, str], locked: set[str], presentation: str
+) -> set[str]:
+    """Values of ``trigger`` that contradict a LOCKED field — across BOTH rule types.
+
+    Shared by both halves of the contrapositive repair, and that sharing is the whole
+    point. Each branch used to build this set from its *own* rule type only: the
+    exclusion branch collected exclusion rules, the requirement branch collected
+    requirement rules. Neither saw the other's bans on the same trigger, so each
+    repair handed the other a value it would immediately reject — and for a male
+    character with a bold eyeliner locked the two sets partition the whole five-value
+    ``makeup_style`` pool between them:
+
+        exclusion branch bans the four naturals  -> leaves only "no makeup"
+        requirement branch bans "no makeup"      -> leaves only the four naturals
+
+    That is a closed cycle, not a near miss. The loop ping-ponged to
+    ``_MAX_CONSTRAINT_ITERATIONS`` and emitted whichever half of the cycle the 12th
+    pass happened to hold, which is how a character came out wearing "no makeup"
+    beside nude lipstick, lash extensions, laminated brows and dewy skin. Measured at
+    **40 of 40 seeds** for each of 14 lock values (the bold ``eye_makeup`` /
+    ``eyeliner`` / ``lashes`` entries) under gender ``Male`` with wardrobe
+    ``Feminine`` or ``Any`` — i.e. squarely on the deliberately-femme male look the
+    wardrobe control exists to serve.
+
+    With one union the cycle cannot form: when every candidate is banned the pool
+    comes back empty, the repair is correctly abandoned, and control falls through to
+    the caller's ``warn()`` — the lock wins, the trigger keeps a value that is
+    coherent with everything *else*, and the user is told about the conflict. This is
+    the same union-of-every-live-rule argument the 0.78.0 comment makes for the
+    forward direction, finally applied across rule types as well.
+
+    Strictly a superset of what each branch computed before, so a repair that already
+    converged is untouched: :func:`_repick` consumes the same RNG regardless of pool
+    contents, so no seed drifts except where the broader ban actually removes the
+    candidate that was about to be (wrongly) chosen.
+    """
+    conflicting: set[str] = set()
+    for rule in CONSTRAINT_RULES:
+        if rule["field"] != trigger:
+            continue
+        if rule.get("presentation_gated") and presentation != "Masculine":
+            continue
+        if rule["type"] == "exclusion":
+            target = rule["excludes_field"]
+            if target in locked and resolved.get(target) in set(rule["excludes_values"]):
+                conflicting.add(rule["value"])
+        else:
+            target = rule["requires_field"]
+            if target not in locked:
+                continue
+            want, have = rule["requires_value"], resolved.get(target)
+            # Two absent-but-different values (e.g. "None" vs "no eyeshadow") both
+            # render nothing, so they are not a contradiction — same equivalence the
+            # requirement branch already applies before warning.
+            if want == have or (_is_absent(want) and _is_absent(have)):
+                continue
+            conflicting.add(rule["value"])
+    return conflicting
+
+
 def _apply_constraints(
     resolved: dict[str, str],
     gender: str,
@@ -1513,12 +1657,12 @@ def _apply_constraints(
                     trig_def = FIELD_DEFINITIONS.get(trigger)
                     if (trig_def is not None and trigger not in locked
                             and not trig_def.get("control")):
-                        conflicting = {
-                            r["value"] for r in CONSTRAINT_RULES
-                            if r["type"] == "exclusion" and r["field"] == trigger
-                            and r["excludes_field"] == target
-                            and resolved[target] in set(r["excludes_values"])
-                        }
+                        # Every value that contradicts ANY locked field, of EITHER
+                        # rule type. Scoping this to exclusion rules on this one
+                        # target is what let the two repairs deadlock — see
+                        # _conflicting_trigger_values.
+                        conflicting = _conflicting_trigger_values(
+                            trigger, resolved, locked, presentation)
                         pool = [v for v in _scale_coherent_pool(
                             trigger,
                             _build_option_pool(trigger, trig_def, gender, resolved),
@@ -1618,27 +1762,15 @@ def _apply_constraints(
                     if (trig_def is not None and trigger not in locked
                             and not trig_def.get("control")
                             and not _requirement_pins(trigger, resolved, presentation)):
-                        # Union of every trigger value that would demand a different
-                        # value from ANY locked target -- not just this rule's target.
-                        # Filtering on one rule alone is the 0.78.0 exclusion bug in
-                        # the other branch: the replacement satisfies rule A and
-                        # violates rule B, and the loop ping-pongs to the iteration
-                        # cap. The union converges in a single pass.
-                        conflicting = set()
-                        for other in CONSTRAINT_RULES:
-                            if (other["type"] != "requirement"
-                                    or other["field"] != trigger):
-                                continue
-                            other_target = other["requires_field"]
-                            if other_target not in locked:
-                                continue
-                            if (other.get("presentation_gated")
-                                    and presentation != "Masculine"):
-                                continue
-                            want, have = other["requires_value"], resolved.get(other_target)
-                            if want == have or (_is_absent(want) and _is_absent(have)):
-                                continue
-                            conflicting.add(other["value"])
+                        # Union of every trigger value that would contradict ANY
+                        # locked target -- not just this rule's target, and not just
+                        # this rule's TYPE. Filtering on one rule alone is the 0.78.0
+                        # exclusion bug in the other branch; filtering on one rule
+                        # type is the deadlock documented in
+                        # _conflicting_trigger_values. The union converges in a
+                        # single pass, or abandons the repair and warns.
+                        conflicting = _conflicting_trigger_values(
+                            trigger, resolved, locked, presentation)
                         pool = [v for v in _scale_coherent_pool(
                             trigger,
                             _build_option_pool(trigger, trig_def, gender, resolved),
@@ -2191,6 +2323,16 @@ def _load_document(raw: str) -> dict:
     return data if isinstance(data, dict) else {}
 
 
+def _document_fields(document: dict) -> set[str]:
+    """Every field name a preset document sets across its group sub-dicts."""
+    fields: set[str] = set()
+    for key, value in document.items():
+        if key in ("_meta", _MODIFIERS_DOC_KEY) or not isinstance(value, dict):
+            continue
+        fields.update(name for name, val in value.items() if isinstance(val, str))
+    return fields
+
+
 def merge_preset_documents(upstream_json: str, own_json: str) -> str:
     """Merge two preset JSON documents, with ``own`` (downstream) winning.
 
@@ -2203,6 +2345,36 @@ def merge_preset_documents(upstream_json: str, own_json: str) -> str:
 
     Either input may be empty, ``"{}"`` or malformed; the result is always a
     valid JSON object string.
+
+    **"Own wins" has to hold for the reserved ``_meta`` keys too, not just fields.**
+    A plain key-by-key merge honours it only for keys the downstream node actually
+    writes, and two classes of key escaped that:
+
+    * :data:`_COSTUME_META_KEYS` describe the *worn costume*, and the Cosplayer node
+      writes ``covers_face`` / ``covers_body`` / ``covers_hair`` unconditionally
+      (even when false) precisely so a downstream node overrides an upstream one --
+      but ``mask`` and ``size_scale`` were only written when present, so they
+      survived. Chaining Cosplayer "Iron Man" -> Cosplayer "Hermione Granger"
+      correctly reset ``covers_face`` to false and still rendered "She has a
+      faceplate with narrow glowing eye slits" over the Hogwarts uniform; via
+      Godzilla it also leaked ``size_scale: giant`` and its authored ``height``.
+      The Archetype / Creature / Modifier nodes write *none* of the five, so
+      Cosplayer -> Archetype leaked all of them at once -- a ballerina in a tutu
+      with Iron Man's faceplate, no face, no hair and no jewellery.
+    * ``_meta.variants`` carries a per-gender archetype's two look blocks, and
+      :func:`generate_character` folds the matching one in *after* the merged locks,
+      so it beat everything downstream of it. Archetype "Battle Bard" -> Cosplayer
+      "Hermione Granger" merged the Hogwarts uniform correctly into ``Clothing`` and
+      then rendered the Bard's velvet doublet, speakeasy, string lights and cheerful
+      mood over it, still labelled "Cosplaying as Hermione Granger". 34 archetypes
+      carry variants.
+
+    Both are fixed here rather than downstream because this is where the precedence
+    contract lives -- and fixing it here covers every node pairing at once, including
+    hand-authored documents, instead of patching each emitter. The rule for the
+    costume keys is that a document supplying its own ``outfit_description`` replaces
+    the *look*, so the upstream's costume-derived state is stale; the rule for
+    variants is plain field-level precedence.
     """
     upstream = _load_document(upstream_json)
     own = _load_document(own_json)
@@ -2212,7 +2384,43 @@ def merge_preset_documents(upstream_json: str, own_json: str) -> str:
         return json.dumps(own, indent=2)
 
     merged: "OrderedDict[str, Any]" = OrderedDict()
-    meta = {**_as_dict(upstream.get("_meta")), **_as_dict(own.get("_meta"))}
+    own_meta = _as_dict(own.get("_meta"))
+    meta = {**_as_dict(upstream.get("_meta")), **own_meta}
+    own_fields = _document_fields(own)
+
+    # The downstream document supplies its own costume, so the upstream's
+    # costume-derived flags no longer describe anything that is being worn.
+    dropped_scale = False
+    if "outfit_description" in own_fields:
+        for key in _COSTUME_META_KEYS:
+            if key not in own_meta and key in meta:
+                del meta[key]
+                dropped_scale = dropped_scale or key == "size_scale"
+
+    # A ``size_scale`` entry always ships with an authored ``scale_prose`` locked into
+    # ``height`` (validator-enforced), so dropping the tier has to drop that phrase
+    # too -- otherwise the scene stops being narrowed for a giant while the lead
+    # sentence still calls the character "colossal and hundreds of feet tall".
+    stale_height = dropped_scale and "height" not in own_fields
+
+    # Field-level precedence for an upstream archetype's variant look blocks: a
+    # variant may only fill fields the downstream document leaves open.
+    variants = meta.get("variants")
+    if "variants" not in own_meta and isinstance(variants, dict) and own_fields:
+        pruned = {
+            variant_gender: {
+                field: value for field, value in look.items()
+                if field not in own_fields
+            }
+            for variant_gender, look in variants.items()
+            if isinstance(look, dict)
+        }
+        pruned = {g: look for g, look in pruned.items() if look}
+        if pruned:
+            meta["variants"] = pruned
+        else:
+            del meta["variants"]
+
     if meta:
         merged["_meta"] = OrderedDict(meta)
     # Canonical groups first, then any unexpected extras; own fields win on overlap.
@@ -2221,8 +2429,11 @@ def merge_preset_documents(upstream_json: str, own_json: str) -> str:
         k for k in (*upstream, *own)
         if k != "_meta" and k not in _GROUP_ORDER and k not in keys
     ]
+    height_group = FIELD_DEFINITIONS.get("height", {}).get("group", "Body")
     for key in keys:
         section = {**_as_dict(upstream.get(key)), **_as_dict(own.get(key))}
+        if stale_height and key == height_group:
+            section.pop("height", None)
         if section:
             merged[key] = section
     return json.dumps(merged, indent=2)
@@ -2231,17 +2442,45 @@ def merge_preset_documents(upstream_json: str, own_json: str) -> str:
 def _format_json(
     resolved: dict[str, str], gender: str, hair_color_scope: str, wardrobe: str,
     cosplay_label: str | None = None, species: dict | None = None,
+    # APPENDED, not inserted -- generate_character calls this positionally, the same
+    # rule the engine entry point documents for its own signature.
+    covers_face: bool = False, covers_body: bool = False, covers_hair: bool = False,
+    mask_text: str | None = None, size_scale: str = "",
+    omitted: "list[str] | None" = None,
 ) -> str:
     """Build a JSON document: ``_meta`` plus fields nested by group.
 
     The seed is intentionally excluded — it is run-control noise, not part of
     the character description. A connected creature's ``Species & Anatomy`` group
     is re-emitted (in canonical order) alongside its identifying ``_meta``.
+
+    **The document has to be self-describing, because the vault round-trips it.**
+    ``prompt_json`` is exactly what Vault Save writes to disk, and Vault Load feeds it
+    straight back into ``archetype_json`` — the node's stated promise being that "a
+    single saved document captures the whole character regardless of how the graph was
+    wired". It did not. Two omissions compounded:
+
+    * The concealment state (``covers_face`` / ``covers_body`` / ``covers_hair`` /
+      ``mask`` / ``size_scale``) lived only on the Cosplayer node's document, never on
+      this one. So recall restored Iron Man's costume but not the *reasons* it hid
+      anything: the faceplate sentence vanished and a full randomized face, hair and
+      makeup were generated under the armour, with a stray ethnicity and skin tone on
+      a fully-encased character.
+    * :func:`group_fields` strips ``"None"``, which is precisely the token the
+      Cosplayer builder injects to suppress a field. She-Hulk's ``ethnicity: "None"``
+      therefore did not survive, and a randomized ethnicity reappeared under the body
+      paint — the exact failure 0.78.0 added that suppression to fix.
+
+    Both are recorded here, so recall needs no changes on the load side:
+    :func:`_parse_archetype_json` already reads the five costume keys, and now reads
+    ``omitted`` as well. ``omitted`` lists only *explicitly locked* absences, never a
+    field that merely randomized to nothing, so a plain run records an empty list and
+    is unchanged.
     """
     species = species or {}
     slots = species.get("slots") or {}
 
-    meta: "OrderedDict[str, str]" = OrderedDict()
+    meta: "OrderedDict[str, Any]" = OrderedDict()
     if cosplay_label:
         meta["cosplay_of"] = cosplay_label
     if slots:
@@ -2251,6 +2490,20 @@ def _format_json(
     meta["gender"] = gender
     meta["hair_color_scope"] = hair_color_scope
     meta["wardrobe"] = wardrobe
+    # Only emitted when actually in play, so an ordinary character's document is
+    # byte-identical to previous releases.
+    if covers_face:
+        meta["covers_face"] = True
+    if covers_body:
+        meta["covers_body"] = True
+    if covers_hair:
+        meta["covers_hair"] = True
+    if mask_text:
+        meta["mask"] = mask_text
+    if size_scale:
+        meta["size_scale"] = size_scale
+    if omitted:
+        meta["omitted"] = sorted(omitted)
 
     grouped = group_fields(resolved)
     if slots:
@@ -2520,6 +2773,14 @@ def generate_character(
         # ink under a costume is coherent.
         _resolve_deferred_fields(resolved, gender, accessory_density, rng)
 
+    # The outfit is final at last, so the pose gate can finally see it -- inside the
+    # randomize loop a *generated* costume does not exist yet. Free unless the drawn
+    # pose is genuinely unperformable in the finished garment, and nothing is drawn
+    # after this point, so no seed drifts except the ones that were already wrong.
+    # See _repair_pose for why this is a repair rather than a deferral.
+    _repair_pose(resolved, gender, set(locked_clean), covers_face, covers_body,
+                 covers_hair, scale_class, rng)
+
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or
     # ring would render on top of the glove (the reported bug). Force the finger
     # fields absent when the resolved outfit covers the hands -- unless they expose
@@ -2697,8 +2958,20 @@ def generate_character(
     ) or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES
     prose = _format_prose(resolved, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text)
+    # Fields a preset or a widget deliberately locked ABSENT. They are stripped from
+    # the group output (``group_fields`` drops "None"), so without recording them the
+    # document cannot round-trip through the vault -- a recalled She-Hulk grew a
+    # randomized ethnicity back under her body paint. Only explicit locks qualify; a
+    # field that merely randomized to nothing is not a decision worth restoring.
+    omitted = sorted(name for name, value in locked_clean.items() if value == "None")
     json_output = _format_json(
-        resolved, gender, hair_color_scope, wardrobe, cosplay_label, species
+        resolved, gender, hair_color_scope, wardrobe, cosplay_label, species,
+        covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
+        mask_text=mask_text,
+        # The tier actually in force: the widget overrides a wired character's own,
+        # which is the precedence _scale_class applies a few lines above.
+        size_scale=(size_scale if size_scale != _SIZE_SCALE_AUTO else character_scale),
+        omitted=omitted,
     )
     return prose, json_output
 
@@ -2805,9 +3078,24 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
                 )
             if meta.get("covers_face"):
                 flat[_COVERS_FACE_KEY] = "1"
+            # Gated on ``covers_face`` on purpose. The mask describes a HEAD that is
+            # hidden; voicing it on a face-visible character renders a helmet over a
+            # perfectly good face. merge_preset_documents now drops a stale mask at
+            # the source, so this is defence in depth -- but it is the half that also
+            # covers a hand-authored document, and the cost is one boolean.
             head = meta.get("mask")
-            if isinstance(head, str) and head:
+            if meta.get("covers_face") and isinstance(head, str) and head:
                 flat[_MASK_KEY] = head
+            # Fields a saved document records as deliberately absent (see
+            # _format_json). Re-injected as "None" locks so a recalled character keeps
+            # its suppressions instead of re-randomizing them. ``setdefault`` never
+            # beats a real value: the group loop below overwrites, and group_fields
+            # has already stripped "None" from the groups, so there is no collision.
+            omitted = meta.get("omitted")
+            if isinstance(omitted, list):
+                for name in omitted:
+                    if isinstance(name, str) and name in FIELD_DEFINITIONS:
+                        flat.setdefault(name, "None")
             if meta.get("covers_body"):
                 flat[_COVERS_BODY_KEY] = "1"
             if meta.get("covers_hair"):

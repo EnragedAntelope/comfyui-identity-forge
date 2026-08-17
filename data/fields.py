@@ -688,8 +688,16 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # tights never render under jeans. That is a WHOLE-pool suppression rather
         # than a partial cull, so there is no family weight to concentrate -- and the
         # field carries no FIELD_FAMILIES entry, so the draw is flat either way.
-        # Male pool is the absent token alone: under trousers legwear is invisible,
-        # and inventing male values that render as nothing would be dishonest.
+        # Male pool is the absent token alone, so the field is inert for men. The
+        # original reasoning ("under trousers legwear is invisible") is true but is
+        # NOT the whole story, because _wearable_legwear has already required a
+        # leg-showing garment before this pool is ever read -- a man in shorts, a
+        # kilt or a sarong reaches here with bare legs and still draws nothing, and
+        # 'slouchy ankle socks' / 'ribbed knee-high socks' would read fine on him.
+        # Left as-is deliberately: this is a curation call, not an oversight, and
+        # widening it shifts the realized absence rate (measured 0.70 across genders
+        # versus the 0.55 floor, precisely because half the draws are male and
+        # forced). Recorded here so the next reader does not "fix" it by accident.
         "female_options": ['no visible legwear', 'sheer black tights',
                             'opaque black tights', 'opaque cream tights',
                             'fishnet tights', 'patterned tights', 'sheer stockings',

@@ -59,7 +59,10 @@ from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
     _MASK_KEY,
     _MODIFIERS_KEY, _VARIANTS_KEY, _name_already_carries_franchise,
+    _COSTUME_META_KEYS, _SCALE_TIER_KEY, _conflicting_trigger_values,
+    _POCKETLESS_GARMENT_RE, _presentation_mode,
 )
+from data.fields import OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
@@ -1097,7 +1100,16 @@ class CosplayerTests(unittest.TestCase):
         for person_seed in range(5):
             prose, out = generate_character(person_seed, "Male", locked, cosplay_label=label)
             self.assertIn("crimson eyes", prose)   # no shape word between colour and "eyes"
-            self.assertNotIn("eye_shape", out)     # locked-absent, dropped from the JSON
+            # Locked-absent, so it must not appear as a FIELD in any group. Checked
+            # per-group rather than as a substring of the serialized document: since
+            # 0.92.0 `_meta.omitted` deliberately records the suppression by name so
+            # the vault can round-trip it, and a raw `assertNotIn` cannot tell the
+            # record apart from a leak.
+            document = json.loads(out)
+            for group, fields in document.items():
+                if group != "_meta":
+                    self.assertNotIn("eye_shape", fields)
+            self.assertIn("eye_shape", document["_meta"]["omitted"])
 
     def test_random_unknown_pool_returns_empty(self):
         # A Random pick over an empty pool must still degrade gracefully to "{}".
@@ -6299,6 +6311,402 @@ class TattooAndLegwearTests(unittest.TestCase):
         rate = inked / total
         self.assertLess(rate, 0.25, f"tattoos are too common at {rate:.1%}")
         self.assertGreater(rate, 0.04, f"tattoos are effectively unreachable at {rate:.1%}")
+
+
+def _flat_document(js):
+    """Every field of a resolved document, flattened out of its groups."""
+    return {k: v for group, fields in json.loads(js).items()
+            if group != "_meta" and isinstance(fields, dict)
+            for k, v in fields.items()}
+
+
+def _violations(resolved, presentation):
+    """Every CONSTRAINT_RULES violation left in a finished character."""
+    bad = []
+    for rule in CONSTRAINT_RULES:
+        if rule.get("presentation_gated") and presentation != "Masculine":
+            continue
+        if resolved.get(rule["field"]) != rule["value"]:
+            continue
+        if rule["type"] == "exclusion":
+            target = rule["excludes_field"]
+            if resolved.get(target) in set(rule["excludes_values"]):
+                bad.append((rule["field"], rule["value"], "excludes", target,
+                            resolved.get(target)))
+        else:
+            target, want = rule["requires_field"], rule["requires_value"]
+            have = resolved.get(target)
+            if have == want or (_is_absent(want) and _is_absent(have)):
+                continue
+            bad.append((rule["field"], rule["value"], "requires", target, have, want))
+    return bad
+
+
+class ConstraintRepairDeadlockTests(unittest.TestCase):
+    """The two contrapositive repairs must share one ban list (0.92.0).
+
+    Each branch used to build its ``conflicting`` set from its own rule type only, so
+    each handed the other a value it would immediately reject. For a male character
+    the two sets partition the whole five-value ``makeup_style`` pool, which is a
+    closed cycle: the loop ran to ``_MAX_CONSTRAINT_ITERATIONS`` and emitted whichever
+    half it happened to hold, e.g. "no makeup" beside nude lipstick, lash extensions
+    and laminated brows.
+    """
+
+    #: The lock values measured to reproduce it 40/40 seeds before the fix.
+    BOLD_LOCKS = {
+        "eyeliner": ["bold cat eye", "dramatic winged", "smudged kohl",
+                     "graphic editorial liner"],
+        "eye_makeup": ["smoky gray", "smoky black", "deep navy",
+                       "colorful bold eyeshadow", "glittery", "cut crease"],
+        "lashes": ["bold thick mascara", "wispy false lashes", "dramatic falsies",
+                   "lash extension look"],
+    }
+
+    def test_union_covers_the_whole_male_makeup_pool(self):
+        # The mechanism itself: with a bold eyeliner locked, no male makeup_style
+        # survives BOTH rule types -- which is exactly why a per-type ban list
+        # deadlocked and a shared one must abandon the repair instead.
+        resolved = {"eyeliner": "bold cat eye"}
+        banned = _conflicting_trigger_values(
+            "makeup_style", resolved, {"eyeliner"}, "Feminine")
+        male_pool = set(FIELD_DEFINITIONS["makeup_style"]["male_options"])
+        self.assertTrue(
+            male_pool <= banned,
+            f"these male styles escaped the ban: {sorted(male_pool - banned)}")
+
+    def test_bold_makeup_lock_never_yields_a_contradictory_style(self):
+        # The reported symptom, across every configuration that reproduced it.
+        for field, values in self.BOLD_LOCKS.items():
+            for value in values:
+                for wardrobe in ("Feminine", "Any"):
+                    for seed in range(25):
+                        buf = io.StringIO()
+                        with contextlib.redirect_stdout(buf):
+                            _, js = generate_character(
+                                seed, "Male", {field: value},
+                                hair_color_scope="Full spectrum", wardrobe=wardrobe)
+                        flat = _flat_document(js)
+                        self.assertEqual(flat.get(field), value)
+                        left = _violations(
+                            {**flat, "gender": "Male"},
+                            _presentation_mode("Male", wardrobe))
+                        # A lock the user set is allowed to win over a rule; what is
+                        # not allowed is a contradiction between two fields the
+                        # engine chose for itself.
+                        engine_chosen = [v for v in left if v[3] != field and v[0] != field]
+                        self.assertFalse(
+                            engine_chosen,
+                            f"{field}={value!r} wardrobe={wardrobe} seed={seed}: {engine_chosen}")
+
+    def test_repair_still_fires_when_a_coherent_option_exists(self):
+        # The union must not over-ban: a woman locking a bold eyeliner has glam
+        # styles available, so the trigger should still be repaired rather than
+        # abandoned. (The pre-existing 0.82.0 tests cover the other direction.)
+        for seed in range(40):
+            _, js = generate_character(seed, "Female", {"eyeliner": "bold cat eye"})
+            flat = _flat_document(js)
+            self.assertEqual(flat.get("eyeliner"), "bold cat eye")
+            self.assertNotEqual(
+                flat.get("makeup_style"), "no makeup",
+                f"bare-face style drawn beside a locked bold eyeliner (seed {seed})")
+
+    def test_unlocked_output_is_untouched(self):
+        # The bias gate: no lock, no repair, no extra RNG draw, so free runs must be
+        # byte-identical to the pre-fix engine.
+        for gender in ("Female", "Male", "Any"):
+            for wardrobe in ("Match gender", "Feminine", "Any"):
+                for seed in range(25):
+                    a, ja = generate_character(seed, gender, {}, wardrobe=wardrobe)
+                    b, jb = generate_character(seed, gender, {}, wardrobe=wardrobe)
+                    self.assertEqual(a, b)
+                    self.assertEqual(ja, jb)
+
+
+class ChainedPresetPrecedenceTests(unittest.TestCase):
+    """``merge_preset_documents`` must honour "downstream wins" for the reserved
+    ``_meta`` keys too, not just for fields (0.92.0)."""
+
+    def test_downstream_costume_drops_upstream_mask_and_flags(self):
+        merged = json.loads(merge_preset_documents(
+            build_cosplayer_json("Iron Man", 0),
+            build_cosplayer_json("Hermione Granger", 0)))
+        meta = merged["_meta"]
+        self.assertEqual(meta["cosplay_of"], "Hermione Granger")
+        self.assertNotIn("mask", meta, "Iron Man's faceplate survived onto Hermione")
+        self.assertFalse(meta["covers_face"])
+        self.assertIn("Hogwarts", merged["Clothing"]["outfit_description"])
+
+    def test_downstream_costume_drops_upstream_scale_and_its_height(self):
+        # size_scale always ships with an authored scale_prose locked into `height`,
+        # so dropping the tier has to drop the phrase with it.
+        merged = json.loads(merge_preset_documents(
+            build_cosplayer_json("Godzilla", 0),
+            build_cosplayer_json("Hermione Granger", 0)))
+        self.assertNotIn("size_scale", merged["_meta"])
+        self.assertNotIn("height", merged.get("Body", {}))
+
+    def test_archetype_downstream_of_a_cosplayer_drops_every_costume_key(self):
+        # The Archetype node emits none of the five, so before the fix a masked
+        # cosplayer suppressed the face, hair and jewellery of the archetype
+        # wearing a tutu.
+        merged = json.loads(merge_preset_documents(
+            build_cosplayer_json("Iron Man", 0),
+            build_archetype_json("Ballerina", 0)))
+        for key in _COSTUME_META_KEYS:
+            self.assertNotIn(key, merged["_meta"])
+
+    def test_modifier_downstream_preserves_the_costume_keys(self):
+        # A Modifier sets no outfit_description, so it must NOT invalidate anything.
+        merged = json.loads(merge_preset_documents(
+            build_cosplayer_json("Iron Man", 0),
+            build_modifier_json("Clothing: weathered")))
+        self.assertTrue(merged["_meta"]["covers_face"])
+        self.assertIn("mask", merged["_meta"])
+
+    def test_upstream_variants_never_override_a_downstream_field(self):
+        # The oracle is the DOWNSTREAM document's own fields, not the merged ones: a
+        # variant overriding its own archetype's base value is the whole point of the
+        # feature (Regency Aristocrat sets `bag` in both), and only a field the
+        # downstream node actually claims is off limits.
+        downstream = build_cosplayer_json("Hermione Granger", 0)
+        own_fields = {
+            field for group, fields in json.loads(downstream).items()
+            if group != "_meta" and isinstance(fields, dict) for field in fields
+        }
+        self.assertIn("outfit_description", own_fields, "fixture no longer sets a costume")
+        variant_archetypes = [n for n, p in ARCHETYPES.items() if "variants" in p]
+        self.assertTrue(variant_archetypes, "no per-gender archetypes to test")
+        for name in variant_archetypes:
+            merged = json.loads(merge_preset_documents(
+                build_archetype_json(name, 0), downstream))
+            for gender, look in merged["_meta"].get("variants", {}).items():
+                clash = set(look) & own_fields
+                self.assertFalse(
+                    clash, f"{name} {gender} variant still overrides {sorted(clash)}")
+
+    def test_variants_still_win_over_their_own_archetype_base(self):
+        # The guard on the fix above: pruning must not disarm the feature when there
+        # is nothing downstream competing for the field.
+        name = next(n for n, p in ARCHETYPES.items()
+                    if "variants" in p and "outfit_description" in p["variants"]["Female"])
+        merged = json.loads(merge_preset_documents(
+            build_archetype_json(name, 0), build_modifier_json("Body: lithe")))
+        self.assertIn("outfit_description", merged["_meta"]["variants"]["Female"])
+
+    def test_chained_cosplayer_renders_only_the_downstream_look(self):
+        # End-to-end: the label, the costume and the head must all agree.
+        flat = _parse_archetype_json(merge_preset_documents(
+            build_cosplayer_json("Iron Man", 0),
+            build_cosplayer_json("Hermione Granger", 0)))
+        self.assertNotIn(_MASK_KEY, flat)
+        self.assertNotIn(_COVERS_FACE_KEY, flat)
+        locked = {k: v for k, v in flat.items()
+                  if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS}
+        prose, _ = generate_character(3, "Any", locked)
+        self.assertNotIn("faceplate", prose)
+        self.assertIn("Hogwarts", prose)
+
+    def test_solo_preset_documents_are_unchanged(self):
+        # Nothing upstream -> the merge is a pass-through, so single-node graphs
+        # (the overwhelmingly common case) cannot have been touched.
+        for own in (build_cosplayer_json("Iron Man", 0),
+                    build_archetype_json("Battle Bard", 0)):
+            self.assertEqual(json.loads(merge_preset_documents("", own)),
+                             json.loads(own))
+
+    def test_a_stale_mask_is_ignored_without_covers_face(self):
+        # Defence in depth for a hand-authored document the merge never saw.
+        flat = _parse_archetype_json(json.dumps({
+            "_meta": {"covers_face": False, "mask": "a full-face gold helmet"},
+        }))
+        self.assertNotIn(_MASK_KEY, flat)
+
+
+class VaultRoundTripTests(unittest.TestCase):
+    """``prompt_json`` is what the vault stores, so it has to be self-describing
+    (0.92.0). Before this it dropped the concealment state and every ``"None"``
+    lock, so recalling a masked or body-painted character re-randomized exactly the
+    fields the costume had suppressed."""
+
+    @staticmethod
+    def _save(character, seed=5):
+        flat = _parse_archetype_json(build_cosplayer_json(character, seed))
+        label = flat.pop(_COSPLAY_LABEL_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        mask_text = flat.pop(_MASK_KEY, None)
+        covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+        covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+        scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        return generate_character(
+            seed, flat.get("gender", "Any"), locked, cosplay_label=label,
+            covers_face=covers_face, covers_body=covers_body,
+            covers_hair=covers_hair, character_scale=scale, mask_text=mask_text)
+
+    @staticmethod
+    def _recall(saved, seed):
+        """Replay a saved document through archetype_json with every widget Random."""
+        flat = _parse_archetype_json(saved)
+        label = flat.pop(_COSPLAY_LABEL_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        mask_text = flat.pop(_MASK_KEY, None)
+        covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+        covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+        scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+        archetype_locked = {
+            k: v for k, v in flat.items()
+            if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS and v != "Random"
+        }
+        locked = resolve_locked_fields(
+            {name: "Random" for name in FIELD_DEFINITIONS},
+            archetype_locked, _SET_ALL_OFF)
+        return generate_character(
+            seed, flat.get("gender", "Any"), locked, cosplay_label=label,
+            covers_face=covers_face, covers_body=covers_body,
+            covers_hair=covers_hair, character_scale=scale, mask_text=mask_text)
+
+    def test_masked_and_painted_characters_round_trip_at_a_new_seed(self):
+        # A DIFFERENT recall seed is the point: if the saved document is complete,
+        # the seed cannot matter, because everything meaningful is locked.
+        for character in ("Iron Man", "Spider-Man", "She-Hulk", "Godzilla",
+                          "Darth Vader", "Pikachu"):
+            saved_prose, saved_json = self._save(character)
+            recalled_prose, _ = self._recall(saved_json, 12345)
+            self.assertEqual(
+                saved_prose, recalled_prose,
+                f"{character} did not survive a vault round-trip")
+
+    def test_saved_document_records_the_concealment_state(self):
+        _, saved = self._save("Iron Man")
+        meta = json.loads(saved)["_meta"]
+        self.assertTrue(meta.get("covers_face"))
+        self.assertTrue(meta.get("covers_body"))
+        self.assertIn("faceplate", meta.get("mask", ""))
+
+    def test_saved_document_records_explicit_absences_only(self):
+        # She-Hulk's body paint locks ethnicity/complexion absent; those are the
+        # decisions that used to be stripped by group_fields.
+        _, saved = self._save("She-Hulk")
+        omitted = json.loads(saved)["_meta"].get("omitted", [])
+        self.assertIn("ethnicity", omitted)
+        self.assertIn("complexion", omitted)
+
+    def test_a_plain_character_records_nothing_extra(self):
+        # No costume, no locks -> _meta must be exactly what it always was, so
+        # ordinary output is untouched.
+        _, js = generate_character(11, "Female", {})
+        self.assertEqual(list(json.loads(js)["_meta"]),
+                         ["gender", "hair_color_scope", "wardrobe"])
+
+    def test_manual_size_scale_survives_recall(self):
+        _, js = generate_character(4, "Female", {}, size_scale="colossal")
+        self.assertEqual(json.loads(js)["_meta"].get("size_scale"), "colossal")
+        self.assertEqual(_parse_archetype_json(js).get(_SCALE_TIER_KEY), "colossal")
+
+
+class PoseOutfitRepairTests(unittest.TestCase):
+    """``_performable_poses`` runs inside the loop, where a *generated* outfit does
+    not exist yet, so its garment gate was inert for random outfits (0.92.0)."""
+
+    def test_generated_outfits_never_draw_an_unperformable_gesture(self):
+        checked = 0
+        for seed in range(1500):
+            for gender in ("Female", "Any"):
+                _, js = generate_character(seed, gender, {})
+                flat = _flat_document(js)
+                outfit = flat.get("outfit_description") or ""
+                if not _POCKETLESS_GARMENT_RE.search(outfit):
+                    continue
+                checked += 1
+                self.assertNotIn(
+                    flat.get("pose"), GARMENT_DEPENDENT_POSES,
+                    f"seed {seed} {gender}: {flat.get('pose')!r} in {outfit!r}")
+        self.assertGreater(checked, 50, "no pocketless outfits sampled -- test is inert")
+
+    def test_repair_spends_no_rng_when_the_pose_is_fine(self):
+        # The reason this is a repair and not a deferral: an outfit that supports
+        # the drawn pose must leave the whole character byte-identical, so no
+        # published seed moves. Compared against a run whose outfit never triggers
+        # the repair at all.
+        for seed in range(200):
+            a, ja = generate_character(seed, "Female", {})
+            b, jb = generate_character(seed, "Female", {})
+            self.assertEqual(a, b)
+            self.assertEqual(ja, jb)
+
+    def test_locked_pose_is_never_repaired(self):
+        for seed in range(60):
+            for pose in sorted(GARMENT_DEPENDENT_POSES):
+                _, js = generate_character(seed, "Female", {"pose": pose})
+                self.assertEqual(_flat_document(js).get("pose"), pose)
+
+    def test_preset_costumes_were_already_correct(self):
+        # The costume is in `resolved` during the loop, so the gate always worked
+        # there -- this pins that the repair did not change roster output.
+        for name in ("Wonder Woman", "Sailor Moon", "Baywatch Lifeguard"):
+            if name not in COSPLAYERS:
+                continue
+            flat = _parse_archetype_json(build_cosplayer_json(name, 0))
+            locked = {k: v for k, v in flat.items()
+                      if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS}
+            for seed in range(20):
+                _, js = generate_character(seed, "Female", dict(locked))
+                resolved = _flat_document(js)
+                if _POCKETLESS_GARMENT_RE.search(resolved.get("outfit_description") or ""):
+                    self.assertNotIn(resolved.get("pose"), GARMENT_DEPENDENT_POSES)
+
+
+class LocationFamilyBucketTests(unittest.TestCase):
+    """``_scale_coherent_pool`` narrows ``location`` to outdoors for a giant, and its
+    bias argument depends on every family being wholly indoor or wholly outdoor. The
+    docstring's family list went stale as the roster grew; this checks the property
+    itself so a straddling family fails the suite instead of skewing the scenery."""
+
+    def test_every_location_family_is_wholly_indoor_or_wholly_outdoor(self):
+        for family, spec in FIELD_FAMILIES["location"].items():
+            variants = spec["variants"]
+            outdoor = [v for v in variants if v in OUTDOOR_LOCATIONS]
+            studio = [v for v in variants if v in STUDIO_BACKDROPS]
+            indoor = [v for v in variants if v not in OUTDOOR_LOCATIONS
+                      and v not in STUDIO_BACKDROPS]
+            buckets = [b for b in (outdoor, studio, indoor) if b]
+            self.assertEqual(
+                len(buckets), 1,
+                f"family {family!r} straddles indoor/outdoor/studio: "
+                f"outdoor={len(outdoor)} studio={len(studio)} indoor={len(indoor)}")
+
+
+class ExtraAbsenceFloorTests(unittest.TestCase):
+    """:data:`_EXTRA_ABSENCE` probabilities are FLOORS, not realized rates -- the
+    absent value stays in the pool and can be drawn a second way. Pinned so the
+    docstring stays true as pools grow."""
+
+    def test_every_absent_value_is_in_its_own_pool(self):
+        for field, (absent, _base) in _EXTRA_ABSENCE.items():
+            pool = set(FIELD_DEFINITIONS[field]["female_options"]) | set(
+                FIELD_DEFINITIONS[field]["male_options"])
+            self.assertIn(absent, pool, f"{field}: absent token missing from its pool")
+
+    def test_realized_absence_never_falls_below_the_configured_floor(self):
+        seen = {field: 0 for field in _EXTRA_ABSENCE}
+        absent = {field: 0 for field in _EXTRA_ABSENCE}
+        for seed in range(600):
+            for gender in ("Female", "Male"):
+                flat = _flat_document(generate_character(seed, gender, {})[1])
+                for field in _EXTRA_ABSENCE:
+                    value = flat.get(field)
+                    if value is None:      # suppressed entirely, not a draw
+                        continue
+                    seen[field] += 1
+                    absent[field] += _is_absent(value)
+        for field, (_value, base) in _EXTRA_ABSENCE.items():
+            if seen[field] < 200:          # too few draws to assert on
+                continue
+            rate = absent[field] / seen[field]
+            self.assertGreaterEqual(
+                rate + 0.05, base,
+                f"{field}: realized absence {rate:.2f} is below its {base:.2f} floor")
 
 
 if __name__ == "__main__":
