@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1826 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1827 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (344)
 
@@ -1101,7 +1101,7 @@
 - **Jinx (Teen Titans)** (F)
 - **John Constantine** (M)
 - **John Stewart** (M)
-- **Joker** (M, +2 alt)
+- **Joker** (M, +8 alt)
 - **Katana** (F, masked, prop)
 - **Katma Tui** (F)
 - **Kid Flash** (M)
@@ -1583,7 +1583,7 @@
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
 
-## Marvel (176)
+## Marvel (177)
 
 ### Marvel
 
@@ -1724,6 +1724,7 @@
 - **She-Hulk** (F, giant)
 - **Shriek** (F)
 - **Shuri** (F)
+- **Silk** (F, +1 alt)
 - **Silver Sable** (F)
 - **Silver Surfer** (M, masked, prop)
 - **Snowbird** (F)

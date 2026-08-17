@@ -1892,6 +1892,30 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "short", "skin_tone": "fair"},
     },
+    # Cindy Moon, bitten by the same spider as Peter Parker. The suit she spins for
+    # herself is black at the shoulders, arms, hips and legs with a pale grey torso
+    # panel webbed in red; the red "mask" is a hood plus a scarf/gaiter drawn over
+    # the lower face, so the eyes and brow show -> covers_hair, NOT covers_face
+    # (the Blue Beetle (Ted Kord) shape, inverted). Alternate is her debut look:
+    # before she could spin garments she simply wound raw webbing round herself.
+    "Silk": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "covers_hair": True,  # the red hood encloses the scalp; eyes and brow show
+        "costume": "a black spider suit with black shoulders, arms, hips and legs, a pale "
+                   "grey chest panel crossed by red web lines with a red spider emblem at "
+                   "its center, two red spider-leg shapes reaching off the panel onto the "
+                   "black, red fingers, a snug red hood over the head, and a red webbed "
+                   "scarf drawn up over the nose to mask the lower face",
+        "costumes": [
+            "a makeshift costume spun from raw pale spider-silk, wound in tight "
+            "overlapping bands around the torso, arms and legs, with the webbing wrapped "
+            "over the head as a hood and drawn across the lower face",
+        ],
+        "signature": {"eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "light", "ethnicity": "Korean"},
+    },
     "Wasp": {
         "franchise": "Marvel",
         "gender": "Female",
@@ -2740,7 +2764,14 @@ COSPLAYERS: dict[str, dict] = {
                    "green hair",
         "signature": {"hair_color": "emerald green", "hair_length": "jaw length",
                       "hair_style": "slicked back"},
+        # The base costume is the classic comics purple tailcoat. Alternates are the
+        # other looks a general audience recognises as the Joker on sight, one per
+        # adaptation lineage. Deliberately NOT added: the Batman: The Animated Series
+        # suit (same purple-coat silhouette as the base, differing only in shirt
+        # colour) and the barely-glimpsed The Batman (2022) inmate, neither of which
+        # renders as a distinct look.
         "costumes": [
+            # The Dark Knight (2008), Heath Ledger.
             {
                 "costume": "a long dark purple overcoat with wide notched lapels over a "
                            "hexagon-patterned shirt and a dark green vest, messy shoulder-length "
@@ -2750,6 +2781,7 @@ COSPLAYERS: dict[str, dict] = {
                 "signature": {"hair_color": "dirty blonde", "hair_length": "shoulder length",
                               "hair_style": "tousled bedhead"},
             },
+            # Joker (2019), Joaquin Phoenix as Arthur Fleck.
             {
                 "costume": "a bright red three-piece suit with a yellow waistcoat over a "
                            "lime-green button-down shirt, messy shoulder-length hair dyed a "
@@ -2758,6 +2790,65 @@ COSPLAYERS: dict[str, dict] = {
                            "blue diamond shapes painted above each eye",
                 "signature": {"hair_color": "medium brown", "hair_length": "shoulder length",
                               "hair_style": "tousled bedhead"},
+            },
+            # Batman (1989), Jack Nicholson. Bob Ringwood's costume: deep purple wool
+            # tailcoat, green satin shirt, orange-and-green pinstriped waistcoat, teal
+            # bow tie, tartan trousers, pale purple suede gloves, wide-brimmed hat. The
+            # hat is a brim, not a scalp covering, so the green hair still shows and the
+            # entry-level signature carries over.
+            "a deep purple wool tailcoat with wide lapels over an orange-and-green pinstriped "
+            "waistcoat and a bright green satin shirt, a loose teal bow tie, purple tartan "
+            "trousers, pale purple suede gloves, pointed purple leather shoes, and a "
+            "wide-brimmed purple fedora, with a chalk-white painted face and a stretched "
+            "permanent red grin",
+            # The Killing Joke (1988), the carnival "tourist" look he wears to shoot
+            # Barbara Gordon - a page and a half of the book and one of his best-known
+            # outfits. The camera is the held prop that completes it.
+            {
+                "costume": "a loud red and orange floral Hawaiian shirt worn open at the collar "
+                           "over dark trousers and a purple porkpie hat with a black band, with "
+                           "a chalk-white painted face and a wide red-lipped grin",
+                "prop": "a boxy black 35mm camera on a scuffed neck strap, raised to take a "
+                        "photograph",
+            },
+            # The Killing Joke (1988), the Red Hood origin flashback: the failed comedian
+            # in the helmet, before the chemical vat. A full dome enclosing the head, so
+            # covers_face + its own mask; distinct from the roster's "Red Hood" (Jason
+            # Todd), whose crimson helmet sits over a tactical bodysuit.
+            {
+                "costume": "a black tuxedo with a white dress shirt, a black bow tie, a red "
+                           "cummerbund, and a long black opera cape",
+                "covers_face": True,
+                "mask": "a smooth glossy red dome helmet enclosing the whole head, with dark "
+                        "eye lenses set into the front",
+            },
+            # Batman: Arkham games (Rocksteady). Reads apart from the base classic on the
+            # pinstripes, the gaunt hollowed face and the buttonhole flower.
+            "a purple pinstriped suit with long tails over a lime-green waistcoat, a green bow "
+            "tie, a white dress shirt, purple gloves, and a wilted flower in the buttonhole, "
+            "with a gaunt hollow-cheeked chalk-white painted face and red-smeared lips over "
+            "yellowed teeth",
+            # Suicide Squad (2016), Jared Leto. The one look with a bare tattooed torso.
+            {
+                "costume": "a purple crocodile-skin trench coat worn open over a bare tattooed "
+                           "torso, black trousers, gold chains and rings, with smooth, flawless "
+                           "chalk-white skin covered in scattered black tattoos, red-stained "
+                           "lips, block lettering tattooed across the forehead, and a silver "
+                           "grill over the teeth",
+                "prop": "a slim purple lacquered walking cane with a silver handle",
+            },
+            # Batman (1966), Cesar Romero. The magenta three-piece and the mustache he
+            # refused to shave, greasepainted over - the detail the look is remembered for.
+            # It rides in signature.facial_hair rather than the costume prose, per the
+            # gendered-field convention, so a female crossplay simply drops it. An overlay
+            # signature REPLACES the base one, so the hair keys are restated here.
+            {
+                "costume": "a magenta three-piece tailcoat suit with a matching waistcoat and "
+                           "pink pinstriped trousers, a lime-green dress shirt, a black ascot, "
+                           "and magenta gloves, with chalk-white greasepaint and red-painted "
+                           "lips",
+                "signature": {"hair_color": "emerald green", "hair_length": "jaw length",
+                              "hair_style": "slicked back", "facial_hair": "mustache"},
             },
         ],
         "physique": {"body_type": "lean", "height": "tall"},

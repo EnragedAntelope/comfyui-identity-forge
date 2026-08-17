@@ -1392,6 +1392,7 @@ const COSPLAYER_FRANCHISES = {
     "She-Hulk",
     "Shriek",
     "Shuri",
+    "Silk",
     "Silver Sable",
     "Silver Surfer",
     "Snowbird",

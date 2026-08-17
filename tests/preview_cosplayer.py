@@ -26,7 +26,7 @@ if str(ROOT) not in sys.path:
 from data.cosplayers import get_cosplayer_names
 from nodes.identity_forge import (
     generate_character, _parse_archetype_json, _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY,
-    _COVERS_BODY_KEY, _COVERS_HAIR_KEY, _SCALE_TIER_KEY, _CONTROL_FIELDS,
+    _COVERS_BODY_KEY, _COVERS_HAIR_KEY, _MASK_KEY, _SCALE_TIER_KEY, _CONTROL_FIELDS,
 )
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
@@ -45,6 +45,11 @@ def render(
         raise SystemExit(f"No output for {character!r} — unknown name or empty Random pool.")
     label = flat.pop(_COSPLAY_LABEL_KEY, None)
     covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+    # The head covering travels beside covers_face and is voiced as its own sentence
+    # by the engine, so the preview must pop and forward it exactly as the node does
+    # -- without this a masked character previews bare-headed (the 0.51.0 lesson
+    # again, this time for the 0.90.0 mask key).
+    mask_text = flat.pop(_MASK_KEY, None)
     covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
     covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
     # The entry's own size_scale tier. The node pops and forwards this; the preview
@@ -59,7 +64,7 @@ def render(
     return generate_character(
         seed, resolved_gender, locked, cosplay_label=label, covers_face=covers_face,
         covers_body=covers_body, covers_hair=covers_hair,
-        character_scale=character_scale,
+        character_scale=character_scale, mask_text=mask_text,
     )
 
 
