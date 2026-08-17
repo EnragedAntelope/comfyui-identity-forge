@@ -18,15 +18,16 @@ else, so each run is a different person wearing the same costume.
 An entry may set **`covers_face: True`** when the head is fully masked/helmeted
 (Spider-Man, a Mandalorian helmet, a ninja hood, a featureless chrome head). The
 head covering is stored in a separate **`mask`** string, kept *out* of `costume`.
-The Cosplayer node re-attaches the mask to the costume and passes `covers_face`
-through its `_meta`; IdentityForge then drops the randomized **Face / Hair /
-Makeup** fields (plus earrings/piercings) from both the prose and JSON — so a
-random face never gets described fighting the mask. Leave both off whenever the
-face is visible (an open cowl, a domino mask, a body-painted but visible face like
-Hulk).
+The Cosplayer node forwards the mask beside `covers_face` in its `_meta` (since
+0.90.0 — it is *not* glued onto the costume), and IdentityForge voices it as its
+own sentence ahead of the clothing; IdentityForge then drops the randomized
+**Face / Hair / Makeup** fields (plus earrings/piercings) from both the prose and
+JSON — so a random face never gets described fighting the mask. Leave both off
+whenever the face is visible (an open cowl, a domino mask, a body-painted but
+visible face like Hulk).
 
 The node's **`mask`** widget controls this per render: **Default** keeps the mask
-on, while **Unmask (show face)** drops the mask clause *and* clears `covers_face`,
+on, while **Unmask (show face)** drops the mask *and* clears `covers_face`,
 so the randomized head/hair shows under the suit — a helmet-off look (Tony Stark in
 the Iron Man armor). It is a no-op for face-visible characters. Keeping the head
 covering in its own field is what lets it be removed cleanly, with no stray
