@@ -686,7 +686,11 @@ free-form prose (own render path — not validated against human fields). Rules:
   near-misses live in `docs/suggested-additions.md`.
 - **Spread a batch across classes.** The creature list is picked uniformly, so a
   Mammals-heavy batch shifts what a plain `Random - any` tends to produce even though no
-  per-entry weight exists (noted at 0.90.0, held to at 0.93.0).
+  per-entry weight exists (noted at 0.90.0, held to at 0.93.0). The test is the resulting
+  *balance*, not the batch: 0.94.0 added six entries all to Insects & Arachnids because
+  the source list was all insects, and that was fine — the class was the smallest
+  non-Alien one at 20 against Mammals' 48, so it moved the distribution toward even.
+  Check the class counts before deciding, not the shape of the batch.
 - **Suppression:** a creature `head` hides human Face/Hair/Makeup; `integument` hides skin
   fields; `form` (Anthropomorphic/Feral/Subtle) sets group-level suppression. Generalizes the
   cosplayer `covers_face` mechanism via `_meta.suppress_groups` / `suppress_fields`.

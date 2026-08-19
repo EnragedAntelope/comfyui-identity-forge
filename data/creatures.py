@@ -2969,6 +2969,125 @@ CREATURES: dict[str, dict] = {
         "tail": "a long rigid spike of a tail",
         "extras": "stacked pages of book gills flexing beneath the rear shield",
     },
+
+    # ======================================================================
+    # Added 0.94.0. Sifted from a ~390-name insect list that resolved into
+    # twelve anatomies, ten of which already ship -- 59 butterflies, 42 moths
+    # and 53 beetles are wing patterns and pronotal horns on three bodies the
+    # class already owns, and castes (queen/soldier/worker), nymphs and named
+    # localities are not forms at all. The three real holes it exposed:
+    #   * Diptera -- 22 fly names and not one true fly on the roster.
+    #   * Hemiptera -- 17 true-bug names and no piercing rostrum anywhere.
+    #   * Larvae -- no larval body plan at all, though the class ships both
+    #     adults (butterfly, moth) whose larvae are a different animal.
+    # Six entries close them. This batch is single-class by necessity (the
+    # source list is all insects) and that is acceptable here for the reason
+    # the spread rule exists: Insects was the smallest non-Alien class at 20
+    # against Mammals' 48, so 20 -> 26 moves the classes closer to even rather
+    # than skewing "Random - any".
+    # ======================================================================
+
+    "caterpillar": {
+        # The class's first larval body plan. Butterfly and moth are the same
+        # animal three weeks later and share nothing with this: no wings, no
+        # hard shell, a soft ringed tube walking on fleshy prolegs.
+        "class": "Insects & Arachnids",
+        "palette": "leaf green",
+        "palette_pool": ["leaf green", "deep black", "burnt orange", "chalky blue-green"],
+        "head": "a small blunt glossy head capsule with stubby antennae and a chewing mouth",
+        "eyes": "a curved row of six tiny simple eyes along each cheek",
+        "integument": "a soft segmented body ringed with fleshy folds and tufts of bristle",
+        "arms": "short hooked true legs held close to the front segments",
+        "hands": "tiny clasping claws",
+        "legs_feet": "rows of fleshy gripping prolegs tipped with hooks",
+        "tail": "a curved horn rising from the rear segment",
+        "extras": "a pair of large false eyespots staring from the shoulders",
+    },
+    "housefly": {
+        # No true fly on the roster before this. Wasp is the nearest winged
+        # insect and is the opposite build: banded, waisted, four wings, sting
+        # at the back. This is squat and bristled, two wings, and the head is
+        # almost entirely eye.
+        "class": "Insects & Arachnids",
+        "palette": "gunmetal grey",
+        "palette_pool": ["gunmetal grey", "dark blue-black", "metallic green"],
+        "head": "a small head crowned with a bristled crest above a fleshy sponging proboscis",
+        "eyes": "enormous red-brown compound eyes wrapping the whole head in thousands of facets",
+        "integument": "a bristled thorax and a banded abdomen under fine hairs",
+        "arms": "thin bristled forelimbs that rub constantly together",
+        "hands": "clawed grips fringed with sticky adhesive pads",
+        "legs_feet": "spindly bristled legs that grip even an upside-down surface",
+        "wings": "a single pair of clear veined wings folded flat over the back",
+        "extras": "a pair of knobbed halteres whirring where the second wings should be",
+    },
+    "mosquito": {
+        # The second Diptera earns its place on mouthparts, which is where the
+        # order's anatomy actually lives: the housefly sponges and is squat,
+        # this pierces and is spindly. Nothing else on the roster leads with a
+        # needle or carries a translucent abdomen.
+        "class": "Insects & Arachnids",
+        "palette": "dusty grey-brown",
+        "palette_pool": ["dusty grey-brown", "pale straw", "dark slate"],
+        "head": "a small round head fronted by a long rigid needle proboscis between feathery plumed antennae",
+        "eyes": "large dark wraparound eyes",
+        "integument": "a slender scaled body with an abdomen translucent enough to show what it holds",
+        "arms": "impossibly thin forelimbs",
+        "hands": "small clinging claws",
+        "legs_feet": "very long trailing legs hanging below the body",
+        "wings": "a narrow pair of scaled wings blurring with a high whine",
+        "extras": "a hunched forward stance with the abdomen tilted up behind the needle",
+    },
+    "antlion": {
+        # The larva, which is what the name means colloquially and the only
+        # form anyone pictures. Stag beetle is the mandible incumbent and loses
+        # on everything else: glossy, hard-shelled, antlered, walking forward.
+        # This is flat, sand-crusted, smooth-sickled and reverses into ground.
+        "class": "Insects & Arachnids",
+        "palette": "sand beige",
+        "palette_pool": ["sand beige", "dusty ochre", "grey-brown"],
+        "head": "a flat wedge of a head carrying two enormous curved sickle jaws spanning wider than the head itself",
+        "eyes": "small clustered black eyes at the base of the jaws",
+        "integument": "a flat bristled hide crusted with clinging sand",
+        "arms": "short bristled forelimbs built for shovelling",
+        "hands": "flat digging claws",
+        "legs_feet": "short backward-set legs made for reversing into loose ground",
+        "tail": "a broad tapering abdomen that anchors below the surface",
+        "extras": "sand grains caught throughout the bristles",
+    },
+    "assassin bug": {
+        # The class's first true bug, and the rostrum is the point: a folding
+        # dagger beak is a head no beetle, wasp or mantis has. The grasping
+        # forelimbs are deliberately NOT written as raptorial -- that is the
+        # praying mantis's line and the two should not converge.
+        "class": "Insects & Arachnids",
+        "palette": "brick red",
+        "palette_pool": ["brick red", "deep black", "dull olive"],
+        "head": "a narrow cone of a head with a short curved dagger of a beak folded back beneath it",
+        "eyes": "round bulging eyes set wide on a slender neck",
+        "integument": "a hard-shelled body with a spined thorax and a flanged flattened abdomen",
+        "arms": "grasping forelimbs sticky with fine gripping hairs",
+        "hands": "hooked clasping claws",
+        "legs_feet": "long thin stalking legs",
+        "wings": "a pair of hardened forewings crossed flat over the back",
+        "extras": "a ridged crest running the length of the thorax",
+    },
+    "caddisfly larva": {
+        # A wholly new INTEGUMENT: armour the creature builds rather than grows.
+        # Snail's shell is secreted and hermit crab's is scavenged whole; this
+        # is a mosaic cemented grain by grain. Named for the larva because the
+        # adult is a drab moth-shape and the case is the entire identity.
+        "class": "Insects & Arachnids",
+        "palette": "silt grey",
+        "palette_pool": ["silt grey", "warm sand", "mossy green"],
+        "head": "a hard dark head capsule with short jaws peering from the mouth of the case",
+        "eyes": "tiny black eyespots either side of the head capsule",
+        "integument": "a soft segmented grub body sealed inside a tube case built from sand grains, twig scraps and shell fragments",
+        "arms": "short hooked forelimbs reaching out of the case",
+        "hands": "small grasping claws",
+        "legs_feet": "short clawed legs that drag the whole case along",
+        "tail": "a sealed tapering end to the case",
+        "extras": "a mosaic of pebbles, cut leaf sections and grit cemented over every surface",
+    },
 }
 
 

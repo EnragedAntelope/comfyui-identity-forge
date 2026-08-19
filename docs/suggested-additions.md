@@ -101,9 +101,9 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 
 ### Creature-node animals — the recurring rejects
 
-A ~600-name animal/insect list was sifted against the creature roster (0.93.0). Ten
-entries shipped; these are the closed rejects. The bar they were judged against
-(**anatomy, not species**) lives in
+Two lists were sifted against the creature roster: ~600 animals at 0.93.0 (ten shipped)
+and ~390 insects at 0.94.0 (six shipped). These are the closed rejects from both. The bar
+they were judged against (**anatomy, not species**) lives in
 [architecture.md → "creatures.py — non-human form layer"](architecture.md).
 
 | Pattern | Why |
@@ -130,6 +130,34 @@ and pufferfish own the spine-ball), **swordfish / marlin / sailfish** and **bett
 (thinner differentiators than lionfish, which took the fish slot), **wombat / wallaby**
 (koala, kangaroo), **opossum** (raccoon, rat), **gibbon** (orangutan shipped instead),
 **dog** (wolf).
+
+**The insect list (0.94.0)** resolved into twelve anatomies, and the ~390 names spent
+themselves on ten the class already owns. Its rejection patterns, on top of the ones
+above:
+
+| Pattern | Why |
+|---|---|
+| 59 butterflies and 42 moths — monarch, swallowtail, morpho, admiral, atlas, luna, cecropia, hawk, tiger… | One body, repainted. Wing colour is `palette_pool` and wing *pattern* is slot text; neither is a new entry. `butterfly` and `moth` already carry the two silhouettes. |
+| 53 beetles — Hercules, Japanese, click, darkling, longhorn, jewel, dung, June, ground, diving, ~40 more | Three beetles ship (rhinoceros, stag, scarab) chosen for three different pronotal/mandible shapes. The rest are size, gloss and host plant. `jewel`/`metallic`/`golden` beetles are the `iridescent` and `metallic` integument finishes. |
+| Castes and life stages — queen / worker / soldier / winged ant and termite, `* nymph`, `* larva`, `butterfly pupa`, male / female mosquito | A caste is not a form, and the node has no caste axis. Where a *larva* is genuinely a different animal it ships on its own (caterpillar, antlion, caddisfly larva at 0.94.0) — the rest are the adult, smaller. |
+| Named localities and hosts — American / German / Oriental cockroach, European / Chinese mantis, Colorado potato / asparagus / cucumber beetle, tomato / tobacco hornworm | The name records where it was found or what it eats. Neither renders. |
+| The remaining flies — crane, hover, robber, bot, blow, bluebottle, deer, horse, stable, drain, tsetse, ~12 more | `housefly` and `mosquito` ship the order's two mouthparts (sponging and piercing). Everything else is a fly with different leg length. |
+| The remaining true bugs — stink, shield, squash, boxelder, milkweed, seed, plant, bed, kissing, leaf-footed | `assassin bug` carries the rostrum, which is what makes a true bug one. A shield-shaped back is already the cockroach's and the beetles'. |
+| Bees and wasps — mason, leafcutter, sweat, mining, carpenter, digger, orchard; yellowjacket, mud dauber, potter, sand, spider, ichneumon, three hornets | `honeybee` and `wasp` hold both. The differences are nesting behaviour and gloss. |
+
+Insect near misses, with the incumbent: **damselfly** (dragonfly), **leaf insect** (stick
+insect — planar vs linear mimicry is not enough), **katydid / camel / cave / Jerusalem /
+mole cricket** (grasshopper; and mole cricket's spade hands are now the `mole`'s),
+**treehopper / thorn bug** (a second Hemipteran in one batch, and `assassin bug` took the
+slot), **water strider** (leg length is its only feature — the flying-squirrel-patagium
+case), **mayfly / stonefly / lacewing / dobsonfly / scorpionfly / snakefly** (dragonfly
+holds the lace-winged silhouette; dobsonfly's mandibles are the stag beetle's),
+**giant water bug** (assassin bug's beak plus the mantis's grasp), **weevil** (the snout
+is real, but it is a small drab beetle — closed under that row above), **earwig**
+(forceps, same row), **termite** (an ant at figure scale), **flea / louse / bed bug**
+(nothing survives the scale), **grub / maggot / mealworm** (caterpillar shipped as the
+soft segmented larva; these are it without the legs, bristles or horn), **glasswing
+butterfly** (the `translucent` finish), **death's-head hawkmoth** (a marking on `moth`).
 
 ### Already ship under another name — check before proposing
 

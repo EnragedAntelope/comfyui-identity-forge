@@ -3,7 +3,7 @@
 
 # Creature reference
 
-**243 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**249 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
 ## Mammals (48)
 
@@ -116,10 +116,14 @@
 - **triceratops** (slate grey-green)
 - **tyrannosaurus rex** (mottled olive-green)
 
-## Insects & Arachnids (20)
+## Insects & Arachnids (26)
 
 - **ant** (reddish black)
+- **antlion** (sand beige)
+- **assassin bug** (brick red)
 - **butterfly** (sunset-orange)
+- **caddisfly larva** (silt grey)
+- **caterpillar** (leaf green)
 - **centipede** (rust-red)
 - **cicada** (olive-brown)
 - **cockroach** (chestnut brown)
@@ -127,7 +131,9 @@
 - **firefly** (black and amber)
 - **grasshopper** (leaf green)
 - **honeybee** (amber and black)
+- **housefly** (gunmetal grey)
 - **ladybug** (red with black spots)
+- **mosquito** (dusty grey-brown)
 - **moth** (dusty taupe)
 - **praying mantis** (emerald)
 - **rhinoceros beetle** (glossy black)
