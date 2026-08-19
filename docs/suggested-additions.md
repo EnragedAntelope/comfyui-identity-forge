@@ -99,6 +99,38 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Power Rangers | Closed unshipped. This is the Miraculous case at its worst — a whole cast in the same suit in different colours, where the shared mechanics are the risk and no single entry earns its place. |
 | Gravity Falls; Hocus Pocus | Closed unshipped at 0.88.0 when the row they shared with Encanto was split. Encanto had four distinct silhouettes; these two are ordinary modern dress and period costume respectively, carried by the ensemble rather than by any one look. |
 
+### Creature-node animals — the recurring rejects
+
+A ~600-name animal/insect list was sifted against the creature roster (0.93.0). Ten
+entries shipped; these are the closed rejects. The bar they were judged against
+(**anatomy, not species**) lives in
+[architecture.md → "creatures.py — non-human form layer"](architecture.md).
+
+| Pattern | Why |
+|---|---|
+| Breeds and cultivars — ~40 dog breeds, ~11 cat breeds, 7 horse breeds, 3 cows | A breed is a colour and a size, not an anatomy. `palette` and `size_scale` already cover that ground on the entry that ships. |
+| Juveniles — the ~50 `baby *` / cub / pup / kit / fawn / gosling names | Not a form. Scale is a node widget (`size_scale`), so a "baby elephant" is the elephant entry rendered tiny. |
+| Colour and region morphs — arctic/black/white/gray wolf, red/gray squirrel, brown/black/polar bear, african/asian elephant | Exactly what `palette_pool` exists for. Wolf's pool already carries five of these. |
+| Generic fish — bass, cod, carp, trout, tuna, perch, minnow, snapper, tilapia, ~25 more | One fish-shaped fish. The class ships the ones with a *shape*: anglerfish, pufferfish, seahorse, koi, and now lionfish. |
+| Small drab bugs — aphid, gnat, midge, tick, mite, weevil, earwig, silverfish, thrips-scale insects | Nothing legible survives at figure scale. |
+| Snake and small-lizard variants — garter, corn, milk, king, rat, boa, copperhead; skink, anole, bearded dragon | Cobra, python and rattlesnake carry the snake anatomy; the lizard slot is held by gecko, iguana, chameleon, monitor and horned lizard. |
+| Songbirds — sparrow, robin, finch, wren, starling, oriole, chickadee, canary, budgie, ~15 more | One small perching bird. Cardinal has it. |
+
+Near misses, closed with the incumbent that beat them: **cheetah** (leopard), **jaguar /
+panther / cougar / bobcat** (leopard, lynx, tiger), **armadillo** (pangolin owns the
+armoured-plate integument), **porcupine** (hedgehog owns spines), **anteater** (aardvark
+shipped instead — one long-snouted myrmecophage is enough), **yak / water buffalo / ox**
+(bison), **coyote / jackal / african wild dog** (wolf, fox, hyena), **badger / weasel /
+mink / ferret** (otter, wolverine, skunk hold the mustelids), **manatee / dugong /
+sea lion** (seal, walrus, whale), **turkey** (rooster's wattles, peacock's fan),
+**woodpecker** (kingfisher already carries a dagger-billed crested bird), **jumping /
+orb-weaver / widow spiders** (tarantula), **luna moth** (moth, and it is a palette),
+**millipede** (centipede), **hermit crab** (crab plus a shell), **sea urchin** (hedgehog
+and pufferfish own the spine-ball), **swordfish / marlin / sailfish** and **betta**
+(thinner differentiators than lionfish, which took the fish slot), **wombat / wallaby**
+(koala, kangaroo), **opossum** (raccoon, rat), **gibbon** (orangutan shipped instead),
+**dog** (wolf).
+
 ### Already ship under another name — check before proposing
 
 | Proposed as | Actually ships as |

@@ -3,10 +3,11 @@
 
 # Creature reference
 
-**233 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**243 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
-## Mammals (44)
+## Mammals (48)
 
+- **aardvark** (dull pinkish grey)
 - **alpaca** (creamy fawn)
 - **bat** (dusky brown)
 - **bear** (deep brown)
@@ -32,8 +33,11 @@
 - **leopard** (tawny gold)
 - **lion** (tawny gold)
 - **lynx** (silvery grey)
+- **mandrill** (olive brown)
 - **meerkat** (sandy tan)
+- **mole** (blue-black)
 - **moose** (dark bark brown)
+- **orangutan** (rust red)
 - **otter** (warm brown)
 - **panda** (black and white)
 - **pangolin** (warm bronze)
@@ -52,9 +56,11 @@
 - **wolverine** (dark chocolate)
 - **zebra** (black-and-white)
 
-## Birds (28)
+## Birds (30)
 
+- **albatross** (chalk white)
 - **cardinal** (vivid crimson)
+- **cassowary** (glossy black)
 - **cockatoo** (white with a sulphur crest)
 - **crane** (pure white)
 - **crow** (glossy black)
@@ -83,7 +89,7 @@
 - **toucan** (black and white)
 - **vulture** (sooty brown)
 
-## Reptiles & Amphibians (23)
+## Reptiles & Amphibians (24)
 
 - **alligator** (dark olive)
 - **axolotl** (pale pink)
@@ -105,16 +111,18 @@
 - **rattlesnake** (sandy tan)
 - **salamander** (black and gold)
 - **sea turtle** (olive green)
+- **snapping turtle** (muddy brown)
 - **tortoise** (earthy olive)
 - **triceratops** (slate grey-green)
 - **tyrannosaurus rex** (mottled olive-green)
 
-## Insects & Arachnids (19)
+## Insects & Arachnids (20)
 
 - **ant** (reddish black)
 - **butterfly** (sunset-orange)
 - **centipede** (rust-red)
 - **cicada** (olive-brown)
+- **cockroach** (chestnut brown)
 - **dragonfly** (metallic teal)
 - **firefly** (black and amber)
 - **grasshopper** (leaf green)
@@ -131,7 +139,7 @@
 - **tarantula** (dusky brown)
 - **wasp** (black and yellow)
 
-## Marine Life (25)
+## Marine Life (27)
 
 - **anglerfish** (abyssal black)
 - **clownfish** (bright orange)
@@ -140,8 +148,10 @@
 - **dolphin** (pale grey)
 - **eel** (olive-green)
 - **hammerhead shark** (slate grey)
+- **horseshoe crab** (dark bronze)
 - **jellyfish** (translucent rose)
 - **koi** (white and orange)
+- **lionfish** (russet red)
 - **lobster** (deep blue-black)
 - **manta ray** (ink-blue and white)
 - **mantis shrimp** (iridescent blue and green)

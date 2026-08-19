@@ -672,6 +672,21 @@ free-form prose (own render path — not validated against human fields). Rules:
   palette RNG draw happens **last** in `build_creature_json`, after creature/slot/form picks,
   so existing seeds keep their creature and only colour shifts; the `Auto`+no-pool path draws no
   RNG and is byte-identical to before.
+- **The roster bar is anatomy, not species** (0.93.0, from sifting a ~600-name animal list
+  down to ten adds). An entry earns a slot only if it brings a head, integument, limb or
+  silhouette the set does not already own; two animals a viewer cannot tell apart in a
+  rendered image are one entry, however far apart they sit taxonomically. What this rules
+  out, in descending frequency: breeds (a breed is a colour and a size — `palette` and
+  `size_scale` already cover it), juveniles (scale is a widget, so a "baby elephant" is the
+  elephant rendered tiny), colour and region morphs (that is exactly `palette_pool`), and
+  the long tail of animals that render as the same shape (generic fish, songbirds, snake
+  variants, small drab bugs). Prefer the *ornamented* member of a group when one exists —
+  cassowary shipped over a fourth drab ratite. Each 0.93.0 entry carries an inline comment
+  naming the incumbent it beat; do that for new adds too. Closed decisions and the named
+  near-misses live in `docs/suggested-additions.md`.
+- **Spread a batch across classes.** The creature list is picked uniformly, so a
+  Mammals-heavy batch shifts what a plain `Random - any` tends to produce even though no
+  per-entry weight exists (noted at 0.90.0, held to at 0.93.0).
 - **Suppression:** a creature `head` hides human Face/Hair/Makeup; `integument` hides skin
   fields; `form` (Anthropomorphic/Feral/Subtle) sets group-level suppression. Generalizes the
   cosplayer `covers_face` mechanism via `_meta.suppress_groups` / `suppress_fields`.

@@ -2795,6 +2795,180 @@ CREATURES: dict[str, dict] = {
         "hands": "huge slab hands",
         "legs_feet": "squat pillar legs on flat block feet",
     },
+
+    # ======================================================================
+    # Added 0.93.0. Sifted from a ~600-name animal list; almost all of it was
+    # already represented (breeds, juveniles, colour morphs, generic fish) or
+    # too close to a shipped entry to read differently in an image -- cheetah
+    # against leopard, porcupine against hedgehog, armadillo against pangolin,
+    # yak against bison, coyote against wolf. What survived is the set that
+    # brings anatomy the roster does not own yet; each entry names the incumbent
+    # it had to beat. Spread across five classes for the same reason as the
+    # 0.90.0 batch: "Random - any" picks uniformly, so a class-heavy batch
+    # shifts what a plain Random tends to produce.
+    # ======================================================================
+
+    # --- Mammals ----------------------------------------------------------
+    "aardvark": {
+        # Long tubular snout on a digging body: pangolin is armoured and
+        # earless, hedgehog is a spine-ball, boar leads with tusks.
+        "class": "Mammals",
+        "palette": "dull pinkish grey",
+        "palette_pool": ["dull pinkish grey", "dusty clay brown", "pale sandy buff"],
+        "head": "a narrow arching head drawn out into a long tubular snout beneath tall upright rabbit-like ears",
+        "eyes": "small weak dark eyes set far back",
+        "integument": "sparse bristly hide wrinkled loose over the shoulders",
+        "arms": "short immensely powerful digging arms",
+        "hands": "broad spade-like hands with heavy flat claws",
+        "legs_feet": "sturdy plantigrade hind legs",
+        "tail": "a thick tapering muscular tail",
+        "extras": "a high-arched hunched back and nostrils fringed with stiff bristles",
+    },
+    "orangutan": {
+        # The class had no red ape: gorilla is black and slab-shouldered,
+        # chimpanzee is bare-faced and short-haired. Flanged cheeks, curtain
+        # hair and arm span carry this one.
+        "class": "Mammals",
+        "palette": "rust red",
+        "palette_pool": ["rust red", "dark auburn", "faded ginger"],
+        "head": "a broad domed ape head with wide flaring cheek pads and a jutting lipped muzzle",
+        "eyes": "small close-set dark eyes under a low brow",
+        "integument": "shaggy hair hanging in long curtains from the arms and shoulders",
+        "arms": "vastly long arms reaching past the knees",
+        "hands": "long hooked grasping hands with short thumbs",
+        "legs_feet": "short bowed legs on grasping prehensile feet",
+        "extras": "a pendulous throat pouch below the jaw",
+    },
+    "mandrill": {
+        # No palette_pool on purpose: the face IS the colour, so it is written
+        # into the head rather than left to a recolourable palette. Reads
+        # nothing like the other primates even at a glance.
+        "class": "Mammals",
+        "palette": "olive brown",
+        "head": "a long-muzzled primate head with a bare face, deep blue ridged furrows flanking a scarlet stripe down the snout",
+        "eyes": "close-set amber eyes under a heavy brow",
+        "integument": "coarse fur that grows longest across the shoulders",
+        "arms": "long powerful forelimbs",
+        "hands": "broad leathery hands",
+        "legs_feet": "sturdy legs on long dark feet",
+        "tail": "a short upright stub tail",
+        "extras": "a flaring white-and-gold mane and a jutting yellow beard",
+    },
+    "mole": {
+        # Outward-turned spade hands and eyes reduced to pinpricks: no other
+        # creature in the set is built by and for burrowing.
+        "class": "Mammals",
+        "palette": "blue-black",
+        "palette_pool": ["blue-black", "slate grey", "warm sepia brown"],
+        "head": "a blunt tapered head with no visible ears and a naked pink snout",
+        "eyes": "eyes reduced to pinpricks buried in the fur",
+        "integument": "velvet fur so short and dense it lies flat in any direction",
+        "arms": "short barrel-thick arms turned outward from the shoulders",
+        "hands": "enormous outward-facing spade hands with pale flat claws",
+        "legs_feet": "small weak hind feet",
+        "tail": "a short bare bristled tail",
+        "extras": "a fringe of stiff whiskers constantly testing the air",
+    },
+
+    # --- Birds ------------------------------------------------------------
+    "albatross": {
+        # The class's first open-ocean glider. Eagle is a raptor, pelican is a
+        # pouch, swan is a neck; none of them is a wingspan.
+        "class": "Birds",
+        "palette": "chalk white",
+        "palette_pool": ["chalk white", "smoky sooty grey", "pale ash"],
+        "head": "a large pale head with a long hooked bill plated in horny sections and tube-shaped nostrils along its ridge",
+        "eyes": "dark eyes set in a smudge of shadow",
+        "integument": "water-shedding plumage packed dense against the wind",
+        "arms": "extraordinarily long slender wing-arms",
+        "hands": "narrow feathered wingtips",
+        "legs_feet": "short webbed feet set far back",
+        "wings": "immense narrow gliding wings spanning far beyond arm's reach",
+        "extras": "a stiff-legged rolling waddle on land",
+    },
+    "cassowary": {
+        # Third ratite, but the only ornamented one: emu and ostrich are drab
+        # and bare-headed, and neither carries a casque, wattles or the claw.
+        # No palette_pool -- the blue-and-scarlet head is the identity and is
+        # written into the head slot, leaving the plumage its fixed black.
+        "class": "Birds",
+        "palette": "glossy black",
+        "head": "a small head carrying a tall bony helmet casque above a bare cobalt-blue face and neck",
+        "eyes": "hard staring amber eyes",
+        "integument": "drooping plumage more like coarse hair than feathers",
+        "arms": "short vestigial wing-arms",
+        "hands": "stiff bare quill spines where flight feathers should be",
+        "legs_feet": "immensely powerful scaled legs on three toes tipped by a long inner dagger claw",
+        "extras": "two scarlet wattles hanging from the throat",
+    },
+
+    # --- Reptiles & Amphibians -------------------------------------------
+    "snapping turtle": {
+        # The class's two chelonians are a streamlined sea turtle and a domed
+        # tortoise; this is the swamp version -- keeled, algae-crusted, beaked,
+        # and unable to withdraw the head it leads with.
+        "class": "Reptiles & Amphibians",
+        "palette": "muddy brown",
+        "palette_pool": ["muddy brown", "black-green", "weathered grey"],
+        "head": "a massive unretractable head with jaws set in a hooked horned beak",
+        "eyes": "small pale eyes high on the skull",
+        "integument": "a ridged shell crusted with algae above pebbled hide",
+        "arms": "short heavily muscled forelimbs",
+        "hands": "broad webbed hands with thick curved claws",
+        "legs_feet": "squat splayed hind legs on clawed feet",
+        "tail": "a long thick tail ridged with a sawtooth crest",
+        "extras": "a warty neck ringed with fleshy tubercles",
+    },
+
+    # --- Insects & Arachnids ---------------------------------------------
+    "cockroach": {
+        # The three shipped beetles are domed and horned; this is the opposite
+        # silhouette -- flattened low under a shield, antennae first.
+        "class": "Insects & Arachnids",
+        "palette": "chestnut brown",
+        "palette_pool": ["chestnut brown", "oily black", "pale amber"],
+        "head": "a small head with a broad chewing mouth tucked under a flat glossy shield of a pronotum",
+        "eyes": "dark kidney-shaped compound eyes",
+        "integument": "a flattened glossy exoskeleton",
+        "arms": "thin spined forelimbs",
+        "hands": "hooked grasping claws",
+        "legs_feet": "long bristled sprinting legs with clinging pads",
+        "wings": "a pair of leathery wing-cases lying flat along the back",
+        "extras": "a pair of very long whipping antennae and short rear cerci",
+    },
+
+    # --- Marine Life ------------------------------------------------------
+    "lionfish": {
+        # Pufferfish is a spined sphere and anglerfish is a lure; neither is a
+        # fan. The plumed venomous fins are the whole silhouette here.
+        "class": "Marine Life",
+        "palette": "russet red",
+        "palette_pool": ["russet red", "burnt maroon", "warm amber brown"],
+        "head": "a broad spined head with a wide fringed mouth and feathered tentacles above the eyes",
+        "eyes": "large gold-flecked eyes ringed with skin flaps",
+        "integument": "banded skin over a body bristling with needle spines",
+        "arms": "arms trailing long fanned plumes of striped fin",
+        "hands": "spread hands webbed into feathered pectoral fans",
+        "legs_feet": "legs sheathed in venomous spined fin",
+        "tail": "a rounded trailing tail fin",
+        "extras": "a crown of erect venomous dorsal spines",
+    },
+    "horseshoe crab": {
+        # Not a crab: no claws leading, no spiral shell, no segmented tail fan.
+        # A hinged shield, ranked eyes and a rigid spike -- the class's only
+        # living fossil.
+        "class": "Marine Life",
+        "palette": "dark bronze",
+        "palette_pool": ["dark bronze", "olive brown", "weathered slate"],
+        "head": "a smooth domed horseshoe of chitin drawn low over the face",
+        "eyes": "a pair of kidney-shaped compound eyes set wide on the shell above smaller simple eyes ranked along its ridge",
+        "integument": "a hinged carapace plated in two smooth shields",
+        "arms": "short jointed arms tucked beneath the shell",
+        "hands": "small pincered claws",
+        "legs_feet": "ranks of walking legs under a plated abdomen fringed with spines",
+        "tail": "a long rigid spike of a tail",
+        "extras": "stacked pages of book gills flexing beneath the rear shield",
+    },
 }
 
 
