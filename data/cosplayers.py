@@ -4380,13 +4380,27 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Bulbasaur": {
+        # RETROFIT to body_plan "feral" (0.95.0). Pokedex: 0.7 m / 2'04".
         "franchise": "Pokemon",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a squat blue-green four-legged body with darker spots and a large green "
-                   "plant bulb sprouting from the back",
-        "mask": "a wide blue-green Bulbasaur face with large red eyes and a small fanged smile",
-        "physique": {"body_type": "stocky", "height": "very petite"},
+        "covers_body": True,
+        "creature_of": "squat four-legged plant-backed reptilian creature",
+        "creature_class": "Plant & Fungal",
+        "mask": "a wide flat frog-like face with a broad mouth curved into a small fanged "
+                "smile and two short pointed ears standing up at the back of the skull",
+        "costume": "smooth blue-green skin mottled with darker teal spots along the flanks",
+        "anatomy": {
+            "eyes": "large round red eyes with dark slit pupils",
+            "legs_feet": "four short stout legs, each foot ending in three small white "
+                         "claws",
+            "extras": "one large pale-green plant bulb, closed and seed-like, growing "
+                      "directly out of the middle of the back",
+        },
+        "size_scale": "tiny",
+        "scale_prose": "small, about two feet long from nose to rump",
+        "physique": {"body_type": "stocky"},
     },
     "Squirtle": {
         "franchise": "Pokemon",
@@ -4398,17 +4412,26 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "stocky", "height": "very petite"},
     },
     "Eevee": {
-        # Pokedex: 0.3 m / 1'00" -- TINY tier.
+        # RETROFIT to body_plan "feral" (0.95.0). Pokedex: 0.3 m / 1'00" -- TINY tier.
         "franchise": "Pokemon",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
         "covers_body": True,
-        "costume": "a small brown furry four-legged body with a thick fluffy cream collar "
-                   "ruff and a bushy cream-tipped tail, on a tiny figure barely a foot tall",
-        "mask": "a fox-like Eevee face with big dark eyes and tall rounded brown ears",
+        "creature_of": "small ruffed fox-like creature",
+        "creature_class": "Mammals",
+        "mask": "a small rounded fox-like face with a short muzzle and two tall rounded "
+                "brown ears with dark grey insides",
+        "costume": "short soft brown fur, with a thick fluffy cream-coloured ruff standing "
+                   "out around the neck and chest",
+        "anatomy": {
+            "eyes": "big dark-brown eyes taking up much of the face",
+            "legs_feet": "four short slender legs on small padded paws",
+            "tail": "a large bushy brown tail with a cream tip, held up behind",
+        },
         "size_scale": "tiny",
-        "scale_prose": "tiny and barely a foot tall",
-        "physique": {"body_type": "petite and slim", "height": "very petite"},
+        "scale_prose": "tiny, barely a foot tall",
+        "physique": {"body_type": "petite and slim"},
     },
     "Jigglypuff": {
         # Pokedex: 0.5 m / 1'08" -- TINY tier.
@@ -8261,13 +8284,38 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a lightsaber with a red energy blade",
     },
     "Jabba the Hutt": {
+        # RETROFIT to body_plan "feral" (0.95.0). The worst of the six before it: the
+        # entry set NEITHER covers_face nor covers_body, so a full randomized human face,
+        # hair, ethnicity, skin tone and jewellery rendered on a legless slug.
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "an enormous slug-like body of slimy green-brown leathery skin with a "
-                   "huge wide mouth, stubby arms, and a long coiling tail",
-        "eyes": "small yellow reptilian",
-        "signature": {},
-        "physique": {"body_type": "plus size", "height": "average height"},
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        # "Aliens" makes _species_subject lead with "monstrous", which is apt here and
+        # is why creature_of carries no adjective of its own.
+        "creature_of": "slug-like Hutt",
+        "creature_class": "Aliens",
+        # Legless: the default pool's "moving forward at an easy pace" is a walk.
+        "poses": [
+            "sprawled on a low dais with the tail coiled beneath the body",
+            "propped up on both stubby arms with the head raised",
+            "lying at rest with the head turned toward the viewer",
+        ],
+        "mask": "a broad flat-topped head merging straight into the shoulders with no "
+                "neck, dominated by an enormous wide lipless mouth, with a squat flat nose "
+                "and a wattled dewlap of loose flesh beneath the jaw",
+        "costume": "slick green-brown leathery hide, wet-looking and blotched with sickly "
+                   "yellow across a vast sagging belly",
+        "anatomy": {
+            "eyes": "small close-set orange-yellow eyes with horizontal slit pupils",
+            "arms": "a pair of short stubby arms ending in small three-fingered hands",
+            "legs_feet": "no legs at all, the body ending in a long thick coiling "
+                         "gastropod tail resting flat on the ground",
+        },
+        "size_scale": "giant",
+        "scale_prose": "immense, well over three metres from head to tail-tip",
+        "physique": {"body_type": "plus size"},
     },
     "Jar Jar Binks": {
         "franchise": "Star Wars",
@@ -9120,37 +9168,76 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "plus size", "height": "very tall"},
     },
     "Tauntaun": {
+        # RETROFIT to body_plan "feral" (0.95.0). Bipedal, but a snow lizard's digitigrade
+        # crouch is not a body a person can occupy either -- see architecture.md.
         "franchise": "Star Wars",
         "gender": "Male",
-        "covers_face": True,
-        "costume": "a stocky gray-and-white furred reptilian body on two clawed legs with a "
-                   "thick balancing tail and small forelimbs",
-        "mask": "a horned reptilian tauntaun head with a blunt snout, curved side horns, and "
-                "shaggy fur",
-        "physique": {"body_type": "stocky", "height": "tall"},
-    },
-    "Bantha": {
-        "franchise": "Star Wars",
-        "gender": "Male",
-        "covers_face": True,
-        "costume": "a massive body of thick shaggy brown fur standing on four sturdy legs",
-        "mask": "a shaggy bantha head with a long muzzle and a great pair of curling spiral "
-                "horns sweeping back from the brow",
-        "physique": {"body_type": "plus size", "height": "very tall"},
-    },
-    "Loth-Cat": {
-        # Cat-sized -- TINY tier.
-        "franchise": "Star Wars",
-        "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
         "covers_body": True,
-        "costume": "a small lithe body of tan-and-white striped fur with a long tail and "
-                   "soft padded paws, on a tiny figure barely a foot tall",
-        "mask": "a loth-cat face with large pointed tufted ears, wide bright eyes, and short "
-                "whiskered fur",
+        "creature_of": "shaggy two-legged snow lizard",
+        "creature_class": "Reptiles & Amphibians",
+        "mask": "a blunt-snouted reptilian head under a shaggy pelt, with wide flaring "
+                "nostrils and a pair of thick curved horns sweeping out and down from the "
+                "temples",
+        "costume": "coarse grey-and-white shaggy fur over pebbled grey hide",
+        "anatomy": {
+            "eyes": "small round dark eyes set wide on the sides of the head",
+            "arms": "a pair of short two-clawed forelimbs held tucked against the chest",
+            "legs_feet": "two powerful digitigrade hind legs ending in three broad clawed "
+                         "toes",
+            "tail": "a thick tapering tail carried straight out behind for balance",
+        },
+        "scale_prose": "roughly seven feet tall standing on two legs",
+        "physique": {"body_type": "stocky"},
+    },
+    "Bantha": {
+        # RETROFIT to body_plan "feral" (0.95.0). Was covers_face + a body-as-costume,
+        # which rendered "a 33-year-old Singaporean man ... He has a simple band, a cuff
+        # ... He WEARS a massive body of thick shaggy brown fur standing on four sturdy
+        # legs." Nobody can be inside a quadruped.
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "shaggy horned beast of burden",
+        "creature_class": "Mammals",
+        "mask": "a broad heavy head carried low on a thick neck, with a long blunt muzzle "
+                "and one great pair of thick ridged horns spiralling back and outward from "
+                "the brow",
+        "costume": "long matted shaggy dark-brown fur hanging in a heavy curtain over the "
+                   "flanks",
+        "anatomy": {
+            "eyes": "small dark deep-set eyes under a heavy shaggy brow",
+            "legs_feet": "four thick columnar legs ending in broad splayed padded feet",
+            "tail": "a long thin rope-like tail with a tuft at the tip",
+            "extras": "a high humped shoulder ridge above a deep barrel chest",
+        },
+        "size_scale": "giant",
+        "scale_prose": "enormous, standing over eight feet at the shoulder",
+        "physique": {"body_type": "plus size"},
+    },
+    "Loth-Cat": {
+        # RETROFIT to body_plan "feral" (0.95.0). Cat-sized -- TINY tier.
+        "franchise": "Star Wars",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "striped cat-sized feline",
+        "creature_class": "Mammals",
+        "mask": "a short flat feline face with a blunt muzzle and tall pointed ears ending "
+                "in long dark tufts",
+        "costume": "short tan fur banded with darker brown stripes over a cream underside",
+        "anatomy": {
+            "eyes": "wide bright green eyes with round pupils",
+            "legs_feet": "four short legs on soft padded paws",
+            "tail": "a long striped tail carried in a low curve",
+        },
         "size_scale": "tiny",
-        "scale_prose": "tiny and barely a foot tall",
-        "physique": {"body_type": "petite and slim", "height": "very petite"},
+        "scale_prose": "tiny, barely a foot tall at the shoulder",
+        "physique": {"body_type": "petite and slim"},
     },
 
     # --- Anime / classic toons (Speed Racer) -----------------

@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1827 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1827 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (344)
 
@@ -415,11 +415,11 @@
 - **Ash Ketchum** (M, prop)
 - **Bea (Pokemon)** (F)
 - **Brock** (M)
-- **Bulbasaur** (M, masked)
+- **Bulbasaur** (M, tiny, beast)
 - **Charizard** (M, masked)
 - **Cynthia** (F)
 - **Dawn** (F)
-- **Eevee** (M, tiny, masked)
+- **Eevee** (M, tiny, beast)
 - **Elesa** (F)
 - **Gary Oak** (M)
 - **Gengar** (M, masked)
@@ -2238,7 +2238,7 @@
 - **Asajj Ventress** (F, prop)
 - **Aurra Sing** (F, prop)
 - **BB-8** (M, masked)
-- **Bantha** (M, masked)
+- **Bantha** (M, giant, beast)
 - **Barriss Offee** (F, prop)
 - **Battle Droid** (M, masked)
 - **Bib Fortuna** (M)
@@ -2287,7 +2287,7 @@
 - **Imperial Officer** (M)
 - **Imperial Royal Guard** (M, masked, prop)
 - **Ithorian** (M, masked)
-- **Jabba the Hutt** (M)
+- **Jabba the Hutt** (M, giant, beast)
 - **Jango Fett** (M, masked)
 - **Jar Jar Binks** (M, masked)
 - **Jawa** (M, masked)
@@ -2299,7 +2299,7 @@
 - **Kylo Ren** (M, prop)
 - **Lando Calrissian** (M)
 - **Lobot** (M)
-- **Loth-Cat** (M, tiny, masked)
+- **Loth-Cat** (M, tiny, beast)
 - **Luke Skywalker** (M, prop)
 - **Luminara Unduli** (F, prop)
 - **Mace Windu** (M, prop)
@@ -2333,7 +2333,7 @@
 - **Snowtrooper** (M, masked, prop)
 - **Stormtrooper** (M, masked, prop)
 - **TIE Pilot** (M, masked)
-- **Tauntaun** (M, masked)
+- **Tauntaun** (M, beast)
 - **The Mandalorian** (M, masked, prop)
 - **Tusken Raider** (M, masked, prop)
 - **Unkar Plutt** (M, masked)
