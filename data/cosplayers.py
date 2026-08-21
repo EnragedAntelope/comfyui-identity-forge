@@ -21420,6 +21420,585 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "average height",
                      "skin_tone": "warm tan"},
     },
+    # =======================================================================
+    # Named fictional beasts (body_plan: "feral") -- 0.95.0
+    # =======================================================================
+    # Rendered AS the animal, not as a person in a suit. The bar is the mirror of the
+    # creature roster's "anatomy, not species" rule: an entry belongs here only if it
+    # brings a body data/creatures.py cannot already render. Simba, Baloo, Shere Khan,
+    # Sven, Epona and Shadowfax are therefore still declined -- `lion`, `bear`, `tiger`
+    # and `horse` render them and the name changes nothing a model draws.
+    #
+    # Every anatomy slot has to carry the likeness with the NAME STRIPPED OUT: most
+    # checkpoints have never heard of a loth-cat or a fell beast. Count and proportion
+    # explicit, colour named, one unmistakable marker in its own clause, no comparison
+    # objects. See docs/architecture.md -> "Writing a feral entry".
+
+    "Appa": {
+        "franchise": "Avatar: The Last Airbender",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "six-legged flying sky bison",
+        "creature_class": "Mammals",
+        "mask": "a broad flat-fronted bison head with a wide blunt muzzle, two small "
+                "backswept horns, and a single wide brown arrow marking that runs from "
+                "between the horns down the centre of the forehead to the nose",
+        "costume": "thick shaggy white fur over the whole body, with a broad brown stripe "
+                   "running the length of the spine",
+        "anatomy": {
+            "eyes": "large gentle dark-brown eyes with small black pupils",
+            "legs_feet": "six thick columnar legs, arranged in three pairs along the body, "
+                         "each ending in a broad padded foot",
+            "tail": "one wide flat paddle-shaped tail, horizontal and beaver-like",
+        },
+        "poses": [
+            "lying down with all six legs folded beneath the body",
+            "standing square with the head turned toward the viewer",
+            "gliding forward with the flat tail held out behind",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "enormous, over twenty feet long from nose to tail",
+        "physique": {"body_type": "plus size"},
+    },
+    "Momo": {
+        "franchise": "Avatar: The Last Airbender",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "winged lemur",
+        "creature_class": "Mammals",
+        "mask": "a small round white-furred face with a short muzzle and two enormous "
+                "green membranous ears, each nearly as tall as the head itself",
+        "costume": "short white fur over the face, chest and belly, with a smooth "
+                   "grey-brown back",
+        "anatomy": {
+            "eyes": "very large round green eyes",
+            "wings": "a pair of thin brown membranous wings stretched between the "
+                     "forelimbs and the flanks, folded flat against the sides at rest",
+            "legs_feet": "four slender limbs ending in small grasping hands",
+            "tail": "a long ringed prehensile tail striped in brown and white",
+        },
+        "size_scale": "tiny",
+        "scale_prose": "tiny, about a foot tall",
+        "physique": {"body_type": "petite and slim"},
+    },
+    "Toothless": {
+        "franchise": "How to Train Your Dragon",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "sleek jet-black dragon",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a smooth rounded catlike dragon head with no horns and no visible teeth, "
+                "with two pairs of soft black ear-flaps that fold flat against the skull "
+                "and a short blunt snout",
+        "costume": "smooth matte pitch-black scaleless hide, soft and rubbery rather than "
+                   "plated",
+        "anatomy": {
+            "eyes": "huge acid-green eyes with wide round pupils",
+            "wings": "a pair of broad black membranous wings on long finger-struts, far "
+                     "wider than the body is long",
+            "legs_feet": "four short powerful legs ending in retractable claws",
+            "tail": "a long whip-like tail ending in two small fins, the left one a "
+                    "patched red prosthetic",
+            "extras": "a low ridge of soft black spines running from the neck to the tail",
+        },
+        "poses": [
+            "crouched low with the wings half-spread",
+            "standing square with the head turned toward the viewer",
+            "gliding forward with the wings fully outstretched",
+        ],
+        "scale_prose": "roughly twenty-six feet from nose to tail-tip",
+        "physique": {"body_type": "athletic"},
+    },
+    "Falkor": {
+        "franchise": "The NeverEnding Story",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "serpentine luckdragon",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a broad friendly dog-like head with a blunt muzzle, a shaggy white mane "
+                "framing the face, two short backswept antlers, long drooping "
+                "whiskers, and an open friendly smile",
+        "costume": "thick soft cream-white fur, pink-tinged along the back, covering a "
+                   "long serpentine body with no scales anywhere",
+        "anatomy": {
+            "eyes": "large ruby-red eyes",
+            "legs_feet": "four small clawed limbs held close under a body that is far too "
+                         "long for them",
+            "extras": "a body that undulates through the air with no wings at all",
+        },
+        "poses": [
+            "drifting forward through the air with the long body undulating behind",
+            "coiled loosely with the head raised toward the viewer",
+            "hovering level with the mane streaming back",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "enormous, over forty feet from nose to tail",
+        "physique": {"body_type": "plus size"},
+    },
+    "Buckbeak": {
+        "franchise": "Harry Potter",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "hippogriff",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a fierce eagle head with a hooked steel-grey beak and a crest of stiff "
+                "pale feathers",
+        "costume": "steel-grey plumage over the head, chest and forelegs giving way at "
+                   "the midsection to short grey horse-hide over the hindquarters",
+        "anatomy": {
+            "eyes": "round orange raptor eyes with hard black pupils",
+            "wings": "a pair of vast grey feathered wings folded high over the shoulders",
+            "legs_feet": "two scaled eagle forelegs in front ending in enormous curved "
+                         "talons, two muscular horse hind legs behind on solid hooves",
+            "tail": "a long horse tail of coarse grey hair",
+        },
+        "scale_prose": "large, standing about seven feet at the shoulder",
+        "physique": {"body_type": "athletic"},
+    },
+    "Fawkes": {
+        "franchise": "Harry Potter",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "crimson-and-gold phoenix",
+        "creature_class": "Birds",
+        "mask": "a broad bird's head with a long slender gold beak and a crest of "
+                "upswept scarlet feathers standing back from the brow",
+        "costume": "deep scarlet plumage shading to molten gold at the wingtips and "
+                   "breast, each feather faintly glowing as if lit from within",
+        "anatomy": {
+            "eyes": "black glittering eyes",
+            "legs_feet": "two scaled gold legs with long gleaming talons",
+            "tail": "a long gold tail of trailing streamer feathers",
+        },
+        "poses": [
+            "perched upright with the wings folded and the head raised",
+            "hovering with the wings beating and the tail streaming below",
+            "standing with the head turned toward the viewer",
+        ],
+        "scale_prose": "about three feet long including the tail",
+        "physique": {"body_type": "slender"},
+    },
+    "Aragog": {
+        "franchise": "Harry Potter",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "colossal acromantula spider",
+        "creature_class": "Insects & Arachnids",
+        "mask": "a bulbous spider's cephalothorax bristling with coarse black hair, "
+                "fronted by a pair of heavy serrated pincers and eight milky-white "
+                "clouded eyes set in two rows",
+        "costume": "coarse black bristling hair over a grey-black domed abdomen",
+        "anatomy": {
+            "legs_feet": "eight enormously long jointed legs, hairy and grey-black, each "
+                         "ending in a small hooked claw",
+        },
+        "poses": [
+            "standing high on all eight legs with the body raised clear of the ground",
+            "crouched low with the front legs lifted",
+            "moving forward at an easy pace",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "vast, fifteen feet across from leg-tip to leg-tip",
+        "physique": {"body_type": "plus size"},
+    },
+    "Chocobo": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "tall flightless riding bird",
+        "creature_class": "Birds",
+        "mask": "a rounded bird's head on a long upright neck, with a short blunt orange "
+                "beak and a small tuft of upright feathers on the crown",
+        "costume": "fluffy bright canary-yellow plumage over the whole body, dense and "
+                   "downy rather than sleek",
+        "anatomy": {
+            "eyes": "large round dark eyes",
+            "wings": "a pair of small useless wings held tight against the flanks",
+            "legs_feet": "two long powerful scaled orange legs ending in three broad "
+                         "clawed toes",
+            "tail": "a short upright fan of yellow tail feathers",
+        },
+        "poses": [
+            "standing tall on both legs with the neck upright",
+            "moving forward at an easy pace",
+            "standing with the head lowered and turned toward the viewer",
+        ],
+        "scale_prose": "large, standing about seven feet tall",
+        "physique": {"body_type": "athletic"},
+    },
+    "Cactuar": {
+        "franchise": "Final Fantasy",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "walking cactus",
+        "creature_class": "Plant & Fungal",
+        "mask": "a flat green cactus head whose entire face is three dark holes cut "
+                "into the flesh, two small round eyes above one wide open oval mouth",
+        "costume": "smooth flat green cactus flesh studded all over with short white "
+                   "needles",
+        "anatomy": {
+            "arms": "two stubby green arms held straight out to the sides, one raised and "
+                    "one lowered, frozen in a running pose",
+            "legs_feet": "two short green legs, one striding forward",
+        },
+        "poses": [
+            "standing rigid with both arms held straight out",
+            "moving forward at an easy pace with the arms held stiffly out",
+        ],
+        "size_scale": "tiny",
+        "scale_prose": "small, about three feet tall",
+        "physique": {"body_type": "very slim"},
+    },
+    "Drogon": {
+        "franchise": "Game of Thrones",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "black-and-red dragon",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a long narrow reptilian head with a horned crown of backswept black "
+                "spikes, a snout lined with needle teeth, and deep red membrane showing "
+                "in the folds of the jaw",
+        "costume": "matte black overlapping scales, scarred and dull, with dark red "
+                   "showing between the plates along the belly and throat",
+        "anatomy": {
+            "eyes": "burning red eyes with vertical slit pupils",
+            "wings": "a pair of vast black leathery wings on long clawed finger-struts, "
+                     "the membrane lit dull red where the light passes through",
+            "legs_feet": "two powerful hind legs with black talons, the wings serving as "
+                         "the forelimbs",
+            "tail": "a very long spined tail tapering to a barbed tip",
+        },
+        "poses": [
+            "crouched low on the hind legs with the wings half-furled",
+            "standing with the neck arched and the head turned toward the viewer",
+            "gliding forward with the wings fully outstretched",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "colossal, the body alone longer than sixty feet",
+        "physique": {"body_type": "athletic"},
+    },
+    "Ghost the Direwolf": {
+        # Not "Ghost (Direwolf)": that renders as "Ghost (Direwolf) (Game of Thrones)".
+        # A descriptive key is as findable in an 1,800-row dropdown without the double
+        # parenthetical (curation rule 6).
+        "franchise": "Game of Thrones",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "albino direwolf",
+        "creature_class": "Mammals",
+        "mask": "a long-muzzled wolf's head with a heavy deep jaw, tall pointed ears, and "
+                "pure white fur running right down to the lips",
+        "costume": "thick shaggy snow-white fur, coarse over the shoulders and ruff",
+        "anatomy": {
+            "eyes": "deep blood-red eyes",
+            "legs_feet": "four long powerful legs on broad heavy paws",
+            "tail": "a thick brush of a white tail carried low",
+        },
+        "scale_prose": "huge, standing over three feet at the shoulder",
+        "physique": {"body_type": "athletic"},
+    },
+    "Shelob": {
+        "franchise": "The Lord of the Rings",
+        "gender": "Female",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "monstrous ancient spider",
+        "creature_class": "Insects & Arachnids",
+        "mask": "a low armored spider's cephalothorax with a cluster of many small "
+                "black eyes above a pair of hooked dripping fangs",
+        "costume": "a hard black horned carapace, pitted and scarred, over a hugely "
+                   "swollen grey-green blotched abdomen",
+        "anatomy": {
+            "legs_feet": "eight long knobbed and jointed legs, each joint rising higher "
+                         "than the body, ending in hooked claws",
+        },
+        "poses": [
+            "crouched low with the swollen abdomen dragging behind",
+            "standing high on all eight legs with the body lifted clear",
+            "moving forward at an easy pace",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "vast, the bloated body over ten feet across",
+        "physique": {"body_type": "plus size"},
+    },
+    "Fell Beast": {
+        "franchise": "The Lord of the Rings",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "gaunt winged steed",
+        "creature_class": "Monsters",
+        "mask": "a long naked snake-like head on a bare wrinkled neck, with a lipless "
+                "beak-like jaw of small teeth and no scales or feathers anywhere",
+        "costume": "grey-black leathery hide stretched tight over a skeletal frame, "
+                   "hairless and featherless, every rib showing",
+        "anatomy": {
+            "eyes": "small sunken pale eyes",
+            "wings": "a pair of enormous ragged bat-like wings of bare membrane between "
+                     "long finger-bones, torn and holed along the trailing edge",
+            "legs_feet": "two thin clawed hind legs ending in great hooked talons",
+            "tail": "a long thin whipping tail",
+        },
+        "poses": [
+            "crouched low on the hind legs with the wings half-furled",
+            "standing with the long neck arched and the head lowered",
+            "gliding forward with the ragged wings fully outstretched",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "enormous, the wings spanning more than forty feet",
+        "physique": {"body_type": "very slim"},
+    },
+    "Arcanine": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "burnt-orange tiger-striped hound",
+        "creature_class": "Mammals",
+        "mask": "a broad canine head with a short muzzle, small triangular ears, and a "
+                "thick cream-coloured mane of fur billowing out around the neck and chest",
+        "costume": "burnt-orange fur crossed by irregular black tiger stripes over the "
+                   "back and legs, with cream fur at the mane, belly and tail",
+        "anatomy": {
+            "eyes": "sharp dark eyes above a black nose",
+            "legs_feet": "four powerful legs, the lower half of each shaggy with cream "
+                         "fur, on broad clawed paws",
+            "tail": "a long thick tail of billowing cream fur",
+        },
+        "scale_prose": "large, standing over six feet at the shoulder",
+        "physique": {"body_type": "athletic"},
+    },
+    "Gyarados": {
+        "franchise": "Pokemon",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "serpentine sea dragon",
+        "creature_class": "Marine Life",
+        "mask": "a heavy blue-scaled head with a gaping fanged mouth, a pair of long "
+                "white barbels trailing from the jaw, and a three-pointed gold crest "
+                "standing up from the crown",
+        "costume": "hard deep-blue scales along a long serpentine body, with a cream-white "
+                   "underside",
+        "anatomy": {
+            "eyes": "furious red eyes",
+            "legs_feet": "no legs at all, the whole body one long coiling serpent",
+            "extras": "rows of stiff cream-white fins spaced down the length of the body",
+        },
+        "poses": [
+            "rearing up with the long body coiled beneath",
+            "coiled loosely with the head raised toward the viewer",
+            "swimming forward with the body arched in a rising curve",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "colossal, over twenty feet from head to tail",
+        "physique": {"body_type": "athletic"},
+    },
+    "Lapras": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "shelled plesiosaur",
+        "creature_class": "Marine Life",
+        "mask": "a small gentle rounded head with a blunt snout and a single spiral horn "
+                "on the forehead, carried on a very long slender neck",
+        "costume": "smooth pale blue hide over the neck and flippers, with a cream "
+                   "underside",
+        "anatomy": {
+            "eyes": "large kind dark eyes",
+            "legs_feet": "four broad flat flippers",
+            "extras": "a heavy grey domed shell on the back, ringed with a row of blunt "
+                      "conical knobs around its rim",
+        },
+        "poses": [
+            "floating at rest with the long neck raised",
+            "swimming forward with the neck stretched out",
+            "drifting on the surface with the head turned toward the viewer",
+        ],
+        "scale_prose": "large, over eight feet long",
+        "physique": {"body_type": "plus size"},
+    },
+    "Catbus": {
+        "franchise": "Studio Ghibli",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "hollow bus-bodied cat",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a wide grinning cat's face split by an enormous fixed smile of square "
+                "white teeth, with a small mouse glowing on the forehead where a bus "
+                "carries its destination lamp",
+        "costume": "short tabby fur banded in brown and cream over a long hollow "
+                   "carriage-shaped body, with a row of lit amber windows down each flank",
+        "anatomy": {
+            "eyes": "two round glowing yellow eyes that shine like headlamps",
+            "legs_feet": "twelve legs in six pairs running the length of the body, on "
+                         "small padded paws",
+            "tail": "a long striped tail held straight out behind",
+        },
+        "poses": [
+            "standing square with all twelve legs planted and the windows lit",
+            "moving forward at an easy pace with the legs blurring",
+            "standing with the head turned toward the viewer and the grin wide",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "enormous, over thirty feet long",
+        "physique": {"body_type": "plus size"},
+    },
+    "Haku (dragon form)": {
+        "franchise": "Studio Ghibli",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "white eastern river dragon",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a slender eastern dragon's head with a short deer-like pair of green "
+                "antlers, a spray of long white whiskers from the muzzle, and a flowing "
+                "green mane running back from the brow",
+        "costume": "smooth pearl-white scales along a long ribbon-thin serpentine body, "
+                   "pale lavender beneath",
+        "anatomy": {
+            "eyes": "green eyes with narrow pupils",
+            "legs_feet": "four small clawed limbs held close beneath a body far too long "
+                         "for them",
+            "extras": "a soft green fin running the length of the spine",
+        },
+        "poses": [
+            "drifting forward through the air with the long body undulating behind",
+            "coiled loosely with the head raised toward the viewer",
+            "hovering with the mane and whiskers streaming back",
+        ],
+        "scale_prose": "over thirty feet from nose to tail",
+        "physique": {"body_type": "very slim"},
+    },
+    "Luna (Sailor Moon)": {
+        # `Luna` alone collides with nothing today, but the parenthetical keeps a
+        # one-word common noun findable in an 1,800-row dropdown (curation rule 6).
+        "franchise": "Sailor Moon",
+        "gender": "Female",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "black cat",
+        "creature_class": "Mammals",
+        "mask": "a small neat cat's face with a short muzzle and tall pointed ears, and "
+                "one bright gold crescent moon set on the forehead, points upward",
+        "costume": "short glossy jet-black fur over the whole body",
+        "anatomy": {
+            "eyes": "large red eyes",
+            "legs_feet": "four slim legs on small padded paws",
+            "tail": "a long thin black tail carried in a high curve",
+        },
+        "size_scale": "tiny",
+        "scale_prose": "small, about a foot tall at the shoulder",
+        "physique": {"body_type": "petite and slim"},
+    },
+    "Mothra": {
+        "franchise": "Godzilla",
+        "gender": "Female",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "giant winged moth",
+        "creature_class": "Insects & Arachnids",
+        "mask": "a furry moth's head with two enormous compound eyes and a pair of thick "
+                "feathered antennae curving back over the skull",
+        "costume": "dense fluffy cream-and-brown fur over a segmented insect body",
+        "anatomy": {
+            "eyes": "two huge round blue compound eyes",
+            "wings": "a pair of vast scalloped wings patterned in orange, black and white, "
+                     "each bearing one large dark eyespot near the leading edge",
+            "legs_feet": "six short clawed legs tucked under the thorax",
+        },
+        "poses": [
+            "hovering with the great wings raised and spread",
+            "at rest on the ground with the wings folded flat over the back",
+            "gliding forward with the wings fully outstretched",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "colossal, the wings spanning hundreds of feet",
+        "physique": {"body_type": "plus size"},
+    },
+    "King Ghidorah": {
+        "franchise": "Godzilla",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "three-headed golden dragon",
+        "creature_class": "Monsters",
+        "mask": "three identical horned dragon heads carried on three long independent "
+                "necks, each head crowned with a spread of backswept horns above a lipless "
+                "mouth of small teeth",
+        "costume": "golden overlapping scales over the whole body, dull and metallic",
+        "anatomy": {
+            "eyes": "six red eyes, one pair in each of the three heads",
+            "wings": "a pair of enormous golden bat-like wings on long clawed struts",
+            "legs_feet": "two thick clawed hind legs and no forelimbs at all",
+            "tail": "two long spined tails side by side",
+        },
+        "poses": [
+            "standing with all three necks raised and the wings half-spread",
+            "crouched low with the three heads turned toward the viewer",
+            "gliding forward with the wings fully outstretched",
+        ],
+        "size_scale": "giant",
+        "scale_prose": "colossal, hundreds of feet tall",
+        "physique": {"body_type": "athletic"},
+    },
+    "Reptar": {
+        "franchise": "Rugrats",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "cartoon green dinosaur",
+        "creature_class": "Reptiles & Amphibians",
+        "mask": "a blocky cartoon dinosaur head with a wide grinning mouth of blunt white "
+                "teeth and a heavy squared brow",
+        "costume": "flat bright grass-green hide over the whole body, with a cream-yellow "
+                   "belly",
+        "anatomy": {
+            "eyes": "small round yellow eyes",
+            "arms": "two short forelimbs held up in front of the chest",
+            "legs_feet": "two thick bipedal hind legs on broad three-toed feet",
+            "tail": "a thick tapering tail held out behind",
+            "extras": "a row of tall triangular orange plates running down the spine",
+        },
+        "size_scale": "giant",
+        "scale_prose": "colossal, over a hundred feet tall",
+        "physique": {"body_type": "stocky"},
+    },
 }
 
 
@@ -21525,6 +22104,9 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Grease", "Pulp Fiction", "James Bond", "The Girl with the Dragon Tattoo",
         "Farscape", "Doctor Who", "Squid Game",
         "Back to the Future", "The Big Lebowski",
+        # 0.95.0, all three singletons -- below _FRANCHISE_SCOPE_MINIMUM, so no new
+        # random_scope option appears.
+        "How to Train Your Dragon", "The NeverEnding Story",
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.
@@ -21542,7 +22124,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Crusade Comics", "Darna", "Danger Girl",
         "The Phantom", "The Spirit", "The Tick",
         "Sheena, Queen of the Jungle",
-        "Sin City", "Dora the Explorer", "Voltron",
+        "Sin City", "Dora the Explorer", "Voltron", "Rugrats",
         "The Powerpuff Girls", "Danny Phantom", "Hey Arnold!", "South Park",
         "My Life as a Teenage Robot", "Bob's Burgers", "Inspector Gadget",
         "Peanuts", "Strawberry Shortcake", "Miraculous Ladybug", "Samurai Jack",

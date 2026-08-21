@@ -139,10 +139,12 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Avatar: The Last Airbender": [
     "Aang",
+    "Appa",
     "Azula",
     "Iroh",
     "Katara",
     "Mai (Avatar)",
+    "Momo",
     "Sokka",
     "Suki",
     "Toph Beifong",
@@ -792,8 +794,10 @@ const COSPLAYER_FRANCHISES = {
     "Aerith Gainsborough",
     "Auron",
     "Barret Wallace",
+    "Cactuar",
     "Cecil Harvey",
     "Celes Chere",
+    "Chocobo",
     "Cloud Strife",
     "Kain Highwind",
     "Kefka Palazzo",
@@ -884,6 +888,8 @@ const COSPLAYER_FRANCHISES = {
     "Brienne of Tarth",
     "Cersei Lannister",
     "Daenerys Targaryen",
+    "Drogon",
+    "Ghost the Direwolf",
     "Jon Snow",
     "Melisandre",
     "The Night King"
@@ -920,7 +926,9 @@ const COSPLAYER_FRANCHISES = {
     "Kratos"
   ],
   "Godzilla": [
-    "Godzilla"
+    "Godzilla",
+    "King Ghidorah",
+    "Mothra"
   ],
   "Grease": [
     "Sandy Olsson"
@@ -959,8 +967,11 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Harry Potter": [
     "Albus Dumbledore",
+    "Aragog",
     "Bellatrix Lestrange",
+    "Buckbeak",
     "Draco Malfoy",
+    "Fawkes",
     "Fleur Delacour",
     "Ginny Weasley",
     "Harry Potter",
@@ -1023,6 +1034,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Horizon": [
     "Aloy"
+  ],
+  "How to Train Your Dragon": [
+    "Toothless"
   ],
   "Hunter x Hunter": [
     "Gon Freecss",
@@ -1744,6 +1758,7 @@ const COSPLAYER_FRANCHISES = {
     "Pocahontas"
   ],
   "Pokemon": [
+    "Arcanine",
     "Ash Ketchum",
     "Bea (Pokemon)",
     "Brock",
@@ -1755,10 +1770,12 @@ const COSPLAYER_FRANCHISES = {
     "Elesa",
     "Gary Oak",
     "Gengar",
+    "Gyarados",
     "Iris",
     "James (Team Rocket)",
     "Jessie (Team Rocket)",
     "Jigglypuff",
+    "Lapras",
     "Leon (Pokemon)",
     "Lillie",
     "Lucario",
@@ -1860,7 +1877,11 @@ const COSPLAYER_FRANCHISES = {
   "Rosario + Vampire": [
     "Moka Akashiya"
   ],
+  "Rugrats": [
+    "Reptar"
+  ],
   "Sailor Moon": [
+    "Luna (Sailor Moon)",
     "Queen Beryl",
     "Sailor Jupiter",
     "Sailor Mars",
@@ -2167,6 +2188,8 @@ const COSPLAYER_FRANCHISES = {
   "Studio Ghibli": [
     "Arrietty Clock",
     "Baron Humbert von Gikkingen",
+    "Catbus",
+    "Haku (dragon form)",
     "Howl",
     "Kaguya",
     "Kiki",
@@ -2365,6 +2388,7 @@ const COSPLAYER_FRANCHISES = {
     "Bilbo Baggins",
     "Boromir",
     "Eowyn",
+    "Fell Beast",
     "Frodo Baggins",
     "Galadriel",
     "Gandalf",
@@ -2374,6 +2398,7 @@ const COSPLAYER_FRANCHISES = {
     "Samwise Gamgee",
     "Saruman",
     "Sauron",
+    "Shelob",
     "Witch-King of Angmar"
   ],
   "The Mask": [
@@ -2384,6 +2409,9 @@ const COSPLAYER_FRANCHISES = {
     "Morpheus (The Matrix)",
     "Neo",
     "Trinity"
+  ],
+  "The NeverEnding Story": [
+    "Falkor"
   ],
   "The Nightmare Before Christmas": [
     "Jack Skellington",

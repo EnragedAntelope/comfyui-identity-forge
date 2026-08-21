@@ -608,7 +608,9 @@ def validate() -> list[str]:
                 # so it must be a BARE noun phrase. A "with" clause inside it collides
                 # with the engine's own ("... a creature with a bulb on its back with a
                 # stocky build"), and a leading article doubles the one the engine adds.
-                if re.search(r"\bwith\b|\band\b|,", creature_of):
+                # Spaced conjunctions only: a hyphenated compound ("crimson-and-gold
+                # phoenix") is one adjective, not a clause.
+                if re.search(r"\s(with|and)\s|,", creature_of):
                     errors.append(f"cosplayer '{name}': creature_of must be a bare noun "
                                   f"phrase -- no 'with'/'and'/comma clause "
                                   f"({creature_of!r})")
