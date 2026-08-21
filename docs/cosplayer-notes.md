@@ -45,6 +45,34 @@ is described richly, like a costume (shape, colours, materials, markings), and l
 most characters have no signature prop and because held objects can stress hand
 rendering in some text-to-image models.
 
+### Named beasts (`body_plan`)
+
+Some characters are not a person in a costume and cannot be: a bantha is a quadruped,
+Jabba is a legless slug, Appa has six legs. Rendering them through the mask-and-costume
+idiom produced *"a 33-year-old Singaporean man ... He has a simple band, a cuff ... He
+**wears** a massive body of thick shaggy brown fur standing on four sturdy legs."*
+
+Such an entry sets **`body_plan: "feral"`**. The node then emits the Creature node's
+`Species & Anatomy` payload instead of a costume — `mask` becomes the head, `costume`
+becomes the integument, and an optional `anatomy` map fills the rest — so IdentityForge
+renders it through the species path and drops the human demographics, proportions,
+clothing, jewellery, skin tone and ethnicity. The prose leads with the character name
+apposed to the species rather than *"Cosplaying as"*, because that framing pushes a
+text-to-image model back toward a human in a suit:
+
+> Appa (Avatar: The Last Airbender), a six-legged flying sky bison with a plus size
+> build and enormous, over twenty feet long from nose to tail. He has a broad
+> flat-fronted bison head ... and a single wide brown arrow marking that runs from
+> between the horns down the centre of the forehead to the nose ...
+
+The **`mask`** widget is a no-op on these entries (there is no person underneath to
+reveal), and `physique` applies in **both** look levels for the same reason. **Full
+mascot suits are not feral** — Pikachu, Godzilla, Rancor and Wampa are all shapes a
+person fits inside, and they keep the settled `covers_face` + `covers_body` + `mask`
+idiom. The dividing question is *"could one person be inside this?"*; the schema and
+the authoring rules are in
+[architecture.md → "Writing a feral entry"](architecture.md).
+
 ### Chaining presets
 
 Both preset nodes expose an optional **`upstream`** input, so Archetype and
@@ -61,10 +89,12 @@ The **`random_scope`** widget limits the `Random — any / female / male` picks.
 three families, in this order:
 
 1. **Attribute scopes** — Giant characters, Tiny characters, Non-human / colored, Masked,
-   Mascot / full-suit. Filtered by a predicate over the entry (`_SPECIAL_SCOPES` in the
-   node), not by franchise. *Mascot / full-suit* is derived from `covers_body and
-   covers_face` — a person inside a full creature suit (Pikachu, the TMNT, Godzilla,
-   Moogle, Teemo); around 109 entries that were previously findable only by luck.
+   Mascot / full-suit, Beast / non-humanoid. Filtered by a predicate over the entry
+   (`_SPECIAL_SCOPES` in the node), not by franchise. *Mascot / full-suit* is derived from
+   `covers_body and covers_face` — a person inside a full creature suit (Pikachu, the TMNT,
+   Godzilla, Moogle, Teemo); around 109 entries that were previously findable only by luck.
+   *Beast / non-humanoid* (0.95.0) is derived from `body_plan == "feral"` — the animal
+   itself rather than someone dressed as it (Appa, Toothless, Catbus, Bantha).
 2. **Broad categories** — Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games,
    Fantasy & Literature, Movies & TV, Comics & Cartoons.
 3. **Single franchises** — `Franchise: Pokemon`, `Franchise: Final Fantasy`, … Derived at
@@ -148,6 +178,12 @@ head set `"covers_face": true` **and** put the head covering in a separate `"mas
 string (kept out of `costume`) so the *Unmask* toggle can drop it. Keep costume
 text and names plain ASCII (no em dashes / smart quotes) so text-to-image
 tokenizers don't mangle them.
+
+For a **named beast that is not a person in a costume** (a quadruped, a serpent, a
+six-legged sky bison), set `"body_plan": "feral"` and describe it as anatomy rather than
+a worn look — see *Named beasts* above and the full schema in
+[architecture.md](architecture.md). The anatomy has to carry the likeness with the name
+stripped out: most checkpoints have never heard of a loth-cat.
 
 For a **bald / shaven-headed character** (Mace Windu, Saitama, Professor X, Lex
 Luthor, Dhalsim), state the bald head in `costume` (e.g. `"…, and a clean-shaven bald
