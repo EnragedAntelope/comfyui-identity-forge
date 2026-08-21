@@ -22,7 +22,7 @@ if str(ROOT) not in sys.path:
 from data.fields import (
     FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES, HAIR_STYLE_FAMILIES,
     HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
-    FURNITURE_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
+    FURNITURE_DEPENDENT_POSES, QUADRUPED_UNPERFORMABLE_POSES, OUTFIT_DESCRIPTIONS,
 )
 from data.constraints import CONSTRAINT_RULES
 from data.fields import WORN_ITEM_RES, SHOE_RE, PALETTE_ADJECTIVES, PATTERN_TAILS
@@ -61,7 +61,9 @@ from nodes.identity_forge import (
     _MODIFIERS_KEY, _VARIANTS_KEY, _name_already_carries_franchise,
     _COSTUME_META_KEYS, _SCALE_TIER_KEY, _conflicting_trigger_values,
     _POCKETLESS_GARMENT_RE, _presentation_mode,
+    _CONCEALED_BODY_FIELDS, _SPECIES_KEY, _FULL_COVER_RE, _FORM_FERAL,
 )
+from nodes.identity_forge_creature import build_creature_json
 from data.fields import OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
@@ -6707,6 +6709,189 @@ class ExtraAbsenceFloorTests(unittest.TestCase):
             self.assertGreaterEqual(
                 rate + 0.05, base,
                 f"{field}: realized absence {rate:.2f} is below its {base:.2f} floor")
+
+
+class ShellTattooTests(unittest.TestCase):
+    """Ink needs skin. A full hard shell / mascot suit has none (0.95.0).
+
+    The tattoo axis shipped at 0.90.0, after ``_CONCEALED_BODY_FIELDS`` was written,
+    and its standing rule -- ink sits on the body *under* the costume, which is why
+    it is deliberately absent from ``_COSTUME_SUPPRESSED_EXTRAS`` -- silently assumed
+    there is a body under there. Measured before the fix: 38/480 (7.9%) of
+    covers_body+covers_face renders described a tattoo on plating or fur.
+    """
+
+    @staticmethod
+    def _render(character, seed, gender="Male"):
+        flat = _parse_archetype_json(
+            build_cosplayer_json(character, seed, "Costume only", _MASK_DEFAULT, False))
+        label = flat.pop(_COSPLAY_LABEL_KEY, None)
+        species = flat.pop(_SPECIES_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+        covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+        mask_text = flat.pop(_MASK_KEY, None)
+        scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS
+                  and not k.startswith("__")}
+        return generate_character(
+            seed, gender, locked, cosplay_label=label, species=species,
+            covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
+            character_scale=scale, mask_text=mask_text)
+
+    def test_both_tattoo_fields_are_shell_concealed(self):
+        self.assertIn("tattoos", _CONCEALED_BODY_FIELDS)
+        self.assertIn("tattoo_placement", _CONCEALED_BODY_FIELDS)
+
+    def test_no_mascot_or_armour_entry_ever_describes_a_tattoo(self):
+        shells = sorted(
+            name for name, entry in COSPLAYERS.items()
+            if entry.get("covers_body") and entry.get("covers_face"))
+        self.assertGreater(len(shells), 100, "expected a large mascot/full-suit set")
+        for character in shells[:60]:
+            for seed in range(8):
+                prose, js = self._render(character, seed)
+                self.assertNotIn("tattoo", prose, f"{character} @{seed}: ink on a shell")
+                self.assertNotIn("tattoos", _flat_document(js))
+
+    def test_an_auto_detected_shell_counts_too(self):
+        # covers_body is not set on these; _FULL_COVER_RE catches the armour in the
+        # costume text, and the same suppression has to follow (Sabine's beskar).
+        for character in ("Sabine Wren", "Honey Lemon"):
+            self.assertFalse(COSPLAYERS[character].get("covers_body"))
+            self.assertTrue(_FULL_COVER_RE.search(COSPLAYERS[character]["costume"]))
+            for seed in range(20):
+                self.assertNotIn("tattoo", self._render(character, seed)[0])
+
+    def test_an_ordinary_clothed_character_still_gets_ink(self):
+        # The narrowing must not leak into the costume rule: ink under normal clothes
+        # is coherent and deliberately kept.
+        inked = sum(
+            "tattoo" in self._render(name, seed, "Female")[0]
+            for name in ("Hermione Granger", "Trinity", "Mia Wallace")
+            for seed in range(40))
+        self.assertGreater(inked, 0, "the shell rule suppressed ink on ordinary clothes")
+
+    def test_a_plain_person_is_untouched(self):
+        inked = sum("tattoo" in generate_character(seed, "Male", {})[0]
+                    for seed in range(200))
+        self.assertGreater(inked, 0)
+
+
+class FeralPoseGateTests(unittest.TestCase):
+    """A feral subject has no arms to cross or hip to rest a hand on (0.95.0).
+
+    Measured before the gate: 80/300 (26.7%) of feral creature renders reached for
+    something the subject does not have.
+    """
+
+    @staticmethod
+    def _feral(creature, seed):
+        flat = _parse_archetype_json(
+            build_creature_json(creature, seed=seed, form="Feral / full creature"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        return generate_character(seed, "Male", locked, species=species)
+
+    def test_the_set_is_whole_families_only(self):
+        # Dropping part of a family concentrates its weight on the survivors -- the
+        # bias trap POSE_FAMILIES documents. Every dropped value must take its
+        # whole family with it.
+        for family, spec in POSE_FAMILIES.items():
+            variants = set(spec["variants"])
+            overlap = variants & QUADRUPED_UNPERFORMABLE_POSES
+            self.assertIn(overlap, (set(), variants),
+                          f"{family}: partially dropped, which skews its share")
+
+    def test_it_leaves_a_usable_pool(self):
+        every = {v for spec in POSE_FAMILIES.values() for v in spec["variants"]}
+        survivors = every - QUADRUPED_UNPERFORMABLE_POSES
+        self.assertGreater(len(survivors), 20)
+        # The families that must survive: an animal can stand, sit, walk and look.
+        for family in ("standing", "seated", "motion", "looking", "leaning"):
+            self.assertTrue(set(POSE_FAMILIES[family]["variants"]) <= survivors,
+                            f"{family} should stay performable for a beast")
+
+    def test_no_feral_render_reaches_for_a_limb_it_lacks(self):
+        for creature in ("lion", "dragon", "bison", "cobra", "eagle"):
+            for seed in range(40):
+                prose, _ = self._feral(creature, seed)
+                for bad in QUADRUPED_UNPERFORMABLE_POSES:
+                    self.assertNotIn(bad, prose, f"{creature} @{seed}: {bad!r}")
+
+    def test_the_gate_is_off_for_every_other_form(self):
+        # Anthropomorphic is humanoid by definition and keeps the whole pool, so the
+        # 249-creature gallery (rendered Anthropomorphic) cannot drift.
+        seen = set()
+        for creature in ("lion", "bison", "wolf"):
+            for seed in range(120):
+                flat = _parse_archetype_json(
+                    build_creature_json(creature, seed=seed, form="Anthropomorphic"))
+                species = flat.pop(_SPECIES_KEY, None)
+                locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+                prose, _ = generate_character(seed, "Male", locked, species=species)
+                seen |= {p for p in QUADRUPED_UNPERFORMABLE_POSES if p in prose}
+        self.assertTrue(seen, "Anthropomorphic must keep the humanoid gestures")
+
+    def test_an_explicit_pose_lock_still_wins(self):
+        flat = _parse_archetype_json(
+            build_creature_json("lion", seed=3, form="Feral / full creature"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        locked["pose"] = "standing with arms crossed"
+        prose, _ = generate_character(3, "Male", locked, species=species)
+        self.assertIn("standing with arms crossed", prose)
+
+
+class SpeciesRoundTripTests(unittest.TestCase):
+    """A saved species document has to carry its own suppression (0.95.0).
+
+    0.92.0 made ``prompt_json`` self-describing for the Cosplayer node's concealment
+    keys but left the species path short: ``form`` and ``creature_of`` were recorded,
+    the ``suppress_*`` lists were not. Recalling a saved feral lion produced
+    "A 45-year-old Kenyan lion ... with brown skin ... a narrow waist".
+    """
+
+    @staticmethod
+    def _save(creature, form, seed=3):
+        flat = _parse_archetype_json(build_creature_json(creature, seed=seed, form=form))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        return generate_character(seed, "Male", locked, species=species)
+
+    @staticmethod
+    def _recall(saved, seed):
+        flat = _parse_archetype_json(saved)
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items()
+                  if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS}
+        return generate_character(seed, "Male", locked, species=species)
+
+    def test_the_saved_document_records_the_suppression(self):
+        _, saved = self._save("lion", "Feral / full creature")
+        meta = json.loads(saved)["_meta"]
+        self.assertEqual(meta.get("form"), _FORM_FERAL)
+        self.assertIn("Demographics", meta.get("suppress_groups", []))
+        self.assertIn("waist", meta.get("suppress_fields", []))
+
+    def test_a_feral_creature_survives_recall_at_a_new_seed(self):
+        for creature in ("lion", "dragon", "bison", "octopus"):
+            saved_prose, saved = self._save(creature, "Feral / full creature")
+            recalled, _ = self._recall(saved, 98765)
+            self.assertEqual(saved_prose, recalled,
+                             f"{creature} did not survive a vault round-trip")
+
+    def test_recall_never_reintroduces_a_human_trait(self):
+        _, saved = self._save("lion", "Feral / full creature")
+        recalled, _ = self._recall(saved, 424242)
+        for human in ("year-old", " skin", "shoulders", "waist", "necklace", "physique"):
+            self.assertNotIn(human, recalled, f"{human!r} leaked back in on recall")
+
+    def test_a_creatureless_document_is_unchanged(self):
+        # No species payload -> no new _meta keys, so ordinary output is byte-stable.
+        _, js = generate_character(11, "Female", {})
+        self.assertEqual(list(json.loads(js)["_meta"]),
+                         ["gender", "hair_color_scope", "wardrobe"])
 
 
 if __name__ == "__main__":

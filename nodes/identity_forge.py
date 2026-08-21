@@ -32,6 +32,7 @@ try:
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
+        QUADRUPED_UNPERFORMABLE_POSES,
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
@@ -42,6 +43,7 @@ except ImportError:  # pragma: no cover — standalone/test context
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
+        QUADRUPED_UNPERFORMABLE_POSES,
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
@@ -318,7 +320,21 @@ _CONCEALED_BODY_GROUPS: frozenset[str] = frozenset({"Jewelry & Nails"})
 #: sunglasses, a belt, a rattan bag — so a randomized draw would only render on top
 #: of a mascot suit / armour shell (the sunglasses-on-Michelin-Man bug). The rest of
 #: the Clothing group stays (the costume itself lives there via outfit_description).
-_CONCEALED_BODY_FIELDS: frozenset[str] = frozenset({"accessories", "bag"})
+#:
+#: ``tattoos`` / ``tattoo_placement`` joined at 0.95.0. The tattoo axis shipped at
+#: 0.90.0, *after* this set was written, and its standing rule -- ink sits on the body
+#: under the costume, which is why it is deliberately absent from
+#: ``_COSTUME_SUPPRESSED_EXTRAS`` -- silently assumed there is skin under the costume.
+#: On a full shell there is none, so the placement clause described ink on a surface
+#: that does not exist: measured at **7.9%** of ``covers_body`` + ``covers_face``
+#: renders (38/480 across 60 entries x 8 seeds) -- Iron Man with "a soft watercolor
+#: tattoo across the back of one hand", RoboCop with one on the neck, a Cylon
+#: Centurion with a blackwork collarbone. Same shape as the 0.92.0 pose-gate finding:
+#: a gate that predates the axis it needed to cover. Note this is the *shell* rule,
+#: not the costume rule -- a character in ordinary clothes still gets ink.
+_CONCEALED_BODY_FIELDS: frozenset[str] = frozenset({
+    "accessories", "bag", "tattoos", "tattoo_placement",
+})
 
 #: Field groups suppressed when a cosplayer sets ``covers_hair`` — a hood / cowl /
 #: helmet-liner (or alien head-tails) fully encloses the scalp while the face still
@@ -1066,6 +1082,8 @@ def _performable_poses(
     covers_face: bool,
     covers_body: bool,
     covers_hair: bool,
+    # APPENDED, not inserted -- both call sites pass positionally.
+    feral: bool = False,
 ) -> list[str]:
     """Drop poses that reach for something this character does not have.
 
@@ -1103,6 +1121,14 @@ def _performable_poses(
     gender-gated). Absent hair means no hair is described at all, so a hair gesture
     is unsupported either way.
 
+    A fifth, 0.95.0: ``feral`` means the subject has no upright, two-armed human body
+    at all -- a cosplay entry with ``body_plan: "feral"`` or a Creature node on the
+    Feral form. Every remaining gesture assumes arms and a hip, so
+    :data:`QUADRUPED_UNPERFORMABLE_POSES` goes as a block. It overlaps the three sets
+    above on purpose: the Creature node's Feral form sets none of the ``covers_*``
+    flags (it suppresses by group instead), so without this its beasts kept crossing
+    arms they do not have.
+
     Whole families are removed, never single values, so the remaining families keep
     their proportional shares (see POSE_FAMILIES). Returns ``pool`` unchanged when
     nothing applies, and never returns empty.
@@ -1128,6 +1154,8 @@ def _performable_poses(
         excluded |= GARMENT_DEPENDENT_POSES
     if (held and not _is_absent(held)) or resolved.get("shot_type") == _SELFIE_SHOT_TYPE:
         excluded |= HAND_OCCUPIED_POSES
+    if feral:
+        excluded |= QUADRUPED_UNPERFORMABLE_POSES
     if not excluded:
         return pool
     return [p for p in pool if p not in excluded] or pool
@@ -1299,6 +1327,8 @@ def _repair_pose(
     covers_hair: bool,
     scale_class: str,
     rng: random.Random,
+    # APPENDED, not inserted -- generate_character calls this positionally.
+    feral: bool = False,
 ) -> None:
     """Re-pick ``pose`` if the finished outfit made the drawn one unperformable.
 
@@ -1336,7 +1366,7 @@ def _repair_pose(
     field_def = FIELD_DEFINITIONS["pose"]
     pool = _performable_poses(
         _build_option_pool("pose", field_def, gender, resolved),
-        resolved, covers_face, covers_body, covers_hair,
+        resolved, covers_face, covers_body, covers_hair, feral,
     )
     if scale_class:
         pool = _scale_coherent_pool("pose", pool, scale_class)
@@ -1449,6 +1479,8 @@ def _randomize_fields(
     covers_body: bool = False,
     covers_hair: bool = False,
     scale_class: str = "",
+    # APPENDED, not inserted -- generate_character calls this positionally.
+    feral: bool = False,
 ) -> dict[str, str]:
     """Fill every unlocked, non-control field from its option pool.
 
@@ -1458,6 +1490,10 @@ def _randomize_fields(
     The ``covers_*`` flags are the cosplayer coverage flags; they only narrow the
     ``pose`` pool (see :func:`_performable_poses`). Every other suppression they
     drive happens after the fill, in :func:`generate_character`.
+
+    ``feral`` marks a non-humanoid subject (a ``body_plan: "feral"`` cosplayer or a
+    Creature node on the Feral form) and, like the ``covers_*`` flags, only narrows
+    ``pose``.
 
     ``scale_class`` is ``"giant"`` / ``"tiny"`` / ``""`` and narrows the scene and
     build pools so the render can show the scale (see :func:`_scale_coherent_pool`).
@@ -1483,7 +1519,8 @@ def _randomize_fields(
         if field_name == "skin_tone":
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
         elif field_name == "pose":
-            pool = _performable_poses(pool, resolved, covers_face, covers_body, covers_hair)
+            pool = _performable_poses(pool, resolved, covers_face, covers_body,
+                                      covers_hair, feral)
         if scale_class:
             pool = _scale_coherent_pool(field_name, pool, scale_class)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
@@ -1929,7 +1966,9 @@ def _format_prose(
 ) -> str:
     """Build a natural-language description from resolved field values.
 
-    When ``cosplay_label`` is set, the prose is prefixed ``Cosplaying as <label>:``.
+    When ``cosplay_label`` is set, the prose is prefixed ``Cosplaying as <label>:`` --
+    unless the subject is Feral, where the label is apposed instead (``<label>, a
+    colossal sky bison with ...``); see the note at the return.
     When ``species`` carries anatomy slots, an Anthropomorphic / Feral form leads
     with the creature subject and weaves its features in; a Subtle form keeps the
     human subject and appends the creature features as accents.
@@ -2280,10 +2319,28 @@ def _format_prose(
         (s[0].upper() + s[1:]) for s in (s.strip() for s in sentences) if s
     )
     text = (text + ".") if text else ""
+    # A FERAL subject is not a person in a costume, so it does not get the cosplay
+    # framing (0.95.0). "Cosplaying as Appa: a colossal sky bison ..." tells a t2i
+    # model to render a human in a suit -- which is exactly the failure the feral path
+    # exists to fix, and it fought the suppression on the way. The label still leads,
+    # because the character name is the single most useful token in the prompt; it is
+    # just apposed to the subject instead of framing it:
+    #
+    #     "Appa (Avatar: The Last Airbender), a colossal sky bison with ..."
+    #
+    # Derived from the species payload rather than a new parameter: `species` is
+    # already here, both producers (the Cosplayer node's body_plan and the Creature
+    # node's Feral form) emit the same payload, and a derived rule cannot drift out of
+    # sync with the suppression it pairs with. `prompt_json` is untouched -- it keeps
+    # recording `cosplay_of`, which is still the character this depicts, so the vault
+    # round-trip and the label-stutter guard in _parse_archetype_json are unaffected.
+    label_is_subject = species_lead and form == _FORM_FERAL
     if cosplay_label and text:
+        if label_is_subject:
+            return f"{cosplay_label}, {text[0].lower() + text[1:]}"
         return f"Cosplaying as {cosplay_label}: {text[0].lower() + text[1:]}"
     if cosplay_label:
-        return f"Cosplaying as {cosplay_label}."
+        return f"{cosplay_label}." if label_is_subject else f"Cosplaying as {cosplay_label}."
     return text
 
 
@@ -2487,6 +2544,19 @@ def _format_json(
         for key in ("creature_of", "creature_class", "form"):
             if species.get(key):
                 meta[key] = species[key]
+        # The suppression lists travel with the form, for the same reason the five
+        # costume keys above do: without them the document is not self-describing and
+        # recall re-randomizes everything the species replaced. Measured before the fix
+        # -- a saved feral lion recalled as "A 45-year-old Kenyan lion ... with brown
+        # skin ... sloped shoulders, a slightly defined chest, a narrow waist". That is
+        # 0.92.0 finding #4 again, left open on the species path because the Cosplayer
+        # node was the only producer audited then; the Creature node round-trips too.
+        # ``omitted`` cannot stand in: it records *explicitly locked* absences, and a
+        # suppressed field is dropped outright, so it never appears there.
+        # _parse_archetype_json already reads both keys, so recall needs no change.
+        for key in ("suppress_groups", "suppress_fields"):
+            if species.get(key):
+                meta[key] = sorted(species[key])
     meta["gender"] = gender
     meta["hair_color_scope"] = hair_color_scope
     meta["wardrobe"] = wardrobe
@@ -2675,6 +2745,13 @@ def generate_character(
         size_scale if size_scale != _SIZE_SCALE_AUTO else "", character_scale
     )
 
+    # A Feral subject has no upright two-armed body, so the arm/hip/chin gestures are
+    # unperformable (see _performable_poses). One derivation for both producers: a
+    # Creature node on the Feral form and a Cosplayer entry with body_plan "feral"
+    # both arrive here as the same species payload, so neither needs its own flag.
+    # Requires slots -- ``form`` alone, with no anatomy, describes nothing.
+    is_feral = bool((species or {}).get("slots")) and (species or {}).get("form") == _FORM_FERAL
+
     # "Any" gender resolves to a concrete man or woman per seed so the person is
     # coherent: the gender gate and randomizer below then draw from a single
     # gender's pools (no beard on a bust, no "they/them" mix). An anatomically
@@ -2730,7 +2807,7 @@ def generate_character(
     resolved = _randomize_fields(
         locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
         covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
-        scale_class=scale_class,
+        scale_class=scale_class, feral=is_feral,
     )
 
     # Wardrobe presentation gates the masculine-default trims: a man reads Masculine
@@ -2779,7 +2856,7 @@ def generate_character(
     # after this point, so no seed drifts except the ones that were already wrong.
     # See _repair_pose for why this is a repair rather than a deferral.
     _repair_pose(resolved, gender, set(locked_clean), covers_face, covers_body,
-                 covers_hair, scale_class, rng)
+                 covers_hair, scale_class, rng, is_feral)
 
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or
     # ring would render on top of the glove (the reported bug). Force the finger
