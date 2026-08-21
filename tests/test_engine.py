@@ -6889,6 +6889,27 @@ class SpeciesRoundTripTests(unittest.TestCase):
         for human in ("year-old", " skin", "shoulders", "waist", "necklace", "physique"):
             self.assertNotIn(human, recalled, f"{human!r} leaked back in on recall")
 
+    def test_a_manual_creature_size_survives_recall(self):
+        # `size` prefixes the subject noun ("A towering lion"), so it belongs with the
+        # rest of the species payload in the saved document.
+        saved_prose, saved = self._save("lion", "Feral / full creature")
+        self.assertIn("towering", self._save_with_size()[0])
+        flat = _parse_archetype_json(build_creature_json(
+            "lion", seed=3, form="Feral / full creature", size_scale="towering"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        prose, js = generate_character(3, "Male", locked, species=species)
+        self.assertEqual(json.loads(js)["_meta"].get("size"), "towering")
+        self.assertEqual(prose, self._recall(js, 31337)[0])
+
+    @staticmethod
+    def _save_with_size():
+        flat = _parse_archetype_json(build_creature_json(
+            "lion", seed=3, form="Feral / full creature", size_scale="towering"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        return generate_character(3, "Male", locked, species=species)
+
     def test_a_creatureless_document_is_unchanged(self):
         # No species payload -> no new _meta keys, so ordinary output is byte-stable.
         _, js = generate_character(11, "Female", {})
@@ -7048,6 +7069,74 @@ class FeralBodyPlanTests(unittest.TestCase):
                 covers_face=covers_face, covers_body=covers_body, character_scale=scale)
             self.assertEqual(saved_prose, recalled,
                              f"{name} did not survive a vault round-trip")
+
+    def test_a_feral_document_makes_an_upstream_costume_stale(self):
+        # A feral document emits no outfit_description, so the "downstream supplies its
+        # own costume" drop in merge_preset_documents did not fire for it: chaining
+        # Cosplayer -> Cosplayer put Iron Man's faceplate on the dragon and Godzilla's
+        # giant scale on a 26-foot one. Same leak class as 0.92.0 finding #2, through
+        # the one door that did not exist then.
+        for upstream in ("Iron Man", "Godzilla", "Hermione Granger", "Pikachu"):
+            merged = merge_preset_documents(
+                build_cosplayer_json(upstream, 1), build_cosplayer_json("Toothless", 1))
+            flat = _parse_archetype_json(merged)
+            self.assertIsNone(flat.get(_MASK_KEY),
+                              f"{upstream} -> Toothless leaked a mask")
+            self.assertFalse(flat.get(_SCALE_TIER_KEY),
+                             f"{upstream} -> Toothless leaked a size_scale")
+            # The upstream's outfit_description DOES survive the merge, and that is
+            # correct: chaining's contract is that non-overlapping upstream fields
+            # survive, and a feral document has no Clothing group to overlap with. It
+            # never reaches the output, because the Feral form suppresses the whole
+            # Clothing group -- so assert on the render, which is what matters.
+            species = flat.pop(_SPECIES_KEY, None)
+            label = flat.pop(_COSPLAY_LABEL_KEY, None)
+            covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+            covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+            locked = {k: v for k, v in flat.items()
+                      if k not in _CONTROL_FIELDS and not k.startswith("__")}
+            prose, js = generate_character(
+                1, "Male", locked, cosplay_label=label, species=species,
+                covers_face=covers_face, covers_body=covers_body)
+            self.assertNotIn("wears", prose, f"{upstream} -> Toothless: a costume rendered")
+            self.assertNotIn("outfit_description", _flat_document(js))
+
+    def test_the_reverse_chain_still_works(self):
+        # The drop must be one-directional: a costume downstream of a beast is a real
+        # costume and keeps its own mask.
+        flat = _parse_archetype_json(merge_preset_documents(
+            build_cosplayer_json("Toothless", 1), build_cosplayer_json("Iron Man", 1)))
+        self.assertTrue(flat.get(_MASK_KEY))
+        self.assertIn("outfit_description", flat)
+
+    def test_a_beast_is_not_in_the_masked_or_mascot_scopes(self):
+        # It sets both flags -- that is what drops the human head and the jewellery --
+        # but "Masked" means a person wearing a mask and "Mascot / full-suit" means a
+        # person inside a suit. Beasts have their own scope; overlapping completely
+        # with it would let "Mascot / full-suit" hand you a bantha. The reference doc
+        # generator already draws this line (`beast`, not `masked`).
+        for scope in ("Masked", "Mascot / full-suit"):
+            pool = [n for n, e in COSPLAYERS.items() if _SPECIAL_SCOPES[scope](e)]
+            self.assertTrue(pool)
+            for name in pool:
+                self.assertNotEqual(COSPLAYERS[name].get("body_plan"), _FERAL,
+                                    f"{name} is a beast but is in the {scope!r} scope")
+
+    def test_no_entry_describes_the_same_feature_twice(self):
+        # The head slot and anatomy.eyes both describe eyes if you let them; Catbus and
+        # Mothra each did in draft ("two round yellow headlamp eyes ... two round
+        # glowing yellow eyes that shine like headlamps").
+        for name in FERAL_ENTRIES:
+            entry = COSPLAYERS[name]
+            head = entry["mask"].lower()
+            for slot, text in (entry.get("anatomy") or {}).items():
+                noun = {"eyes": "eyes", "wings": "wings", "tail": "tail",
+                        "legs_feet": "legs", "arms": "arms"}.get(slot)
+                # Whole words only: "backswept" contains "wing", and matching on the
+                # substring flagged Drogon's perfectly good head slot.
+                if noun and re.search(rf"\b{noun}\b", head):
+                    self.fail(f"{name}: mask already describes {noun!r}, so "
+                              f"anatomy.{slot} renders it twice")
 
     def test_an_ordinary_entry_is_untouched_by_any_of_it(self):
         # The whole feral path must be inert for the other ~1,821 entries: they still

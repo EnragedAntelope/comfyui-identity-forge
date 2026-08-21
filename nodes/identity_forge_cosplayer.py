@@ -174,7 +174,11 @@ def _scope_is_tiny(entry: dict) -> bool:
 
 
 def _scope_is_masked(entry: dict) -> bool:
-    return bool(entry.get("covers_face"))
+    # A feral entry sets covers_face (that is what drops the human head), but it is
+    # not *masked* -- there is no person wearing anything. It has its own scope, and
+    # docs/reference/cosplayers.md already makes the same distinction (`beast`, not
+    # `masked`), so the scopes must agree with it. Same for the mascot scope below.
+    return bool(entry.get("covers_face")) and entry.get("body_plan") != _FERAL
 
 
 def _scope_is_nonhuman(entry: dict) -> bool:
@@ -195,11 +199,17 @@ def _scope_is_mascot(entry: dict) -> bool:
     because it is a *filter over the existing pool* it adds no entries and cannot
     shift any field's distribution. Bias-free by construction.
 
-    It earns its place on discoverability: ~90 entries carry both flags (Pikachu,
+    It earns its place on discoverability: ~120 entries carry both flags (Pikachu,
     the TMNT, Bugs Bunny, Godzilla, Moogle, Teemo, ...) and there was no way to
     find them short of luck.
+
+    Feral entries are excluded (0.95.0). They carry both flags too, but the scope means
+    *a person inside a suit*, which is precisely what a feral entry is not -- and the
+    two scopes would otherwise overlap completely, so picking "Mascot / full-suit"
+    could hand you a bantha.
     """
-    return bool(entry.get("covers_body")) and bool(entry.get("covers_face"))
+    return (bool(entry.get("covers_body")) and bool(entry.get("covers_face"))
+            and entry.get("body_plan") != _FERAL)
 
 
 def _scope_is_feral(entry: dict) -> bool:
@@ -780,6 +790,13 @@ def build_cosplayer_json(
     # "very tall" from the human height pool says nothing useful about one. The
     # validator allows the pairing only for a feral entry; every tiered entry still
     # ships both, and the size_scale-requires-scale_prose rule is unchanged.
+    #
+    # Feral ``scale_prose`` is worded as an APPOSITIVE ("small, about two feet long"),
+    # not as the conjunction the other 101 entries use ("tiny and barely a foot tall").
+    # That is deliberate: a human entry has three core items (build, height, skin tone)
+    # so ``_join`` commas them, but a feral entry has two -- no skin tone -- and the
+    # conjunctive form renders "with a stocky build and tiny and barely two feet long".
+    # Do not align the two forms.
     if entry.get("scale_prose"):
         _apply_suppress(document, {"height": entry["scale_prose"]}, override=True)
     return json.dumps(document, indent=2)

@@ -690,6 +690,13 @@ rather than restating its lists, so the two producers cannot drift.
 | `poses` | replaces `_FERAL_POSES` | for a body plan the default pool does not fit (a serpent cannot walk) |
 | `scale_prose` | the `height` value | may stand **without** a `size_scale` tier here, uniquely |
 
+**Word `scale_prose` as an appositive here, not a conjunction.** The other 101 tiered
+entries read "tiny and barely a foot tall", which works because a human entry has three
+core items (build, height, skin tone) and `_join` separates them with commas. A feral
+entry has exactly two — there is no skin tone — so the conjunctive form renders *"with a
+stocky build **and** tiny **and** barely two feet long"*. "small, about two feet long
+from nose to rump" is the correct form for this path; do not "align" it with the others.
+
 `covers_face` and `covers_body` are both **required** — they are what drop the human
 Face/Hair/Makeup, the jewellery, the accessories and (together) the skin tone and
 ethnicity. `physique` applies in **both** look levels, because there is no person

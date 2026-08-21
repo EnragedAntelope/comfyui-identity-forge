@@ -2447,8 +2447,17 @@ def merge_preset_documents(upstream_json: str, own_json: str) -> str:
 
     # The downstream document supplies its own costume, so the upstream's
     # costume-derived flags no longer describe anything that is being worn.
+    #
+    # A FERAL document counts as "its own costume" even though it emits no
+    # ``outfit_description`` (0.95.0): it replaces the whole body, so an upstream
+    # mask/scale is exactly as stale. Without this, Cosplayer "Iron Man" -> Cosplayer
+    # "Toothless" rendered "He has a faceplate with narrow glowing eye slits" on the
+    # dragon, and Godzilla -> Toothless leaked ``size_scale: giant``. Same leak class
+    # as the 0.92.0 finding this block was written for, through the one door that did
+    # not exist yet.
+    own_is_feral = own_meta.get("form") == _FORM_FERAL and bool(own.get(_SPECIES_GROUP))
     dropped_scale = False
-    if "outfit_description" in own_fields:
+    if "outfit_description" in own_fields or own_is_feral:
         for key in _COSTUME_META_KEYS:
             if key not in own_meta and key in meta:
                 del meta[key]
@@ -2541,7 +2550,9 @@ def _format_json(
     if cosplay_label:
         meta["cosplay_of"] = cosplay_label
     if slots:
-        for key in ("creature_of", "creature_class", "form"):
+        # ``size`` belongs with them: it prefixes the subject noun ("A towering lion"),
+        # so leaving it out recalled a towering creature as a plain one.
+        for key in ("creature_of", "creature_class", "form", "size"):
             if species.get(key):
                 meta[key] = species[key]
         # The suppression lists travel with the form, for the same reason the five

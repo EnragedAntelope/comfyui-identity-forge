@@ -21931,8 +21931,8 @@ COSPLAYERS: dict[str, dict] = {
         "covers_body": True,
         "creature_of": "giant winged moth",
         "creature_class": "Insects & Arachnids",
-        "mask": "a furry moth's head with two enormous compound eyes and a pair of thick "
-                "feathered antennae curving back over the skull",
+        "mask": "a furry moth's head with a pair of thick feathered antennae curving "
+                "back over the skull above a coiled tongue",
         "costume": "dense fluffy cream-and-brown fur over a segmented insect body",
         "anatomy": {
             "eyes": "two huge round blue compound eyes",
