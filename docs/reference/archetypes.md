@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**238 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**249 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -74,6 +74,7 @@
 - **Cottagecore** [Female]
 - **Country Star**
 - **Court Jester** -- edgy alternative
+- **Cybergoth** [Female] -- edgy alternative
 - **Cyberpunk Netrunner** -- streetwear
 - **Cyclist** [Male] -- athletic
 - **DJ** -- streetwear
@@ -131,10 +132,12 @@
 - **K-Pop Idol**
 - **Kabuki Actor** -- evening formal
 - **Kawaii Street Fashion** [Female]
+- **Korean Hanbok** [Female] -- vintage retro
 - **Librarian** [Female] -- smart casual
 - **Lifeguard** [Male] -- athletic
 - **Luchador** [Male] -- athletic
 - **Lumberjack** [Male]
+- **Maasai** [Male] -- bohemian
 - **Mad Scientist** [Male]
 - **Marching Band Drum Major** -- evening formal
 - **Mardi Gras Reveler** [Any]
@@ -148,6 +151,7 @@
 - **Medieval Peasant** -- casual
 - **Metrosexual** [Male] -- smart casual
 - **Mime** -- edgy alternative
+- **Mongolian Deel** [Male] -- vintage retro
 - **Musician** -- streetwear
 - **Musketeer** -- vintage retro
 - **Navy Sailor** -- smart casual
@@ -186,7 +190,9 @@
 - **Roaring Twenties Gent** [Male] -- vintage retro
 - **Rock Climber** [Female] -- athletic
 - **Roman Centurion** [Male] -- athletic
+- **Rude Boy** [Male] -- vintage retro
 - **Safari Guide** -- casual
+- **Sami Gakti** [Female] -- vintage retro
 - **Samurai** [Male] -- edgy alternative
 - **Sapeur** [Male] -- evening formal
 - **Scandi Minimalist**
@@ -216,6 +222,7 @@
 - **Tailor** -- smart casual
 - **Tattoo Artist** -- edgy alternative
 - **Teacher** [Female] -- smart casual
+- **Teddy Boy** [Male] -- vintage retro
 - **Tennis Player** -- athletic
 - **Toymaker** -- vintage retro
 - **Train Conductor** -- business casual
@@ -224,12 +231,16 @@
 - **Trial Lawyer** -- business formal
 - **Tribal Shaman** -- bohemian
 - **Trucker** -- casual
+- **Tuareg** [Male] -- bohemian
+- **Ukrainian Vyshyvanka** [Female] -- vintage retro
 - **Valkyrie** [Female] -- edgy alternative
 - **Vampire Noble** [Male] -- evening formal
 - **Veterinarian** -- business casual
 - **Victorian Dandy** [Male] -- evening formal
 - **Victorian Lady** [Female] -- evening formal
+- **Vietnamese Ao Dai** [Female] -- vintage retro
 - **Viking Shieldmaiden** [Female] -- edgy alternative
+- **Visual Kei** [Female] -- edgy alternative
 - **Volcanologist** -- athletic
 - **Warlock** [Female] -- edgy alternative
 - **Wasteland Survivor** -- edgy alternative

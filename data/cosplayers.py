@@ -100,6 +100,25 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "porcelain"},
         "prop": "a slender white katana with a straight guard, held point-down",
     },
+    "The Martyr": {
+        "franchise": "The Citadel",
+        "gender": "Female",
+        # Placed beside 2B deliberately: the bob is openly derived from hers, so the
+        # entry has to carry its own identifiers or the two converge. Purple across
+        # hair/eyes/suit, plus the eyepatch and the headphones, are what separate
+        # them -- 2B is monochrome with a blindfold and a katana.
+        "costume": "a sleeveless deep-purple bodysuit with a high collar under a "
+                   "cropped long-sleeved shrug, elbow-length purple gloves and matching "
+                   "purple thigh-high stockings, a black eyepatch over the right eye, "
+                   "and large padded headphones worn over the ears",
+        "eyes": "violet",
+        "signature": {"hair_color": "purple", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "pale"},
+        "prop": "a broad double-bitted battle axe with a pitted steel head on a long "
+                "wrapped haft",
+    },
     "Aerith Gainsborough": {
         "franchise": "Final Fantasy",
         "gender": "Female",
@@ -5702,6 +5721,24 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "curly"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "very pale"},
     },
+    "Minthara": {
+        "franchise": "Baldur's Gate 3",
+        "gender": "Female",
+        # Drow skin is the identity, so it takes the skin-native marker and physique
+        # omits skin_tone (else a human tone renders under the violet). The House
+        # Baenre sigil is a canonical marking and rides in the costume, the way the
+        # other 47 tattooed entries carry theirs.
+        "costume": "ornate drow half-plate of blackened steel with tall pointed "
+                   "pauldrons and fine gold filigree across the breastplate, a long "
+                   "deep-violet tabard split at the front over black leather leggings, "
+                   "and flat black-and-purple boots, over smooth, flawless pale "
+                   "lavender-grey skin, with a small spidered House Baenre sigil "
+                   "tattooed on the left side of the neck",
+        "eyes": "deep crimson",
+        "signature": {"hair_color": "platinum white", "hair_length": "shoulder length",
+                      "hair_style": "messy bun", "hair_texture": "sleek straight"},
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
 
     # --- Horror / slasher icons ------------------------------------------
     "Freddy Krueger": {
@@ -5956,8 +5993,11 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_face": True,
         "costume": "a hunched cyborg body of white-and-grey droid plating over an "
-                   "exposed organic sac, with four arms and a tattered cape",
-        "mask": "a bone-white skull-like cyborg faceplate with narrow reptilian eyes",
+                   "exposed organic sac, with four long arms, two on each side of the "
+                   "torso, and a tattered cape",
+        "mask": "a bone-white skull-like cyborg faceplate with narrow reptilian eyes, "
+                "carried on a four-armed body: two pairs of arms, an upper pair at the "
+                "shoulders and a second pair set below them on the ribs",
         "physique": {"body_type": "lean", "height": "very tall"},
         "prop": "four lit lightsabers, two blue and two green, fanned out in four splayed "
                 "mechanical hands",
@@ -8302,16 +8342,16 @@ COSPLAYERS: dict[str, dict] = {
             "propped up on both stubby arms with the head raised",
             "lying at rest with the head turned toward the viewer",
         ],
-        "mask": "a broad flat-topped head merging straight into the shoulders with no "
-                "neck, dominated by an enormous wide lipless mouth, with a squat flat nose "
+        "mask": "a broad flat-topped head set directly onto the shoulders, the jaw "
+                "resting against the chest, dominated by an enormous wide lipless mouth, with a squat flat nose "
                 "and a wattled dewlap of loose flesh beneath the jaw",
         "costume": "slick green-brown leathery hide, wet-looking and blotched with sickly "
                    "yellow across a vast sagging belly",
         "anatomy": {
             "eyes": "small close-set orange-yellow eyes with horizontal slit pupils",
             "arms": "a pair of short stubby arms ending in small three-fingered hands",
-            "legs_feet": "no legs at all, the body ending in a long thick coiling "
-                         "gastropod tail resting flat on the ground",
+            "legs_feet": "a long thick coiling gastropod tail that carries the whole "
+                         "body, resting flat along the ground",
         },
         "size_scale": "giant",
         "scale_prose": "immense, well over three metres from head to tail-tip",
@@ -8948,14 +8988,29 @@ COSPLAYERS: dict[str, dict] = {
         # "all four sleeves" carries the arm count as a GARMENT detail, which both
         # reads correctly after "He wears" and states it early. Leading with the bare
         # arms produced "He wears four thick arms ... wearing a tunic".
+        # 0.96.0, MEASURED: rewording inside the costume does not work. "four thick
+        # arms" plus "all four sleeves" plus "a second pair of shoulders" -- the count
+        # stated three times in one "He wears ..." sentence -- still rendered TWO arms.
+        # What fixed it was POSITION, not repetition: the arm count moved into the
+        # `mask` string, which _format_prose voices as its own "He has ..." sentence
+        # BEFORE the clothing. Same lever as the 0.90.0 mask fix. Verified against a
+        # render: four arms, two pairs, correctly placed.
+        # `mask` means "what the head looks like", so carrying body anatomy in it is a
+        # deliberate compromise -- there is no per-entry anatomy sentence for a
+        # non-feral entry. The costume KEEPS its own "all four arms" mention so that
+        # the Unmask toggle (which drops `mask`) degrades to the old behaviour rather
+        # than losing the arms entirely.
         "costume": "a grubby short-sleeved cook's tunic with all four sleeves rolled "
-                   "to the elbow over two pairs of thick arms, a heavily grease-stained "
-                   "apron with a dish towel tucked into the waist tie, on a towering, "
-                   "slab-bellied frame, over uniform, all-over mottled green-tan hide",
+                   "to the elbow on all four arms, a heavily "
+                   "grease-stained apron with a dish towel tucked into the waist tie, "
+                   "on a towering, slab-bellied frame, over uniform, all-over mottled "
+                   "green-tan hide",
         "mask": "a broad Besalisk head with a bony crest running back over the bald "
                 "skull, a heavy pendulous wattle of loose skin hanging from the chin "
                 "and throat, small dark deep-set eyes under a low brow, and a wide "
-                "mouth showing blunt teeth and two stubby upturned lower tusks",
+                "mouth showing blunt teeth and two stubby upturned lower tusks, carried on "
+                "a four-armed body: two pairs of arms, an upper pair at the shoulders "
+                "and a second pair set lower on the ribs",
         # Build/height/age sit in `signature`, NOT `physique`, and deliberately: per
         # the schema note at the top of this file, signature applies in BOTH modes
         # while physique applies only in Full-character mode. Dex's bulk and age are
@@ -9204,15 +9259,17 @@ COSPLAYERS: dict[str, dict] = {
         "creature_of": "shaggy horned beast of burden",
         "creature_class": "Mammals",
         "mask": "a broad heavy head carried low on a thick neck, with a long blunt muzzle "
-                "and one great pair of thick ridged horns spiralling back and outward from "
-                "the brow",
+                "and a single pair of massive ridged horns, one on each side of the brow, "
+                "curling back in one wide spiral",
         "costume": "long matted shaggy dark-brown fur hanging in a heavy curtain over the "
                    "flanks",
         "anatomy": {
             "eyes": "small dark deep-set eyes under a heavy shaggy brow",
-            "legs_feet": "four thick columnar legs ending in broad splayed padded feet",
+            "legs_feet": "four thick columnar legs, one at each corner of the body, "
+                         "ending in broad splayed padded feet",
             "tail": "a long thin rope-like tail with a tuft at the tip",
-            "extras": "a high humped shoulder ridge above a deep barrel chest",
+            "extras": "a single shoulder hump rising from the spine just behind the "
+                      "head, on one deep barrel-chested body",
         },
         "size_scale": "giant",
         "scale_prose": "enormous, standing over eight feet at the shoulder",
@@ -9512,10 +9569,16 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_body": True,
         "covers_face": True,
+        # "two extra arms" made the model do the arithmetic and it rendered two. The
+        # count is a numeral now, and it also leads the `mask` sentence -- see the
+        # measured note on Dexter Jettster: position beats repetition. The costume
+        # keeps its own mention so Unmask does not drop the arms.
         "costume": "an even, all-over coat of blue fur on a small sturdy koala-like alien "
-                   "frame, with two extra arms and retractable back spines",
+                   "frame with four arms, the second smaller pair extended below the "
+                   "main pair, and retractable back spines",
         "mask": "a blue koala-like alien head with large notched pointed ears, big black "
-                "eyes, and a wide toothy mouth",
+                "eyes, and a wide toothy mouth, carried on a four-armed body: an upper "
+                "pair of arms at the shoulders and a smaller second pair below them",
         "physique": {"body_type": "stocky", "height": "petite"},
     },
     "Gru": {
@@ -16325,10 +16388,14 @@ COSPLAYERS: dict[str, dict] = {
     "Queen Marika the Eternal": {
         "franchise": "Elden Ring",
         "gender": "Female",
+        # 0.96.0 refine: the two UNEVEN braids (the right longer) are the canonical
+        # read and the hair_style pool's "loose braids" cannot express it, so the
+        # detail rides in the costume prose the way other asymmetries do.
         "costume": "a floor-length black gown embroidered all over with golden "
                    "floral motifs, a slender gold circlet, broad gold armbands "
-                   "and serpentine gold bracelets coiled up both forearms, and "
-                   "bare feet",
+                   "and serpentine gold bracelets coiled up both forearms, "
+                   "bare feet, and long golden hair gathered into two uneven "
+                   "braids, the right braid noticeably longer than the left",
         "signature": {"hair_color": "golden blonde", "hair_length": "hip length",
                       "hair_style": "loose braids", "hair_texture": "silky and glossy",
                       "eye_color": "amber"},
@@ -19103,9 +19170,16 @@ COSPLAYERS: dict[str, dict] = {
     "Ragyo Kiryuin": {
         "franchise": "Kill la Kill",
         "gender": "Female",
+        # 0.96.0 refine: two canonical identifiers were missing -- the swan-feather
+        # boa (the gown alone is a generic white couture look) and the rainbow light
+        # she is always drawn radiating. `hair_color` stays "rainbow ombre": it is the
+        # closest pool value to silver-on-top-with-a-rainbow-underside, and the
+        # costume now states the underlight explicitly rather than relying on it.
         "costume": "a floor-length white couture gown with an enormous stiff "
-                   "flared collar and a long train, elbow-length white gloves, "
-                   "and white heels",
+                   "flared collar and a long train, a voluminous white swan-feather "
+                   "boa draped across the shoulders, elbow-length white gloves, "
+                   "and white heels, with a soft rainbow-hued light radiating from "
+                   "the hair and shoulders and glowing beneath the hair",
         "signature": {"hair_color": "rainbow ombre", "hair_length": "shoulder length",
                       "hair_texture": "sleek straight"},
         "eyes": "pale iridescent",
@@ -19425,9 +19499,10 @@ COSPLAYERS: dict[str, dict] = {
         # covers_body (the 0.64.0 material rule).
         "franchise": "Record of Ragnarok",
         "gender": "Male",
-        "costume": "a short golden dhoti with a jewelled belt over a bare torso, heavy "
-                   "gold arm rings and a broad collar necklace, painted white ash "
-                   "stripes across the brow and chest, and four muscular arms",
+        "costume": "a short golden dhoti with a jewelled belt over a bare torso and four "
+                   "muscular arms, two on each side of the chest, heavy gold arm rings "
+                   "on all four and a broad collar necklace, and painted white ash "
+                   "stripes across the brow and chest",
         "eyes": "molten gold",
         # `necklace` pinned absent because the costume names a collar necklace (see
         # the Aphrodite note above -- a costume does not suppress jewellery).
@@ -19915,6 +19990,20 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "mint green", "hair_length": "chin length bob",
                       "hair_texture": "silky and glossy", "hair_style": "worn down"},
         "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "porcelain"},
+    },
+    "Captain Mizuki": {
+        "franchise": "One Punch Man",
+        "gender": "Female",
+        # The three medals are the identifier -- the sports kit alone is generic, so
+        # they are named with a count and a position rather than left as "medals".
+        # No skin_tone: canon does not fix one, so the person underneath randomizes.
+        "costume": "a fitted athletic sports top and matching high-waisted spandex "
+                   "shorts, wide elastic wristbands and low running shoes, with three "
+                   "gold medals on striped ribbons hanging together at the chest",
+        "signature": {"hair_color": "orange", "hair_length": "long",
+                      "hair_style": "high ponytail", "hair_texture": "sleek straight"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+        "prop": "a heavy polished iron shot put resting in one open palm",
     },
     "Yuno Gasai": {
         "franchise": "Future Diary",
@@ -21493,11 +21582,11 @@ COSPLAYERS: dict[str, dict] = {
         "covers_body": True,
         "creature_of": "sleek jet-black dragon",
         "creature_class": "Mythic & Fantasy",
-        "mask": "a smooth rounded catlike dragon head with no horns and no visible teeth, "
+        "mask": "a smooth rounded catlike dragon head with an unbroken domed brow and a "
+                "closed lipless mouth, "
                 "with two pairs of soft black ear-flaps that fold flat against the skull "
                 "and a short blunt snout",
-        "costume": "smooth matte pitch-black scaleless hide, soft and rubbery rather than "
-                   "plated",
+        "costume": "smooth matte pitch-black hide, soft and rubbery like a seal's",
         "anatomy": {
             "eyes": "huge acid-green eyes with wide round pupils",
             "wings": "a pair of broad black membranous wings on long finger-struts, far "
@@ -21524,15 +21613,16 @@ COSPLAYERS: dict[str, dict] = {
         "creature_of": "serpentine luckdragon",
         "creature_class": "Mythic & Fantasy",
         "mask": "a broad friendly dog-like head with a blunt muzzle, a shaggy white mane "
-                "framing the face, two short backswept antlers, long drooping "
+                "framing the face, two short smooth backswept horns, long drooping "
                 "whiskers, and an open friendly smile",
-        "costume": "thick soft cream-white fur, pink-tinged along the back, covering a "
-                   "long serpentine body with no scales anywhere",
+        "costume": "thick soft cream-white fur, pink-tinged along the back, furred from "
+                   "mane to tail tip over a long serpentine body",
         "anatomy": {
             "eyes": "large ruby-red eyes",
             "legs_feet": "four small clawed limbs held close under a body that is far too "
                          "long for them",
-            "extras": "a body that undulates through the air with no wings at all",
+            "extras": "an unbroken furred back, the long body swimming through the air "
+                      "in slow rolling undulations",
         },
         "poses": [
             "drifting forward through the air with the long body undulating behind",
@@ -21629,7 +21719,7 @@ COSPLAYERS: dict[str, dict] = {
                    "downy rather than sleek",
         "anatomy": {
             "eyes": "large round dark eyes",
-            "wings": "a pair of small useless wings held tight against the flanks",
+            "wings": "a pair of small stubby wings held tight against the flanks",
             "legs_feet": "two long powerful scaled orange legs ending in three broad "
                          "clawed toes",
             "tail": "a short upright fan of yellow tail feathers",
@@ -21753,9 +21843,9 @@ COSPLAYERS: dict[str, dict] = {
         "creature_of": "gaunt winged steed",
         "creature_class": "Monsters",
         "mask": "a long naked snake-like head on a bare wrinkled neck, with a lipless "
-                "beak-like jaw of small teeth and no scales or feathers anywhere",
+                "beak-like jaw of small teeth over taut bare grey skin",
         "costume": "grey-black leathery hide stretched tight over a skeletal frame, "
-                   "hairless and featherless, every rib showing",
+                   "bare and smooth, every rib showing",
         "anatomy": {
             "eyes": "small sunken pale eyes",
             "wings": "a pair of enormous ragged bat-like wings of bare membrane between "
@@ -21808,7 +21898,8 @@ COSPLAYERS: dict[str, dict] = {
                    "underside",
         "anatomy": {
             "eyes": "furious red eyes",
-            "legs_feet": "no legs at all, the whole body one long coiling serpent",
+            "legs_feet": "one long coiling serpent body from head to tail, moving on "
+                         "its coils alone",
             "extras": "rows of stiff cream-white fins spaced down the length of the body",
         },
         "poses": [
@@ -21964,7 +22055,8 @@ COSPLAYERS: dict[str, dict] = {
         "anatomy": {
             "eyes": "six red eyes, one pair in each of the three heads",
             "wings": "a pair of enormous golden bat-like wings on long clawed struts",
-            "legs_feet": "two thick clawed hind legs and no forelimbs at all",
+            "legs_feet": "two thick clawed hind legs carrying the whole body, the "
+                         "shoulders given over entirely to the wings",
             "tail": "two long spined tails side by side",
         },
         "poses": [
@@ -22067,7 +22159,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Bloodborne", "Celeste", "Half-Life", "Remember Me", "Dragon's Lair",
         "Elden Ring", "Space Ace", "Assassin's Creed", "Persona", "Dark Souls",
         "Cyberpunk 2077",
-        "Castlevania", "Fallout", "Guilty Gear", "Team Fortress 2",
+        "Castlevania", "Fallout", "Guilty Gear", "Team Fortress 2", "The Citadel",
         # Warhammer 40,000 is tabletop-first and the pack has no tabletop category;
         # Video Games is the least-surprising home given the franchise's game presence.
         "Warhammer 40,000",

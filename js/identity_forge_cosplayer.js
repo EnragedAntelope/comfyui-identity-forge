@@ -158,6 +158,7 @@ const COSPLAYER_FRANCHISES = {
     "Astarion",
     "Karlach",
     "Lae'zel",
+    "Minthara",
     "Shadowheart"
   ],
   "Battlestar Galactica": [
@@ -1668,6 +1669,7 @@ const COSPLAYER_FRANCHISES = {
     "Usopp"
   ],
   "One Punch Man": [
+    "Captain Mizuki",
     "Fubuki (One Punch Man)",
     "Garou",
     "Genos",
@@ -2298,6 +2300,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "The Brady Bunch": [
     "Marcia Brady"
+  ],
+  "The Citadel": [
+    "The Martyr"
   ],
   "The Crow": [
     "Eric Draven"

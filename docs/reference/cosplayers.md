@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1849 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1852 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (350)
+## Anime & Manga (351)
 
 ### Akame ga Kill
 
@@ -397,6 +397,7 @@
 
 ### One Punch Man
 
+- **Captain Mizuki** (F, prop)
 - **Fubuki (One Punch Man)** (F)
 - **Garou** (M)
 - **Genos** (M)
@@ -2376,7 +2377,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (406)
+## Video Games (408)
 
 ### ARMS
 
@@ -2395,6 +2396,7 @@
 - **Astarion** (M)
 - **Karlach** (F, prop)
 - **Lae'zel** (F)
+- **Minthara** (F)
 - **Shadowheart** (F)
 
 ### Bayonetta
@@ -2957,6 +2959,10 @@
 - **Nina Williams** (F)
 - **Paul Phoenix** (M)
 - **Zafina** (F)
+
+### The Citadel
+
+- **The Martyr** (F, prop)
 
 ### The King of Fighters
 

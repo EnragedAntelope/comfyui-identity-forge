@@ -659,6 +659,13 @@ def validate() -> list[str]:
         if creature_class is not None and creature_class not in CREATURE_CLASSES:
             errors.append(f"cosplayer '{name}': creature_class {creature_class!r} is not "
                           f"one of {list(CREATURE_CLASSES)}")
+        # Required on a feral entry, for the same reason ``creature_of`` is: the node
+        # falls back to ``"Mammals"`` when it is absent, and a silent default is wrong
+        # for every dragon, bird, spider and plant on the roster. Every shipped entry
+        # sets it, so this pins a latent trap rather than fixing a live bug.
+        if body_plan == "feral" and not creature_class:
+            errors.append(f"cosplayer '{name}': a feral entry needs 'creature_class' "
+                          f"(the node otherwise silently defaults it to 'Mammals')")
 
         # Optional ``costumes`` alternate-look list: each item is a plain costume
         # string or a dict overlay of _LOOK_OVERRIDE_KEYS. The node rng-picks one look

@@ -86,6 +86,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | The rest of the Guilty Gear cast — Potemkin, Faust, Chipp Zanuff, Nagoriyuki, Ramlethal, Axl Low | The curated eleven already cover every distinct silhouette in the cast. This is the League ceiling applied early: a franchise stops where more entries stop adding new visual ground. |
 | Ork Boyz, Necrons (Warhammer 40,000) | No worn look — a hulking green brute and a skeletal metal automaton. Both are shapes a person fits inside, so they are the mascot-suit case rather than the feral one, and neither adds a silhouette the four shipped 40K entries lack. (The old wording filed them "the same call as Appa and Simba"; Appa shipped at 0.95.0 and Simba did not — see the quadruped row below for the test that separates them.) |
 | Chaos Space Marines, Aeldari Farseers (Warhammer 40,000) | More armour. The four that shipped were chosen because two of them are cloth; these would re-add exactly the silhouette the original skip was right about. |
+| Suiko (One Punch Man) | A hoodie over a sports top and black trousers. Tan skin, short black hair and a beauty mark are the only markers, and none of them survives as a silhouette — the render is "a woman in a hoodie". Fails the same bar as Jessica Jones and Marion Ravenwood. `Captain Mizuki` shipped from the same request because the three gold medals and the shot put carry her. |
 
 ### Whole classes
 
@@ -170,6 +171,16 @@ butterfly** (the `translucent` finish), **death's-head hawkmoth** (a marking on 
 | Ghost-Spider | **Spider-Gwen** |
 | Kurisu (Steins;Gate) | **Makise Kurisu** |
 | Evelynn, Seraphine, Akali | Already on the roster — they were *refined*, not duplicated |
+| Queen Marika (Elden Ring) | **Queen Marika the Eternal** — refined at 0.96.0 (the two uneven braids), not duplicated |
+| Ragyo Kiryuin (Kill la Kill) | Already on the roster — refined at 0.96.0 (swan-feather boa, rainbow underlight) |
+| "Tuareg desert robes" | Was a costume alternate on the **Desert Nomad** archetype. Promoted to its own `Tuareg` archetype at 0.96.0 and the Desert Nomad alternate re-pointed at a generic Saharan traveller, so the look ships once. |
+
+### Archetypes — declined
+
+| Candidate | Why |
+|---|---|
+| Techwear / Gorpcore | **Cyberpunk Netrunner already is a techwear look** — its costume is literally "a {dark_color} techwear jacket with {color} LED trim, utility straps, and a sleek visor". Stripping the sci-fi trim to leave shell-jacket-and-cargo-trousers is not a second silhouette, it is the same one with less to draw. |
+| A dark/gothic counterpart to Kawaii Street Fashion | Declined on two counts. The pastel silhouette is already `Kawaii Street Fashion` (ruffled blouse, tiered skirt, platform Mary-Janes) and the dark one is already `1990s Goth`, so the candidate sits between two shipped entries rather than beside them. The maintainer also rejected the subculture's usual name outright. **Do not re-propose it under a synonym.** |
 
 ---
 
@@ -180,6 +191,7 @@ Open. No decision has been made either way.
 | # | Question | Where it stands |
 |---|---|---|
 | 2 | **Costume text that asserts a body trait against an unpinned random field.** A costume reading "on a hulking frame" can render beside "a very slim build" in the same sentence, because `physique` applies only in Full-character mode while `costume` renders in both. | Measured at 0.90.0, **33 entries** (`Colossus`, `Gollum`, `Jabba the Hutt`, `Space Marine`, `Brook`, …). Not swept, for two reasons. First, the `signature` / `physique` split is *deliberate* — the schema says physique is Full-mode-only, so a randomly-built person wearing the costume is the intended behaviour, and most of the 33 are mascot suits where the suit supplies the bulk regardless of the wearer. Second, a naive regex reported **171** and was wrong: "tiny" on `Trinity` and `Neo` is their *sunglasses*, "enormous" on `Edna Mode` is her *lashes*. Requiring the adjective to modify a body noun cut it to 33. **If this is ever taken up, measure it again from scratch — do not trust the 171.** The four entries fixed at 0.90.0 (`Dexter Jettster`, `Figrin D'an`, `Ithorian`, plus the new Fallout/GoT entries) pin the trait in `signature`, which applies in both modes; that is the pattern to follow. |
+| 3 | **`_POCKETLESS_GARMENT_RE` is an allowlist of garment nouns, so a pocketless costume it does not name still draws a pockets/collar gesture.** Observed at 0.96.0 on `Kratos`: "a leather harness and bracers over a bare chest" plus "posing with hands in pockets". | **Not a regression** — the regex is deliberately conservative (its own comment: "never a suit/shirt/dress, which may have pockets"), and it catches the enumerated swimwear/leotard/gown/toga set by design. Deliberately left alone. Widening it (e.g. on `bare chest`, `harness`, `bare torso`) would move `pose` on an unknown number of shipped entries, and `--check` **cannot see it** — `entry_hash` covers the entry dict, not the prose, the same blind spot the 0.90.0 mask rewrite hit. If taken up: measure the affected entry list first, then re-render all of them in the same commit. |
 | 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
 
 **Closed at 0.88.0 — the creature face-colour question (was #2).** The proposal was an engine

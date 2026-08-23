@@ -3410,6 +3410,734 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": ["full body shot", "medium shot from waist up"],
         "mood": "radiant",
     },
+
+    # --- 0.96.0: traditional dress -----------------------------------------
+    # Authored the same way as Andean Cholita, Sapeur, Highland Scot and Whirling
+    # Dervish: an honest, specific likeness of the garments, named correctly, with
+    # the modern-jewellery and salon-makeup fields pinned off so the engine does not
+    # dress a traditional look in contemporary accessories. Adding archetypes is
+    # bias-free -- the archetype menu is picked uniformly, so these are variety only
+    # and no field distribution moves.
+
+    # The tagelmust is worn by MEN in Tuareg custom, so this is male-only rather than
+    # a variants pair. Desert Nomad's indigo/tagelmust alternate is retired below in
+    # the same commit -- keeping both would ship one look under two names.
+    "Tuareg": {
+        "gender": "Male",
+        "ethnicity": "Berber",
+        "body_type": "lean",
+        "height": "tall",
+        # The tagelmust encloses the scalp and the lower face, so the scalp and
+        # facial-hair fields have nothing to show; pinned rather than left to roll
+        # underneath the cloth.
+        "hair_length": "very short",
+        "facial_hair": "clean shaven",
+        "hair_accessory": "no hair accessory",
+        "hair_color": ["jet black", "dark brown"],
+        "hair_texture": "curly",
+        "hair_style": "natural and unstyled",
+        "makeup_style": "no makeup",
+        "nails": "natural short nails",
+        "skin_tone": ["bronze", "warm tan", "caramel"],
+        "piercings": "no piercings beyond ears",
+        "eye_color": "dark brown",
+        "outfit_style": "bohemian",
+        # The costume override does NOT suppress the jewellery fields, and the silver
+        # Agadez cross is named in the prose, so the rest are pinned off or a modern
+        # pendant lands on top of it (the Andean Cholita rule).
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "other_jewelry": "no other jewelry",
+        "bracelet": "none",
+        "rings": "none",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "outfit_description": [
+            "a long indigo-dyed tagelmust wound around the head and drawn across "
+            "the bridge of the nose so only the eyes show, a loose full-length "
+            "indigo gandoura robe over wide trousers, a silver Agadez cross hung "
+            "on a cord at the chest, and worn leather sandals",
+            "a deep indigo tagelmust wrapped high on the head and veiling the lower "
+            "face, a flowing {earth_tone} gandoura over an indigo underrobe, a "
+            "tooled leather belt pouch, and flat leather sandals",
+        ],
+        "expression": "calm and composed",
+        "location": ["rolling desert dune", "cracked salt flats"],
+        "lighting": "harsh desert sun",
+        "shot_type": ["full body shot", "medium shot from waist up"],
+        "mood": "enigmatic",
+    },
+
+    "Maasai": {
+        "gender": "Male",
+        "ethnicity": "Kenyan",
+        "skin_tone": ["dark brown", "deep", "ebony"],
+        "eye_color": "dark brown",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "bohemian",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "expression": "calm and composed",
+        "location": "golden savanna with acacia trees",
+        "lighting": "golden hour sunlight",
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+        "variants": {
+            # The moran's ochred braids and the beaded disc collar of a married woman
+            # are different looks, not one look on two bodies, so they diverge fully.
+            "Male": {
+                "body_type": "lean",
+                "height": "very tall",
+                "facial_hair": "clean shaven",
+                "hair_color": "jet black",
+                "hair_length": "long",
+                "hair_texture": "coily",
+                "hair_style": "cornrows",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "outfit_description": [
+                    "a bright red checked shuka cloth knotted over one shoulder and "
+                    "falling to the knee, layered flat beaded collars in red, white "
+                    "and blue at the throat, beaded bands at the wrists and ankles, "
+                    "long ochre-reddened braids, and tyre-soled sandals",
+                    "two overlapping shuka cloths in red and {jewel_tone} plaid worn "
+                    "across the body, a broad beaded neckpiece, coiled beaded armbands, "
+                    "stretched earlobes carrying beaded discs, and flat leather sandals",
+                ],
+            },
+            "Female": {
+                "body_type": "slender",
+                "height": "tall",
+                "hair_length": "buzzed very short",
+                "hair_color": "jet black",
+                "hair_texture": "coily",
+                "hair_style": "natural and unstyled",
+                "hair_accessory": "no hair accessory",
+                "makeup_style": "no makeup",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a bright red checked shuka wrapped and knotted at one shoulder, "
+                    "a very wide flat beaded disc collar covering the chest in "
+                    "concentric rings of red, white, blue and orange, a beaded "
+                    "headband across a closely shaved head, stacked beaded bracelets, "
+                    "and flat leather sandals",
+                    "layered {jewel_tone} and red shuka cloths, a broad circular "
+                    "beaded collar worn over the shoulders, long beaded ear pendants "
+                    "hanging from stretched lobes, coiled wire armbands, and sandals",
+                ],
+            },
+        },
+    },
+
+    # The option pool has no Sami value, so the ethnicity is pinned to the states
+    # Sapmi spans rather than left to roll the whole 92-value list. Named for the
+    # garment (gakti) the way Andean Cholita is named for the wearer.
+    "Sami Gakti": {
+        "gender": "Female",
+        "ethnicity": ["Norwegian", "Finnish", "Swedish"],
+        "skin_tone": ["fair", "light", "porcelain"],
+        "outfit_style": "vintage retro",
+        "piercings": "no piercings beyond ears",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "expression": "calm and composed",
+        "location": ["snowy pine forest", "alpine meadow with wildflowers"],
+        "lighting": ["snow-reflected daylight", "overcast diffused daylight"],
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+        "variants": {
+            "Female": {
+                "body_type": "average",
+                "height": "average height",
+                "hair_color": ["dark blonde", "medium brown", "ash brown"],
+                "hair_length": "long",
+                "hair_texture": "slightly wavy",
+                "hair_style": "loose braids",
+                "makeup_style": "no makeup",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a deep blue wool gakti tunic banded at the hem, cuffs and collar "
+                    "with woven red, yellow and green ribbon, a tall four-winds cap in "
+                    "matching blue and red, a silver risku brooch fastening the collar, "
+                    "a braided belt, and reindeer-hide boots with upturned toes",
+                    "a {dark_color} wool gakti with bright ribbon banding at the "
+                    "shoulders and hem, a fringed woven shawl pinned with a domed "
+                    "silver brooch, a woven belt of tin-thread embroidery, and "
+                    "curl-toed hide boots bound with woven laces",
+                ],
+            },
+            "Male": {
+                "body_type": "stocky",
+                "height": "average height",
+                "facial_hair": "clean shaven",
+                "hair_color": ["dark blonde", "medium brown"],
+                "hair_length": "very short",
+                "hair_texture": "slightly wavy",
+                "hair_style": "natural and unstyled",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "a deep blue wool gakti tunic cut to the thigh and banded with "
+                    "woven red and yellow ribbon at the hem and cuffs, a tall "
+                    "four-winds cap, a wide tooled leather belt with a sheathed knife, "
+                    "and reindeer-hide boots with upturned toes",
+                    "a {dark_color} wool gakti over close-cut wool trousers, ribbon "
+                    "banding at the collar and hem, a silver-buckled belt, a woven "
+                    "band tied below each knee, and curl-toed hide boots",
+                ],
+            },
+        },
+    },
+
+    "Ukrainian Vyshyvanka": {
+        "gender": "Female",
+        "ethnicity": "Ukrainian",
+        "age": ["20", "22", "25", "28"],
+        "skin_tone": ["fair", "light"],
+        "eye_color": ["pale blue", "hazel", "dark brown"],
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "expression": "warm smile",
+        "location": ["rolling wheat field", "flower field in bloom"],
+        "lighting": "golden hour sunlight",
+        "shot_type": ["medium shot from waist up", "full body shot"],
+        "mood": "radiant",
+        "variants": {
+            "Female": {
+                "body_type": "average",
+                "height": "average height",
+                "hair_color": ["dark blonde", "light chestnut", "medium brown"],
+                "hair_length": "waist length",
+                "hair_texture": "slightly wavy",
+                "hair_style": "crown braid",
+                # The vinok is named in the costume, so the hair_accessory field is
+                # pinned off rather than left to add a second headpiece.
+                "hair_accessory": "no hair accessory",
+                "makeup_style": "barely there natural makeup",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a white linen vyshyvanka blouse densely embroidered in red and "
+                    "black geometric cross-stitch across the shoulders and sleeves, a "
+                    "wrapped woven plakhta skirt, a red woven sash at the waist, "
+                    "layered strings of red coral beads, a vinok flower crown trailing "
+                    "long coloured ribbons down the back, and red leather boots",
+                    "a white linen vyshyvanka embroidered in {jewel_tone} floral motifs "
+                    "down both sleeves, a full dark skirt with a woven apron, a braided "
+                    "sash, strands of red beads at the throat, and a wildflower vinok "
+                    "with ribbons",
+                ],
+            },
+            "Male": {
+                "body_type": "lean",
+                "height": "tall",
+                "facial_hair": "clean shaven",
+                "hair_color": ["dark blonde", "medium brown"],
+                "hair_length": "very short",
+                "hair_texture": "slightly wavy",
+                "hair_style": "natural and unstyled",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "a loose white linen vyshyvanka shirt with red and black geometric "
+                    "cross-stitch banding the standing collar, placket and cuffs, worn "
+                    "loose over dark wide trousers with a woven red sash knotted at the "
+                    "waist, and black leather boots",
+                    "a white linen vyshyvanka shirt embroidered in {jewel_tone} thread "
+                    "at the collar and cuffs, a braided woollen belt with tasselled "
+                    "ends, dark trousers tucked into knee boots, and a fur-trimmed cap",
+                ],
+            },
+        },
+    },
+
+    "Mongolian Deel": {
+        "gender": "Male",
+        "ethnicity": "Mongolian",
+        "skin_tone": ["warm tan", "tan", "golden tan"],
+        "eye_color": "dark brown",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "expression": "calm and composed",
+        "location": ["open meadow", "rolling desert dune"],
+        "lighting": ["golden hour sunlight", "overcast diffused daylight"],
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+        "variants": {
+            "Male": {
+                "body_type": "stocky",
+                "height": "average height",
+                "facial_hair": "clean shaven",
+                "hair_color": "jet black",
+                "hair_length": "very short",
+                "hair_texture": "sleek straight",
+                "hair_style": "natural and unstyled",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "outfit_description": [
+                    "a floor-length {jewel_tone} silk deel crossing right over left and "
+                    "fastened at the shoulder with knotted cloth buttons, a wide orange "
+                    "silk bus sash wound many times around the waist, a brimmed "
+                    "conical hat with an upturned edge, and heavy leather boots with "
+                    "upturned toes",
+                    "a quilted {dark_color} winter deel with a broad contrasting collar "
+                    "and cuff bands, a bright silk sash at the waist, a fur-lined "
+                    "loovuuz hat with earflaps, and thick upturned-toe riding boots",
+                ],
+            },
+            "Female": {
+                "body_type": "average",
+                "height": "average height",
+                "hair_color": "jet black",
+                "hair_length": "waist length",
+                "hair_texture": "sleek straight",
+                "hair_style": "loose braids",
+                "makeup_style": "no makeup",
+                "necklace": "no necklace",
+                "earrings": ["medium gold hoops", "long drop earrings"],
+                "bracelet": "none",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a floor-length {jewel_tone} silk deel with a high standing collar "
+                    "and long sleeves, crossing right over left and fastened with "
+                    "knotted cloth buttons, a wide contrasting silk sash at the waist, "
+                    "a tall embroidered headdress with coral and silver ornaments, and "
+                    "upturned-toe leather boots",
+                    "an embroidered {color} silk deel with wide padded shoulders and a "
+                    "contrast-banded hem, a silver-mounted sash, silver hair ornaments "
+                    "hung with coral beads, and boots with upturned toes",
+                ],
+            },
+        },
+    },
+
+    "Korean Hanbok": {
+        "gender": "Female",
+        "ethnicity": "Korean",
+        "skin_tone": ["fair", "light", "porcelain"],
+        "eye_color": "dark brown",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "expression": "serene",
+        "location": ["cherry blossom grove", "castle courtyard"],
+        "lighting": "soft morning light",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+        "variants": {
+            "Female": {
+                "body_type": "slender",
+                "height": "average height",
+                "hair_color": "jet black",
+                "hair_length": "waist length",
+                "hair_texture": "sleek straight",
+                "hair_style": "chignon",
+                "hair_part": "center part",
+                # The binyeo pin is named in the costume; the field is pinned off so a
+                # modern clip does not land beside it.
+                "hair_accessory": "no hair accessory",
+                "makeup_style": "barely there natural makeup",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a short {pastel} jeogori jacket with a curved white collar band "
+                    "and long {jewel_tone} goreum ribbon tied in a single loop at the "
+                    "chest, over a very full high-waisted chima skirt falling to the "
+                    "floor in soft folds, a long carved binyeo pin through a low "
+                    "chignon, and white boat-shaped beoseon socks",
+                    "a {color} silk jeogori with contrasting cuff and collar bands over "
+                    "a wide {pastel} chima gathered high under the bust, a norigae "
+                    "tassel ornament hung from the jacket tie, and flat embroidered "
+                    "silk shoes",
+                ],
+            },
+            "Male": {
+                "body_type": "lean",
+                "height": "average height",
+                "facial_hair": "clean shaven",
+                "hair_color": "jet black",
+                "hair_length": "long",
+                "hair_texture": "sleek straight",
+                "hair_style": "top knot",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "a {pastel} jeogori jacket over wide gathered baji trousers tied at "
+                    "the ankle, a long {jewel_tone} durumagi overcoat falling below the "
+                    "knee and fastened with a ribbon tie, a wide black horsehair gat hat "
+                    "with a tall crown and a chin cord, and white beoseon socks",
+                    "a pale linen jeogori and wide baji trousers under a sheer black "
+                    "horsehair overcoat, a woven belt, a tall brimmed gat hat, and flat "
+                    "black shoes",
+                ],
+            },
+        },
+    },
+
+    "Vietnamese Ao Dai": {
+        "gender": "Female",
+        "ethnicity": "Vietnamese",
+        "skin_tone": ["light", "light medium", "fair"],
+        "eye_color": "dark brown",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "expression": "gentle smile",
+        "location": ["terraced rice paddies", "botanical garden path"],
+        "lighting": ["soft morning light", "golden hour sunlight"],
+        "shot_type": "full body shot",
+        "mood": "peaceful",
+        "variants": {
+            "Female": {
+                "body_type": "very slim",
+                "height": "average height",
+                "hair_color": "jet black",
+                "hair_length": "waist length",
+                "hair_texture": "sleek straight",
+                "hair_style": "worn down",
+                "hair_part": "center part",
+                "makeup_style": "barely there natural makeup",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a close-fitting {pastel} silk ao dai tunic with a mandarin collar, "
+                    "split at the hip into long front and back panels that fall to the "
+                    "ankle, worn over wide white silk trousers, with a conical non la "
+                    "hat held by its chin ribbon and flat sandals",
+                    "a {jewel_tone} silk ao dai painted with sprays of blossom down one "
+                    "panel, a high mandarin collar fastened at the shoulder, wide "
+                    "matching silk trousers, and low heeled sandals",
+                ],
+            },
+            "Male": {
+                "body_type": "lean",
+                "height": "average height",
+                "facial_hair": "clean shaven",
+                "hair_color": "jet black",
+                "hair_length": "very short",
+                "hair_texture": "sleek straight",
+                "hair_style": "natural and unstyled",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "a loose {jewel_tone} brocade ao dai tunic with a mandarin collar "
+                    "and side slits reaching the knee, worn over wide dark trousers, "
+                    "with a flat wound khan dong turban and cloth shoes",
+                    "a plain {color} silk ao dai tunic buttoned along the right "
+                    "shoulder over straight white trousers, a wrapped khan dong "
+                    "headpiece, and flat black shoes",
+                ],
+            },
+        },
+    },
+
+    # --- 0.96.0: style subcultures -----------------------------------------
+    # Gated against what already ships: Techwear/Gorpcore was declined because
+    # Cyberpunk Netrunner is already a techwear look, and the sweet-street silhouette
+    # is already Kawaii Street Fashion. These four bring a silhouette none of
+    # Emo / Punk Rocker / 1990s Goth / 1960s Mod / 1950s Greaser / Hair Metal owns.
+
+    "Visual Kei": {
+        "gender": "Female",
+        "ethnicity": "Japanese",
+        "age": ["20", "22", "25", "28"],
+        "outfit_style": "edgy alternative",
+        "skin_tone": ["porcelain", "very pale"],
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "intense gaze",
+        "location": ["concert hall backstage", "empty theater stage with the curtain up"],
+        "lighting": ["dramatic single overhead spotlight", "colored gel lighting"],
+        "shot_type": ["medium shot from waist up", "full body shot"],
+        "mood": "intense",
+        "variants": {
+            # Deliberately androgynous on both sides -- that is the style, not a
+            # crossover. The male pool has no dramatic `makeup_style`, so the male
+            # variant carries the look through eyeliner/eye_makeup/lips, which do have
+            # full male pools.
+            "Male": {
+                "body_type": "very slim",
+                "height": "tall",
+                "facial_hair": "clean shaven",
+                "hair_color": ["jet black", "platinum white", "deep red"],
+                "hair_length": "shoulder length",
+                "hair_texture": "thick and voluminous",
+                "hair_style": "windswept",
+                "makeup_style": "no makeup",
+                "nails": "black polish",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "rings": "none",
+                "other_jewelry": "no other jewelry",
+                "outfit_description": [
+                    "heavy stage makeup of stark white foundation, dramatic black "
+                    "winged eyeliner and deep red lips, worn with a heavily layered "
+                    "{dark_color} costume of an asymmetric "
+                    "ruffled shirt under a cropped military jacket with corded frogging "
+                    "and buckled straps, tight leather trousers, lace fingerless gloves, "
+                    "a stack of pendant chains, and tall buckled platform boots",
+                    "heavy stage makeup of pale foundation, thick smudged black "
+                    "eyeliner and dark lips, worn with a long {dark_color} brocade "
+                    "coat with flared cuffs over a lace "
+                    "jabot shirt, a corseted waist belt, torn lace sleeves, layered "
+                    "silver chains and rings, and knee-high platform boots",
+                ],
+            },
+            "Female": {
+                "body_type": "very slim",
+                "height": "tall",
+                "hair_color": ["jet black", "platinum white", "deep red"],
+                "hair_length": "shoulder length",
+                "hair_texture": "thick and voluminous",
+                "hair_style": "windswept",
+                "makeup_style": "editorial makeup",
+                "eyeliner": "dramatic winged",
+                "eye_makeup": "smoky black",
+                "lips_makeup": "deep red",
+                "nails": "black polish",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "rings": "none",
+                "other_jewelry": "no other jewelry",
+                "outfit_description": [
+                    "a heavily layered {dark_color} stage costume of an asymmetric "
+                    "ruffled blouse under a cropped military jacket with corded frogging "
+                    "and buckled straps, a tiered lace skirt over torn tights, lace "
+                    "fingerless gloves, layered pendant chains, and tall platform boots",
+                    "a long {dark_color} brocade coat with flared cuffs over a lace "
+                    "jabot blouse, an outer corset, torn lace sleeves, stacked silver "
+                    "chains and rings, and knee-high buckled platform boots",
+                ],
+            },
+        },
+    },
+
+    "Cybergoth": {
+        "gender": "Female",
+        "age": ["18", "20", "22", "25"],
+        "outfit_style": "edgy alternative",
+        "skin_tone": ["porcelain", "very pale", "pale"],
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "expression": "confident",
+        "location": ["neon-lit nightclub", "urban alley with graffiti"],
+        "lighting": ["neon sign glow in multiple colors", "club strobe lighting"],
+        "shot_type": "full body shot",
+        "mood": "intense",
+        "variants": {
+            "Female": {
+                "body_type": "slim",
+                "height": "average height",
+                "hair_color": ["jet black", "hot pink", "electric blue"],
+                "hair_length": "shoulder length",
+                "hair_texture": "sleek straight",
+                "hair_style": "high ponytail",
+                "makeup_style": "club makeup",
+                "eyeliner": "graphic editorial liner",
+                "eye_makeup": "colorful bold eyeshadow",
+                "lips_makeup": "plum",
+                "nails": "black polish",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "rings": "none",
+                "other_jewelry": "no other jewelry",
+                "outfit_description": [
+                    "a black PVC corset top and pleated mini skirt over ripped fishnet "
+                    "tights, a mass of {neon} synthetic cyberlox falls bound into a high "
+                    "ponytail, tinted goggles pushed up on the forehead, a ribbed "
+                    "respirator mask hanging at the throat, striped arm warmers, and "
+                    "enormous buckled platform boots",
+                    "a {neon} mesh top under a black vinyl harness and utility skirt, "
+                    "UV-reactive tubing woven through the hair, welding goggles, "
+                    "fingerless gloves, layered rubber wristbands, and towering "
+                    "platform boots with stacked buckles",
+                ],
+            },
+            "Male": {
+                "body_type": "lean",
+                "height": "tall",
+                "facial_hair": "clean shaven",
+                "hair_color": ["jet black", "electric blue", "lime green"],
+                "hair_length": "short pixie",
+                "hair_texture": "sleek straight",
+                "hair_style": "slicked back",
+                "makeup_style": "no makeup",
+                "nails": "black polish",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "rings": "none",
+                "other_jewelry": "no other jewelry",
+                "outfit_description": [
+                    "blacked-out eye makeup smudged wide around both eyes, with a "
+                    "sleeveless black mesh top under a buckled vinyl harness, "
+                    "tapered black cargo trousers strapped at the thigh, {neon} "
+                    "cyberlox falls tied back from a shaved undercut, tinted goggles, "
+                    "a ribbed respirator at the throat, and heavy platform boots",
+                    "heavy black eye makeup ringing both eyes, with a "
+                    "black PVC jacket with {neon} panel trim over a mesh shirt, "
+                    "strapped utility trousers, UV tubing looped at the belt, welding "
+                    "goggles pushed up, and buckled platform boots",
+                ],
+            },
+        },
+    },
+
+    "Rude Boy": {
+        "gender": "Male",
+        "ethnicity": ["Jamaican", "English"],
+        "age": ["20", "22", "25", "28"],
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "expression": "confident",
+        "location": ["indie record store", "cobblestone old-town street"],
+        "lighting": ["harsh fluorescent lighting", "overcast diffused daylight"],
+        "shot_type": ["full body shot", "medium shot from waist up"],
+        "mood": "self-assured",
+        "variants": {
+            # 2-Tone's sharp mohair suit is a different garment from 1960s Mod's
+            # geometric shift dress, and the checkerboard is unique to it.
+            "Male": {
+                "body_type": "lean",
+                "height": "average height",
+                "facial_hair": "clean shaven",
+                "hair_color": ["jet black", "dark brown"],
+                "hair_length": "buzzed very short",
+                "hair_texture": "sleek straight",
+                "hair_style": "natural and unstyled",
+                "makeup_style": "no makeup",
+                "nails": "natural short nails",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "rings": "none",
+                "outfit_description": [
+                    "a sharp two-tone tonic suit with narrow trousers cut short at the "
+                    "ankle, a crisp white shirt with a slim black tie, a black-and-white "
+                    "checkerboard pocket square, a flat-brimmed black porkpie hat, white "
+                    "socks and polished black loafers",
+                    "a slim {dark_color} mohair suit over a button-down shirt and a thin "
+                    "tie, black-and-white checkerboard braces, a porkpie hat tilted "
+                    "forward, dark sunglasses, and shined loafers",
+                ],
+            },
+            "Female": {
+                "body_type": "slim",
+                "height": "average height",
+                "hair_color": ["jet black", "dark brown"],
+                "hair_length": "short pixie",
+                "hair_texture": "sleek straight",
+                "hair_style": "crew cut",
+                "makeup_style": "soft natural makeup",
+                "eyeliner": "classic thin cat eye",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bracelet": "none",
+                "rings": "none",
+                "nails": "natural short nails",
+                "outfit_description": [
+                    "a slim tailored {dark_color} suit jacket over a fitted white shirt "
+                    "and a thin black tie, cropped straight trousers, black-and-white "
+                    "checkerboard braces, a black porkpie hat, and flat loafers",
+                    "a sharp two-tone jacket over a black-and-white checkerboard shift "
+                    "dress, white socks, a slim tie knotted at the collar, dark "
+                    "sunglasses, and polished flat loafers",
+                ],
+            },
+        },
+    },
+
+    # Kept male-only and under the period name: the drape jacket and creepers are the
+    # concept, and the name is gendered (the same reason Roaring Twenties Gent and
+    # Sapeur are not variants pairs).
+    "Teddy Boy": {
+        "gender": "Male",
+        "ethnicity": "English",
+        "age": ["18", "20", "22", "25"],
+        "body_type": "lean",
+        "height": "tall",
+        "facial_hair": "clean shaven",
+        "hair_color": ["jet black", "dark brown", "near black"],
+        "hair_length": "very short",
+        "hair_texture": "sleek straight",
+        "hair_style": "pompadour",
+        "skin_tone": ["fair", "light"],
+        "outfit_style": "vintage retro",
+        "piercings": "no piercings beyond ears",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "makeup_style": "no makeup",
+        "nails": "natural short nails",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "bracelet": "none",
+        "rings": "none",
+        "other_jewelry": "no other jewelry",
+        "outfit_description": [
+            "a long {dark_color} Edwardian drape jacket to mid-thigh with a black "
+            "velvet collar and turned-back velvet cuffs, a brocade waistcoat, a "
+            "narrow bootlace tie fastened with a metal clasp, high-waisted drainpipe "
+            "trousers cut short at the ankle, bright socks, and thick crepe-soled "
+            "suede brothel creepers",
+            "a {menswear_color} drape jacket with contrasting velvet trim and a deep "
+            "single vent, a patterned waistcoat over a white shirt, a slim bootlace "
+            "tie, tight drainpipe trousers, and heavy crepe-soled creepers",
+        ],
+        "expression": "smirking",
+        "location": ["wood-paneled pub", "cobblestone old-town street"],
+        "lighting": ["warm incandescent lamp glow", "fog-diffused streetlamp glow"],
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+    },
 }
 
 
@@ -3627,8 +4355,13 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a canvas work jacket over a dust-caked shirt with heavy gloves tucked in the belt and a chisel and wooden mallet in hand"],
     "Winemaker": ["a {earth_tone} quilted vest over a checked shirt with dark trousers, leather boots, and a stemmed tasting glass in hand",
      "a linen shirt with rolled sleeves under a wine-stained {dark_color} cellar apron, dark trousers, and a bunch of grapes held up to the light"],
+    # 0.96.0: the second alternate used to be a tagelmust look, which the new Tuareg
+    # archetype now owns properly (veiled face, Agadez cross, Berber ethnicity). Two
+    # names for one look is the duplication the curation rules forbid, so it is
+    # re-pointed at a generic Saharan traveller rather than deleted -- the entry keeps
+    # its two-costume rotation, so no seed loses a choice.
     "Desert Nomad": ["flowing layered {earth_tone} desert robes with a wrapped head scarf trailing loose ends, a braided belt, and worn leather sandals",
-     "an indigo-dyed desert robe with a wrapped tagelmust head scarf, a braided leather belt, and layered silver amulet necklaces"],
+     "a hooded {earth_tone} burnous cloak over a long belted tunic, a coiled cord headband holding a loose head cloth, a slung waterskin, and dusty leather boots"],
     "Tribal Shaman": ["layered hide and woven-cloth garments with a feathered mantle, bone-and-bead necklaces, and a carved staff",
      "woven {earth_tone} ceremonial robes with feather-and-bead adornments, painted markings on the arms, and a smoking herb bundle in hand"],
     "Trapeze Artist": ["a shimmering {jewel_tone} sequined leotard with sheer sleeves, tights, and wrapped wrist guards",

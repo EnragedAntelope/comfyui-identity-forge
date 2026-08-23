@@ -1013,6 +1013,46 @@ Finally, the tattoo gets **its own sentence**, not another item on the clothing 
 A marking appended to a long garment list is exactly what made Judy Alvarez's face
 tattoo and the Kabuki Actor's kumadori fail to render.
 
+### Limb and part counts: position beats repetition (0.96.0, measured)
+
+The same rule governs **anatomy that is not the head**, and it was measured directly on
+`Dexter Jettster`. His costume stated the arm count *three times in one sentence* —
+"all four sleeves rolled to the elbow", "over four thick arms", "a second pair of
+shoulders set below the first so all four arms are clearly visible" — and the render
+still came back with **two arms**. Saying it more times inside the `He wears …`
+sentence does nothing.
+
+What fixed it was moving the count into a sentence that renders **before** the
+clothing. `mask` is voiced as its own `He has …` sentence (see the note on `_MASK_KEY`),
+so the count was appended there — "…carried on a four-armed body: two pairs of arms, an
+upper pair at the shoulders and a second pair set lower on the ribs" — and the very next
+render produced four correctly-placed arms. Confirmed again on `General Grievous` (four
+arms, four sabers) and `Stitch`.
+
+Two consequences for authoring:
+
+* **A count is load-bearing prose, so give it a clause of its own, early.** Restating it
+  later is free but does not carry the render.
+* `mask` means *what the head looks like*, so carrying body anatomy in it is a
+  compromise, taken because **a non-feral entry has no per-entry anatomy sentence**. The
+  costume keeps its own mention of the count so the Unmask toggle — which drops `mask` —
+  degrades to the old behaviour instead of losing the limbs entirely. The four
+  multi-armed entries with no `mask` (`Shiva (Record of Ragnarok)`, `Salaak`, `Spiral`,
+  `Greez Dritus`) therefore **cannot** be fixed this way; closing that properly needs an
+  optional anatomy sentence for non-feral entries, mirroring `_MASK_KEY`.
+
+### Never negate in prompt data
+
+A negated clause lands as the thing it excludes: t2i draws "no wings", not the absence of
+wings. Six feral entries shipped nine of them at 0.95.0 (`Falkor` "with no scales
+anywhere" **and** "with no wings at all", `Toothless` "no horns and no visible teeth",
+`King Ghidorah` "no forelimbs at all", …) and `Falkor` rendered with branched antlers and
+a tangle of limbs. All nine were rewritten as positive statements at 0.96.0 — say what
+*is* there ("furred from mane to tail tip", "an unbroken domed brow", "the shoulders
+given over entirely to the wings"). `-less` adjectives count too (`scaleless`,
+`featherless`); `lipless` is kept because it names a real mouth shape rather than an
+absence. Applies to `mask`, `costume` and every `anatomy` slot.
+
 ## Considered and deferred
 
 Design notes for ideas that were scoped but deliberately not built. Kept so the reasoning
@@ -1972,6 +2012,16 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   the engine will never supply makeup on a man. Anything a male character wears on his face —
   Lobo's blacked-out lips, a clown's greasepaint, corpse paint — renders only if the costume
   string says so.
+  **This binds archetypes too, and the failure there is silent (0.96.0).** The whole makeup
+  sentence in `_format_prose` is gated on `makeup_style` being present, and `makeup_style`'s
+  *male* pool holds only natural values, so a male archetype variant that locks
+  `eyeliner`/`eye_makeup`/`lips_makeup` gets **no makeup sentence at all** — the locks are
+  accepted, validate clean, and never reach the prose. Caught on the `Visual Kei` and
+  `Cybergoth` male variants, whose whole point is the makeup. The fix is the same one this
+  bullet already prescribes: pin `makeup_style: "no makeup"` (so no contradictory "soft natural
+  makeup" lead-in can roll) and write the makeup into `outfit_description`, which always
+  renders. Same class as any dead widget: a field accepted on every build and never voiced —
+  check what `_format_prose` actually reads before authoring content into a field.
 - **A franchise-disambiguated key must not restate its franchise in the label (0.77.0).** The
   cosplay prefix is built as `f"{cosplay_of} ({franchise})"`, so the 29 entries whose key is
   disambiguated *by their franchise* rendered it twice — `Cosplaying as Red (Pokemon)
