@@ -84,7 +84,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Chie Satonaka, Yukiko Amagi, Rise Kujikawa, Yukari Takeba, Fuuka Yamagishi (Persona) | School uniform plus one coloured jacket. That is the exact shape flagged below as the roster's softest already-shipped entries — adding five more of it would move the bar, not meet it. The Persona entries that shipped at 0.88.0 all have a distinct non-uniform silhouette. |
 | Scout, Soldier (Team Fortress 2) | The seven that shipped each carry a silhouette that reads alone. Scout is a backwards baseball cap over a t-shirt and Soldier is a generic helmeted soldier — both need the franchise name to do the work. |
 | The rest of the Guilty Gear cast — Potemkin, Faust, Chipp Zanuff, Nagoriyuki, Ramlethal, Axl Low | The curated eleven already cover every distinct silhouette in the cast. This is the League ceiling applied early: a franchise stops where more entries stop adding new visual ground. |
-| Ork Boyz, Necrons (Warhammer 40,000) | No worn look — a hulking green brute and a skeletal metal automaton. **Creature node** shape, the same call as Appa and Simba. |
+| Ork Boyz, Necrons (Warhammer 40,000) | No worn look — a hulking green brute and a skeletal metal automaton. Both are shapes a person fits inside, so they are the mascot-suit case rather than the feral one, and neither adds a silhouette the four shipped 40K entries lack. (The old wording filed them "the same call as Appa and Simba"; Appa shipped at 0.95.0 and Simba did not — see the quadruped row below for the test that separates them.) |
 | Chaos Space Marines, Aeldari Farseers (Warhammer 40,000) | More armour. The four that shipped were chosen because two of them are cloth; these would re-add exactly the silhouette the original skip was right about. |
 
 ### Whole classes
@@ -92,10 +92,10 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Class | Why |
 |---|---|
 | Akumatized Miraculous villains (Volpina, Antibug, Style Queen, Timebreaker, Miracle Queen…) | Mostly one-episode designs. **Chat Blanc** is the exception and ships as an *alternate* on Cat Noir, not a separate entry. |
-| The kwamis (Tikki, Plagg, Wayzz…) | Palm-sized floating creatures with no worn look. Creature-node shape. |
-| Quadrupeds with no worn look — Appa, Momo, Luna, Artemis, Nala, Simba, Baloo, Shere Khan, Yogi Bear, Tom & Jerry, Courage, Reptar | No garments to describe. The **Creature node** already covers this ground exactly, rendering an animal form slot by slot. |
+| The kwamis (Tikki, Plagg, Wayzz…) | Palm-sized floating creatures with no worn look. Re-checked against the 0.95.0 feral test and still closed: each is a simple coloured blob with a head, which is not a body `data/creatures.py` cannot render, and at palm scale nothing distinguishing survives. |
+| Quadrupeds with no worn look — Nala, Simba, Baloo, Shere Khan, Yogi Bear, Tom & Jerry, Courage | **Reason replaced at 0.95.0, verdict unchanged for these seven.** The old reason ("the Creature node already covers this ground exactly") was wrong, and `Appa`, `Momo`, `Luna` and `Reptar` shipped at 0.95.0 under `body_plan: "feral"`. The real test is the mirror of the creature roster's *anatomy, not species* bar: **does the beast bring a body `data/creatures.py` cannot render?** These seven do not — `lion`, `bear`, `tiger` and `cat` render them and the name changes nothing a model draws, so by the 0.93.0 rule the difference is a `palette` and a `size_scale`. Appa (six legs, brown arrow) and Catbus (twelve legs, lit windows) do. See [architecture.md → "Animal characters split four ways"](architecture.md). |
 | The full ~170-champion League roster | Offered and declined. ~155 adds would make League the largest franchise in the pack and take Video Games to ~28%, letting one game steer the global Random pool. The curated 15 → 38 expansion is where it stops. |
-| The rest of the Pixar gap — Monsters Inc., Ratatouille, Turning Red | Closed unshipped at 0.88.0. Sulley and Mike are mascot-suit shapes already covered ~50 times over; Remy is a quadruped with no worn look (**Creature node**); Mei's red panda form is the same question. None brings new visual ground. |
+| The rest of the Pixar gap — Monsters Inc., Ratatouille, Turning Red | Closed unshipped at 0.88.0. Sulley and Mike are mascot-suit shapes already covered ~50 times over; Remy is an ordinary rat and Mei's red panda form an ordinary red panda, both of which `data/creatures.py` already renders, so they fail the 0.95.0 feral test too. None brings new visual ground. |
 | Power Rangers | Closed unshipped. This is the Miraculous case at its worst — a whole cast in the same suit in different colours, where the shared mechanics are the risk and no single entry earns its place. |
 | Gravity Falls; Hocus Pocus | Closed unshipped at 0.88.0 when the row they shared with Encanto was split. Encanto had four distinct silhouettes; these two are ordinary modern dress and period costume respectively, carried by the ensemble rather than by any one look. |
 
@@ -199,3 +199,18 @@ question resolved at exactly those three, not an open-ended class. `Robin Hood (
 into `Mickey Mouse & Friends`, which would have crossed `_FRANCHISE_SCOPE_MINIMUM` and added an
 unplanned `random_scope` option). A further funny-animal batch needs a fresh case, same as any
 other candidate.
+
+**Closed at 0.95.0 — the fictional-animal question.** Settled as a mechanism
+(`body_plan: "feral"`) rather than an admit/exclude list: six misfiled entries were
+retrofitted (`Bantha`, `Tauntaun`, `Loth-Cat`, `Bulbasaur`, `Eevee`, `Jabba the Hutt`)
+and 22 shipped (Appa, Momo, Toothless, Falkor, Buckbeak, Fawkes, Aragog, Chocobo,
+Cactuar, Drogon, Ghost the Direwolf, Shelob, Fell Beast, Arcanine, Gyarados, Lapras,
+Catbus, Haku, Luna, Mothra, King Ghidorah, Reptar). The admission test is in
+[architecture.md → "Animal characters split four ways"](architecture.md) and it is
+narrow on purpose — it is the creature roster's own *anatomy, not species* bar pointed
+the other way, so it admits Appa and Catbus and keeps Simba, Baloo, Sven, Epona and
+Shadowfax closed. **A new beast needs a written case that the creature roster cannot
+already render its body.** Deferred with reasons, not declined: `Smaug` (belongs to
+*The Hobbit*; a one-entry sub-franchise split is not yet worth it) and Sailor Moon's
+`Artemis` (the key is taken by the Greek goddess, and a rename is not free on the
+gallery side).

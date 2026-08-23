@@ -553,13 +553,24 @@ def validate() -> list[str]:
             errors.append(f"cosplayer '{name}': size_scale must be 'giant' or 'tiny', got {size_scale!r}")
         if size_scale and (not isinstance(scale_prose, str) or not scale_prose):
             errors.append(f"cosplayer '{name}': size_scale requires a non-empty 'scale_prose'")
-        if scale_prose is not None and not size_scale:
-            errors.append(f"cosplayer '{name}': scale_prose is only allowed with size_scale")
-        if size_scale:
+        # A feral entry may carry ``scale_prose`` on its own: it states a concrete
+        # animal size ("about eight feet at the shoulder") without claiming the
+        # giant/tiny *tier*, which is a scene control rather than a size. Everyone
+        # else still needs the tier to justify the free-text height.
+        if scale_prose is not None and not size_scale and entry.get("body_plan") != "feral":
+            errors.append(f"cosplayer '{name}': scale_prose is only allowed with "
+                          f"size_scale (or on a feral entry)")
+        if scale_prose:
             combined = f"{entry.get('costume', '')} {scale_prose or ''}".lower()
             for banned in (r"beside (a|the)\b", r"everyday objects?", r"apples high",
                            r"\binsect[- ]sized", r"\bant[- ]sized", r"\bdoll[- ]sized",
-                           r"\bpalm[- ]sized", r"\bdwarfing", r"next to (a|the)\b"):
+                           r"\bpalm[- ]sized", r"\bdwarfing", r"next to (a|the)\b",
+                           # 0.95.0: the same trap in comparative clothing -- "about
+                           # the size of a large riding horse" renders the horse. It
+                           # slipped past the list above because it names no object
+                           # *position*, only a comparison. Caught on a real draft.
+                           r"\bsize of (a|an|the)\b", r"\bas (big|large|tall|long) as\b",
+                           r"\bthe size of\b", r"\bcompared to\b"):
                 if re.search(banned, combined):
                     errors.append(
                         f"cosplayer '{name}': scale text matches comparison-object "
@@ -568,6 +579,86 @@ def validate() -> list[str]:
         # Every key must be a real field and every value a valid option for it.
         for section in ("signature", "physique"):
             errors += _validate_field_map(name, section, entry.get(section, {}))
+
+        # --- feral body plan (0.95.0) ---------------------------------
+        # A named beast rendered as itself rather than as a person in a suit. The
+        # entry emits the Creature node's Species & Anatomy payload, so the keys it
+        # feeds have to be checked here -- nothing downstream validates slot text
+        # (that freedom is what lets a non-human escape the human option pools).
+        body_plan = entry.get("body_plan")
+        if body_plan is not None:
+            if body_plan != "feral":
+                errors.append(f"cosplayer '{name}': body_plan must be 'feral', "
+                              f"got {body_plan!r}")
+            # covers_face/covers_body are what drop the human face, jewellery,
+            # ethnicity and skin tone; without them a beast renders a human head
+            # and a necklace over its fur. The mask IS the head slot.
+            if not entry.get("covers_face"):
+                errors.append(f"cosplayer '{name}': a feral entry must set covers_face")
+            if not entry.get("covers_body"):
+                errors.append(f"cosplayer '{name}': a feral entry must set covers_body")
+            creature_of = entry.get("creature_of")
+            if not creature_of:
+                errors.append(f"cosplayer '{name}': a feral entry needs 'creature_of' "
+                              f"(the species noun the prose leads with)")
+            elif not isinstance(creature_of, str):
+                errors.append(f"cosplayer '{name}': creature_of must be a string")
+            else:
+                # It renders as "<label>, a {creature_of} with a {build} and {size}",
+                # so it must be a BARE noun phrase. A "with" clause inside it collides
+                # with the engine's own ("... a creature with a bulb on its back with a
+                # stocky build"), and a leading article doubles the one the engine adds.
+                # Spaced conjunctions only: a hyphenated compound ("crimson-and-gold
+                # phoenix") is one adjective, not a clause.
+                if re.search(r"\s(with|and)\s|,", creature_of):
+                    errors.append(f"cosplayer '{name}': creature_of must be a bare noun "
+                                  f"phrase -- no 'with'/'and'/comma clause "
+                                  f"({creature_of!r})")
+                if re.match(r"(?i)(a|an|the)\s", creature_of):
+                    errors.append(f"cosplayer '{name}': creature_of must not lead with an "
+                                  f"article; the engine adds one ({creature_of!r})")
+                if creature_of != creature_of.strip() or creature_of[:1].isupper():
+                    errors.append(f"cosplayer '{name}': creature_of must be lowercase and "
+                                  f"unpadded ({creature_of!r})")
+            # A feral entry has no worn look, so a held prop has no hand to hold it.
+            # ``eyes`` overrides eye_color, which the head slot suppresses anyway;
+            # a feral entry states its eyes in anatomy.eyes instead.
+            for banned in ("prop", "prop_costume", "body_paint", "skin", "eyes"):
+                if entry.get(banned):
+                    errors.append(f"cosplayer '{name}': {banned!r} is not valid on a "
+                                  f"feral entry")
+            # Alternate looks vary a *costume*; a body plan is not a look.
+            if entry.get("costumes"):
+                errors.append(f"cosplayer '{name}': 'costumes' alternates are not "
+                              f"supported on a feral entry")
+        for key in ("anatomy", "poses", "creature_of", "creature_class"):
+            if entry.get(key) is not None and body_plan != "feral":
+                errors.append(f"cosplayer '{name}': {key!r} requires body_plan 'feral'")
+        anatomy = entry.get("anatomy")
+        if anatomy is not None:
+            if not isinstance(anatomy, dict) or not anatomy:
+                errors.append(f"cosplayer '{name}': 'anatomy' must be a non-empty dict")
+            else:
+                for slot, text in anatomy.items():
+                    if slot not in CREATURE_SLOTS:
+                        errors.append(f"cosplayer '{name}': anatomy slot {slot!r} is not "
+                                      f"a creature slot {list(CREATURE_SLOTS)}")
+                    elif slot in ("head", "integument"):
+                        errors.append(f"cosplayer '{name}': anatomy.{slot} would collide "
+                                      f"with the {'mask' if slot == 'head' else 'costume'} "
+                                      f"key, which fills that slot")
+                    if not isinstance(text, str) or not text.strip():
+                        errors.append(f"cosplayer '{name}': anatomy.{slot} must be a "
+                                      f"non-empty string")
+        poses = entry.get("poses")
+        if poses is not None and (not isinstance(poses, list) or not poses
+                                  or not all(isinstance(p, str) and p for p in poses)):
+            errors.append(f"cosplayer '{name}': 'poses' must be a non-empty list of "
+                          f"non-empty strings")
+        creature_class = entry.get("creature_class")
+        if creature_class is not None and creature_class not in CREATURE_CLASSES:
+            errors.append(f"cosplayer '{name}': creature_class {creature_class!r} is not "
+                          f"one of {list(CREATURE_CLASSES)}")
 
         # Optional ``costumes`` alternate-look list: each item is a plain costume
         # string or a dict overlay of _LOOK_OVERRIDE_KEYS. The node rng-picks one look

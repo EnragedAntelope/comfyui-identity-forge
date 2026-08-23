@@ -424,12 +424,31 @@ outlive any one candidate list.
   (Pikachu, Moogle, Bugs Bunny, the TMNT, Mr. Krabs…), and `size_scale: "tiny"` handles
   a three-foot subject. Ask *"is this a small person, or a person in a small-creature
   suit?"* — only the first is excluded.
-- **Animal characters split three ways, not two.** (a) Quadrupeds with no worn look at
-  all (Appa, Simba, Luna) — **Creature node**, not the roster. (b) Full mascot suits
-  (Pikachu, Mr. Krabs) — ordinary entries, mechanism long settled. (c) Animals wearing
-  real garments (Sandy Cheeks, Gadget Hackwrench, Maid Marian) — also ordinary entries:
-  `covers_body: True` with the animal head written into `mask`. Only (a) is excluded, and
-  it is excluded for the worn-look rule, not for being an animal.
+- **Animal characters split four ways (0.95.0; was three).** (a) A *generic* animal that
+  the name adds nothing to — a wolf, a lion, a bear — **Creature node**. (b) Full mascot
+  suits (Pikachu, Mr. Krabs, Rancor, Wampa) — ordinary entries, mechanism long settled.
+  (c) Animals wearing real garments (Sandy Cheeks, Gadget Hackwrench, Maid Marian) — also
+  ordinary entries: `covers_body: True` with the animal head written into `mask`. (d) A
+  **named fictional beast whose canonical body the creature roster cannot render** —
+  Appa, Toothless, Catbus, Buckbeak, Mothra — an ordinary roster entry carrying
+  `body_plan: "feral"` (see below).
+
+  The old three-way rule sent (d) to the Creature node on the grounds that it "already
+  covers this ground exactly". **It does not, and four entries had quietly proved it:**
+  `Bantha`, `Bulbasaur`, `Eevee` and `Loth-Cat` were shipping in the roster in violation
+  of the rule, plus `Jabba the Hutt` and `Mynock`. `data/creatures.py` is a taxonomy of
+  *generic anatomies* with no name and no `franchise` key, and its own bar (0.93.0,
+  "anatomy, not species") would reject Appa as a bison with a `palette` — Appa is
+  six-legged, chalk-white, and carries a brown arrow. So Appa was producible by neither
+  node, which was the actual gap.
+
+  Two tests separate the cases. **(d) vs (a): does the beast bring a body the creature
+  roster cannot render?** Appa (six legs, arrow), Catbus (twelve legs, lit windows),
+  Buckbeak (eagle front, horse back), Luna (crescent-moon mark) — yes. Simba, Nala,
+  Baloo, Shere Khan, Sven, Epona, Shadowfax — **no**, and they stay declined: by the
+  0.93.0 rule the difference from `lion` / `bear` / `tiger` / `horse` is a `palette` and
+  a `size_scale`. **(d) vs (b): could one person be inside it?** Rancor and Wampa were
+  literally suit performers and keep the mascot idiom; nobody can be inside a bantha.
 - **A whole cast in near-identical suits makes the *shared* mechanics the risk**, not the
   individual entries. Writing the Miraculous Ladybug team surfaced three that recurred
   per-entry: a talisman worn **at the throat** needs `necklace: "no necklace"` (Cat Noir's
@@ -653,6 +672,69 @@ Conventions (keep the data coherent):
   Comics & Cartoons). The Cosplayer node's `random_scope` control narrows the `Random — …` picks
   by category (combines with the gender scope); `get_cosplayer_names(gender, category)` does the
   filtering. Unmapped franchises fall back to a default.
+
+### Writing a feral entry (`body_plan: "feral"`, 0.95.0)
+
+A named beast is rendered **as the beast**. The entry emits the Creature node's
+`Species & Anatomy` payload instead of a costume, so the engine's existing species
+prose path and Feral suppression do all the work — there is no second prose path, and
+`nodes/identity_forge_cosplayer.py` imports the Creature node's own `_suppression()`
+rather than restating its lists, so the two producers cannot drift.
+
+| Entry key | Becomes | Notes |
+|---|---|---|
+| `mask` | the `head` slot | reused, not renamed, so `entry_hash`, the Masked/Mascot scopes and the gallery keep working |
+| `costume` | the `integument` slot | colour and material only; it is not clothing |
+| `anatomy` | any other creature slot | `eyes`, `arms`, `hands`, `legs_feet`, `wings`, `tail`, `extras` |
+| `creature_of` | the subject noun | a **bare lowercase noun phrase**, no article and no `with`/`and` clause |
+| `poses` | replaces `_FERAL_POSES` | for a body plan the default pool does not fit (a serpent cannot walk) |
+| `scale_prose` | the `height` value | may stand **without** a `size_scale` tier here, uniquely |
+
+**Word `scale_prose` as an appositive here, not a conjunction.** The other 101 tiered
+entries read "tiny and barely a foot tall", which works because a human entry has three
+core items (build, height, skin tone) and `_join` separates them with commas. A feral
+entry has exactly two — there is no skin tone — so the conjunctive form renders *"with a
+stocky build **and** tiny **and** barely two feet long"*. "small, about two feet long
+from nose to rump" is the correct form for this path; do not "align" it with the others.
+
+`covers_face` and `covers_body` are both **required** — they are what drop the human
+Face/Hair/Makeup, the jewellery, the accessories and (together) the skin tone and
+ethnicity. `physique` applies in **both** look levels, because there is no person
+underneath to randomize; that also closes the costume-asserts-a-body-trait problem
+(backlog "Still to consider" #2) for these entries. `prop`, `body_paint`, `skin`,
+`eyes` and `costumes` alternates are rejected by `validate_data.py`: a beast has no
+hand for a prop, its colour is its integument, and a body plan is not a look.
+
+**Prose framing.** A feral subject does **not** take the `Cosplaying as X:` prefix —
+that framing tells a t2i model to render a human in a suit, which is precisely the
+failure the path exists to fix. The label is apposed instead: *"Appa (Avatar: The Last
+Airbender), a six-legged flying sky bison with …"*. Derived from the species payload in
+`_format_prose`, so no signature changed and `prompt_json` still records `cosplay_of`.
+`Unmask` is forced off: there is no person under a bantha to reveal, and clearing
+`covers_face` let the human Face group back in ("His expression is warm smile").
+
+**Write the anatomy so it renders with the NAME STRIPPED OUT.** Most checkpoints have
+never heard of a loth-cat or a fell beast; an entry that leans on the name renders a
+generic animal. Each slot goes silhouette/proportion → colour → material → markings:
+
+- **Count and proportion explicit** — "six thick columnar legs", "three long
+  independent necks", "twelve legs in six pairs". Never "many legs".
+- **Colour named**, and stated on the integument when the colour *is* the identity
+  (Appa's white, Toothless's black, Luna's black). Same instinct as the 0.93.0
+  `mandrill` / `cassowary` rule of shipping **no** `palette_pool` in that case.
+- **The one unmistakable marker gets its own clause** — Appa's brown arrow, Luna's gold
+  crescent, Catbus's lit windows and grin, Toothless's patched red tail fin, Mothra's
+  wing eyespots. This is what separates the entry from the generic species.
+- **No comparison objects, anywhere** — not just in scale text. "as long as a road
+  coach", "the bulk of a swan", "folded like a bat's" all render the coach, the swan and
+  the bat. `validate_data.py` now rejects `the size of a …` / `as big as …` in scale
+  text; the rest is a review job. Anatomical `-like` adjectives ("bat-like wings",
+  "dog-like head") are fine — a simile with its own clause is not.
+- **No garment words at all** in a feral entry's slots — no *wear*, *worn*, *dressed*,
+  *suit*, *outfit*. A draft that said Falkor was "wearing an open smiling expression"
+  was caught by the test that scans for exactly this.
+- Every `poses` value must complete "He/She is …", so participles only: "standing with
+  the head lowered", never the noun-absolute "head lowered and turned".
 
 ## creatures.py — non-human form layer
 
@@ -2458,3 +2540,68 @@ the pool-membership test is free. A seed only changes when its pose was already 
 then nothing downstream shifts, because nothing downstream draws. A preset costume was already
 in `resolved` during the loop, so this is a verified no-op across the whole cosplayer and
 archetype roster.
+
+### Ink needs skin: the shell tattoo gap (0.95.0)
+
+`_CONCEALED_BODY_FIELDS` — the fields a `covers_body` shell drops on top of the whole
+`Jewelry & Nails` group — was written for `accessories` and `bag`. The **`tattoos`
+cascade shipped afterwards, at 0.90.0**, and its own rule pointed the other way: ink
+sits on the body *under* the costume, which is exactly why `tattoos` is deliberately
+absent from `_COSTUME_SUPPRESSED_EXTRAS`. That rule silently assumes there is skin
+under the costume. Under a mascot suit, plate armour or a droid chassis there is none.
+
+Measured before the fix: **38 of 480 renders (7.9%)** across 60 `covers_body` +
+`covers_face` entries × 8 seeds described a tattoo on a surface that does not exist —
+*Iron Man* with "a soft watercolor tattoo across the back of one hand", *RoboCop* with
+one on the neck, a *Cylon Centurion* with "a dense blackwork tattoo across the
+collarbone". Both fields now join the set, so the auto-detected `_FULL_COVER_RE` shells
+(Sabine Wren's beskar, Honey Lemon's armoured bodysuit) are covered too.
+
+This is the same shape as the 0.92.0 pose finding directly above: **a gate that
+predates the axis it needed to cover.** When a new randomizable axis is added, walk the
+existing suppression sets and ask which of them the new field should have joined.
+Drift from the change is 72 of 730 sampled renders, every one a shell, every one a
+removed tattoo; a character in ordinary clothes still gets ink.
+
+### A feral subject has no arms to cross (0.95.0)
+
+Every `pose` value is written as a gesture a *person* performs. `_performable_poses`
+already dropped the ones needing hair, a garment or free hands; nothing knew about a
+subject with no upright two-armed body at all. Measured: **80 of 300 feral renders
+(26.7%)** reached for something the subject does not have — "standing with arms
+crossed" on a six-legged sky bison.
+
+`QUADRUPED_UNPERFORMABLE_POSES` (in `data/fields.py`) drops six gesture families plus
+`seated_perch`, **whole families only**, so the survivors keep their proportional
+shares. It overlaps the `covers_*` rules on purpose: the Creature node's Feral form
+sets none of those flags (it suppresses by group), so without this its beasts kept
+crossing arms. It is derived from the species payload in `generate_character`, so one
+rule covers both producers, and it is **off for Anthropomorphic and Subtle** — which is
+why the 249-entry creature gallery, rendered Anthropomorphic, cannot drift.
+
+The surviving pool still holds human *stances* ("in a relaxed contrapposto stance",
+"sitting cross-legged"). Culling those would mean splitting and repricing the two
+largest pose families — the expensive kind of change the backlog warns about — so a
+feral cosplay entry instead **locks an authored pose** from `_FERAL_POSES`, the same
+replace-the-field pattern `scale_prose` uses for `height`. Nothing is drawn from the
+global pool for those entries, so no family weight moves.
+
+### The vault round-trip was only half-closed (0.95.0)
+
+0.92.0 made `prompt_json` self-describing for the Cosplayer node's five concealment
+keys. The **species path was left short**: `_format_json` recorded `form`,
+`creature_of` and `creature_class` but not `suppress_groups` / `suppress_fields`, so a
+saved creature recalled with nothing suppressed:
+
+```
+saved:   A lion with a plump build and petite. He has a broad leonine head ...
+recall:  A 45-year-old Kenyan lion with a plump build, petite, and brown skin.
+         He has a very fit physique with sloped shoulders, a slightly defined
+         chest, a narrow waist ...
+```
+
+`omitted` could not stand in for them — it records *explicitly locked* absences, and a
+suppressed field is dropped outright, so it never appears there. Both lists are now
+emitted whenever the document carries anatomy slots; `_parse_archetype_json` already
+read them, so recall needed no change. This fixes the **Creature node's** own vault
+round-trip as much as the feral cosplay path that would otherwise have inherited it.

@@ -59,14 +59,20 @@ try:
         get_cosplayer_categories,
     )
     from ..data.fields import FIELD_DEFINITIONS
-    from .identity_forge import group_fields, merge_preset_documents
+    from .identity_forge import (
+        group_fields, merge_preset_documents, _SPECIES_GROUP, _FORM_FERAL,
+    )
+    from .identity_forge_creature import _suppression
 except ImportError:  # pragma: no cover — standalone/test context
     from data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
         get_cosplayer_categories,
     )
     from data.fields import FIELD_DEFINITIONS
-    from nodes.identity_forge import group_fields, merge_preset_documents
+    from nodes.identity_forge import (
+        group_fields, merge_preset_documents, _SPECIES_GROUP, _FORM_FERAL,
+    )
+    from nodes.identity_forge_creature import _suppression
 
 try:
     from comfy_api.latest import io  # type: ignore[import-not-found]
@@ -100,6 +106,58 @@ _PROP_ON = "Include signature prop"
 #: Random-scope sentinel: no franchise/category limit on the Random picks.
 _SCOPE_ANY = "Any"
 
+#: The one ``body_plan`` value. A named fictional beast whose canonical form is a body
+#: **a person cannot occupy** -- a quadruped, a serpent, a six-legged sky bison -- so
+#: the mascot-suit reading ("a person inside a Pikachu suit") is not available and the
+#: whole ``covers_face`` + ``mask`` + body-as-costume idiom renders it wrong: as a
+#: human in a fur suit, with human demographics, human proportions, jewellery and a
+#: "He *wears* a ... body" verb.
+#:
+#: Such an entry emits the Creature node's ``Species & Anatomy`` payload instead of a
+#: costume, so the engine's existing species prose path and Feral suppression handle
+#: it. There is deliberately no second value: ``body_plan`` is a switch onto that
+#: path, not a taxonomy. Which characters qualify is settled in
+#: docs/architecture.md -> "Animal characters split four ways".
+_FERAL = "feral"
+
+#: Entry keys carrying anatomy for a feral entry. ``mask`` -> the ``head`` slot and
+#: ``costume`` -> the ``integument`` slot are REUSED rather than renamed, so
+#: ``_pick_look``, ``entry_hash``, the Masked / Mascot / Non-human scopes and the
+#: gallery keep working on a feral entry untouched. Everything else goes in
+#: ``anatomy``, keyed by the Creature node's own slot names.
+_FERAL_HEAD_SLOT = "head"
+_FERAL_INTEGUMENT_SLOT = "integument"
+
+#: Default ``pose`` pool for a feral subject, drawn per seed and locked.
+#:
+#: :data:`~data.fields.QUADRUPED_UNPERFORMABLE_POSES` removes the gestures that reach
+#: for arms and hips, but the survivors still include human *stances* -- "in a relaxed
+#: contrapposto stance", "sitting cross-legged", "kneeling gracefully". Culling those
+#: would mean splitting the two largest pose families and repricing them, which is the
+#: expensive kind of change the backlog warns about; authoring a replacement is the
+#: cheap kind, and it is the pattern the pack already uses for exactly this shape of
+#: problem (``scale_prose`` replaces ``height``, a body-paint colour replaces
+#: ``skin_tone``, ``eyes`` replaces ``eye_color``).
+#:
+#: **Bias-free by construction**: nothing is ever drawn from the global ``pose`` pool
+#: for a feral entry, so no family weight moves and no other entry is affected. The
+#: values are body-plan neutral on purpose -- they read on a quadruped, a serpent or a
+#: winged beast alike -- and an entry with an unusual plan overrides them with its own
+#: ``poses`` list.
+#: Every value must complete "He/She/They is ..." -- the pose clause is a bare
+#: ``{subject} is {pose}``, so a noun-absolute ("head lowered and turned toward the
+#: viewer") renders as "He is head lowered ...". Participles only. They also avoid a
+#: possessive: "with the head raised", never "with its head raised", because the
+#: sentence subject is a gendered pronoun and "its" fights it.
+_FERAL_POSES: tuple[str, ...] = (
+    "standing still with the head raised",
+    "standing in full profile with the whole body in frame",
+    "moving forward at an easy pace",
+    "standing with the head lowered and turned toward the viewer",
+    "at rest on the ground with the body settled",
+    "standing square with the head turned to one side",
+)
+
 #: Special Random scopes that filter the pool by a character *attribute* instead of
 #: its franchise category. They are offered ahead of the franchise categories in the
 #: node's ``random_scope`` dropdown and combine with the gender scope. Each maps to a
@@ -116,7 +174,11 @@ def _scope_is_tiny(entry: dict) -> bool:
 
 
 def _scope_is_masked(entry: dict) -> bool:
-    return bool(entry.get("covers_face"))
+    # A feral entry sets covers_face (that is what drops the human head), but it is
+    # not *masked* -- there is no person wearing anything. It has its own scope, and
+    # docs/reference/cosplayers.md already makes the same distinction (`beast`, not
+    # `masked`), so the scopes must agree with it. Same for the mascot scope below.
+    return bool(entry.get("covers_face")) and entry.get("body_plan") != _FERAL
 
 
 def _scope_is_nonhuman(entry: dict) -> bool:
@@ -137,11 +199,28 @@ def _scope_is_mascot(entry: dict) -> bool:
     because it is a *filter over the existing pool* it adds no entries and cannot
     shift any field's distribution. Bias-free by construction.
 
-    It earns its place on discoverability: ~90 entries carry both flags (Pikachu,
+    It earns its place on discoverability: ~120 entries carry both flags (Pikachu,
     the TMNT, Bugs Bunny, Godzilla, Moogle, Teemo, ...) and there was no way to
     find them short of luck.
+
+    Feral entries are excluded (0.95.0). They carry both flags too, but the scope means
+    *a person inside a suit*, which is precisely what a feral entry is not -- and the
+    two scopes would otherwise overlap completely, so picking "Mascot / full-suit"
+    could hand you a bantha.
     """
-    return bool(entry.get("covers_body")) and bool(entry.get("covers_face"))
+    return (bool(entry.get("covers_body")) and bool(entry.get("covers_face"))
+            and entry.get("body_plan") != _FERAL)
+
+
+def _scope_is_feral(entry: dict) -> bool:
+    """A named beast rendered as itself -- see :data:`_FERAL` and ``body_plan``.
+
+    Derived from the schema key rather than hand-listed, exactly like
+    :func:`_scope_is_mascot`: it is a *filter over the existing pool*, so it adds no
+    entries, cannot shift any field's distribution, and counts ``user_options.json``
+    additions for free.
+    """
+    return entry.get("body_plan") == _FERAL
 
 
 _SPECIAL_SCOPES: "dict[str, Any]" = {
@@ -150,6 +229,7 @@ _SPECIAL_SCOPES: "dict[str, Any]" = {
     "Non-human / colored": _scope_is_nonhuman,
     "Masked": _scope_is_masked,
     "Mascot / full-suit": _scope_is_mascot,
+    "Beast / non-humanoid": _scope_is_feral,
 }
 
 #: Minimum roster size for a franchise to earn its own Random scope. The nine
@@ -575,10 +655,26 @@ def build_cosplayer_json(
     # made it the last item of a "He wears ..." list, where t2i models reliably
     # ignored it -- see the note on `_MASK_KEY` in identity_forge.py.
     head_text = entry["mask"] if (covers and not unmask and entry.get("mask")) else None
+    # A feral entry's ``mask`` IS its head slot, voiced by the species path, so the
+    # separate mask sentence would describe the same head twice. Unmasking is a no-op
+    # for the same reason there is no mascot reading: there is no person underneath a
+    # bantha to reveal.
+    feral = entry.get("body_plan") == _FERAL
+    if feral:
+        head_text = None
+        # ...and unmasking must not clear ``covers_face`` either. It normally does, to
+        # reveal the randomized head under a helmet; on a beast that head does not
+        # exist, and clearing the flag let the human Face group back in ("His
+        # expression is warm smile" on a bantha). Caught by
+        # FeralBodyPlanTests.test_unmask_is_a_no_op_for_a_beast.
+        unmask = False
 
     # The costume drives IdentityForge's hidden outfit_description override; the
     # signature look (hair/eyes) is always applied; physique only in Full mode.
-    fields: dict[str, str] = {"outfit_description": costume}
+    # A feral entry has no costume: its ``costume`` is the integument slot and goes to
+    # the species group below, so nothing locks ``outfit_description`` (the Feral form
+    # suppresses the whole Clothing group anyway).
+    fields: dict[str, str] = {} if feral else {"outfit_description": costume}
     fields.update(entry.get("signature", {}))
     # Free-text canonical eye-colour override for characters whose eyes fall outside
     # the believable-people eye_color pool (e.g. "crimson", "golden cat-slit pupils").
@@ -586,11 +682,22 @@ def build_cosplayer_json(
     # free-text value straight to the prose. Applied in both look levels.
     if entry.get("eyes"):
         fields["eye_color"] = entry["eyes"]
-    if look_level == _FULL:
+    # ``physique`` is normally Full-character-only, because Costume-only deliberately
+    # randomizes *the person wearing the costume*. A feral entry has no person
+    # underneath -- the physique IS the animal -- so it applies in both look levels.
+    # This is also what keeps a costume-asserted body trait from contradicting an
+    # unpinned random field (docs/suggested-additions.md "Still to consider" #2).
+    if feral or look_level == _FULL:
         fields.update(entry.get("physique", {}))
     # Signature held prop → hidden held_item lock (opt-in; off by default).
     if include_prop and entry.get("prop"):
         fields["held_item"] = entry["prop"]
+    # Feral pose: authored, seed-picked and locked, so the global pose pool is never
+    # drawn from and no family weight moves (see _FERAL_POSES). An entry may pin its
+    # own ``poses`` for an unusual body plan (a serpent cannot walk, a phoenix flies),
+    # and an explicit signature ``pose`` still wins over both.
+    if feral and "pose" not in fields:
+        fields["pose"] = rng.choice(tuple(entry.get("poses") or _FERAL_POSES))
 
     document: "OrderedDict[str, Any]" = OrderedDict()
     document["_meta"] = OrderedDict([
@@ -607,7 +714,28 @@ def build_cosplayer_json(
     size_scale = entry.get("size_scale", "")
     if size_scale:
         document["_meta"]["size_scale"] = size_scale
+    # A feral entry emits the Creature node's document shape: the Feral form token, the
+    # species noun the prose leads with, and the suppression the form implies. The
+    # suppression is computed by the Creature node's own ``_suppression`` rather than
+    # restated here, so the two producers cannot drift -- a beast and a Feral creature
+    # drop exactly the same human fields, and any future change to the form lands on
+    # both at once.
+    if feral:
+        slots: "OrderedDict[str, str]" = OrderedDict()
+        if entry.get("mask"):
+            slots[_FERAL_HEAD_SLOT] = entry["mask"]
+        slots[_FERAL_INTEGUMENT_SLOT] = costume
+        for slot, text in (entry.get("anatomy") or {}).items():
+            slots[slot] = text
+        document["_meta"]["creature_of"] = entry.get("creature_of", "") or name
+        document["_meta"]["creature_class"] = entry.get("creature_class", "Mammals")
+        document["_meta"]["form"] = _FORM_FERAL
+        suppress_groups, suppress_fields = _suppression(_FORM_FERAL, slots)
+        document["_meta"]["suppress_groups"] = suppress_groups
+        document["_meta"]["suppress_fields"] = suppress_fields
     document.update(group_fields(fields))
+    if feral:
+        document[_SPECIES_GROUP] = slots
     # When an eye-colour override is in play, lock eye_shape to absent so the override
     # reads clean downstream ("crimson eyes", not "crimson deep-set eyes"). Injected
     # here, after group_fields (which strips "None" on the build side), because the
@@ -629,7 +757,7 @@ def build_cosplayer_json(
     # Body paint runs even for a masked face: covers_face hides the Face/Hair/Makeup
     # groups but NOT the Body-group skin_tone, so an all-over coat ("flame", "scaled
     # skin") would otherwise still report a stray human skin tone under it.
-    if _is_body_paint(entry, costume):
+    if not feral and _is_body_paint(entry, costume):
         _apply_suppress(document, _BODY_PAINT_SUPPRESS, override=True)
         # Re-plant the paint colour in the (now-suppressed) skin_tone slot so the
         # opening prose anchors it ("...and vivid green skin") instead of leaving the
@@ -645,17 +773,31 @@ def build_cosplayer_json(
     # "bald" in the prose suppresses scalp hair only (a bald man may keep a beard); an
     # explicit ``bald: True`` is the stronger "fully hairless head" assertion used for
     # creatures/aliens, so it also clears facial hair.
-    if _is_bald(entry, costume):
+    if not feral and _is_bald(entry, costume):
         _apply_suppress(document, _BALD_SUPPRESS, override=False)
         if entry.get("bald") is True:
             _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
-    if _CLEAN_SHAVEN_RE.search(costume):
+    if not feral and _CLEAN_SHAVEN_RE.search(costume):
         _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
     # Size-scale: replace the human height with the entry's authored scale_prose so
     # the scale reads in the lead sentence (strongest T2I position) instead of a
     # contradictory "very tall"/"petite". override=True beats any physique.height
     # lock. Validator guarantees scale_prose accompanies size_scale.
-    if entry.get("size_scale"):
+    # 0.95.0: gated on ``scale_prose`` rather than ``size_scale``, so a FERAL entry can
+    # state a concrete size without claiming a giant/tiny *tier*. The tier is a scene
+    # control (it forces the framing and location that can show the scale); most beasts
+    # -- a tauntaun, a chocobo, a direwolf -- are simply an animal-sized animal, and
+    # "very tall" from the human height pool says nothing useful about one. The
+    # validator allows the pairing only for a feral entry; every tiered entry still
+    # ships both, and the size_scale-requires-scale_prose rule is unchanged.
+    #
+    # Feral ``scale_prose`` is worded as an APPOSITIVE ("small, about two feet long"),
+    # not as the conjunction the other 101 entries use ("tiny and barely a foot tall").
+    # That is deliberate: a human entry has three core items (build, height, skin tone)
+    # so ``_join`` commas them, but a feral entry has two -- no skin tone -- and the
+    # conjunctive form renders "with a stocky build and tiny and barely two feet long".
+    # Do not align the two forms.
+    if entry.get("scale_prose"):
         _apply_suppress(document, {"height": entry["scale_prose"]}, override=True)
     return json.dumps(document, indent=2)
 

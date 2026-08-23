@@ -22,7 +22,7 @@ if str(ROOT) not in sys.path:
 from data.fields import (
     FIELD_DEFINITIONS, FIELD_FAMILIES, POSE_FAMILIES, HAIR_STYLE_FAMILIES,
     HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
-    FURNITURE_DEPENDENT_POSES, OUTFIT_DESCRIPTIONS,
+    FURNITURE_DEPENDENT_POSES, QUADRUPED_UNPERFORMABLE_POSES, OUTFIT_DESCRIPTIONS,
 )
 from data.constraints import CONSTRAINT_RULES
 from data.fields import WORN_ITEM_RES, SHOE_RE, PALETTE_ADJECTIVES, PATTERN_TAILS
@@ -61,14 +61,16 @@ from nodes.identity_forge import (
     _MODIFIERS_KEY, _VARIANTS_KEY, _name_already_carries_franchise,
     _COSTUME_META_KEYS, _SCALE_TIER_KEY, _conflicting_trigger_values,
     _POCKETLESS_GARMENT_RE, _presentation_mode,
+    _CONCEALED_BODY_FIELDS, _SPECIES_KEY, _FULL_COVER_RE, _FORM_FERAL,
 )
+from nodes.identity_forge_creature import build_creature_json
 from data.fields import OUTDOOR_LOCATIONS, STUDIO_BACKDROPS
 from nodes.identity_forge_archetype import build_archetype_json
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
     _pick_look, _resolve_character, _SPECIAL_SCOPES,
     _FRANCHISE_SCOPES, _PREDICATE_SCOPES, _FRANCHISE_SCOPE_MINIMUM,
-    _FRANCHISE_SCOPE_PREFIX,
+    _FRANCHISE_SCOPE_PREFIX, _FERAL, _FERAL_POSES,
 )
 from nodes.identity_forge_modifier import build_modifier_json, _parse_modifier_text
 from data.templates import ARCHETYPES
@@ -5136,11 +5138,13 @@ class SpecialRandomScopeTests(unittest.TestCase):
         # The scope list is user-facing UI, so a change to it should be a
         # deliberate edit here rather than something that slips in with a data
         # tweak. `Mascot / full-suit` joined at 0.82.0; see MascotScopeTests.
+        # `Beast / non-humanoid` joined at 0.95.0; see FeralBodyPlanTests.
         # (Non-breaking: ComfyUI serialises a combo by its string value, so
         # inserting an option does not move a saved workflow's selection.)
         self.assertEqual(set(_SPECIAL_SCOPES),
                          {"Giant characters", "Tiny characters",
-                          "Non-human / colored", "Masked", "Mascot / full-suit"})
+                          "Non-human / colored", "Masked", "Mascot / full-suit",
+                          "Beast / non-humanoid"})
 
     def test_giant_scope_only_returns_giants(self):
         for name in self._pick("Giant characters"):
@@ -6707,6 +6711,442 @@ class ExtraAbsenceFloorTests(unittest.TestCase):
             self.assertGreaterEqual(
                 rate + 0.05, base,
                 f"{field}: realized absence {rate:.2f} is below its {base:.2f} floor")
+
+
+class ShellTattooTests(unittest.TestCase):
+    """Ink needs skin. A full hard shell / mascot suit has none (0.95.0).
+
+    The tattoo axis shipped at 0.90.0, after ``_CONCEALED_BODY_FIELDS`` was written,
+    and its standing rule -- ink sits on the body *under* the costume, which is why
+    it is deliberately absent from ``_COSTUME_SUPPRESSED_EXTRAS`` -- silently assumed
+    there is a body under there. Measured before the fix: 38/480 (7.9%) of
+    covers_body+covers_face renders described a tattoo on plating or fur.
+    """
+
+    @staticmethod
+    def _render(character, seed, gender="Male"):
+        flat = _parse_archetype_json(
+            build_cosplayer_json(character, seed, "Costume only", _MASK_DEFAULT, False))
+        label = flat.pop(_COSPLAY_LABEL_KEY, None)
+        species = flat.pop(_SPECIES_KEY, None)
+        covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+        covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+        covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+        mask_text = flat.pop(_MASK_KEY, None)
+        scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS
+                  and not k.startswith("__")}
+        return generate_character(
+            seed, gender, locked, cosplay_label=label, species=species,
+            covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
+            character_scale=scale, mask_text=mask_text)
+
+    def test_both_tattoo_fields_are_shell_concealed(self):
+        self.assertIn("tattoos", _CONCEALED_BODY_FIELDS)
+        self.assertIn("tattoo_placement", _CONCEALED_BODY_FIELDS)
+
+    def test_no_mascot_or_armour_entry_ever_describes_a_tattoo(self):
+        shells = sorted(
+            name for name, entry in COSPLAYERS.items()
+            if entry.get("covers_body") and entry.get("covers_face"))
+        self.assertGreater(len(shells), 100, "expected a large mascot/full-suit set")
+        for character in shells[:60]:
+            for seed in range(8):
+                prose, js = self._render(character, seed)
+                self.assertNotIn("tattoo", prose, f"{character} @{seed}: ink on a shell")
+                self.assertNotIn("tattoos", _flat_document(js))
+
+    def test_an_auto_detected_shell_counts_too(self):
+        # covers_body is not set on these; _FULL_COVER_RE catches the armour in the
+        # costume text, and the same suppression has to follow (Sabine's beskar).
+        for character in ("Sabine Wren", "Honey Lemon"):
+            self.assertFalse(COSPLAYERS[character].get("covers_body"))
+            self.assertTrue(_FULL_COVER_RE.search(COSPLAYERS[character]["costume"]))
+            for seed in range(20):
+                self.assertNotIn("tattoo", self._render(character, seed)[0])
+
+    def test_an_ordinary_clothed_character_still_gets_ink(self):
+        # The narrowing must not leak into the costume rule: ink under normal clothes
+        # is coherent and deliberately kept.
+        inked = sum(
+            "tattoo" in self._render(name, seed, "Female")[0]
+            for name in ("Hermione Granger", "Trinity", "Mia Wallace")
+            for seed in range(40))
+        self.assertGreater(inked, 0, "the shell rule suppressed ink on ordinary clothes")
+
+    def test_a_plain_person_is_untouched(self):
+        inked = sum("tattoo" in generate_character(seed, "Male", {})[0]
+                    for seed in range(200))
+        self.assertGreater(inked, 0)
+
+
+class FeralPoseGateTests(unittest.TestCase):
+    """A feral subject has no arms to cross or hip to rest a hand on (0.95.0).
+
+    Measured before the gate: 80/300 (26.7%) of feral creature renders reached for
+    something the subject does not have.
+    """
+
+    @staticmethod
+    def _feral(creature, seed):
+        flat = _parse_archetype_json(
+            build_creature_json(creature, seed=seed, form="Feral / full creature"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        return generate_character(seed, "Male", locked, species=species)
+
+    def test_the_set_is_whole_families_only(self):
+        # Dropping part of a family concentrates its weight on the survivors -- the
+        # bias trap POSE_FAMILIES documents. Every dropped value must take its
+        # whole family with it.
+        for family, spec in POSE_FAMILIES.items():
+            variants = set(spec["variants"])
+            overlap = variants & QUADRUPED_UNPERFORMABLE_POSES
+            self.assertIn(overlap, (set(), variants),
+                          f"{family}: partially dropped, which skews its share")
+
+    def test_it_leaves_a_usable_pool(self):
+        every = {v for spec in POSE_FAMILIES.values() for v in spec["variants"]}
+        survivors = every - QUADRUPED_UNPERFORMABLE_POSES
+        self.assertGreater(len(survivors), 20)
+        # The families that must survive: an animal can stand, sit, walk and look.
+        for family in ("standing", "seated", "motion", "looking", "leaning"):
+            self.assertTrue(set(POSE_FAMILIES[family]["variants"]) <= survivors,
+                            f"{family} should stay performable for a beast")
+
+    def test_no_feral_render_reaches_for_a_limb_it_lacks(self):
+        for creature in ("lion", "dragon", "bison", "cobra", "eagle"):
+            for seed in range(40):
+                prose, _ = self._feral(creature, seed)
+                for bad in QUADRUPED_UNPERFORMABLE_POSES:
+                    self.assertNotIn(bad, prose, f"{creature} @{seed}: {bad!r}")
+
+    def test_the_gate_is_off_for_every_other_form(self):
+        # Anthropomorphic is humanoid by definition and keeps the whole pool, so the
+        # 249-creature gallery (rendered Anthropomorphic) cannot drift.
+        seen = set()
+        for creature in ("lion", "bison", "wolf"):
+            for seed in range(120):
+                flat = _parse_archetype_json(
+                    build_creature_json(creature, seed=seed, form="Anthropomorphic"))
+                species = flat.pop(_SPECIES_KEY, None)
+                locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+                prose, _ = generate_character(seed, "Male", locked, species=species)
+                seen |= {p for p in QUADRUPED_UNPERFORMABLE_POSES if p in prose}
+        self.assertTrue(seen, "Anthropomorphic must keep the humanoid gestures")
+
+    def test_an_explicit_pose_lock_still_wins(self):
+        flat = _parse_archetype_json(
+            build_creature_json("lion", seed=3, form="Feral / full creature"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        locked["pose"] = "standing with arms crossed"
+        prose, _ = generate_character(3, "Male", locked, species=species)
+        self.assertIn("standing with arms crossed", prose)
+
+
+class SpeciesRoundTripTests(unittest.TestCase):
+    """A saved species document has to carry its own suppression (0.95.0).
+
+    0.92.0 made ``prompt_json`` self-describing for the Cosplayer node's concealment
+    keys but left the species path short: ``form`` and ``creature_of`` were recorded,
+    the ``suppress_*`` lists were not. Recalling a saved feral lion produced
+    "A 45-year-old Kenyan lion ... with brown skin ... a narrow waist".
+    """
+
+    @staticmethod
+    def _save(creature, form, seed=3):
+        flat = _parse_archetype_json(build_creature_json(creature, seed=seed, form=form))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        return generate_character(seed, "Male", locked, species=species)
+
+    @staticmethod
+    def _recall(saved, seed):
+        flat = _parse_archetype_json(saved)
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items()
+                  if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS}
+        return generate_character(seed, "Male", locked, species=species)
+
+    def test_the_saved_document_records_the_suppression(self):
+        _, saved = self._save("lion", "Feral / full creature")
+        meta = json.loads(saved)["_meta"]
+        self.assertEqual(meta.get("form"), _FORM_FERAL)
+        self.assertIn("Demographics", meta.get("suppress_groups", []))
+        self.assertIn("waist", meta.get("suppress_fields", []))
+
+    def test_a_feral_creature_survives_recall_at_a_new_seed(self):
+        for creature in ("lion", "dragon", "bison", "octopus"):
+            saved_prose, saved = self._save(creature, "Feral / full creature")
+            recalled, _ = self._recall(saved, 98765)
+            self.assertEqual(saved_prose, recalled,
+                             f"{creature} did not survive a vault round-trip")
+
+    def test_recall_never_reintroduces_a_human_trait(self):
+        _, saved = self._save("lion", "Feral / full creature")
+        recalled, _ = self._recall(saved, 424242)
+        for human in ("year-old", " skin", "shoulders", "waist", "necklace", "physique"):
+            self.assertNotIn(human, recalled, f"{human!r} leaked back in on recall")
+
+    def test_a_manual_creature_size_survives_recall(self):
+        # `size` prefixes the subject noun ("A towering lion"), so it belongs with the
+        # rest of the species payload in the saved document.
+        saved_prose, saved = self._save("lion", "Feral / full creature")
+        self.assertIn("towering", self._save_with_size()[0])
+        flat = _parse_archetype_json(build_creature_json(
+            "lion", seed=3, form="Feral / full creature", size_scale="towering"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        prose, js = generate_character(3, "Male", locked, species=species)
+        self.assertEqual(json.loads(js)["_meta"].get("size"), "towering")
+        self.assertEqual(prose, self._recall(js, 31337)[0])
+
+    @staticmethod
+    def _save_with_size():
+        flat = _parse_archetype_json(build_creature_json(
+            "lion", seed=3, form="Feral / full creature", size_scale="towering"))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items() if not k.startswith("__")}
+        return generate_character(3, "Male", locked, species=species)
+
+    def test_a_creatureless_document_is_unchanged(self):
+        # No species payload -> no new _meta keys, so ordinary output is byte-stable.
+        _, js = generate_character(11, "Female", {})
+        self.assertEqual(list(json.loads(js)["_meta"]),
+                         ["gender", "hair_color_scope", "wardrobe"])
+
+
+FERAL_ENTRIES = sorted(n for n, e in COSPLAYERS.items() if e.get("body_plan") == _FERAL)
+
+
+def _render_cosplayer(character, seed, look_level="Costume only",
+                      mask_mode=_MASK_DEFAULT, gender="Male", include_prop=False):
+    """Wire the Cosplayer node into the engine exactly as the graph does."""
+    flat = _parse_archetype_json(
+        build_cosplayer_json(character, seed, look_level, mask_mode, include_prop))
+    label = flat.pop(_COSPLAY_LABEL_KEY, None)
+    species = flat.pop(_SPECIES_KEY, None)
+    covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+    covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+    covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
+    mask_text = flat.pop(_MASK_KEY, None)
+    scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+    locked = {k: v for k, v in flat.items()
+              if k not in _CONTROL_FIELDS and not k.startswith("__")}
+    return generate_character(
+        seed, gender, locked, cosplay_label=label, species=species,
+        covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
+        character_scale=scale, mask_text=mask_text)
+
+
+class FeralBodyPlanTests(unittest.TestCase):
+    """``body_plan: "feral"`` renders a named beast AS the beast (0.95.0).
+
+    The mascot-suit idiom (covers_face + mask + body-as-costume) assumes a person can
+    be inside. For a quadruped or a legless slug nobody can, and the idiom rendered
+    "a 33-year-old Singaporean man ... He has a simple band, a cuff ... He *wears* a
+    massive body of thick shaggy brown fur standing on four sturdy legs".
+    """
+
+    def test_the_roster_actually_has_feral_entries(self):
+        self.assertGreaterEqual(len(FERAL_ENTRIES), 6)
+
+    def test_a_beast_is_never_framed_as_a_cosplayer(self):
+        for name in FERAL_ENTRIES:
+            prose, _ = _render_cosplayer(name, 3)
+            self.assertFalse(prose.startswith("Cosplaying as"),
+                             f"{name}: still framed as a person in a costume")
+            # The label is "<name> (<franchise>)", apposed with a comma, then the
+            # species noun -- "Bantha (Star Wars), a shaggy horned beast of burden".
+            self.assertTrue(prose.startswith(name),
+                            f"{name}: the label should lead -- got {prose[:60]!r}")
+            self.assertRegex(prose, rf"^{re.escape(name)}[^.]*?, an? ",
+                             f"{name}: the species noun should follow, apposed")
+
+    def test_a_beast_never_describes_a_human_trait(self):
+        # The whole point: no person underneath, in EITHER look level.
+        # Prose markers only for things a shot_type can never say. Body proportions
+        # are checked on the JSON instead: "medium shot from waist up" is a framing
+        # term, not a claim about the subject's waist.
+        human_prose = ("year-old", "necklace", "earrings", "bracelet", "nail polish",
+                       "tattoo", "makeup", "lipstick", "hair is", "physique",
+                       "wears ", "wearing ")
+        human_fields = ("age", "ethnicity", "skin_tone", "outfit_description", "bust",
+                        "waist", "hips", "shoulder_width", "neck_length", "posture",
+                        "fitness_level", "tattoos", "tattoo_placement", "necklace",
+                        "hair_length", "hair_color", "expression", "makeup_style")
+        for name in FERAL_ENTRIES:
+            for look in ("Costume only", "Full character"):
+                for seed in range(20):
+                    prose, js = _render_cosplayer(name, seed, look)
+                    for word in human_prose:
+                        self.assertNotIn(word, prose,
+                                         f"{name} @{seed} ({look}): {word!r} leaked")
+                    flat = _flat_document(js)
+                    for field in human_fields:
+                        self.assertNotIn(field, flat,
+                                         f"{name} @{seed} ({look}): {field} in the JSON")
+
+    def test_a_beast_never_takes_an_unperformable_pose(self):
+        for name in FERAL_ENTRIES:
+            for seed in range(25):
+                prose, _ = _render_cosplayer(name, seed)
+                for bad in QUADRUPED_UNPERFORMABLE_POSES:
+                    self.assertNotIn(bad, prose, f"{name} @{seed}: {bad!r}")
+
+    def test_every_pose_completes_the_sentence_frame(self):
+        # The clause is a bare "<subject> is <pose>", so a noun-absolute ("head
+        # lowered and ...") renders as "He is head lowered". Participles only.
+        pools = [_FERAL_POSES] + [
+            tuple(COSPLAYERS[n]["poses"]) for n in FERAL_ENTRIES if COSPLAYERS[n].get("poses")]
+        for pool in pools:
+            for pose in pool:
+                self.assertRegex(
+                    pose, r"^(standing|sitting|lying|moving|at rest|sprawled|propped|"
+                          r"perched|coiled|hovering|gliding|flying|swimming|walking|"
+                          r"crouched|curled|settled|rearing|padding|prowling|floating|"
+                          r"drifting|resting)\b",
+                    f"{pose!r} does not complete 'He is ...'")
+
+    def test_the_species_group_is_built_from_mask_and_costume(self):
+        for name in FERAL_ENTRIES:
+            entry = COSPLAYERS[name]
+            doc = json.loads(build_cosplayer_json(name, 1))
+            slots = doc["Species & Anatomy"]
+            self.assertEqual(slots["head"], entry["mask"])
+            self.assertEqual(slots["integument"], entry["costume"])
+            for slot, text in (entry.get("anatomy") or {}).items():
+                self.assertEqual(slots[slot], text)
+            self.assertEqual(doc["_meta"]["form"], _FORM_FERAL)
+            # The mask must NOT also be emitted as its own sentence, or the head is
+            # described twice.
+            self.assertNotIn("mask", doc["_meta"])
+
+    def test_unmask_is_a_no_op_for_a_beast(self):
+        # There is no person under a bantha to reveal.
+        for name in FERAL_ENTRIES:
+            on, _ = _render_cosplayer(name, 5, mask_mode=_MASK_DEFAULT)
+            off, _ = _render_cosplayer(name, 5, mask_mode=_MASK_OFF)
+            self.assertEqual(on, off, f"{name}: Unmask changed a feral render")
+
+    def test_physique_applies_in_both_look_levels(self):
+        # No person underneath means nothing to randomize, so Costume-only and Full
+        # character agree -- which is also what stops a costume-asserted body trait
+        # contradicting an unpinned random field.
+        for name in FERAL_ENTRIES:
+            costume_only, _ = _render_cosplayer(name, 9, "Costume only")
+            full, _ = _render_cosplayer(name, 9, "Full character")
+            self.assertEqual(costume_only, full, f"{name}: look levels disagree")
+
+    def test_the_beast_scope_returns_only_beasts(self):
+        picked = {
+            _resolve_character("Random — any", random.Random(seed), "Beast / non-humanoid")
+            for seed in range(120)
+        }
+        picked.discard(None)
+        self.assertTrue(picked)
+        for name in picked:
+            self.assertEqual(COSPLAYERS[name].get("body_plan"), _FERAL,
+                             f"{name} is not a beast but was picked under the Beast scope")
+
+    def test_a_beast_survives_a_vault_round_trip_at_a_new_seed(self):
+        for name in FERAL_ENTRIES:
+            saved_prose, saved = _render_cosplayer(name, 5)
+            flat = _parse_archetype_json(saved)
+            label = flat.pop(_COSPLAY_LABEL_KEY, None)
+            species = flat.pop(_SPECIES_KEY, None)
+            covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+            covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+            scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+            archetype_locked = {
+                k: v for k, v in flat.items()
+                if k in FIELD_DEFINITIONS and k not in _CONTROL_FIELDS and v != "Random"}
+            locked = resolve_locked_fields(
+                {n: "Random" for n in FIELD_DEFINITIONS}, archetype_locked, _SET_ALL_OFF)
+            recalled, _ = generate_character(
+                54321, "Male", locked, cosplay_label=label, species=species,
+                covers_face=covers_face, covers_body=covers_body, character_scale=scale)
+            self.assertEqual(saved_prose, recalled,
+                             f"{name} did not survive a vault round-trip")
+
+    def test_a_feral_document_makes_an_upstream_costume_stale(self):
+        # A feral document emits no outfit_description, so the "downstream supplies its
+        # own costume" drop in merge_preset_documents did not fire for it: chaining
+        # Cosplayer -> Cosplayer put Iron Man's faceplate on the dragon and Godzilla's
+        # giant scale on a 26-foot one. Same leak class as 0.92.0 finding #2, through
+        # the one door that did not exist then.
+        for upstream in ("Iron Man", "Godzilla", "Hermione Granger", "Pikachu"):
+            merged = merge_preset_documents(
+                build_cosplayer_json(upstream, 1), build_cosplayer_json("Toothless", 1))
+            flat = _parse_archetype_json(merged)
+            self.assertIsNone(flat.get(_MASK_KEY),
+                              f"{upstream} -> Toothless leaked a mask")
+            self.assertFalse(flat.get(_SCALE_TIER_KEY),
+                             f"{upstream} -> Toothless leaked a size_scale")
+            # The upstream's outfit_description DOES survive the merge, and that is
+            # correct: chaining's contract is that non-overlapping upstream fields
+            # survive, and a feral document has no Clothing group to overlap with. It
+            # never reaches the output, because the Feral form suppresses the whole
+            # Clothing group -- so assert on the render, which is what matters.
+            species = flat.pop(_SPECIES_KEY, None)
+            label = flat.pop(_COSPLAY_LABEL_KEY, None)
+            covers_face = bool(flat.pop(_COVERS_FACE_KEY, None))
+            covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
+            locked = {k: v for k, v in flat.items()
+                      if k not in _CONTROL_FIELDS and not k.startswith("__")}
+            prose, js = generate_character(
+                1, "Male", locked, cosplay_label=label, species=species,
+                covers_face=covers_face, covers_body=covers_body)
+            self.assertNotIn("wears", prose, f"{upstream} -> Toothless: a costume rendered")
+            self.assertNotIn("outfit_description", _flat_document(js))
+
+    def test_the_reverse_chain_still_works(self):
+        # The drop must be one-directional: a costume downstream of a beast is a real
+        # costume and keeps its own mask.
+        flat = _parse_archetype_json(merge_preset_documents(
+            build_cosplayer_json("Toothless", 1), build_cosplayer_json("Iron Man", 1)))
+        self.assertTrue(flat.get(_MASK_KEY))
+        self.assertIn("outfit_description", flat)
+
+    def test_a_beast_is_not_in_the_masked_or_mascot_scopes(self):
+        # It sets both flags -- that is what drops the human head and the jewellery --
+        # but "Masked" means a person wearing a mask and "Mascot / full-suit" means a
+        # person inside a suit. Beasts have their own scope; overlapping completely
+        # with it would let "Mascot / full-suit" hand you a bantha. The reference doc
+        # generator already draws this line (`beast`, not `masked`).
+        for scope in ("Masked", "Mascot / full-suit"):
+            pool = [n for n, e in COSPLAYERS.items() if _SPECIAL_SCOPES[scope](e)]
+            self.assertTrue(pool)
+            for name in pool:
+                self.assertNotEqual(COSPLAYERS[name].get("body_plan"), _FERAL,
+                                    f"{name} is a beast but is in the {scope!r} scope")
+
+    def test_no_entry_describes_the_same_feature_twice(self):
+        # The head slot and anatomy.eyes both describe eyes if you let them; Catbus and
+        # Mothra each did in draft ("two round yellow headlamp eyes ... two round
+        # glowing yellow eyes that shine like headlamps").
+        for name in FERAL_ENTRIES:
+            entry = COSPLAYERS[name]
+            head = entry["mask"].lower()
+            for slot, text in (entry.get("anatomy") or {}).items():
+                noun = {"eyes": "eyes", "wings": "wings", "tail": "tail",
+                        "legs_feet": "legs", "arms": "arms"}.get(slot)
+                # Whole words only: "backswept" contains "wing", and matching on the
+                # substring flagged Drogon's perfectly good head slot.
+                if noun and re.search(rf"\b{noun}\b", head):
+                    self.fail(f"{name}: mask already describes {noun!r}, so "
+                              f"anatomy.{slot} renders it twice")
+
+    def test_an_ordinary_entry_is_untouched_by_any_of_it(self):
+        # The whole feral path must be inert for the other ~1,821 entries: they still
+        # get the cosplay framing, a costume, and a randomized person underneath.
+        for name in ("Hermione Granger", "Iron Man", "Pikachu", "Rancor", "Wampa"):
+            self.assertIsNone(COSPLAYERS[name].get("body_plan"))
+            prose, js = _render_cosplayer(name, 4)
+            self.assertTrue(prose.startswith(f"Cosplaying as {name}"))
+            self.assertIn("outfit_description", _flat_document(js))
+            self.assertNotIn("Species & Anatomy", json.loads(js))
 
 
 if __name__ == "__main__":

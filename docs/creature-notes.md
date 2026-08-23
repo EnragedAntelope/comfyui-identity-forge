@@ -4,6 +4,18 @@ Reference notes for the **Identity Forge Creature** node. These are intentional
 trade-offs, not bugs — recorded so behaviour is predictable and future changes are
 informed.
 
+## Scope: generic anatomies, not named characters
+
+Every creature here is a **generic type** — `bison`, `lion`, `dragon`. There is no name
+and no franchise key, and the roster's bar is *anatomy, not species*: two animals a
+viewer cannot tell apart in a render are one entry (see
+[architecture.md](architecture.md)). That is deliberate, and it is why a **named
+fictional beast does not belong here**: Appa would file as a bison with a `palette`,
+losing the six legs and the arrow marking that make him Appa. Named beasts are roster
+entries carrying `body_plan: "feral"` on the **Cosplayer** node instead — see
+[cosplayer-notes.md → "Named beasts"](cosplayer-notes.md). Hybridizing a generic
+creature is what this node is for; naming one is not.
+
 ## How it works
 
 The Creature node emits a grouped-JSON document with a **`Species & Anatomy`** group

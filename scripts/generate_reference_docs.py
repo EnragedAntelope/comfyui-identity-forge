@@ -46,7 +46,12 @@ def _cosplayer_flags(entry: dict) -> str:
     flags.append({"Female": "F", "Male": "M"}.get(gender, "any"))
     if entry.get("size_scale"):
         flags.append(entry["size_scale"])  # giant / tiny
-    if entry.get("covers_face"):
+    if entry.get("body_plan") == "feral":
+        # A beast is rendered AS the animal, not as a person in a suit. It sets
+        # covers_face too (that is what drops the human head), but printing "masked"
+        # for it would read as a costume the wearer could take off.
+        flags.append("beast")
+    elif entry.get("covers_face"):
         flags.append("masked")
     alts = entry.get("costumes")
     if alts:
@@ -61,6 +66,7 @@ def build_cosplayers_md() -> str:
     lines = [_GENERATED_BANNER, "# Cosplayer reference", ""]
     lines.append(f"**{len(COSPLAYERS)} characters.** Flags: `F`/`M` = source gender, "
                  "`giant`/`tiny` = size scale, `masked` = full-face covering, "
+                 "`beast` = rendered as the animal itself (`body_plan: feral`), "
                  "`+N alt` = extra costumes, `prop` = signature held item.")
     lines.append("")
     # category -> franchise -> [(name, flags)]

@@ -173,7 +173,7 @@ A taste of archetypes, cosplay characters and creatures:
 | **Identity Forge** | Lockable dropdowns in collapsible groups + the constraint engine → `prompt_text` (prose) and `prompt_json`. |
 | **Archetype** | Themed presets (knight, sorceress, pirate, samurai, pop star, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes. |
 | **Cosplayer** | Fictional characters (Spider-Man, 2B, She-Hulk, Zelda…) as a *cosplay look* — the costume on a random, optionally cross-gender person. |
-| **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. |
+| **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. Generic species only — a *named* fictional beast (Appa, Toothless) is a Cosplayer entry. |
 | **Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`). |
 | **Vault Save / Load** | Save a generated character (with a thumbnail) to a local vault; recall it later as a chainable preset, with a Manage Vault gallery. |
 
@@ -278,7 +278,8 @@ for a ready-to-run workflow.
   of any character's. `Any` rolls a coherent man or woman each run; pair it with `wardrobe: Any`
   for fully mixed-gender output. Locked / archetype / cosplayer values always win.
 - **Scope the random character.** On the Cosplayer node, `random_scope` narrows the `Random — …`
-  picks to an attribute (Giant, Tiny, Non-human / colored, Masked, Mascot / full-suit), a broad category (Anime &
+  picks to an attribute (Giant, Tiny, Non-human / colored, Masked, Mascot / full-suit,
+  Beast / non-humanoid), a broad category (Anime &
   Manga, Marvel, DC, …), or a single franchise. It combines with gender, and the console prints
   the in-scope pool size the first time you use a combination. If a franchise has nobody of the
   chosen gender, the **scope wins and the gender relaxes** — crossplay makes that valid anyway.
@@ -294,6 +295,11 @@ for a ready-to-run workflow.
   trait. Face-visible cosplays still describe the person underneath as usual.
 - **Masked characters** (Spider-Man, a Mandalorian helmet) suppress the randomized face/hair so
   only the mask shows; the Cosplayer `Unmask` toggle reveals the head under the suit.
+- **Named beasts render as the animal, not as someone dressed as it.** A character nobody can
+  physically be inside — Appa, Toothless, Catbus, a bantha, Jabba — is rendered from its own
+  anatomy, with the human demographics, proportions, clothing and jewellery dropped. Full mascot
+  suits (Pikachu, Godzilla) are *not* in this group: a person fits inside those, so they stay a
+  costume on a randomized wearer.
 - **Vault** — *Vault Save* is a terminal node used like Save Image (branch `prompt_json` in,
   optionally the image for a thumbnail; mute it to skip). *Vault Load* recalls a save as a
   `character_json` that wires into `archetype_json`.

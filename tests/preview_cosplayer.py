@@ -27,6 +27,7 @@ from data.cosplayers import get_cosplayer_names
 from nodes.identity_forge import (
     generate_character, _parse_archetype_json, _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY,
     _COVERS_BODY_KEY, _COVERS_HAIR_KEY, _MASK_KEY, _SCALE_TIER_KEY, _CONTROL_FIELDS,
+    _SPECIES_KEY,
 )
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
@@ -57,13 +58,19 @@ def render(
     # never give it (the 0.51.0 lesson -- a preview that skips a forwarded flag
     # misreports the very bug you are checking for).
     character_scale = flat.pop(_SCALE_TIER_KEY, "") or ""
+    # A `body_plan: "feral"` entry travels as a species payload, exactly as a Creature
+    # node's does. Forward it or the beast previews as a human in a fur suit -- the
+    # same class of preview gap as the 0.91.0 mask one directly above, and it would
+    # misreport the very behaviour this path exists to fix.
+    species = flat.pop(_SPECIES_KEY, None)
     # The IdentityForge node forwards the parsed _meta gender; mirror that so the
     # person defaults to the character's gender unless --male/--female overrides.
     resolved_gender = gender or flat.get("gender", "Any")
-    locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+    locked = {k: v for k, v in flat.items()
+              if k not in _CONTROL_FIELDS and not k.startswith("__")}
     return generate_character(
         seed, resolved_gender, locked, cosplay_label=label, covers_face=covers_face,
-        covers_body=covers_body, covers_hair=covers_hair,
+        covers_body=covers_body, covers_hair=covers_hair, species=species,
         character_scale=character_scale, mask_text=mask_text,
     )
 

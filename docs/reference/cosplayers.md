@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1827 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `+N alt` = extra costumes, `prop` = signature held item.
+**1849 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (344)
+## Anime & Manga (350)
 
 ### Akame ga Kill
 
@@ -412,21 +412,24 @@
 
 ### Pokemon
 
+- **Arcanine** (M, beast)
 - **Ash Ketchum** (M, prop)
 - **Bea (Pokemon)** (F)
 - **Brock** (M)
-- **Bulbasaur** (M, masked)
+- **Bulbasaur** (M, tiny, beast)
 - **Charizard** (M, masked)
 - **Cynthia** (F)
 - **Dawn** (F)
-- **Eevee** (M, tiny, masked)
+- **Eevee** (M, tiny, beast)
 - **Elesa** (F)
 - **Gary Oak** (M)
 - **Gengar** (M, masked)
+- **Gyarados** (M, giant, beast)
 - **Iris** (F)
 - **James (Team Rocket)** (M)
 - **Jessie (Team Rocket)** (F)
 - **Jigglypuff** (F, tiny, masked)
+- **Lapras** (F, beast)
 - **Leon (Pokemon)** (M)
 - **Lillie** (F)
 - **Lucario** (M, masked)
@@ -486,6 +489,7 @@
 
 ### Sailor Moon
 
+- **Luna (Sailor Moon)** (F, tiny, beast)
 - **Queen Beryl** (F, prop)
 - **Sailor Jupiter** (F)
 - **Sailor Mars** (F)
@@ -523,6 +527,8 @@
 
 - **Arrietty Clock** (F, tiny)
 - **Baron Humbert von Gikkingen** (M, masked, prop)
+- **Catbus** (M, giant, beast)
+- **Haku (dragon form)** (M, beast)
 - **Howl** (M)
 - **Kaguya** (F)
 - **Kiki** (F, prop)
@@ -579,7 +585,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (238)
+## Comics & Cartoons (241)
 
 ### Adventure Time
 
@@ -606,10 +612,12 @@
 ### Avatar: The Last Airbender
 
 - **Aang** (M, prop)
+- **Appa** (M, giant, beast)
 - **Azula** (F)
 - **Iroh** (M, prop)
 - **Katara** (F)
 - **Mai (Avatar)** (F)
+- **Momo** (M, tiny, beast)
 - **Sokka** (M, prop)
 - **Suki** (F)
 - **Toph Beifong** (F)
@@ -856,6 +864,10 @@
 - **Morty Smith** (M)
 - **Rick Sanchez** (M, prop)
 - **Summer Smith** (F)
+
+### Rugrats
+
+- **Reptar** (M, giant, beast)
 
 ### Samurai Jack
 
@@ -1444,7 +1456,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (77)
+## Fantasy & Literature (84)
 
 ### Anne of Green Gables
 
@@ -1495,6 +1507,8 @@
 - **Brienne of Tarth** (F, prop)
 - **Cersei Lannister** (F)
 - **Daenerys Targaryen** (F)
+- **Drogon** (M, giant, beast)
+- **Ghost the Direwolf** (M, beast)
 - **Jon Snow** (M, prop)
 - **Melisandre** (F)
 - **The Night King** (M)
@@ -1502,8 +1516,11 @@
 ### Harry Potter
 
 - **Albus Dumbledore** (M, prop)
+- **Aragog** (M, giant, beast)
 - **Bellatrix Lestrange** (F)
+- **Buckbeak** (M, beast)
 - **Draco Malfoy** (M)
+- **Fawkes** (M, beast)
 - **Fleur Delacour** (F)
 - **Ginny Weasley** (F)
 - **Harry Potter** (M, prop)
@@ -1555,6 +1572,7 @@
 - **Bilbo Baggins** (M)
 - **Boromir** (M, prop)
 - **Eowyn** (F)
+- **Fell Beast** (M, giant, beast)
 - **Frodo Baggins** (M)
 - **Galadriel** (F)
 - **Gandalf** (M, prop)
@@ -1564,6 +1582,7 @@
 - **Samwise Gamgee** (M)
 - **Saruman** (M, prop)
 - **Sauron** (M, giant, masked)
+- **Shelob** (F, giant, beast)
 - **Witch-King of Angmar** (M, masked, prop)
 
 ### The Wizard of Oz
@@ -1765,7 +1784,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (188)
+## Movies & TV (192)
 
 ### A Nightmare on Elm Street
 
@@ -1906,6 +1925,8 @@
 ### Godzilla
 
 - **Godzilla** (M, giant, masked)
+- **King Ghidorah** (M, giant, beast)
+- **Mothra** (F, giant, beast)
 
 ### Grease
 
@@ -1922,6 +1943,10 @@
 ### Hellraiser
 
 - **Pinhead** (M, masked)
+
+### How to Train Your Dragon
+
+- **Toothless** (M, beast)
 
 ### IT
 
@@ -2155,6 +2180,10 @@
 - **Neo** (M)
 - **Trinity** (F)
 
+### The NeverEnding Story
+
+- **Falkor** (M, giant, beast)
+
 ### The Partridge Family
 
 - **Laurie Partridge** (F)
@@ -2238,7 +2267,7 @@
 - **Asajj Ventress** (F, prop)
 - **Aurra Sing** (F, prop)
 - **BB-8** (M, masked)
-- **Bantha** (M, masked)
+- **Bantha** (M, giant, beast)
 - **Barriss Offee** (F, prop)
 - **Battle Droid** (M, masked)
 - **Bib Fortuna** (M)
@@ -2287,7 +2316,7 @@
 - **Imperial Officer** (M)
 - **Imperial Royal Guard** (M, masked, prop)
 - **Ithorian** (M, masked)
-- **Jabba the Hutt** (M)
+- **Jabba the Hutt** (M, giant, beast)
 - **Jango Fett** (M, masked)
 - **Jar Jar Binks** (M, masked)
 - **Jawa** (M, masked)
@@ -2299,7 +2328,7 @@
 - **Kylo Ren** (M, prop)
 - **Lando Calrissian** (M)
 - **Lobot** (M)
-- **Loth-Cat** (M, tiny, masked)
+- **Loth-Cat** (M, tiny, beast)
 - **Luke Skywalker** (M, prop)
 - **Luminara Unduli** (F, prop)
 - **Mace Windu** (M, prop)
@@ -2333,7 +2362,7 @@
 - **Snowtrooper** (M, masked, prop)
 - **Stormtrooper** (M, masked, prop)
 - **TIE Pilot** (M, masked)
-- **Tauntaun** (M, masked)
+- **Tauntaun** (M, beast)
 - **The Mandalorian** (M, masked, prop)
 - **Tusken Raider** (M, masked, prop)
 - **Unkar Plutt** (M, masked)
@@ -2347,7 +2376,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (404)
+## Video Games (406)
 
 ### ARMS
 
@@ -2528,8 +2557,10 @@
 - **Aerith Gainsborough** (F, prop)
 - **Auron** (M, prop)
 - **Barret Wallace** (M)
+- **Cactuar** (M, tiny, beast)
 - **Cecil Harvey** (M)
 - **Celes Chere** (F)
+- **Chocobo** (M, beast)
 - **Cloud Strife** (M, prop)
 - **Kain Highwind** (M, masked, prop)
 - **Kefka Palazzo** (M)

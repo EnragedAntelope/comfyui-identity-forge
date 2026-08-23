@@ -1120,6 +1120,34 @@ HAND_OCCUPIED_POSES: frozenset[str] = frozenset(
 #: an outdoor scene). Whole family, same reasoning as the two sets above.
 FURNITURE_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["seated_perch"]["variants"])
 
+#: Poses that assume an upright, two-armed body, dropped for a FERAL subject -- a
+#: cosplay entry with ``body_plan: "feral"`` or a Creature node set to the Feral form
+#: (0.95.0). Every ``pose`` value is written as a gesture a *person* performs; a
+#: quadruped, a serpent or a six-legged sky bison has no arms to cross behind its back,
+#: no hip to rest a hand on, and no chin to prop. Measured before the gate: **26.7%**
+#: of feral renders (80/300, five creatures x 60 seeds) reached for something the
+#: subject does not have -- "standing with arms crossed" on a six-legged sky bison.
+#:
+#: Six families go, and they are the same six the humanoid rules already drop one at a
+#: time -- ``covers_face`` takes ``gesture_hair``, ``covers_body`` takes the two garment
+#: families -- so this mostly formalizes what the flags achieve piecemeal, and covers
+#: the Creature node's Feral form, which sets neither flag (it suppresses by group).
+#: ``seated_perch`` joins them because perching on the edge of a seat is a human sit.
+#:
+#: What SURVIVES is the point: `standing`, `seated`, `leaning`, `motion` and `looking`
+#: all read correctly on an animal -- standing four-square, lying down, walking
+#: mid-stride, looking over one shoulder. Whole families throughout, so the survivors
+#: keep their proportional shares (the POSE_FAMILIES rule above).
+QUADRUPED_UNPERFORMABLE_POSES: frozenset[str] = frozenset(
+    POSE_FAMILIES["standing_hands_bound"]["variants"]
+    + POSE_FAMILIES["gesture"]["variants"]
+    + POSE_FAMILIES["gesture_two_hands"]["variants"]
+    + POSE_FAMILIES["gesture_garment"]["variants"]
+    + POSE_FAMILIES["gesture_pockets"]["variants"]
+    + POSE_FAMILIES["gesture_hair"]["variants"]
+    + POSE_FAMILIES["seated_perch"]["variants"]
+)
+
 #: 0.65.0: the `studio` family's former `'Dutch angle with hard shadows'` mixed a pure
 #: camera concept (Dutch angle = frame tilt) into a lighting field -- the same class of
 #: wart the 0.63.0 shot_type camera-only doctrine would have caught there. Reworded to
