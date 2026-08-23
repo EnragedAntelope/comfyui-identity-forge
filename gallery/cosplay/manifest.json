@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "cosplay",
-  "generated": "2026-08-11T00:16:29.526498",
-  "total_entries": 1826,
-  "entries_with_images": 1826,
+  "generated": "2026-08-22T22:10:07.083396",
+  "total_entries": 1852,
+  "entries_with_images": 1852,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -526,6 +526,13 @@
       "image": "images/Apollo (WildStorm).jpeg"
     },
     {
+      "name": "Appa",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Avatar: The Last Airbender",
+      "image": "images/Appa.jpeg"
+    },
+    {
       "name": "April O'Neil",
       "has_image": true,
       "gender": "Female",
@@ -554,11 +561,25 @@
       "image": "images/Aquaman.jpeg"
     },
     {
+      "name": "Aragog",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Harry Potter",
+      "image": "images/Aragog.jpeg"
+    },
+    {
       "name": "Aragorn",
       "has_image": true,
       "gender": "Male",
       "group": "The Lord of the Rings",
       "image": "images/Aragorn.jpeg"
+    },
+    {
+      "name": "Arcanine",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Pokemon",
+      "image": "images/Arcanine.jpeg"
     },
     {
       "name": "Ariel",
@@ -1513,6 +1534,13 @@
       "image": "images/Bubbles.jpeg"
     },
     {
+      "name": "Buckbeak",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Harry Potter",
+      "image": "images/Buckbeak.jpeg"
+    },
+    {
       "name": "Buddha (Record of Ragnarok)",
       "has_image": true,
       "gender": "Male",
@@ -1616,6 +1644,13 @@
       "gender": "Male",
       "group": "Marvel",
       "image": "images/Cable.jpeg"
+    },
+    {
+      "name": "Cactuar",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Final Fantasy",
+      "image": "images/Cactuar.jpeg"
     },
     {
       "name": "Cad Bane",
@@ -1728,6 +1763,13 @@
       "gender": "Female",
       "group": "Marvel",
       "image": "images/Captain Marvel.jpeg"
+    },
+    {
+      "name": "Captain Mizuki",
+      "has_image": true,
+      "gender": "Female",
+      "group": "One Punch Man",
+      "image": "images/Captain Mizuki.jpeg"
     },
     {
       "name": "Captain Olimar",
@@ -1854,6 +1896,13 @@
       "gender": "Male",
       "group": "Miraculous Ladybug",
       "image": "images/Cat Noir.jpeg"
+    },
+    {
+      "name": "Catbus",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Studio Ghibli",
+      "image": "images/Catbus.jpeg"
     },
     {
       "name": "Catwoman",
@@ -2036,6 +2085,13 @@
       "gender": "Female",
       "group": "Rent-a-Girlfriend",
       "image": "images/Chizuru Mizuhara.jpeg"
+    },
+    {
+      "name": "Chocobo",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Final Fantasy",
+      "image": "images/Chocobo.jpeg"
     },
     {
       "name": "Chopper",
@@ -3004,6 +3060,13 @@
       "image": "images/Dream of the Endless.jpeg"
     },
     {
+      "name": "Drogon",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Game of Thrones",
+      "image": "images/Drogon.jpeg"
+    },
+    {
       "name": "Duff Killigan",
       "has_image": true,
       "gender": "Male",
@@ -3431,6 +3494,13 @@
       "image": "images/Falcon.jpeg"
     },
     {
+      "name": "Falkor",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The NeverEnding Story",
+      "image": "images/Falkor.jpeg"
+    },
+    {
       "name": "Fantastic Mr Fox",
       "has_image": true,
       "gender": "Male",
@@ -3445,6 +3515,13 @@
       "image": "images/Fatality.jpeg"
     },
     {
+      "name": "Fawkes",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Harry Potter",
+      "image": "images/Fawkes.jpeg"
+    },
+    {
       "name": "Faye Valentine",
       "has_image": true,
       "gender": "Female",
@@ -3457,6 +3534,13 @@
       "gender": "Female",
       "group": "Darkstalkers",
       "image": "images/Felicia.jpeg"
+    },
+    {
+      "name": "Fell Beast",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Lord of the Rings",
+      "image": "images/Fell Beast.jpeg"
     },
     {
       "name": "Ferengi",
@@ -3893,6 +3977,13 @@
       "image": "images/Ghost Rider.jpeg"
     },
     {
+      "name": "Ghost the Direwolf",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Game of Thrones",
+      "image": "images/Ghost the Direwolf.jpeg"
+    },
+    {
       "name": "Ghostbuster",
       "has_image": true,
       "gender": "Male",
@@ -4264,6 +4355,13 @@
       "image": "images/Gwen Tennyson.jpeg"
     },
     {
+      "name": "Gyarados",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Pokemon",
+      "image": "images/Gyarados.jpeg"
+    },
+    {
       "name": "Gypsy",
       "has_image": true,
       "gender": "Female",
@@ -4276,6 +4374,13 @@
       "gender": "Male",
       "group": "Hercules",
       "image": "images/Hades.jpeg"
+    },
+    {
+      "name": "Haku (dragon form)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Studio Ghibli",
+      "image": "images/Haku (dragon form).jpeg"
     },
     {
       "name": "Hal Jordan",
@@ -5839,6 +5944,13 @@
       "image": "images/King Bradley.jpeg"
     },
     {
+      "name": "King Ghidorah",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Godzilla",
+      "image": "images/King Ghidorah.jpeg"
+    },
+    {
       "name": "King Kong",
       "has_image": true,
       "gender": "Male",
@@ -6201,6 +6313,13 @@
       "gender": "Female",
       "group": "Steven Universe",
       "image": "images/Lapis Lazuli.jpeg"
+    },
+    {
+      "name": "Lapras",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Pokemon",
+      "image": "images/Lapras.jpeg"
     },
     {
       "name": "Lara Croft",
@@ -6712,6 +6831,13 @@
       "gender": "Female",
       "group": "Star Wars",
       "image": "images/Luminara Unduli.jpeg"
+    },
+    {
+      "name": "Luna (Sailor Moon)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Sailor Moon",
+      "image": "images/Luna (Sailor Moon).jpeg"
     },
     {
       "name": "Luna Lovegood",
@@ -7498,6 +7624,13 @@
       "image": "images/Minnie Mouse.jpeg"
     },
     {
+      "name": "Minthara",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Baldur's Gate 3",
+      "image": "images/Minthara.jpeg"
+    },
+    {
       "name": "Mipha",
       "has_image": true,
       "gender": "Female",
@@ -7652,6 +7785,13 @@
       "image": "images/Momiji.jpeg"
     },
     {
+      "name": "Momo",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Avatar: The Last Airbender",
+      "image": "images/Momo.jpeg"
+    },
+    {
       "name": "Momo Yaoyorozu",
       "has_image": true,
       "gender": "Female",
@@ -7776,6 +7916,13 @@
       "gender": "Male",
       "group": "The Boys",
       "image": "images/Mother's Milk.jpeg"
+    },
+    {
+      "name": "Mothra",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Godzilla",
+      "image": "images/Mothra.jpeg"
     },
     {
       "name": "Motoko Kusanagi",
@@ -9339,6 +9486,13 @@
       "image": "images/Rennala, Queen of the Full Moon.jpeg"
     },
     {
+      "name": "Reptar",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Rugrats",
+      "image": "images/Reptar.jpeg"
+    },
+    {
       "name": "Reptile",
       "has_image": true,
       "gender": "Male",
@@ -10319,6 +10473,13 @@
       "image": "images/Sheik.jpeg"
     },
     {
+      "name": "Shelob",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Lord of the Rings",
+      "image": "images/Shelob.jpeg"
+    },
+    {
       "name": "Shi (Ana Ishikawa)",
       "has_image": true,
       "gender": "Female",
@@ -10422,6 +10583,13 @@
       "gender": "Male",
       "group": "Arcane",
       "image": "images/Silco.jpeg"
+    },
+    {
+      "name": "Silk",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Marvel",
+      "image": "images/Silk.jpeg"
     },
     {
       "name": "Silk Spectre",
@@ -11432,6 +11600,13 @@
       "image": "images/The Mandalorian.jpeg"
     },
     {
+      "name": "The Martyr",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Citadel",
+      "image": "images/The Martyr.jpeg"
+    },
+    {
       "name": "The Mask",
       "has_image": true,
       "gender": "Male",
@@ -11703,6 +11878,13 @@
       "gender": "Male",
       "group": "Kellogg's",
       "image": "images/Tony the Tiger.jpeg"
+    },
+    {
+      "name": "Toothless",
+      "has_image": true,
+      "gender": "Male",
+      "group": "How to Train Your Dragon",
+      "image": "images/Toothless.jpeg"
     },
     {
       "name": "Topaz",
