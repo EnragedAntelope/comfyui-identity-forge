@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "gallery": "archetypes",
-  "generated": "2026-08-10T21:54:03.990837",
-  "total_entries": 238,
-  "entries_with_images": 238,
+  "generated": "2026-08-22T22:09:56.557135",
+  "total_entries": 249,
+  "entries_with_images": 249,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -491,6 +491,13 @@
       "image": "images/Court Jester.jpeg"
     },
     {
+      "name": "Cybergoth",
+      "has_image": true,
+      "gender": "Female",
+      "group": "edgy alternative",
+      "image": "images/Cybergoth.jpeg"
+    },
+    {
       "name": "Cyberpunk Netrunner",
       "has_image": true,
       "gender": "any",
@@ -890,6 +897,13 @@
       "image": "images/Kawaii Street Fashion.jpeg"
     },
     {
+      "name": "Korean Hanbok",
+      "has_image": true,
+      "gender": "Female",
+      "group": "vintage retro",
+      "image": "images/Korean Hanbok.jpeg"
+    },
+    {
       "name": "Librarian",
       "has_image": true,
       "gender": "Female",
@@ -916,6 +930,13 @@
       "gender": "Male",
       "group": "",
       "image": "images/Lumberjack.jpeg"
+    },
+    {
+      "name": "Maasai",
+      "has_image": true,
+      "gender": "Male",
+      "group": "bohemian",
+      "image": "images/Maasai.jpeg"
     },
     {
       "name": "Mad Scientist",
@@ -1007,6 +1028,13 @@
       "gender": "any",
       "group": "edgy alternative",
       "image": "images/Mime.jpeg"
+    },
+    {
+      "name": "Mongolian Deel",
+      "has_image": true,
+      "gender": "Male",
+      "group": "vintage retro",
+      "image": "images/Mongolian Deel.jpeg"
     },
     {
       "name": "Musician",
@@ -1275,11 +1303,25 @@
       "image": "images/Roman Centurion.jpeg"
     },
     {
+      "name": "Rude Boy",
+      "has_image": true,
+      "gender": "Male",
+      "group": "vintage retro",
+      "image": "images/Rude Boy.jpeg"
+    },
+    {
       "name": "Safari Guide",
       "has_image": true,
       "gender": "any",
       "group": "casual",
       "image": "images/Safari Guide.jpeg"
+    },
+    {
+      "name": "Sami Gakti",
+      "has_image": true,
+      "gender": "Female",
+      "group": "vintage retro",
+      "image": "images/Sami Gakti.jpeg"
     },
     {
       "name": "Samurai",
@@ -1485,6 +1527,13 @@
       "image": "images/Teacher.jpeg"
     },
     {
+      "name": "Teddy Boy",
+      "has_image": true,
+      "gender": "Male",
+      "group": "vintage retro",
+      "image": "images/Teddy Boy.jpeg"
+    },
+    {
       "name": "Tennis Player",
       "has_image": true,
       "gender": "any",
@@ -1541,6 +1590,20 @@
       "image": "images/Trucker.jpeg"
     },
     {
+      "name": "Tuareg",
+      "has_image": true,
+      "gender": "Male",
+      "group": "bohemian",
+      "image": "images/Tuareg.jpeg"
+    },
+    {
+      "name": "Ukrainian Vyshyvanka",
+      "has_image": true,
+      "gender": "Female",
+      "group": "vintage retro",
+      "image": "images/Ukrainian Vyshyvanka.jpeg"
+    },
+    {
       "name": "Valkyrie",
       "has_image": true,
       "gender": "Female",
@@ -1576,11 +1639,25 @@
       "image": "images/Victorian Lady.jpeg"
     },
     {
+      "name": "Vietnamese Ao Dai",
+      "has_image": true,
+      "gender": "Female",
+      "group": "vintage retro",
+      "image": "images/Vietnamese Ao Dai.jpeg"
+    },
+    {
       "name": "Viking Shieldmaiden",
       "has_image": true,
       "gender": "Female",
       "group": "edgy alternative",
       "image": "images/Viking Shieldmaiden.jpeg"
+    },
+    {
+      "name": "Visual Kei",
+      "has_image": true,
+      "gender": "Female",
+      "group": "edgy alternative",
+      "image": "images/Visual Kei.jpeg"
     },
     {
       "name": "Volcanologist",
