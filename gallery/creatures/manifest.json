@@ -1,12 +1,26 @@
 {
   "schema_version": 1,
   "gallery": "creatures",
-  "generated": "2026-08-10T21:53:25.478860",
-  "total_entries": 233,
-  "entries_with_images": 233,
+  "generated": "2026-08-22T22:10:15.173258",
+  "total_entries": 249,
+  "entries_with_images": 249,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
+    {
+      "name": "aardvark",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/aardvark.jpeg"
+    },
+    {
+      "name": "albatross",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/albatross.jpeg"
+    },
     {
       "name": "alligator",
       "has_image": true,
@@ -41,6 +55,20 @@
       "gender": "any",
       "group": "Insects & Arachnids",
       "image": "images/ant.jpeg"
+    },
+    {
+      "name": "antlion",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/antlion.jpeg"
+    },
+    {
+      "name": "assassin bug",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/assassin bug.jpeg"
     },
     {
       "name": "avian alien",
@@ -148,6 +176,13 @@
       "image": "images/cactus folk.jpeg"
     },
     {
+      "name": "caddisfly larva",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/caddisfly larva.jpeg"
+    },
+    {
       "name": "camel",
       "has_image": true,
       "gender": "any",
@@ -176,11 +211,25 @@
       "image": "images/carnivorous plant.jpeg"
     },
     {
+      "name": "cassowary",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "image": "images/cassowary.jpeg"
+    },
+    {
       "name": "cat",
       "has_image": true,
       "gender": "any",
       "group": "Mammals",
       "image": "images/cat.jpeg"
+    },
+    {
+      "name": "caterpillar",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/caterpillar.jpeg"
     },
     {
       "name": "centaur",
@@ -265,6 +314,13 @@
       "gender": "any",
       "group": "Birds",
       "image": "images/cockatoo.jpeg"
+    },
+    {
+      "name": "cockroach",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/cockroach.jpeg"
     },
     {
       "name": "cordyceps thrall",
@@ -659,6 +715,20 @@
       "image": "images/horse.jpeg"
     },
     {
+      "name": "horseshoe crab",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "image": "images/horseshoe crab.jpeg"
+    },
+    {
+      "name": "housefly",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/housefly.jpeg"
+    },
+    {
       "name": "hummingbird",
       "has_image": true,
       "gender": "any",
@@ -841,6 +911,13 @@
       "image": "images/lion.jpeg"
     },
     {
+      "name": "lionfish",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "image": "images/lionfish.jpeg"
+    },
+    {
       "name": "lobster",
       "has_image": true,
       "gender": "any",
@@ -881,6 +958,13 @@
       "gender": "any",
       "group": "Plant & Fungal",
       "image": "images/mandrake.jpeg"
+    },
+    {
+      "name": "mandrill",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/mandrill.jpeg"
     },
     {
       "name": "manta ray",
@@ -925,6 +1009,13 @@
       "image": "images/minotaur.jpeg"
     },
     {
+      "name": "mole",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/mole.jpeg"
+    },
+    {
       "name": "monitor lizard",
       "has_image": true,
       "gender": "any",
@@ -937,6 +1028,13 @@
       "gender": "any",
       "group": "Mammals",
       "image": "images/moose.jpeg"
+    },
+    {
+      "name": "mosquito",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "image": "images/mosquito.jpeg"
     },
     {
       "name": "moss golem",
@@ -1028,6 +1126,13 @@
       "gender": "any",
       "group": "Mythic & Fantasy",
       "image": "images/oni.jpeg"
+    },
+    {
+      "name": "orangutan",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "image": "images/orangutan.jpeg"
     },
     {
       "name": "orc",
@@ -1392,6 +1497,13 @@
       "gender": "any",
       "group": "Insects & Arachnids",
       "image": "images/snail.jpeg"
+    },
+    {
+      "name": "snapping turtle",
+      "has_image": true,
+      "gender": "any",
+      "group": "Reptiles & Amphibians",
+      "image": "images/snapping turtle.jpeg"
     },
     {
       "name": "sphinx",
