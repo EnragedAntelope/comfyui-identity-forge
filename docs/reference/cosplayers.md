@@ -3,15 +3,19 @@
 
 # Cosplayer reference
 
-**1869 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1877 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (351)
+## Anime & Manga (353)
 
 ### Akame ga Kill
 
 - **Akame** (F, prop)
 - **Esdeath** (F, prop)
 - **Leone** (F)
+
+### Akira
+
+- **Kaneda** (M)
 
 ### Amagi Brilliant Park
 
@@ -405,6 +409,10 @@
 - **Saitama** (M)
 - **Tatsumaki** (F)
 
+### Oshi no Ko
+
+- **Ai Hoshino** (F, prop)
+
 ### Overlord
 
 - **Ainz Ooal Gown** (M, masked, prop)
@@ -586,7 +594,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (248)
+## Comics & Cartoons (249)
 
 ### Adventure Time
 
@@ -729,6 +737,10 @@
 ### Gen13
 
 - **Caitlin Fairchild** (F)
+
+### Gravity Falls
+
+- **Bill Cipher** (M, masked)
 
 ### Hazbin Hotel
 
@@ -1796,7 +1808,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (195)
+## Movies & TV (196)
 
 ### A Nightmare on Elm Street
 
@@ -2148,6 +2160,10 @@
 - **Uncle Fester** (M, prop)
 - **Wednesday Addams** (F)
 
+### The Apothecary Diaries
+
+- **Maomao** (F, prop)
+
 ### The Big Lebowski
 
 - **The Dude** (M)
@@ -2394,11 +2410,15 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (414)
+## Video Games (418)
 
 ### ARMS
 
 - **Twintelle** (F)
+
+### Animal Crossing
+
+- **Isabelle** (F, masked, prop)
 
 ### Arcane
 
@@ -2457,6 +2477,10 @@
 ### Crash Bandicoot
 
 - **Crash Bandicoot** (M)
+
+### Cuphead
+
+- **Cuphead** (M, masked)
 
 ### Cyberpunk 2077
 
@@ -3028,6 +3052,11 @@
 ### Tomb Raider
 
 - **Lara Croft** (F, prop)
+
+### Undertale
+
+- **Papyrus** (M, masked, prop)
+- **Sans** (M, masked, prop)
 
 ### Warhammer 40,000
 

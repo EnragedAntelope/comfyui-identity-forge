@@ -1083,6 +1083,10 @@
         "hash": "f16f6a1f4c013818",
         "rendered": "pre-existing"
       },
+      "Ai Hoshino": {
+        "hash": "47c2c7f769b56a5f",
+        "rendered": "2026-08-24"
+      },
       "Aigis": {
         "hash": "7240b15de145859d",
         "rendered": "2026-08-10"
@@ -1655,6 +1659,10 @@
       "Bilbo Baggins": {
         "hash": "fadba03acc29e708",
         "rendered": "pre-existing"
+      },
+      "Bill Cipher": {
+        "hash": "5a2e9a02247eda6e",
+        "rendered": "2026-08-24"
       },
       "Billy Butcher": {
         "hash": "26c9a969322831c2",
@@ -2351,6 +2359,10 @@
       "Crystal": {
         "hash": "7a612762c794cb0c",
         "rendered": "pre-existing"
+      },
+      "Cuphead": {
+        "hash": "b5cca311f9639e46",
+        "rendered": "2026-08-24"
       },
       "Curious George": {
         "hash": "3e6fc16a8eb15f9d",
@@ -3866,6 +3878,10 @@
         "hash": "7bc3f23a110902ec",
         "rendered": "2026-08-10"
       },
+      "Isabelle": {
+        "hash": "6f28703a69155fc3",
+        "rendered": "2026-08-24"
+      },
       "Issei Hyoudou": {
         "hash": "41fdc1c0d6faf725",
         "rendered": "pre-existing"
@@ -4273,6 +4289,10 @@
       "Kaminoan": {
         "hash": "87da7b031d8e1485",
         "rendered": "pre-existing"
+      },
+      "Kaneda": {
+        "hash": "e5929cb291ff9648",
+        "rendered": "2026-08-24"
       },
       "Kang the Conqueror": {
         "hash": "aa22cfb07798924b",
@@ -5078,6 +5098,10 @@
       "Mantis": {
         "hash": "21074c738480dc61",
         "rendered": "pre-existing"
+      },
+      "Maomao": {
+        "hash": "12cad4ee5c19c0c4",
+        "rendered": "2026-08-24"
       },
       "Mara Jade": {
         "hash": "7c0563305477e1b3",
@@ -5975,6 +5999,10 @@
         "hash": "8e489ad2567eed9b",
         "rendered": "pre-existing"
       },
+      "Papyrus": {
+        "hash": "341d27daf80b0f2b",
+        "rendered": "2026-08-24"
+      },
       "Patrick Star": {
         "hash": "ecaf474487ef4196",
         "rendered": "pre-existing"
@@ -6794,6 +6822,10 @@
       "Sanji": {
         "hash": "587634a6e1f1376d",
         "rendered": "pre-existing"
+      },
+      "Sans": {
+        "hash": "fc4b2bd7488ac40c",
+        "rendered": "2026-08-24"
       },
       "Santa Claus": {
         "hash": "24f6f294fade198c",
@@ -9482,7 +9514,7 @@
       }
     }
   },
-  "generated": "2026-08-24T15:28:08",
+  "generated": "2026-08-24T16:51:18",
   "render": {
     "cfg": 1,
     "height": 2432,

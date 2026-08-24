@@ -141,7 +141,10 @@ def _gallery_shot(seed: int) -> str | None:
     from nodes.identity_forge import IdentityForge
     for spec in IdentityForge.define_schema().inputs:
         if spec.id == "shot_type":
-            pool = [s for s in spec.options if s not in _BACK_FACING_SHOTS]
+            # "Random" is the field's control value, not a shot: pinning it
+            # would re-randomize the camera and leak back-facing values through.
+            pool = [s for s in spec.options
+                    if s not in _BACK_FACING_SHOTS and s != "Random"]
             return random.Random(seed ^ 0x5A17C105).choice(pool)
     return None
 

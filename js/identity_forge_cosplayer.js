@@ -64,6 +64,9 @@ const COSPLAYER_FRANCHISES = {
     "Esdeath",
     "Leone"
   ],
+  "Akira": [
+    "Kaneda"
+  ],
   "Aladdin": [
     "Aladdin",
     "Genie",
@@ -98,6 +101,9 @@ const COSPLAYER_FRANCHISES = {
     "Dimitri",
     "Dowager Empress Marie",
     "Rasputin"
+  ],
+  "Animal Crossing": [
+    "Isabelle"
   ],
   "Anne of Green Gables": [
     "Anne of Green Gables"
@@ -356,6 +362,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Crusade Comics": [
     "Shi (Ana Ishikawa)"
+  ],
+  "Cuphead": [
+    "Cuphead"
   ],
   "Cyberpunk 2077": [
     "Johnny Silverhand",
@@ -937,6 +946,9 @@ const COSPLAYER_FRANCHISES = {
     "Godzilla",
     "King Ghidorah",
     "Mothra"
+  ],
+  "Gravity Falls": [
+    "Bill Cipher"
   ],
   "Grease": [
     "Sandy Olsson"
@@ -1698,6 +1710,9 @@ const COSPLAYER_FRANCHISES = {
     "Saitama",
     "Tatsumaki"
   ],
+  "Oshi no Ko": [
+    "Ai Hoshino"
+  ],
   "Overlord": [
     "Ainz Ooal Gown",
     "Albedo (Overlord)",
@@ -2302,6 +2317,9 @@ const COSPLAYER_FRANCHISES = {
     "Uncle Fester",
     "Wednesday Addams"
   ],
+  "The Apothecary Diaries": [
+    "Maomao"
+  ],
   "The BFG": [
     "The BFG"
   ],
@@ -2576,6 +2594,10 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Ultraman": [
     "Ultraman"
+  ],
+  "Undertale": [
+    "Papyrus",
+    "Sans"
   ],
   "Underworld": [
     "Selene (Underworld)"

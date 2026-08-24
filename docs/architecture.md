@@ -947,7 +947,9 @@ Two publish-quality gaps closed together:
 
 **Gallery shots are pinned front-facing.** A user request: no gallery image shows a back.
 `_gallery_shot()` picks each entry's `shot_type` from the schema pool minus the four
-back-facing values, on a dedicated stream (`seed ^ 0x5A17C105`) so the choice never shifts
+back-facing values and the `Random` control value (pinning the control would just
+re-randomize the camera - caught at 0.98.0 when a seed drew it), on a dedicated stream
+(`seed ^ 0x5A17C105`) so the choice never shifts
 the engine's RNG stream - the same shape as the Turnaround node's neutral-pose stream.
 Back-facing values stay available to users; only the sample images avoid them. The pin
 initially shipped DEAD: a leftover second `IdentityForge.execute(...)` line below the pin

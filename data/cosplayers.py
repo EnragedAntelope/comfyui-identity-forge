@@ -22402,6 +22402,116 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a plain nicked short sword held point-down at the side",
         "physique": {"body_type": "petite and slim"},
     },
+
+    # --- 0.98.0 -----------------------------------------------------------
+
+    "Sans": {
+        "franchise": "Undertale",
+        # Skeleton, Jack Skellington route: bone from head to foot via covers_face
+        # + covers_body; the hoodie carries the silhouette, so the name does no work
+        # (the test the 0.88.0 skip list applies).
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a blue zip-up hoodie worn open over a white t-shirt, black shorts "
+                   "with a white side stripe, and pink fuzzy slippers, on a short bare "
+                   "skeleton frame of smooth bone-white",
+        "mask": "a wide grinning white skull with round black eye sockets holding tiny "
+                "white pinpoint pupils under a heavy brow",
+        "prop": "a bottle of ketchup",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "Papyrus": {
+        "franchise": "Undertale",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a snug white hero suit with red gloves and red boots, black briefs "
+                   "worn over the suit, and a long red scarf trailing behind, on an "
+                   "impossibly tall bare skeleton frame of smooth bone-white",
+        "mask": "a long narrow white skull with large round black eye sockets and a "
+                "confident toothy grin",
+        "prop": "a plate of spaghetti",
+        "physique": {"body_type": "slim", "height": "very tall"},
+    },
+    "Cuphead": {
+        "franchise": "Cuphead",
+        # Mascot-suit case (Pikachu route): the porcelain cup head IS the mask, so
+        # the render reads without the name doing the work.
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "red shorts, four-fingered white gloves, and oversized brown-and-"
+                   "yellow shoes on a lean rubber-hose cartoon frame of glossy black",
+        "mask": "a white porcelain cup head with a red-and-white striped straw bent out "
+                "of the top, round black pie-slice eyes, a small button nose, and a wide "
+                "open-mouth grin",
+        "physique": {"body_type": "slim", "height": "short"},
+    },
+    "Isabelle": {
+        "franchise": "Animal Crossing",
+        # Mascot-suit case: the shih tzu head mask + tartan dress carry the look;
+        # the toy hammer is her signature item.
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of golden-yellow fur on a petite frame, dressed "
+                   "in a green tartan dress with a white collar and cuffs",
+        "mask": "a rounded shih tzu dog head with a topknot bun tied in a red band, floppy "
+                "ears, rosy blush spots on the cheeks, and a gentle open-mouth smile",
+        "prop": "a toy hammer",
+        "physique": {"body_type": "petite and slim", "height": "short"},
+    },
+    "Bill Cipher": {
+        "franchise": "Gravity Falls",
+        # Ships as the exception that carries a franchise closed unshipped at 0.88.0
+        # (Captain Mizuki precedent): that closure covered the human cast's ordinary
+        # modern dress, not a one-eyed dream demon. Unlike Claptrap, the triangle reads
+        # as a wearable costume shell, so the mascot-suit case applies. Genderless like
+        # The Knight (Hollow Knight), filed Male per that convention.
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a flat triangular shell of glossy gold with an etched brick pattern "
+                   "along the bottom edge, thin black stick arms ending in white gloves, "
+                   "and spindly black legs in small black shoes",
+        "mask": "the upper face of the triangle: a single huge cyclops eye with a black "
+                "slit pupil under thin angry brows, a black bow tie just below, crowned "
+                "by a floating black top hat",
+    },
+    "Kaneda": {
+        "franchise": "Akira",
+        "gender": "Male",
+        "costume": "a high-collared crimson biker jacket with white piping down the sleeves "
+                   "and a white capsule emblem across the back, dark cargo trousers tucked "
+                   "into brown engineer boots",
+        "signature": {"age": "18", "hair_color": "dark brown", "hair_length": "ear length",
+                      "hair_texture": "thick and voluminous", "hair_style": "pompadour",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Ai Hoshino": {
+        "franchise": "Oshi no Ko",
+        # Her star-shaped eye glints are THE facial marker; free-text eyes are the
+        # Night King route because no pool option is anywhere near this.
+        "gender": "Female",
+        "eyes": "vivid magenta with glowing star-shaped highlights",
+        "costume": "a frilly magenta idol two-piece with white ruffle trim, a large chest "
+                   "ribbon, puffed sleeves, a pleated mini-skirt, and thigh-high boots",
+        "signature": {"age": "20", "hair_color": "deep purple", "hair_length": "hip length",
+                      "hair_style": "side ponytail"},
+        "prop": "a headset microphone",
+    },
+    "Maomao": {
+        "franchise": "The Apothecary Diaries",
+        "gender": "Female",
+        "costume": "layered hanfu-style apothecary robes in moss green and cream with wide "
+                   "sleeves, a work apron tied at the waist, and simple cloth shoes",
+        "signature": {"age": "18", "hair_color": "emerald green", "hair_length": "mid back",
+                      "hair_style": "sleek bun", "hair_accessory": "decorative hair pins",
+                      "freckles_density": "scattered", "eye_color": "emerald"},
+        "prop": "a small ceramic bowl of dried herbs",
+    },
 }
 
 
@@ -22433,6 +22543,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Hunter x Hunter", "Trigun", "Black Butler", "Yu-Gi-Oh!",
         "Mobile Suit Gundam", "Solo Leveling",
         "Inuyasha", "Yu Yu Hakusho", "Ranma 1/2", "Hellsing",
+        "Akira", "Oshi no Ko",  # 0.98.0
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
@@ -22475,6 +22586,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         # Video Games is the least-surprising home given the franchise's game presence.
         "Warhammer 40,000",
         "Mega Man", "Hollow Knight",  # 0.97.0
+        "Undertale", "Cuphead", "Animal Crossing",  # 0.98.0
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -22523,6 +22635,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Top Cow", "Witchblade", "Youngblood", "WildStorm",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
+        "Gravity Falls",  # 0.98.0 -- Bill Cipher ships alone; see his entry comment
         "Steven Universe", "Popeye", "Johnny Bravo", "Ben 10",
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",
         "Peepoodo", "Archer", "Josie and the Pussycats",

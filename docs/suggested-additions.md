@@ -37,15 +37,31 @@ pre-existing, non-split family with no length restriction — so the total weigh
 7140 and no share moved at all. That is the difference between a cheap addition and an
 expensive one, and it is not visible from the option list.
 
-**Everything else: empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
+**Logged for future consideration (0.98.0 render session):**
+
+| Candidate | Case |
+|---|---|
+| **Kendo practitioner** (archetype) | Full bogu armor with the men grille mask is a silhouette nothing on the roster carries; distinct from the shipped samurai (no armor, exposed face). The men IS a covers_face mask, so the mask system fits natively. |
+| **Vintage deep-sea diver** (archetype) | Copper breastplate helmet with viewports over a weighted canvas suit; reads instantly at silhouette scale and has no incumbent. Needs a check against existing helmeted archetypes for `_HAT_RE` / covers_hair interactions before building. |
+| **Okapi** (creature) | Zebra-striped legs on a giraffe-family body; the striping is integument structure, not a palette swap of any shipped hide, so it passes the anatomy bar. |
+| **Goblin shark** (creature) | Protrusible slingshot jaws wider than the snout - head anatomy no shipped fish has (anglerfish owns the lure, pufferfish the inflation). Verify no broadnose/goblin-adjacent incumbent before adding. |
+
+**Everything else remains empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends, Destiny,
-Monster Hunter, Skyrim, Splatoon, Animal Crossing, Undertale, FNAF,
-Cuphead, Among Us, Minecraft. Each is an armoured, abstract or mascot silhouette
+Monster Hunter, Skyrim, Splatoon, FNAF,
+Among Us, Minecraft. Each is an armoured, abstract or mascot silhouette
 that would render as something generic without the name doing the work — the same
 reason Ryze, Swain and Viktor were declined below.
+
+> **Animal Crossing, Undertale and Cuphead were removed from that list at 0.98.0 and
+> shipped**, on the same argument as Warhammer 40K below: the skip treated whole
+> settings as uniform silhouettes, but these three shipped characters whose look reads
+> without the name doing the work — skull-grin faces on bare bone (`Sans`, `Papyrus`,
+> the Jack Skellington route), a porcelain cup head AS the mascot mask (`Cuphead`), and
+> a tartan-dress shih tzu (`Isabelle`).
 
 > **Warhammer 40K was removed from that list at 0.88.0 and shipped.** The original skip
 > treated the whole setting as uniformly armoured silhouettes. That is true of two of the
@@ -103,7 +119,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | The full ~170-champion League roster | Offered and declined. ~155 adds would make League the largest franchise in the pack and take Video Games to ~28%, letting one game steer the global Random pool. The curated 15 → 38 expansion is where it stops. |
 | The rest of the Pixar gap — Monsters Inc., Ratatouille, Turning Red | Closed unshipped at 0.88.0. Sulley and Mike are mascot-suit shapes already covered ~50 times over; Remy is an ordinary rat and Mei's red panda form an ordinary red panda, both of which `data/creatures.py` already renders, so they fail the 0.95.0 feral test too. None brings new visual ground. |
 | Power Rangers | Closed unshipped. This is the Miraculous case at its worst — a whole cast in the same suit in different colours, where the shared mechanics are the risk and no single entry earns its place. |
-| Gravity Falls; Hocus Pocus | Closed unshipped at 0.88.0 when the row they shared with Encanto was split. Encanto had four distinct silhouettes; these two are ordinary modern dress and period costume respectively, carried by the ensemble rather than by any one look. |
+| Gravity Falls; Hocus Pocus | Closed unshipped at 0.88.0 when the row they shared with Encanto was split. Encanto had four distinct silhouettes; these two are ordinary modern dress and period costume respectively, carried by the ensemble rather than by any one look. `Bill Cipher` ships at 0.98.0 as the exception that carries the franchise (the Captain Mizuki pattern): a one-eyed dream demon is neither modern dress nor period costume. The closure still stands for the human cast. |
 
 ### Creature-node animals — the recurring rejects
 
