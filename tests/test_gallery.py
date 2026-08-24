@@ -612,6 +612,69 @@ class ReleaseStampTests(unittest.TestCase):
                        "from data.templates import"):
             self.assertNotIn(banned, source, f"stamp_versions.py does `{banned}`")
 
+    def test_history_reads_git_as_utf8(self):
+        """A non-ASCII entry name must survive the round trip through git.
+
+        `subprocess.run(text=True)` alone decodes with the LOCALE codec, which on
+        Windows is cp1252 -- so `Día de los Muertos` came back from `git show` as
+        `DÃ­a de los Muertos`, matched no current entry, and `--from-history`
+        re-stamped a 0.50.0 archetype as brand new. Caught only because the live
+        manifest reported one unexpected "new" entry.
+        """
+        mod = self._stamp_module()
+        # Structural: every subprocess call that decodes text must name its
+        # encoding, or it inherits the locale codec.
+        source = (ROOT / "scripts" / "stamp_versions.py").read_text(encoding="utf-8")
+        pattern = r"subprocess\.run\((?:[^()]|\([^()]*\))*\)"
+        for call in re.findall(pattern, source, re.S):
+            if "text=True" in call:
+                self.assertIn('encoding="utf-8"', call,
+                              "a subprocess call decodes with the locale codec: "
+                              + call)
+        # And the real behaviour, not just the shape of the source.
+        head = mod._git("rev-parse", "HEAD").strip()
+        names = mod.entry_names(mod._show(head, "data/templates.py"), "ARCHETYPES")
+        from data.templates import ARCHETYPES
+        non_ascii = [k for k in ARCHETYPES if not k.isascii()]
+        for name in non_ascii:
+            with self.subTest(name):
+                self.assertIn(name, names,
+                              "a non-ASCII name was mangled reading git")
+
+    def test_no_stamp_is_newer_than_the_entry_is(self):
+        """A stamp must not claim an entry is newer than its first commit.
+
+        The cp1252 bug showed up exactly this way: a 0.50.0 archetype stamped
+        0.97.0. Checked against git rather than against the map itself.
+        """
+        mod = self._stamp_module()
+        from data.versions import ADDED_IN, RELEASES
+        current = RELEASES[-1]
+        suspects = {kind: [n for n, v in stamps.items() if v == current]
+                    for kind, stamps in ADDED_IN.items()}
+        for kind, names in suspects.items():
+            relative = mod.SOURCES[kind][0]
+            dict_name = mod.SOURCES[kind][1]
+            if not names:
+                continue
+            # Whatever the map says shipped in the CURRENT release must be absent
+            # from the PREVIOUS release's tree.
+            previous = RELEASES[-2]
+            shas = mod._git("log", "--format=%H", "--reverse").split()
+            tip = None
+            for sha in shas:
+                if mod.read_version(mod._show(sha, "pyproject.toml")) == previous:
+                    tip = sha
+            if tip is None:
+                continue
+            before = set(mod.entry_names(mod._show(tip, relative), dict_name))
+            for name in names:
+                with self.subTest(kind=kind, name=name):
+                    self.assertNotIn(
+                        name, before,
+                        f"{name!r} is stamped {current} but already existed at "
+                        f"{previous} -- the stamp map has drifted")
+
     def test_sentinels_are_never_stamped(self):
         from data.versions import ADDED_IN
         mod = self._stamp_module()

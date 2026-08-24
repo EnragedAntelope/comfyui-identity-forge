@@ -2082,7 +2082,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Doctor': "0.5.0",
         'Drag Performer': "0.24.0",
         'Dwarven Blacksmith': "0.5.0",
-        'Día de los Muertos': "0.97.0",
+        'Día de los Muertos': "0.50.0",
         'E-Girl / E-Boy': "0.67.0",
         'ER Nurse': "0.5.0",
         'Egyptian Pharaoh': "0.17.0",

@@ -181,14 +181,21 @@ def render(releases: list[str], added: dict[str, dict[str, str]]) -> str:
 # History reconstruction
 # ---------------------------------------------------------------------------
 
+# ``encoding="utf-8"`` on both, and it is load-bearing rather than tidiness.
+# ``text=True`` alone decodes with the LOCALE codec, which on a Windows box is
+# cp1252 -- so `Día de los Muertos` came back as `DÃ­a de los Muertos`, matched no
+# current entry, and the archetype was re-stamped as brand new in the release the
+# rebuild happened to run in. Caught because the live manifest reported one
+# unexpected "new" archetype. Any accented roster name would hit this.
 def _git(*args: str) -> str:
     return subprocess.run(["git", *args], cwd=ROOT, capture_output=True,
-                          text=True, check=True).stdout
+                          text=True, encoding="utf-8", check=True).stdout
 
 
 def _show(sha: str, path: str) -> str:
     result = subprocess.run(["git", "show", f"{sha}:{path}"], cwd=ROOT,
-                            capture_output=True, text=True, check=False)
+                            capture_output=True, text=True, encoding="utf-8",
+                            check=False)
     return result.stdout if result.returncode == 0 else ""
 
 
