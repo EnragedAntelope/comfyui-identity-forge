@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-08-23T23:28:53.044041",
-  "version": "0.97.0",
+  "generated": "2026-08-24T13:31:06.635487",
+  "version": "0.98.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -116,7 +116,8 @@
     "0.94.0",
     "0.95.0",
     "0.96.0",
-    "0.97.0"
+    "0.97.0",
+    "0.98.0"
   ],
   "total_entries": 249,
   "entries_with_images": 249,
