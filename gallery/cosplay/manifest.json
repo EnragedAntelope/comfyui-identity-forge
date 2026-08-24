@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-08-24T15:27:14.929345",
+  "generated": "2026-08-24T16:44:56.188829",
   "version": "0.98.0",
   "releases": [
     "0.5.0",
@@ -119,8 +119,8 @@
     "0.97.0",
     "0.98.0"
   ],
-  "total_entries": 1869,
-  "entries_with_images": 1869,
+  "total_entries": 1877,
+  "entries_with_images": 1877,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -291,6 +291,14 @@
       "group": "Star Wars",
       "added": "0.6.0",
       "image": "images/Ahsoka Tano.jpeg"
+    },
+    {
+      "name": "Ai Hoshino",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Oshi no Ko",
+      "added": "0.98.0",
+      "image": "images/Ai Hoshino.jpeg"
     },
     {
       "name": "Aigis",
@@ -1435,6 +1443,14 @@
       "group": "The Lord of the Rings",
       "added": "0.43.0",
       "image": "images/Bilbo Baggins.jpeg"
+    },
+    {
+      "name": "Bill Cipher",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Gravity Falls",
+      "added": "0.98.0",
+      "image": "images/Bill Cipher.jpeg"
     },
     {
       "name": "Billy Butcher",
@@ -2827,6 +2843,14 @@
       "group": "Marvel",
       "added": "0.18.0",
       "image": "images/Crystal.jpeg"
+    },
+    {
+      "name": "Cuphead",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Cuphead",
+      "added": "0.98.0",
+      "image": "images/Cuphead.jpeg"
     },
     {
       "name": "Curious George",
@@ -5853,6 +5877,14 @@
       "image": "images/Isabela Madrigal.jpeg"
     },
     {
+      "name": "Isabelle",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Animal Crossing",
+      "added": "0.98.0",
+      "image": "images/Isabelle.jpeg"
+    },
+    {
       "name": "Issei Hyoudou",
       "has_image": true,
       "gender": "Male",
@@ -6667,6 +6699,14 @@
       "group": "Star Wars",
       "added": "0.21.0",
       "image": "images/Kaminoan.jpeg"
+    },
+    {
+      "name": "Kaneda",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Akira",
+      "added": "0.98.0",
+      "image": "images/Kaneda.jpeg"
     },
     {
       "name": "Kang the Conqueror",
@@ -8275,6 +8315,14 @@
       "group": "Marvel",
       "added": "0.17.0",
       "image": "images/Mantis.jpeg"
+    },
+    {
+      "name": "Maomao",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Apothecary Diaries",
+      "added": "0.98.0",
+      "image": "images/Maomao.jpeg"
     },
     {
       "name": "Mara Jade",
@@ -10069,6 +10117,14 @@
       "image": "images/Papa Smurf.jpeg"
     },
     {
+      "name": "Papyrus",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Undertale",
+      "added": "0.98.0",
+      "image": "images/Papyrus.jpeg"
+    },
+    {
       "name": "Patrick Star",
       "has_image": true,
       "gender": "Male",
@@ -11707,6 +11763,14 @@
       "group": "One Piece",
       "added": "0.16.0",
       "image": "images/Sanji.jpeg"
+    },
+    {
+      "name": "Sans",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Undertale",
+      "added": "0.98.0",
+      "image": "images/Sans.jpeg"
     },
     {
       "name": "Santa Claus",
