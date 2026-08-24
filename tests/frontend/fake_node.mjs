@@ -107,3 +107,20 @@ export async function createNode(ext, nodeId, opts = {}) {
   }
   return node;
 }
+
+/**
+ * Fires `onNodeCreated` TWICE on the same node, which ComfyUI genuinely does on
+ * some paths -- the comment that has sat in identity_forge_cosplayer.js since
+ * 0.89.0 says so, and 0.97.0 added the same guard to the other four setups.
+ * The single-creation `createNode` above cannot see a duplicate-widget bug,
+ * because there is nothing to duplicate on the first pass.
+ */
+export async function createNodeTwice(ext, nodeId, opts = {}) {
+  const node = makeFakeNode(nodeId, opts);
+  const FakeNodeType = await driveBeforeRegisterNodeDef(ext, nodeId);
+  if (typeof FakeNodeType.prototype.onNodeCreated === "function") {
+    FakeNodeType.prototype.onNodeCreated.call(node);
+    FakeNodeType.prototype.onNodeCreated.call(node);
+  }
+  return node;
+}

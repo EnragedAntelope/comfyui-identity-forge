@@ -30,6 +30,10 @@ sys.path.insert(0, REPO_ROOT)
 
 # === GALLERY CONFIG - the only part that differs between the three copies ====
 GALLERY_KIND = "cosplay"
+#: This gallery's key in ``data/versions.py`` (written by
+#: ``scripts/stamp_versions.py``). Differs from GALLERY_KIND for cosplay,
+#: whose folder is "cosplay" but whose data module is "cosplayers".
+VERSIONS_KIND = "cosplayers"
 
 from data.cosplayers import COSPLAYERS  # noqa: E402
 
@@ -52,6 +56,31 @@ def entry_meta(name: str) -> dict:
 # ============================================================================
 
 DEFAULT_OUTPUT = os.path.join(os.path.dirname(__file__), "manifest.json")
+
+
+def pack_version() -> str:
+    """The version in ``pyproject.toml``, used for the "New in ..." filter."""
+    import re
+    text = (Path(REPO_ROOT) / "pyproject.toml").read_text(encoding="utf-8")
+    match = re.search(r'(?m)^version\s*=\s*"([^"]+)"', text)
+    return match.group(1) if match else ""
+
+
+def release_order() -> tuple:
+    """Every release that shipped roster content, oldest first."""
+    from data.versions import RELEASES
+    return RELEASES
+
+
+def release_stamps() -> dict:
+    """``{entry name: release}`` for this gallery's kind.
+
+    Written by ``scripts/stamp_versions.py`` and checked in CI. An entry with no
+    stamp (a user-added one) gets ``""`` and the page treats it as oldest.
+    """
+    from data.versions import ADDED_IN
+    return dict(ADDED_IN.get(VERSIONS_KIND, {}))
+
 
 
 #: Characters no Windows (and, for ``/``, no POSIX) filename may contain. A roster
@@ -106,10 +135,16 @@ def generate_manifest(images_dir: str, output_path: str) -> dict:
         if f.suffix.lower() == ".jpeg":
             available.setdefault(normalize_name(f.stem), f.stem)
 
+    stamps = release_stamps()
+
     entries, missing = [], []
     for name in sorted(entry_names()):
         stem = available.get(normalize_name(name))
         entry = {"name": name, "has_image": stem is not None, **entry_meta(name)}
+        # The release this entry first shipped in, "" for a user-added one. The page
+        # ranks by POSITION IN ``releases`` below, never by parsing this string --
+        # "0.10.0" sorts before "0.9.0" as text.
+        entry["added"] = stamps.get(name, "")
         if stem is not None:
             entry["image"] = f"images/{stem}.jpeg"
         else:
@@ -117,9 +152,15 @@ def generate_manifest(images_dir: str, output_path: str) -> dict:
         entries.append(entry)
 
     manifest = {
-        "schema_version": 1,
+        # 2 (0.97.0): entries gained "added", and the manifest gained
+        # "version" + "releases", so the page can offer a Newest-first sort.
+        # A page served an older manifest simply sees every entry as unstamped
+        # and falls back to A-Z, so the bump is informational.
+        "schema_version": 2,
         "gallery": GALLERY_KIND,
         "generated": __import__("datetime").datetime.now().isoformat(),
+        "version": pack_version(),
+        "releases": list(release_order()),
         "total_entries": len(entries),
         "entries_with_images": len(entries) - len(missing),
         "entries_missing_images": len(missing),

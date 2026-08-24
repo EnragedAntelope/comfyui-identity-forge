@@ -29,6 +29,16 @@
     <input type="text" id="search" placeholder="Search characters…" autocomplete="off" aria-label="Search characters">
     <button id="search-clear" class="search-clear hidden" aria-label="Clear search">&times;</button>
   </div>
+  <div class="view-controls">
+    <span class="sort-group" id="sort-group" hidden>
+      <label class="sort-label" for="sort">Sort</label>
+      <select id="sort" class="sort-select">
+        <option value="az">A–Z</option>
+        <option value="new">Newest first</option>
+      </select>
+    </span>
+    <button type="button" id="filter-new" class="filter-chip" aria-pressed="false" hidden></button>
+  </div>
   <div class="stats-bar">
     <span id="stats-visible">Showing <strong id="count-visible">0</strong> of <strong id="count-total">0</strong> entries</span>
     <span id="stats-missing" class="stats-missing"></span>
@@ -45,8 +55,8 @@
 </div>
 
 <div id="no-results" class="no-results hidden">
-  <p>No characters match your search.</p>
-  <button id="clear-search-btn" class="btn-secondary">Clear search</button>
+  <p>Nothing matches the current filters.</p>
+  <button type="button" id="clear-search-btn" class="btn-secondary">Clear filters</button>
 </div>
 
 <!-- Lightbox Modal -->

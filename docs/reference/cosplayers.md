@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1852 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1861 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (351)
 
@@ -1457,7 +1457,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (84)
+## Fantasy & Literature (85)
 
 ### Anne of Green Gables
 
@@ -1557,6 +1557,10 @@
 ### Pippi Longstocking
 
 - **Pippi Longstocking** (F)
+
+### Sherlock Holmes
+
+- **Sherlock Holmes** (M, prop)
 
 ### The BFG
 
@@ -1785,7 +1789,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (192)
+## Movies & TV (195)
 
 ### A Nightmare on Elm Street
 
@@ -1892,6 +1896,10 @@
 ### Escape from New York
 
 - **Snake Plissken** (M)
+
+### Evil Dead
+
+- **Ash Williams** (M, prop)
 
 ### Farscape
 
@@ -2006,6 +2014,7 @@
 
 ### Mad Max
 
+- **Immortan Joe** (M, masked)
 - **Imperator Furiosa** (F)
 - **Mad Max** (M)
 
@@ -2234,6 +2243,7 @@
 - **Creature from the Black Lagoon** (M, masked)
 - **Dracula** (M)
 - **Frankenstein's Monster** (M)
+- **The Invisible Man** (M, masked)
 - **The Mummy** (M, masked)
 - **The Phantom of the Opera** (M)
 - **The Wolf Man** (M)
@@ -2377,7 +2387,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (408)
+## Video Games (413)
 
 ### ARMS
 
@@ -2397,6 +2407,7 @@
 - **Karlach** (F, prop)
 - **Lae'zel** (F)
 - **Minthara** (F)
+- **Mizora** (F)
 - **Shadowheart** (F)
 
 ### Bayonetta
@@ -2422,7 +2433,9 @@
 - **Lilith (Borderlands)** (F)
 - **Mad Moxxi** (F)
 - **Psycho (Borderlands)** (M, masked, prop)
+- **Sir Hammerlock** (M, prop)
 - **Tiny Tina** (F, prop)
+- **Zer0** (M, masked, prop)
 
 ### Castlevania
 
@@ -2638,6 +2651,10 @@
 
 - **Agent 47** (M)
 
+### Hollow Knight
+
+- **The Knight (Hollow Knight)** (M, tiny, masked, prop)
+
 ### Horizon
 
 - **Aloy** (F, prop)
@@ -2722,6 +2739,10 @@
 - **Mordin Solus** (M, masked)
 - **Tali'Zorah** (F, masked)
 - **Urdnot Wrex** (M, masked)
+
+### Mega Man
+
+- **Mega Man** (M)
 
 ### Metal Gear
 

@@ -120,5 +120,92 @@ class JsDataInSync(unittest.TestCase):
                 )
 
 
+class CosplayerFranchisesInSync(unittest.TestCase):
+    """``COSPLAYER_FRANCHISES`` in the Cosplayer JS matches the roster (0.97.0).
+
+    Closes a coverage gap an audit found: the two blocks in ``identity_forge.js``
+    were pinned by a unit test AND by ``generate_js_data.py --check`` in CI, but
+    this third generated block was pinned by the CI check alone. A contributor
+    adding a character and running only the unit suite got a green run with a
+    stale franchise filter -- the filter is what the dropdown searches, so a new
+    entry would simply be unreachable through it.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.source = (ROOT / "js" / "identity_forge_cosplayer.js").read_text(
+            encoding="utf-8")
+
+    def _expected(self):
+        # Reuses the GENERATOR's own reader rather than importing COSPLAYERS.
+        # Importing runs ``apply_user_cosplayers`` at the bottom of the data module,
+        # which merges the maintainer's local ``user_options.json`` -- so an
+        # import-based expectation would fail on any machine that has one, and would
+        # be asserting that a private character IS in a committed file.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "_gen_js_data", ROOT / "scripts" / "generate_js_data.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module._builtin_cosplayer_franchises()
+
+    def test_the_block_matches_the_roster(self):
+        js_map = _extract_object(self.source, "COSPLAYER_FRANCHISES", "{", "}")
+        expected = self._expected()
+        self.assertEqual(
+            {f: sorted(v) for f, v in js_map.items()}, expected,
+            "js/identity_forge_cosplayer.js COSPLAYER_FRANCHISES is out of sync with "
+            "data/cosplayers.py -- run `python scripts/generate_js_data.py`.",
+        )
+
+    def test_every_builtin_entry_is_reachable_through_the_filter(self):
+        # User-added characters are deliberately absent from the map (the frontend
+        # treats an unknown name as unfiltered and always shows it), so this checks
+        # the BUILT-IN roster only -- same reader, same reason as above.
+        js_map = _extract_object(self.source, "COSPLAYER_FRANCHISES", "{", "}")
+        listed = {n for names in js_map.values() for n in names}
+        expected = {n for names in self._expected().values() for n in names}
+        self.assertEqual(sorted(expected - listed), [],
+                         "built-in entries unreachable through franchise_filter")
+
+
+class SpeciesSlotListsInSync(unittest.TestCase):
+    """The species slot tuple is maintained by hand in three places (0.97.0).
+
+    ``data/creatures.py::CREATURE_SLOTS``,
+    ``data/user_options.py::_CREATURE_SLOTS`` and
+    ``nodes/identity_forge.py::_SPECIES_SLOT_ORDER`` are the same nine slots, and
+    ``nodes/identity_forge_creature.py::_OVERRIDE_SLOTS`` is a hand-written subset.
+
+    The duplication is deliberate -- it is what keeps the data modules importable
+    without the nodes package -- but nothing pinned them together, so a tenth slot
+    could be added in one place and silently ignored in the other two. An audit
+    flagged it; this is the mechanical pin rather than the refactor, because
+    collapsing them would re-introduce the import edge the split exists to avoid.
+    """
+
+    def test_all_three_copies_are_identical(self):
+        from data.creatures import CREATURE_SLOTS
+        from data.user_options import _CREATURE_SLOTS
+        from nodes.identity_forge import _SPECIES_SLOT_ORDER
+        self.assertEqual(tuple(CREATURE_SLOTS), tuple(_SPECIES_SLOT_ORDER))
+        self.assertEqual(tuple(CREATURE_SLOTS), tuple(_CREATURE_SLOTS))
+
+    def test_the_override_subset_names_only_real_slots(self):
+        from data.creatures import CREATURE_SLOTS
+        from nodes.identity_forge_creature import _OVERRIDE_SLOTS
+        extra = set(_OVERRIDE_SLOTS) - set(CREATURE_SLOTS)
+        self.assertEqual(extra, set(), f"not creature slots: {sorted(extra)}")
+
+    def test_the_order_is_the_reading_order_the_prose_relies_on(self):
+        # _SPECIES_SLOT_ORDER is what the anatomy sentence is built from, so the
+        # tuple ORDER is load-bearing, not just its membership.
+        from data.creatures import CREATURE_SLOTS
+        self.assertEqual(
+            tuple(CREATURE_SLOTS),
+            ("head", "eyes", "integument", "arms", "hands", "legs_feet", "wings",
+             "tail", "extras"),
+        )
+
 if __name__ == "__main__":
     unittest.main()

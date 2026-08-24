@@ -86,7 +86,12 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | The rest of the Guilty Gear cast — Potemkin, Faust, Chipp Zanuff, Nagoriyuki, Ramlethal, Axl Low | The curated eleven already cover every distinct silhouette in the cast. This is the League ceiling applied early: a franchise stops where more entries stop adding new visual ground. |
 | Ork Boyz, Necrons (Warhammer 40,000) | No worn look — a hulking green brute and a skeletal metal automaton. Both are shapes a person fits inside, so they are the mascot-suit case rather than the feral one, and neither adds a silhouette the four shipped 40K entries lack. (The old wording filed them "the same call as Appa and Simba"; Appa shipped at 0.95.0 and Simba did not — see the quadruped row below for the test that separates them.) |
 | Chaos Space Marines, Aeldari Farseers (Warhammer 40,000) | More armour. The four that shipped were chosen because two of them are cloth; these would re-add exactly the silhouette the original skip was right about. |
+| The `Reincarnation Coliseum` cast — Kouji Mikagami, Zayd, Mary, Alice, Suzu | Closed as a **whole property** at 0.97.0. A 2022 ecchi harem manga with four English volumes and **no anime adaptation**; the bar the roster enforces is "genuinely iconic, broadly recognizable", and this is a deep cut by a wide margin — Valorant, Apex Legends and Destiny were skipped on stronger cases than it has. The designs are also revealing fantasy armour, which is the silhouette the "Researched and skipped" list closes against. Do not re-survey without a *new* argument, e.g. an anime adaptation with real reach. |
 | Suiko (One Punch Man) | A hoodie over a sports top and black trousers. Tan skin, short black hair and a beauty mark are the only markers, and none of them survives as a silhouette — the render is "a woman in a hoodie". Fails the same bar as Jessica Jones and Marion Ravenwood. `Captain Mizuki` shipped from the same request because the three gold medals and the shot put carry her. |
+
+| Krieg (Borderlands) | Near-duplicate of the shipped `Psycho (Borderlands)`, which already carries the bandage mask, the strap harness and the buzz axe. `Zer0` and `Sir Hammerlock` shipped from the same request because neither overlaps anything on the roster. |
+| Maya, Amara (Borderlands) | `Lilith (Borderlands)` already carries the glowing blue Siren tattoos down one arm, which is the whole visual identity of the class. Amara's six arms are genuinely new ground and `anatomy_note` (0.97.0) could now carry them — but the rest of her reads as Lilith, so she needs a case built on the arms alone. |
+| Claptrap (Borderlands) | A one-wheeled box with a single lens. Fails **both** halves of the animal/mascot split: nobody can be inside it (so it is not the mascot-suit case) and it is a machine, not a beast (so `body_plan: "feral"` does not apply either). |
 
 ### Whole classes
 
@@ -173,7 +178,34 @@ butterfly** (the `translucent` finish), **death's-head hawkmoth** (a marking on 
 | Evelynn, Seraphine, Akali | Already on the roster — they were *refined*, not duplicated |
 | Queen Marika (Elden Ring) | **Queen Marika the Eternal** — refined at 0.96.0 (the two uneven braids), not duplicated |
 | Ragyo Kiryuin (Kill la Kill) | Already on the roster — refined at 0.96.0 (swan-feather boa, rainbow underlight) |
+| Leon S. Kennedy (Resident Evil) | **Ships**, and has since long before it was proposed. |
+| Furiosa (Mad Max) | **Imperator Furiosa** — the `Mad Max` franchise exists and `Immortan Joe` joined it at 0.97.0. |
+| Gomez Addams (The Addams Family) | **Ships**, in a six-entry Addams family. |
+
+> **Those three came from an external audit at 0.97.0 that reported them "verified
+> absent" by grep.** Four of its five character proposals were already on the roster;
+> only `The Invisible Man` and `Ash Williams` were real gaps, and both shipped. The
+> lesson is the one rule 2 already states — **grep the live keys** — and it applies to
+> a report just as much as to a request. Nothing in an audit is a roster fact until it
+> has been checked against `data/cosplayers.py`.
 | "Tuareg desert robes" | Was a costume alternate on the **Desert Nomad** archetype. Promoted to its own `Tuareg` archetype at 0.96.0 and the Desert Nomad alternate re-pointed at a generic Saharan traveller, so the look ships once. |
+
+### Field options — declined (0.97.0)
+
+An external audit proposed fourteen new widget values. Five shipped (`mary janes`,
+`cowboy boots`, `argyle`, `split dye`, `stretched lobes`, plus the three men's `bag`
+values that had to accompany the masculine `bag` trim). These did not, and the reasons
+are reusable — **most of them are the roster's own bars pointed at the option pools.**
+
+| Candidate | Why |
+|---|---|
+| `ethnicity`: Belgian, Swiss, Kurdish, Albanian, Bosnian, Latvian, Lithuanian, Estonian, Belarusian | **Two independent reasons, either sufficient.** (1) None is visually distinguishable from a shipped neighbour in a T2I render — Belgian draws what Dutch and French draw. That is the same "the name would be doing the work" bar that declined Ryze, Swain and Scout. (2) `ethnicity` is a **flat 92-value field** already ~30% European; nine more takes Europe to ~35%, which is exactly the concentration the pack refuses everywhere else. A field whose values steer skin tone and facial features is the last place to let one region gain share for free. |
+| `skin_details`: heterochromia | **Wrong field.** It is an eye trait, not a skin mark. `eye_color` renders as `"{value} eyes"`, so putting it there emits "heterochromia eyes"; putting it in `skin_details` puts it in the complexion sentence. It would need its own handling to ship at all, which makes it a feature, not an option. |
+| `hair_style`: victory rolls | Exactly the `hime cut` price. `hair_style` is the 17-family weighted field; a new value needs its family repriced. Parked with the other two under [Under consideration](#under-consideration), not declined on taste. |
+| `legwear`: thigh-high stockings with garter belt | Asserts a **visible undergarment** against most `outfit_style` values, and shifts the pack's tone on a random roll rather than on a deliberate one. `sheer stockings` and `over-the-knee socks` already hold the silhouette. |
+| `footwear`: riding boots | `knee-high boots` is the same tall polished shaft. |
+| `footwear`: flip-flops | `sandals` is the generic beach shoe and already reaches `resort vacation`. |
+| `accessories`: earmuffs, knit winter scarf, headphones worn around the neck | **Blocked on a gate that does not exist, not on merit.** `accessories` has no season or `outfit_style` allowlist — only `footwear` does (`FOOTWEAR_BY_STYLE`, 0.83.0) — so a knit winter scarf would land on `resort vacation` at a beach. Building that gate is a phase of its own; the three values are worth revisiting *after* it, not before. |
 
 ### Archetypes — declined
 
@@ -193,6 +225,25 @@ Open. No decision has been made either way.
 | 2 | **Costume text that asserts a body trait against an unpinned random field.** A costume reading "on a hulking frame" can render beside "a very slim build" in the same sentence, because `physique` applies only in Full-character mode while `costume` renders in both. | Measured at 0.90.0, **33 entries** (`Colossus`, `Gollum`, `Jabba the Hutt`, `Space Marine`, `Brook`, …). Not swept, for two reasons. First, the `signature` / `physique` split is *deliberate* — the schema says physique is Full-mode-only, so a randomly-built person wearing the costume is the intended behaviour, and most of the 33 are mascot suits where the suit supplies the bulk regardless of the wearer. Second, a naive regex reported **171** and was wrong: "tiny" on `Trinity` and `Neo` is their *sunglasses*, "enormous" on `Edna Mode` is her *lashes*. Requiring the adjective to modify a body noun cut it to 33. **If this is ever taken up, measure it again from scratch — do not trust the 171.** The four entries fixed at 0.90.0 (`Dexter Jettster`, `Figrin D'an`, `Ithorian`, plus the new Fallout/GoT entries) pin the trait in `signature`, which applies in both modes; that is the pattern to follow. |
 | 3 | **`_POCKETLESS_GARMENT_RE` is an allowlist of garment nouns, so a pocketless costume it does not name still draws a pockets/collar gesture.** Observed at 0.96.0 on `Kratos`: "a leather harness and bracers over a bare chest" plus "posing with hands in pockets". | **Not a regression** — the regex is deliberately conservative (its own comment: "never a suit/shirt/dress, which may have pockets"), and it catches the enumerated swimwear/leotard/gown/toga set by design. Deliberately left alone. Widening it (e.g. on `bare chest`, `harness`, `bare torso`) would move `pose` on an unknown number of shipped entries, and `--check` **cannot see it** — `entry_hash` covers the entry dict, not the prose, the same blind spot the 0.90.0 mask rewrite hit. If taken up: measure the affected entry list first, then re-render all of them in the same commit. |
 | 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
+
+**Closed at 0.97.0 — three engine questions that had been measured and left.** All three
+were carried in AGENTS.md rather than in this table, and all three shipped together:
+
+* **`composition` was not narrowed by the giant/tiny scale gate**, so a forty-foot subject
+  could still draw "the subject filling most of the frame". Closed: `composition` is a FLAT
+  field, so the partial cull the fix needs is the cheap kind. 0/300 bad draws at each tier
+  after the change, full pool still reachable with no scale in play.
+* **A filled `hands` slot did not suppress the human `nails` field**, so every one of the 249
+  creatures could draw "square nails" over its own claws. Closed: `nails` only, never `rings`
+  — a clawed hand can still *wear* a ring. 0/600 creature JSONs carry `nails` after.
+* **The four multi-armed entries with no `mask`** could not use the 0.96.0 limb-count fix,
+  which needs a sentence that renders before the clothing. Closed by `anatomy_note`, the
+  optional body sentence the 0.96.0 note said this would take.
+
+Each cost is the one that was priced when they were deferred: the published gallery images for
+the affected entries are no longer literal reproductions of current output, and `--check`
+cannot see it because `entry_hash` covers the entry dict, not the prose. Taken deliberately.
+Reasoning in [architecture.md](architecture.md).
 
 **Closed at 0.88.0 — the creature face-colour question (was #2).** The proposal was an engine
 change restating `palette` on the `head` slot, mirroring `_format_prose`. Measurement killed it:

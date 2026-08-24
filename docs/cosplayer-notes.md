@@ -33,6 +33,36 @@ the Iron Man armor). It is a no-op for face-visible characters. Keeping the head
 covering in its own field is what lets it be removed cleanly, with no stray
 "faceplate" reference stranded in the costume prose.
 
+### An unusual body: `anatomy_note`
+
+A count or a body plan buried in the `He wears …` garment list does not reach the
+render — measured on Dexter Jettster, who stated "four arms" three times inside one
+sentence and still came back with two. What fixes it is a sentence that renders
+**before** the clothing, and until 0.97.0 the only one a non-feral entry had was
+`mask`. Four multi-armed entries have no mask, so they could not be fixed at all.
+
+**`anatomy_note`** is that sentence, decoupled from the head: one optional string,
+voiced as its own `He has …` immediately ahead of the mask sentence. Use it for a
+limb or part count, or a body plan the costume cannot carry:
+
+```python
+"anatomy_note": "a four-armed body: two pairs of arms, an upper pair at the "
+                "shoulders and a second pair set lower on the ribs, four arms in total",
+```
+
+Four rules:
+
+- **State the count as a word, and say it plainly** — "four arms in total". Making the
+  model do arithmetic ("a second pair below the first") does not carry.
+- **It describes the body, never the clothes.** Garments belong in `costume`;
+  `validate_data.py` rejects a garment noun here.
+- **Lowercase, unpadded, no trailing period** — the engine sentences it.
+- **Not on a feral entry.** Those use the per-slot `anatomy` map instead (below), and
+  carrying both would describe the same body twice.
+
+Unmasking does not clear it — it is not part of the head. A *downstream* node that
+supplies its own costume does drop it, like every other costume-derived `_meta` key.
+
 ### Signature props
 
 Costumes stay **worn, not held** — but a character with a *truly iconic* held prop

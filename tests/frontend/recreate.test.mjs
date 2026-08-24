@@ -314,3 +314,44 @@ test("an input link the fresh node cannot resolve a matching slot for is not sil
     "a link the fresh node can't reconnect must produce a warning naming the affected input, " +
     "not vanish silently");
 });
+
+
+/* --- Re-entry guard (0.97.0) ---------------------------------------------
+   An audit reported this file as one of four missing a re-entry guard. Half
+   right: the menu ENTRY was already safe, because replaceRecreateOption()
+   de-duplicates by label (pinned by the test above), so a duplicate entry was
+   never the failure mode here.
+
+   Fully right: re-entry wraps our own wrapper, but `inherited` is captured
+   before the assignment, so the upstream handler still runs exactly once per
+   menu open. Measured -- removing the guard turned neither of these red, which
+   is why this file ships without one. These two pin the properties that make
+   that true, so a refactor that breaks either is caught. */
+test("nodeCreated running twice installs the menu entry only once", async () => {
+  const node = makeFakeNode("IdentityForge");
+  await ext.nodeCreated(node);
+  await ext.nodeCreated(node);
+  const options = [];
+  node.getExtraMenuOptions({}, options);
+  const ours = options.filter(
+    (o) => o && typeof o.content === "string" && o.content.includes("recreate"));
+  assert.equal(ours.length, 1,
+    `expected one recreate entry, got ${ours.length}`);
+});
+
+test("re-entry still runs an upstream menu handler exactly once", async () => {
+  // The second half of why no guard is needed. `inherited` is captured BEFORE
+  // the assignment, so a second wrapper calls the first, which calls the real
+  // upstream -- once. If a refactor ever captured it after, or re-read it at
+  // call time, the upstream handler would run once per re-entry and this fails.
+  const node = makeFakeNode("IdentityForge");
+  let upstreamCalls = 0;
+  node.getExtraMenuOptions = function () { upstreamCalls += 1; };
+
+  await ext.nodeCreated(node);
+  await ext.nodeCreated(node);
+  node.getExtraMenuOptions({}, []);
+
+  assert.equal(upstreamCalls, 1,
+    `upstream ran ${upstreamCalls} times for one menu open`);
+});

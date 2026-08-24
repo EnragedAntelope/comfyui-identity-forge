@@ -159,6 +159,7 @@ const COSPLAYER_FRANCHISES = {
     "Karlach",
     "Lae'zel",
     "Minthara",
+    "Mizora",
     "Shadowheart"
   ],
   "Battlestar Galactica": [
@@ -249,7 +250,9 @@ const COSPLAYER_FRANCHISES = {
     "Lilith (Borderlands)",
     "Mad Moxxi",
     "Psycho (Borderlands)",
-    "Tiny Tina"
+    "Sir Hammerlock",
+    "Tiny Tina",
+    "Zer0"
   ],
   "Brave": [
     "Merida"
@@ -733,6 +736,9 @@ const COSPLAYER_FRANCHISES = {
   "Escape from New York": [
     "Snake Plissken"
   ],
+  "Evil Dead": [
+    "Ash Williams"
+  ],
   "F-Zero": [
     "Captain Falcon"
   ],
@@ -1033,6 +1039,9 @@ const COSPLAYER_FRANCHISES = {
   "Hitman": [
     "Agent 47"
   ],
+  "Hollow Knight": [
+    "The Knight (Hollow Knight)"
+  ],
   "Horizon": [
     "Aloy"
   ],
@@ -1259,6 +1268,7 @@ const COSPLAYER_FRANCHISES = {
     "Yosemite Sam"
   ],
   "Mad Max": [
+    "Immortan Joe",
     "Imperator Furiosa",
     "Mad Max"
   ],
@@ -1480,6 +1490,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Medaka Box": [
     "Medaka Kurokami"
+  ],
+  "Mega Man": [
+    "Mega Man"
   ],
   "Metal Gear": [
     "Solid Snake"
@@ -1910,6 +1923,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Sheena, Queen of the Jungle": [
     "Sheena"
+  ],
+  "Sherlock Holmes": [
+    "Sherlock Holmes"
   ],
   "Shrek": [
     "Lord Farquaad",
@@ -2561,6 +2577,7 @@ const COSPLAYER_FRANCHISES = {
     "Creature from the Black Lagoon",
     "Dracula",
     "Frankenstein's Monster",
+    "The Invisible Man",
     "The Mummy",
     "The Phantom of the Opera",
     "The Wolf Man"

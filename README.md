@@ -32,7 +32,8 @@ renders even on checkpoints that have never heard of the character. Ask a plain 
 Chun-Li and your prompt says `Chun-Li`; ask this one and you get the blue qipao with gold trim,
 the brown tights, the white cross-laced boots and the spiked bracelets.
 
-**Browse what's on offer** — a searchable sample render for every entry:
+**Browse what's on offer** — a searchable sample render for every entry, sortable
+**A–Z or newest first**, with a **New in this release** filter:
 [cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) ·
 [archetype gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/archetypes/) ·
 [creature gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/creatures/).
@@ -248,9 +249,10 @@ for a ready-to-run workflow.
 - **The scene shows the scale.** A giant only *looks* giant if the frame has something to
   compare against, so a giant tier — or a canonically giant character like Godzilla or the
   Iron Giant — moves the shot outdoors and picks a wide, low or establishing framing, and stops
-  the build being described as petite. Lock `location` or `shot_type` yourself and your choice
-  wins as always. Tiny characters get the lighter version: only the framings too wide to
-  resolve them are dropped.
+  the build being described as petite — and, since 0.97.0, stops the composition cropping the
+  surroundings away, which was the one way a giant could still lose its own scale. Lock
+  `location`, `shot_type` or `composition` yourself and your choice wins as always. Tiny
+  characters get the lighter version: only the framings too wide to resolve them are dropped.
 - **The light matches the place.** Indoor locations never draw open-sky light and outdoor ones never
   draw window or hearth light, and a light naming a physical fixture — a hearth, a television, a
   stained-glass window, a stage rig — only appears where that fixture exists. The **location**

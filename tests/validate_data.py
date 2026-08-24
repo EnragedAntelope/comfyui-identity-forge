@@ -634,6 +634,48 @@ def validate() -> list[str]:
         for key in ("anatomy", "poses", "creature_of", "creature_class"):
             if entry.get(key) is not None and body_plan != "feral":
                 errors.append(f"cosplayer '{name}': {key!r} requires body_plan 'feral'")
+
+        # --- anatomy_note (0.97.0) ------------------------------------
+        # One sentence about the BODY, voiced ahead of the clothing exactly as
+        # ``mask`` is. It exists so a MASKLESS entry can state a limb count where
+        # the render acts on it -- see ``_ANATOMY_NOTE_KEY`` in
+        # nodes/identity_forge.py and architecture.md -> "Limb and part counts".
+        note = entry.get("anatomy_note")
+        if note is not None:
+            if not isinstance(note, str) or not note.strip():
+                errors.append(f"cosplayer '{name}': 'anatomy_note' must be a "
+                              f"non-empty string")
+            elif body_plan == "feral":
+                # A beast already has a per-slot ``anatomy`` path; carrying both
+                # would describe the same body twice.
+                errors.append(f"cosplayer '{name}': 'anatomy_note' is not valid on a "
+                              f"feral entry -- use the 'anatomy' slots instead")
+            else:
+                if note != note.strip() or note[:1].isupper():
+                    errors.append(f"cosplayer '{name}': anatomy_note is voiced mid-"
+                                  f"sentence after 'He has ', so it must be lowercase "
+                                  f"and unpadded ({note!r})")
+                if note.endswith("."):
+                    errors.append(f"cosplayer '{name}': anatomy_note must not end with "
+                                  f"a period; the engine sentences it ({note!r})")
+                # The note survives into a render that a DOWNSTREAM node may have
+                # re-costumed (``_COSTUME_META_KEYS`` drops it only when the
+                # downstream document supplies its own outfit). Naming a garment
+                # here would put clothing in the body sentence, where it competes
+                # with the real one. Garments belong in ``costume``.
+                # Word-boundary anchored, and it has to stay that way: without
+                # the \b the alternation matched INSIDE ordinary anatomy words --
+                # "sleeveless" hit `sleeve`, "capelike" hit `cape`, "unbelted"
+                # hit `belt`. A validator that rejects a correct entry is worse
+                # than one that misses a wrong one.
+                worn = re.search(
+                    r"(?i)\b(shirt|sleeves?|jacket|coat|trousers|pants|dress|skirt|"
+                    r"robes?|armou?r|breastplate|boots?|shoes?|gloves?|cape|cloak|"
+                    r"belt|vest|tunic|uniform|helmet|mask)\b", note)
+                if worn:
+                    errors.append(f"cosplayer '{name}': anatomy_note describes the "
+                                  f"BODY, not the clothes -- move "
+                                  f"{worn.group(0)!r} into 'costume' ({note!r})")
         anatomy = entry.get("anatomy")
         if anatomy is not None:
             if not isinstance(anatomy, dict) or not anatomy:

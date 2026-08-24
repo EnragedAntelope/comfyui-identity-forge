@@ -1093,6 +1093,7 @@
         "labret stud",
         "double nostril piercing",
         "medusa piercing",
+        "stretched lobes",
         "None"
       ]
     },
@@ -1180,6 +1181,9 @@
         "mini backpack in tan",
         "straw beach tote",
         "printed silk scarf tied as bag accent",
+        "leather briefcase in black",
+        "canvas messenger bag",
+        "canvas duffel bag",
         "None"
       ]
     },
@@ -1745,6 +1749,7 @@
         "frosted tips",
         "money piece",
         "peekaboo highlights",
+        "split dye",
         "None"
       ]
     },
@@ -1820,6 +1825,8 @@
         "espadrilles",
         "derbies",
         "kitten heels",
+        "mary janes",
+        "cowboy boots",
         "None"
       ]
     },
@@ -1865,6 +1872,7 @@
         "pinstripe",
         "gingham",
         "tie-dye",
+        "argyle",
         "None"
       ]
     },
@@ -2428,6 +2436,7 @@
         "Asajj Ventress",
         "Asami Sato",
         "Ash Ketchum",
+        "Ash Williams",
         "Ashe (Overwatch)",
         "Asia Argento",
         "Aspen Matthews",
@@ -3028,6 +3037,7 @@
         "Ichigo Kurosaki",
         "Illaoi",
         "Illidan Stormrage",
+        "Immortan Joe",
         "Impa",
         "Imperator Furiosa",
         "Imperial Officer",
@@ -3383,6 +3393,7 @@
         "Medic (Team Fortress 2)",
         "Medusa",
         "Meg Griffin",
+        "Mega Man",
         "Megara",
         "Megatron",
         "Megumi Fushiguro",
@@ -3440,6 +3451,7 @@
         "Misty Knight",
         "Mitsuri Kanroji",
         "Mitsuru Kirijo",
+        "Mizora",
         "Moana",
         "Mockingbird",
         "Moira",
@@ -3831,6 +3843,7 @@
         "Shego",
         "Sheik",
         "Shelob",
+        "Sherlock Holmes",
         "Shi (Ana Ishikawa)",
         "Shido Itsuka",
         "Shikamaru Nara",
@@ -3857,6 +3870,7 @@
         "Sindel",
         "Sinestro",
         "Sinon",
+        "Sir Hammerlock",
         "Sirius Black",
         "Sister Sage",
         "Sister of Battle",
@@ -3988,7 +4002,9 @@
         "The Ghoul",
         "The Great Gazoo",
         "The Grinch",
+        "The Invisible Man",
         "The Iron Giant",
+        "The Knight (Hollow Knight)",
         "The Lorax",
         "The Mandalorian",
         "The Martyr",
@@ -4173,6 +4189,7 @@
         "Zeb Orrelios",
         "Zelda",
         "Zenitsu Agatsuma",
+        "Zer0",
         "Zeri",
         "Zero (Code Geass)",
         "Zero Suit Samus",
@@ -4250,7 +4267,8 @@
         "Franchise: The Boys",
         "Franchise: The Legend of Zelda",
         "Franchise: The Lord of the Rings",
-        "Franchise: The Simpsons"
+        "Franchise: The Simpsons",
+        "Franchise: Universal Monsters"
       ]
     },
     {

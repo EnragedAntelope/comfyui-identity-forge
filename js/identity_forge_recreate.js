@@ -302,6 +302,14 @@ app.registerExtension({
   async nodeCreated(node) {
     try {
       if (!isIdentityForgeNode(node)) return;
+      // NO re-entry guard here, deliberately. An audit listed this file with the
+      // four setups that needed one at 0.97.0; measured, it does not. Re-entry
+      // wraps our own wrapper, but `inherited` is captured before the assignment,
+      // so the upstream handler still runs exactly once per menu open, and
+      // replaceRecreateOption() de-duplicates by label so the entry appears once.
+      // Both properties are pinned in tests/frontend/recreate.test.mjs -- a
+      // refactor that breaks either one turns them red, which is worth more than
+      // a flag guarding a failure that cannot happen.
 
       // An own property on the instance, not another prototype wrapper.
       // Every pack that contributes menu entries does it by wrapping the

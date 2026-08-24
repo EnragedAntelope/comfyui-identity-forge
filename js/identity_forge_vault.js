@@ -21,6 +21,14 @@ import { api } from "../../scripts/api.js";
 
 const NODE = "IdentityForgeVaultLoad";
 const NO_CHARACTERS = "(no characters saved)";
+//: Shown when the vault API could not be reached at all. Distinct from
+//: NO_CHARACTERS on purpose: "the server is not answering" and "nothing is saved
+//: yet" are different situations that used to render identically, so a failed
+//: fetch was indistinguishable from an empty vault.
+const VAULT_UNAVAILABLE = "(vault unavailable — press Refresh)";
+//: First widget this file adds; its presence is the re-entry guard in
+//: `setupVaultLoad`. See js/identity_forge.js.
+const REFRESH_LABEL = "🔄 Refresh";
 
 function apiURL(route) {
   try {
@@ -34,15 +42,29 @@ function previewURL(name, bust) {
   return apiURL(`/identity_forge/vault/preview/${encodeURIComponent(name)}${q}`);
 }
 
+/* Returns the character list, or NULL when the vault API could not be reached.
+   The null is the point: returning [] on failure made a dead server render as an
+   empty vault, so a user with saved characters was told they had none. */
 async function fetchCharacters() {
   try {
     const resp = await api.fetchApi("/identity_forge/vault/characters");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
     return Array.isArray(data.characters) ? data.characters : [];
   } catch (e) {
     console.error("[IdentityForge] vault list failed:", e);
-    return [];
+    return null;
   }
+}
+
+/* ComfyUI has carried a combo's option list on `options.values` throughout, but
+   in some builds it is a FUNCTION rather than an array. Assigning straight over it
+   works on the common build and breaks on those -- the Cosplayer and Recreate files
+   already route through a helper for exactly this, and the vault was the odd one
+   out. Assigning an array is correct in both cases; reading needs the call. */
+function setComboValues(widget, values) {
+  if (!widget.options) widget.options = {};
+  widget.options.values = values;
 }
 
 function getCharacterWidget(node) {
@@ -75,11 +97,16 @@ function updatePreview(node) {
 }
 
 function applyCharacterList(node, characters) {
-  const names = characters.map((c) => (typeof c === "string" ? c : c.name));
   const w = getCharacterWidget(node);
   if (!w) return;
-  const list = names.length ? names : [NO_CHARACTERS];
-  w.options.values = list;
+  let list;
+  if (characters === null) {
+    list = [VAULT_UNAVAILABLE];
+  } else {
+    const names = characters.map((c) => (typeof c === "string" ? c : c.name));
+    list = names.length ? names : [NO_CHARACTERS];
+  }
+  setComboValues(w, list);
   if (!list.includes(w.value)) w.value = list[0];
   updatePreview(node);
   node.setDirtyCanvas(true, true);
@@ -228,10 +255,21 @@ function openManager(node) {
     if (!names.length) { alert("Select at least one character first."); return; }
     if (!confirm(`Delete ${names.length} character(s)? This cannot be undone.`)) return;
     try {
-      await api.fetchApi("/identity_forge/vault/delete", {
+      // resp.ok was unchecked here while rename DID check it, so a 500 was
+      // swallowed: the reload showed the character still present with no
+      // explanation, which reads as "the delete button does nothing".
+      const resp = await api.fetchApi("/identity_forge/vault/delete", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ names }),
       });
+      if (!resp.ok) {
+        let detail = `HTTP ${resp.status}`;
+        try {
+          const data = await resp.json();
+          if (data && data.error) detail = data.error;
+        } catch (parseError) { /* not JSON - keep the status */ }
+        alert(`Delete failed: ${detail}`);
+      }
     } catch (e) {
       console.error("[IdentityForge] delete failed:", e);
       alert("Delete failed — see console.");
@@ -265,7 +303,11 @@ function openManager(node) {
 // Node wiring
 // --------------------------------------------------------------------------
 function setupVaultLoad(node) {
-  const refreshW = node.addWidget("button", "🔄 Refresh", null, () => refresh(node), { serialize: false });
+  // Re-entry guard -- see ALL_RANDOM_LABEL in js/identity_forge.js. Without it a
+  // second call adds a second Refresh/Manage pair AND a second DOM preview widget,
+  // which is the one that leaves a visibly broken node.
+  if ((node.widgets || []).some((w) => w.name === REFRESH_LABEL)) return;
+  const refreshW = node.addWidget("button", REFRESH_LABEL, null, () => refresh(node), { serialize: false });
   const manageW = node.addWidget("button", "🗂 Manage Vault…", null, () => {
     try { openManager(node); } catch (err) { console.error("[IdentityForge] manager failed:", err); }
   }, { serialize: false });

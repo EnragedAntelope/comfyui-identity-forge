@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 
 import { installDom } from "./dom.mjs";
 import { __getExtension } from "./stubs/app.js";
-import { createNode } from "./fake_node.mjs";
+import { createNode, createNodeTwice } from "./fake_node.mjs";
 
 // No DOM manipulation happens in this file, but the module unconditionally
 // calls requestAnimationFrame() at the end of setup (to correct the
@@ -106,4 +106,59 @@ test("both bulk-set buttons and both group headers are created with options.seri
   for (const b of buttons) {
     assert.equal(b.options?.serialize, false, `button "${b.name}" must set serialize:false`);
   }
+});
+
+
+/* --- Re-entry guard (0.97.0) --------------------------------------------- */
+test("a second onNodeCreated adds no second set of headers or bulk buttons", async () => {
+  const once = await createNode(ext, "IdentityForgeCreature");
+  const twice = await createNodeTwice(ext, "IdentityForgeCreature");
+
+  assert.equal(twice.widgets.length, once.widgets.length,
+    "re-entry duplicated widgets");
+  const names = twice.widgets.map((w) => w.name);
+  const dupes = names.filter((n, i) => names.indexOf(n) !== i);
+  assert.deepEqual(dupes, [], `widgets appearing twice: ${dupes.join(", ")}`);
+  assert.equal(names.filter((n) => n === "Slots: all Follow base").length, 1);
+  assert.equal(names.filter((n) => n === "Slots: all Random").length, 1);
+});
+
+/* --- Bulk-set must not abort halfway (0.97.0) ---------------------------- */
+test("one throwing slot callback does not stop the rest of the bulk set", async () => {
+  const node = await createNode(ext, "IdentityForgeCreature");
+  const bulk = node.widgets.find((w) => w.name === "Slots: all Random");
+  assert.ok(bulk, "the bulk-set button must exist");
+
+  // Every slot the button drives, identified the way the module does: the
+  // widgets that sit between the two bulk buttons and the next group header.
+  const slots = node.widgets.filter(
+    (w) => w.type === "combo" && typeof w.value === "string"
+      && (w.options?.values || []).includes("Follow base"));
+  assert.ok(slots.length >= 3, "expected several hybrid slots to exist");
+
+  let calls = 0;
+  for (const w of slots) {
+    w.callback = () => { calls += 1; throw new Error("boom"); };
+  }
+  bulk.callback();
+
+  assert.equal(calls, slots.length,
+    "the loop stopped at the first throwing callback");
+  for (const w of slots) {
+    assert.equal(w.value, "Random", `${w.name} was left unset`);
+  }
+});
+
+/* --- The hidden-widget sentinel (0.97.0) --------------------------------- */
+test("a collapsed widget carries the same hidden type string as the main node", async () => {
+  const node = await createNode(ext, "IdentityForgeCreature");
+  const header = node.widgets.find((w) => typeof w.name === "string"
+    && w.name.startsWith("\u25BE "));
+  assert.ok(header, "expected at least one group header");
+  header.callback();
+  const hidden = node.widgets.filter((w) => w.type === "if_hidden");
+  assert.ok(hidden.length > 0, "collapsing set no widget to the shared sentinel");
+  assert.equal(
+    node.widgets.filter((w) => w.type === "if_creature_hidden").length, 0,
+    "the old creature-only sentinel is still in use");
 });

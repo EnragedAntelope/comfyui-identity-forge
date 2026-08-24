@@ -1207,10 +1207,10 @@ archetype"). **Both are now closed and the note was stale** — verified against
 `Country Star` cover the western ground, and `Biker` ships. Kept as a line rather than
 deleted because a stale "gap" invites someone to fill it twice.
 
-### A bare-adjective `height` reads awkwardly in the lead sentence (open, noticed 0.84.0)
+### A bare-adjective `height` read awkwardly in the lead sentence (CLOSED 0.97.0)
 
 Found in a preview pass, **pre-existing since the lead sentence was written** and unrelated to
-anything 0.84.0 changed. The lead joins `[body_type, height, skin_tone]`, and `height` is
+anything 0.84.0 changed. The lead joins `[body_type, height, skin_tone]`, and `height` was
 inserted verbatim:
 
 > Iron Man: *"a 22-year-old man with an average build **and short**."*
@@ -1218,19 +1218,40 @@ inserted verbatim:
 
 Six of the nine `height` values are bare adjectives (`very petite`, `petite`, `short`, `tall`,
 `statuesque`, `very tall`); the other three are already noun phrases (`average height`,
-`slightly below/above average height`) and read correctly. It is most visible on a fully
+`slightly below/above average height`) and read correctly. It was most visible on a fully
 encased character, where `_CONCEALED_SHELL_SKIN_FIELDS` drops `skin_tone` and the list falls to
 two items, leaving a naked "and short".
 
-**Not fixed, deliberately.** It is cosmetic, and any fix rewrites the lead sentence of roughly
-two-thirds of *all* renders — this pack's output is a T2I prompt, so changing `short` to
-`a short stature` changes the conditioning tokens for every user, not just the phrasing. That
-is a bigger, standalone decision than a wording tidy-up looks like.
+**It sat open from 0.84.0 to 0.97.0 because the obvious fix was priced wrong.** The assumed
+remedy was rewrapping the value — `short` → `a short stature` — which changes the conditioning
+tokens for every user of a T2I prompt builder, not just the phrasing. That is a real cost and
+the deferral was correct for that fix.
 
-**If it is ever taken on**, the constraint to respect: `height` is also the slot the
-`size_scale` / `scale_prose` override writes into (`"colossal and fifty feet tall"`), and those
-are hand-authored phrases that already read correctly. Any rewrapping must apply **only** to
-values present in `FIELD_DEFINITIONS["height"]`, never to free text.
+**What shipped instead moves the word, it does not rewrite it.** The six bare adjectives are
+voiced as a PRENOMINAL adjective on the subject noun, which is the slot English actually allows
+them in, and size precedes age in English adjective order:
+
+> now: *"**A short** 22-year-old man with an average build and medium skin."*
+
+The token `short` is still there, exactly once; only its position changed. `_PRENOMINAL_HEIGHTS`
+in `nodes/identity_forge.py` is the membership list, and it goes at the FRONT of `lead_bits`
+while `core` skips it, so nothing is voiced twice.
+
+**The constraint the old note named is respected, and it is why the list is literal rather than
+computed.** `height` is also the slot the `size_scale` / `scale_prose` override writes into
+(`"colossal and fifty feet tall"`), and those are hand-authored phrases that already read
+correctly where they are — "A colossal and fifty feet tall man" would be worse than the wart.
+Anything not named in `_PRENOMINAL_HEIGHTS` — the three noun-phrase values and every free-text
+override — stays in the trailing list untouched. `HeightPrenominalTests` pins every member
+against `FIELD_DEFINITIONS["height"]` (so a renamed value fails loudly instead of silently
+falling back to the old wording), pins the split against the "contains the word height" rule,
+and pins that free text is never moved.
+
+**The cost that was accepted:** the lead sentence of roughly two-thirds of all renders now
+reads differently, so the published gallery images for those entries are no longer literal
+reproductions of what the pack emits today. `--check` cannot see it — `entry_hash` covers the
+entry *dict*, not the prose — which is the same blind spot the 0.90.0 mask rewrite hit. A
+maintainer decision, taken deliberately, not a regression.
 
 ### The `loose` hair_style family blocks the rest of the buzz-cut fix (CLOSED 0.78.0)
 
@@ -2655,3 +2676,155 @@ suppressed field is dropped outright, so it never appears there. Both lists are 
 emitted whenever the document carries anatomy slots; `_parse_archetype_json` already
 read them, so recall needed no change. This fixes the **Creature node's** own vault
 round-trip as much as the feral cosplay path that would otherwise have inherited it.
+
+### `anatomy_note`: the early sentence a maskless entry never had (0.97.0)
+
+The 0.96.0 limb-count fix works by moving a count into a sentence that renders **before** the
+`He wears …` garment list. The only such sentence a non-feral entry had was `mask`, so the fix
+could not reach the four multi-armed entries that have no mask — `Shiva (Record of Ragnarok)`,
+`Salaak`, `Spiral`, `Greez Dritus`. That gap was written up at 0.96.0 as needing "an optional
+anatomy sentence for non-feral entries, mirroring `_MASK_KEY`". This is it.
+
+`anatomy_note` is an optional string on a cosplayer entry. It travels as `_ANATOMY_NOTE_KEY`
+exactly as the mask travels as `_MASK_KEY`, and `_format_prose` voices it as its own
+`He has …` sentence immediately **before** the mask sentence — body first, then head, which is
+how the two read together on an entry carrying both.
+
+Five rules, each with a reason:
+
+* **It describes the BODY, never the clothes.** A garment here would survive into a render a
+  downstream node has re-costumed, and would then compete with the real clothing sentence.
+  `validate_data.py` rejects a garment noun in the field.
+* **It is voiced with `has`, not `wears`** — for the same reason `mask` is: this is what the
+  body *is*, not something on it.
+* **State the count as a word, early.** "four arms in total" carries the render; "a second pair
+  below the first" makes the model do arithmetic and it does not. See "Limb and part counts"
+  above.
+* **It is in `_COSTUME_META_KEYS`**, so a downstream document that supplies its own
+  `outfit_description` drops it. That is the 0.92.0 "downstream wins" contract, and skipping it
+  would reintroduce the leak class that put Iron Man's faceplate on a Hogwarts uniform —
+  chaining Cosplayer `Spiral` → Cosplayer `Hermione Granger` would otherwise leave six arms on
+  the new look.
+* **It is rejected on a feral entry.** A beast already has a per-slot `anatomy` dict routed into
+  the species payload; carrying both would describe the same body twice. Note the two keys are
+  different things: `anatomy` (feral, a `{slot: text}` dict) and `anatomy_note` (non-feral, a
+  plain string).
+
+Unmasking does **not** clear it — it is not part of the head. `AnatomyNoteTests` pins all of
+the above, including the body-before-head ordering, which no shipped entry exercises yet but
+which the first entry carrying both will inherit.
+
+`Mizora` (0.97.0) is the first non-arm use: four horns and a pair of wings are a count and an
+unusual body plan, and both were buried in her costume sentence before this existed.
+
+### `composition` joins the giant/tiny scale gate (0.97.0, measured)
+
+`_scale_coherent_pool` narrowed `location`, `shot_type`, `body_type` and `pose` for an extreme
+scale, but not `composition` — so a forty-foot subject could still draw
+*"composed with the subject filling most of the frame"*, which throws away the very surroundings
+the other three rules work to keep in shot. Observed on `Falkor`.
+
+The two ends fail for opposite reasons and get their own sets. **Giant** drops the two framings
+that crop the world away (`the subject filling most of the frame`, `a tight crop and little
+headroom`), because "colossal and fifty feet tall" is a claim about a *relationship* and a frame
+containing only the subject has nothing to measure it against. **Tiny** drops the one framing
+that makes a doll-sized subject resolve to nothing (`the subject small against open negative
+space`) — the mirror of `_SHOTS_TOO_WIDE_FOR_TINY`, and the same single-value light touch the
+tiny tiers get everywhere else.
+
+**BIAS.** `composition` is flat — no `FIELD_FAMILIES` entry, no `weights` map — so the survivors
+stay uniform over each other. This is the partial cull "A flat field is where a partial cull is
+FINE (0.82.0)" sanctions, and the same property that clears `shot_type` and `body_type`.
+Four of the eight values are *also* in `_ENVIRONMENT_DEPENDENT_COMPOSITIONS`, which culls them in
+a studio; the two rules compose, and worst case a giant in a studio narrows to two with the
+`or pool` fallback behind it.
+
+Measured after the change: 0/300 bad draws at each tier, and the full pool still reachable with
+no scale in play.
+
+### A species `hands` slot suppresses the human `nails` field (0.97.0, measured)
+
+All **249** creatures fill the `hands` slot — "small black-clawed hands", "broad hoof-tipped
+forelimbs", "sucker-lined tentacles" — and the human `nails` field could still draw
+"He has square nails" over the claws. `hands_covered` (the glove/full-shell rule) never saw it,
+because a species slot is not a glove.
+
+The fix sits beside the glove rule and drops `nails` when `species["slots"]["hands"]` is filled.
+The same slot reaches a Cosplayer entry carrying `body_plan: "feral"`, so a named beast is
+covered too.
+
+**`nails` only — not `rings`.** A ring is a *worn* item and a clawed or taloned hand can wear
+one; a fingernail is a claim about the hand itself, which is exactly what the slot has just
+overwritten. Two entries name human-like hands (`raccoon`, `android`) and neither wants a
+manicure either.
+
+No RNG moves — the field is drawn and then dropped, the same shape as the glove rule — so
+nothing biases, and an explicit lock still wins. Measured after the change: 0/600 creature JSONs
+carry a `nails` key, while a plain human still gets one.
+
+### `bag` was the last feminine-coded field with no masculine trim (0.97.0, measured)
+
+Same class of miss as the 0.83.0 `footwear` trim, and found the same way. `bag` shares one
+option pool across genders and had **no entry in `_MALE_EXCLUDED_VALUES` at all**, while every
+other feminine-coded field — nails, earrings, necklace, rings, bracelet, footwear, hair_style —
+had one.
+
+**Measured before the fix, over 1000 male renders at the default `wardrobe="Match gender"`:
+137 (13.7%)** carried a strictly feminine handbag.
+
+> *"…a fine-knit poplin shirt and a silk tie in a floral print, in loafers, carrying **an
+> envelope clutch in gold**."*
+
+Twelve values are trimmed, and the trim is **presentation-gated** like the other wardrobe trims,
+so a Feminine/"Any" wardrobe on a man keeps the whole pool — that mechanism is the entire point.
+Deliberately *not* trimmed: the totes, crossbodies, saddlebags, belt bags and mini backpacks,
+which are unisex carriers.
+
+**Three men's bags ship in the same revision** (`leather briefcase in black`,
+`canvas messenger bag`, `canvas duffel bag`). That is not a coincidental content addition — cull
+twelve of twenty-six and the masculine pool is nearly empty, so the trim and the additions are
+one change. `bag` is flat, so both halves are bias-free.
+
+Measured after: 0/1000, with the men's bags reachable and a Feminine wardrobe still opening the
+full pool.
+
+### Release stamps, and the gallery's "Newest first" (0.97.0)
+
+`data/versions.py` records the release each roster entry first shipped in, written by
+`scripts/stamp_versions.py` and checked in CI. It exists so the three sample galleries can offer
+a **Newest first** sort and a **New in `<version>`** filter without a human keeping a changelog
+of thousands of tiles in their head.
+
+**It is presentation data only.** Nothing in it reaches a prompt, and no seed, saved workflow,
+dropdown order or gallery image depends on it — which is why adding a stamp can never change
+what the node generates.
+
+Three things about it are load-bearing:
+
+* **The reader uses `ast`, never an import.** Importing `data/cosplayers.py` runs
+  `apply_user_cosplayers` at the bottom of it, which merges the maintainer's local
+  `user_options.json` — so an import-based stamper would bake private entries into a committed,
+  published file. `scripts/generate_js_data.py` documents this trap at length and this follows
+  it. A user-added entry therefore never gets a stamp, and the gallery treats an unstamped entry
+  as oldest, which is the right failure mode: it has no image on `gh-pages` either.
+* **`RELEASES` is an ordered tuple and the page ranks by POSITION in it**, never by parsing the
+  version strings — `"0.10.0"` sorts before `"0.9.0"` as text.
+* **`--stamp` never rewrites an existing stamp.** A release date is a fact about the past;
+  rewriting one silently reorders the gallery.
+
+`--check` is the CI gate. It fails when a shipped entry has no stamp *and* when the map still
+names something the pack no longer ships — the half a convention alone cannot enforce, since an
+unstamped entry would simply sort as though it had always been there.
+
+The manifest carries this to the page: `schema_version` 2 adds `added` per entry plus `version`
+and `releases` at the top level. A page served an older manifest sees every entry as unstamped,
+hides both controls and behaves exactly as before, so the two sides can be published
+independently.
+
+**Two pre-existing page bugs were fixed in the same pass**, both found by driving the page in a
+browser rather than by reading it: `showMissing()` planted the literal text `missing entries` in
+the search box (it looked like a query the viewer had typed and could not be un-typed without
+clearing a real search), and the **"Clear search" button in the markup was never wired to
+anything** — a dead control, shipped for releases. Search and the two toggles now funnel through
+one `applyView()` so they compose instead of overwriting each other, and the empty-state panel
+fires for any narrowing rather than only for a search.

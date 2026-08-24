@@ -69,6 +69,16 @@ _HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_item"})
 
 #: Hidden fields that are nonetheless honoured as preset-supplied locks (a costume
 #: override and a cosplayer's signature prop). Everything else hidden is engine-only.
+#:
+#: **These two sets are EQUAL today, and that is not an accident worth collapsing.**
+#: An audit flagged them as "identical twin constants"; the names are not redundant,
+#: the *membership* happens to coincide because both hidden fields are currently
+#: preset-supplied. The consequence is that
+#: ``name not in _HIDDEN_FIELDS or name in _PRESET_HIDDEN_FIELDS`` is a tautology
+#: right now -- it is kept because it is the clause that starts doing work the moment
+#: a third engine-only hidden field is added, and rediscovering that requirement
+#: after the fact is far more expensive than the dead branch. ``HiddenFieldTests``
+#: pins the subset relation the clause depends on.
 _PRESET_HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_item"})
 
 #: Fields drawn AFTER the main randomization loop, because their pool depends on the
@@ -191,6 +201,26 @@ _COVERS_FACE_KEY = "__covers_face__"
 #: with a long clothing list loses, so it gets its own sentence.
 _MASK_KEY = "__mask__"
 
+#: Reserved key carrying a cosplayer's ``anatomy_note`` -- one sentence about the
+#: BODY, voiced ahead of the clothing exactly as :data:`_MASK_KEY` is.
+#:
+#: Added 0.97.0 to close the gap the 0.96.0 limb-count fix left open. That fix works
+#: by moving a count into a sentence that renders BEFORE the ``He wears ...`` list,
+#: and the only such sentence a non-feral entry had was ``mask`` -- so it could not
+#: reach the four multi-armed entries with no mask (``Shiva (Record of Ragnarok)``,
+#: ``Salaak``, ``Spiral``, ``Greez Dritus``). This is that sentence, decoupled from
+#: the head.
+#:
+#: **The note describes the body, never the clothes.** Garments belong in ``costume``;
+#: putting one here would survive a downstream costume override and contradict it.
+#: ``validate_data.py`` rejects a garment noun in the field.
+#:
+#: Distinct from a FERAL entry's ``anatomy``, which is a ``{slot: text}`` dict routed
+#: into the species payload. ``anatomy_note`` is a plain string and is rejected on a
+#: feral entry -- a beast already has a per-slot anatomy path and would voice the
+#: body twice.
+_ANATOMY_NOTE_KEY = "__anatomy_note__"
+
 #: Reserved key carrying a cosplayer's ``covers_body`` flag through the parsed dict
 #: (a full hard suit / armour / robot shell / exoskeleton — no skin for worn
 #: jewellery to sit on).
@@ -216,6 +246,7 @@ _SCALE_TIER_KEY = "__scale_tier__"
 #: scale on Hermione, a masked cosplayer suppressing an archetype's whole face).
 _COSTUME_META_KEYS: tuple[str, ...] = (
     "covers_face", "covers_body", "covers_hair", "mask", "size_scale",
+    "anatomy_note",
 )
 
 #: Top-level section name a Modifier node adds to the chained preset document,
@@ -418,8 +449,9 @@ _HAT_ACCESSORY_VALUES: frozenset[str] = frozenset({
     "wide brim sun hat", "baseball cap", "beret", "woven hat",
     # 0.83.0 additions to the accessories pool. Keeping this in sync is mandatory --
     # the docstring above says so, and a missed entry means that hat can stack on a
-    # hooded or helmeted outfit. ``AccessoryHatSyncTests`` now enforces it mechanically
-    # rather than relying on someone reading the comment.
+    # hooded or helmeted outfit. Enforced mechanically by
+    # ``GloveAccessoryTests.test_hat_accessory_values_stay_in_sync_with_the_pool``
+    # rather than by someone reading this comment.
     "flat cap", "bucket hat", "wool beanie",
 })
 
@@ -504,6 +536,26 @@ _MAX_CONSTRAINT_ITERATIONS: int = 12
 #: because nothing is ever drawn from this pool.
 _SIZE_SCALE_AUTO: str = "Auto"
 
+#: ``height`` values that are BARE ADJECTIVES, and therefore read wrong in the
+#: trailing list of the lead sentence: "a 22-year-old man with an average build
+#: **and short**". Voiced as a PRENOMINAL adjective instead -- "a short
+#: 22-year-old man with an average build" -- which is the same token in a slot
+#: English actually allows, so a t2i prompt keeps the word and loses the wart.
+#: Size precedes age in English adjective order, so this goes at the FRONT of the
+#: lead, ahead of ``age`` and ``ethnicity``.
+#:
+#: **Membership is deliberately a literal list, not a computed one.** ``height`` is
+#: also the slot :data:`_SIZE_SCALE_PHRASES` and a Cosplayer's ``scale_prose``
+#: write into ("colossal and fifty feet tall"), and those are hand-authored phrases
+#: that already read correctly where they are. Anything not named here -- the three
+#: noun-phrase values, and every free-text override -- stays in the trailing list
+#: untouched. ``HeightPrenominalTests`` pins every member against
+#: ``FIELD_DEFINITIONS["height"]`` so a renamed value fails loudly instead of
+#: silently falling back to the old wording.
+_PRENOMINAL_HEIGHTS: frozenset[str] = frozenset({
+    "very petite", "petite", "short", "tall", "statuesque", "very tall",
+})
+
 #: Hand-authored scale phrases, one per tier, that REPLACE the ``height`` value.
 #:
 #: This reuses the proven Cosplayer ``size_scale`` / ``scale_prose`` machinery: the
@@ -581,6 +633,44 @@ _SHOTS_TOO_WIDE_FOR_TINY: frozenset[str] = frozenset({
 #: contradiction for lost variety. ``body_type`` is flat (no families, no weights), so
 #: removing two of nineteen values is bias-free.
 _STATURE_BODY_TYPES: frozenset[str] = frozenset({"petite and slim", "petite and curvy"})
+
+#: ``composition`` values that fight an EXTREME scale, split by which end they fail at.
+#:
+#: The fourth field of the giant gate, added 0.97.0 to close a measured gap: the scale
+#: gate narrowed ``location``, ``shot_type``, ``body_type`` and ``pose`` but not
+#: ``composition``, so a forty-foot subject could still draw "composed with the subject
+#: filling most of the frame" -- which removes the very surroundings the other three
+#: rules work to keep in shot. Observed on ``Falkor``.
+#:
+#: The two ends fail for opposite reasons, so they get their own sets:
+#:
+#: * **Giant** -- a frame with nothing but the subject in it has nothing to measure
+#:   the subject against, and "colossal and fifty feet tall" is a claim about a
+#:   *relationship*. Both survivors here are the framings that crop the world away.
+#: * **Tiny** -- the mirror of :data:`_SHOTS_TOO_WIDE_FOR_TINY`, and the same single
+#:   value it is built from: a doll-sized subject rendered deliberately small in a
+#:   large empty frame resolves to nothing. A tight crop is *good* evidence at that
+#:   end, so the tiny set stays a single value, matching the lighter touch the tiny
+#:   tiers get everywhere else.
+#:
+#: BIAS: ``composition`` is flat -- no ``FIELD_FAMILIES`` entry, no ``weights`` map --
+#: so the survivors stay uniform over each other. This is the partial cull that
+#: architecture.md's "A flat field is where a partial cull is FINE" sanctions, and it
+#: is the same property ``shot_type`` and ``body_type`` pass on.
+#:
+#: Four of the eight values are ALSO in ``_ENVIRONMENT_DEPENDENT_COMPOSITIONS``
+#: (``data/constraints.py``), which culls them in a studio. The two rules compose:
+#: worst case for a giant in a studio the pool narrows to two, and the ``or pool``
+#: fallback below means an empty result keeps the value rather than raising.
+_COMPOSITIONS_TOO_TIGHT_FOR_GIANT: frozenset[str] = frozenset({
+    "the subject filling most of the frame",
+    "a tight crop and little headroom",
+})
+
+#: See :data:`_COMPOSITIONS_TOO_TIGHT_FOR_GIANT`.
+_COMPOSITIONS_TOO_WIDE_FOR_TINY: frozenset[str] = frozenset({
+    "the subject small against open negative space",
+})
 
 #: Probability that a randomized skin tone is drawn from the ethnicity's
 #: plausible band rather than the full spectrum. < 1.0 keeps real-world
@@ -1404,7 +1494,7 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
     An extreme change of scale is the one thing the prose cannot establish on its own.
     "Colossal and fifty feet tall" is a claim about the *relationship* between the
     subject and everything around them, so it only survives into the image when the
-    frame contains something to measure against. Three fields decide that:
+    frame contains something to measure against. Five fields decide that:
 
     * ``shot_type`` -- must hold a framing that keeps the world in shot, or looks up
       from ground level (:data:`_SCALE_SHOWING_SHOTS`).
@@ -1419,10 +1509,16 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
       of all 38 poses at giant scale found this to be the only genuinely impossible one
       (`leaning against a wall` reads better at scale, not worse -- the wall becomes a
       building).
+    * ``composition`` -- must not crop the world away
+      (:data:`_COMPOSITIONS_TOO_TIGHT_FOR_GIANT`). Added 0.97.0; without it the other
+      three rules could keep the surroundings in shot and ``composition`` could then
+      throw them out again, which is what "the subject filling most of the frame"
+      did on ``Falkor``.
 
-    Only the giant class takes all four; ``tiny`` takes the framing rule alone, in
-    its own lighter form (see :data:`_SHOTS_TOO_WIDE_FOR_TINY`). A three-foot subject
-    perched on the edge of a seat is fine, so the pose rule is giant-only.
+    Only the giant class takes all five; ``tiny`` takes the two framing rules, each in
+    its own lighter form (:data:`_SHOTS_TOO_WIDE_FOR_TINY`,
+    :data:`_COMPOSITIONS_TOO_WIDE_FOR_TINY`). A three-foot subject perched on the edge
+    of a seat is fine, so the pose rule is giant-only, and so is the location rule.
 
     **This is called from the randomize loop, which has already skipped every locked
     field, so an explicit user lock is never narrowed** -- lock ``location`` to a
@@ -1431,7 +1527,9 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
     the user asked for, and the 0.63.0 empty-studio-pool precedent is to keep the
     value rather than raise.
 
-    **BIAS.** All four fields are safe, each for its own reason. ``shot_type`` and
+    **BIAS.** All five fields are safe, each for its own reason. ``composition`` is
+    flat (no ``FIELD_FAMILIES`` entry, no ``weights`` map), the same property that
+    clears ``shot_type`` below. ``shot_type`` and
     ``body_type`` are flat -- no ``FIELD_FAMILIES`` entry, no ``weights`` map -- so a
     narrowed pool stays uniform over the survivors. ``pose`` is family-weighted and
     passes because ``FURNITURE_DEPENDENT_POSES`` is exactly the ``seated_perch`` family,
@@ -1462,9 +1560,15 @@ def _scale_coherent_pool(field_name: str, pool: list[str], scale_class: str) -> 
             return [v for v in pool if v not in _STATURE_BODY_TYPES] or pool
         if field_name == "pose":
             return [v for v in pool if v not in FURNITURE_DEPENDENT_POSES] or pool
+        if field_name == "composition":
+            return [v for v in pool
+                    if v not in _COMPOSITIONS_TOO_TIGHT_FOR_GIANT] or pool
     elif scale_class == "tiny":
         if field_name == "shot_type":
             return [v for v in pool if v not in _SHOTS_TOO_WIDE_FOR_TINY] or pool
+        if field_name == "composition":
+            return [v for v in pool
+                    if v not in _COMPOSITIONS_TOO_WIDE_FOR_TINY] or pool
     return pool
 
 
@@ -1962,7 +2066,7 @@ def _species_subject(species: dict, gender: str) -> str:
 def _format_prose(
     resolved: dict[str, str], gender: str, cosplay_label: str | None = None,
     species: dict | None = None, hands_visible: bool = True,
-    mask_text: str | None = None,
+    mask_text: str | None = None, anatomy_note: str | None = None,
 ) -> str:
     """Build a natural-language description from resolved field values.
 
@@ -1999,7 +2103,12 @@ def _format_prose(
     sentences: list[str] = []
 
     # --- Demographics + body core --------------------------------------
-    lead_bits = [b for b in (f"{g('age')}-year-old" if g("age") else "", g("ethnicity")) if b]
+    # A bare-adjective height leads the phrase instead of trailing it -- see
+    # _PRENOMINAL_HEIGHTS. Popped here so the `core` list below cannot voice it twice.
+    prenominal_height = g("height") if g("height") in _PRENOMINAL_HEIGHTS else ""
+    lead_bits = [b for b in (prenominal_height,
+                             f"{g('age')}-year-old" if g("age") else "",
+                             g("ethnicity")) if b]
     lead_tail = _words(*lead_bits, subject_noun)
     # Both branches now pick the article from the text. The human branch used to
     # hardcode "A " to avoid disturbing existing output, which shipped "A Armenian
@@ -2011,7 +2120,7 @@ def _format_prose(
     core = []
     if g("body_type"):
         core.append(_an(g("body_type"), "build"))
-    if g("height"):
+    if g("height") and not prenominal_height:
         core.append(g("height"))
     if g("skin_tone"):
         # Normally "{tone} skin" ("bronze skin"). A body-paint colour anchor may be a
@@ -2240,6 +2349,15 @@ def _format_prose(
     # gives it its own weight instead of making it compete with five garments.
     # "has" rather than "wears" because a mask slot describes what the head IS
     # (an alien skull, a bandaged stump), not something worn on top of it.
+    # --- Body anatomy, for an entry that states one ---------------------
+    # Same position and the same reason as the mask sentence below: a count or an
+    # unusual body plan buried in the "He wears ..." garment list does not carry the
+    # render (measured on Dexter Jettster -- architecture.md, "Limb and part counts").
+    # Body BEFORE head, which is how the two read together on an entry carrying both.
+    # "has", not "wears": this is what the body IS, never something worn on it.
+    if anatomy_note:
+        sentences.append(f"{subj} {has} {anatomy_note}")
+
     if mask_text:
         sentences.append(f"{subj} {has} {mask_text}")
 
@@ -2511,7 +2629,7 @@ def _format_json(
     # APPENDED, not inserted -- generate_character calls this positionally, the same
     # rule the engine entry point documents for its own signature.
     covers_face: bool = False, covers_body: bool = False, covers_hair: bool = False,
-    mask_text: str | None = None, size_scale: str = "",
+    mask_text: str | None = None, anatomy_note: str | None = None, size_scale: str = "",
     omitted: "list[str] | None" = None,
 ) -> str:
     """Build a JSON document: ``_meta`` plus fields nested by group.
@@ -2581,6 +2699,8 @@ def _format_json(
         meta["covers_hair"] = True
     if mask_text:
         meta["mask"] = mask_text
+    if anatomy_note:
+        meta["anatomy_note"] = anatomy_note
     if size_scale:
         meta["size_scale"] = size_scale
     if omitted:
@@ -2659,6 +2779,7 @@ def generate_character(
     # widgets_values shift fixed twice already this release: positional interfaces
     # tolerate appends and nothing else.
     mask_text: str | None = None,
+    anatomy_note: str | None = None,
 ) -> tuple[str, str]:
     """Engine entry point. Returns ``(prose, json_output)``.
 
@@ -2935,6 +3056,25 @@ def generate_character(
             if field not in locked_clean:
                 resolved.pop(field, None)
 
+    # A species `hands` slot REPLACES the human hand, so the human `nails` field is
+    # describing anatomy the subject does not have: every one of the 249 creatures
+    # fills `hands` ("small black-clawed hands", "broad hoof-tipped forelimbs",
+    # "sucker-lined tentacles"), and `nails` could still draw "He has square nails"
+    # over the claws. The same slot reaches a Cosplayer entry carrying
+    # ``body_plan: "feral"``, so a named beast is covered too.
+    #
+    # `nails` only -- not `rings`. A ring is a WORN item and a clawed or taloned hand
+    # can wear one (and several roster entries do); a fingernail is a claim about the
+    # hand itself, which is exactly what the slot has just overwritten. Two entries
+    # name human-like hands (`raccoon`, `android`); neither wants a manicure either.
+    #
+    # No RNG moves -- the field was already drawn and is dropped after the fill, the
+    # same shape as the glove rule above -- so nothing biases. An explicit lock wins,
+    # as everywhere else.
+    hands_replaced = bool(species and (species.get("slots") or {}).get("hands"))
+    if hands_replaced and "nails" not in locked_clean:
+        resolved.pop("nails", None)
+
     # A full hard shell -- robot / droid / powered armour / full plate / exoskeleton
     # -- leaves no bare skin for worn jewellery or nails, so a randomized necklace,
     # ring or polish would only render on top of the shell. Drop the whole Jewelry &
@@ -3045,7 +3185,8 @@ def generate_character(
         _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text)
     ) or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES
     prose = _format_prose(resolved, gender, cosplay_label, species,
-                          hands_visible=not hands_covered, mask_text=mask_text)
+                          hands_visible=not hands_covered, mask_text=mask_text,
+                          anatomy_note=anatomy_note)
     # Fields a preset or a widget deliberately locked ABSENT. They are stripped from
     # the group output (``group_fields`` drops "None"), so without recording them the
     # document cannot round-trip through the vault -- a recalled She-Hulk grew a
@@ -3056,6 +3197,7 @@ def generate_character(
         resolved, gender, hair_color_scope, wardrobe, cosplay_label, species,
         covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
         mask_text=mask_text,
+        anatomy_note=anatomy_note,
         # The tier actually in force: the widget overrides a wired character's own,
         # which is the precedence _scale_class applies a few lines above.
         size_scale=(size_scale if size_scale != _SIZE_SCALE_AUTO else character_scale),
@@ -3174,6 +3316,12 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
             head = meta.get("mask")
             if meta.get("covers_face") and isinstance(head, str) and head:
                 flat[_MASK_KEY] = head
+            # NOT gated on covers_face: an anatomy note describes the body, not the
+            # head, and every entry it exists for is face-visible. See
+            # :data:`_ANATOMY_NOTE_KEY`.
+            note = meta.get("anatomy_note")
+            if isinstance(note, str) and note:
+                flat[_ANATOMY_NOTE_KEY] = note
             # Fields a saved document records as deliberately absent (see
             # _format_json). Re-injected as "None" locks so a recalled character keeps
             # its suppressions instead of re-randomizing them. ``setdefault`` never
@@ -3420,6 +3568,7 @@ if _COMFY_AVAILABLE:
             cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
             covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
             mask_text = archetype.pop(_MASK_KEY, None)
+            anatomy_note = archetype.pop(_ANATOMY_NOTE_KEY, None)
             covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
             covers_hair = bool(archetype.pop(_COVERS_HAIR_KEY, None))
             character_scale = archetype.pop(_SCALE_TIER_KEY, "") or ""
@@ -3485,5 +3634,6 @@ if _COMFY_AVAILABLE:
                 character_scale,
                 widget_locked=widget_locked,
                 mask_text=mask_text,
+                anatomy_note=anatomy_note,
             )
             return io.NodeOutput(prose, json_output)

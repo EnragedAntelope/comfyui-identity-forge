@@ -37,6 +37,42 @@ to JPEG at 600px wide, quality 80.
 
 ---
 
+## Release stamps and the "Newest first" sort
+
+Each page offers **A–Z** or **Newest first**, plus a **New in `<version>`** filter, because
+every roster entry carries the release it first shipped in. That lives in `data/versions.py`,
+written by `scripts/stamp_versions.py` and gated in CI:
+
+```bash
+python scripts/stamp_versions.py --stamp   # after adding entries; commit data/versions.py
+python scripts/stamp_versions.py --check   # what CI runs
+```
+
+`build_manifest.py` copies the stamps into `manifest.json` as `added`, alongside a top-level
+`version` and `releases` list. The page **ranks by position in `releases`**, never by parsing
+the version strings — `"0.10.0"` sorts before `"0.9.0"` as text.
+
+Both controls hide themselves when the manifest does not carry the fields, so a page served an
+older (`schema_version: 1`) manifest silently falls back to plain A–Z rather than showing a
+control that cannot do anything. That means the pages and the manifests can be published
+independently, in either order.
+
+A **user-added** entry has no stamp. It sorts as oldest and never appears under "New in", which
+is the right failure mode — it has no image on `gh-pages` either.
+
+---
+
+## Editing the page files
+
+`gallery.js` and `style.css` are copies too, exactly like the four `.py` scripts. `style.css` is
+byte-identical across all three and `gallery.js` differs **only** in its header banner;
+`PageAssetsStayInSyncTests` in `tests/test_gallery.py` fails until a change has landed in all
+three. It also checks that every `$('#id')` the script reaches for exists in that gallery's
+`index.html` — a lookup returning `null` is how the "Clear search" button sat dead for several
+releases without anyone noticing.
+
+---
+
 ## The safety model
 
 This is the part worth reading before changing anything.

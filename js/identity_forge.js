@@ -597,9 +597,19 @@ function resize(node) {
   node.setDirtyCanvas(true, true);
 }
 
+//: The first widget this file adds. Its presence IS the re-entry guard below --
+//: a structural check rather than a flag, so it also holds for a node rebuilt by
+//: "Fix node (recreate)", which produces a genuinely new node object.
+const ALL_RANDOM_LABEL = "🎲 Unlock all (set to Random)";
+
 function setupIdentityForge(node) {
   const original = node.widgets ? node.widgets.slice() : [];
   if (!original.length) return;
+  // Re-entry guard: onNodeCreated can fire again for the same node on some paths.
+  // Without it a second call appends a second pair of master buttons and a second
+  // set of group headers, and wraps the gender callback twice. The Cosplayer file
+  // has had this since 0.89.0; the other four setups had not (0.97.0).
+  if (original.some((w) => w.name === ALL_RANDOM_LABEL)) return;
 
   const fields = original.filter(isFieldWidget);
   const fieldSet = new Set(fields);
@@ -612,7 +622,7 @@ function setupIdentityForge(node) {
 
   // --- master buttons ---
   // "Random" on a field = randomize it each run; any concrete value = lock it.
-  const allRandom = node.addWidget("button", "🎲 Unlock all (set to Random)", null, () => {
+  const allRandom = node.addWidget("button", ALL_RANDOM_LABEL, null, () => {
     for (const w of fields) setWidgetValue(node, w, "Random");
     resize(node);
   }, { serialize: false });

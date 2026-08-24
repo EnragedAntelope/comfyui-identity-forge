@@ -27,7 +27,7 @@ from data.cosplayers import get_cosplayer_names
 from nodes.identity_forge import (
     generate_character, _parse_archetype_json, _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY,
     _COVERS_BODY_KEY, _COVERS_HAIR_KEY, _MASK_KEY, _SCALE_TIER_KEY, _CONTROL_FIELDS,
-    _SPECIES_KEY,
+    _SPECIES_KEY, _ANATOMY_NOTE_KEY,
 )
 from nodes.identity_forge_cosplayer import (
     build_cosplayer_json, _MASK_DEFAULT, _MASK_OFF,
@@ -51,6 +51,10 @@ def render(
     # -- without this a masked character previews bare-headed (the 0.51.0 lesson
     # again, this time for the 0.90.0 mask key).
     mask_text = flat.pop(_MASK_KEY, None)
+    # Same trap as the mask above, for the body sentence a maskless multi-limbed
+    # entry needs (0.97.0). A preview that skips a forwarded key misreports the very
+    # thing you opened it to check.
+    anatomy_note = flat.pop(_ANATOMY_NOTE_KEY, None)
     covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
     covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
     # The entry's own size_scale tier. The node pops and forwards this; the preview
@@ -72,6 +76,7 @@ def render(
         seed, resolved_gender, locked, cosplay_label=label, covers_face=covers_face,
         covers_body=covers_body, covers_hair=covers_hair, species=species,
         character_scale=character_scale, mask_text=mask_text,
+        anatomy_note=anatomy_note,
     )
 
 

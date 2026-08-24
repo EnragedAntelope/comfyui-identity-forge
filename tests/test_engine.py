@@ -58,6 +58,10 @@ from nodes.identity_forge import (
 from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
     _MASK_KEY,
+    _ANATOMY_NOTE_KEY,
+    _PRENOMINAL_HEIGHTS,
+    _COMPOSITIONS_TOO_TIGHT_FOR_GIANT,
+    _COMPOSITIONS_TOO_WIDE_FOR_TINY,
     _MODIFIERS_KEY, _VARIANTS_KEY, _name_already_carries_franchise,
     _COSTUME_META_KEYS, _SCALE_TIER_KEY, _conflicting_trigger_values,
     _POCKETLESS_GARMENT_RE, _presentation_mode,
@@ -75,6 +79,7 @@ from nodes.identity_forge_cosplayer import (
 from nodes.identity_forge_modifier import build_modifier_json, _parse_modifier_text
 from data.templates import ARCHETYPES
 from data.cosplayers import COSPLAYERS, get_cosplayer_names
+from data.creatures import CREATURES
 from tests.validate_data import validate
 
 
@@ -6931,13 +6936,15 @@ def _render_cosplayer(character, seed, look_level="Costume only",
     covers_body = bool(flat.pop(_COVERS_BODY_KEY, None))
     covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
     mask_text = flat.pop(_MASK_KEY, None)
+    anatomy_note = flat.pop(_ANATOMY_NOTE_KEY, None)
     scale = flat.pop(_SCALE_TIER_KEY, "") or ""
     locked = {k: v for k, v in flat.items()
               if k not in _CONTROL_FIELDS and not k.startswith("__")}
     return generate_character(
         seed, gender, locked, cosplay_label=label, species=species,
         covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
-        character_scale=scale, mask_text=mask_text)
+        character_scale=scale, mask_text=mask_text,
+        anatomy_note=anatomy_note)
 
 
 class FeralBodyPlanTests(unittest.TestCase):
@@ -7147,6 +7154,423 @@ class FeralBodyPlanTests(unittest.TestCase):
             self.assertTrue(prose.startswith(f"Cosplaying as {name}"))
             self.assertIn("outfit_description", _flat_document(js))
             self.assertNotIn("Species & Anatomy", json.loads(js))
+
+
+class HeightPrenominalTests(unittest.TestCase):
+    """A bare-adjective ``height`` leads the phrase instead of trailing it (0.97.0).
+
+    Closes the wart recorded in architecture.md since 0.84.0: the lead sentence
+    joined ``[body_type, height, skin_tone]`` and inserted ``height`` verbatim, so
+    six of nine values landed as "with an average build **and short**".
+    """
+
+    def test_every_member_is_a_real_height_value(self):
+        # The whole point of a literal list is that it cannot silently go stale.
+        # A renamed value would otherwise just fall back to the old wording.
+        pool = set(FIELD_DEFINITIONS["height"]["female_options"])
+        pool |= set(FIELD_DEFINITIONS["height"]["male_options"])
+        self.assertTrue(_PRENOMINAL_HEIGHTS <= pool,
+                        f"not height values: {_PRENOMINAL_HEIGHTS - pool}")
+
+    def test_the_list_is_exactly_the_bare_adjectives(self):
+        # Anything containing the word "height" is already a noun phrase and reads
+        # correctly where it is. This pins the split so a new height value has to be
+        # classified deliberately rather than defaulting into the trailing list.
+        pool = set(FIELD_DEFINITIONS["height"]["female_options"])
+        noun_phrases = {v for v in pool if "height" in v}
+        self.assertEqual(_PRENOMINAL_HEIGHTS, pool - noun_phrases)
+
+    def test_bare_adjective_leads_and_is_not_repeated(self):
+        for value in sorted(_PRENOMINAL_HEIGHTS):
+            with self.subTest(value):
+                prose, _ = generate_character(
+                    3, "Male", {"height": value, "age": "40", "body_type": "athletic"})
+                lead = prose.split(". ")[0]
+                self.assertTrue(lead.startswith(f"A {value} 40-year-old"), lead)
+                # Once, not twice -- the trailing list must have dropped it.
+                self.assertEqual(lead.count(value), 1, lead)
+                self.assertNotIn(f"and {value}", lead)
+
+    def test_noun_phrase_heights_still_trail(self):
+        for value in ("average height", "slightly below average height",
+                      "slightly above average height"):
+            with self.subTest(value):
+                prose, _ = generate_character(
+                    3, "Male", {"height": value, "age": "40", "body_type": "athletic"})
+                lead = prose.split(". ")[0]
+                self.assertTrue(lead.startswith("A 40-year-old"), lead)
+                self.assertIn(value, lead)
+
+    def test_free_text_scale_prose_is_never_moved(self):
+        # ``height`` is also the slot size_scale/scale_prose writes into, and those
+        # are hand-authored phrases that already read correctly in the trailing list.
+        # Rewrapping one would produce "A colossal and fifty feet tall man".
+        phrase = "colossal and hundreds of feet tall"
+        prose, _ = generate_character(4, "Male", {"height": phrase, "age": "33"})
+        lead = prose.split(". ")[0]
+        self.assertFalse(lead.startswith(f"A {phrase}"), lead)
+        self.assertIn(phrase, lead)
+
+
+class CompositionScaleGateTests(unittest.TestCase):
+    """``composition`` joins the giant/tiny scale gate (0.97.0).
+
+    Measured gap: ``location``, ``shot_type``, ``body_type`` and ``pose`` were
+    narrowed for an extreme scale but ``composition`` was not, so a forty-foot
+    subject could still draw "the subject filling most of the frame" -- which
+    throws away the very surroundings the other three rules work to keep in shot.
+    """
+
+    def test_the_named_values_are_real_composition_values(self):
+        pool = set(FIELD_DEFINITIONS["composition"]["female_options"])
+        self.assertTrue(_COMPOSITIONS_TOO_TIGHT_FOR_GIANT <= pool)
+        self.assertTrue(_COMPOSITIONS_TOO_WIDE_FOR_TINY <= pool)
+
+    def test_composition_is_flat_so_a_partial_cull_is_safe(self):
+        # This is the property the whole rule rests on. A family-weighted field would
+        # concentrate a frozen weight on the survivors instead.
+        self.assertNotIn("composition", FIELD_FAMILIES)
+        self.assertFalse(FIELD_DEFINITIONS["composition"].get("weights"))
+
+    def test_giant_drops_the_crop_away_framings(self):
+        for seed in range(120):
+            prose, _ = generate_character(seed, "Female", {}, size_scale="colossal")
+            for banned in _COMPOSITIONS_TOO_TIGHT_FOR_GIANT:
+                self.assertNotIn(banned, prose, f"seed {seed}")
+
+    def test_tiny_drops_the_vanishing_framing(self):
+        for seed in range(120):
+            prose, _ = generate_character(seed, "Female", {}, size_scale="tiny")
+            for banned in _COMPOSITIONS_TOO_WIDE_FOR_TINY:
+                self.assertNotIn(banned, prose, f"seed {seed}")
+
+    def test_ordinary_output_is_untouched(self):
+        # No scale in play must leave the full pool reachable, or the rule has
+        # quietly become a global cull.
+        seen = set()
+        for seed in range(300):
+            prose, _ = generate_character(seed, "Female", {})
+            seen |= {v for v in FIELD_DEFINITIONS["composition"]["female_options"]
+                     if v in prose}
+        self.assertTrue(_COMPOSITIONS_TOO_TIGHT_FOR_GIANT <= seen)
+        self.assertTrue(_COMPOSITIONS_TOO_WIDE_FOR_TINY <= seen)
+
+    def test_an_explicit_lock_still_wins(self):
+        # The gate is called from the randomize loop, which skips locked fields.
+        locked = {"composition": "the subject filling most of the frame"}
+        prose, _ = generate_character(1, "Female", locked, size_scale="colossal")
+        self.assertIn("the subject filling most of the frame", prose)
+
+
+class SpeciesHandsSuppressNailsTests(unittest.TestCase):
+    """A filled species ``hands`` slot drops the human ``nails`` field (0.97.0).
+
+    All 249 creatures fill ``hands`` ("small black-clawed hands", "sucker-lined
+    tentacles"), and before this the human ``nails`` field could still draw
+    "He has square nails" over the claws.
+    """
+
+    def _render_creature(self, name, seed=0):
+        flat = _parse_archetype_json(build_creature_json(name, seed))
+        species = flat.pop(_SPECIES_KEY, None)
+        self.assertIsNotNone(species, f"{name!r} is not a creature")
+        locked = {k: v for k, v in flat.items()
+                  if not k.startswith("__") and k != "gender"}
+        return generate_character(seed, "Any", locked, species=species)
+
+    def test_every_creature_fills_hands(self):
+        # The premise. If this ever stops being true the rule silently stops
+        # covering part of the roster.
+        for name, entry in CREATURES.items():
+            if isinstance(entry, dict):
+                self.assertTrue(entry.get("hands"), f"{name} has no hands slot")
+
+    def test_nails_is_dropped_from_the_json(self):
+        names = [k for k in CREATURES if isinstance(CREATURES[k], dict)]
+        for name in names[:30]:
+            for seed in range(6):
+                with self.subTest(name=name, seed=seed):
+                    _, js = self._render_creature(name, seed)
+                    for group in json.loads(js).values():
+                        if isinstance(group, dict):
+                            self.assertNotIn("nails", group)
+
+    def test_rings_survive_a_clawed_hand(self):
+        # Deliberately NOT suppressed: a ring is a worn item and a clawed hand can
+        # wear one. Only the claim about the hand itself is dropped.
+        names = [k for k in CREATURES if isinstance(CREATURES[k], dict)]
+        seen = False
+        for name in names[:40]:
+            for seed in range(8):
+                _, js = self._render_creature(name, seed)
+                if any(isinstance(g, dict) and "rings" in g
+                       for g in json.loads(js).values()):
+                    seen = True
+                    break
+            if seen:
+                break
+        self.assertTrue(seen, "no creature reached the rings field at all")
+
+    def test_a_plain_human_still_gets_nails(self):
+        hits = sum(1 for seed in range(60)
+                   if "nails" in generate_character(seed, "Female", {})[0])
+        self.assertGreater(hits, 0)
+
+    def test_an_explicit_lock_still_wins(self):
+        flat = _parse_archetype_json(build_creature_json("fox", 0))
+        species = flat.pop(_SPECIES_KEY, None)
+        locked = {k: v for k, v in flat.items()
+                  if not k.startswith("__") and k != "gender"}
+        locked["nails"] = "red polish"
+        prose, _ = generate_character(0, "Female", locked, species=species)
+        self.assertIn("red polish", prose)
+
+
+class AnatomyNoteTests(unittest.TestCase):
+    """``anatomy_note`` gives a MASKLESS entry the early body sentence (0.97.0).
+
+    The 0.96.0 limb-count fix works by moving a count into a sentence that renders
+    before the "He wears ..." list. The only such sentence was ``mask``, so it could
+    not reach the four multi-armed entries that have none.
+    """
+
+    #: The entries the key exists for. Gaining one is fine; losing one is not.
+    ENTRIES = ("Shiva (Record of Ragnarok)", "Salaak", "Spiral", "Greez Dritus")
+
+    def test_the_four_maskless_multiarmed_entries_carry_one(self):
+        for name in self.ENTRIES:
+            with self.subTest(name):
+                entry = COSPLAYERS[name]
+                self.assertTrue(entry.get("anatomy_note"))
+                self.assertFalse(entry.get("mask"),
+                                 "this entry has a mask and should use it instead")
+
+    def test_the_note_states_the_count_as_a_word(self):
+        # architecture.md -> "Limb and part counts": a count hidden behind arithmetic
+        # ("a second pair below the first") does not carry the render.
+        for name in self.ENTRIES:
+            with self.subTest(name):
+                self.assertRegex(COSPLAYERS[name]["anatomy_note"],
+                                 r"\b(four|six|eight)\b")
+
+    def test_it_renders_before_the_clothing(self):
+        for name in self.ENTRIES:
+            with self.subTest(name):
+                prose, _ = _render_cosplayer(name, 5)
+                note = COSPLAYERS[name]["anatomy_note"]
+                self.assertIn(note, prose)
+                self.assertLess(prose.index(note), prose.index(" wears "))
+
+    def test_unmasking_does_not_clear_it(self):
+        # It is not part of the head, so the Unmask toggle must leave it alone.
+        for name in self.ENTRIES:
+            with self.subTest(name):
+                prose, _ = _render_cosplayer(name, 5, mask_mode=_MASK_OFF)
+                self.assertIn(COSPLAYERS[name]["anatomy_note"], prose)
+
+    def test_body_is_voiced_before_head_when_an_entry_has_both(self):
+        # No shipped entry carries both today; the ORDER still has to be pinned,
+        # because the first one that does will inherit whatever it happens to be.
+        prose, _ = generate_character(
+            1, "Male", {}, mask_text="a horned skull",
+            anatomy_note="a four-armed body")
+        self.assertLess(prose.index("a four-armed body"),
+                        prose.index("a horned skull"))
+
+    def test_a_downstream_costume_drops_it(self):
+        # Same leak class as the 0.92.0 mask/size_scale finding: chaining a second
+        # costume over Spiral must not leave six arms on the new look.
+        upstream = build_cosplayer_json("Spiral", 0)
+        downstream = build_cosplayer_json("Hermione Granger", 0)
+        merged = json.loads(merge_preset_documents(upstream, downstream))
+        self.assertNotIn("anatomy_note", merged.get("_meta", {}))
+
+    def test_no_feral_entry_carries_one(self):
+        # A beast has a per-slot ``anatomy`` dict; both would voice the body twice.
+        for name, entry in COSPLAYERS.items():
+            if isinstance(entry, dict) and entry.get("body_plan") == "feral":
+                self.assertIsNone(entry.get("anatomy_note"), name)
+
+class MaleBagTrimTests(unittest.TestCase):
+    """``bag`` gets a masculine trim, and three men's carriers (0.97.0).
+
+    ``bag`` shared one pool across genders and was the last feminine-coded field
+    with no entry in ``_MALE_EXCLUDED_VALUES`` at all -- the same class of miss as
+    the 0.83.0 ``footwear`` trim, found the same way (a preview pass).
+
+    MEASURED before the fix, over 1000 male renders at the default
+    ``wardrobe="Match gender"``: 137 (13.7%) carried a strictly feminine handbag,
+    e.g. "a fine-knit poplin shirt and a silk tie in a floral print, in loafers,
+    carrying an envelope clutch in gold".
+    """
+
+    #: The values the trim removes. Written out rather than imported so the test
+    #: fails when the table changes, instead of agreeing with it.
+    FEMININE = (
+        "structured top handle bag in black", "structured top handle bag in cream",
+        "structured top handle bag in tan", "envelope clutch in black",
+        "envelope clutch in gold", "envelope clutch in nude", "woven rattan bag",
+        "small quilted chain bag", "beaded evening clutch", "velvet evening bag",
+        "straw beach tote", "printed silk scarf tied as bag accent",
+    )
+    MENS = ("leather briefcase in black", "canvas messenger bag", "canvas duffel bag")
+
+    def _male(self, seed, wardrobe="Match gender"):
+        return generate_character(
+            seed, "Male", {}, hair_color_scope="Natural only", wardrobe=wardrobe,
+            accessory_density="Balanced", location_setting="Any")[0]
+
+    def test_the_trim_names_only_real_bag_values(self):
+        from data.constraints import _MALE_EXCLUDED_VALUES
+        pool = set(FIELD_DEFINITIONS["bag"]["female_options"])
+        self.assertTrue(set(self.FEMININE) <= pool)
+        self.assertTrue(set(self.MENS) <= pool)
+        self.assertEqual(set(_MALE_EXCLUDED_VALUES["bag"]), set(self.FEMININE))
+
+    def test_bag_is_flat_so_a_partial_cull_is_safe(self):
+        # architecture.md -> "A flat field is where a partial cull is FINE".
+        self.assertNotIn("bag", FIELD_FAMILIES)
+        self.assertFalse(FIELD_DEFINITIONS["bag"].get("weights"))
+
+    def test_a_default_male_never_draws_a_feminine_bag(self):
+        for seed in range(400):
+            prose = self._male(seed)
+            for value in self.FEMININE:
+                self.assertNotIn(value, prose, f"seed {seed}")
+
+    def test_the_mens_bags_are_reachable_by_a_male(self):
+        hits = sum(1 for seed in range(400)
+                   if any(v in self._male(seed) for v in self.MENS))
+        self.assertGreater(hits, 0, "the masculine pool is unreachable")
+
+    def test_a_feminine_wardrobe_on_a_man_keeps_the_whole_pool(self):
+        from data.constraints import _PRESENTATION_GATED_FIELDS
+        # The trim is presentation-gated, exactly like the jewellery and footwear
+        # trims: an explicit Feminine wardrobe is the whole point of that mechanism.
+        self.assertIn("bag", _PRESENTATION_GATED_FIELDS)
+        hits = sum(1 for seed in range(200)
+                   if any(v in self._male(seed, wardrobe="Feminine")
+                          for v in self.FEMININE))
+        self.assertGreater(hits, 0)
+
+    def test_a_woman_still_reaches_both_halves(self):
+        seen = set()
+        for seed in range(500):
+            prose = generate_character(
+                seed, "Female", {}, accessory_density="Maximal")[0]
+            seen |= {v for v in self.FEMININE + self.MENS if v in prose}
+        self.assertTrue(set(self.FEMININE) & seen, "feminine bags unreachable")
+        self.assertTrue(set(self.MENS) & seen, "men's bags unreachable for a woman")
+
+    def test_an_explicit_lock_still_wins(self):
+        # Faithful crossplay: a man deliberately locked to a clutch keeps it.
+        prose, _ = generate_character(
+            1, "Male", {"bag": "envelope clutch in gold"}, wardrobe="Match gender")
+        self.assertIn("envelope clutch in gold", prose)
+
+
+class NewFieldValueTests(unittest.TestCase):
+    """The 0.97.0 option additions, and the couplings each one needed.
+
+    Every one of these is a FLAT field except ``clothing_pattern``, which is
+    weighted and therefore had to be repriced rather than appended to (see
+    ``ConceptShareTests``).
+    """
+
+    ADDED = {
+        "footwear": ("mary janes", "cowboy boots"),
+        "clothing_pattern": ("argyle",),
+        "bag": ("leather briefcase in black", "canvas messenger bag",
+                "canvas duffel bag"),
+        "hair_highlights": ("split dye",),
+        "piercings": ("stretched lobes",),
+    }
+
+    def test_every_new_value_is_in_both_gender_pools(self):
+        for field, values in self.ADDED.items():
+            definition = FIELD_DEFINITIONS[field]
+            for value in values:
+                with self.subTest(field=field, value=value):
+                    self.assertIn(value, definition["female_options"])
+                    self.assertIn(value, definition["male_options"])
+
+    def test_new_footwear_is_placed_in_the_style_allowlist(self):
+        from data.constraints import FOOTWEAR_BY_STYLE
+        # FOOTWEAR_BY_STYLE is an ALLOWLIST (0.83.0): a shoe absent from a style's
+        # set is BANNED there, so a new value reaches nothing until placed. A silent
+        # zero-reach addition is the failure this pins.
+        for shoe in self.ADDED["footwear"]:
+            styles = [s for s, allowed in FOOTWEAR_BY_STYLE.items() if shoe in allowed]
+            with self.subTest(shoe):
+                self.assertGreater(len(styles), 1, f"{shoe} reaches {styles}")
+
+    def test_mary_janes_are_trimmed_for_a_default_male(self):
+        from data.constraints import _MALE_EXCLUDED_VALUES
+        self.assertIn("mary janes", _MALE_EXCLUDED_VALUES["footwear"])
+
+    def test_cowboy_boots_stay_unisex(self):
+        from data.constraints import _MALE_EXCLUDED_VALUES
+        self.assertNotIn("cowboy boots", _MALE_EXCLUDED_VALUES["footwear"])
+
+    def test_argyle_has_a_prose_tail(self):
+        # A pattern with no PATTERN_TAILS entry is dropped silently at compose time.
+        self.assertIn("argyle", PATTERN_TAILS)
+        self.assertEqual(PATTERN_TAILS["argyle"], " in argyle")
+
+    def test_argyle_is_not_treated_as_multicolour(self):
+        # _MULTICOLOUR_PATTERNS bans a pattern under an all-black/all-white palette.
+        # Argyle IS multicoloured, so leaving it out would let "all black" clothing
+        # draw an argyle lattice. Pinned so the omission is a decision, not a gap.
+        from data.constraints import _MULTICOLOUR_PATTERNS
+        self.assertIn("argyle", _MULTICOLOUR_PATTERNS)
+
+    def test_every_new_value_is_actually_reachable(self):
+        seen = set()
+        wanted = {v for values in self.ADDED.values() for v in values}
+        for seed in range(1200):
+            prose = generate_character(
+                seed, "Female", {}, hair_color_scope="Any",
+                accessory_density="Maximal")[0]
+            seen |= {v for v in wanted if v in prose}
+            if seen == wanted:
+                break
+        self.assertEqual(wanted - seen, set(), "unreachable new values")
+
+class HiddenFieldTests(unittest.TestCase):
+    """The relationship between the two hidden-field sets (0.97.0).
+
+    An audit called ``_HIDDEN_FIELDS`` and ``_PRESET_HIDDEN_FIELDS`` "identical twin
+    constants". They are equal *today*, which makes
+    ``name not in _HIDDEN_FIELDS or name in _PRESET_HIDDEN_FIELDS`` a tautology --
+    but the names are not redundant, and collapsing them would delete the clause
+    that starts doing work the moment an engine-only hidden field is added.
+    """
+
+    def test_preset_honoured_hidden_fields_are_a_subset(self):
+        # The invariant the clause depends on. Equality is allowed; a preset-honoured
+        # field that is not hidden at all would mean the sets have drifted apart in a
+        # way the guard was never written for.
+        from nodes.identity_forge import _HIDDEN_FIELDS, _PRESET_HIDDEN_FIELDS
+        self.assertTrue(_PRESET_HIDDEN_FIELDS <= _HIDDEN_FIELDS)
+
+    def test_both_name_only_real_fields(self):
+        from nodes.identity_forge import _HIDDEN_FIELDS, _PRESET_HIDDEN_FIELDS
+        for name in _HIDDEN_FIELDS | _PRESET_HIDDEN_FIELDS:
+            self.assertIn(name, FIELD_DEFINITIONS)
+
+    def test_no_hidden_field_gets_a_widget(self):
+        # The whole point of the set: these are engine-generated, so a widget for one
+        # would be a dead control (the 0.83.0 dead-widget failure mode). Checked
+        # against the generated FIELD_TO_GROUP block, which IS the widget list.
+        import json as _json
+        from nodes.identity_forge import _HIDDEN_FIELDS
+        source = (ROOT / "js" / "identity_forge.js").read_text(encoding="utf-8")
+        marker = "const FIELD_TO_GROUP = "
+        start = source.index(marker) + len(marker)
+        end = source.index("};", start) + 1
+        widgets = set(_json.loads(source[start:end]))
+        self.assertEqual(_HIDDEN_FIELDS & widgets, set(),
+                         "an engine-generated field grew a widget")
 
 
 if __name__ == "__main__":

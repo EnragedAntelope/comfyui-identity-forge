@@ -1371,6 +1371,10 @@
         "hash": "e957278d4808c12c",
         "rendered": "pre-existing"
       },
+      "Ash Williams": {
+        "hash": "c63e6f662aaeabcf",
+        "rendered": "2026-08-23"
+      },
       "Ashe (Overwatch)": {
         "hash": "a58e6c3653954c6c",
         "rendered": "pre-existing"
@@ -3435,8 +3439,8 @@
         "rendered": "pre-existing"
       },
       "Greez Dritus": {
-        "hash": "f410bfedf97d7a23",
-        "rendered": "pre-existing"
+        "hash": "b6146613c473dead",
+        "rendered": "2026-08-23"
       },
       "Griffith": {
         "hash": "d7ece464fe1f3965",
@@ -3773,6 +3777,10 @@
       "Illidan Stormrage": {
         "hash": "74fcb7c196384971",
         "rendered": "pre-existing"
+      },
+      "Immortan Joe": {
+        "hash": "6c94e0db709557dc",
+        "rendered": "2026-08-23"
       },
       "Impa": {
         "hash": "6eb676b4dcb588a4",
@@ -5195,6 +5203,10 @@
         "hash": "07e78636795e91df",
         "rendered": "pre-existing"
       },
+      "Mega Man": {
+        "hash": "1a65d671326684b5",
+        "rendered": "2026-08-23"
+      },
       "Megara": {
         "hash": "135cd0ece35af62a",
         "rendered": "pre-existing"
@@ -5422,6 +5434,10 @@
       "Mitsuru Kirijo": {
         "hash": "021e18cd7764847c",
         "rendered": "2026-08-10"
+      },
+      "Mizora": {
+        "hash": "2c41197dd56b1cb9",
+        "rendered": "2026-08-23"
       },
       "Moana": {
         "hash": "58df07d61ed6f236",
@@ -6708,8 +6724,8 @@
         "rendered": "pre-existing"
       },
       "Salaak": {
-        "hash": "2cb05f2da1a01d40",
-        "rendered": "pre-existing"
+        "hash": "3aa41942effa0918",
+        "rendered": "2026-08-23"
       },
       "Salacious Crumb": {
         "hash": "de2282bb9c90508c",
@@ -6987,6 +7003,10 @@
         "hash": "91435fa4adb5d1e7",
         "rendered": "2026-08-22"
       },
+      "Sherlock Holmes": {
+        "hash": "18e08de1395d1e01",
+        "rendered": "2026-08-23"
+      },
       "Shi (Ana Ishikawa)": {
         "hash": "32d95958e9b26b82",
         "rendered": "pre-existing"
@@ -7012,8 +7032,8 @@
         "rendered": "pre-existing"
       },
       "Shiva (Record of Ragnarok)": {
-        "hash": "3aa4597a4be2abd3",
-        "rendered": "2026-08-22"
+        "hash": "2e2577b3365d8118",
+        "rendered": "2026-08-23"
       },
       "Shoto Todoroki": {
         "hash": "4ed3b1f7578641b6",
@@ -7090,6 +7110,10 @@
       "Sinon": {
         "hash": "4627530f88a6cbee",
         "rendered": "pre-existing"
+      },
+      "Sir Hammerlock": {
+        "hash": "6f71690e8dfa916f",
+        "rendered": "2026-08-23"
       },
       "Sirius Black": {
         "hash": "be5bb7401893aa57",
@@ -7268,8 +7292,8 @@
         "rendered": "pre-existing"
       },
       "Spiral": {
-        "hash": "73573edbede03476",
-        "rendered": "pre-existing"
+        "hash": "b1ed5165669fd332",
+        "rendered": "2026-08-23"
       },
       "Splicer": {
         "hash": "53025aeddf549f89",
@@ -7615,9 +7639,17 @@
         "hash": "519d83ab8f9b2de7",
         "rendered": "pre-existing"
       },
+      "The Invisible Man": {
+        "hash": "091b4d1150d8546c",
+        "rendered": "2026-08-23"
+      },
       "The Iron Giant": {
         "hash": "05666a41be6584b3",
         "rendered": "pre-existing"
+      },
+      "The Knight (Hollow Knight)": {
+        "hash": "ac44a14cf3ac7213",
+        "rendered": "2026-08-23"
       },
       "The Lorax": {
         "hash": "88d9659376b85663",
@@ -8354,6 +8386,10 @@
       "Zenitsu Agatsuma": {
         "hash": "7e19dee23d94df51",
         "rendered": "pre-existing"
+      },
+      "Zer0": {
+        "hash": "5989b6ed9262062a",
+        "rendered": "2026-08-23"
       },
       "Zeri": {
         "hash": "f7ee3baa5455e959",
@@ -9414,7 +9450,7 @@
       }
     }
   },
-  "generated": "2026-08-22T22:22:51",
+  "generated": "2026-08-23T23:19:14",
   "render": {
     "cfg": 1,
     "height": 2432,

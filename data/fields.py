@@ -360,8 +360,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("piercings", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing'],
-        "male_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing'],
+        "female_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing', 'stretched lobes'],
+        "male_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing', 'stretched lobes'],
         "optional": True
     }),
     ("nails", {
@@ -384,8 +384,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("bag", {
         "group": 'Clothing',
-        "female_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent'],
-        "male_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent'],
+        "female_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent', 'leather briefcase in black', 'canvas messenger bag', 'canvas duffel bag'],
+        "male_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent', 'leather briefcase in black', 'canvas messenger bag', 'canvas duffel bag'],
         "optional": False
     }),
     ("accessories", {
@@ -494,8 +494,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("hair_highlights", {
         "group": 'Hair',
-        "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights'],
-        "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights'],
+        "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights', 'split dye'],
+        "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights', 'split dye'],
         "optional": False
     }),
     ("rings", {
@@ -518,8 +518,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("footwear", {
         "group": 'Clothing',
-        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels'],
-        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels'],
+        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots'],
+        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots'],
         "optional": False
     }),
     ("clothing_color", {
@@ -530,18 +530,26 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("clothing_pattern", {
         "group": 'Clothing',
-        "female_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'polka dot', 'houndstooth', 'paisley', 'pinstripe', 'gingham', 'tie-dye'],
-        "male_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'polka dot', 'houndstooth', 'paisley', 'pinstripe', 'gingham', 'tie-dye'],
+        "female_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'polka dot', 'houndstooth', 'paisley', 'pinstripe', 'gingham', 'tie-dye', 'argyle'],
+        "male_options": ['solid', 'subtle texture', 'stripes', 'plaid', 'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'polka dot', 'houndstooth', 'paisley', 'pinstripe', 'gingham', 'tie-dye', 'argyle'],
         # 0.90.0 grew this 10 -> 16. A bare append would have dropped the PLAIN
         # concept ('solid' + 'subtle texture') from 2/10 = 20% of characters to
         # 2/16 = 12.5%, quietly dressing everyone in busier clothes. These weights
-        # hold plain at exactly 20%: 2 plain at 1.0 plus 14 patterned at 4/7 = 8.0,
-        # so plain keeps its 2/10 share and the six new patterns subdivide the
-        # PATTERNED half only.
-        "weights": {'stripes': 4/7, 'plaid': 4/7, 'floral': 4/7, 'animal print': 4/7,
-                    'geometric': 4/7, 'abstract': 4/7, 'camouflage': 4/7, 'denim': 4/7,
-                    'polka dot': 4/7, 'houndstooth': 4/7, 'paisley': 4/7,
-                    'pinstripe': 4/7, 'gingham': 4/7, 'tie-dye': 4/7},
+        # hold plain at exactly 20%: 2 plain at 1.0 plus the patterned values sharing
+        # a fixed 8.0 between them, so plain keeps its 2/10 share and every new
+        # pattern subdivides the PATTERNED half only.
+        #
+        # 0.97.0 added 'argyle' and repriced the whole patterned set 4/7 -> 8/15 to
+        # keep that sum at 8.0. A bare append would have taken plain from 2/10 to
+        # 2/10.571 (18.9%) -- exactly the drift ConceptShareTests exists to catch,
+        # and the reason the weight is written as a fraction of the count rather
+        # than a decimal: the next pattern reprices to 8/16 and the arithmetic
+        # stays visible.
+        "weights": {'stripes': 8/15, 'plaid': 8/15, 'floral': 8/15,
+                    'animal print': 8/15, 'geometric': 8/15, 'abstract': 8/15,
+                    'camouflage': 8/15, 'denim': 8/15, 'polka dot': 8/15,
+                    'houndstooth': 8/15, 'paisley': 8/15, 'pinstripe': 8/15,
+                    'gingham': 8/15, 'tie-dye': 8/15, 'argyle': 8/15},
         "optional": False
     }),
     ("season", {
@@ -1349,6 +1357,9 @@ PATTERN_TAILS: dict[str, str] = {
     'pinstripe': ' in pinstripes',
     'gingham': ' in gingham',
     'tie-dye': ' in tie-dye',
+    # 0.97.0. Named in the menswear pool comment below as a staple, and distinct from
+    # plaid/houndstooth/gingham: a diamond lattice with an overlaid diagonal stripe.
+    'argyle': ' in argyle',
 }
 
 #: Outfit descriptions keyed by outfit_style, split into gendered buckets.

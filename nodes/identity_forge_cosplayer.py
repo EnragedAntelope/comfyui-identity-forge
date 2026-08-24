@@ -421,7 +421,7 @@ _CLEAN_SHAVEN_SUPPRESS: dict[str, str] = {"facial_hair": "clean shaven"}
 #: ``franchise``/``gender`` so a giant stays giant (and the same person-underneath) no
 #: matter which costume is rolled -- the alternates vary only the *worn look*.
 _LOOK_OVERRIDE_KEYS = (
-    "costume", "signature", "mask", "covers_face", "covers_body",
+    "costume", "signature", "mask", "anatomy_note", "covers_face", "covers_body",
     "covers_hair", "prop", "prop_costume", "body_paint", "skin", "eyes",
 )
 
@@ -711,6 +711,14 @@ def build_cosplayer_json(
     ])
     if head_text:
         document["_meta"]["mask"] = head_text
+    # One sentence about the BODY, voiced ahead of the clothing exactly as the mask
+    # is -- the only route a maskless entry has to state a limb count where the
+    # render will act on it (see ``_ANATOMY_NOTE_KEY`` in identity_forge.py).
+    # Feral entries are excluded at the data layer: they carry a per-slot ``anatomy``
+    # dict instead, and voicing both would describe the body twice. Unmasking does
+    # NOT clear it -- it is not part of the head.
+    if not feral and entry.get("anatomy_note"):
+        document["_meta"]["anatomy_note"] = entry["anatomy_note"]
     size_scale = entry.get("size_scale", "")
     if size_scale:
         document["_meta"]["size_scale"] = size_scale

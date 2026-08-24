@@ -457,5 +457,167 @@ class SourceMatchingTests(unittest.TestCase):
         self.assertNotIn(published_only, {supplied})
 
 
+class PageAssetsStayInSyncTests(unittest.TestCase):
+    """The three PAGE files are copies too, and nothing pinned them (0.97.0).
+
+    ``CopiesStayInSyncTests`` covers the four ``.py`` scripts. It never covered
+    ``gallery.js`` or ``style.css``, which are also maintained as copies -- and an
+    audit found the consequence: all three shipped a ``style.css`` whose header
+    comment claimed to be the *cosplay* sheet, because the file had been copied
+    twice and the header never re-read.
+    """
+
+    def test_gallery_js_is_identical_outside_its_header_comment(self):
+        bodies = {}
+        for kind in KINDS:
+            text = (GALLERY_ROOT / kind / "gallery.js").read_text(encoding="utf-8")
+            # The leading /* ... */ banner names the gallery; everything after it
+            # must match byte for byte.
+            self.assertTrue(text.startswith("/*"), f"{kind}: no header banner")
+            bodies[kind] = text[text.index("*/") + 2:]
+        for kind in KINDS[1:]:
+            self.assertEqual(
+                bodies["cosplay"], bodies[kind],
+                f"gallery/{kind}/gallery.js has drifted from gallery/cosplay/"
+                f"gallery.js -- port the change to all three (gallery/README.md).")
+
+    def test_style_css_is_byte_identical(self):
+        base = (GALLERY_ROOT / "cosplay" / "style.css").read_text(encoding="utf-8")
+        for kind in KINDS[1:]:
+            self.assertEqual(
+                base, (GALLERY_ROOT / kind / "style.css").read_text(encoding="utf-8"),
+                f"gallery/{kind}/style.css has drifted from gallery/cosplay/style.css")
+
+    def test_the_shared_stylesheet_does_not_claim_to_be_one_gallery(self):
+        # The bug this pins: a header saying "Cosplay Gallery Styles" inside the
+        # creature and archetype copies, which is how the drift went unnoticed.
+        head = (GALLERY_ROOT / "cosplay" / "style.css").read_text(
+            encoding="utf-8")[:600].lower()
+        self.assertNotIn("cosplay gallery styles", head)
+
+    def test_every_page_ships_the_sort_controls(self):
+        for kind in KINDS:
+            html = (GALLERY_ROOT / kind / "index.html").read_text(encoding="utf-8")
+            with self.subTest(kind):
+                for needed in ('id="sort"', 'id="sort-group"', 'id="filter-new"',
+                               'id="clear-search-btn"'):
+                    self.assertIn(needed, html, f"{kind}/index.html lacks {needed}")
+
+    #: ids the script CREATES at render time, so they are correctly absent from the
+    #: static markup. Everything else it queries must be there or the lookup
+    #: returns null and the control silently does nothing.
+    INJECTED_IDS = {"show-missing-btn"}
+
+    def test_every_element_the_script_reaches_for_exists_in_the_markup(self):
+        # A `$('#id')` that resolves to null is how a control silently does
+        # nothing -- the dead "Clear search" button shipped that way for releases.
+        for kind in KINDS:
+            js = (GALLERY_ROOT / kind / "gallery.js").read_text(encoding="utf-8")
+            html = (GALLERY_ROOT / kind / "index.html").read_text(encoding="utf-8")
+            queried = set(re.findall(r"\$\('#([\w-]+)'\)", js))
+            for element_id in sorted(queried - self.INJECTED_IDS):
+                with self.subTest(kind=kind, id=element_id):
+                    self.assertIn(f'id="{element_id}"', html,
+                                  f"{kind}/gallery.js queries #{element_id}, "
+                                  f"which is not in index.html")
+            # ...and an injected id must actually be injected somewhere, or the
+            # allowlist above is just hiding a typo.
+            for element_id in sorted(queried & self.INJECTED_IDS):
+                with self.subTest(kind=kind, injected=element_id):
+                    self.assertIn(f'id="{element_id}"', js,
+                                  f"{kind}/gallery.js queries #{element_id} and "
+                                  f"never creates it either")
+
+
+class ReleaseStampTests(unittest.TestCase):
+    """``data/versions.py`` and the manifest fields the Newest-first sort needs."""
+
+    def _stamp_module(self):
+        spec = importlib.util.spec_from_file_location(
+            "_stamp_versions", ROOT / "scripts" / "stamp_versions.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def test_check_passes_on_the_committed_tree(self):
+        # The CI gate, run here so a roster addition fails locally too.
+        mod = self._stamp_module()
+        releases, added = mod.load_map()
+        shipped = mod.shipped_ids()
+        for kind, names in shipped.items():
+            unstamped = sorted(n for n in names if n not in added.get(kind, {}))
+            self.assertEqual(
+                unstamped, [],
+                f"{kind} entries with no release stamp: {unstamped[:5]} -- run "
+                f"`python scripts/stamp_versions.py --stamp`")
+            orphans = sorted(n for n in added.get(kind, {}) if n not in set(names))
+            self.assertEqual(orphans, [],
+                             f"{kind} stamps for entries that no longer ship: "
+                             f"{orphans[:5]}")
+
+    def test_every_stamp_names_a_known_release(self):
+        from data.versions import ADDED_IN, RELEASES
+        known = set(RELEASES)
+        for kind, stamps in ADDED_IN.items():
+            unknown = sorted({v for v in stamps.values() if v not in known})
+            self.assertEqual(unknown, [], f"{kind} cites unlisted releases: {unknown}")
+
+    def test_releases_are_ordered_oldest_first(self):
+        # The page ranks by POSITION in this tuple, so the order IS the data --
+        # parsing the strings in JS would sort "0.10.0" before "0.9.0".
+        from data.versions import RELEASES
+        as_tuples = [tuple(int(p) for p in r.split(".")) for r in RELEASES]
+        self.assertEqual(as_tuples, sorted(as_tuples),
+                         "RELEASES is not in ascending version order")
+
+    def test_the_current_version_is_the_last_release(self):
+        import re as _re
+        from data.versions import RELEASES
+        text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+        version = _re.search(r'(?m)^version\s*=\s*"([^"]+)"', text).group(1)
+        self.assertEqual(RELEASES[-1], version,
+                         "pyproject version is not the newest stamped release")
+
+    def test_a_stamp_is_never_rewritten_by_stamp_mode(self):
+        # A release date is a fact about the past. Rewriting one silently reorders
+        # the gallery, so --stamp must only ever fill in blanks.
+        mod = self._stamp_module()
+        releases, added = mod.load_map()
+        before = dict(added["cosplayers"])
+        version = mod.current_version()
+        for kind, names in mod.shipped_ids().items():
+            for name in names:
+                added[kind].setdefault(name, version)
+        self.assertEqual({k: added["cosplayers"][k] for k in before}, before)
+
+    def test_the_manifest_carries_what_the_sort_needs(self):
+        for kind in KINDS:
+            mod = load(kind, "build_manifest")
+            with self.subTest(kind):
+                self.assertTrue(mod.pack_version())
+                self.assertTrue(mod.release_order())
+                stamps = mod.release_stamps()
+                names = mod.entry_names()
+                self.assertTrue(names)
+                unstamped = [n for n in names if n not in stamps]
+                self.assertEqual(unstamped, [], f"{kind}: {unstamped[:5]}")
+
+    def test_the_stamp_reader_never_imports_the_data_layer(self):
+        # Importing runs apply_user_* at the bottom of each data module, which
+        # merges the maintainer's local user_options.json -- so an import-based
+        # stamper would bake private entries into a committed, published file.
+        source = (ROOT / "scripts" / "stamp_versions.py").read_text(encoding="utf-8")
+        self.assertIn("ast.parse", source)
+        for banned in ("from data.cosplayers import", "from data.creatures import",
+                       "from data.templates import"):
+            self.assertNotIn(banned, source, f"stamp_versions.py does `{banned}`")
+
+    def test_sentinels_are_never_stamped(self):
+        from data.versions import ADDED_IN
+        mod = self._stamp_module()
+        for kind, stamps in ADDED_IN.items():
+            for sentinel in mod.SENTINELS:
+                self.assertNotIn(sentinel, stamps, f"{kind} stamped {sentinel!r}")
+
 if __name__ == "__main__":
     unittest.main()

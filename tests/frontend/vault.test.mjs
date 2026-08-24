@@ -10,7 +10,7 @@ import assert from "node:assert/strict";
 import { installDom, resetDom } from "./dom.mjs";
 import { __getExtension } from "./stubs/app.js";
 import { __setFetchApiHandler, __getFetchApiCalls, __resetApi } from "./stubs/api.js";
-import { createNode } from "./fake_node.mjs";
+import { createNode, createNodeTwice } from "./fake_node.mjs";
 
 installDom();
 
@@ -124,4 +124,75 @@ test("delete posts to the delete route with a JSON content type", async () => {
   // header on mutating requests specifically so a plain cross-origin HTML
   // form (which cannot set it) can't trigger one.
   assert.equal(calls[0].opts?.headers?.["Content-Type"], "application/json");
+});
+
+
+/* --- Re-entry guard (0.97.0) --------------------------------------------- */
+test("a second onNodeCreated adds no second Refresh, Manage or preview widget", async () => {
+  resetDom();
+  __resetApi();
+  respondWithCharacters();
+  const node = await createNodeTwice(ext, "IdentityForgeVaultLoad");
+  await flush();
+  const names = node.widgets.map((w) => w.name);
+  const dupes = names.filter((n, i) => names.indexOf(n) !== i);
+  assert.deepEqual(dupes, [], `widgets appearing twice: ${dupes.join(", ")}`);
+  assert.equal(names.filter((n) => n === "vault_preview").length, 1,
+    "a second DOM preview widget is the one that visibly breaks the node");
+});
+
+/* --- A failed fetch is not an empty vault (0.97.0) ----------------------- */
+test("an unreachable vault API is reported, not rendered as an empty vault", async () => {
+  resetDom();
+  __resetApi();
+  __setFetchApiHandler(async () => { throw new Error("connection refused"); });
+  const node = await createNode(ext, "IdentityForgeVaultLoad");
+  await flush();
+  const charW = node.widgets.find((w) => w.name === "character");
+  assert.deepEqual(charW.options.values, ["(vault unavailable \u2014 press Refresh)"]);
+  assert.notDeepEqual(charW.options.values, ["(no characters saved)"],
+    "a dead server must not look like an empty vault");
+});
+
+test("a non-ok response is treated as unavailable, not as an empty vault", async () => {
+  resetDom();
+  __resetApi();
+  __setFetchApiHandler(async () => ({ ok: false, status: 500, json: async () => ({}) }));
+  const node = await createNode(ext, "IdentityForgeVaultLoad");
+  await flush();
+  const charW = node.widgets.find((w) => w.name === "character");
+  assert.deepEqual(charW.options.values, ["(vault unavailable \u2014 press Refresh)"]);
+});
+
+/* --- A failed delete must not look like a success (0.97.0) --------------- */
+test("a failed delete surfaces the error instead of silently reloading", async () => {
+  resetDom();
+  __resetApi();
+  const alerts = [];
+  globalThis.alert = (message) => alerts.push(String(message));
+  globalThis.confirm = () => true;
+  __setFetchApiHandler(async (route) => {
+    if (route === "/identity_forge/vault/characters") {
+      return { ok: true, json: async () => ({ characters: SAMPLE_CHARACTERS }) };
+    }
+    if (route === "/identity_forge/vault/delete") {
+      return { ok: false, status: 500, json: async () => ({ error: "disk is read-only" }) };
+    }
+    return { ok: true, json: async () => ({}) };
+  });
+  const node = await createNode(ext, "IdentityForgeVaultLoad");
+  await flush();
+  const manage = node.widgets.find((w) => w.name === "\u{1F5C2} Manage Vault\u2026");
+  assert.ok(manage, "Manage Vault button must exist");
+  manage.callback();
+  await flush();
+
+  const del = [...document.querySelectorAll("button")]
+    .find((b) => b.textContent === "\u{1F5D1}");
+  assert.ok(del, "expected a per-card delete button");
+  del.onclick();
+  await flush();
+
+  assert.ok(alerts.some((m) => m.includes("disk is read-only")),
+    `expected the server's reason to reach the user; got ${JSON.stringify(alerts)}`);
 });

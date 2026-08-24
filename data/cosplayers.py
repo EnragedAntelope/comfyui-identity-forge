@@ -5360,6 +5360,9 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "Salaak": {
+        "anatomy_note": (
+            "a four-armed body: two pairs of arms, an upper pair at the shoulders and a second pair set lower on the ribs, four arms in total"
+        ),
         "franchise": "DC",
         "gender": "Male",
         "bald": True,
@@ -7441,6 +7444,9 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "brown"},
     },
     "Spiral": {
+        "anatomy_note": (
+            "a six-armed body: the natural pair of arms at the shoulders and two further pairs set below them down the torso, six arms in total"
+        ),
         "franchise": "Marvel",
         "gender": "Female",
         "costume": "a revealing costume in metallics and blacks with technological "
@@ -8845,6 +8851,9 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "an ignited blue lightsaber",
     },
     "Greez Dritus": {
+        "anatomy_note": (
+            "a four-armed body: two pairs of short arms, an upper pair at the shoulders and a second pair set lower on the ribs, four arms in total"
+        ),
         "franchise": "Star Wars",
         "gender": "Male",
         "costume": "a captain's vest and rolled sleeves over a stout orange-skinned Latero "
@@ -19494,6 +19503,9 @@ COSPLAYERS: dict[str, dict] = {
                      "fitness_level": "very fit", "skin_tone": "light medium"},
     },
     "Shiva (Record of Ragnarok)": {
+        "anatomy_note": (
+            "a four-armed body: two pairs of arms, an upper pair at the shoulders and a second pair set lower on the ribs, four arms in total"
+        ),
         # Four arms are anatomy, not a garment, so they ride in the costume prose
         # the way the Soul Calibur four-armed entries do. The body is skin, so no
         # covers_body (the 0.64.0 material rule).
@@ -22091,6 +22103,168 @@ COSPLAYERS: dict[str, dict] = {
         "scale_prose": "colossal, over a hundred feet tall",
         "physique": {"body_type": "stocky"},
     },
+    # --- 0.97.0 ------------------------------------------------------------
+    "Mizora": {
+        "franchise": "Baldur's Gate 3",
+        "gender": "Female",
+        # Distinct from Karlach, the roster's other BG3 fiend: Karlach is deep red
+        # with two backswept horns and no wings. Mizora is pale blue, four-horned
+        # and winged, and BG3 ships nothing else with wings.
+        "costume": "a floor-length deep blue gown with a gilded belt and gold "
+                   "filigree across the bodice, a gold-and-ruby circlet worn like a "
+                   "tiara, and a pair of large leathery bat wings spread from the "
+                   "back, over smooth, flawless pale blue skin",
+        # Four horns is a count, and a count buried in the garment list does not
+        # carry the render -- so it leads, in its own sentence (0.96.0/0.97.0).
+        "anatomy_note": "four curved horns on the head, an upper pair sweeping back "
+                        "from the brow and a shorter second pair below them, four "
+                        "horns in total, and long pointed ears",
+        "eyes": "fire-flecked coal-black",
+        "signature": {
+            "hair_color": "bright red",
+            "hair_length": "short pixie",
+            "hair_style": "worn down",
+            # Her canonical purplish lips are deliberately NOT pinned. The costume
+            # carries a body-paint anchor ("smooth, flawless pale blue skin"), and
+            # _BODY_PAINT_RE locks the whole Makeup group absent for exactly the
+            # reason that anchor exists: skin-toned makeup under a coloured face
+            # renders as a pale patch. A lips_makeup lock here does not win -- it
+            # only produces a constraint warning on every single render.
+        },
+        "physique": {"body_type": "hourglass", "height": "tall"},
+    },
+    "Zer0": {
+        "franchise": "Borderlands",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a smooth featureless dark helmet with a flat visor, a single glowing "
+                "red digit projected across the faceplate where a face would be",
+        "costume": "a close-fitting matte black bodysuit with crimson paneling down "
+                   "the ribs and thighs, segmented armor plates at the shoulders "
+                   "and shins, a long tattered dark half-cape hanging from one "
+                   "shoulder, and a sword scabbard slung across the back",
+        "prop": "a slender straight-bladed energy sword held low in one hand",
+        "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "Sir Hammerlock": {
+        "franchise": "Borderlands",
+        "gender": "Male",
+        "costume": "a tan sleeveless safari waistcoat over a rolled-sleeve khaki "
+                   "shirt, a wide brown slouch hat, a cracked brass monocle over the "
+                   "right eye, and a burnished brass mechanical right arm and right "
+                   "leg with exposed pistons at the joints",
+        "prop": "a long-barrelled hunting rifle carried at the shoulder",
+        "signature": {
+            "hair_color": "jet black",
+            "hair_length": "very short",
+            "facial_hair": "mustache",
+            "eye_color": "dark brown",
+        },
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "deep ebony"},
+    },
+    "The Invisible Man": {
+        "franchise": "Universal Monsters",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_hair": True,
+        "mask": "a head wrapped completely in white gauze bandages with a sculpted "
+                "false nose beneath them, and round black goggles strapped over the "
+                "eyes",
+        "costume": "a heavy dark double-breasted overcoat with the collar turned up, "
+                   "a wide-brimmed dark fedora set low, a wool scarf at the "
+                   "throat, and dark leather gloves",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Ash Williams": {
+        "franchise": "Evil Dead",
+        "gender": "Male",
+        "costume": "a torn pale blue denim work shirt with the sleeves rolled and the "
+                   "right sleeve cut away, brown canvas trousers, black work boots, "
+                   "a brown leather chest harness, and a chainsaw strapped over the "
+                   "right forearm in place of a hand",
+        "prop": "a sawn-off double-barrelled shotgun held in the left hand",
+        "signature": {
+            "hair_color": "dark brown",
+            "hair_length": "very short",
+            "hair_style": "slicked back",
+            "eye_color": "medium brown",
+        },
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Immortan Joe": {
+        "franchise": "Mad Max",
+        "gender": "Male",
+        "covers_face": True,
+        # A lower-face mask alone is normally NOT covers_face (Sub-Zero, Kakashi
+        # write theirs into the costume). This one is, because the respirator is the
+        # single most recognizable thing about him and the 0.90.0 finding is that a
+        # head buried in the "He wears ..." garment list does not render. So the
+        # mask describes the WHOLE visible head, the way Tusken Raider and The Ghoul
+        # do, and the deep-set shadowed eyes stand in for the randomized face the
+        # covers_face flag suppresses.
+        "mask": "a pallid chalk-white head with a skeletal respirator clamped across "
+                "the mouth and jaw, its grille set with rows of yellowed horse teeth "
+                "and fed by ribbed hoses running back over the shoulders, above "
+                "deep-set shadowed eyes under a heavy brow",
+        # The talcum powder is written as SKIN, not as powder. That is the 0.52 A/B
+        # result the body-paint anchor exists for: "paint"/"powder" wording makes a
+        # model layer a streaky coat over a human tone, skin-native wording renders
+        # the colour uniformly.
+        "costume": "a molded clear armored chestplate with tan edge trim, hung with "
+                   "rows of scavenged medals and bottle caps, over a rough sleeveless "
+                   "leather jacket, a studded metal pauldron on the right shoulder, "
+                   "and dark trousers, over smooth, flawless chalk-white skin",
+        "signature": {"hair_color": "silver", "hair_length": "long"},
+        "physique": {"body_type": "stocky", "height": "tall",
+                     "shoulder_width": "broad"},
+    },
+    "Mega Man": {
+        "franchise": "Mega Man",
+        "gender": "Male",
+        "covers_hair": True,
+        "costume": "a cobalt blue armored bodysuit with a pale cyan torso panel, "
+                   "matching blue forearm guards and tall blue boots, a close-fitting "
+                   "cobalt helmet with a raised crest and a round blue ear pod on "
+                   "each side, and a wide grey arm cannon replacing the right hand",
+        "eyes": "large bright green",
+        "physique": {"body_type": "lean", "height": "petite"},
+    },
+    "Sherlock Holmes": {
+        "franchise": "Sherlock Holmes",
+        "gender": "Male",
+        "costume": "a brown tweed deerstalker cap with the ear flaps tied up, a grey "
+                   "Inverness cape worn over a tweed three-piece suit with a "
+                   "waistcoat and watch chain, a high starched collar, and polished "
+                   "leather ankle boots",
+        "prop": "a curved calabash pipe held in one hand",
+        "signature": {
+            "hair_color": "dark brown",
+            "hair_length": "very short",
+            "hair_style": "slicked back",
+            "eye_color": "gray",
+            "facial_hair": "clean shaven",
+        },
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "The Knight (Hollow Knight)": {
+        "franchise": "Hollow Knight",
+        # Canonically a genderless vessel. Filed "Male" to match the shipped
+        # convention for genderless mascots (Pikachu, Moogle, No-Face, Cactuar):
+        # this key only scopes the "Random - female/male" picks, and "Any" would
+        # make the entry unreachable from BOTH of them.
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "size_scale": "tiny",
+        "scale_prose": "tiny and barely three feet tall",
+        "mask": "a smooth bone-white oval mask with two long curved horns rising from "
+                "the top and two wide black hollows where the eyes would be",
+        "costume": "a ragged charcoal-grey cloak falling to the knees over an even, "
+                   "all-over coat of matte black, on a tiny three-foot frame",
+        "prop": "a plain nicked short sword held point-down at the side",
+        "physique": {"body_type": "petite and slim"},
+    },
 }
 
 
@@ -22163,6 +22337,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         # Warhammer 40,000 is tabletop-first and the pack has no tabletop category;
         # Video Games is the least-surprising home given the franchise's game presence.
         "Warhammer 40,000",
+        "Mega Man", "Hollow Knight",  # 0.97.0
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -22170,10 +22345,11 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Literature", "Folklore", "Legend", "Dr. Seuss", "Winnie the Pooh",
         "Charlie and the Chocolate Factory", "The BFG", "Fantastic Mr Fox",
         "Conan the Barbarian", "Nancy Drew", "Little House on the Prairie", "Dune",
+        "Sherlock Holmes",  # 0.97.0
     ),
     "Movies & TV": (
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
-        "Judge Dredd", "Mad Max",
+        "Judge Dredd", "Mad Max", "Evil Dead",  # Evil Dead 0.97.0
         "Escape from New York", "Pirates of the Caribbean", "The Addams Family",
         "Universal Monsters", "Indiana Jones", "Godzilla", "Rambo",
         "KPop Demon Hunters",
@@ -22257,11 +22433,6 @@ def get_cosplayer_names(gender: str | None = None, category: str | None = None) 
 def get_cosplayer(name: str) -> dict:
     """Return the cosplay record for ``name`` (empty dict if unknown)."""
     return COSPLAYERS.get(name, {})
-
-
-def get_cosplayer_names_by_gender(gender: str) -> list[str]:
-    """Return sorted names whose SOURCE character matches ``gender`` (back-compat shim)."""
-    return get_cosplayer_names(gender=gender)
 
 
 # Merge optional user-supplied cosplayers (./user_options.json, "cosplayers"

@@ -47,6 +47,12 @@ jobs:
         run: python scripts/generate_js_data.py --check
       - name: Check generated frontend fixtures are current
         run: python scripts/dump_frontend_fixtures.py --check
+      - name: Check every roster entry carries a release stamp
+        # data/versions.py is what lets the sample galleries offer "Newest first"
+        # and a "New in <version>" filter. An entry with no stamp would silently
+        # sort as though it had always shipped, which is the half a convention
+        # cannot enforce on its own. Stdlib-only and network-free.
+        run: python scripts/stamp_versions.py --check
       - name: Check every roster entry's gallery image is current
         # Network-free and stdlib-only by design: it compares
         # gallery/render_manifest.json against the data layer and never touches

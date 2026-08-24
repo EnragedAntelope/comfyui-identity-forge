@@ -40,13 +40,26 @@ const GROUPED_NAMES = new Set(GROUPS.flatMap(([, names]) => names));
 // stable headline (placed right after it, above the collapsible groups).
 const MULTILINE_AFTER_HEADLINE = ["more_features"];
 
+//: First widget this file adds; its presence is the re-entry guard in
+//: `setupCreature`. Structural rather than a flag, for the same reason as
+//: ALL_RANDOM_LABEL in js/identity_forge.js.
+const BULK_FOLLOW_LABEL = "Slots: all Follow base";
+
+//: Sentinel `type` a collapsed widget carries. Kept identical to the string in
+//: js/identity_forge.js -- the two files hide widgets the same way and there is no
+//: reason for the marker to differ.
+const HIDDEN_WIDGET_TYPE = "if_hidden";
+
 // --- collapse helpers (hide a widget without losing its type) -------------
 function hideWidget(w) {
   if (w.__hidden) return;
   w.__hidden = true;
   w.__origType = w.type;
   w.__origComputeSize = w.computeSize;
-  w.type = "if_creature_hidden";
+  // Same sentinel string as js/identity_forge.js. It was "if_creature_hidden"
+  // here, which is harmless today (computeSize does the work) but is exactly the
+  // kind of drift that bites if LiteGraph ever special-cases the literal.
+  w.type = HIDDEN_WIDGET_TYPE;
   w.computeSize = () => [0, -4];
 }
 
@@ -89,6 +102,9 @@ function resize(node) {
 }
 
 function setupCreature(node) {
+  // Re-entry guard -- see ALL_RANDOM_LABEL in js/identity_forge.js. Without it a
+  // second call duplicates the group headers and the two bulk-set buttons.
+  if ((node.widgets || []).some((w) => w.name === BULK_FOLLOW_LABEL)) return;
   const original = node.widgets ? node.widgets.slice() : [];
   if (!original.length) return;
 
@@ -115,15 +131,26 @@ function setupCreature(node) {
     // overrides can be set at once. Follow base is the default; Random rolls each slot.
     const bulk = [];
     if (title === "Hybrid slots") {
+      // One throwing callback used to abort the loop, leaving some slots set and
+      // the rest untouched -- a partial state the user cannot see and did not ask
+      // for. Each slot is now independent; the value is assigned before the
+      // callback runs, so a throw costs the notification, never the value.
+      // Arity matches setWidgetValue elsewhere in the pack (value, canvas, node).
       const setAll = (val) => {
         for (const w of slotWidgets) {
           w.value = val;
-          if (typeof w.callback === "function") w.callback(val);
+          if (typeof w.callback === "function") {
+            try {
+              w.callback(val, app.canvas, node);
+            } catch (err) {
+              console.error("[IdentityForgeCreature] slot callback failed:", err);
+            }
+          }
         }
         node.setDirtyCanvas(true, true);
       };
       bulk.push(
-        node.addWidget("button", "Slots: all Follow base", null, () => setAll("Follow base"),
+        node.addWidget("button", BULK_FOLLOW_LABEL, null, () => setAll("Follow base"),
                        { serialize: false }),
         node.addWidget("button", "Slots: all Random", null, () => setAll("Random"),
                        { serialize: false }),

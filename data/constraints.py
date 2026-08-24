@@ -571,7 +571,26 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     # keeps them available -- the whole point of that mechanism. `wedges` / `mules` /
     # `heels` were in the pool before 0.83.0 and were already landing on men invisibly.
     "footwear": ["heels", "kitten heels", "wedges", "mules", "ballet flats",
-                 "knee-high boots"],
+                 "knee-high boots", "mary janes"],  # mary janes 0.97.0
+    # 0.97.0, and the same class of miss as the footwear trim above: `bag` shares one
+    # pool across genders and was the last feminine-coded field with no trim at all.
+    # MEASURED before the fix, over 1000 male renders at the default
+    # wardrobe="Match gender": 137 (13.7%) carried a strictly feminine handbag --
+    # "a fine-knit poplin shirt and a silk tie in a floral print, in loafers, carrying
+    # an envelope clutch in gold". Presentation-gated like the other wardrobe trims,
+    # so a Feminine/"Any" wardrobe on a man keeps the whole pool.
+    #
+    # Deliberately NOT trimmed: `canvas tote`, the leather totes, the crossbodies, the
+    # saddlebags, the belt bags and the mini backpacks. Those are unisex carriers and
+    # culling them would leave the masculine pool almost empty -- which is why the
+    # three men's bags ship in the same revision (see data/fields.py).
+    "bag": [
+        "structured top handle bag in black", "structured top handle bag in cream",
+        "structured top handle bag in tan", "envelope clutch in black",
+        "envelope clutch in gold", "envelope clutch in nude", "woven rattan bag",
+        "small quilted chain bag", "beaded evening clutch", "velvet evening bag",
+        "straw beach tote", "printed silk scarf tied as bag accent",
+    ],
     "hair_style": [
         "space buns", "pigtails", "high pigtails", "low pigtails", "curled pigtails",
         "braided pigtails", "updo", "French twist",
@@ -592,6 +611,7 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
 _PRESENTATION_GATED_FIELDS: frozenset[str] = frozenset({
     "nails", "earrings", "necklace", "other_jewelry", "rings", "bracelet",
     "footwear",   # 0.83.0 -- a wardrobe choice, not anatomy, so it gates like jewellery
+    "bag",        # 0.97.0 -- likewise
 })
 for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
     CONSTRAINT_RULES.append({
@@ -739,11 +759,11 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ("casual", frozenset([
         'sneakers', 'loafers', 'boots', 'flats', 'sandals', 'ankle boots', 'mules',
         'chelsea boots', 'combat boots', 'ballet flats', 'high-top sneakers',
-        'espadrilles'])),
+        'espadrilles', 'mary janes', 'cowboy boots'])),
     ("smart casual", frozenset([
         'sneakers', 'loafers', 'boots', 'heels', 'flats', 'oxfords', 'ankle boots',
         'wedges', 'mules', 'chelsea boots', 'knee-high boots', 'ballet flats',
-        'derbies', 'kitten heels'])),
+        'derbies', 'kitten heels', 'mary janes'])),
     ("business casual", frozenset([
         'loafers', 'heels', 'flats', 'oxfords', 'ankle boots', 'wedges', 'mules',
         'chelsea boots', 'ballet flats', 'derbies', 'kitten heels'])),
@@ -755,23 +775,24 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
         'kitten heels', 'knee-high boots'])),
     ("streetwear", frozenset([
         'sneakers', 'boots', 'ankle boots', 'combat boots', 'high-top sneakers',
-        'chelsea boots', 'mules'])),
+        'chelsea boots', 'mules', 'cowboy boots'])),
     ("bohemian", frozenset([
         'sandals', 'boots', 'flats', 'ankle boots', 'wedges', 'mules', 'bare feet',
-        'espadrilles', 'ballet flats', 'knee-high boots'])),
+        'espadrilles', 'ballet flats', 'knee-high boots', 'cowboy boots'])),
     ("athletic", frozenset(['sneakers', 'high-top sneakers'])),
     ("resort vacation", frozenset([
         'sandals', 'flats', 'wedges', 'mules', 'bare feet', 'espadrilles',
         'sneakers', 'ballet flats'])),
     ("edgy alternative", frozenset([
         'boots', 'combat boots', 'ankle boots', 'chelsea boots', 'knee-high boots',
-        'heels', 'sneakers', 'high-top sneakers'])),
+        'heels', 'sneakers', 'high-top sneakers', 'cowboy boots', 'mary janes'])),
     ("preppy", frozenset([
         'loafers', 'oxfords', 'sneakers', 'flats', 'ankle boots', 'chelsea boots',
-        'ballet flats', 'derbies', 'espadrilles', 'kitten heels'])),
+        'ballet flats', 'derbies', 'espadrilles', 'kitten heels', 'mary janes'])),
     ("vintage retro", frozenset([
         'loafers', 'oxfords', 'heels', 'flats', 'ankle boots', 'wedges', 'mules',
-        'derbies', 'kitten heels', 'ballet flats', 'chelsea boots'])),
+        'derbies', 'kitten heels', 'ballet flats', 'chelsea boots', 'mary janes',
+        'cowboy boots'])),
     ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats'])),
 ])
 
@@ -795,6 +816,11 @@ for _style, _allowed in FOOTWEAR_BY_STYLE.items():
 # staple. `solid` is allowed everywhere by construction.
 _MULTICOLOUR_PATTERNS: list[str] = [
     'floral', 'animal print', 'geometric', 'abstract', 'camouflage', 'denim', 'plaid',
+    # 0.97.0. Filed with 'plaid' rather than with the two-tone patterns the 0.90.0
+    # batch deliberately left out ('houndstooth', 'gingham', 'pinstripe', 'polka dot'):
+    # the classic argyle lattice is three colours plus a contrasting overstitch, so an
+    # "all black" palette leaves it nothing to be.
+    'argyle',
 ]
 for _colour in ('all black', 'all white', 'black monochrome', 'white and cream'):
     CONSTRAINT_RULES.append({
