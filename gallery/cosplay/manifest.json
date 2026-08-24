@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-08-23T23:28:44.981297",
-  "version": "0.97.0",
+  "generated": "2026-08-24T13:29:38.542649",
+  "version": "0.98.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -116,10 +116,11 @@
     "0.94.0",
     "0.95.0",
     "0.96.0",
-    "0.97.0"
+    "0.97.0",
+    "0.98.0"
   ],
-  "total_entries": 1861,
-  "entries_with_images": 1861,
+  "total_entries": 1869,
+  "entries_with_images": 1869,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -490,6 +491,14 @@
       "group": "Half-Life",
       "added": "0.74.0",
       "image": "images/Alyx Vance.jpeg"
+    },
+    {
+      "name": "Amara",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Borderlands",
+      "added": "0.98.0",
+      "image": "images/Amara.jpeg"
     },
     {
       "name": "Ambessa",
@@ -4266,6 +4275,14 @@
       "group": "Tangled",
       "added": "0.77.0",
       "image": "images/Flynn Rider.jpeg"
+    },
+    {
+      "name": "Foghorn Leghorn",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Foghorn Leghorn.jpeg"
     },
     {
       "name": "Fox McCloud",
@@ -10364,6 +10381,14 @@
       "image": "images/Porg.jpeg"
     },
     {
+      "name": "Porky Pig",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Porky Pig.jpeg"
+    },
+    {
       "name": "Portgas D. Ace",
       "has_image": true,
       "gender": "Male",
@@ -11146,6 +11171,14 @@
       "group": "Tokyo Ghoul",
       "added": "0.77.0",
       "image": "images/Rize Kamishiro.jpeg"
+    },
+    {
+      "name": "Road Runner",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Road Runner.jpeg"
     },
     {
       "name": "Robin",
@@ -12660,6 +12693,14 @@
       "image": "images/Speedball.jpeg"
     },
     {
+      "name": "Speedy Gonzales",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Speedy Gonzales.jpeg"
+    },
+    {
       "name": "Spider-Gwen",
       "has_image": true,
       "gender": "Female",
@@ -13074,6 +13115,14 @@
       "group": "World of Warcraft",
       "added": "0.18.0",
       "image": "images/Sylvanas Windrunner.jpeg"
+    },
+    {
+      "name": "Sylvester",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Sylvester.jpeg"
     },
     {
       "name": "Symmetra",
@@ -13884,6 +13933,14 @@
       "image": "images/Tuxedo Mask.jpeg"
     },
     {
+      "name": "Tweety",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Tweety.jpeg"
+    },
+    {
       "name": "Twintelle",
       "has_image": true,
       "gender": "Female",
@@ -14426,6 +14483,14 @@
       "group": "DC",
       "added": "0.45.0",
       "image": "images/Wildcat.jpeg"
+    },
+    {
+      "name": "Wile E. Coyote",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Looney Tunes",
+      "added": "0.98.0",
+      "image": "images/Wile E. Coyote.jpeg"
     },
     {
       "name": "Will Turner",
