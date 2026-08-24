@@ -246,6 +246,7 @@ const COSPLAYER_FRANCHISES = {
     "Tina Belcher"
   ],
   "Borderlands": [
+    "Amara",
     "Handsome Jack",
     "Lilith (Borderlands)",
     "Mad Moxxi",
@@ -1262,9 +1263,16 @@ const COSPLAYER_FRANCHISES = {
     "Bugs Bunny",
     "Daffy Duck",
     "Elmer Fudd",
+    "Foghorn Leghorn",
     "Lola Bunny",
     "Marvin the Martian",
+    "Porky Pig",
+    "Road Runner",
+    "Speedy Gonzales",
+    "Sylvester",
     "Tasmanian Devil",
+    "Tweety",
+    "Wile E. Coyote",
     "Yosemite Sam"
   ],
   "Mad Max": [

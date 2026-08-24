@@ -153,6 +153,16 @@ Seed `42`, Female, `hair_color` = auburn:
 
 `prompt_json` mirrors this, nested by group with a small `_meta` block.
 
+## Turnaround views
+
+The **Identity Forge Turnaround** node builds a reference set: one character, several
+camera angles. Keep `seed` fixed (it deliberately does not randomize between runs), pick a
+view set, and queue once per angle - `index` auto-increments after every queue, so six
+queued runs emit front, both three-quarters, profile, rear three-quarter and back. With
+`neutral_pose = On` the pose pins to a standing, symmetric stance, so the only thing that
+changes between renders is the camera. Connect an Archetype / Cosplayer / Creature preset
+to `upstream` to turn *that* character around; the output is plain text for CLIPTextEncode.
+
 ## Notes
 
 - The ethnicity-to-skin-tone link is a *soft* bias over coarse regional bands; lock `skin_tone`

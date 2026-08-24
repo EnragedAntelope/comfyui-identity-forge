@@ -3028,7 +3028,7 @@ CREATURES: dict[str, dict] = {
         "class": "Insects & Arachnids",
         "palette": "dusty grey-brown",
         "palette_pool": ["dusty grey-brown", "pale straw", "dark slate"],
-        "head": "a small round head fronted by a long rigid needle proboscis between feathery plumed antennae",
+        "head": "a long rigid dark needle proboscis held out ahead, several times the length of the small rounded head it springs from, flanked by two feathery plumed antennae",
         "eyes": "large dark wraparound eyes",
         "integument": "a slender scaled body with an abdomen translucent enough to show what it holds",
         "arms": "impossibly thin forelimbs",

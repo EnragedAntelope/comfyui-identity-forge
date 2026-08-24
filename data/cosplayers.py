@@ -8424,13 +8424,24 @@ COSPLAYERS: dict[str, dict] = {
     "Grogu": {
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "a loose tan woven robe, with smooth green skin, very large pointed "
-                   "ears, and a few wisps of fine white hair, on a tiny figure barely a foot tall",
-        "eyes": "enormous dark glossy",
+        # Mascot treatment, Pikachu/Moogle precedent. Without the covers flags the
+        # node emitted a whole random human cosplayer ("a 40-year-old Dominican
+        # man") in a tan robe -- exactly the reported "unwanted person in the
+        # scene": renders showed a man standing beside / holding a small green
+        # figure. With covers_face+covers_body the render IS the character.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of smooth sage-green skin on a tiny "
+                   "toddler-proportioned body barely a foot tall, wrapped in a loose "
+                   "tan woven robe with draped sleeves",
+        "mask": "a green alien infant's head with an oversized round forehead, very "
+                "large wide-set dark glossy eyes, enormous pointed ears sweeping out "
+                "sideways, and a few fine wisps of white hair",
         "signature": {},
         "size_scale": "tiny",
         "scale_prose": "tiny and barely a foot tall",
         "physique": {"body_type": "slim", "height": "very petite"},
+        "prop": "a shiny metal control knob clutched in one three-fingered hand",
     },
     "Stormtrooper": {
         "franchise": "Star Wars",
@@ -8851,16 +8862,33 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "an ignited blue lightsaber",
     },
     "Greez Dritus": {
-        "anatomy_note": (
-            "a four-armed body: two pairs of short arms, an upper pair at the shoulders and a second pair set lower on the ribs, four arms in total"
-        ),
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "a captain's vest and rolled sleeves over a stout orange-skinned Latero "
-                   "body with four arms",
-        "eyes": "small dark",
-        "signature": {"facial_hair": "mustache"},
-        "physique": {"body_type": "stocky", "height": "petite"},
+        "covers_face": True,
+        # Same structural fix as Dexter Jettster: a Latero is not a human in a
+        # vest -- without the covers flags the prose opened as a random man and
+        # bolted four arms onto him (the published render was a two-armed human).
+        # covers_face+covers_body drop ethnicity/skin_tone, jewellery and nails;
+        # "uniform, all-over" is the _BODY_PAINT_RE anchor that makes the
+        # orange-tan colour the only skin descriptor.
+        "covers_body": True,
+        "costume": "a rumpled captain's vest over a collarless shirt with all four "
+                   "sleeves rolled to the elbow, dark trousers and boots, on a plump "
+                   "rounded barrel torso, over uniform, all-over weathered orange-tan skin",
+        # The four arms ride in the mask sentence (voiced BEFORE the clothing),
+        # because buried mid-costume they render as two -- measured on Dexter
+        # at 0.96.0. anatomy_note is the MASKLESS-entry mechanism; this entry
+        # has a mask, so it uses it.
+        "mask": "a Latero head: a balding crown with short hair running down into "
+                "thick sideburns, a heavy drooping mustache above a flat upturned "
+                "nose, small brown eyes under heavy brows, and long pointed ears, "
+                "carried on a stout four-armed body: an upper pair of arms at the "
+                "shoulders and a shorter second pair set lower on the ribs",
+        # Build/age sit in `signature` (both modes), not `physique`, so a
+        # costume-only Greez still reads short and stout.
+        "signature": {"age": "50", "body_type": "stocky", "height": "short",
+                      "waist": "full", "fitness_level": "sedentary"},
+        "prop": "a battered cooking pot with a wooden spoon sticking out",
     },
     "Devaronian": {
         "franchise": "Star Wars",
@@ -15693,6 +15721,28 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "thick and voluminous", "eye_color": "amber"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
+    "Amara": {
+        "franchise": "Borderlands",
+        "gender": "Female",
+        # The case suggested-additions.md asked for: built on the arms alone.
+        # Six arms = her natural pair plus the four spectral arms her Phasetrance
+        # conjures, stated numeral-first per the 0.96.0 rule and voiced early via
+        # anatomy_note. Her tiger tattoo covers BOTH arms at max level, which is
+        # also what separates her from Lilith's single blue arm-scroll.
+        "anatomy_note": (
+            "six arms in total: her own two arms plus four glowing violet spectral "
+            "arms fanned out in two pairs behind her shoulders"
+        ),
+        "costume": "a studded leather vest over a dark top, heavy trousers with a "
+                   "broad belt and boots, gold bangles on one wrist and a heavy "
+                   "knuckle-duster glove on the other hand, with a dark tiger-striped "
+                   "tattoo curling over both arms and shoulders",
+        "signature": {"hair_color": "raven black", "hair_length": "mid back",
+                      "hair_style": "high ponytail", "eye_color": "dark brown",
+                      "makeup_style": "soft everyday glam"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan",
+                     "fitness_level": "muscular"},
+    },
     "Marcia Brady": {
         "franchise": "The Brady Bunch",
         "gender": "Female",
@@ -18527,6 +18577,93 @@ COSPLAYERS: dict[str, dict] = {
                    "and a bald head",
         "prop": "a double-barrelled hunting shotgun",
         "physique": {"body_type": "stocky", "height": "short", "skin_tone": "fair"},
+    },
+    # Core cast additions -- each passes the uniqueness bar against the roster:
+    # Porky vs Piglet (size, build, garment), Foghorn vs the generic rooster
+    # creature (white plumage, red comb/wattles, bald forehead), Sylvester/Tweety
+    # as the paired cat-and-canary set, and the chase pair on their own silhouettes.
+    "Porky Pig": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "a navy double-breasted jacket buttoned over an even, all-over "
+                   "coat of smooth pink skin, on a plump round frame with a curly tail",
+        "mask": "a pink pig head with a round upturned snout, small bright eyes, "
+                "drooping little ears, and a gentle shy smile",
+        "physique": {"body_type": "plus size", "height": "short"},
+    },
+    "Sylvester": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an even, all-over coat of sleek black fur with a white muzzle, "
+                   "chest, belly, paws, and tail tip, on a tall lanky frame",
+        "mask": "a black cat head with a wide white muzzle, a bright red nose, "
+                "half-lidded yellow eyes, and long anxious brow whiskers",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Tweety": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an even, all-over coat of bright yellow feathers on a tiny round "
+                   "baby-bird body barely a foot tall, with an oversized smooth head",
+        "mask": "a yellow baby-bird head with huge long-lashed blue eyes, a small "
+                "orange beak, and three wispy feathers on the crown",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and barely a foot tall",
+        "physique": {"body_type": "slim", "height": "very petite"},
+    },
+    "Wile E. Coyote": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an even, all-over coat of scruffy brown fur with a pale tan "
+                   "belly, on a very tall bony frame with knobby knees and a little pot belly",
+        "mask": "a lean brown-grey coyote head with tall upright pointed ears, a long "
+                "narrow tapering snout, small hungry yellow eyes, and pale scruffy "
+                "cheek ruffs",
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a wooden shipping crate stamped ACME",
+    },
+    "Road Runner": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an even, all-over coat of sleek blue-and-purple feathers with a "
+                   "paler breast, on a slender frame balanced on extremely long thin legs",
+        "mask": "a roadrunner head with a high youthful forehead, a swept-back crest "
+                "of feathers, large wide eyes, and a slim pointed beak",
+        "physique": {"body_type": "slim", "height": "tall"},
+    },
+    "Foghorn Leghorn": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an even, all-over coat of snowy white feathers, on a tall "
+                   "heavyset frame with stumpy tail feathers",
+        "mask": "a rooster head with a bald pink-tinged forehead, sharp half-lidded "
+                "eyes, a heavy yellow beak, a bright red comb, and matching double "
+                "red wattles",
+        "physique": {"body_type": "stocky", "height": "tall"},
+    },
+    "Speedy Gonzales": {
+        "franchise": "Looney Tunes",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an oversized yellow straw sombrero, a crisp white shirt and "
+                   "trousers, and a red kerchief tied at the neck, on a small quick "
+                   "mouse frame",
+        "mask": "a brown mouse head with large round ears, a small black nose, "
+                "buoyant smiling eyes, and two buck teeth",
+        "physique": {"body_type": "slim", "height": "short"},
     },
     "Storm Shadow": {
         "franchise": "G.I. Joe",

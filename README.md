@@ -177,6 +177,7 @@ A taste of archetypes, cosplay characters and creatures:
 | **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. Generic species only — a *named* fictional beast (Appa, Toothless) is a Cosplayer entry. |
 | **Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`). |
 | **Vault Save / Load** | Save a generated character (with a thumbnail) to a local vault; recall it later as a chainable preset, with a Manage Vault gallery. |
+| **Turnaround** | One seed-fixed character, several camera angles - a reference-sheet builder. `index` auto-increments each queued render, so N runs walk front / three-quarter / profile / back automatically. Wire any preset into `upstream` to turn that character instead. |
 
 ---
 

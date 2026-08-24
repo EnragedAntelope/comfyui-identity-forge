@@ -90,7 +90,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Suiko (One Punch Man) | A hoodie over a sports top and black trousers. Tan skin, short black hair and a beauty mark are the only markers, and none of them survives as a silhouette — the render is "a woman in a hoodie". Fails the same bar as Jessica Jones and Marion Ravenwood. `Captain Mizuki` shipped from the same request because the three gold medals and the shot put carry her. |
 
 | Krieg (Borderlands) | Near-duplicate of the shipped `Psycho (Borderlands)`, which already carries the bandage mask, the strap harness and the buzz axe. `Zer0` and `Sir Hammerlock` shipped from the same request because neither overlaps anything on the roster. |
-| Maya, Amara (Borderlands) | `Lilith (Borderlands)` already carries the glowing blue Siren tattoos down one arm, which is the whole visual identity of the class. Amara's six arms are genuinely new ground and `anatomy_note` (0.97.0) could now carry them — but the rest of her reads as Lilith, so she needs a case built on the arms alone. |
+| Maya (Borderlands) | `Lilith (Borderlands)` already carries the glowing blue Siren tattoos down one arm, which is the whole visual identity of the class - and unlike `Amara` (shipped 0.98.0 on the strength of her six arms), Maya has no feature Lilith lacks. |
 | Claptrap (Borderlands) | A one-wheeled box with a single lens. Fails **both** halves of the animal/mascot split: nobody can be inside it (so it is not the mascot-suit case) and it is a machine, not a beast (so `body_plan: "feral"` does not apply either). |
 
 ### Whole classes

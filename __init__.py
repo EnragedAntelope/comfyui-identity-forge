@@ -1,6 +1,6 @@
 """comfyui-identity-forge — V3 custom node pack entrypoint.
 
-Exposes seven nodes:
+Exposes eight nodes:
 
 * ``IdentityForge`` — a multi-field character description randomizer with a
   constraint engine and dual prose/JSON output.
@@ -11,6 +11,8 @@ Exposes seven nodes:
   mythic), optionally hybridized slot-by-slot, that seeds IdentityForge.
 * ``IdentityForgeModifier`` — prepends custom descriptors to individual fields /
   groups (e.g. "sci-fi" shoes) for per-element stylistic tilts.
+* ``IdentityForgeTurnaround`` — one seed-fixed character emitted one camera view
+  per run (index auto-increments), for multi-view reference sets.
 * ``IdentityForgeVaultSave`` — save a generated character to a local vault.
 * ``IdentityForgeVaultLoad`` — recall a saved character as a chainable preset.
 
@@ -28,6 +30,7 @@ try:
     from .nodes.identity_forge_cosplayer import IdentityForgeCosplayer
     from .nodes.identity_forge_creature import IdentityForgeCreature
     from .nodes.identity_forge_modifier import IdentityForgeModifier
+    from .nodes.identity_forge_turnaround import IdentityForgeTurnaround
     from .nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from .nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 except ImportError:  # pragma: no cover
@@ -36,6 +39,7 @@ except ImportError:  # pragma: no cover
     from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
     from nodes.identity_forge_creature import IdentityForgeCreature
     from nodes.identity_forge_modifier import IdentityForgeModifier
+    from nodes.identity_forge_turnaround import IdentityForgeTurnaround
     from nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 
@@ -150,7 +154,7 @@ class IdentityForgeExtension(ComfyExtension):
 
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
         return [IdentityForge, IdentityForgeArchetype, IdentityForgeCosplayer,
-                IdentityForgeCreature, IdentityForgeModifier,
+                IdentityForgeCreature, IdentityForgeModifier, IdentityForgeTurnaround,
                 IdentityForgeVaultSave, IdentityForgeVaultLoad]
 
 

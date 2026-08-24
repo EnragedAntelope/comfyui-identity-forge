@@ -108,6 +108,8 @@ class Int:
             self.max = max
             self.control_after_generate = control_after_generate
 
+    class Output(Output):
+        pass
 
 class String:
     class Input(WidgetInput):

@@ -195,6 +195,15 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   routes send no CORS headers. `_json_body()` also turns a malformed body into a 400 instead of
   letting it raise into a 500. The pack's own JS already sent the right header, so the UI was
   unaffected. Graph execution never touches these routes.
+- **Turnaround** ([nodes/identity_forge_turnaround.py](../nodes/identity_forge_turnaround.py),
+  0.98.0) - a reference-set builder: one seed-fixed character, N camera views. Each run pins
+  `shot_type` to the view chosen by `index`, a combo with `control_after_generate="increment"`
+  so queued runs walk the set automatically. Every run locks the SAME set of fields and only
+  the pinned shot VALUE differs, so all other fields resolve identically across views - which
+  is also why there is no explicit scene lock. `neutral_pose = On` pins the pose to a curated
+  standing/symmetric subset via its own RNG stream (`seed ^ 0x5A17`) so the choice never
+  shifts the engine stream between views. Text-only outputs: `prompt`, `view_label`,
+  `view_count`. Any preset chained on `upstream` turns THAT character around.
 
 ## fields.py — the field engine
 
@@ -932,6 +941,28 @@ ComfyUI is off turns CI red until it is re-rendered. That is the enforcement, no
 **Order of operations, once:** `--seed-manifest` must be run and committed **before** new
 content lands, or seeding silently blesses unrendered entries as `"pre-existing"`.
 
+### Front-facing shots and overwrite publishing (0.98.0)
+
+Two publish-quality gaps closed together:
+
+**Gallery shots are pinned front-facing.** A user request: no gallery image shows a back.
+`_gallery_shot()` picks each entry's `shot_type` from the schema pool minus the four
+back-facing values, on a dedicated stream (`seed ^ 0x5A17C105`) so the choice never shifts
+the engine's RNG stream - the same shape as the Turnaround node's neutral-pose stream.
+Back-facing values stay available to users; only the sample images avoid them. The pin
+initially shipped DEAD: a leftover second `IdentityForge.execute(...)` line below the pin
+block overwrote the pinned result with an unpinned one, so every render used whatever the
+unpinned stream rolled - plausible output, silently wrong mechanism. It surfaced only when
+an entry whose seed rolled "from above and behind" hid its defining feature (the
+mosquito's proboscis). Lesson: verify a pin by reading the prompt back out of the saved
+artifact, not by trusting the code path.
+
+**Re-renders now overwrite.** `gallery/*/publish.py` defaults to ADD-MISSING-ONLY, so a
+re-render of an existing entry was silently dropped and the published image stayed old -
+caught exactly that way at 0.98.0. Passing the whole archive folder with `--overwrite`
+would instead re-encode every historical image, so `render_gallery.py` stages only the
+originals rendered in THIS run into a temp dir and publishes that folder with
+`--overwrite`. Both halves matter.
 ### Adding a field without breaking saved workflows (0.90.0)
 
 `tattoos`, `legwear` and `tattoo_placement` are the first genuinely new *widgets* the
@@ -1035,11 +1066,13 @@ Two consequences for authoring:
   later is free but does not carry the render.
 * `mask` means *what the head looks like*, so carrying body anatomy in it is a
   compromise, taken because **a non-feral entry has no per-entry anatomy sentence**. The
-  costume keeps its own mention of the count so the Unmask toggle — which drops `mask` —
-  degrades to the old behaviour instead of losing the limbs entirely. The four
-  multi-armed entries with no `mask` (`Shiva (Record of Ragnarok)`, `Salaak`, `Spiral`,
-  `Greez Dritus`) therefore **cannot** be fixed this way; closing that properly needs an
-  optional anatomy sentence for non-feral entries, mirroring `_MASK_KEY`.
+  costume keeps its own mention of the count so the Unmask toggle - which drops `mask` -
+  degrades to the old behaviour instead of losing the limbs entirely. `Greez Dritus` was
+  moved onto this pattern at 0.98.0 (his published render had come back two-armed); the
+  three multi-armed entries still without a `mask` (`Shiva (Record of Ragnarok)`, `Salaak`,
+  `Spiral`) carry the count via `anatomy_note` instead, and closing the general case
+  properly still needs an optional anatomy sentence for non-feral entries, mirroring
+  `_MASK_KEY`.
 
 ### Never negate in prompt data
 

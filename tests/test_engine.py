@@ -7335,7 +7335,9 @@ class AnatomyNoteTests(unittest.TestCase):
     """
 
     #: The entries the key exists for. Gaining one is fine; losing one is not.
-    ENTRIES = ("Shiva (Record of Ragnarok)", "Salaak", "Spiral", "Greez Dritus")
+    ENTRIES = ("Shiva (Record of Ragnarok)", "Salaak", "Spiral", "Amara")
+    # Greez Dritus left this cohort at 0.98.0: the entry gained a mask and now
+    # carries its four arms in the mask sentence, per the Dexter Jettster rule.
 
     def test_the_four_maskless_multiarmed_entries_carry_one(self):
         for name in self.ENTRIES:
@@ -7359,7 +7361,11 @@ class AnatomyNoteTests(unittest.TestCase):
                 prose, _ = _render_cosplayer(name, 5)
                 note = COSPLAYERS[name]["anatomy_note"]
                 self.assertIn(note, prose)
-                self.assertLess(prose.index(note), prose.index(" wears "))
+                # rfind, not index: an entry with visible skin also carries a
+                # MAKEUP sentence ("She wears soft glam ...") before the note;
+                # the invariant is the note beating the COSTUME wear-clause,
+                # which is always the last one.
+                self.assertLess(prose.index(note), prose.rfind(" wears "))
 
     def test_unmasking_does_not_clear_it(self):
         # It is not part of the head, so the Unmask toggle must leave it alone.

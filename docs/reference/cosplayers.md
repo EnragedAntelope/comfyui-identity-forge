@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1861 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1869 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (351)
 
@@ -586,7 +586,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (241)
+## Comics & Cartoons (248)
 
 ### Adventure Time
 
@@ -787,9 +787,16 @@
 - **Bugs Bunny** (M, masked, prop)
 - **Daffy Duck** (M, masked)
 - **Elmer Fudd** (M, prop)
+- **Foghorn Leghorn** (M, masked)
 - **Lola Bunny** (F)
 - **Marvin the Martian** (M, tiny, masked, prop)
+- **Porky Pig** (M, masked)
+- **Road Runner** (M, masked)
+- **Speedy Gonzales** (M, masked)
+- **Sylvester** (M, masked)
 - **Tasmanian Devil** (M)
+- **Tweety** (M, tiny, masked)
+- **Wile E. Coyote** (M, masked, prop)
 - **Yosemite Sam** (M, prop)
 
 ### Masters of the Universe
@@ -2318,8 +2325,8 @@
 - **Grand Admiral Thrawn** (M)
 - **Grand Inquisitor** (M, prop)
 - **Greedo** (M, masked)
-- **Greez Dritus** (M)
-- **Grogu** (M, tiny)
+- **Greez Dritus** (M, masked, prop)
+- **Grogu** (M, tiny, masked, prop)
 - **Han Solo** (M, prop)
 - **Hera Syndulla** (F)
 - **Hondo Ohnaka** (M)
@@ -2387,7 +2394,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (413)
+## Video Games (414)
 
 ### ARMS
 
@@ -2429,6 +2436,7 @@
 
 ### Borderlands
 
+- **Amara** (F)
 - **Handsome Jack** (M)
 - **Lilith (Borderlands)** (F)
 - **Mad Moxxi** (F)

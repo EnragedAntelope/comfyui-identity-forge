@@ -44,10 +44,13 @@ import datetime as _datetime
 import hashlib
 import importlib.util
 import json
+import random
 import subprocess
 import sys
 import time
 import urllib.error
+import shutil
+import tempfile
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -112,6 +115,35 @@ FORGE_WIDGETS = {
     "location_setting": "Any indoor/outdoor",
     "set_all_fields": "Off",
 }
+
+#: Back-facing framings never rotate into a gallery sample: the gallery is a
+#: showcase, and a rear view hides the costume the entry exists to show. The
+#: engine pools are untouched - users still draw these, and the Turnaround
+#: node needs them - this only curates what the SAMPLES use.
+_BACK_FACING_SHOTS = frozenset({
+    "from slightly behind and to the side",
+    "view from directly behind",
+    "from behind and slightly below, looking up toward subject",
+    "from above and behind, looking down toward subject",
+})
+
+
+def _gallery_shot(seed: int) -> str | None:
+    """A deterministic front-facing ``shot_type`` pin for one entry render.
+
+    Picked on a dedicated stream from the schema's own shot_type options
+    (minus the back-facing four), so the same entry seed always renders the
+    same angle. Locking the field shifts the engine's RNG stream relative to
+    an unpinned render, which is fine here: a gallery image is a sample of
+    what the node CAN emit, not a canonical reproduction (the manifest hash
+    tracks entry text, not render settings - see architecture.md).
+    """
+    from nodes.identity_forge import IdentityForge
+    for spec in IdentityForge.define_schema().inputs:
+        if spec.id == "shot_type":
+            pool = [s for s in spec.options if s not in _BACK_FACING_SHOTS]
+            return random.Random(seed ^ 0x5A17C105).choice(pool)
+    return None
 
 
 class RenderError(RuntimeError):
@@ -460,7 +492,11 @@ def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
         raise RenderError(f"Unknown kind: {kind!r}")
 
     character_json = _unwrap(preset)[0]
-    forged = IdentityForge.execute(**_forge_kwargs(IdentityForge, character_json, seed))
+    forge_kwargs = _forge_kwargs(IdentityForge, character_json, seed)
+    shot = _gallery_shot(seed)
+    if shot:
+        forge_kwargs["shot_type"] = shot
+    forged = IdentityForge.execute(**forge_kwargs)
     prose = _unwrap(forged)[0]
     if not isinstance(prose, str) or not prose.strip():
         raise RenderError(f"{kind}/{name}: the engine produced no prose")
@@ -689,17 +725,48 @@ def render_one(client: ComfyClient, kind: str, name: str, settings: dict[str, An
     return False
 
 
-def publish_kind(kind: str) -> bool:
-    """Hand off to the gallery's own publisher, which never deletes."""
-    source = RENDER_OUT / kind
-    if not source.is_dir() or not any(source.iterdir()):
-        print(f"  {kind}: nothing in {source}, skipped")
+def publish_kind(kind: str, names: list[str] | None = None) -> bool:
+    """Hand off to the gallery's own publisher, which never deletes.
+
+    ``names`` limits the hand-off to THIS run's originals, staged into a temp
+    folder and published with ``--overwrite``. Both halves matter: the
+    publisher's default mode is ADD-MISSING-ONLY, so a re-render of an
+    existing entry would be silently skipped (the manifest hash updated, the
+    published image stayed old - caught exactly that way at 0.98.0); and
+    passing the whole archive folder with --overwrite would re-encode every
+    historical original on every run.
+    """
+    archive = RENDER_OUT / kind
+    normalize_name = _load_normalize_name()
+    if not archive.is_dir() or not any(archive.iterdir()):
+        print(f"  {kind}: nothing in {archive}, skipped")
         return True
+    if names:
+        staging = Path(tempfile.mkdtemp(prefix=f"ifstage-{kind}-"))
+        missing = []
+        for name in names:
+            src = archive / f"{normalize_name(name)}.png"
+            if src.is_file():
+                shutil.copy2(src, staging / src.name)
+            else:
+                missing.append(name)
+        if missing:
+            print(f"  {kind}: WARNING, no original for: {', '.join(missing)}")
+        if not any(staging.iterdir()):
+            print(f"  {kind}: no staged originals, skipped")
+            shutil.rmtree(staging, ignore_errors=True)
+            return True
+        source, cleanup = staging, True
+    else:
+        source, cleanup = archive, False
     script = ROOT / "gallery" / kind / "publish.py"
-    print(f"  {kind}: {script.name} --source {source}")
+    print(f"  {kind}: {script.name} --source {source} --overwrite")
     result = subprocess.run(
-        [sys.executable, str(script), "--source", str(source)], cwd=str(ROOT)
+        [sys.executable, str(script), "--source", str(source), "--overwrite"],
+        cwd=str(ROOT)
     )
+    if cleanup:
+        shutil.rmtree(source, ignore_errors=True)
     return result.returncode == 0
 
 
@@ -894,7 +961,7 @@ def main(argv: list[str] | None = None) -> int:
         }
         today = _datetime.date.today().isoformat()
         done = failed = 0
-        touched: set[str] = set()
+        touched: dict[str, list[str]] = {}
         for position, (kind, name) in enumerate(targets, 1):
             print(f"[{position}/{len(targets)}] {kind} / {name}")
             if render_one(client, kind, name, settings, normalize_name,
@@ -904,7 +971,7 @@ def main(argv: list[str] | None = None) -> int:
                 if args.reroll:
                     record["seed"] = entry_seed(name, args.reroll)
                 manifest["entries"].setdefault(kind, {})[name] = record
-                touched.add(kind)
+                touched.setdefault(kind, []).append(name)
                 done += 1
             else:
                 failed += 1
@@ -917,7 +984,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.publish:
             print("\nPublishing:")
             for kind in sorted(touched):
-                if not publish_kind(kind):
+                if not publish_kind(kind, touched[kind]):
                     return 1
         return 0
 
