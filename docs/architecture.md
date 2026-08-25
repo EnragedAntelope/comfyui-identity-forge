@@ -255,6 +255,17 @@ the same rule that rewrote nine feral clauses at 0.96.0 (see "Never negate in pr
 Only `view from directly behind` qualifies: `from slightly behind and to the side` still shows
 a cheek and jaw, and stripping it would discard description a viewer can see.
 
+**What the back view still cannot fix, deliberately.** A costume is ONE authored free-text
+string, so a chest-front detail inside it is drawn on the back too - measured on a live
+Supergirl render, where "a blue crop top with the Superman S-shield" put the shield on her
+back. Suppressing it would mean regex-parsing authored prose to guess which clause faces
+front, which is the failure this repo has already paid for twice: `_POCKETLESS_GARMENT_RE` is
+an incomplete allowlist to this day, and the AGENTS.md "costume text that asserts a body trait"
+gap carries the standing warning that its naive regex reported 171 and was wrong. The only
+correct fix is structured front/back costume data
+across the whole roster, which is not worth one artifact on one view of six. Left as-is on
+purpose.
+
 Two engine-facing traps this rewrite hit, both silent, both now pinned by tests:
 
 - **Controls do not share the fields' vocabulary.** Filling the engine call with `"Random"` for
