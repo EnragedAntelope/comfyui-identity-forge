@@ -13,12 +13,12 @@ import re
 import unittest
 
 from data.fields import FIELD_DEFINITIONS
-from nodes.identity_forge import IdentityForge
+from nodes.identity_forge import IdentityForge, _is_absent
 from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
 from nodes.identity_forge_turnaround import (
-    _FRAMINGS, _KEEP_POSE, _NEUTRAL_POSES, _REPLAYED_STEERING, _ROTATION_LABELS,
-    _VIEW_SETS, IdentityForgeTurnaround, compose_shot, replay_steering,
-    resolve_turnaround,
+    _FACE_ONLY_FIELDS, _FACE_OUT_OF_FRAME, _FRAMINGS, _KEEP_POSE, _NEUTRAL_POSES,
+    _REPLAYED_STEERING, _ROTATION_LABELS, _VIEW_SETS, IdentityForgeTurnaround,
+    compose_shot, replay_steering, resolve_turnaround,
 )
 
 _FRAMING_RE = re.compile(r"the framing is ([^,]+(?:, [^,]+)?)(?=, composed| and |, and |\.)")
@@ -56,6 +56,17 @@ def _strip_camera(prompt: str) -> str:
     for shot in _ALL_SHOTS:
         prompt = prompt.replace(shot, "<SHOT>")
     return prompt
+
+
+def _face_visible(prompts: list, labels: list) -> list:
+    """Every view except the straight-back one.
+
+    The back view is deliberately NOT identical to the others -- it drops the
+    face-only fields (see FaceOutOfFrameTests), so it is excluded wherever a test
+    asserts that only the camera moved.
+    """
+    return [prompt for prompt, label in zip(prompts, labels)
+            if label.split("-", 1)[1] not in {"back"}]
 
 
 class VocabularySanityTests(unittest.TestCase):
@@ -127,10 +138,10 @@ class TurnaroundStabilityTests(unittest.TestCase):
 
     def test_every_view_shares_all_non_camera_prose(self):
         _, document = _forge(42)
-        prompts, _ = resolve_turnaround(document, "Turnaround (6)", "Full body",
-                                        _NEUTRAL_POSES[0])
+        prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                             _NEUTRAL_POSES[0])
         self.assertEqual(len(prompts), 6)
-        stripped = {_strip_camera(prompt) for prompt in prompts}
+        stripped = {_strip_camera(p) for p in _face_visible(prompts, labels)}
         self.assertEqual(len(stripped), 1,
                          "non-camera prose drifted between views of one character")
 
@@ -147,9 +158,10 @@ class TurnaroundStabilityTests(unittest.TestCase):
     def test_a_cosplayer_keeps_its_costume_and_mask_in_every_view(self):
         for name in ("Iron Man", "She-Hulk", "Darth Vader", "Pikachu", "Godzilla"):
             _, document = _forge(5, archetype_json=_cosplayer_document(name))
-            prompts, _ = resolve_turnaround(document, "Turnaround (6)", "Full body",
-                                            _NEUTRAL_POSES[0])
-            self.assertEqual(len({_strip_camera(p) for p in prompts}), 1, name)
+            prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                                 _NEUTRAL_POSES[0])
+            self.assertEqual(
+                len({_strip_camera(p) for p in _face_visible(prompts, labels)}), 1, name)
             for prompt in prompts:
                 self.assertIn(f"Cosplaying as {name}", prompt)
 
@@ -222,6 +234,98 @@ class TurnaroundStabilityTests(unittest.TestCase):
         self.assertEqual(first, second)
 
 
+class FaceOutOfFrameTests(unittest.TestCase):
+    """A view shot from behind must not describe the face.
+
+    Reported from a live render: the back view of a Supergirl turnaround still
+    carried "bright blue downturned eyes ... deep red lip colour ... a broad
+    smile", and a t2i model draws what the prose names — so it turned the head
+    to show them, which is not a back view.
+    """
+
+    def _fields(self, prompt_json):
+        return {name: value
+                for group, values in json.loads(prompt_json).items()
+                if group != "_meta" and isinstance(values, dict)
+                for name, value in values.items()}
+
+    def test_the_back_view_drops_every_face_only_field(self):
+        _, document = _forge(42)
+        own = self._fields(document)
+        prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                             _NEUTRAL_POSES[0])
+        back = prompts[labels.index("6-back")]
+        front = prompts[labels.index("1-front")]
+        for name in _FACE_ONLY_FIELDS:
+            value = own.get(name)
+            # An in-pool "absent" value ("clean shaven", "no notable marks") is
+            # recorded in the document but never voiced, so there is nothing to
+            # drop -- the engine's own _is_absent is the authority on which.
+            if not value or value in ("None", "Random") or _is_absent(value):
+                continue
+            with self.subTest(field=name):
+                self.assertIn(value, front, f"{name} should be voiced on the front view")
+                self.assertNotIn(value, back, f"{name} is still voiced on the back view")
+
+    def test_the_back_view_keeps_what_reads_from_behind(self):
+        # Hair, costume and build are all visible from behind; stripping them
+        # would make the back view a different character, not a rear view.
+        _, document = _forge(42)
+        own = self._fields(document)
+        prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                             _NEUTRAL_POSES[0])
+        back = prompts[labels.index("6-back")]
+        for name in ("hair_color", "hair_length", "body_type", "height", "footwear"):
+            value = own.get(name)
+            if value and value not in ("None", "Random") and not _is_absent(value):
+                with self.subTest(field=name):
+                    self.assertIn(value, back, f"{name} should survive on the back view")
+
+    def test_a_masked_cosplayer_keeps_the_mask_from_behind(self):
+        # The mask is _meta prose, not a Face field, and a helmet reads perfectly
+        # well from behind — so the suppression must not reach it.
+        _, document = _forge(5, archetype_json=_cosplayer_document("Iron Man"))
+        prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                             _NEUTRAL_POSES[0])
+        back = prompts[labels.index("6-back")]
+        self.assertIn("Cosplaying as Iron Man", back)
+        self.assertIn("faceplate", back)
+
+    def test_nothing_is_ever_negated(self):
+        # Suppression must be an OMISSION. Naming a feature to deny it is what
+        # makes a t2i model draw it (architecture.md -> "Never negate in prompt
+        # data"), so no view may say the face is hidden.
+        _, document = _forge(42)
+        prompts, _ = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                        _NEUTRAL_POSES[0])
+        for prompt in prompts:
+            lowered = prompt.lower()
+            for phrase in ("not visible", "no face", "hidden face", "face is not",
+                           "without a face", "obscured"):
+                self.assertNotIn(phrase, lowered)
+
+    def test_only_the_straight_back_view_is_stripped(self):
+        # "from slightly behind and to the side" still shows a cheek and jaw.
+        self.assertEqual(_FACE_OUT_OF_FRAME, frozenset({"view from directly behind"}))
+        _, document = _forge(42)
+        prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                             _NEUTRAL_POSES[0])
+        rear = prompts[labels.index("5-rear-three-quarter")]
+        front = prompts[labels.index("1-front")]
+        self.assertEqual(_strip_camera(rear), _strip_camera(front))
+
+    def test_the_field_list_is_derived_not_hand_typed(self):
+        # A Face or Makeup field added later must be covered automatically.
+        for name, field in FIELD_DEFINITIONS.items():
+            if field.get("group") in ("Face", "Makeup"):
+                self.assertIn(name, _FACE_ONLY_FIELDS, name)
+        self.assertIn("facial_hair", _FACE_ONLY_FIELDS)
+        self.assertIn("expression", _FACE_ONLY_FIELDS)
+        # Ear jewellery reads from behind and must NOT be stripped.
+        self.assertNotIn("earrings", _FACE_ONLY_FIELDS)
+        self.assertNotIn("hair_color", _FACE_ONLY_FIELDS)
+
+
 class ViewSetTests(unittest.TestCase):
     def test_each_set_emits_exactly_its_own_count(self):
         _, document = _forge(11)
@@ -269,8 +373,10 @@ class PoseTests(unittest.TestCase):
 
     def test_keep_pose_still_holds_the_pose_still_across_views(self):
         _, document = _forge(8)
-        prompts, _ = resolve_turnaround(document, "Turnaround (6)", "Full body", _KEEP_POSE)
-        self.assertEqual(len({_strip_camera(prompt) for prompt in prompts}), 1)
+        prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
+                                             _KEEP_POSE)
+        self.assertEqual(
+            len({_strip_camera(p) for p in _face_visible(prompts, labels)}), 1)
 
 
 class ReplaySteeringTests(unittest.TestCase):

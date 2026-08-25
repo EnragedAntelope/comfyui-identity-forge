@@ -56,6 +56,12 @@ except ImportError:  # pragma: no cover — exercised only outside ComfyUI
     _COMFY_AVAILABLE = False
 
 
+try:
+    from .identity_forge import FIELD_DEFINITIONS
+except ImportError:  # pragma: no cover — standalone/test context
+    from nodes.identity_forge import FIELD_DEFINITIONS
+
+
 def _forge_class() -> type:
     """The IdentityForge CLASS, resolved lazily.
 
@@ -147,6 +153,36 @@ _REPLAYED_STEERING: "dict[str, str]" = {
     "hair_color_scope": "Natural only",
 }
 
+#: Rotations where the camera is behind the subject's head, so the face is not in
+#: frame at all. Only the straight-back view qualifies: "from slightly behind and
+#: to the side" still shows a cheek and jaw, and stripping its face detail would
+#: lose description a viewer can actually see.
+_FACE_OUT_OF_FRAME: "frozenset[str]" = frozenset({_BACK})
+
+#: Field groups that describe nothing but the face.
+_FACE_ONLY_GROUPS: "frozenset[str]" = frozenset({"Face", "Makeup"})
+
+#: Face-only fields filed under some other group: a beard reads only from the
+#: front, and ``expression`` lives with the scene. Ear and neck jewellery are
+#: deliberately NOT here -- earrings read perfectly well from behind.
+_FACE_ONLY_EXTRA: "frozenset[str]" = frozenset({"facial_hair", "expression"})
+
+#: Everything omitted from a view whose camera is behind the subject.
+#:
+#: Derived from ``FIELD_DEFINITIONS`` rather than hand-listed, so a Face or Makeup
+#: field added later is covered without anyone remembering this exists.
+#:
+#: This is an OMISSION, never a denial. Nothing here ever writes "the face is not
+#: visible" -- naming a feature in order to negate it is precisely what makes a
+#: t2i model draw it (architecture.md -> "Never negate in prompt data", where nine
+#: shipped clauses did exactly that). The character's mask, hair and costume are
+#: untouched, because all three read from behind: a helmeted cosplayer keeps their
+#: helmet.
+_FACE_ONLY_FIELDS: "frozenset[str]" = frozenset(
+    name for name, field in FIELD_DEFINITIONS.items()
+    if field.get("group") in _FACE_ONLY_GROUPS
+) | _FACE_ONLY_EXTRA
+
 #: Seed for the replay call. Held constant, and its value cannot matter: the
 #: resolved document locks every field, so the randomizer has nothing left to draw
 #: and the RNG stream is never consumed differently between views. It is fixed
@@ -232,10 +268,16 @@ def resolve_turnaround(
     prompts: "list[str]" = []
     labels: "list[str]" = []
     for position, rotation in enumerate(rotations, start=1):
+        view = dict(base)
         # shot_type is already in `base` (as "Random"), so it is overwritten
         # rather than passed alongside — the one field this node owns.
-        base["shot_type"] = compose_shot(framing_name, rotation)
-        prompts.append(str(_unwrap(forge.execute(**base))[0]))
+        view["shot_type"] = compose_shot(framing_name, rotation)
+        if rotation in _FACE_OUT_OF_FRAME:
+            # "None" is the engine's explicit-omit token and it beats the wired
+            # character's own value (resolve_locked_fields), which is what makes
+            # this work on a cosplayer whose costume authored those fields.
+            view.update(dict.fromkeys(_FACE_ONLY_FIELDS, "None"))
+        prompts.append(str(_unwrap(forge.execute(**view))[0]))
         # Numbered so a reference set sorts in rotation order when the label is
         # wired into Save Image's filename_prefix, which is what it is for.
         labels.append(f"{position}-{_ROTATION_LABELS[rotation]}")
@@ -303,7 +345,12 @@ if _COMFY_AVAILABLE:
                                 "three-quarter, profile, back; the two pairs are "
                                 "the quick checks. Every angle is emitted at "
                                 "once as a list, so the graph below runs once "
-                                "per view.",
+                                "per view.\n"
+                                "The straight-back view drops the face "
+                                "description (eyes, lips, makeup, expression) "
+                                "so the model renders a back and does not turn "
+                                "the head to show them; hair, costume and any "
+                                "mask are kept.",
                     ),
                     io.Combo.Input(
                         "framing",

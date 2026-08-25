@@ -241,6 +241,20 @@ The rewrite deletes the questions rather than documenting answers, on one line:
   anything — `test_composed_shots_are_free_text_the_gender_gate_lets_through` pins that, since a
   future divergence would silently drop every composed shot.
 
+**The back view omits the face (0.99.0, from a live render).** The first turnaround rendered
+from the new node came back with the subject's head turned: the prose still carried "bright
+blue downturned eyes ... deep red lip colour ... a broad smile", and a t2i model draws what it
+is given, so it rotated the head to show them. `_FACE_ONLY_FIELDS` - the whole `Face` and
+`Makeup` groups plus `facial_hair` and `expression`, **derived from `FIELD_DEFINITIONS` rather
+than hand-listed** so a field added later is covered - is set to the engine's `"None"` omit
+token on that view only. Three things this deliberately does not do: it does not touch hair,
+costume, build or ear jewellery (all of which read from behind); it does not touch the mask,
+which is `_meta` prose rather than a Face field, so a helmeted cosplayer keeps their helmet;
+and **it never negates**. Writing "the face is not visible" would name the face and draw one -
+the same rule that rewrote nine feral clauses at 0.96.0 (see "Never negate in prompt data").
+Only `view from directly behind` qualifies: `from slightly behind and to the side` still shows
+a cheek and jaw, and stripping it would discard description a viewer can see.
+
 Two engine-facing traps this rewrite hit, both silent, both now pinned by tests:
 
 - **Controls do not share the fields' vocabulary.** Filling the engine call with `"Random"` for

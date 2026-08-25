@@ -182,6 +182,14 @@ Three controls, all camera:
   the camera. An asymmetric pose (a hand on one hip) reads as a different body from each
   side. `Keep the character's pose` leaves it alone for a looser character sheet.
 
+The straight-back view drops the face automatically. A t2i model draws whatever the prose
+names, so "bright blue eyes ... deep red lip colour ... a broad smile" made it turn the head
+to show them - which is not a back view. On `6-back` the Face and Makeup fields, `facial_hair`
+and `expression` are simply omitted; hair, costume, build, earrings and the scene all stay,
+and a masked character keeps their mask. Nothing is ever *negated* (a prompt that says "the
+face is not visible" draws a face). `5-rear-three-quarter` keeps its face description, because
+at that angle a cheek and jaw genuinely are in frame.
+
 Everything else belongs on the Identity Forge node - it owns the character and the scene,
 the Turnaround owns only the camera. For a clean reference sheet, set that node's
 `location_setting` to `Studio / solid backdrop` and lock `composition` to `centered symmetry`.
