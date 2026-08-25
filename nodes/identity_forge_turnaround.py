@@ -94,6 +94,11 @@ _NEUTRAL_POSES: tuple[str, ...] = (
     "standing with feet planted wide",
 )
 
+#: Prefix on every re-exposed steering tooltip. The rest of each tooltip is the
+#: main node's own text, read off its schema at define time, so the two can
+#: never drift apart.
+_STEER_LEAD = "Applied identically to every view. "
+
 #: Steering widgets this node re-exposes, with their IdentityForge defaults.
 _STEER_WIDGETS: dict[str, str] = {
     "gender": "Any",
@@ -103,6 +108,16 @@ _STEER_WIDGETS: dict[str, str] = {
     "accessory_density": "Balanced",
     "location_setting": "Any indoor/outdoor",
 }
+
+
+def _forge_inputs_by_id() -> dict[str, Any]:
+    """IdentityForge's input specs keyed by id.
+
+    Built once and shared by every steering widget. ``define_schema()`` on the
+    main node constructs ~80 widget specs from the field tables, so looking each
+    one up with its own full schema walk rebuilt that twelve times per read.
+    """
+    return {spec.id: spec for spec in _forge_class().define_schema().inputs}
 
 
 def resolve_turnaround_prompt(
@@ -174,11 +189,29 @@ def _unwrap(output: Any) -> tuple:
 
 if _COMFY_AVAILABLE:
 
+    def _steer_widget(name: str, default: str, spec: Any) -> "io.Combo.Input":
+        """Re-expose one IdentityForge steering widget, tooltip and all.
+
+        Options, default and help text all come off the main node's own spec:
+        these ARE that control, forwarded to every view, and a second hand-typed
+        copy would only give the two room to drift. Everything falls back to the
+        value recorded in :data:`_STEER_WIDGETS` if the main node ever loses the
+        input, because a node whose ``define_schema`` raises is a node ComfyUI
+        drops from the menu with nothing in the log to say why.
+        """
+        return io.Combo.Input(
+            name,
+            options=list(getattr(spec, "options", None) or [default]),
+            default=getattr(spec, "default", None) or default,
+            tooltip=_STEER_LEAD + (getattr(spec, "tooltip", None) or ""),
+        )
+
     class IdentityForgeTurnaround(io.ComfyNode):  # type: ignore[misc, valid-type]
         """Emit one view of a seed-fixed character per run, for reference sets."""
 
         @classmethod
         def define_schema(cls) -> "io.Schema":
+            forge = _forge_inputs_by_id()
             return io.Schema(
                 node_id="IdentityForgeTurnaround",
                 display_name="Identity Forge Turnaround",
@@ -207,19 +240,26 @@ if _COMFY_AVAILABLE:
                         options=list(_VIEW_PRESETS),
                         default="Turnaround (6)",
                         tooltip="Which ordered set of shots 'index' steps "
-                                "through. Turnaround covers all six; Portrait "
-                                "set drops the two rear views.",
+                                "through, and therefore how many runs a "
+                                "complete set takes: Turnaround = all six "
+                                "angles, Portrait set = the four front-and-"
+                                "side ones, Front + profile = just those two. "
+                                "The 'view_count' output reports the number.",
                     ),
                     io.Combo.Input(
                         "index",
                         options=["0", "1", "2", "3", "4", "5"],
                         default="0",
                         control_after_generate="increment",
-                        tooltip="Which view THIS run emits. The control below "
-                                "the widget defaults to 'increment', so each "
-                                "queued render automatically emits the next "
-                                "angle: queue 6 runs (or set 'batch count' to "
-                                "6) for the full set.",
+                        tooltip="Which view THIS run emits. The control "
+                                "below the widget defaults to 'increment', so "
+                                "each queued render automatically emits the "
+                                "next angle: set it to 0 and queue as many "
+                                "runs as the chosen 'views' set has angles "
+                                "(6 / 4 / 2 — see the 'view_count' output). "
+                                "The list always offers 0-5; on a shorter set "
+                                "the extra numbers wrap around to the start "
+                                "rather than emitting nothing.",
                     ),
                     io.Combo.Input(
                         "neutral_pose",
@@ -233,7 +273,7 @@ if _COMFY_AVAILABLE:
                     ),
                 ]
                 + [
-                    io.Combo.Input(name, options=_options_for(name), default=default)
+                    _steer_widget(name, default, forge.get(name))
                     for name, default in _STEER_WIDGETS.items()
                 ]
                 + [
@@ -256,6 +296,18 @@ if _COMFY_AVAILABLE:
             )
 
         @classmethod
+        def fingerprint_inputs(cls, **kwargs: Any) -> float:
+            # Same reason as the four randomizers (architecture.md -> "Seeded
+            # nodes re-roll every queue"): ComfyUI can serve a stale cached
+            # result for a node whose control_after_generate auto-advances a
+            # widget between queues (ComfyUI#11905, still open). This node's
+            # ENTIRE point is that 'index' auto-increments, so without the
+            # never-equal signature a queue of six runs can emit the same view
+            # six times. Pure cache control -- no RNG here, so a fixed seed and
+            # index still reproduce exactly.
+            return float("nan")
+
+        @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
             prompt, label, count = resolve_turnaround_prompt(
                 kwargs.get("upstream", ""),
@@ -266,13 +318,3 @@ if _COMFY_AVAILABLE:
                 {name: kwargs.get(name, default) for name, default in _STEER_WIDGETS.items()},
             )
             return io.NodeOutput(prompt, label, count)
-
-
-def _options_for(name: str) -> list[str]:
-    """The option list for a steering widget, read off IdentityForge's schema."""
-    for spec in _forge_class().define_schema().inputs:
-        if spec.id == name:
-            options = getattr(spec, "options", None)
-            if options:
-                return list(options)
-    return []

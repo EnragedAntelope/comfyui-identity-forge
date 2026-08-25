@@ -7361,11 +7361,15 @@ class AnatomyNoteTests(unittest.TestCase):
                 prose, _ = _render_cosplayer(name, 5)
                 note = COSPLAYERS[name]["anatomy_note"]
                 self.assertIn(note, prose)
-                # rfind, not index: an entry with visible skin also carries a
-                # MAKEUP sentence ("She wears soft glam ...") before the note;
-                # the invariant is the note beating the COSTUME wear-clause,
-                # which is always the last one.
-                self.assertLess(prose.index(note), prose.rfind(" wears "))
+                # Compare against the entry's OWN costume text, not against the
+                # first " wears ": an entry with a visible face also carries a
+                # makeup sentence ("She wears soft glam ...") ahead of the note,
+                # so a naive first-match test measures the wrong clause. The
+                # invariant that matters is the one the key exists for -- the
+                # body sentence lands before the clothing.
+                costume = COSPLAYERS[name]["costume"]
+                self.assertIn(costume, prose)
+                self.assertLess(prose.index(note), prose.index(costume))
 
     def test_unmasking_does_not_clear_it(self):
         # It is not part of the head, so the Unmask toggle must leave it alone.

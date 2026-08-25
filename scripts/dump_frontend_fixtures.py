@@ -45,6 +45,7 @@ from nodes.identity_forge_archetype import IdentityForgeArchetype  # noqa: E402
 from nodes.identity_forge_cosplayer import IdentityForgeCosplayer  # noqa: E402
 from nodes.identity_forge_creature import IdentityForgeCreature  # noqa: E402
 from nodes.identity_forge_modifier import IdentityForgeModifier  # noqa: E402
+from nodes.identity_forge_turnaround import IdentityForgeTurnaround  # noqa: E402
 from nodes.identity_forge_vault_load import IdentityForgeVaultLoad  # noqa: E402
 from nodes.identity_forge_vault_save import IdentityForgeVaultSave  # noqa: E402
 
@@ -57,16 +58,21 @@ _NODE_CLASSES = {
     "IdentityForgeCosplayer": IdentityForgeCosplayer,
     "IdentityForgeCreature": IdentityForgeCreature,
     "IdentityForgeModifier": IdentityForgeModifier,
+    "IdentityForgeTurnaround": IdentityForgeTurnaround,
     "IdentityForgeVaultLoad": IdentityForgeVaultLoad,
     "IdentityForgeVaultSave": IdentityForgeVaultSave,
 }
 
 # ComfyUI's standard control_after_generate combo, auto-added by the real
-# frontend next to any widget whose Int.Input set a truthy value here. Not
+# frontend next to any widget (Int OR Combo) that set a truthy value here. Not
 # part of this pack's own schema (no io.* construction produces it), so it
 # can't be derived from define_schema() output — this is the one fixed
 # convention the generator has to know about, not discover.
 _CONTROL_AFTER_GENERATE_OPTIONS = ["fixed", "increment", "decrement", "randomize"]
+
+#: What the sibling combo starts on when the input asked for a bare ``True``
+#: rather than naming a mode.
+_CONTROL_AFTER_GENERATE_FALLBACK = "randomize"
 
 
 def _widgets_for(node_cls: Any) -> list[dict[str, Any]]:
@@ -88,11 +94,18 @@ def _widgets_for(node_cls: Any) -> list[dict[str, Any]]:
             entry["type"] = "STRING"
         widgets.append(entry)
 
-        if getattr(inp, "control_after_generate", None):
+        control = getattr(inp, "control_after_generate", None)
+        if control:
+            # A string names the mode the sibling combo starts on ("fixed" on
+            # the Turnaround's seed, "increment" on its index); a bare True
+            # leaves it on ComfyUI's own default. Hard-coding "randomize" here
+            # made the fixture claim every control started there, which is only
+            # true of the four randomizers' seeds.
             widgets.append({
                 "name": "control_after_generate",
                 "type": "combo",
-                "default": "randomize",
+                "default": (control if isinstance(control, str)
+                            else _CONTROL_AFTER_GENERATE_FALLBACK),
                 "options": list(_CONTROL_AFTER_GENERATE_OPTIONS),
             })
     return widgets

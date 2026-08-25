@@ -7,6 +7,7 @@ pose that reads differently from each side).
 """
 from __future__ import annotations
 
+import math
 import re
 import unittest
 
@@ -182,6 +183,32 @@ class SchemaShapeTests(unittest.TestCase):
                 self.by_id[name].default, forge_by_id[name].default,
                 f"{name} default drifted from the main node",
             )
+
+    def test_every_widget_carries_a_tooltip(self):
+        # The pack's own convention and the node's only in-UI documentation.
+        # 0.98.0 first shipped the six steering widgets with none at all.
+        for spec in self.schema.inputs:
+            self.assertTrue(
+                (getattr(spec, "tooltip", None) or "").strip(),
+                f"{spec.id} has no tooltip",
+            )
+
+    def test_steering_tooltips_reuse_the_main_node_text(self):
+        # Not merely "present": the same sentence as the control it forwards,
+        # so the two copies cannot drift as the main node's help is edited.
+        from nodes.identity_forge import IdentityForge
+        forge_by_id = {spec.id: spec for spec in IdentityForge.define_schema().inputs}
+        for name in _STEER:
+            self.assertIn(forge_by_id[name].tooltip, self.by_id[name].tooltip)
+
+    def test_it_re_executes_every_queue(self):
+        # An auto-advanced widget can otherwise be served from cache and the
+        # view "sticks" (ComfyUI#11905) -- the same workaround the four
+        # randomizers carry. This node auto-advances 'index' by design, so
+        # losing this turns a six-run queue into six copies of one view.
+        self.assertTrue(
+            math.isnan(IdentityForgeTurnaround.fingerprint_inputs(seed=0, index="0")),
+        )
 
     def test_upstream_is_an_optional_socket_not_a_multiline_box(self):
         spec = self.by_id["upstream"]

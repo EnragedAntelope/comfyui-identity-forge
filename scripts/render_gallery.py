@@ -45,12 +45,12 @@ import hashlib
 import importlib.util
 import json
 import random
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
-import shutil
-import tempfile
 import urllib.parse
 import urllib.request
 from pathlib import Path

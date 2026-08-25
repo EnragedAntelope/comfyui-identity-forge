@@ -8441,7 +8441,9 @@ COSPLAYERS: dict[str, dict] = {
         "size_scale": "tiny",
         "scale_prose": "tiny and barely a foot tall",
         "physique": {"body_type": "slim", "height": "very petite"},
-        "prop": "a shiny metal control knob clutched in one three-fingered hand",
+        # Voiced as "holding <prop>", so it must not restate the hand
+        # ("holding ... clutched in one hand" reads as a stutter).
+        "prop": "a shiny metal control knob",
     },
     "Stormtrooper": {
         "franchise": "Star Wars",
@@ -15725,10 +15727,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Borderlands",
         "gender": "Female",
         # The case suggested-additions.md asked for: built on the arms alone.
-        # Six arms = her natural pair plus the four spectral arms her Phasetrance
-        # conjures, stated numeral-first per the 0.96.0 rule and voiced early via
-        # anatomy_note. Her tiger tattoo covers BOTH arms at max level, which is
-        # also what separates her from Lilith's single blue arm-scroll.
+        # Six arms = her natural pair plus the four spectral arms her Siren
+        # phase-skills conjure, stated numeral-first per the 0.96.0 rule and
+        # voiced early via anatomy_note. Her tiger tattoo covers BOTH arms only
+        # at max level (it starts on the left alone), which is also what
+        # separates her from Lilith's single blue arm-scroll.
         "anatomy_note": (
             "six arms in total: her own two arms plus four glowing violet spectral "
             "arms fanned out in two pairs behind her shoulders"
@@ -18587,8 +18590,9 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_body": True,
         "covers_face": True,
-        "costume": "a navy double-breasted jacket buttoned over an even, all-over "
-                   "coat of smooth pink skin, on a plump round frame with a curly tail",
+        "costume": "a navy double-breasted jacket with a red bow tie at the collar, "
+                   "buttoned over an even, all-over coat of smooth pink skin, on a "
+                   "plump round frame with a curly tail",
         "mask": "a pink pig head with a round upturned snout, small bright eyes, "
                 "drooping little ears, and a gentle shy smile",
         "physique": {"body_type": "plus size", "height": "short"},
@@ -22441,8 +22445,12 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "covers_face": True,
         "covers_body": True,
-        "costume": "red shorts, four-fingered white gloves, and oversized brown-and-"
-                   "yellow shoes on a lean rubber-hose cartoon frame of glossy black",
+        # The anchor phrasing (_BODY_PAINT_RE) leads, exactly as it does on
+        # Bugs Bunny and Daffy Duck: it is what puts the body colour into the
+        # opening sentence instead of leaving it stranded after the garments.
+        "costume": "an even, all-over coat of glossy black on lean rubber-hose "
+                   "cartoon arms and legs, red shorts, four-fingered white gloves, "
+                   "and oversized brown-and-yellow shoes",
         "mask": "a white porcelain cup head with a red-and-white striped straw bent out "
                 "of the top, round black pie-slice eyes, a small button nose, and a wide "
                 "open-mouth grin",
@@ -22475,17 +22483,26 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a flat triangular shell of glossy gold with an etched brick pattern "
                    "along the bottom edge, thin black stick arms ending in white gloves, "
                    "and spindly black legs in small black shoes",
-        "mask": "the upper face of the triangle: a single huge cyclops eye with a black "
-                "slit pupil under thin angry brows, a black bow tie just below, crowned "
-                "by a floating black top hat",
+        # Self-contained: the mask sentence renders BEFORE the costume one, so
+        # it cannot refer back to "the triangle" -- nothing has named it yet.
+        "mask": "the face of a flat gold triangle: a single huge cyclops eye with a "
+                "black slit pupil ringed by short black lashes, a black bow tie just "
+                "below it, and a small black top hat sitting directly on the top "
+                "point of the triangle",
+        # Pinned so the build sentence stops rolling a broad chest and wide hips
+        # onto what is a flat two-dimensional shell.
+        "physique": {"body_type": "very slim", "height": "short"},
     },
     "Kaneda": {
         "franchise": "Akira",
         "gender": "Male",
-        "costume": "a high-collared crimson biker jacket with white piping down the sleeves "
-                   "and a white capsule emblem across the back, dark cargo trousers tucked "
-                   "into brown engineer boots",
-        "signature": {"age": "18", "hair_color": "dark brown", "hair_length": "ear length",
+        # The film look is red head to foot -- red jacket, red trousers, red
+        # boots, over a pale yellow tee. An earlier draft put him in dark cargo
+        # trousers and brown boots, which loses the silhouette entirely.
+        "costume": "a high-collared crimson biker jacket with white piping down the "
+                   "sleeves and a large capsule emblem across the back, over a pale "
+                   "yellow t-shirt, with matching red trousers and red boots",
+        "signature": {"age": "18", "hair_color": "jet black", "hair_length": "ear length",
                       "hair_texture": "thick and voluminous", "hair_style": "pompadour",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "slim", "height": "average height"},
@@ -22495,9 +22512,13 @@ COSPLAYERS: dict[str, dict] = {
         # Her star-shaped eye glints are THE facial marker; free-text eyes are the
         # Night King route because no pool option is anywhere near this.
         "gender": "Female",
-        "eyes": "vivid magenta with glowing star-shaped highlights",
-        "costume": "a frilly magenta idol two-piece with white ruffle trim, a large chest "
-                   "ribbon, puffed sleeves, a pleated mini-skirt, and thigh-high boots",
+        # Ends in an eye part so the engine does NOT append its own " eyes"
+        # (see _EYE_PART_RE): "...star-shaped highlights" came out as
+        # "star-shaped highlights eyes". Colour is indigo, not magenta.
+        "eyes": "vivid indigo with a white six-pointed star set in each iris",
+        "costume": "a frilly idol two-piece layered in light and deep pink with yellow "
+                   "trim, fuchsia frills across the chest, puffed sleeves, a black belt "
+                   "at the waist, a pleated mini-skirt, and thigh-high boots",
         "signature": {"age": "20", "hair_color": "deep purple", "hair_length": "hip length",
                       "hair_style": "side ponytail"},
         "prop": "a headset microphone",
@@ -22505,11 +22526,15 @@ COSPLAYERS: dict[str, dict] = {
     "Maomao": {
         "franchise": "The Apothecary Diaries",
         "gender": "Female",
-        "costume": "layered hanfu-style apothecary robes in moss green and cream with wide "
-                   "sleeves, a work apron tied at the waist, and simple cloth shoes",
+        # The bandaged left forearm (hiding the scars from her own poison trials)
+        # is as much a marker as the robes, and the long burgundy skirt under a
+        # light green top is what makes the silhouette read as hers.
+        "costume": "an aoqun hanfu with a wide-sleeved light green top over a white "
+                   "inner layer, a long burgundy skirt, a work apron tied at the waist, "
+                   "white bandages wound over the left forearm, and dark green flats",
         "signature": {"age": "18", "hair_color": "emerald green", "hair_length": "mid back",
                       "hair_style": "sleek bun", "hair_accessory": "decorative hair pins",
-                      "freckles_density": "scattered", "eye_color": "emerald"},
+                      "freckles_density": "scattered", "eye_color": "deep blue"},
         "prop": "a small ceramic bowl of dried herbs",
     },
 }

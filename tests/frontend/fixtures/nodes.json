@@ -6782,6 +6782,133 @@
       "type": "STRING"
     }
   ],
+  "IdentityForgeTurnaround": [
+    {
+      "name": "seed",
+      "default": 0,
+      "type": "INT"
+    },
+    {
+      "name": "control_after_generate",
+      "type": "combo",
+      "default": "fixed",
+      "options": [
+        "fixed",
+        "increment",
+        "decrement",
+        "randomize"
+      ]
+    },
+    {
+      "name": "views",
+      "default": "Turnaround (6)",
+      "type": "combo",
+      "options": [
+        "Turnaround (6)",
+        "Portrait set (4)",
+        "Front + profile (2)"
+      ]
+    },
+    {
+      "name": "index",
+      "default": "0",
+      "type": "combo",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "name": "control_after_generate",
+      "type": "combo",
+      "default": "increment",
+      "options": [
+        "fixed",
+        "increment",
+        "decrement",
+        "randomize"
+      ]
+    },
+    {
+      "name": "neutral_pose",
+      "default": "On",
+      "type": "combo",
+      "options": [
+        "On",
+        "Off"
+      ]
+    },
+    {
+      "name": "gender",
+      "default": "Any",
+      "type": "combo",
+      "options": [
+        "Any",
+        "Female",
+        "Male"
+      ]
+    },
+    {
+      "name": "wardrobe",
+      "default": "Match gender",
+      "type": "combo",
+      "options": [
+        "Match gender",
+        "Feminine",
+        "Masculine",
+        "Any"
+      ]
+    },
+    {
+      "name": "size_scale",
+      "default": "Auto",
+      "type": "combo",
+      "options": [
+        "Auto",
+        "tiny",
+        "miniature",
+        "short",
+        "large",
+        "towering",
+        "colossal"
+      ]
+    },
+    {
+      "name": "hair_color_scope",
+      "default": "Natural only",
+      "type": "combo",
+      "options": [
+        "Natural only",
+        "Full spectrum"
+      ]
+    },
+    {
+      "name": "accessory_density",
+      "default": "Balanced",
+      "type": "combo",
+      "options": [
+        "Balanced",
+        "Minimal",
+        "Maximal",
+        "None"
+      ]
+    },
+    {
+      "name": "location_setting",
+      "default": "Any indoor/outdoor",
+      "type": "combo",
+      "options": [
+        "Any indoor/outdoor",
+        "Indoor",
+        "Outdoor",
+        "Studio / solid backdrop"
+      ]
+    }
+  ],
   "IdentityForgeVaultLoad": [
     {
       "name": "character",

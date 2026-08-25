@@ -111,6 +111,7 @@ class Int:
     class Output(Output):
         pass
 
+
 class String:
     class Input(WidgetInput):
         def __init__(

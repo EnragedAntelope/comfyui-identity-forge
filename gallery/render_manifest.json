@@ -1084,7 +1084,7 @@
         "rendered": "pre-existing"
       },
       "Ai Hoshino": {
-        "hash": "47c2c7f769b56a5f",
+        "hash": "7692c76a4bb8755e",
         "rendered": "2026-08-24"
       },
       "Aigis": {
@@ -1661,8 +1661,9 @@
         "rendered": "pre-existing"
       },
       "Bill Cipher": {
-        "hash": "5a2e9a02247eda6e",
-        "rendered": "2026-08-24"
+        "hash": "b61bb1a0434fbf78",
+        "rendered": "2026-08-24",
+        "seed": 153986290540482763
       },
       "Billy Butcher": {
         "hash": "26c9a969322831c2",
@@ -2361,7 +2362,7 @@
         "rendered": "pre-existing"
       },
       "Cuphead": {
-        "hash": "b5cca311f9639e46",
+        "hash": "cd5db299f8f7d17e",
         "rendered": "2026-08-24"
       },
       "Curious George": {
@@ -3479,7 +3480,7 @@
         "rendered": "pre-existing"
       },
       "Grogu": {
-        "hash": "1938e042d36e822b",
+        "hash": "010844d1b62b9b83",
         "rendered": "2026-08-24"
       },
       "Groot": {
@@ -4291,7 +4292,7 @@
         "rendered": "pre-existing"
       },
       "Kaneda": {
-        "hash": "e5929cb291ff9648",
+        "hash": "8294a8b282ece17f",
         "rendered": "2026-08-24"
       },
       "Kang the Conqueror": {
@@ -5100,7 +5101,7 @@
         "rendered": "pre-existing"
       },
       "Maomao": {
-        "hash": "12cad4ee5c19c0c4",
+        "hash": "75abae441022c169",
         "rendered": "2026-08-24"
       },
       "Mara Jade": {
@@ -6160,8 +6161,9 @@
         "rendered": "pre-existing"
       },
       "Porky Pig": {
-        "hash": "b47500a4a625981d",
-        "rendered": "2026-08-24"
+        "hash": "7f9e917a24375eb2",
+        "rendered": "2026-08-24",
+        "seed": 465169010108407707
       },
       "Portgas D. Ace": {
         "hash": "e44cd19f0a5a7591",
@@ -9514,7 +9516,7 @@
       }
     }
   },
-  "generated": "2026-08-24T16:51:18",
+  "generated": "2026-08-24T21:49:11",
   "render": {
     "cfg": 1,
     "height": 2432,

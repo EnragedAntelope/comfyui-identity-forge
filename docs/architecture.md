@@ -203,7 +203,30 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   is also why there is no explicit scene lock. `neutral_pose = On` pins the pose to a curated
   standing/symmetric subset via its own RNG stream (`seed ^ 0x5A17`) so the choice never
   shifts the engine stream between views. Text-only outputs: `prompt`, `view_label`,
-  `view_count`. Any preset chained on `upstream` turns THAT character around.
+  `view_count`. Any preset chained on `upstream` turns THAT character around. Two
+  things it must keep: `fingerprint_inputs` returning NaN (the auto-advancing `index`
+  is exactly the ComfyUI#11905 case -- see "Seeded nodes" below), and its six steering
+  widgets reading their options, defaults **and tooltips** straight off
+  `IdentityForge.define_schema()`, so re-exposing a control can never leave a second,
+  drifting copy of its help text.
+
+### Adding a whole node — the registries it has to join (0.98.0)
+
+Adding a node class is not enough; it is invisible or half-tested until it is named in
+each of these. The Turnaround shipped its first draft missing the last two.
+
+1. `__init__.py` — both the `try`/`except ImportError` import pair **and**
+   `IdentityForgeExtension.get_node_list()`. Miss the second and ComfyUI never loads it.
+2. `README.md`'s node table and `__init__.py`'s module docstring ("Exposes N nodes").
+3. `scripts/dump_frontend_fixtures.py` — `_NODE_CLASSES`. The fixture is what the jsdom
+   suite builds fake nodes from, so a node absent from that map has **no** frontend
+   coverage and its `--check` gate silently passes forever.
+4. `fingerprint_inputs` returning NaN **if** any widget sets `control_after_generate` —
+   see "Seeded nodes re-roll every queue" below. The trigger is the auto-advancing
+   widget, not the presence of a seed.
+5. A tooltip on **every** input. There is no lint for this; the frontend fixture records
+   widget names and defaults, not help text, so only `tests/test_*.py` can hold the line
+   (`test_every_widget_carries_a_tooltip`).
 
 ## fields.py — the field engine
 
@@ -965,6 +988,7 @@ caught exactly that way at 0.98.0. Passing the whole archive folder with `--over
 would instead re-encode every historical image, so `render_gallery.py` stages only the
 originals rendered in THIS run into a temp dir and publishes that folder with
 `--overwrite`. Both halves matter.
+
 ### Adding a field without breaking saved workflows (0.90.0)
 
 `tattoos`, `legwear` and `tattoo_placement` are the first genuinely new *widgets* the
@@ -2250,11 +2274,14 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   Full preset comes out in tennis whites with a human tone, losing the green. To **layer** a tilt
   onto a cosplay instead of overwriting it, set the archetype (or cosplayer) to **Essentials** so it
   emits only the look groups and leaves the rest to flow through.
-- **Seeded nodes re-roll every queue via `fingerprint_inputs`.** The four randomizers
-  (`IdentityForge`, `Archetype`, `Cosplayer`, `Creature`) return `float("nan")` from
-  `fingerprint_inputs`, forcing ComfyUI to re-execute them -- otherwise an auto-advanced seed can be
-  served from cache and the output "sticks" (ComfyUI#11905). Pure cache control (no RNG): a *fixed*
-  seed still reproduces exactly, and identical output keeps expensive downstream nodes cached.
+- **Every node with an auto-advancing widget re-executes each queue via `fingerprint_inputs`.**
+  `IdentityForge`, `Archetype`, `Cosplayer`, `Creature` and (0.98.0) `Turnaround` return
+  `float("nan")` from `fingerprint_inputs`, forcing ComfyUI to re-execute them -- otherwise a widget
+  advanced by `control_after_generate` can be served from cache and the output "sticks"
+  (ComfyUI#11905). The trigger is the auto-advancing widget, not the seed as such: the Turnaround's
+  `index` is a *combo* on `increment`, and without the workaround a six-run queue can emit one view
+  six times. Pure cache control (no RNG): a *fixed* seed still reproduces exactly, and identical
+  output keeps expensive downstream nodes cached.
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
 - The roster is large (~1300 cosplayers across ~263 franchises, ~195 creatures): always grep

@@ -51,8 +51,8 @@ real case shipped, and everything else was closed into [Decided against](#decide
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends, Destiny,
-Monster Hunter, Skyrim, Splatoon, FNAF,
-Among Us, Minecraft. Each is an armoured, abstract or mascot silhouette
+Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft. Each is an armoured,
+abstract or mascot silhouette
 that would render as something generic without the name doing the work — the same
 reason Ryze, Swain and Viktor were declined below.
 
