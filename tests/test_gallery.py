@@ -570,13 +570,23 @@ class ReleaseStampTests(unittest.TestCase):
         self.assertEqual(as_tuples, sorted(as_tuples),
                          "RELEASES is not in ascending version order")
 
-    def test_the_current_version_is_the_last_release(self):
+    def test_the_current_version_is_never_behind_the_last_release(self):
+        # RELEASES holds every release that shipped ROSTER CONTENT (see
+        # build_manifest.release_order), so an engine-only release is legitimately
+        # absent from it -- 0.99.0, the Turnaround rewrite, was the first one and
+        # turned this red when it asserted equality. What must never happen is the
+        # pyproject version falling BEHIND the newest stamp, which would mean an
+        # entry is stamped for a release that has not shipped. Unstamped entries
+        # are caught separately, by `stamp_versions.py --check`.
         import re as _re
         from data.versions import RELEASES
         text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
         version = _re.search(r'(?m)^version\s*=\s*"([^"]+)"', text).group(1)
-        self.assertEqual(RELEASES[-1], version,
-                         "pyproject version is not the newest stamped release")
+        as_tuple = tuple(int(part) for part in version.split("."))
+        newest_stamped = tuple(int(part) for part in RELEASES[-1].split("."))
+        self.assertGreaterEqual(
+            as_tuple, newest_stamped,
+            "pyproject version is older than the newest stamped release")
 
     def test_a_stamp_is_never_rewritten_by_stamp_mode(self):
         # A release date is a fact about the past. Rewriting one silently reorders

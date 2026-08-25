@@ -155,13 +155,36 @@ Seed `42`, Female, `hair_color` = auburn:
 
 ## Turnaround views
 
-The **Identity Forge Turnaround** node builds a reference set: one character, several
-camera angles. Keep `seed` fixed (it deliberately does not randomize between runs), pick a
-view set, and queue once per angle - `index` auto-increments after every queue, so six
-queued runs emit front, both three-quarters, profile, rear three-quarter and back. With
-`neutral_pose = On` the pose pins to a standing, symmetric stance, so the only thing that
-changes between renders is the camera. Connect an Archetype / Cosplayer / Creature preset
-to `upstream` to turn *that* character around; the output is plain text for CLIPTextEncode.
+The **Identity Forge Turnaround** node builds a reference set: one character, every camera
+angle, from a single queue.
+
+```
+Cosplayer/Archetype -> Identity Forge -(prompt_json)-> Turnaround -(prompt)-> CLIPTextEncode -> ...
+```
+
+Wire Identity Forge's **`prompt_json`** output into `character_json`. That output is a fully
+resolved character, so every angle reproduces it exactly - nothing is re-rolled between
+views, and it does not matter whether the nodes upstream are set to randomize each run.
+
+`prompt` and `view_label` are **list** outputs: ComfyUI runs everything downstream once per
+view, so one queue produces the whole set. The rest of the graph needs no rewiring - a
+single negative prompt, model and latent are reused across all of them. Wire `view_label`
+into Save Image's `filename_prefix` and the set lands on disk in rotation order
+(`1-front`, `2-three-quarter-left`, …).
+
+Three controls, all camera:
+
+- **`views`** - `Turnaround (6)`, `Turnaround (4)`, `Front + back (2)` or `Front + profile (2)`.
+  This is also how many images one queue produces.
+- **`framing`** - how much of the subject each view frames, `Full body` by default. It is
+  combined with the angle and replaces whatever framing the character resolved to.
+- **`pose`** - a standing, symmetric stance, so the only thing changing between views is
+  the camera. An asymmetric pose (a hand on one hip) reads as a different body from each
+  side. `Keep the character's pose` leaves it alone for a looser character sheet.
+
+Everything else belongs on the Identity Forge node - it owns the character and the scene,
+the Turnaround owns only the camera. For a clean reference sheet, set that node's
+`location_setting` to `Studio / solid backdrop` and lock `composition` to `centered symmetry`.
 
 ## Notes
 

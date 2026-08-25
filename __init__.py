@@ -11,8 +11,8 @@ Exposes eight nodes:
   mythic), optionally hybridized slot-by-slot, that seeds IdentityForge.
 * ``IdentityForgeModifier`` — prepends custom descriptors to individual fields /
   groups (e.g. "sci-fi" shoes) for per-element stylistic tilts.
-* ``IdentityForgeTurnaround`` — one seed-fixed character emitted one camera view
-  per run (index auto-increments), for multi-view reference sets.
+* ``IdentityForgeTurnaround`` — takes a resolved character and emits every camera
+  view of it as a list, so one queue renders a whole reference set.
 * ``IdentityForgeVaultSave`` — save a generated character to a local vault.
 * ``IdentityForgeVaultLoad`` — recall a saved character as a chainable preset.
 

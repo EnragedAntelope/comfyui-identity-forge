@@ -46,7 +46,9 @@ from nodes.identity_forge_cosplayer import IdentityForgeCosplayer  # noqa: E402
 from nodes.identity_forge_creature import IdentityForgeCreature  # noqa: E402
 from nodes.identity_forge_modifier import IdentityForgeModifier  # noqa: E402
 from nodes.identity_forge_turnaround import IdentityForgeTurnaround  # noqa: E402
-from nodes.identity_forge_vault_load import IdentityForgeVaultLoad  # noqa: E402
+from nodes.identity_forge_vault_load import (  # noqa: E402
+    IdentityForgeVaultLoad, _NO_CHARACTERS,
+)
 from nodes.identity_forge_vault_save import IdentityForgeVaultSave  # noqa: E402
 
 _FIXTURE_PATH = ROOT / "tests" / "frontend" / "fixtures" / "nodes.json"
@@ -96,8 +98,8 @@ def _widgets_for(node_cls: Any) -> list[dict[str, Any]]:
 
         control = getattr(inp, "control_after_generate", None)
         if control:
-            # A string names the mode the sibling combo starts on ("fixed" on
-            # the Turnaround's seed, "increment" on its index); a bare True
+            # A string names the mode the sibling combo starts on ("randomize"
+            # on the four seeds, "fixed" to reproduce); a bare True
             # leaves it on ComfyUI's own default. Hard-coding "randomize" here
             # made the fixture claim every control started there, which is only
             # true of the four randomizers' seeds.
@@ -115,6 +117,42 @@ def build_fixture() -> dict[str, list[dict[str, Any]]]:
     return {node_id: _widgets_for(cls) for node_id, cls in _NODE_CLASSES.items()}
 
 
+#: The Vault Load ``character`` combo's empty-vault sentinel, imported from the
+#: node rather than retyped: a second copy that drifted would disarm the guard
+#: below silently, which is the one failure mode it must not have.
+_EMPTY_VAULT_SENTINEL = _NO_CHARACTERS
+
+
+def _assert_no_private_data(fixture: dict[str, list[dict[str, Any]]]) -> None:
+    """Refuse to emit a fixture built against a populated local vault.
+
+    Same class of trap `generate_js_data.py` documents at length, reached by a
+    different route. That one is about importing the data layer (which merges the
+    maintainer's `user_options.json`); this one needs no import at all —
+    `IdentityForgeVaultLoad.define_schema()` lists the characters actually saved
+    under ComfyUI's user directory, so running this script on the maintainer's own
+    machine, with a real ComfyUI on `sys.path`, writes their saved character names
+    straight into a committed, published file. Measured: a regeneration under the
+    real `comfy_api` replaced the sentinel with three private vault entries.
+
+    CI never hits it (dependency-free, so the stub's `folder_paths` finds no
+    vault), which is exactly why it needs a guard rather than a convention — the
+    gate that would catch it is the one that cannot run there.
+    """
+    options = next((widget.get("options", []) for widget in fixture.get("IdentityForgeVaultLoad", [])
+                    if widget.get("name") == "character"), [])
+    if list(options) != [_EMPTY_VAULT_SENTINEL]:
+        raise SystemExit(
+            "Refusing to touch the fixture: IdentityForgeVaultLoad lists "
+            f"{len(options)} saved character(s) from a local vault, so live "
+            "schema output is machine-specific and writing it would commit "
+            "private data (--check would also report a false 'STALE').\n"
+            "Run WITHOUT a real ComfyUI on sys.path (plain "
+            "`python scripts/dump_frontend_fixtures.py` from the repo root) so "
+            "the comfy_api stub is used."
+        )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true",
@@ -122,7 +160,9 @@ def main(argv: list[str] | None = None) -> int:
                              "output (exit 1 if stale).")
     args = parser.parse_args(argv)
 
-    content = json.dumps(build_fixture(), indent=2) + "\n"
+    fixture = build_fixture()
+    _assert_no_private_data(fixture)
+    content = json.dumps(fixture, indent=2) + "\n"
     rel = _FIXTURE_PATH.relative_to(ROOT)
 
     if args.check:

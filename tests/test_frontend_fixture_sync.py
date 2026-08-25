@@ -31,7 +31,22 @@ _spec.loader.exec_module(_dump_frontend_fixtures)
 
 class FrontendFixtureInSync(unittest.TestCase):
     def test_fixture_matches_live_schema(self) -> None:
-        expected = json.dumps(_dump_frontend_fixtures.build_fixture(), indent=2) + "\n"
+        live = _dump_frontend_fixtures.build_fixture()
+        # The fixture is defined against an EMPTY vault, because that is what CI
+        # (dependency-free, stub `folder_paths`) sees. Run on a maintainer's box
+        # with a real ComfyUI on sys.path, `IdentityForgeVaultLoad` instead lists
+        # their actual saved characters, so this test failed and told them to
+        # "regenerate" -- which would have committed those private names. Skip
+        # instead: the fixture is not stale, the vault is simply not empty.
+        try:
+            _dump_frontend_fixtures._assert_no_private_data(live)
+        except SystemExit:
+            self.skipTest(
+                "a populated local vault is on sys.path, so live define_schema() "
+                "output is machine-specific; the committed fixture is generated "
+                "against an empty vault (see dump_frontend_fixtures guard)"
+            )
+        expected = json.dumps(live, indent=2) + "\n"
         actual = _FIXTURE_PATH.read_text(encoding="utf-8")
         self.assertEqual(
             actual, expected,

@@ -182,6 +182,19 @@ class ComfyNode:
     functions it delegates to are tested directly instead.
     """
 
+    @classmethod
+    def fingerprint_inputs(cls, **kwargs: Any) -> Any:
+        """Declared solely so the stub matches the real base class.
+
+        The real ``ComfyNode`` declares this (raising ``NotImplementedError``)
+        whether or not a node overrides it, so ``hasattr(cls,
+        "fingerprint_inputs")`` is True for EVERY node in ComfyUI. Without it
+        here, a test asserting a node has no cache override passed against the
+        stub and would have asserted nothing against the real API — check
+        ``"fingerprint_inputs" in vars(cls)`` instead.
+        """
+        raise NotImplementedError
+
 
 class NodeOutput:
     """Positional output bundle. Storage only; never inspected by these tests."""

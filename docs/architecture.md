@@ -196,19 +196,71 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
   letting it raise into a 500. The pack's own JS already sent the right header, so the UI was
   unaffected. Graph execution never touches these routes.
 - **Turnaround** ([nodes/identity_forge_turnaround.py](../nodes/identity_forge_turnaround.py),
-  0.98.0) - a reference-set builder: one seed-fixed character, N camera views. Each run pins
-  `shot_type` to the view chosen by `index`, a combo with `control_after_generate="increment"`
-  so queued runs walk the set automatically. Every run locks the SAME set of fields and only
-  the pinned shot VALUE differs, so all other fields resolve identically across views - which
-  is also why there is no explicit scene lock. `neutral_pose = On` pins the pose to a curated
-  standing/symmetric subset via its own RNG stream (`seed ^ 0x5A17`) so the choice never
-  shifts the engine stream between views. Text-only outputs: `prompt`, `view_label`,
-  `view_count`. Any preset chained on `upstream` turns THAT character around. Two
-  things it must keep: `fingerprint_inputs` returning NaN (the auto-advancing `index`
-  is exactly the ComfyUI#11905 case -- see "Seeded nodes" below), and its six steering
-  widgets reading their options, defaults **and tooltips** straight off
-  `IdentityForge.define_schema()`, so re-exposing a control can never leave a second,
-  drifting copy of its help text.
+  rewritten 0.99.0) - a reference-set builder. It takes a **resolved** character
+  (`IdentityForge.prompt_json`) on `character_json` and emits every camera view of it as a
+  **list**, so one queue renders the whole set. See "The Turnaround owns only the camera"
+  below for why it is shaped that way.
+
+### The Turnaround owns only the camera (0.99.0 rewrite)
+
+The 0.98.0 draft was a second Identity Forge. It re-exposed six of the main node's steering
+widgets, passed `"Random"` for the other ~75 fields, pinned `shot_type` to the view chosen by
+an auto-incrementing `index`, and carried its own `seed`. Three things were wrong with that,
+and only the first was visible:
+
+1. **Duplicated controls with no stated winner.** Six widgets appeared on both nodes, and the
+   other seventy-odd silently did not appear at all — so choosing the Turnaround meant losing
+   every field lock, `set_all_fields`, and the vault, with nothing on the node face saying so.
+   Its `seed` was a *third* seed, competing with the one on every upstream preset.
+2. **The identity was not actually fixed.** `index` advances between queues, so a complete set
+   took N queues — and any upstream preset left on `control_after_generate="randomize"`
+   re-rolled the character between them. A "turnaround" of six different people.
+3. It needed the ComfyUI#11905 NaN signature purely to work around its own `index` widget.
+
+The rewrite deletes the questions rather than documenting answers, on one line:
+**Identity Forge owns the character and the scene; the Turnaround owns only the camera.**
+
+- **Input is a resolved document, not a preset.** `character_json` takes `prompt_json` —
+  self-describing by contract, because it is exactly what Vault Save writes and Vault Load
+  feeds back through `archetype_json` (see "a self-describing `prompt_json`", 0.92.0). Every
+  field is already concrete, so re-running the engine over it with only `shot_type` overridden
+  reproduces the character exactly and the seed cannot move anything. All the configuration a
+  user wants is on the main node, where it always was; nothing is re-exposed.
+- **Output is a list.** Both outputs set `is_output_list=True`, so ComfyUI runs everything
+  downstream once per view (`execution.py` → `merge_result_data`) and shorter inputs — the
+  negative prompt, model, latent — broadcast off their last element (`slice_dict`). One queue,
+  the whole set, from a single upstream resolution. Which also means an upstream node left on
+  `randomize` is now a *feature*: each queue is one new character × N coherent views.
+- **No `fingerprint_inputs`.** With no auto-advancing widget and no RNG the node is a pure
+  function of its inputs, so ComfyUI's normal caching is correct — see the counter-example
+  note under "Seeded nodes re-roll every queue".
+- **`shot_type` is composed, not picked.** That field mixes distance ("full body shot"),
+  orientation ("side profile") and lens in one pool, so a turnaround cannot express both halves
+  by choosing a value. `compose_shot()` emits `"<distance>, <rotation>"`. The free text survives
+  only because `shot_type`'s two gender pools are identical, which makes `_gender_permits` pass
+  anything — `test_composed_shots_are_free_text_the_gender_gate_lets_through` pins that, since a
+  future divergence would silently drop every composed shot.
+
+Two engine-facing traps this rewrite hit, both silent, both now pinned by tests:
+
+- **Controls do not share the fields' vocabulary.** Filling the engine call with `"Random"` for
+  every input looks right and is not: `"Random"` is nonsense to `size_scale` (logged and
+  ignored) and, worse, is *not* `"Any"` to `gender` — so `execute` never falls through to the
+  document's `_meta.gender` and re-rolled it, turning a woman into a man between the two nodes.
+  The node now builds its call from `IdentityForge.define_schema()`'s own **defaults**, which
+  gives every field `"Random"` and every control its defer value, and self-maintains when a
+  control is added later.
+- **`_meta.wardrobe` is recorded but not honoured on the `archetype_json` path.** That is
+  deliberate for a *preset* (`_parse_archetype_json` explains it: neither `wardrobe` nor
+  `hair_color_scope` has a "defer to the preset" sentinel, so honouring them would let a
+  recalled character override a live widget). But this node is **replaying a finished run**, not
+  steering a new one, and has no such widgets to override — so it restores both off `_meta`.
+  Measured before the fix: a character generated with `wardrobe: "Any"` (which unlocks
+  mixed-gender features) came back rebuilt under "Match gender" in **150 of 150** sampled seeds.
+  **The vault has the same hole and it is still open** — `IdentityForgeVaultLoad` recall of a
+  `wardrobe: "Any"` character rebuilds a different person for exactly this reason. Fixing it
+  properly needs an "Auto (preset)" sentinel on the two widgets; the Turnaround did not wait,
+  because it has no widget to add one to.
 
 ### Adding a whole node — the registries it has to join (0.98.0)
 
@@ -973,7 +1025,7 @@ Two publish-quality gaps closed together:
 back-facing values and the `Random` control value (pinning the control would just
 re-randomize the camera - caught at 0.98.0 when a seed drew it), on a dedicated stream
 (`seed ^ 0x5A17C105`) so the choice never shifts
-the engine's RNG stream - the same shape as the Turnaround node's neutral-pose stream.
+the engine's RNG stream.
 Back-facing values stay available to users; only the sample images avoid them. The pin
 initially shipped DEAD: a leftover second `IdentityForge.execute(...)` line below the pin
 block overwrote the pinned result with an unpinned one, so every render used whatever the
@@ -2275,13 +2327,15 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   onto a cosplay instead of overwriting it, set the archetype (or cosplayer) to **Essentials** so it
   emits only the look groups and leaves the rest to flow through.
 - **Every node with an auto-advancing widget re-executes each queue via `fingerprint_inputs`.**
-  `IdentityForge`, `Archetype`, `Cosplayer`, `Creature` and (0.98.0) `Turnaround` return
-  `float("nan")` from `fingerprint_inputs`, forcing ComfyUI to re-execute them -- otherwise a widget
-  advanced by `control_after_generate` can be served from cache and the output "sticks"
-  (ComfyUI#11905). The trigger is the auto-advancing widget, not the seed as such: the Turnaround's
-  `index` is a *combo* on `increment`, and without the workaround a six-run queue can emit one view
-  six times. Pure cache control (no RNG): a *fixed* seed still reproduces exactly, and identical
-  output keeps expensive downstream nodes cached.
+  `IdentityForge`, `Archetype`, `Cosplayer` and `Creature` return `float("nan")` from
+  `fingerprint_inputs`, forcing ComfyUI to re-execute them -- otherwise a widget advanced by
+  `control_after_generate` can be served from cache and the output "sticks" (ComfyUI#11905).
+  The trigger is the auto-advancing widget, not the seed as such. Pure cache control (no RNG):
+  a *fixed* seed still reproduces exactly, and identical output keeps expensive downstream nodes
+  cached. **The Turnaround is the counter-example and stays one:** it carries no
+  `control_after_generate` widget and no RNG, so it is a pure function of its inputs and
+  ComfyUI's normal caching is correct for it. It had the NaN signature at 0.98.0 only because
+  its `index` combo auto-advanced; 0.99.0 deleted the widget, so the workaround went with it.
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
 - The roster is large (~1300 cosplayers across ~263 franchises, ~195 creatures): always grep
@@ -2863,6 +2917,17 @@ what the node generates.
 
 Three things about it are load-bearing:
 
+* **A generated file must never be able to see the maintainer's own data — and `ast` is
+  not the only route in.** `scripts/dump_frontend_fixtures.py` imports nothing from the data
+  layer, so the `ast` rule below did not apply to it, and it leaked anyway by a second route:
+  `IdentityForgeVaultLoad.define_schema()` lists the characters actually saved under ComfyUI's
+  user directory, so regenerating the fixture on a box with a real ComfyUI on `sys.path` wrote
+  three private vault entries into a committed, published file (found at 0.99.0, by running the
+  suite against the real `comfy_api` instead of the stub). CI cannot catch it — dependency-free,
+  so the stub's `folder_paths` finds no vault and the sentinel is all it ever sees. The script
+  now **refuses to write or `--check`** when the vault is non-empty, and
+  `test_fixture_matches_live_schema` **skips** rather than failing, because its old advice
+  ("regenerate") was precisely the action that committed the data.
 * **The reader uses `ast`, never an import.** Importing `data/cosplayers.py` runs
   `apply_user_cosplayers` at the bottom of it, which merges the maintainer's local
   `user_options.json` — so an import-based stamper would bake private entries into a committed,
@@ -2873,6 +2938,14 @@ Three things about it are load-bearing:
   version strings — `"0.10.0"` sorts before `"0.9.0"` as text.
 * **`--stamp` never rewrites an existing stamp.** A release date is a fact about the past;
   rewriting one silently reorders the gallery.
+* **`RELEASES` holds only releases that shipped ROSTER CONTENT, so it is not the release
+  history.** An engine-only release is legitimately absent from it. That distinction cost a red
+  suite at 0.99.0 — the Turnaround rewrite was the first release since stamping shipped that
+  added no characters, and `test_the_current_version_is_the_last_release` asserted the pyproject
+  version *equals* `RELEASES[-1]`, an invariant that had held only by accident. The test now
+  asserts the version is never *behind* the newest stamp (unstamped entries are `--check`'s job,
+  not its). Nothing on the page needed changing: the "New in `<version>`" button already hides
+  itself when no entry matches, which is exactly the right behaviour for such a release.
 
 `--check` is the CI gate. It fails when a shipped entry has no stamp *and* when the map still
 names something the pack no longer ships — the half a convention alone cannot enforce, since an
