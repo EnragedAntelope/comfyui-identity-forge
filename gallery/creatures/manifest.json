@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-08-25T10:11:35.672991",
-  "version": "0.99.0",
+  "generated": "2026-08-26T17:09:52.190867",
+  "version": "1.0.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -117,10 +117,11 @@
     "0.95.0",
     "0.96.0",
     "0.97.0",
-    "0.98.0"
+    "0.98.0",
+    "1.0.0"
   ],
-  "total_entries": 249,
-  "entries_with_images": 249,
+  "total_entries": 253,
+  "entries_with_images": 253,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -813,6 +814,14 @@
       "image": "images/goblin.jpeg"
     },
     {
+      "name": "goblin shark",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "added": "1.0.0",
+      "image": "images/goblin shark.jpeg"
+    },
+    {
       "name": "gorgon",
       "has_image": true,
       "gender": "any",
@@ -1349,6 +1358,14 @@
       "image": "images/naga.jpeg"
     },
     {
+      "name": "naked mole rat",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.0.0",
+      "image": "images/naked mole rat.jpeg"
+    },
+    {
       "name": "narwhal",
       "has_image": true,
       "gender": "any",
@@ -1395,6 +1412,14 @@
       "group": "Monsters",
       "added": "0.67.0",
       "image": "images/ogre.jpeg"
+    },
+    {
+      "name": "okapi",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.0.0",
+      "image": "images/okapi.jpeg"
     },
     {
       "name": "oni",
@@ -1875,6 +1900,14 @@
       "group": "Insects & Arachnids",
       "added": "0.87.0",
       "image": "images/stag beetle.jpeg"
+    },
+    {
+      "name": "star-nosed mole",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.0.0",
+      "image": "images/star-nosed mole.jpeg"
     },
     {
       "name": "starfish",
