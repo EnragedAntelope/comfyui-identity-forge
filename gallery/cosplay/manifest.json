@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-08-25T10:12:24.813447",
-  "version": "0.99.0",
+  "generated": "2026-08-26T17:09:26.335381",
+  "version": "1.0.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -117,10 +117,11 @@
     "0.95.0",
     "0.96.0",
     "0.97.0",
-    "0.98.0"
+    "0.98.0",
+    "1.0.0"
   ],
-  "total_entries": 1877,
-  "entries_with_images": 1877,
+  "total_entries": 1974,
+  "entries_with_images": 1974,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -235,6 +236,14 @@
       "group": "Star Wars",
       "added": "0.20.0",
       "image": "images/Admiral Ackbar.jpeg"
+    },
+    {
+      "name": "Aeon Flux",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Aeon Flux",
+      "added": "1.0.0",
+      "image": "images/Aeon Flux.jpeg"
     },
     {
       "name": "Aerith Gainsborough",
@@ -539,6 +548,14 @@
       "group": "DC",
       "added": "0.18.0",
       "image": "images/Amethyst, Princess of Gemworld.jpeg"
+    },
+    {
+      "name": "Amy Rose",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Sonic the Hedgehog",
+      "added": "1.0.0",
+      "image": "images/Amy Rose.jpeg"
     },
     {
       "name": "Amy Wong",
@@ -853,6 +870,14 @@
       "image": "images/Arthas Menethil.jpeg"
     },
     {
+      "name": "Arthur Morgan",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Red Dead Redemption",
+      "added": "1.0.0",
+      "image": "images/Arthur Morgan.jpeg"
+    },
+    {
       "name": "Arwen",
       "has_image": true,
       "gender": "Female",
@@ -901,12 +926,28 @@
       "image": "images/Ashe (Overwatch).jpeg"
     },
     {
+      "name": "Ashley",
+      "has_image": true,
+      "gender": "Female",
+      "group": "WarioWare",
+      "added": "1.0.0",
+      "image": "images/Ashley.jpeg"
+    },
+    {
       "name": "Asia Argento",
       "has_image": true,
       "gender": "Female",
       "group": "High School DxD",
       "added": "0.74.0",
       "image": "images/Asia Argento.jpeg"
+    },
+    {
+      "name": "Asirpa",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Golden Kamuy",
+      "added": "1.0.0",
+      "image": "images/Asirpa.jpeg"
     },
     {
       "name": "Aspen Matthews",
@@ -1053,6 +1094,14 @@
       "image": "images/Ayane.jpeg"
     },
     {
+      "name": "Ayla",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Chrono Trigger",
+      "added": "1.0.0",
+      "image": "images/Ayla.jpeg"
+    },
+    {
       "name": "Azula",
       "has_image": true,
       "gender": "Female",
@@ -1115,6 +1164,14 @@
       "group": "My Hero Academia",
       "added": "0.7.0",
       "image": "images/Bakugo.jpeg"
+    },
+    {
+      "name": "Balalaika",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Black Lagoon",
+      "added": "1.0.0",
+      "image": "images/Balalaika.jpeg"
     },
     {
       "name": "Bamm-Bamm Rubble",
@@ -1387,6 +1444,14 @@
       "group": "Betty Boop",
       "added": "0.18.0",
       "image": "images/Betty Boop.jpeg"
+    },
+    {
+      "name": "Betty Cooper",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Archie",
+      "added": "1.0.0",
+      "image": "images/Betty Cooper.jpeg"
     },
     {
       "name": "Betty Rubble",
@@ -2173,6 +2238,14 @@
       "image": "images/Captain Mizuki.jpeg"
     },
     {
+      "name": "Captain Nemo",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Twenty Thousand Leagues Under the Sea",
+      "added": "1.0.0",
+      "image": "images/Captain Nemo.jpeg"
+    },
+    {
       "name": "Captain Olimar",
       "has_image": true,
       "gender": "Male",
@@ -2357,6 +2430,14 @@
       "image": "images/Cell.jpeg"
     },
     {
+      "name": "Celty Sturluson",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Durarara!!",
+      "added": "1.0.0",
+      "image": "images/Celty Sturluson.jpeg"
+    },
+    {
       "name": "Cersei Lannister",
       "has_image": true,
       "gender": "Female",
@@ -2387,6 +2468,14 @@
       "group": "DC",
       "added": "0.22.0",
       "image": "images/Ch'p.jpeg"
+    },
+    {
+      "name": "Cha Hae-in",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Solo Leveling",
+      "added": "1.0.0",
+      "image": "images/Cha Hae-in.jpeg"
     },
     {
       "name": "Char Aznable",
@@ -2821,6 +2910,14 @@
       "image": "images/Crimson Viper.jpeg"
     },
     {
+      "name": "Crono",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Chrono Trigger",
+      "added": "1.0.0",
+      "image": "images/Crono.jpeg"
+    },
+    {
       "name": "Cruella de Vil",
       "has_image": true,
       "gender": "Female",
@@ -3203,6 +3300,14 @@
       "group": "DC",
       "added": "0.18.0",
       "image": "images/Dee Dee.jpeg"
+    },
+    {
+      "name": "Dejah Thoris",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Barsoom",
+      "added": "1.0.0",
+      "image": "images/Dejah Thoris.jpeg"
     },
     {
       "name": "Deku",
@@ -3589,6 +3694,14 @@
       "image": "images/Dr. Frank-N-Furter.jpeg"
     },
     {
+      "name": "Dr. Jekyll",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Dr. Jekyll and Mr. Hyde",
+      "added": "1.0.0",
+      "image": "images/Dr. Jekyll.jpeg"
+    },
+    {
       "name": "Dr. Krieger",
       "has_image": true,
       "gender": "Male",
@@ -3725,6 +3838,14 @@
       "image": "images/E. Honda.jpeg"
     },
     {
+      "name": "Eda Clawthorne",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Owl House",
+      "added": "1.0.0",
+      "image": "images/Eda Clawthorne.jpeg"
+    },
+    {
       "name": "Edna Mode",
       "has_image": true,
       "gender": "Female",
@@ -3837,6 +3958,14 @@
       "image": "images/Elise.jpeg"
     },
     {
+      "name": "Elizabeth (BioShock)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "BioShock",
+      "added": "1.0.0",
+      "image": "images/Elizabeth (BioShock).jpeg"
+    },
+    {
       "name": "Elizabeth Liones",
       "has_image": true,
       "gender": "Female",
@@ -3885,6 +4014,14 @@
       "image": "images/Elmer Fudd.jpeg"
     },
     {
+      "name": "Elora",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Spyro",
+      "added": "1.0.0",
+      "image": "images/Elora.jpeg"
+    },
+    {
       "name": "Elphelt Valentine",
       "has_image": true,
       "gender": "Female",
@@ -3923,6 +4060,14 @@
       "group": "Re:Zero",
       "added": "0.69.0",
       "image": "images/Emilia.jpeg"
+    },
+    {
+      "name": "Emily (Corpse Bride)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Corpse Bride",
+      "added": "1.0.0",
+      "image": "images/Emily (Corpse Bride).jpeg"
     },
     {
       "name": "Emma Frost",
@@ -4093,6 +4238,14 @@
       "image": "images/Etrigan the Demon.jpeg"
     },
     {
+      "name": "Eureka",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Eureka Seven",
+      "added": "1.0.0",
+      "image": "images/Eureka.jpeg"
+    },
+    {
       "name": "Evelynn",
       "has_image": true,
       "gender": "Female",
@@ -4197,6 +4350,14 @@
       "image": "images/Felicia.jpeg"
     },
     {
+      "name": "Felix the Cat",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Felix the Cat",
+      "added": "1.0.0",
+      "image": "images/Felix the Cat.jpeg"
+    },
+    {
       "name": "Fell Beast",
       "has_image": true,
       "gender": "Male",
@@ -4251,6 +4412,14 @@
       "group": "Adventure Time",
       "added": "0.19.0",
       "image": "images/Finn the Human.jpeg"
+    },
+    {
+      "name": "Fionna",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Adventure Time",
+      "added": "1.0.0",
+      "image": "images/Fionna.jpeg"
     },
     {
       "name": "Fire",
@@ -4315,6 +4484,14 @@
       "group": "Star Fox",
       "added": "0.19.0",
       "image": "images/Fox McCloud.jpeg"
+    },
+    {
+      "name": "Fran",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Final Fantasy",
+      "added": "1.0.0",
+      "image": "images/Fran.jpeg"
     },
     {
       "name": "Frankenstein's Monster",
@@ -4397,6 +4574,14 @@
       "image": "images/Frodo Baggins.jpeg"
     },
     {
+      "name": "Frog",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Chrono Trigger",
+      "added": "1.0.0",
+      "image": "images/Frog.jpeg"
+    },
+    {
       "name": "Frollo",
       "has_image": true,
       "gender": "Male",
@@ -4443,6 +4628,14 @@
       "group": "One Punch Man",
       "added": "0.79.0",
       "image": "images/Fubuki (One Punch Man).jpeg"
+    },
+    {
+      "name": "Fujiko Mine",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Lupin III",
+      "added": "1.0.0",
+      "image": "images/Fujiko Mine.jpeg"
     },
     {
       "name": "Furina",
@@ -4893,6 +5086,14 @@
       "image": "images/Goldilocks.jpeg"
     },
     {
+      "name": "Goliath",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Gargoyles",
+      "added": "1.0.0",
+      "image": "images/Goliath.jpeg"
+    },
+    {
       "name": "Gollum",
       "has_image": true,
       "gender": "Male",
@@ -5109,6 +5310,14 @@
       "image": "images/Guile.jpeg"
     },
     {
+      "name": "Gustave",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Clair Obscur: Expedition 33",
+      "added": "1.0.0",
+      "image": "images/Gustave.jpeg"
+    },
+    {
       "name": "Guts",
       "has_image": true,
       "gender": "Male",
@@ -5251,6 +5460,14 @@
       "group": "Persona",
       "added": "0.88.0",
       "image": "images/Haru Okumura.jpeg"
+    },
+    {
+      "name": "Haruko Haruhara",
+      "has_image": true,
+      "gender": "Female",
+      "group": "FLCL",
+      "added": "1.0.0",
+      "image": "images/Haruko Haruhara.jpeg"
     },
     {
       "name": "Hatsune Miku",
@@ -5429,6 +5646,14 @@
       "image": "images/Hermione Granger.jpeg"
     },
     {
+      "name": "Himeno",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Chainsaw Man",
+      "added": "1.0.0",
+      "image": "images/Himeno.jpeg"
+    },
+    {
       "name": "Himiko Toga",
       "has_image": true,
       "gender": "Female",
@@ -5475,6 +5700,14 @@
       "group": "Attack on Titan",
       "added": "0.74.0",
       "image": "images/Historia Reiss.jpeg"
+    },
+    {
+      "name": "Hit-Girl",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Kick-Ass",
+      "added": "1.0.0",
+      "image": "images/Hit-Girl.jpeg"
     },
     {
       "name": "Hitagi Senjougahara",
@@ -5701,6 +5934,14 @@
       "image": "images/Ichigo Kurosaki.jpeg"
     },
     {
+      "name": "Ilia",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Star Trek",
+      "added": "1.0.0",
+      "image": "images/Ilia.jpeg"
+    },
+    {
       "name": "Illaoi",
       "has_image": true,
       "gender": "Female",
@@ -5755,6 +5996,14 @@
       "group": "Star Wars",
       "added": "0.20.0",
       "image": "images/Imperial Royal Guard.jpeg"
+    },
+    {
+      "name": "Inara Serra",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Firefly",
+      "added": "1.0.0",
+      "image": "images/Inara Serra.jpeg"
     },
     {
       "name": "Indiana Jones",
@@ -6165,6 +6414,14 @@
       "image": "images/Jean Grey.jpeg"
     },
     {
+      "name": "Jeanne",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Bayonetta",
+      "added": "1.0.0",
+      "image": "images/Jeanne.jpeg"
+    },
+    {
       "name": "Jeanne d'Arc (Fate)",
       "has_image": true,
       "gender": "Female",
@@ -6187,6 +6444,14 @@
       "group": "Jem and the Holograms",
       "added": "0.18.0",
       "image": "images/Jem.jpeg"
+    },
+    {
+      "name": "Jennifer Check",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Jennifer's Body",
+      "added": "1.0.0",
+      "image": "images/Jennifer Check.jpeg"
     },
     {
       "name": "Jenny Sparks",
@@ -6307,6 +6572,14 @@
       "group": "Naruto",
       "added": "0.16.0",
       "image": "images/Jiraiya.jpeg"
+    },
+    {
+      "name": "Joel Miller",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Last of Us",
+      "added": "1.0.0",
+      "image": "images/Joel Miller.jpeg"
     },
     {
       "name": "John Constantine",
@@ -6605,6 +6878,14 @@
       "image": "images/Kabal.jpeg"
     },
     {
+      "name": "Kabuki",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Kabuki",
+      "added": "1.0.0",
+      "image": "images/Kabuki.jpeg"
+    },
+    {
       "name": "Kaedehara Kazuha",
       "has_image": true,
       "gender": "Male",
@@ -6619,6 +6900,22 @@
       "group": "Vocaloid",
       "added": "0.77.0",
       "image": "images/Kagamine Rin.jpeg"
+    },
+    {
+      "name": "Kagome Higurashi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Inuyasha",
+      "added": "1.0.0",
+      "image": "images/Kagome Higurashi.jpeg"
+    },
+    {
+      "name": "Kagura",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Gintama",
+      "added": "1.0.0",
+      "image": "images/Kagura.jpeg"
     },
     {
       "name": "Kaguya",
@@ -6747,6 +7044,14 @@
       "group": "Baldur's Gate 3",
       "added": "0.77.0",
       "image": "images/Karlach.jpeg"
+    },
+    {
+      "name": "Kassandra",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Assassin's Creed",
+      "added": "1.0.0",
+      "image": "images/Kassandra.jpeg"
     },
     {
       "name": "Kasumi",
@@ -6899,6 +7204,14 @@
       "group": "Studio Ghibli",
       "added": "0.60.0",
       "image": "images/Kiki.jpeg"
+    },
+    {
+      "name": "Kikyo",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Inuyasha",
+      "added": "1.0.0",
+      "image": "images/Kikyo.jpeg"
     },
     {
       "name": "Kilik",
@@ -7597,6 +7910,14 @@
       "image": "images/Lex Luthor.jpeg"
     },
     {
+      "name": "Lexa",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The 100",
+      "added": "1.0.0",
+      "image": "images/Lexa.jpeg"
+    },
+    {
       "name": "Li Long",
       "has_image": true,
       "gender": "Male",
@@ -7651,6 +7972,14 @@
       "group": "Tekken",
       "added": "0.61.0",
       "image": "images/Lili.jpeg"
+    },
+    {
+      "name": "Liliana Vess",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Magic: The Gathering",
+      "added": "1.0.0",
+      "image": "images/Liliana Vess.jpeg"
     },
     {
       "name": "Lilith (Borderlands)",
@@ -7925,6 +8254,14 @@
       "image": "images/Lucario.jpeg"
     },
     {
+      "name": "Lucina",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Fire Emblem",
+      "added": "1.0.0",
+      "image": "images/Lucina.jpeg"
+    },
+    {
       "name": "Lucy",
       "has_image": true,
       "gender": "Female",
@@ -7981,6 +8318,14 @@
       "image": "images/Lulu.jpeg"
     },
     {
+      "name": "Lum Invader",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Urusei Yatsura",
+      "added": "1.0.0",
+      "image": "images/Lum Invader.jpeg"
+    },
+    {
       "name": "Lumiere",
       "has_image": true,
       "gender": "Male",
@@ -8011,6 +8356,14 @@
       "group": "Harry Potter",
       "added": "0.16.0",
       "image": "images/Luna Lovegood.jpeg"
+    },
+    {
+      "name": "Lune",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Clair Obscur: Expedition 33",
+      "added": "1.0.0",
+      "image": "images/Lune.jpeg"
     },
     {
       "name": "Lurch",
@@ -8141,12 +8494,28 @@
       "image": "images/Madoka Kaname (Ultimate).jpeg"
     },
     {
+      "name": "Maelle",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Clair Obscur: Expedition 33",
+      "added": "1.0.0",
+      "image": "images/Maelle.jpeg"
+    },
+    {
       "name": "Magenta",
       "has_image": true,
       "gender": "Female",
       "group": "The Rocky Horror Picture Show",
       "added": "0.76.0",
       "image": "images/Magenta.jpeg"
+    },
+    {
+      "name": "Magica De Spell",
+      "has_image": true,
+      "gender": "Female",
+      "group": "DuckTales",
+      "added": "1.0.0",
+      "image": "images/Magica De Spell.jpeg"
     },
     {
       "name": "Magik",
@@ -8171,6 +8540,14 @@
       "group": "Marvel",
       "added": "0.7.0",
       "image": "images/Magneto.jpeg"
+    },
+    {
+      "name": "Magus",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Chrono Trigger",
+      "added": "1.0.0",
+      "image": "images/Magus.jpeg"
     },
     {
       "name": "Mai (Avatar)",
@@ -8211,6 +8588,14 @@
       "group": "Dragon Ball",
       "added": "0.43.0",
       "image": "images/Majin Buu.jpeg"
+    },
+    {
+      "name": "Maka Albarn",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Soul Eater",
+      "added": "1.0.0",
+      "image": "images/Maka Albarn.jpeg"
     },
     {
       "name": "Maki Genryusai",
@@ -8373,6 +8758,14 @@
       "image": "images/Mari Kurihara.jpeg"
     },
     {
+      "name": "Maria (Metropolis)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Metropolis",
+      "added": "1.0.0",
+      "image": "images/Maria (Metropolis).jpeg"
+    },
+    {
       "name": "Marie Rose",
       "has_image": true,
       "gender": "Female",
@@ -8501,6 +8894,14 @@
       "image": "images/Maui.jpeg"
     },
     {
+      "name": "Mavis",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hotel Transylvania",
+      "added": "1.0.0",
+      "image": "images/Mavis.jpeg"
+    },
+    {
       "name": "Max Rebo",
       "has_image": true,
       "gender": "Male",
@@ -8539,6 +8940,14 @@
       "group": "Guilty Gear",
       "added": "0.88.0",
       "image": "images/May (Guilty Gear).jpeg"
+    },
+    {
+      "name": "Maya Fey",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Ace Attorney",
+      "added": "1.0.0",
+      "image": "images/Maya Fey.jpeg"
     },
     {
       "name": "Mayura",
@@ -8595,6 +9004,14 @@
       "group": "Mega Man",
       "added": "0.97.0",
       "image": "images/Mega Man.jpeg"
+    },
+    {
+      "name": "Megaera",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hades",
+      "added": "1.0.0",
+      "image": "images/Megaera.jpeg"
     },
     {
       "name": "Megara",
@@ -8797,6 +9214,14 @@
       "image": "images/Michiko Malandro.jpeg"
     },
     {
+      "name": "Michonne",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Walking Dead",
+      "added": "1.0.0",
+      "image": "images/Michonne.jpeg"
+    },
+    {
       "name": "Mickey Mouse",
       "has_image": true,
       "gender": "Male",
@@ -8965,12 +9390,28 @@
       "image": "images/Miranda Lawson.jpeg"
     },
     {
+      "name": "Mirko",
+      "has_image": true,
+      "gender": "Female",
+      "group": "My Hero Academia",
+      "added": "1.0.0",
+      "image": "images/Mirko.jpeg"
+    },
+    {
       "name": "Misa Amane",
       "has_image": true,
       "gender": "Female",
       "group": "Death Note",
       "added": "0.16.0",
       "image": "images/Misa Amane.jpeg"
+    },
+    {
+      "name": "Misaka Mikoto",
+      "has_image": true,
+      "gender": "Female",
+      "group": "A Certain Scientific Railgun",
+      "added": "1.0.0",
+      "image": "images/Misaka Mikoto.jpeg"
     },
     {
       "name": "Misato Katsuragi",
@@ -9117,6 +9558,14 @@
       "image": "images/Momo.jpeg"
     },
     {
+      "name": "Momo Ayase",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Dandadan",
+      "added": "1.0.0",
+      "image": "images/Momo Ayase.jpeg"
+    },
+    {
       "name": "Momo Yaoyorozu",
       "has_image": true,
       "gender": "Female",
@@ -9211,6 +9660,14 @@
       "group": "League of Legends",
       "added": "0.77.0",
       "image": "images/Morgana.jpeg"
+    },
+    {
+      "name": "Morgiana",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Magi",
+      "added": "1.0.0",
+      "image": "images/Morgiana.jpeg"
     },
     {
       "name": "Morpheus (The Matrix)",
@@ -9437,6 +9894,14 @@
       "image": "images/Mystique.jpeg"
     },
     {
+      "name": "Nakoruru",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Samurai Shodown",
+      "added": "1.0.0",
+      "image": "images/Nakoruru.jpeg"
+    },
+    {
       "name": "Nami",
       "has_image": true,
       "gender": "Female",
@@ -9483,6 +9948,14 @@
       "group": "Jujutsu Kaisen",
       "added": "0.77.0",
       "image": "images/Nanami Kento.jpeg"
+    },
+    {
+      "name": "Nancy Downs",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Craft",
+      "added": "1.0.0",
+      "image": "images/Nancy Downs.jpeg"
     },
     {
       "name": "Nancy Drew",
@@ -9749,6 +10222,14 @@
       "image": "images/Nightwing.jpeg"
     },
     {
+      "name": "Nikaido",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Dorohedoro",
+      "added": "1.0.0",
+      "image": "images/Nikaido.jpeg"
+    },
+    {
       "name": "Nilin",
       "has_image": true,
       "gender": "Female",
@@ -9805,6 +10286,22 @@
       "image": "images/Nocturne.jpeg"
     },
     {
+      "name": "Noelle Silva",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Black Clover",
+      "added": "1.0.0",
+      "image": "images/Noelle Silva.jpeg"
+    },
+    {
+      "name": "Nosferatu",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Universal Monsters",
+      "added": "1.0.0",
+      "image": "images/Nosferatu.jpeg"
+    },
+    {
       "name": "Nova (Frankie Raye)",
       "has_image": true,
       "gender": "Female",
@@ -9843,6 +10340,14 @@
       "group": "Kill la Kill",
       "added": "0.74.0",
       "image": "images/Nui Harime.jpeg"
+    },
+    {
+      "name": "Number Six",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Battlestar Galactica",
+      "added": "1.0.0",
+      "image": "images/Number Six.jpeg"
     },
     {
       "name": "Nurse (Silent Hill)",
@@ -10101,12 +10606,28 @@
       "image": "images/Pam Poovey.jpeg"
     },
     {
+      "name": "Panam Palmer",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Cyberpunk 2077",
+      "added": "1.0.0",
+      "image": "images/Panam Palmer.jpeg"
+    },
+    {
       "name": "Panthro",
       "has_image": true,
       "gender": "Male",
       "group": "Thundercats",
       "added": "0.17.0",
       "image": "images/Panthro.jpeg"
+    },
+    {
+      "name": "Panty Anarchy",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Panty & Stocking with Garterbelt",
+      "added": "1.0.0",
+      "image": "images/Panty Anarchy.jpeg"
     },
     {
       "name": "Papa Smurf",
@@ -10501,6 +11022,14 @@
       "image": "images/Princess Allura.jpeg"
     },
     {
+      "name": "Princess Aura",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Flash Gordon",
+      "added": "1.0.0",
+      "image": "images/Princess Aura.jpeg"
+    },
+    {
       "name": "Princess Bubblegum",
       "has_image": true,
       "gender": "Female",
@@ -10629,6 +11158,14 @@
       "image": "images/Pyke.jpeg"
     },
     {
+      "name": "Pyra",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Xenoblade Chronicles",
+      "added": "1.0.0",
+      "image": "images/Pyra.jpeg"
+    },
+    {
       "name": "Pyramid Head",
       "has_image": true,
       "gender": "Male",
@@ -10675,6 +11212,14 @@
       "group": "Mortal Kombat",
       "added": "0.74.0",
       "image": "images/Quan Chi.jpeg"
+    },
+    {
+      "name": "Quanxi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Chainsaw Man",
+      "added": "1.0.0",
+      "image": "images/Quanxi.jpeg"
     },
     {
       "name": "Quasar",
@@ -10747,6 +11292,14 @@
       "group": "Marvel",
       "added": "0.19.0",
       "image": "images/Quicksilver.jpeg"
+    },
+    {
+      "name": "Quiet",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Metal Gear",
+      "added": "1.0.0",
+      "image": "images/Quiet.jpeg"
     },
     {
       "name": "Quorra",
@@ -10869,6 +11422,14 @@
       "image": "images/Rambo.jpeg"
     },
     {
+      "name": "Ramona Flowers",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Scott Pilgrim",
+      "added": "1.0.0",
+      "image": "images/Ramona Flowers.jpeg"
+    },
+    {
       "name": "Rancor",
       "has_image": true,
       "gender": "Male",
@@ -10907,6 +11468,14 @@
       "group": "TMNT",
       "added": "0.17.0",
       "image": "images/Raphael.jpeg"
+    },
+    {
+      "name": "Raphtalia",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Rising of the Shield Hero",
+      "added": "1.0.0",
+      "image": "images/Raphtalia.jpeg"
     },
     {
       "name": "Rapunzel",
@@ -11117,6 +11686,14 @@
       "image": "images/Rey.jpeg"
     },
     {
+      "name": "Reze",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Chainsaw Man",
+      "added": "1.0.0",
+      "image": "images/Reze.jpeg"
+    },
+    {
       "name": "Rhino",
       "has_image": true,
       "gender": "Male",
@@ -11211,6 +11788,22 @@
       "group": "Youngblood",
       "added": "0.57.0",
       "image": "images/Riptide.jpeg"
+    },
+    {
+      "name": "River Tam",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Firefly",
+      "added": "1.0.0",
+      "image": "images/River Tam.jpeg"
+    },
+    {
+      "name": "Rivet",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Ratchet & Clank",
+      "added": "1.0.0",
+      "image": "images/Rivet.jpeg"
     },
     {
       "name": "Riza Hawkeye",
@@ -11365,6 +11958,14 @@
       "image": "images/Rosalind Starling.jpeg"
     },
     {
+      "name": "Rose Quartz",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Steven Universe",
+      "added": "1.0.0",
+      "image": "images/Rose Quartz.jpeg"
+    },
+    {
       "name": "Rose Wilson",
       "has_image": true,
       "gender": "Female",
@@ -11379,6 +11980,14 @@
       "group": "The Jetsons",
       "added": "0.77.0",
       "image": "images/Rosie the Robot.jpeg"
+    },
+    {
+      "name": "Rouge the Bat",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Sonic the Hedgehog",
+      "added": "1.0.0",
+      "image": "images/Rouge the Bat.jpeg"
     },
     {
       "name": "Roxas",
@@ -11525,12 +12134,28 @@
       "image": "images/Sabretooth.jpeg"
     },
     {
+      "name": "Sabrina Spellman",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Archie",
+      "added": "1.0.0",
+      "image": "images/Sabrina Spellman.jpeg"
+    },
+    {
       "name": "Sackboy",
       "has_image": true,
       "gender": "Male",
       "group": "LittleBigPlanet",
       "added": "0.53.0",
       "image": "images/Sackboy.jpeg"
+    },
+    {
+      "name": "Sadie Adler",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Red Dead Redemption",
+      "added": "1.0.0",
+      "image": "images/Sadie Adler.jpeg"
     },
     {
       "name": "Sadness",
@@ -11757,6 +12382,14 @@
       "image": "images/Sandy Olsson.jpeg"
     },
     {
+      "name": "Sango",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Inuyasha",
+      "added": "1.0.0",
+      "image": "images/Sango.jpeg"
+    },
+    {
       "name": "Sanji",
       "has_image": true,
       "gender": "Male",
@@ -11803,6 +12436,14 @@
       "group": "StarCraft",
       "added": "0.18.0",
       "image": "images/Sarah Kerrigan.jpeg"
+    },
+    {
+      "name": "Sarah Williams",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Labyrinth",
+      "added": "1.0.0",
+      "image": "images/Sarah Williams.jpeg"
     },
     {
       "name": "Saruman",
@@ -11933,6 +12574,14 @@
       "image": "images/Scathach.jpeg"
     },
     {
+      "name": "Sciel",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Clair Obscur: Expedition 33",
+      "added": "1.0.0",
+      "image": "images/Sciel.jpeg"
+    },
+    {
       "name": "Scorpion",
       "has_image": true,
       "gender": "Male",
@@ -12003,6 +12652,14 @@
       "group": "Marvel",
       "added": "0.69.0",
       "image": "images/Selene Gallio (Black Queen).jpeg"
+    },
+    {
+      "name": "Selvaria Bles",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Valkyria Chronicles",
+      "added": "1.0.0",
+      "image": "images/Selvaria Bles.jpeg"
     },
     {
       "name": "Senua",
@@ -12469,6 +13126,14 @@
       "image": "images/Sister of Battle.jpeg"
     },
     {
+      "name": "Six",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Little Nightmares",
+      "added": "1.0.0",
+      "image": "images/Six.jpeg"
+    },
+    {
       "name": "Skarlet",
       "has_image": true,
       "gender": "Female",
@@ -12805,6 +13470,14 @@
       "image": "images/Spike Spiegel.jpeg"
     },
     {
+      "name": "Spinel",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Steven Universe",
+      "added": "1.0.0",
+      "image": "images/Spinel.jpeg"
+    },
+    {
       "name": "Spiral",
       "has_image": true,
       "gender": "Female",
@@ -13029,6 +13702,14 @@
       "image": "images/Stitch.jpeg"
     },
     {
+      "name": "Stocking Anarchy",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Panty & Stocking with Garterbelt",
+      "added": "1.0.0",
+      "image": "images/Stocking Anarchy.jpeg"
+    },
+    {
       "name": "Storm",
       "has_image": true,
       "gender": "Female",
@@ -13165,6 +13846,14 @@
       "image": "images/Swamp Thing.jpeg"
     },
     {
+      "name": "Sydney Savage",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Danger Girl",
+      "added": "1.0.0",
+      "image": "images/Sydney Savage.jpeg"
+    },
+    {
       "name": "Sylphy",
       "has_image": true,
       "gender": "Female",
@@ -13213,6 +13902,14 @@
       "image": "images/TIE Pilot.jpeg"
     },
     {
+      "name": "Taarna",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Heavy Metal",
+      "added": "1.0.0",
+      "image": "images/Taarna.jpeg"
+    },
+    {
       "name": "Taki",
       "has_image": true,
       "gender": "Female",
@@ -13251,6 +13948,14 @@
       "group": "Demon Slayer",
       "added": "0.16.0",
       "image": "images/Tanjiro Kamado.jpeg"
+    },
+    {
+      "name": "Tank Girl",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tank Girl",
+      "added": "1.0.0",
+      "image": "images/Tank Girl.jpeg"
     },
     {
       "name": "Tanya",
@@ -13307,6 +14012,14 @@
       "group": "Star Wars",
       "added": "0.21.0",
       "image": "images/Tauntaun.jpeg"
+    },
+    {
+      "name": "Tauriel",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Lord of the Rings",
+      "added": "1.0.0",
+      "image": "images/Tauriel.jpeg"
     },
     {
       "name": "Tech-Priest",
@@ -13619,6 +14332,14 @@
       "group": "DC",
       "added": "0.16.0",
       "image": "images/The Riddler.jpeg"
+    },
+    {
+      "name": "The Shadow",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Shadow",
+      "added": "1.0.0",
+      "image": "images/The Shadow.jpeg"
     },
     {
       "name": "The Spectre",
@@ -14061,6 +14782,14 @@
       "image": "images/Tzekel-Kan.jpeg"
     },
     {
+      "name": "Ubel",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Frieren: Beyond Journey's End",
+      "added": "1.0.0",
+      "image": "images/Ubel.jpeg"
+    },
+    {
       "name": "Uhura",
       "has_image": true,
       "gender": "Female",
@@ -14173,12 +14902,28 @@
       "image": "images/Vanellope von Schweetz.jpeg"
     },
     {
+      "name": "Vanessa Ives",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Penny Dreadful",
+      "added": "1.0.0",
+      "image": "images/Vanessa Ives.jpeg"
+    },
+    {
       "name": "Vash the Stampede",
       "has_image": true,
       "gender": "Male",
       "group": "Trigun",
       "added": "0.87.0",
       "image": "images/Vash the Stampede.jpeg"
+    },
+    {
+      "name": "Vasquez",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Alien",
+      "added": "1.0.0",
+      "image": "images/Vasquez.jpeg"
     },
     {
       "name": "Vault Dweller",
@@ -14259,6 +15004,14 @@
       "group": "Captain Planet",
       "added": "0.69.0",
       "image": "images/Verminous Skumm.jpeg"
+    },
+    {
+      "name": "Veronica Lodge",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Archie",
+      "added": "1.0.0",
+      "image": "images/Veronica Lodge.jpeg"
     },
     {
       "name": "Vette",
@@ -14589,6 +15342,14 @@
       "image": "images/Wilma Flintstone.jpeg"
     },
     {
+      "name": "Winifred Sanderson",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hocus Pocus",
+      "added": "1.0.0",
+      "image": "images/Winifred Sanderson.jpeg"
+    },
+    {
       "name": "Winnie the Pooh",
       "has_image": true,
       "gender": "Male",
@@ -14885,6 +15646,14 @@
       "image": "images/Yuno Gasai.jpeg"
     },
     {
+      "name": "Yuri",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Red Alert",
+      "added": "1.0.0",
+      "image": "images/Yuri.jpeg"
+    },
+    {
       "name": "Yusuke Urameshi",
       "has_image": true,
       "gender": "Male",
@@ -15115,6 +15884,14 @@
       "group": "Star Wars",
       "added": "0.21.0",
       "image": "images/Zorii Bliss.jpeg"
+    },
+    {
+      "name": "Zorro",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Zorro",
+      "added": "1.0.0",
+      "image": "images/Zorro.jpeg"
     },
     {
       "name": "Zuckuss",
