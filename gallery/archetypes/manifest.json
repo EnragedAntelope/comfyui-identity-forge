@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-08-23T23:28:48.981261",
-  "version": "0.97.0",
+  "generated": "2026-08-26T17:09:09.563700",
+  "version": "1.0.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -116,10 +116,12 @@
     "0.94.0",
     "0.95.0",
     "0.96.0",
-    "0.97.0"
+    "0.97.0",
+    "0.98.0",
+    "1.0.0"
   ],
-  "total_entries": 249,
-  "entries_with_images": 249,
+  "total_entries": 251,
+  "entries_with_images": 251,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1140,6 +1142,14 @@
       "image": "images/Kawaii Street Fashion.jpeg"
     },
     {
+      "name": "Kendo Practitioner",
+      "has_image": true,
+      "gender": "any",
+      "group": "athletic",
+      "added": "1.0.0",
+      "image": "images/Kendo Practitioner.jpeg"
+    },
+    {
       "name": "Korean Hanbok",
       "has_image": true,
       "gender": "Female",
@@ -1850,6 +1860,14 @@
       "group": "edgy alternative",
       "added": "0.5.0",
       "image": "images/Tattoo Artist.jpeg"
+    },
+    {
+      "name": "Tavern Wench",
+      "has_image": true,
+      "gender": "Female",
+      "group": "casual",
+      "added": "1.0.0",
+      "image": "images/Tavern Wench.jpeg"
     },
     {
       "name": "Teacher",
