@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**249 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**251 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -132,6 +132,7 @@
 - **K-Pop Idol**
 - **Kabuki Actor** -- evening formal
 - **Kawaii Street Fashion** [Female]
+- **Kendo Practitioner** -- athletic
 - **Korean Hanbok** [Female] -- vintage retro
 - **Librarian** [Female] -- smart casual
 - **Lifeguard** [Male] -- athletic
@@ -221,6 +222,7 @@
 - **Swim Instructor** [Female] -- athletic
 - **Tailor** -- smart casual
 - **Tattoo Artist** -- edgy alternative
+- **Tavern Wench** [Female] -- casual
 - **Teacher** [Female] -- smart casual
 - **Teddy Boy** [Male] -- vintage retro
 - **Tennis Player** -- athletic

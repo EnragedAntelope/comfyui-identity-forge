@@ -46,18 +46,28 @@ const COSPLAYER_FRANCHISES = {
   "101 Dalmatians": [
     "Cruella de Vil"
   ],
+  "A Certain Scientific Railgun": [
+    "Misaka Mikoto"
+  ],
   "A Nightmare on Elm Street": [
     "Freddy Krueger"
   ],
   "ARMS": [
     "Twintelle"
   ],
+  "Ace Attorney": [
+    "Maya Fey"
+  ],
   "Adventure Time": [
     "Finn the Human",
+    "Fionna",
     "Ice King",
     "Jake the Dog",
     "Marceline the Vampire Queen",
     "Princess Bubblegum"
+  ],
+  "Aeon Flux": [
+    "Aeon Flux"
   ],
   "Akame ga Kill": [
     "Akame",
@@ -83,6 +93,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Alien": [
     "Ellen Ripley",
+    "Vasquez",
     "Xenomorph"
   ],
   "Amagi Brilliant Park": [
@@ -124,8 +135,14 @@ const COSPLAYER_FRANCHISES = {
     "Sterling Archer",
     "Woodhouse"
   ],
+  "Archie": [
+    "Betty Cooper",
+    "Sabrina Spellman",
+    "Veronica Lodge"
+  ],
   "Assassin's Creed": [
-    "Ezio Auditore"
+    "Ezio Auditore",
+    "Kassandra"
   ],
   "Atlantis: The Lost Empire": [
     "Kida"
@@ -168,11 +185,16 @@ const COSPLAYER_FRANCHISES = {
     "Mizora",
     "Shadowheart"
   ],
+  "Barsoom": [
+    "Dejah Thoris"
+  ],
   "Battlestar Galactica": [
-    "Cylon Centurion"
+    "Cylon Centurion",
+    "Number Six"
   ],
   "Bayonetta": [
-    "Bayonetta"
+    "Bayonetta",
+    "Jeanne"
   ],
   "Beauty and the Beast": [
     "Babette",
@@ -208,13 +230,18 @@ const COSPLAYER_FRANCHISES = {
   ],
   "BioShock": [
     "Big Daddy",
+    "Elizabeth (BioShock)",
     "Splicer"
   ],
   "Black Butler": [
     "Ciel Phantomhive",
     "Sebastian Michaelis"
   ],
+  "Black Clover": [
+    "Noelle Silva"
+  ],
   "Black Lagoon": [
+    "Balalaika",
     "Revy"
   ],
   "Blade Runner": [
@@ -305,8 +332,11 @@ const COSPLAYER_FRANCHISES = {
   "Chainsaw Man": [
     "Aki Hayakawa",
     "Denji",
+    "Himeno",
     "Makima",
-    "Power (Chainsaw Man)"
+    "Power (Chainsaw Man)",
+    "Quanxi",
+    "Reze"
   ],
   "Chaos! Comics": [
     "Lady Death"
@@ -324,10 +354,22 @@ const COSPLAYER_FRANCHISES = {
   "Chip 'n Dale Rescue Rangers": [
     "Gadget Hackwrench"
   ],
+  "Chrono Trigger": [
+    "Ayla",
+    "Crono",
+    "Frog",
+    "Magus"
+  ],
   "Cinderella": [
     "Cinderella",
     "Fairy Godmother",
     "Lady Tremaine"
+  ],
+  "Clair Obscur: Expedition 33": [
+    "Gustave",
+    "Lune",
+    "Maelle",
+    "Sciel"
   ],
   "Clue": [
     "Yvette the Maid"
@@ -353,6 +395,9 @@ const COSPLAYER_FRANCHISES = {
     "Coraline",
     "Other Mother"
   ],
+  "Corpse Bride": [
+    "Emily (Corpse Bride)"
+  ],
   "Cowboy Bebop": [
     "Faye Valentine",
     "Spike Spiegel"
@@ -368,7 +413,8 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Cyberpunk 2077": [
     "Johnny Silverhand",
-    "Judy Alvarez"
+    "Judy Alvarez",
+    "Panam Palmer"
   ],
   "Cyberpunk: Edgerunners": [
     "David Martinez",
@@ -538,12 +584,16 @@ const COSPLAYER_FRANCHISES = {
     "Raven",
     "Starfire"
   ],
+  "Dandadan": [
+    "Momo Ayase"
+  ],
   "Danganronpa": [
     "Junko Enoshima"
   ],
   "Danger Girl": [
     "Abbey Chase",
-    "Natalia Kassle"
+    "Natalia Kassle",
+    "Sydney Savage"
   ],
   "Danny Phantom": [
     "Danny Phantom",
@@ -668,6 +718,12 @@ const COSPLAYER_FRANCHISES = {
   "Dora the Explorer": [
     "Dora the Explorer"
   ],
+  "Dorohedoro": [
+    "Nikaido"
+  ],
+  "Dr. Jekyll and Mr. Hyde": [
+    "Dr. Jekyll"
+  ],
   "Dr. Seuss": [
     "Horton",
     "The Cat in the Hat",
@@ -707,6 +763,7 @@ const COSPLAYER_FRANCHISES = {
     "Princess Daphne"
   ],
   "DuckTales": [
+    "Magica De Spell",
     "Scrooge McDuck"
   ],
   "Duke Nukem": [
@@ -718,6 +775,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Duolingo": [
     "Duolingo Owl"
+  ],
+  "Durarara!!": [
+    "Celty Sturluson"
   ],
   "Edward Scissorhands": [
     "Edward Scissorhands"
@@ -746,11 +806,17 @@ const COSPLAYER_FRANCHISES = {
   "Escape from New York": [
     "Snake Plissken"
   ],
+  "Eureka Seven": [
+    "Eureka"
+  ],
   "Evil Dead": [
     "Ash Williams"
   ],
   "F-Zero": [
     "Captain Falcon"
+  ],
+  "FLCL": [
+    "Haruko Haruhara"
   ],
   "Fables": [
     "Bloody Mary"
@@ -804,6 +870,9 @@ const COSPLAYER_FRANCHISES = {
   "Fathom": [
     "Aspen Matthews"
   ],
+  "Felix the Cat": [
+    "Felix the Cat"
+  ],
   "FernGully": [
     "Crysta"
   ],
@@ -816,6 +885,7 @@ const COSPLAYER_FRANCHISES = {
     "Celes Chere",
     "Chocobo",
     "Cloud Strife",
+    "Fran",
     "Kain Highwind",
     "Kefka Palazzo",
     "Lightning",
@@ -839,7 +909,15 @@ const COSPLAYER_FRANCHISES = {
     "Zidane"
   ],
   "Fire Emblem": [
-    "Azura"
+    "Azura",
+    "Lucina"
+  ],
+  "Firefly": [
+    "Inara Serra",
+    "River Tam"
+  ],
+  "Flash Gordon": [
+    "Princess Aura"
   ],
   "Folklore": [
     "Baba Yaga",
@@ -860,7 +938,8 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Frieren: Beyond Journey's End": [
     "Fern",
-    "Frieren"
+    "Frieren",
+    "Ubel"
   ],
   "Frozen": [
     "Anna",
@@ -911,6 +990,9 @@ const COSPLAYER_FRANCHISES = {
     "Melisandre",
     "The Night King"
   ],
+  "Gargoyles": [
+    "Goliath"
+  ],
   "Geico": [
     "Geico Gecko"
   ],
@@ -938,6 +1020,9 @@ const COSPLAYER_FRANCHISES = {
     "Ghostbuster",
     "Stay Puft Marshmallow Man"
   ],
+  "Gintama": [
+    "Kagura"
+  ],
   "God of War": [
     "Freya",
     "Kratos"
@@ -946,6 +1031,9 @@ const COSPLAYER_FRANCHISES = {
     "Godzilla",
     "King Ghidorah",
     "Mothra"
+  ],
+  "Golden Kamuy": [
+    "Asirpa"
   ],
   "Gravity Falls": [
     "Bill Cipher"
@@ -974,6 +1062,9 @@ const COSPLAYER_FRANCHISES = {
     "Nia Teppelin",
     "Simon",
     "Yoko Littner"
+  ],
+  "Hades": [
+    "Megaera"
   ],
   "Half-Life": [
     "Alyx Vance"
@@ -1008,6 +1099,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Hazbin Hotel": [
     "Alastor"
+  ],
+  "Heavy Metal": [
+    "Taarna"
   ],
   "Hell's Paradise": [
     "Akaginu",
@@ -1052,11 +1146,17 @@ const COSPLAYER_FRANCHISES = {
   "Hitman": [
     "Agent 47"
   ],
+  "Hocus Pocus": [
+    "Winifred Sanderson"
+  ],
   "Hollow Knight": [
     "The Knight (Hollow Knight)"
   ],
   "Horizon": [
     "Aloy"
+  ],
+  "Hotel Transylvania": [
+    "Mavis"
   ],
   "How to Train Your Dragon": [
     "Toothless"
@@ -1089,7 +1189,10 @@ const COSPLAYER_FRANCHISES = {
     "Inspector Gadget"
   ],
   "Inuyasha": [
-    "Inuyasha"
+    "Inuyasha",
+    "Kagome Higurashi",
+    "Kikyo",
+    "Sango"
   ],
   "Invincible": [
     "Allen the Alien",
@@ -1108,6 +1211,9 @@ const COSPLAYER_FRANCHISES = {
   "Jem and the Holograms": [
     "Jem",
     "Pizzazz"
+  ],
+  "Jennifer's Body": [
+    "Jennifer Check"
   ],
   "JoJo's Bizarre Adventure": [
     "Dio Brando",
@@ -1145,6 +1251,9 @@ const COSPLAYER_FRANCHISES = {
     "Rumi",
     "Zoey"
   ],
+  "Kabuki": [
+    "Kabuki"
+  ],
   "Kakegurui": [
     "Yumeko Jabami"
   ],
@@ -1153,6 +1262,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Kellogg's": [
     "Tony the Tiger"
+  ],
+  "Kick-Ass": [
+    "Hit-Girl"
   ],
   "Kid Icarus": [
     "Palutena"
@@ -1203,7 +1315,8 @@ const COSPLAYER_FRANCHISES = {
     "Kool-Aid Man"
   ],
   "Labyrinth": [
-    "Jareth the Goblin King"
+    "Jareth the Goblin King",
+    "Sarah Williams"
   ],
   "League of Legends": [
     "Ahri",
@@ -1262,6 +1375,9 @@ const COSPLAYER_FRANCHISES = {
   "Little House on the Prairie": [
     "Laura Ingalls"
   ],
+  "Little Nightmares": [
+    "Six"
+  ],
   "LittleBigPlanet": [
     "Sackboy"
   ],
@@ -1287,6 +1403,9 @@ const COSPLAYER_FRANCHISES = {
     "Wile E. Coyote",
     "Yosemite Sam"
   ],
+  "Lupin III": [
+    "Fujiko Mine"
+  ],
   "Mad Max": [
     "Immortan Joe",
     "Imperator Furiosa",
@@ -1298,6 +1417,12 @@ const COSPLAYER_FRANCHISES = {
     "Madoka Kaname (Ultimate)",
     "Mami Tomoe",
     "Sayaka Miki"
+  ],
+  "Magi": [
+    "Morgiana"
+  ],
+  "Magic: The Gathering": [
+    "Liliana Vess"
   ],
   "Marvel": [
     "Abomination",
@@ -1515,11 +1640,15 @@ const COSPLAYER_FRANCHISES = {
     "Mega Man"
   ],
   "Metal Gear": [
+    "Quiet",
     "Solid Snake"
   ],
   "Metroid": [
     "Samus Aran (Power Suit)",
     "Zero Suit Samus"
+  ],
+  "Metropolis": [
+    "Maria (Metropolis)"
   ],
   "Michelin": [
     "Michelin Man"
@@ -1621,6 +1750,7 @@ const COSPLAYER_FRANCHISES = {
     "Hawks",
     "Himiko Toga",
     "Midnight (My Hero Academia)",
+    "Mirko",
     "Momo Yaoyorozu",
     "Mt. Lady",
     "Nejire Hado",
@@ -1745,11 +1875,18 @@ const COSPLAYER_FRANCHISES = {
   "Pac-Man": [
     "Pac-Man"
   ],
+  "Panty & Stocking with Garterbelt": [
+    "Panty Anarchy",
+    "Stocking Anarchy"
+  ],
   "Peanuts": [
     "Charlie Brown"
   ],
   "Peepoodo": [
     "Dr. Monique Pussycat"
+  ],
+  "Penny Dreadful": [
+    "Vanessa Ives"
   ],
   "Persona": [
     "Aigis",
@@ -1865,6 +2002,9 @@ const COSPLAYER_FRANCHISES = {
   "Rascal Does Not Dream of Bunny Girl Senpai": [
     "Mai Sakurajima"
   ],
+  "Ratchet & Clank": [
+    "Rivet"
+  ],
   "Re:Zero": [
     "Emilia",
     "Ram",
@@ -1878,6 +2018,13 @@ const COSPLAYER_FRANCHISES = {
     "Jack the Ripper (Record of Ragnarok)",
     "Lu Bu",
     "Shiva (Record of Ragnarok)"
+  ],
+  "Red Alert": [
+    "Yuri"
+  ],
+  "Red Dead Redemption": [
+    "Arthur Morgan",
+    "Sadie Adler"
   ],
   "Red Sonja": [
     "Red Sonja"
@@ -1935,11 +2082,17 @@ const COSPLAYER_FRANCHISES = {
   "Samurai Jack": [
     "Samurai Jack"
   ],
+  "Samurai Shodown": [
+    "Nakoruru"
+  ],
   "Scooby-Doo": [
     "Daphne Blake",
     "Fred Jones",
     "Shaggy",
     "Velma Dinkley"
+  ],
+  "Scott Pilgrim": [
+    "Ramona Flowers"
   ],
   "Scream": [
     "Ghostface"
@@ -1976,10 +2129,13 @@ const COSPLAYER_FRANCHISES = {
     "Snow White"
   ],
   "Solo Leveling": [
+    "Cha Hae-in",
     "Sung Jinwoo"
   ],
   "Sonic the Hedgehog": [
+    "Amy Rose",
     "Dr. Eggman",
+    "Rouge the Bat",
     "Sonic the Hedgehog"
   ],
   "Soul Calibur": [
@@ -1999,6 +2155,9 @@ const COSPLAYER_FRANCHISES = {
     "Voldo",
     "Xianghua",
     "Yoshimitsu"
+  ],
+  "Soul Eater": [
+    "Maka Albarn"
   ],
   "South Park": [
     "Eric Cartman",
@@ -2021,6 +2180,9 @@ const COSPLAYER_FRANCHISES = {
     "Loid Forger",
     "Yor Forger"
   ],
+  "Spyro": [
+    "Elora"
+  ],
   "Squid Game": [
     "Front Man",
     "Pink Guard",
@@ -2042,6 +2204,7 @@ const COSPLAYER_FRANCHISES = {
     "Ferengi",
     "Geordi La Forge",
     "Gowron",
+    "Ilia",
     "Klingon",
     "Mr. Spock",
     "Seven of Nine",
@@ -2185,6 +2348,8 @@ const COSPLAYER_FRANCHISES = {
     "Lapis Lazuli",
     "Pearl",
     "Peridot",
+    "Rose Quartz",
+    "Spinel",
     "Steven Universe",
     "Topaz"
   ],
@@ -2277,6 +2442,9 @@ const COSPLAYER_FRANCHISES = {
     "Flynn Rider",
     "Rapunzel"
   ],
+  "Tank Girl": [
+    "Tank Girl"
+  ],
   "Tarzan": [
     "Jane Porter",
     "Tarzan"
@@ -2308,6 +2476,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "That Time I Got Reincarnated as a Slime": [
     "Milim Nava"
+  ],
+  "The 100": [
+    "Lexa"
   ],
   "The Addams Family": [
     "Cousin Itt",
@@ -2345,6 +2516,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "The Citadel": [
     "The Martyr"
+  ],
+  "The Craft": [
+    "Nancy Downs"
   ],
   "The Crow": [
     "Eric Draven"
@@ -2408,7 +2582,8 @@ const COSPLAYER_FRANCHISES = {
     "Terry Bogard"
   ],
   "The Last of Us": [
-    "Ellie Williams"
+    "Ellie Williams",
+    "Joel Miller"
   ],
   "The Legend of Korra": [
     "Asami Sato",
@@ -2446,6 +2621,7 @@ const COSPLAYER_FRANCHISES = {
     "Saruman",
     "Sauron",
     "Shelob",
+    "Tauriel",
     "Witch-King of Angmar"
   ],
   "The Mask": [
@@ -2465,6 +2641,9 @@ const COSPLAYER_FRANCHISES = {
     "Oogie Boogie",
     "Sally"
   ],
+  "The Owl House": [
+    "Eda Clawthorne"
+  ],
   "The Partridge Family": [
     "Laurie Partridge"
   ],
@@ -2483,6 +2662,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "The Ring": [
     "Samara"
+  ],
+  "The Rising of the Shield Hero": [
+    "Raphtalia"
   ],
   "The Road to El Dorado": [
     "Chel",
@@ -2509,6 +2691,9 @@ const COSPLAYER_FRANCHISES = {
     "Diane",
     "Elizabeth Liones",
     "Meliodas"
+  ],
+  "The Shadow": [
+    "The Shadow"
   ],
   "The Simpsons": [
     "Bart Simpson",
@@ -2537,6 +2722,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "The Tick": [
     "The Tick"
+  ],
+  "The Walking Dead": [
+    "Michonne"
   ],
   "The Witcher": [
     "Ciri",
@@ -2592,6 +2780,9 @@ const COSPLAYER_FRANCHISES = {
   "Tron": [
     "Quorra"
   ],
+  "Twenty Thousand Leagues Under the Sea": [
+    "Captain Nemo"
+  ],
   "Ultraman": [
     "Ultraman"
   ],
@@ -2607,6 +2798,7 @@ const COSPLAYER_FRANCHISES = {
     "Creature from the Black Lagoon",
     "Dracula",
     "Frankenstein's Monster",
+    "Nosferatu",
     "The Invisible Man",
     "The Mummy",
     "The Phantom of the Opera",
@@ -2615,8 +2807,14 @@ const COSPLAYER_FRANCHISES = {
   "Up": [
     "Carl Fredricksen"
   ],
+  "Urusei Yatsura": [
+    "Lum Invader"
+  ],
   "V for Vendetta": [
     "V (V for Vendetta)"
+  ],
+  "Valkyria Chronicles": [
+    "Selvaria Bles"
   ],
   "Vampirella": [
     "Vampirella"
@@ -2634,6 +2832,9 @@ const COSPLAYER_FRANCHISES = {
     "Sister of Battle",
     "Space Marine",
     "Tech-Priest"
+  ],
+  "WarioWare": [
+    "Ashley"
   ],
   "Watchmen": [
     "Doctor Manhattan",
@@ -2682,6 +2883,9 @@ const COSPLAYER_FRANCHISES = {
   "Xena: Warrior Princess": [
     "Xena"
   ],
+  "Xenoblade Chronicles": [
+    "Pyra"
+  ],
   "Youngblood": [
     "Riptide",
     "Suprema",
@@ -2701,6 +2905,9 @@ const COSPLAYER_FRANCHISES = {
   "Zootopia": [
     "Judy Hopps",
     "Nick Wilde"
+  ],
+  "Zorro": [
+    "Zorro"
   ]
 };
 // <<< GENERATED DATA <<<

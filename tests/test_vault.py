@@ -201,5 +201,90 @@ class RoundTripTests(unittest.TestCase):
             rename_character(self.root, "ghost", "C")
 
 
+
+class VaultRecallControlDeferralTests(unittest.TestCase):
+    """Regression for the 0.99.0 wardrobe/hair_color_scope recall hole.
+
+    A character saved with wardrobe='Any' (and/or a full-spectrum hair colour)
+    rebuilt a *different* person on Vault Load, because IdentityForge read the
+    control values from its own widgets (default 'Match gender' / 'Natural only')
+    and ignored the saved _meta. The fix adds an 'Auto (preset)' sentinel to
+    both widgets: set it and recall honours the saved controls.
+    """
+
+    def _generate(self, seed, gender, wardrobe, hair_color_scope):
+        from nodes.identity_forge import IdentityForge
+        out = IdentityForge.execute(
+            seed=seed, gender=gender, wardrobe=wardrobe,
+            hair_color_scope=hair_color_scope,
+        )
+        return out.args[1]
+
+    def _recall(self, saved_json, seed, wardrobe, hair_color_scope, gender="Any"):
+        from nodes.identity_forge import IdentityForge
+        out = IdentityForge.execute(
+            seed=seed, archetype_json=saved_json, gender=gender,
+            wardrobe=wardrobe, hair_color_scope=hair_color_scope,
+        )
+        return out.args[1]
+
+    def test_recall_with_auto_preset_is_faithful(self):
+        original = self._generate(12345, "Any", "Any", "Full spectrum")
+        recalled = self._recall(original, 12345, "Auto (preset)", "Auto (preset)")
+        orig = json.loads(original)
+        rec = json.loads(recalled)
+        # The saved control values are honoured: the recalled _meta matches.
+        self.assertEqual(rec["_meta"], orig["_meta"])
+        # The composed outfit (the authoritative description of the person)
+        # is identical, so the recalled character is the same person.
+        self.assertEqual(
+            rec["Clothing"]["outfit_description"],
+            orig["Clothing"]["outfit_description"],
+        )
+        # The whole document matches once the four raw garment fields that the
+        # engine intentionally supersedes with outfit_description are ignored
+        # (a pre-existing, wardrobe-orthogonal round-trip detail: on generation
+        # outfit_description starts absent so they are kept; on recall it is
+        # locked so they are popped). The person is otherwise identical.
+        _GARMENT_FIELDS = ("outfit_style", "footwear", "clothing_color",
+                           "clothing_pattern")
+        def _drop_garment(doc):
+            return {
+                g: {k: v for k, v in fields.items() if k not in _GARMENT_FIELDS}
+                for g, fields in doc.items()
+            }
+        self.assertEqual(_drop_garment(rec), _drop_garment(orig))
+
+    def test_recall_with_default_widgets_diverges(self):
+        original = self._generate(12345, "Any", "Any", "Full spectrum")
+        recalled = self._recall(original, 12345, "Match gender", "Natural only")
+        self.assertNotEqual(json.loads(recalled), json.loads(original))
+
+    def test_parse_archetype_exposes_control_meta(self):
+        from nodes.identity_forge import (
+            _parse_archetype_json, _WARDROBE_KEY, _HAIR_COLOR_SCOPE_KEY,
+        )
+        doc = json.dumps({
+            "_meta": {"gender": "Any", "wardrobe": "Any",
+                      "hair_color_scope": "Full spectrum"},
+            "Hair": {"hair_color": "hot pink"},
+        })
+        parsed = _parse_archetype_json(doc)
+        self.assertEqual(parsed.get(_WARDROBE_KEY), "Any")
+        self.assertEqual(parsed.get(_HAIR_COLOR_SCOPE_KEY), "Full spectrum")
+
+    def test_auto_preset_without_archetype_falls_back(self):
+        # No wired character: 'Auto (preset)' must not leak the sentinel into
+        # the engine, and must fall back to the widget defaults.
+        from nodes.identity_forge import IdentityForge
+        out = IdentityForge.execute(
+            seed=7, gender="Female", wardrobe="Auto (preset)",
+            hair_color_scope="Auto (preset)",
+        )
+        recalled = json.loads(out.args[1])
+        self.assertEqual(recalled["_meta"]["wardrobe"], "Match gender")
+        self.assertEqual(recalled["_meta"]["hair_color_scope"], "Natural only")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

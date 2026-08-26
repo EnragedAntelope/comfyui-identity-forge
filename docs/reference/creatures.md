@@ -3,9 +3,9 @@
 
 # Creature reference
 
-**249 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**253 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
-## Mammals (48)
+## Mammals (51)
 
 - **aardvark** (dull pinkish grey)
 - **alpaca** (creamy fawn)
@@ -37,6 +37,8 @@
 - **meerkat** (sandy tan)
 - **mole** (blue-black)
 - **moose** (dark bark brown)
+- **naked mole rat** (wrinkled pink)
+- **okapi** (rich chestnut)
 - **orangutan** (rust red)
 - **otter** (warm brown)
 - **panda** (black and white)
@@ -51,6 +53,7 @@
 - **sloth** (grey-brown)
 - **squirrel** (russet-brown)
 - **stag** (chestnut)
+- **star-nosed mole** (dusky brown)
 - **tiger** (burnt orange)
 - **wolf** (slate-grey)
 - **wolverine** (dark chocolate)
@@ -145,7 +148,7 @@
 - **tarantula** (dusky brown)
 - **wasp** (black and yellow)
 
-## Marine Life (27)
+## Marine Life (28)
 
 - **anglerfish** (abyssal black)
 - **clownfish** (bright orange)
@@ -153,6 +156,7 @@
 - **cuttlefish** (mottled sand)
 - **dolphin** (pale grey)
 - **eel** (olive-green)
+- **goblin shark** (flabby pale rose)
 - **hammerhead shark** (slate grey)
 - **horseshoe crab** (dark bronze)
 - **jellyfish** (translucent rose)

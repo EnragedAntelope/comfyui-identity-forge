@@ -282,10 +282,31 @@ Two engine-facing traps this rewrite hit, both silent, both now pinned by tests:
   steering a new one, and has no such widgets to override — so it restores both off `_meta`.
   Measured before the fix: a character generated with `wardrobe: "Any"` (which unlocks
   mixed-gender features) came back rebuilt under "Match gender" in **150 of 150** sampled seeds.
-  **The vault has the same hole and it is still open** — `IdentityForgeVaultLoad` recall of a
-  `wardrobe: "Any"` character rebuilds a different person for exactly this reason. Fixing it
-  properly needs an "Auto (preset)" sentinel on the two widgets; the Turnaround did not wait,
-  because it has no widget to add one to.
+  **The vault had the same hole; fixed at 0.102.0** — `IdentityForgeVaultLoad` recall of a
+  `wardrobe: "Any"` character used to rebuild a different person for exactly this reason. Fixed
+  by the "Auto (preset)" sentinel on the two widgets (see "Vault recall and the control
+  sentinels"); the Turnaround did not wait, because it has no widget to add one to.
+
+### Vault recall and the control sentinels (0.102.0)
+
+`wardrobe` and `hair_color_scope` are control fields — they live only in `_meta`, never in
+the body, and `execute` reads them from the widget, not from a wired character. That is
+correct for a *preset* (a preset must not override a live widget), but wrong for the
+vault, which is replaying a finished run that already chose those controls.
+
+The fix is the `"Auto (preset)"` sentinel on both widgets. When the widget is set to it,
+`execute` defers to the value `_parse_archetype_json` surfaced under `__wardrobe__` /
+`__hair_color_scope__` (the saved `_meta.wardrobe` / `_meta.hair_color_scope`); otherwise
+it keeps the widget default. The sentinel is never passed through to generation, and
+`_parse_archetype_json` ignores an `"Auto (preset)"` value stored in `_meta` (a vault save
+can only ever store a concrete choice), so the 0.91.1 trap — a recalled character silently
+overriding the user's toggle — cannot recur.
+
+Recall workflow: load a saved character with `wardrobe` and `hair_color_scope` both set to
+`Auto (preset)` to replay its exact saved controls. Any other widget value is a deliberate
+override and wins. `tests/test_vault.py::VaultRecallControlDeferralTests` pins the four
+cases (faithful recall, default-widget divergence, exposed control meta, and no-archetype
+fallback).
 
 ### Adding a whole node — the registries it has to join (0.98.0)
 
@@ -313,12 +334,12 @@ each of these. The Turnaround shipped its first draft missing the last two.
 - **Control fields** carry `"control": True` (`gender`, `hair_color_scope`, `location_setting`):
   read from their toggle, never randomized, never described. `_CONTROL_FIELDS` collects them.
   They are **widget-owned**: `execute` filters `_CONTROL_FIELDS` out of `archetype_locked`, so a
-  preset cannot set one from its `_meta`. `gender` is the single exception, and only because its
-  widget has an explicit `"Any"` defer sentinel — `execute` reads it back by name. `_parse_archetype_json`
-  copied `hair_color_scope` alongside it until 0.91.1 and it never arrived (dead plumbing that
-  read like a feature); wiring it up would need a defer sentinel on the widget first, and would
-  make a vault-recalled character — whose stored `_meta` carries the scope the main node wrote —
-  silently override the user's toggle. `tests/test_engine.py::HairScopeTests` pins it.
+  preset cannot set one from its `_meta`. `gender` is the exception, and `wardrobe` /
+  `hair_color_scope` joined it at 0.102.0: each widget carries an `"Auto (preset)"` defer
+  sentinel, so `execute` reads the saved value back by name (from `__wardrobe__` /
+  `__hair_color_scope__` surfaced by `_parse_archetype_json`) only when the widget is set to
+  it — the widget default otherwise wins, so a recall never silently overrides a deliberate
+  user choice. `tests/test_engine.py::HairScopeTests` pins the scope; `tests/test_vault.py::VaultRecallControlDeferralTests` pins the recall.
   A user's `user_options.json` `hair_color` additions extend the option pools but not
   `natural_hair_colors`, so they are randomizable only under `Full spectrum` (documented in
   `docs/usage.md` and `data/user_options.py`); lockable by hand under either scope.

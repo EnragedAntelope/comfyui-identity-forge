@@ -1,48 +1,53 @@
 # ComfyUI Identity Forge
 
-**Believable people from dropdowns — no prompt-wrangling.** Queue once and you get a coherent,
-fully described person. Queue again and you get someone completely new. Identity Forge turns menu
-choices into clean natural-language prose (straight into CLIP Text Encode) plus a structured JSON
-record.
+**Create believable, coherent characters from dropdowns — no prompt engineering required.**
 
-A constraint engine keeps every result sensible — no beard on the buzz cut, no handbag with the
-gym kit, no open-sky sunlight indoors, and a skin tone that stays plausible for the chosen
-ancestry in either direction. Lock the few traits you care about; let the rest roll.
+Identity Forge turns menu choices into clean, natural-language character descriptions that feed directly into your image model. Queue once and get a fully-realized person. Queue again and meet someone completely new.
 
-**Why you'll like it**
+## Why Identity Forge?
 
-- **Coherent by design** — clashing traits get resolved for you, automatically.
-- **Reproducible** — seed-driven, so a person you liked comes back exactly.
-- **Yours to steer** — every field is roll it, lock it, or leave it out.
-- **Zero dependencies, fully offline** — no LLM, no API keys, no model downloads.
+**The problem:** Writing good character prompts is hard. You need to describe age, ethnicity, body type, face, hair, makeup, clothing, accessories, pose, lighting, location — and make sure none of it contradicts. A beard on a buzz cut. Open-sky lighting indoors. A handbag with gym kit. The constraint engine handles all of this automatically.
 
-### Optional layers
+**The solution:** Lock the few traits you care about. Let the rest roll. Every result is coherent, reproducible (seed-driven), and yours to steer.
 
-Four preset nodes stack in front of Identity Forge to steer the look. Each one is optional and
-passes through when you set it to `None`, so you can leave them all wired and just toggle.
-**Archetype** drops a themed look (knight, sorceress, astronaut, surgeon…) onto a still-random
-person. **Creature** turns that person into an animal, monster or alien. **Modifier** tweaks one
-field or a whole group. And **Cosplayer** puts a fictional character's costume on a random,
-optionally cross-gender person.
+## What makes this different
 
-The Cosplayer node is worth a special mention: most character wildcards emit a name and hope the
-model recognises it. Every character here instead carries a hand-written, canon-checked
-description of the *costume* — garments, colours, masks, markings, signature props — so the look
-renders even on checkpoints that have never heard of the character. Ask a plain wildcard for
-Chun-Li and your prompt says `Chun-Li`; ask this one and you get the blue qipao with gold trim,
-the brown tights, the white cross-laced boots and the spiked bracelets.
+### Character creation that actually works
 
-**Browse what's on offer** — a searchable sample render for every entry, sortable
-**A–Z or newest first**, with a **New in this release** filter:
-[cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) ·
-[archetype gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/archetypes/) ·
-[creature gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/creatures/).
-Or read the full lists: [cosplay characters](docs/reference/cosplayers.md) ·
-[archetypes](docs/reference/archetypes.md) · [creatures](docs/reference/creatures.md).
-Something obvious missing? [Open an issue](https://github.com/EnragedAntelope/comfyui-identity-forge/issues) —
-suggestions are welcome.
+Most character generators emit a name and hope the model recognizes it. Identity Forge builds the person from the ground up — demographics, physique, face, hair, makeup, clothing, accessories, pose, expression, lighting, location — all composed into natural-language prose that any image model can render.
 
-Built on the ComfyUI **V3 API** (`comfy_api.latest`). Category: `conditioning/character`.
+Every field is `Random` (roll it), a specific value (lock it), or `None` (omit it). The constraint engine ensures nothing clashes: no beard on the buzz cut, no open-sky sunlight indoors, skin tone plausible for the chosen ancestry.
+
+### Cosplay nodes that understand the characters
+
+The Cosplayer node is where Identity Forge really shines. Most character wildcards emit a name — `Chun-Li` — and hope for the best. Every character here carries a **hand-written, canon-checked description of the costume**: garments, colours, masks, markings, signature props.
+
+Ask a plain wildcard for Chun-Li and your prompt says `Chun-Li`. Ask this Cosplayer node and you get: *the blue qipao with gold trim, brown tights, white cross-laced boots, and spiked bracelets.* The look renders even on checkpoints that have never heard of the character.
+
+**Characters from every major franchise:** Marvel, DC, Star Wars, anime, video games, fantasy, sci-fi, horror. Each one with multiple costume variants where applicable (Harley Quinn's three iconic looks, Catwoman's different suits, etc.). Characters rotate between variants by seed, so the same name yields a different signature costume each roll.
+
+**Crossplay built in:** Set the person's gender independently of the character. The costume adapts. A female Spider-Man gets the suit resized and reshaped; a male Wonder Woman gets the armor reconfigured. The constraint engine handles the anatomy.
+
+**Named beasts render as the animal, not as someone dressed as it:** Appa, Toothless, Catbus, a bantha, Jabba — characters nobody can physically be inside — render from their own anatomy with human demographics dropped. Full mascot suits (Pikachu, Godzilla) stay costumes on a randomized wearer.
+
+### Turnaround: one character, every angle, one queue
+
+The Turnaround node is a reference-sheet builder. Wire Identity Forge's `prompt_json` output into it, and it emits **front, three-quarter, profile, and back views as a list** — so a single queue renders the whole set of the same person.
+
+The character and scene stay configured on Identity Forge. The Turnaround only moves the camera. That's the whole design: one resolved character, four (or six) camera angles, no re-rolling between views.
+
+**Why this matters:** Most turnaround workflows use an auto-incrementing index widget, which means an upstream node left on `randomize` re-rolls the character between queues. Your "turnaround" becomes six angles on six different people. The Turnaround node takes a **resolved** character instead — every view reproduces it exactly.
+
+The straight-back view **omits the face description** (eyes, lips, makeup, expression) so the model renders a back and doesn't turn the head to show them. Hair, costume, and any mask are kept — they read from behind.
+
+### Additional layers
+
+- **Archetype:** Themed looks (knight, sorceress, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes.
+- **Creature:** Turn the person into an animal, monster, or alien. Hybridized slot-by-slot (head, eyes, integument, arms, hands, legs, tail, wings).
+- **Modifier:** Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`).
+- **Vault Save / Load:** Save a generated character with a thumbnail; recall it later as a chainable preset.
+
+All preset nodes stack via an `upstream` input — chain them through each other and keep them all wired. Set any node to `None` and it passes through.
 
 ---
 

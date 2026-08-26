@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-identity-forge"
-version = "0.99.0"
+version = "1.0.0"
 description = "A character creator and person generator for ComfyUI. Build a believable, coherent person from dropdowns - a constraint engine keeps every trait sensible and a seed makes any result reproducible. Optional preset nodes layer on themed archetypes, a creature/monster/alien form with slot-by-slot hybridization, per-element style modifiers, and a cosplay layer whose characters each ship a hand-written, canon-checked visual description - garments, colours, masks, markings, signature props - so the look renders on any checkpoint. Plus a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
 license = { text = "MIT" }
 readme = "README.md"

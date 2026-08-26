@@ -111,6 +111,28 @@ class EntryHashTests(unittest.TestCase):
         )
 
 
+class GalleryShotPoolTests(unittest.TestCase):
+    """Regression: ``_gallery_shot`` must always pin a real camera angle.
+
+    ``shot_type``'s option list carries "Random" (its control value) and
+    "None" (its omit sentinel) alongside actual framings. The pool filter
+    excluded "Random" but not "None" -- so on the seeds that landed on it,
+    the gallery render passed shot_type="None" into IdentityForge.execute,
+    which (a non-Random widget value always beats a preset lock) silently
+    discarded whatever shot_type the archetype/cosplayer itself locked,
+    with no framing at all. Caught via ``Kendo Practitioner`` (locked to
+    "full body shot") rendering as an extreme close-up twice in a row.
+    """
+
+    def test_never_returns_the_omit_sentinel_or_control_value(self) -> None:
+        for seed in range(500):
+            shot = render_gallery._gallery_shot(seed)
+            self.assertNotEqual(shot, "None", f"seed {seed} picked the omit sentinel")
+            self.assertNotEqual(shot, "Random", f"seed {seed} picked the control value")
+            self.assertNotIn(shot, render_gallery._BACK_FACING_SHOTS,
+                              f"seed {seed} picked a back-facing shot")
+
+
 class ImportIsInertTests(unittest.TestCase):
     """The module must import with no ComfyUI, no network and no side effects."""
 

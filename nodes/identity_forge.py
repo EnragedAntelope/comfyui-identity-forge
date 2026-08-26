@@ -124,6 +124,15 @@ _SET_ALL_NONE = "All to None"
 #: Reserved key (not a real field) carrying a cosplay character label from a
 #: connected Cosplayer node's ``_meta`` through the parsed-archetype dict.
 _COSPLAY_LABEL_KEY = "__cosplay_label__"
+#: Sentinel a downstream widget sends to mean "use the wired character's own
+#: recorded control value" — i.e. honour a vault save's _meta. Distinct from
+#: "Any", which is a generation-time choice, not a defer-to-preset.
+_AUTO_PRESET = "Auto (preset)"
+#: Reserved keys (not real fields) carrying the control values a saved
+#: character recorded in _meta, surfaced through the parsed-archetype dict so
+#: execute can defer to them when the widget is set to _AUTO_PRESET.
+_WARDROBE_KEY = "__wardrobe__"
+_HAIR_COLOR_SCOPE_KEY = "__hair_color_scope__"
 
 #: Trailing "(...)" disambiguator on a roster key, e.g. "Blue Beetle (Ted Kord)".
 _KEY_PARENTHETICAL_RE = re.compile(r"^(?P<base>.*?)\s*\((?P<paren>[^()]+)\)\s*$")
@@ -2063,6 +2072,28 @@ def _species_subject(species: dict, gender: str) -> str:
     return f"{size} {noun}" if size else noun
 
 
+#: Emphatic phrasing for ``facial_hair``. A bare "a mustache" is a short,
+#: unembellished clause sitting next to a paragraph of richly adjective-laden
+#: description everywhere else in the prompt -- the same under-rendering
+#: class the tattoo sentence was pulled out on its own to fix (see the
+#: Tattoos section in ``_format_prose``), just milder: the value already gets
+#: its own clause, but with too little descriptive weight to compete for the
+#: model's attention (measured: 0/4 sampled renders showed the requested
+#: facial hair with the bare noun phrase). Falls back to ``_an(fh)`` for any
+#: value not listed here, so a future field addition never crashes.
+_FACIAL_HAIR_PHRASING: dict[str, str] = {
+    "stubble": "visible stubble",
+    "short beard": "a neatly trimmed short beard",
+    "full beard": "a thick, full beard",
+    "goatee": "a well-groomed goatee",
+    "mustache": "a neatly groomed mustache",
+    "van dyke": "a sharply trimmed van dyke beard",
+    "soul patch": "a small soul patch",
+    "mutton chops": "bold mutton chops",
+    "five o'clock shadow": "a visible five o'clock shadow",
+}
+
+
 def _format_prose(
     resolved: dict[str, str], gender: str, cosplay_label: str | None = None,
     species: dict | None = None, hands_visible: bool = True,
@@ -2287,9 +2318,7 @@ def _format_prose(
         hair_extra.append(hl if "highlight" in hl else f"{hl} highlights")
     if g("facial_hair"):
         fh = g("facial_hair")
-        # Mass/plural values ("stubble", "mutton chops") read naturally bare;
-        # the singular pieces ("full beard", "mustache") take an article.
-        hair_extra.append(fh if fh in ("stubble", "mutton chops") else _an(fh))
+        hair_extra.append(_FACIAL_HAIR_PHRASING.get(fh, _an(fh)))
     if g("hair_accessory") and not is_bald:
         acc = g("hair_accessory")
         # "... in/over hair" values are placement phrases; voice them with the
@@ -3278,6 +3307,16 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
             # "Auto (preset)" option on the widget first.
             if isinstance(meta.get("gender"), str):
                 flat["gender"] = meta["gender"]
+            # Wardrobe / hair_color_scope are control fields, not body fields, so
+            # they travel only in _meta. They are surfaced under reserved keys so
+            # execute can defer to them when the downstream widget is explicitly
+            # set to _AUTO_PRESET — the widget default must never silently override
+            # a saved character's own choice (the 0.91.1 trap). The locked-field
+            # loops skip them because the keys are not real field names.
+            if isinstance(meta.get("wardrobe"), str) and meta["wardrobe"] not in ("", _AUTO_PRESET):
+                flat[_WARDROBE_KEY] = meta["wardrobe"]
+            if isinstance(meta.get("hair_color_scope"), str) and meta["hair_color_scope"] not in ("", _AUTO_PRESET):
+                flat[_HAIR_COLOR_SCOPE_KEY] = meta["hair_color_scope"]
             # Per-gender variant look blocks from a merged archetype. Kept under a
             # reserved key (not real fields) so the locked-field loops never treat
             # them as locks; applied in generate_character after the gender is fixed.
@@ -3422,7 +3461,7 @@ if _COMFY_AVAILABLE:
                 ),
                 io.Combo.Input(
                     "wardrobe",
-                    options=["Match gender", "Feminine", "Masculine", "Any"],
+                    options=["Match gender", "Feminine", "Masculine", "Any", _AUTO_PRESET],
                     default="Match gender",
                     tooltip="Which outfit wardrobe to draw from -- and how the character "
                             "presents. 'Match gender' keeps outfits typical for the chosen "
@@ -3430,7 +3469,9 @@ if _COMFY_AVAILABLE:
                             "in feminine outfits). 'Any' mixes outfits -- and, when gender "
                             "is also 'Any', unlocks fully mixed-gender features too. On a "
                             "man, 'Feminine' / 'Any' also lift the masculine defaults for "
-                            "jewellery, nails and makeup so a full femme look is reachable.",
+                            "jewellery, nails and makeup so a full femme look is reachable. "
+                            "'Auto (preset)' defers to a wired character's own saved "
+                            "wardrobe (use it when recalling a vault save made with 'Any').",
                 ),
                 io.Combo.Input(
                     "size_scale",
@@ -3449,10 +3490,12 @@ if _COMFY_AVAILABLE:
                 ),
                 io.Combo.Input(
                     "hair_color_scope",
-                    options=["Natural only", "Full spectrum"],
+                    options=["Natural only", "Full spectrum", _AUTO_PRESET],
                     default="Natural only",
                     tooltip="Defaults to realistic hair colours; choose 'Full spectrum' "
-                            "to allow fantasy shades (pink, blue, …).",
+                            "to allow fantasy shades (pink, blue, ...). 'Auto (preset)' "
+                            "defers to a wired character's own saved scope (use it when "
+                            "recalling a vault save made with 'Full spectrum').",
                 ),
                 io.Combo.Input(
                     "accessory_density",
@@ -3584,8 +3627,25 @@ if _COMFY_AVAILABLE:
             if gender not in _SUBJ:
                 gender = "Any"
 
-            hair_color_scope = kwargs.get("hair_color_scope", "Natural only")
-            wardrobe = kwargs.get("wardrobe", "Match gender")
+            # Control fields are not body fields; they live only in _meta. When the
+            # widget is explicitly set to _AUTO_PRESET we defer to the wired
+            # character's own recorded value (recall of a vault save made with
+            # wardrobe='Any' / a full-spectrum hair colour). The widget default is
+            # preserved otherwise, so a recall never silently overrides a
+            # deliberate user choice -- that was the 0.91.1 trap, and the reason
+            # these controls were not honoured until the sentinel existed.
+            widget_hair_scope = kwargs.get("hair_color_scope", "Natural only")
+            if widget_hair_scope == _AUTO_PRESET:
+                # Defer to the wired character's recorded scope; fall back to the
+                # default when nothing is wired (never pass the sentinel through).
+                hair_color_scope = archetype.get(_HAIR_COLOR_SCOPE_KEY) or "Natural only"
+            else:
+                hair_color_scope = widget_hair_scope
+            widget_wardrobe = kwargs.get("wardrobe", "Match gender")
+            if widget_wardrobe == _AUTO_PRESET:
+                wardrobe = archetype.get(_WARDROBE_KEY) or "Match gender"
+            else:
+                wardrobe = widget_wardrobe
             accessory_density = kwargs.get("accessory_density", "Balanced")
             location_setting = kwargs.get("location_setting", "Any indoor/outdoor")
 

@@ -2699,6 +2699,21 @@ CREATURES: dict[str, dict] = {
         "legs_feet": "a tall sickle dorsal fin above and paired pelvic fins below",
         "tail": "a powerful asymmetric sweeping tail fin",
     },
+    "goblin shark": {
+        # Closes its 0.98.0 backlog case: protrusible slingshot jaws hung below
+        # a blade snout are head anatomy no shipped fish has (anglerfish owns
+        # the lure, pufferfish the inflation, hammerhead the crossbar).
+        "class": "Marine Life",
+        "palette": "flabby pale rose",
+        "palette_pool": ["flabby pale rose", "bruised grey-pink", "muddy salmon"],
+        "head": "dramatically protruding slingshot jaws snapped forward past a long flattened blade-like snout, lined with slender needle teeth",
+        "eyes": "small dark deepsea eyes",
+        "integument": "loose soft skin of the deep shelf",
+        "arms": "soft finned arms",
+        "hands": "webbed clawed hands",
+        "legs_feet": "a low rounded dorsal fin above small pelvic fins",
+        "tail": "a short asymmetric tail fin with a long lower lobe",
+    },
     "cuttlefish": {
         "class": "Marine Life",
         "palette": "mottled sand",
@@ -2856,18 +2871,37 @@ CREATURES: dict[str, dict] = {
     },
     "mole": {
         # Outward-turned spade hands and eyes reduced to pinpricks: no other
-        # creature in the set is built by and for burrowing.
+        # creature in the set is built by and for burrowing. The ears are
+        # stated positively (openings sealed flush in the fur): an earlier
+        # "no visible ears" clause drew ears on the render -- t2i lands a
+        # negation as the thing it excludes (architecture.md, Never negate).
         "class": "Mammals",
         "palette": "blue-black",
         "palette_pool": ["blue-black", "slate grey", "warm sepia brown"],
-        "head": "a blunt tapered head with no visible ears and a naked pink snout",
+        "head": "a blunt wedge-shaped head with the ear openings sealed flush beneath the fur, tapering to a naked pink snout",
         "eyes": "eyes reduced to pinpricks buried in the fur",
-        "integument": "velvet fur so short and dense it lies flat in any direction",
+        "integument": "velvet fur so short and dense it lies flat in any direction over a cylindrical tubular body",
         "arms": "short barrel-thick arms turned outward from the shoulders",
         "hands": "enormous outward-facing spade hands with pale flat claws",
         "legs_feet": "small weak hind feet",
         "tail": "a short bare bristled tail",
         "extras": "a fringe of stiff whiskers constantly testing the air",
+    },
+    "naked mole rat": {
+        # Sits beside the mole on purpose: the mole owns velvet fur and spade
+        # hands; this owns bare folded hide and chisel incisors that live
+        # outside the mouth - eusocial-digger anatomy nothing else carries.
+        "class": "Mammals",
+        "palette": "wrinkled pink",
+        "palette_pool": ["wrinkled pink", "pale yellowish grey", "dusky flesh tone"],
+        "head": "a tubular wrinkled head ending in a blunt snout, with two broad chisel incisors jutting out past the closed lips",
+        "eyes": "pinprick eyes sunk so deep under the folded skin they read as faint dark slits",
+        "integument": "loose bare skin folded into deep wrinkles along a cylindrical tubular body",
+        "arms": "short scrawny limbs held close to the body",
+        "hands": "small wrinkle-knuckled grasping hands",
+        "legs_feet": "thin bowed legs on small narrow feet",
+        "tail": "a pencil-thin hairless tail",
+        "extras": "stiff whisker bristles sprouting along the muzzle and flanks",
     },
 
     # --- Birds ------------------------------------------------------------
@@ -3087,6 +3121,34 @@ CREATURES: dict[str, dict] = {
         "legs_feet": "short clawed legs that drag the whole case along",
         "tail": "a sealed tapering end to the case",
         "extras": "a mosaic of pebbles, cut leaf sections and grit cemented over every surface",
+    },
+
+    # --- Mammals (additions) ----------------------------------------------
+    "okapi": {
+        "class": "Mammals",
+        "palette": "rich chestnut",
+        "palette_pool": ["rich chestnut", "dark chocolate"],
+        "head": "an elongated equine head with large upright ears and a dark prehensile tongue",
+        "eyes": "large dark gentle eyes",
+        "integument": "short dense velvety fur",
+        "arms": "slender chestnut forelegs",
+        "hands": "small cloven-hoof-like forefeet",
+        "legs_feet": "slender legs with bold horizontal black-and-white zebra stripes from the knee down",
+        "tail": "a short tail with a tuft of dark hair",
+        "extras": "white stockings on the upper legs fading into the striped lower legs",
+    },
+    "star-nosed mole": {
+        "class": "Mammals",
+        "palette": "dusky brown",
+        "palette_pool": ["dusky brown", "dark grey-brown"],
+        "head": "a nose ringed by a vivid pink starburst of 22 fleshy tentacles, set on an otherwise blunt cylindrical head",
+        "eyes": "tiny bead-like eyes nearly hidden in fur",
+        "integument": "dense velvety water-repellent fur",
+        "arms": "short powerful forelimbs with broad spaded hands",
+        "hands": "large turned-out spade-shaped claws for digging",
+        "legs_feet": "short stout clawed feet",
+        "tail": "a short thick bare tail",
+        "extras": "the nose tentacles glistening with moisture, in constant motion tasting the air",
     },
 }
 

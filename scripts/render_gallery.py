@@ -141,10 +141,13 @@ def _gallery_shot(seed: int) -> str | None:
     from nodes.identity_forge import IdentityForge
     for spec in IdentityForge.define_schema().inputs:
         if spec.id == "shot_type":
-            # "Random" is the field's control value, not a shot: pinning it
-            # would re-randomize the camera and leak back-facing values through.
+            # "Random" is the field's control value and "None" is its omit
+            # sentinel -- neither is a shot; picking either would leak through
+            # as no framing at all (worse, "None" is a concrete widget value
+            # that silently overrides an archetype/cosplayer's own shot_type
+            # lock, since a non-Random widget value always wins over a preset).
             pool = [s for s in spec.options
-                    if s not in _BACK_FACING_SHOTS and s != "Random"]
+                    if s not in _BACK_FACING_SHOTS and s not in ("Random", "None")]
             return random.Random(seed ^ 0x5A17C105).choice(pool)
     return None
 
