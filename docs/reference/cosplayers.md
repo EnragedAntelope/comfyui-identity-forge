@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1974 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1977 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (377)
+## Anime & Manga (379)
 
 ### Akame ga Kill
 
@@ -429,6 +429,11 @@
 ### Noragami
 
 - **Bishamonten** (F, prop)
+
+### Oh My Goddess!
+
+- **Belldandy** (F)
+- **Urd** (F)
 
 ### One Piece
 
@@ -1911,7 +1916,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (221)
+## Movies & TV (222)
 
 ### A Nightmare on Elm Street
 
@@ -2012,6 +2017,7 @@
 ### Dr. Jekyll and Mr. Hyde
 
 - **Dr. Jekyll** (M, prop)
+- **Mr. Hyde** (M)
 
 ### Duolingo
 
@@ -2245,7 +2251,7 @@
 
 ### Red Alert
 
-- **Yuri** (M, prop)
+- **Yuri** (M)
 
 ### Rise of the Guardians
 

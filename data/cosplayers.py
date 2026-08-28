@@ -19246,12 +19246,31 @@ COSPLAYERS: dict[str, dict] = {
     "Yuri": {
         "franchise": "Red Alert",
         "gender": "Male",
-        # Psychic villain; bald head with distinctive robes, unique silhouette.
-        "costume": "a high-collared dark purple robe with gold trim and Soviet military styling, dramatic shoulder pauldrons, and a flowing cape, over a black bodysuit",
-        "signature": {"hair_color": "jet black", "hair_length": "bald",
-                      "hair_texture": "pin straight", "facial_hair": "clean shaven"},
+        "bald": True,
+        # Bald head / tattoo / band lead the sentence rather than trailing the coat
+        # description -- CLIP weights earlier tokens more heavily, and two prior
+        # attempts with the bald clause appended AFTER the coat both rendered with a
+        # full head of hair despite the prompt containing zero hair-related text (the
+        # entry-level bald flag correctly suppresses the "His hair is..." sentence;
+        # the model was hallucinating hair from general training bias, not following
+        # any prompt cue, so pure positional emphasis is the only lever available at
+        # this pipeline's cfg=1/no-negative-prompt turbo config).
+        # Canonical detail per source material: three simplified Hebrew letters
+        # (resh/vav/yod) down the forehead center -- rendered as tattooed glyphs
+        # rather than literal script, since t2i models cannot reproduce real text
+        # reliably (see [[t2i-prose-needs-a-rendering-frame]] in memory). The psi
+        # collar's shoulder wiring replaces the separate "shoulder armor" phrase
+        # from the previous draft -- they were describing the same silhouette
+        # feature and competing for it.
+        "costume": "a shaved bald head marked with three dark red tattooed glyphs "
+                   "down the center of the forehead, a rivet-studded metal ring "
+                   "around the crown of the skull with flashing lights, wired down "
+                   "the neck into a heavy mechanical collar over the shoulders, and "
+                   "a high-collared black-and-purple military coat with purple "
+                   "gloves and tall black boots",
+        "eyes": "intense wide unblinking dark brown",
+        "signature": {"facial_hair": "van dyke"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "pale"},
-        "prop": "a psychic amplification device with glowing crystals and metal coils",
     },
     "Impa": {
         "franchise": "The Legend of Zelda",
@@ -22456,6 +22475,25 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
         "prop": "a silver-tipped walking cane",
     },
+    "Mr. Hyde": {
+        "franchise": "Dr. Jekyll and Mr. Hyde",
+        "gender": "Male",
+        # The monstrous transformation, as a separate entry rather than a Jekyll
+        # variant/costume: the two need independently randomizable bodies (gaunt
+        # gentleman vs. hulking brute), which an alt-costume overlay can't carry.
+        # Kept short and list-style (see Yuri) -- a longer single run-on clause
+        # tried first diluted attention and the render lost the skin colour, the
+        # brow, and the fangs, rendering as an ordinary pale Victorian man.
+        "costume": "a torn black Victorian coat and shredded waistcoat hanging open "
+                   "over a ripped shirt and tattered trousers, with uniform, all-over "
+                   "sallow grey-green skin, a jutting brow, and a snarling underbite "
+                   "lined with yellowed fangs, on a hulking muscular frame",
+        "eyes": "small sunken bloodshot yellow",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "natural and unstyled", "body_type": "stocky",
+                      "height": "very tall", "shoulder_width": "very broad",
+                      "fitness_level": "muscular"},
+    },
     "Captain Nemo": {
         "franchise": "Twenty Thousand Leagues Under the Sea",
         "gender": "Male",
@@ -23085,8 +23123,41 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a sleek black bodysuit gloved to the elbow, a padded biker "
                    "jacket left open, and tall black boots, with wisps of black "
                    "smoke curling from the open collar",
-        "mask": "a glossy midnight-black motorcycle helmet with a mirrored visor",
+        "mask": "a glossy yellow-and-blue full-face motorcycle helmet molded with small "
+                "cat-ear peaks at the crown and a smoked mirrored visor",
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "pale"},
+    },
+    "Urd": {
+        "franchise": "Oh My Goddess!",
+        "gender": "Female",
+        # Half-goddess, half-demon; the dark violet inverted-triangle markings mark her
+        # mixed heritage (goddesses wear blue, demons red) and are the character's most
+        # identifying feature, above and beyond the purple wardrobe. This is her
+        # formal goddess robe-and-cape look (not the bikini-top variant tried first).
+        "costume": "dark violet inverted-triangle markings on the forehead and both "
+                   "cheeks, a form-fitting purple robe falling to the ankles with a "
+                   "high slit up the left leg and a plunging V-neckline baring the "
+                   "midriff, black shoulder straps patterned with gold triangles "
+                   "extending into a dark cape lined in purple, matching purple "
+                   "arm-length gloves, a black choker, silver bracelets, and dark shoes",
+        "signature": {"hair_color": "silver", "hair_length": "very long",
+                      "hair_texture": "pin straight", "hair_style": "worn down",
+                      "eye_color": "golden brown"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "bronze"},
+    },
+    "Belldandy": {
+        "franchise": "Oh My Goddess!",
+        "gender": "Female",
+        # Full goddess; the blue diamond forehead crest and blue triangle cheek marks are
+        # her heritage markings (see Urd for the half-demon violet version).
+        "costume": "an elaborate white goddess gown baring the legs, wrapped in an outer "
+                   "blue garment with yellow triangular trim draped over the shoulders and "
+                   "torso and joined at the front by a jeweled brooch, dangling gold "
+                   "earrings, and a slender blue diamond crest centered on the forehead "
+                   "with dark blue triangular markings on both cheeks",
+        "signature": {"hair_color": "light chestnut", "hair_length": "waist length",
+                      "hair_style": "low ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
     },
     "Panty Anarchy": {
         "franchise": "Panty & Stocking with Garterbelt",
@@ -23694,7 +23765,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Durarara!!", "Panty & Stocking with Garterbelt", "Gintama",
         "Golden Kamuy", "Magi", "Soul Eater",
         "Black Clover", "Dorohedoro", "Eureka Seven",
-        "Dandadan"
+        "Dandadan", "Oh My Goddess!"
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),

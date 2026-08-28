@@ -722,7 +722,8 @@ const COSPLAYER_FRANCHISES = {
     "Nikaido"
   ],
   "Dr. Jekyll and Mr. Hyde": [
-    "Dr. Jekyll"
+    "Dr. Jekyll",
+    "Mr. Hyde"
   ],
   "Dr. Seuss": [
     "Horton",
@@ -1813,6 +1814,10 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Noragami": [
     "Bishamonten"
+  ],
+  "Oh My Goddess!": [
+    "Belldandy",
+    "Urd"
   ],
   "One Piece": [
     "Boa Hancock",

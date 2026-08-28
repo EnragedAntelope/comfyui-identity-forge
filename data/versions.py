@@ -135,6 +135,7 @@ RELEASES: tuple[str, ...] = (
     "0.97.0",
     "0.98.0",
     "1.0.0",
+    "1.0.1",
 )
 
 #: Entry name -> the release it first shipped in.
@@ -302,6 +303,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Beerus': "0.16.0",
         'Beetlejuice': "0.76.0",
         'Bellatrix Lestrange': "0.16.0",
+        'Belldandy': "1.0.1",
         'Belle': "0.6.0",
         'Bender': "0.59.0",
         'Betty Boop': "0.18.0",
@@ -1344,6 +1346,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Mr. Burns': "0.77.0",
         'Mr. Clean': "0.51.0",
         'Mr. Freeze': "0.16.0",
+        'Mr. Hyde': "1.0.1",
         'Mr. Incredible': "0.17.0",
         'Mr. Krabs': "0.77.0",
         'Mr. Peanut': "0.51.0",
@@ -1980,6 +1983,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Uncle Fester': "0.59.0",
         'Unkar Plutt': "0.21.0",
         'Urbosa': "0.16.0",
+        'Urd': "1.0.1",
         'Urdnot Wrex': "0.60.0",
         'Ursula': "0.6.0",
         'Usopp': "0.74.0",
