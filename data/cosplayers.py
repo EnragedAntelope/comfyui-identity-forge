@@ -238,8 +238,12 @@ COSPLAYERS: dict[str, dict] = {
     "Bulma": {
         "franchise": "Dragon Ball",
         "gender": "Female",
-        "costume": "a casual pink sleeveless top with the word logo, denim shorts, and "
-                   "white sneakers, with a red hair band",
+        # Canon is a shirt reading "BULMA" -- the old "with the word logo" phrasing named
+        # no actual text. Canonical-accuracy rule: authored text is never reworded away
+        # for render-quality reasons (same doctrine as the 1.1.0 neon coherence fix).
+        # Changes this entry's entry_hash; picked up by a later re-render pass.
+        "costume": "a casual pink sleeveless top with 'BULMA' emblazoned across the chest, "
+                   "denim shorts, and white sneakers, with a red hair band",
         "signature": {"hair_color": "teal", "hair_length": "shoulder length",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},

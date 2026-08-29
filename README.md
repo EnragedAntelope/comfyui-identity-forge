@@ -322,7 +322,11 @@ for a ready-to-run workflow.
   widget value and every link is preserved (this pack ships its own working recreate; ComfyUI-
   Manager's own version of that menu entry can fail on the current frontend — see
   [docs/architecture.md](docs/architecture.md#a-working-fix-node-recreate)).
-  
+- **Background lettering (signage, a costume's printed text, tattoo script) shows up more
+  than you'd like.** The pack authors canonical text where a character's design calls for
+  it and emits no negative prompt of its own, so if you'd rather not see incidental
+  background lettering, add `text, signage, watermark` to your own negative prompt.
+
 ---
 
 ## Learn more

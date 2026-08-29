@@ -1860,7 +1860,18 @@ class FixtureLightingTests(unittest.TestCase):
     #: `outdoor amphitheater` is a real outdoor stage, and the four studio backdrops
     #: must stay because `studio_stage` is carved out of the family VOID_ALLOWED_LIGHTING
     #: admits. Everything not listed here is an interior object and must stay indoors.
-    OUTDOOR_CAPABLE_FIXTURES = {"stage spotlight from above"}
+    #:
+    #: 1.1.0: the seven neon/venue-rig values join this list. NEON_SIGNAGE_VENUE_LOCATIONS
+    #: mixes indoor bars/venues with outdoor streets and landmarks, and
+    #: NEON_STREET_LOCATIONS is the whole (outdoor) urban_outdoor family -- neither is
+    #: interior-only, so `test_interior_fixtures_stay_indoors` would otherwise (correctly)
+    #: flag them.
+    OUTDOOR_CAPABLE_FIXTURES = {
+        "stage spotlight from above",
+        "neon sign glow in multiple colors", "single neon light from one side",
+        "purple and teal neon wash", "club strobe lighting", "colored gel lighting",
+        "fog-diffused streetlamp glow", "reflection off wet pavement",
+    }
 
     def test_allowlist_entries_are_all_real_locations(self):
         # A typo, or a location later renamed/removed, would silently make an
@@ -1894,16 +1905,28 @@ class FixtureLightingTests(unittest.TestCase):
             self.OUTDOOR_CAPABLE_FIXTURES <= set(FIXTURE_LIGHTING),
             "the exemption list names a fixture that no longer exists")
 
-    def test_every_fixture_value_is_its_own_whole_family(self):
+    def test_fixture_families_move_together(self):
+        """A fixture-gated family no longer has to be a SINGLETON (1.1.0:
+        neon_signage is 3 variants, venue_rig is 2), but every member of such a
+        family must be fixture-gated, and every member must share the exact same
+        allowlist -- otherwise a per-location rule would partially cull the
+        family and dump its frozen weight onto the survivors. A singleton family
+        satisfies this trivially, so this subsumes the pre-1.1.0 assertion."""
         from data.fields import FIXTURE_LIGHTING, LIGHTING_FAMILIES
-        singletons = {tuple(d["variants"])[0] for d in LIGHTING_FAMILIES.values()
-                      if len(d["variants"]) == 1}
-        for light in FIXTURE_LIGHTING:
-            self.assertIn(
-                light, singletons,
-                f"{light!r} is excluded per-location but shares a family -- the "
-                f"exclusion would be a partial cull and concentrate that family's "
-                f"frozen weight onto the survivors")
+        family_of = {v: fam for fam, d in LIGHTING_FAMILIES.items() for v in d["variants"]}
+        touched = {family_of[light] for light in FIXTURE_LIGHTING if light in family_of}
+        for fam in touched:
+            variants = LIGHTING_FAMILIES[fam]["variants"]
+            missing = [v for v in variants if v not in FIXTURE_LIGHTING]
+            self.assertFalse(
+                missing,
+                f"family {fam!r} fixture-gates some members but not {missing} -- "
+                f"a partial cull would concentrate the family's frozen weight")
+            allowlists = {frozenset(FIXTURE_LIGHTING[v]) for v in variants}
+            self.assertEqual(
+                len(allowlists), 1,
+                f"family {fam!r}'s members do not share one allowlist -- "
+                f"excluding a location would partially cull the family")
 
 
 class LightingBucketFamilyTests(unittest.TestCase):
@@ -1931,8 +1954,16 @@ class LightingBucketFamilyTests(unittest.TestCase):
             "INDOOR_ONLY_LIGHTING": set(INDOOR_ONLY_LIGHTING),
             "not VOID_ALLOWED_LIGHTING": allv - set(VOID_ALLOWED_LIGHTING),
         }
-        for light in FIXTURE_LIGHTING:
-            buckets[f"fixture {light!r}"] = {light}
+        # Group fixture values by their allowlist rather than one bucket per
+        # value (1.1.0): neon_signage's 3 values and venue_rig's 2 share ONE
+        # allowlist, so testing each value in isolation would look like a
+        # partial cull of its family even though every member of that family
+        # moves together (see FixtureLightingTests.test_fixture_families_move_together).
+        by_allowlist: "dict[frozenset, set]" = {}
+        for light, places in FIXTURE_LIGHTING.items():
+            by_allowlist.setdefault(frozenset(places), set()).add(light)
+        for i, values in enumerate(by_allowlist.values()):
+            buckets[f"fixture allowlist #{i}"] = values
         return buckets
 
     def test_no_bucket_partially_culls_a_family(self):
@@ -1957,10 +1988,12 @@ class LightingBucketFamilyTests(unittest.TestCase):
         """Every rescale is only legitimate if no value's probability moved.
 
         Baseline is the 0.81.0 family table, hardcoded so a future weight retune
-        has to be a deliberate act rather than an accident. It has now survived two
-        splits: x6 at 0.82.0 (the fixture split) and x11 at 0.83.0 (studio ->
-        studio_shape + studio_stage), total 228 x 11 = 2508. The point of the test is
-        that a value's per-variant share is STILL the 0.81.0 share after both.
+        has to be a deliberate act rather than an accident. It has now survived
+        three splits: x6 at 0.82.0 (the fixture split), x11 at 0.83.0 (studio ->
+        studio_shape + studio_stage, total 228 x 11 = 2508), and x2 at 1.1.0
+        (neon_venue -> neon_signage + venue_rig + bokeh, total 2508 x 2 = 5016).
+        The point of the test is that a value's per-variant share is STILL the
+        0.81.0 share after all three.
         """
         from data.fields import LIGHTING_FAMILIES
         before = {  # 0.81.0: family -> (weight, variant count)
@@ -1971,7 +2004,10 @@ class LightingBucketFamilyTests(unittest.TestCase):
             "daylight": "daylight", "window_general": "window",
             "window_stained": "window", "artificial_open": "artificial",
             "artificial_ceiling": "artificial", "artificial_hearth": "artificial",
-            "artificial_screen": "artificial", "neon_venue": "neon",
+            "artificial_screen": "artificial",
+            # 1.1.0: all three neon_venue halves trace to the same 0.81.0 parent,
+            # proportional to variant count (3:2:1 -- neon_venue had 6 variants).
+            "neon_signage": "neon", "venue_rig": "neon", "bokeh": "neon",
             "neon_street": "neon",
             # 0.83.0: both halves of the studio split trace to the same 0.81.0 parent,
             # which is exactly the 10:1 proportionality assertion.
@@ -1987,6 +2023,190 @@ class LightingBucketFamilyTests(unittest.TestCase):
                 d["weight"] / new_total / len(d["variants"]),
                 pw / old_total / pn, places=12,
                 msg=f"family {fam!r} shifted its members' share off the 0.81.0 baseline")
+
+
+class NeonSignageGateTests(unittest.TestCase):
+    """1.1.0: the neon_venue split (neon_signage / venue_rig / bokeh) and its
+    location gate. `neon_venue` was legal at every location except the four
+    void backdrops, which inflated it to 22.76% of indoor draws once other
+    families excluded themselves (see the block comment above LIGHTING_FAMILIES
+    in data/fields.py). `bokeh` is a light quality with no fixture claim and is
+    deliberately left ungated.
+    """
+
+    def test_lighting_family_weights_sum_to_5016(self):
+        from data.fields import LIGHTING_FAMILIES
+        self.assertEqual(sum(d["weight"] for d in LIGHTING_FAMILIES.values()), 5016)
+        self.assertEqual(len(LIGHTING_FAMILIES), 13,
+                          "seeds drift for `lighting` -- 13 families, not 11")
+
+    #: Ordinary indoor rooms and quiet rural/outdoor spots -- exactly the class
+    #: of place the old, ungated `neon_venue` was illegally reaching (the
+    #: motivating report was a neighborhood pharmacy under firelight; this is
+    #: the same bug class for neon signage).
+    _NON_VENUE_LOCATIONS = (
+        'neighborhood pharmacy', 'grand cathedral interior', 'hospital room',
+        'university lecture hall', 'corporate open office', 'forest trail',
+        'a Yosemite valley meadow', 'mountain overlook', 'sunny suburban kitchen',
+    )
+
+    def test_neon_signage_unreachable_at_non_venue_locations(self):
+        from data.fields import NEON_SIGNAGE_VENUE_LOCATIONS, LIGHTING_FAMILIES
+        self.assertTrue(
+            set(self._NON_VENUE_LOCATIONS).isdisjoint(NEON_SIGNAGE_VENUE_LOCATIONS),
+            "a sample location is on the allowlist -- pick a different sample")
+        gated = (set(LIGHTING_FAMILIES["neon_signage"]["variants"])
+                 | set(LIGHTING_FAMILIES["venue_rig"]["variants"]))
+        for loc in self._NON_VENUE_LOCATIONS:
+            for seed in range(60):
+                _, js = generate_character(seed, "Any", {"location": loc})
+                setting = json.loads(js)["Setting & Shot"]
+                self.assertEqual(setting["location"], loc)
+                self.assertNotIn(setting["lighting"], gated,
+                                  f"{loc!r} lit by {setting['lighting']!r}")
+
+    def test_neon_signage_reachable_at_a_nightclub(self):
+        from data.fields import LIGHTING_FAMILIES
+        neon_signage_values = set(LIGHTING_FAMILIES["neon_signage"]["variants"])
+        hit = False
+        for seed in range(200):
+            _, js = generate_character(seed, "Any", {"location": "neon-lit nightclub"})
+            setting = json.loads(js)["Setting & Shot"]
+            self.assertEqual(setting["location"], "neon-lit nightclub")
+            if setting["lighting"] in neon_signage_values:
+                hit = True
+                break
+        self.assertTrue(hit, "neon_signage never landed at a nightclub in 200 seeds")
+
+    def test_bokeh_stays_ungated(self):
+        """`bokeh` (`golden bokeh lights in background`) asserts no fixture, so
+        unlike its former neon_venue siblings it must NOT appear in FIXTURE_LIGHTING."""
+        from data.fields import FIXTURE_LIGHTING
+        self.assertNotIn('golden bokeh lights in background', FIXTURE_LIGHTING)
+
+
+def _archetype_location_lighting_pairs():
+    """Yield every (label, location, lighting) pair reachable from a shipped
+    ``data.templates.ARCHETYPES`` entry (base preset and each gender variant).
+
+    A field may hold a list of curated alternatives; ``build_archetype_json``
+    resolves each list field with its OWN independent seeded ``rng.choice``
+    call (see ``_resolve_list_values``), so every (location, lighting)
+    combination across two independent lists is reachable across seeds -- this
+    enumerates all of them rather than sampling.
+    """
+    from data.templates import ARCHETYPES
+
+    def _options(value):
+        if value is None:
+            return [None]
+        return list(value) if isinstance(value, list) else [value]
+
+    for name, preset in ARCHETYPES.items():
+        variants = preset.get("variants")
+        base_loc, base_lig = preset.get("location"), preset.get("lighting")
+        blocks = [(name, base_loc, base_lig)]
+        if isinstance(variants, dict):
+            for variant_name, look in variants.items():
+                if not isinstance(look, dict):
+                    continue
+                blocks.append((
+                    f"{name} ({variant_name})",
+                    look.get("location", base_loc),
+                    look.get("lighting", base_lig),
+                ))
+        for label, loc, lig in blocks:
+            if loc is None or lig is None:
+                continue
+            for one_loc in _options(loc):
+                for one_lig in _options(lig):
+                    yield label, one_loc, one_lig
+
+
+class ArchetypeNeonLocationTests(unittest.TestCase):
+    """1.1.0 mandatory pre-flight audit: no shipped ``ARCHETYPES`` entry may
+    lock a (location, lighting) pair the new neon/venue-rig/streetlamp gate
+    rejects.
+
+    ``_apply_constraints`` never silently overwrites a locked field -- when
+    both the trigger (``location``) and the target (``lighting``) are locked,
+    as every archetype here has them (both are in the "Setting & Shot"
+    essential group), a firing exclusion just warns and keeps both values (see
+    its docstring). So a contradictory archetype pair does not visibly break
+    on render; it is still a data smell this audit exists to catch, and the
+    fix is always to widen the allowlist, never to edit archetype data.
+    """
+
+    #: Scope this audit to the SEVEN 1.1.0 fixture values (neon_signage's 3,
+    #: venue_rig's 2, neon_street's 2). `stage spotlight from above` is also in
+    #: FIXTURE_LIGHTING but is an unrelated, pre-existing (0.83.0) fixture this
+    #: task never touches -- STAGE_LOCATIONS already has its own pre-existing
+    #: archetype mismatches (Stage Magician, Circus Clown, Hair Metal Rocker,
+    #: Opera Singer, Figure Skater, Beauty Pageant Contestant, Kabuki Actor),
+    #: out of scope for this audit entirely.
+    _NEW_FIXTURES = frozenset({
+        "neon sign glow in multiple colors", "single neon light from one side",
+        "purple and teal neon wash", "club strobe lighting", "colored gel lighting",
+        "fog-diffused streetlamp glow", "reflection off wet pavement",
+    })
+
+    #: Pre-existing / newly-surfaced authoring inconsistencies this audit found
+    #: that are OUT OF SCOPE for the 1.1.0 neon fix -- editing archetype data is
+    #: explicitly disallowed for this change; only the allowlist may move.
+    #: Tracked here for a follow-up, each (archetype label, location, lighting):
+    #:
+    #: * Teddy Boy / wood-paneled pub / fog-diffused streetlamp glow -- an
+    #:   indoor food_drink location already contradicted OUTDOOR_ONLY_LIGHTING
+    #:   before this task; unrelated to the 1.1.0 neon gate.
+    #: * Grim Reaper / misty moor / fog-diffused streetlamp glow -- misty moor
+    #:   is nature_outdoor, exactly the "streetlamp on a Yosemite meadow" bug
+    #:   class NEON_STREET_LOCATIONS exists to prevent. A genuine authoring miss.
+    #: * 1980s Action Star and Hazmat Technician each pair 'single neon light
+    #:   from one side' with a work_industrial location (warehouse interior,
+    #:   parking garage, factory floor) -- outside every brief-named category
+    #:   (food_drink / leisure_fitness / urban_outdoor / urban_landmark).
+    #: * Streamer / co-working space / neon sign glow in multiple colors --
+    #:   work_industrial, same reasoning.
+    _PRE_EXISTING_EXCEPTIONS = frozenset({
+        ("Teddy Boy", "wood-paneled pub", "fog-diffused streetlamp glow"),
+        ("Grim Reaper", "misty moor", "fog-diffused streetlamp glow"),
+        ("1980s Action Star", "warehouse interior", "single neon light from one side"),
+        ("1980s Action Star", "parking garage", "single neon light from one side"),
+        ("Hazmat Technician", "warehouse interior", "single neon light from one side"),
+        ("Hazmat Technician", "factory floor", "single neon light from one side"),
+        ("Streamer", "co-working space", "neon sign glow in multiple colors"),
+    })
+
+    def test_no_shipped_archetype_locks_a_rejected_neon_pair(self):
+        from data.fields import FIXTURE_LIGHTING
+        failures = []
+        for label, loc, lig in _archetype_location_lighting_pairs():
+            if lig not in self._NEW_FIXTURES or loc in FIXTURE_LIGHTING[lig]:
+                continue
+            base_name = label.split(" (")[0]
+            if (base_name, loc, lig) in self._PRE_EXISTING_EXCEPTIONS:
+                continue
+            failures.append((label, loc, lig))
+        self.assertEqual(
+            failures, [],
+            f"shipped archetype(s) lock a (location, lighting) pair the neon "
+            f"gate rejects, uncovered by a declared pre-existing exception: "
+            f"{failures}")
+
+    def test_pre_existing_exceptions_are_not_stale(self):
+        """Each exemption must still name a real, currently-rejected pair --
+        otherwise it is dead weight that would hide a real future regression
+        (same doctrine as FixtureLightingTests's OUTDOOR_CAPABLE_FIXTURES check)."""
+        from data.fields import FIXTURE_LIGHTING
+        all_pairs = {(label.split(" (")[0], loc, lig)
+                     for label, loc, lig in _archetype_location_lighting_pairs()}
+        for exc in self._PRE_EXISTING_EXCEPTIONS:
+            name, loc, lig = exc
+            self.assertIn(lig, self._NEW_FIXTURES, f"{exc} names a fixture out of this audit's scope")
+            self.assertIn(exc, all_pairs, f"{exc} no longer appears in ARCHETYPES")
+            self.assertNotIn(
+                loc, FIXTURE_LIGHTING.get(lig, frozenset()),
+                f"{exc} is no longer actually rejected -- remove this exemption")
 
 
 class RepickDistributionTests(unittest.TestCase):

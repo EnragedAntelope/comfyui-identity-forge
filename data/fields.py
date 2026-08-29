@@ -1189,22 +1189,66 @@ QUADRUPED_UNPERFORMABLE_POSES: frozenset[str] = frozenset(
 # Total 228 = 38 x 6. **Seeds drift for `lighting`**: the distribution is unchanged
 # but `rng.choices` sees 10 families instead of 5, so a given seed can land on a
 # different value. Accepted, same precedent as 0.64.0 / 0.66.0 / 0.78.0 / 0.81.0.
+#
+# --- 1.1.0: the neon fixture split (neon_venue was never location-gated) -----
+# `neon_venue` mixed a SIGNAGE claim (a readable neon sign), a VENUE-RIG claim (a
+# strobe or gelled stage light), and a plain light QUALITY (background bokeh) in
+# one 6-variant family, legal at every location except the four void backdrops.
+# Because `_pick_family_weighted` keeps a family's full frozen weight when other
+# families drop out, excluding e.g. `daylight` indoors inflated `neon_venue` to
+# 22.76% of indoor draws and `neon_venue` + `neon_street` to 19.6% outdoors --
+# roughly one render in four carrying a neon or signage cue. The canonical-
+# accuracy rule for this release is that authored TEXT is never reworded away
+# for render-quality reasons, so this is a coherence and frequency fix, not a
+# text-quality one: a neon sign belongs in a nightclub, not a cathedral.
+#
+# The split follows the fixture seam, same doctrine as the hearth/TV/stained-
+# glass split above and the studio_stage split below: the neon trio (`neon sign
+# glow in multiple colors`, `single neon light from one side`, `purple and teal
+# neon wash`) asserts SIGNAGE; the strobe and colored-gel pair assert a VENUE/
+# STAGE RIG; background bokeh is a light quality with no fixture claim at all,
+# so it alone stays broadly legal (ungated) -- see NEON_SIGNAGE_VENUE_LOCATIONS
+# and FIXTURE_LIGHTING below for the new allowlists.
+#
+# Arithmetic: every weight in this map is rescaled x2 FIRST (2508 -> 5016), which
+# alone would leave `neon_venue` at 594 for 6 variants -- still 99 per variant,
+# identical to its old 297/6 share. That 594 is then split three ways
+# proportional to variant count (3:2:1 -> 297/198/99), so every one of the six
+# original variants keeps EXACTLY its pre-split per-variant share:
+#   neon_signage 297/3 == venue_rig 198/2 == bokeh 99/1 == the old neon_venue
+#   297/6 share, all before dividing by the (now doubled) field total.
+# No other family's per-variant share moves -- see
+# LightingBucketFamilyTests.test_split_preserved_every_pre_split_share.
+# Total 5016 = 2508 x 2. **Seeds drift for `lighting`** (13 families, not 11).
 LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("daylight", {"weight": 924, "variants": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'moonlight with cool blue tones', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight']}),
+    ("daylight", {"weight": 1848, "variants": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'moonlight with cool blue tones', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight']}),
     # Indoor daylight. The whole family is indoor-only, so it drops whole outdoors;
     # stained glass splits off because it additionally needs the *building* to have it.
-    ("window_general", {"weight": 220, "variants": ['soft window light from the side', 'backlit silhouette against bright window', 'light through venetian blinds casting stripes', 'warm sunlight streaming through a window', 'diffused skylight from above']}),
-    ("window_stained", {"weight": 44, "variants": ['light through stained glass casting colors']}),
+    ("window_general", {"weight": 440, "variants": ['soft window light from the side', 'backlit silhouette against bright window', 'light through venetian blinds casting stripes', 'warm sunlight streaming through a window', 'diffused skylight from above']}),
+    ("window_stained", {"weight": 88, "variants": ['light through stained glass casting colors']}),
     # Portable / open flame -- reads fine on a patio, at a campfire, on a terrace.
-    ("artificial_open", {"weight": 220, "variants": ['warm candlelight', 'warm incandescent lamp glow', 'warm string lights bokeh background', 'fire and flame warm flicker', 'warm lantern light']}),
+    ("artificial_open", {"weight": 440, "variants": ['warm candlelight', 'warm incandescent lamp glow', 'warm string lights bokeh background', 'fire and flame warm flicker', 'warm lantern light']}),
     # A ceiling fixture asserts a built interior: indoor-only, and now drops whole.
-    ("artificial_ceiling", {"weight": 88, "variants": ['cool LED overhead lighting', 'harsh fluorescent lighting']}),
+    ("artificial_ceiling", {"weight": 176, "variants": ['cool LED overhead lighting', 'harsh fluorescent lighting']}),
     # Fixture-specific: indoors AND only where that fixture plausibly exists.
-    ("artificial_hearth", {"weight": 44, "variants": ['flickering firelight from a hearth']}),
-    ("artificial_screen", {"weight": 44, "variants": ['flickering television glow in a dark room']}),
-    ("neon_venue", {"weight": 297, "variants": ['neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'golden bokeh lights in background', 'purple and teal neon wash', 'colored gel lighting']}),
-    # Exterior street fixtures: outdoor-only, and now drop whole indoors.
-    ("neon_street", {"weight": 99, "variants": ['fog-diffused streetlamp glow', 'reflection off wet pavement']}),
+    ("artificial_hearth", {"weight": 88, "variants": ['flickering firelight from a hearth']}),
+    ("artificial_screen", {"weight": 88, "variants": ['flickering television glow in a dark room']}),
+    # 1.1.0 fixture split (was `neon_venue`, weight 297, 6 variants -- see the
+    # block comment above). The trio asserts a readable SIGN: gated to
+    # NEON_SIGNAGE_VENUE_LOCATIONS via FIXTURE_LIGHTING.
+    ("neon_signage", {"weight": 297, "variants": ['neon sign glow in multiple colors', 'single neon light from one side', 'purple and teal neon wash']}),
+    # The strobe/gel pair asserts a VENUE or STAGE RIG: same allowlist as signage
+    # (a place with a light rig usually has signage too, and vice versa).
+    ("venue_rig", {"weight": 198, "variants": ['club strobe lighting', 'colored gel lighting']}),
+    # A light quality with no fixture claim -- deliberately left ungated, unlike
+    # its two former neon_venue siblings above.
+    ("bokeh", {"weight": 99, "variants": ['golden bokeh lights in background']}),
+    # Exterior street fixtures: outdoor-only, and now drop whole indoors. 1.1.0
+    # narrows this further to urban_outdoor (+ any outdoor transit_travel, none
+    # shipped today) via NEON_STREET_LOCATIONS -- a streetlamp has no business on
+    # a nature/landmark location either (the motivating case was a Yosemite
+    # valley meadow rendering "fog-diffused streetlamp glow").
+    ("neon_street", {"weight": 198, "variants": ['fog-diffused streetlamp glow', 'reflection off wet pavement']}),
     # 0.83.0 fixture split, same argument as the hearth/television/stained-glass
     # values above: a "stage spotlight" asserts an overhead stage RIG, which is an
     # object, not a light quality. Measured before this: it landed on outdoor
@@ -1213,11 +1257,8 @@ LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # together -- Rembrandt / butterfly / split / soft-box / chiaroscuro / low key /
     # three-point all describe the SHAPE of light on the face and are achievable on
     # location with a reflector, so they are not fixture claims and need no allowlist.
-    # Weights: 48 -> 480 + 48, proportional at 10:1, hence the x11 rescale of every
-    # family in this map (480/10 == 48/1 == the old per-variant share). Total
-    # 2508 = 228 x 11. **Seeds drift for `lighting`** (11 families, not 10).
-    ("studio_shape", {"weight": 480, "variants": ['dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
-    ("studio_stage", {"weight": 48, "variants": ['stage spotlight from above']}),
+    ("studio_shape", {"weight": 960, "variants": ['dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
+    ("studio_stage", {"weight": 96, "variants": ['stage spotlight from above']}),
 ])
 
 #: Location families. Each is entirely indoor, entirely outdoor, or entirely
@@ -2098,6 +2139,71 @@ STAGE_LOCATIONS: frozenset[str] = frozenset([
     'high school gymnasium',
 ])
 
+#: Nightlife / entertainment / urban-strip locations where a neon SIGN or a venue
+#: light RIG (strobe, colored gels) is plausible (1.1.0, the neon_venue split --
+#: see the block comment above LIGHTING_FAMILIES). This is an allowlist, so a
+#: location NOT named here has no neon sign or venue rig until deliberately added
+#: -- the same fail-safe default as HEARTH_LOCATIONS etc.
+#:
+#: Assembled from four whole LOCATION_FAMILIES buckets, each pared down to the
+#: members that plausibly carry the fixture, and cross-checked against every
+#: shipped ARCHETYPES lock so this never strips a signature look (see
+#: ArchetypeNeonLocationTests in tests/test_engine.py). ``work_industrial`` and
+#: ``transit_travel`` are deliberately absent even though a few archetypes pair a
+#: neon value with a warehouse, factory floor, parking garage or co-working
+#: space -- those are pre-existing, out-of-scope authoring looseness (tracked,
+#: not fixed here; see ArchetypeNeonLocationTests._PRE_EXISTING_EXCEPTIONS),
+#: not a location this gate is meant to admit generally.
+NEON_SIGNAGE_VENUE_LOCATIONS: frozenset[str] = frozenset([
+    # food_drink: the bar/club members (a wine bar, gastropub, cafe or diner is
+    # not a nightlife venue and stays out).
+    'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge',
+    'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar',
+    # leisure_fitness: arcade / karaoke / casino / bowling / skating / cinema,
+    # plus the music- and stage-performance venues four shipped archetypes need
+    # (Musician, Punk Rocker, Hair Metal Rocker, Rapper, Visual Kei) -- a
+    # recording studio, a concert backstage, and a stage under gelled rig light.
+    'bowling alley', 'roller skating rink', 'movie theater lobby',
+    'arcade with glowing cabinets', 'independent cinema auditorium',
+    'karaoke room with song menus', 'casino floor with card tables',
+    'recording studio', 'concert hall backstage',
+    'empty theater stage with the curtain up',
+    # urban_outdoor: the specific night-street members that plausibly carry
+    # signage or rig light, not the whole family (that broader outdoor pass is
+    # neon_street's job below). Every one of these is also a location a shipped
+    # archetype locks a signage/rig value against (Bosozoku, 1980s Action Star,
+    # Mardi Gras Reveler, E-Girl / E-Boy, Cybergoth, Rapper).
+    'neon-lit city street', 'urban alley with graffiti', 'cobblestone old-town street',
+    'open-air street food market', 'graffiti-covered skate park',
+    # urban_landmark: the three landmarks actually known for dense illuminated
+    # signage, not the whole 17-member family.
+    'Times Square', 'Shibuya Crossing', 'the Bund waterfront in Shanghai',
+    # retail_services: one deliberate addition outside the four families above --
+    # a tattoo parlor with neon signage is as iconic a pairing as a nightclub,
+    # and the shipped Tattoo Artist archetype locks exactly this pair. Nothing
+    # else in retail_services is added; this is not a general retail allowance.
+    'tattoo parlor',
+])
+
+#: Where a fog-diffused streetlamp or a wet-pavement reflection is plausible:
+#: the whole ``urban_outdoor`` LOCATION_FAMILIES family (a real street), plus any
+#: OUTDOOR_LOCATIONS member of ``transit_travel`` -- none ship today, so this is
+#: computed rather than hand-listed to stay correct if one ever does. Deliberately
+#: NOT the whole outdoor bucket: a streetlamp on a nature or landmark location
+#: (a Yosemite valley meadow, the Grand Canyon) is the same fixture-claim bug a
+#: hearth in a pharmacy was. Two shipped archetypes pair a streetlamp value with
+#: a location outside this allowlist (Grim Reaper / misty moor -- exactly the
+#: nature-outdoor bug this gate exists to prevent; Teddy Boy / wood-paneled pub
+#: -- indoor, and already contradicted OUTDOOR_ONLY_LIGHTING before this task).
+#: Both are pre-existing authoring issues, not fixed here; see
+#: ArchetypeNeonLocationTests._PRE_EXISTING_EXCEPTIONS.
+NEON_STREET_LOCATIONS: frozenset[str] = frozenset(
+    LOCATION_FAMILIES["urban_outdoor"]["variants"]
+) | frozenset(
+    loc for loc in LOCATION_FAMILIES["transit_travel"]["variants"]
+    if loc in OUTDOOR_LOCATIONS
+)
+
 #: {fixture lighting value -> the locations that have that fixture}. Consumed by
 #: data/constraints.py, which turns it into one exclusion rule per location listing
 #: whichever fixtures that location lacks.
@@ -2113,6 +2219,17 @@ FIXTURE_LIGHTING: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ('flickering television glow in a dark room', SCREEN_GLOW_LOCATIONS),
     ('light through stained glass casting colors', STAINED_GLASS_LOCATIONS),
     ('stage spotlight from above', STAGE_LOCATIONS),
+    # 1.1.0: the neon_signage (3-variant) and venue_rig (2-variant) families
+    # share ONE allowlist, so all five values are gated together -- excluding a
+    # location excludes both families wholly, never a partial cull of either.
+    ('neon sign glow in multiple colors', NEON_SIGNAGE_VENUE_LOCATIONS),
+    ('single neon light from one side', NEON_SIGNAGE_VENUE_LOCATIONS),
+    ('purple and teal neon wash', NEON_SIGNAGE_VENUE_LOCATIONS),
+    ('club strobe lighting', NEON_SIGNAGE_VENUE_LOCATIONS),
+    ('colored gel lighting', NEON_SIGNAGE_VENUE_LOCATIONS),
+    # neon_street's two values share their own, wider (whole-family) allowlist.
+    ('fog-diffused streetlamp glow', NEON_STREET_LOCATIONS),
+    ('reflection off wet pavement', NEON_STREET_LOCATIONS),
 ])
 
 #: The only lighting a void backdrop may draw: the ``studio`` family, exactly.
