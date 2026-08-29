@@ -24,6 +24,7 @@ Schema per entry (keyed by character name)::
         "physique":  {                    # body/skin/height — applied ONLY in "Full character" mode
             "body_type": "slender", "height": "average height", "skin_tone": "porcelain",
         },
+        "aliases":   ["YoRHa No. 2 Type B"],  # OPTIONAL — extra searchable names
     }
 
 Curation rules (so the data stays coherent with the engine):
@@ -56,6 +57,15 @@ Curation rules (so the data stays coherent with the engine):
   fields and every value must be a valid option for that field. Prefer unisex
   fields (hair, eyes, body) so the look survives the downstream gender gate for
   crossplay. ``tests/validate_data.py`` enforces this.
+* **Aliases (optional, schema support only).** A character with an alternate name
+  worth searching by (a codename vs. a civilian name, a hero identity vs. a secret
+  one) may carry an ``"aliases": [...]`` list of extra name strings. ``tests/
+  validate_data.py`` requires each to be a non-empty ASCII string.
+  ``scripts/generate_js_data.py`` folds them into the character's entry in
+  ``js/identity_forge_roster.json`` (the search index the picker modal fetches), so
+  an alias becomes another way to find the entry. This is schema support only —
+  the existing roster is not being backfilled; add aliases opportunistically as
+  characters are touched.
 * Non-human characters are included: their non-mappable features (green/blue/
   orange skin, montrals, antennae, wings, scales) live in ``costume`` as worn
   cosplay elements, and ``skin_tone`` is left out so the person underneath

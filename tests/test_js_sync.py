@@ -169,6 +169,34 @@ class CosplayerFranchisesInSync(unittest.TestCase):
                          "built-in entries unreachable through franchise_filter")
 
 
+class RosterJsonSizeTests(unittest.TestCase):
+    """``js/identity_forge_roster.json`` is the picker modal's bulk search index
+    (a separate, later task builds the modal that fetches it). It is regenerated
+    from the full roster on every release, so nothing pins its *content* here
+    beyond this size ceiling -- ``scripts/generate_js_data.py --check`` is what
+    catches it going stale relative to the data layer. This just stops a future
+    roster pass from quietly ballooning the file every ComfyUI picker has to fetch.
+    """
+
+    #: ~1.5 MB ceiling (0.97 MB at introduction across 1977 cosplayers, 251
+    #: archetypes, 253 creatures) -- generous headroom for roster growth, tight
+    #: enough to fail loudly on an accidental per-entry bloat (e.g. a stray raw
+    #: field dump instead of just the haystack).
+    _MAX_BYTES = 1_500_000
+
+    def test_roster_json_stays_under_the_size_ceiling(self):
+        path = ROOT / "js" / "identity_forge_roster.json"
+        self.assertTrue(path.is_file(), f"{path} does not exist -- run "
+                        f"`python scripts/generate_js_data.py`")
+        size = path.stat().st_size
+        self.assertLess(
+            size, self._MAX_BYTES,
+            f"js/identity_forge_roster.json is {size:,} bytes, over the "
+            f"{self._MAX_BYTES:,}-byte ceiling -- a roster pass has bloated the "
+            f"picker's search index; trim what each entry's haystack carries.",
+        )
+
+
 class SpeciesSlotListsInSync(unittest.TestCase):
     """The species slot tuple is maintained by hand in three places (0.97.0).
 
