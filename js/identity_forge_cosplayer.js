@@ -3016,11 +3016,22 @@ function setupCosplayer(node) {
  * the filter sits at index 1 -- every widget after `character` was restored one slot
  * out. Reported by the maintainer, who had to recreate each Cosplayer node by hand.
  *
+ * `random_pool` (1.1.0) is a Python-appended input, always the LAST widget (schema
+ * appends it after `upstream`, and `upstream` is a pure socket with no widget of its
+ * own) -- the direct precedent is `FIELDS_ADDED_BY_RELEASE` in identity_forge.js.
+ * Newest-first here also means highest-target-index-first: `random_pool`'s slot
+ * (last) is padded before `franchise_filter`'s (right after `character`), so the
+ * splice below still lands correctly even from a 7-value pre-0.89.0 array where
+ * neither widget has a slot yet -- verified by hand for all three legacy lengths
+ * (7 -> 9 needs both pads, 8 -> 9 needs one, 9 -> 9 is untouched) and pinned in
+ * tests/frontend/cosplayer.test.mjs.
+ *
  * Same table and same repair as `FIELDS_ADDED_BY_RELEASE` in identity_forge.js; the
  * two nodes hit the identical trap from opposite directions (a JS-inserted view widget
  * here, a Python-appended input there).
  */
 const WIDGETS_ADDED_BY_RELEASE = [
+  ["random_pool"], // 1.1.0
   [FILTER_WIDGET], // 0.89.0
 ];
 

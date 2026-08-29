@@ -4436,6 +4436,16 @@
         "decrement",
         "randomize"
       ]
+    },
+    {
+      "name": "random_pool",
+      "default": "All characters",
+      "type": "combo",
+      "options": [
+        "All characters",
+        "People only \u2014 no mascot suits or beasts",
+        "Mascot suits and beasts only"
+      ]
     }
   ],
   "IdentityForgeCreature": [

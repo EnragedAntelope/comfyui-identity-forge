@@ -199,9 +199,9 @@ def _scope_is_mascot(entry: dict) -> bool:
     because it is a *filter over the existing pool* it adds no entries and cannot
     shift any field's distribution. Bias-free by construction.
 
-    It earns its place on discoverability: ~120 entries carry both flags (Pikachu,
-    the TMNT, Bugs Bunny, Godzilla, Moogle, Teemo, ...) and there was no way to
-    find them short of luck.
+    It earns its place on discoverability: the entries this predicate matches
+    (Pikachu, the TMNT, Bugs Bunny, Godzilla, Moogle, Teemo, ...) had no way to
+    be found short of luck.
 
     Feral entries are excluded (0.95.0). They carry both flags too, but the scope means
     *a person inside a suit*, which is precisely what a feral entry is not -- and the
@@ -230,6 +230,33 @@ _SPECIAL_SCOPES: "dict[str, Any]" = {
     "Masked": _scope_is_masked,
     "Mascot / full-suit": _scope_is_mascot,
     "Beast / non-humanoid": _scope_is_feral,
+}
+
+
+def _pool_is_people(entry: dict) -> bool:
+    return not (_scope_is_mascot(entry) or _scope_is_feral(entry))
+
+
+def _pool_is_mascot_or_beast(entry: dict) -> bool:
+    return _scope_is_mascot(entry) or _scope_is_feral(entry)
+
+
+#: `random_pool` widget values (1.1.0): a POSITIVE attribute filter over the same
+#: Random pool `random_scope` narrows, composing with it rather than replacing it --
+#: `random_scope` stays single-select, so "Marvel, no mascots" stays reachable as
+#: scope + pool together. Reuses `_scope_is_mascot`/`_scope_is_feral` rather than new
+#: detection logic, so it self-maintains as the roster grows exactly like those two
+#: random_scope entries do. "All characters" applies no filter and reproduces
+#: pre-1.1.0 picks seed-for-seed; the other two are exact complements of each other
+#: over any fixed scope. Mirrored verbatim by the Phase 4 picker modal (a later,
+#: separate task) -- do not rename any of the three strings.
+_POOL_ALL = "All characters"
+_POOL_PEOPLE = "People only — no mascot suits or beasts"
+_POOL_MASCOT = "Mascot suits and beasts only"
+
+_POOL_PREDICATES: "dict[str, Any]" = {
+    _POOL_PEOPLE: _pool_is_people,
+    _POOL_MASCOT: _pool_is_mascot_or_beast,
 }
 
 #: Minimum roster size for a franchise to earn its own Random scope. The nine
@@ -500,15 +527,19 @@ _SCOPE_ABANDONED = "abandoned"      # scope itself matched nothing (result out o
 
 
 def _announce_scope(
-    character: str, category: str, gender: str | None, count: int, outcome: str
+    character: str, category: str, gender: str | None, count: int, outcome: str,
+    pool: str = _POOL_ALL,
 ) -> None:
     """Print a one-time console note of the in-scope pool size for a Random combo.
 
     A franchise/attribute scope narrows the Random pool. A *small* pool (e.g.
     ``Masked`` + ``female`` = 8) then repeats characters across seeds, which reads
     like the scope was ignored even though it is working. Printing the pool size
-    once per (character, scope) combo makes the scope legible without spamming the
-    console every generation.
+    once per (character, scope, pool) combo makes the scope legible without
+    spamming the console every generation. ``pool`` (the `random_pool` widget)
+    joins the cache key at 1.1.0: a different pool over the same scope is a
+    genuinely different combo and must not be silently suppressed by the first
+    one's announcement.
 
     ``outcome`` distinguishes the two degraded cases, which are very different for
     the user: :data:`_SCOPE_GENDER_RELAXED` still honours the franchise they asked
@@ -516,73 +547,86 @@ def _announce_scope(
     while :data:`_SCOPE_ABANDONED` means the scope matched nothing at all and the
     result really is out of scope.
     """
-    key = (character, category)
+    key = (character, category, pool)
     if key in _SCOPE_NOTICE_SEEN:
         return
     _SCOPE_NOTICE_SEEN.add(key)
     gender_word = gender.lower() if gender else "any-gender"
     plural = "s" if count != 1 else ""
+    # Named only when it actually narrows anything, so the default ("All
+    # characters") reproduces the pre-1.1.0 message text byte-for-byte.
+    pool_note = f" + pool '{pool}'" if pool != _POOL_ALL else ""
     if outcome == _SCOPE_GENDER_RELAXED:
-        print(f"[IdentityForgeCosplayer] scope '{category}' has no {gender_word} "
-              f"characters; keeping the scope and picking from all {count} "
-              f"character{plural} in it instead. Set the person's gender on the "
-              f"IdentityForge node for crossplay.")
+        print(f"[IdentityForgeCosplayer] scope '{category}'{pool_note} has no "
+              f"{gender_word} characters; keeping the scope and picking from all "
+              f"{count} character{plural} in it instead. Set the person's gender "
+              f"on the IdentityForge node for crossplay.")
     elif outcome == _SCOPE_ABANDONED:
-        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}' matched no "
-              f"characters; falling back to the full {gender_word} pool "
+        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}'{pool_note} "
+              f"matched no characters; falling back to the full {gender_word} pool "
               f"({count} characters). The result will be OUT OF SCOPE.")
     else:
-        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}': "
+        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}'{pool_note}: "
               f"{count} character{plural} in scope.")
 
 
 def _resolve_character(
-    character: str, rng: random.Random, category: str = _SCOPE_ANY
+    character: str, rng: random.Random, category: str = _SCOPE_ANY,
+    pool: str = _POOL_ALL,
 ) -> str | None:
     """Resolve a combo selection to a concrete character name.
 
     Returns ``None`` for "None", an unknown name, or a Random pick over an empty
     pool (e.g. "Random — male" before any male characters are added). ``category``
-    limits the Random picks to one franchise/category ("Any" = no limit). A specific
-    character selection ignores ``category``.
+    limits the Random picks to one franchise/category ("Any" = no limit). ``pool``
+    (the `random_pool` widget) is a POSITIVE attribute filter that composes with
+    ``category`` -- both narrow the same Random draw, independently, so a franchise
+    scope plus "People only" is expressible together. A specific character
+    selection ignores both.
 
-    When a (gender, scope) combo is empty the **scope wins and the gender is
-    relaxed**: asking for "Random — male" + "Franchise: Date A Live" (an all-female
-    cast) returns a Date A Live character rather than an out-of-scope one from the
-    whole roster. The scope is the deliberate, visible choice; the source gender
-    only pre-filters the pool, and the *person* cosplaying is gendered separately on
-    the IdentityForge node, so crossplay already makes the relaxed pick valid.
-    Only a scope that matches nothing at all falls back to the full roster, loudly.
+    When a (gender, scope, pool) combo is empty the **scope and pool win and the
+    gender is relaxed**: asking for "Random — male" + "Franchise: Date A Live" (an
+    all-female cast) returns a Date A Live character rather than an out-of-scope one
+    from the whole roster. Scope and pool are both deliberate, visible choices; the
+    source gender only pre-filters the pool, and the *person* cosplaying is gendered
+    separately on the IdentityForge node, so crossplay already makes the relaxed
+    pick valid. Only a combo that matches nothing at all falls back to the full
+    roster, loudly.
     """
     if character in _RANDOM_POOLS:
         gender = _RANDOM_POOLS[character]
-        scoped = category != _SCOPE_ANY
+        scoped = category != _SCOPE_ANY or pool != _POOL_ALL
         predicate = _PREDICATE_SCOPES.get(category)
+        pool_predicate = _POOL_PREDICATES.get(pool)
 
         def in_scope(for_gender: str | None) -> list[str]:
-            names = get_cosplayer_names(gender=for_gender)
             if predicate is not None:
                 # Attribute scope (Giant/Tiny/Non-human/Masked) or a single-franchise
                 # scope: filter the gender pool by the predicate instead of by category.
-                return [n for n in names if predicate(get_cosplayer(n))]
-            return get_cosplayer_names(gender=for_gender, category=category)
+                names = [n for n in get_cosplayer_names(gender=for_gender)
+                         if predicate(get_cosplayer(n))]
+            else:
+                names = get_cosplayer_names(gender=for_gender, category=category)
+            if pool_predicate is not None:
+                names = [n for n in names if pool_predicate(get_cosplayer(n))]
+            return names
 
-        pool = in_scope(gender)
+        candidates = in_scope(gender)
         outcome = _SCOPE_OK
-        if not pool and scoped and gender is not None:
-            # Keep the scope the user picked; drop only the source-gender filter.
-            pool = in_scope(None)
+        if not candidates and scoped and gender is not None:
+            # Keep the scope/pool the user picked; drop only the source-gender filter.
+            candidates = in_scope(None)
             outcome = _SCOPE_GENDER_RELAXED
-        if not pool:
-            # The scope itself is empty (only reachable via user_options.json).
+        if not candidates:
+            # The scope/pool itself is empty (only reachable via user_options.json).
             outcome = _SCOPE_ABANDONED if scoped else _SCOPE_OK
-            pool = get_cosplayer_names(gender=gender)
-        if not pool:
+            candidates = get_cosplayer_names(gender=gender)
+        if not candidates:
             print(f"[IdentityForgeCosplayer] No characters available for '{character}'.")
             return None
         if scoped:
-            _announce_scope(character, category, gender, len(pool), outcome)
-        return rng.choice(pool)
+            _announce_scope(character, category, gender, len(candidates), outcome, pool)
+        return rng.choice(candidates)
     if character == _NONE or character not in COSPLAYERS:
         return None
     return character
@@ -595,6 +639,7 @@ def build_cosplayer_json(
     mask_mode: str = _MASK_DEFAULT,
     include_prop: bool = False,
     random_scope: str = _SCOPE_ANY,
+    random_pool: str = _POOL_ALL,
 ) -> str:
     """Return the cosplay preset as a grouped JSON string.
 
@@ -619,9 +664,16 @@ def build_cosplayer_json(
     ``random_scope`` (default ``"Any"``) limits the ``"Random — …"`` picks to one
     franchise/category, or to one of the attribute scopes (Giant / Tiny / Non-human /
     Masked); it is ignored when a specific character is selected.
+
+    ``random_pool`` (default ``"All characters"``) is a positive attribute filter
+    that composes with ``random_scope`` rather than replacing it -- "People only —
+    no mascot suits or beasts" and "Mascot suits and beasts only" are exact
+    complements of each other over any fixed scope. It is ignored when a specific
+    character is selected. "All characters" applies no filter and reproduces
+    pre-1.1.0 output seed-for-seed.
     """
     rng = random.Random(seed)
-    name = _resolve_character(character, rng, random_scope)
+    name = _resolve_character(character, rng, random_scope, random_pool)
     if name is None:
         return "{}"
 
@@ -909,6 +961,22 @@ if _COMFY_AVAILABLE:
                                 "overlap; set this node to 'None' to pass the upstream "
                                 "through unchanged.",
                     ),
+                    # Appended at the END of the schema, never inserted among the
+                    # inputs above -- see WIDGETS_ADDED_BY_RELEASE in
+                    # js/identity_forge_cosplayer.js for why: a saved workflow's
+                    # widgets_values is positional, so this widget's slot must only
+                    # ever grow at the tail.
+                    io.Combo.Input(
+                        "random_pool",
+                        options=[_POOL_ALL, _POOL_PEOPLE, _POOL_MASCOT],
+                        default=_POOL_ALL,
+                        tooltip="Narrows the 'Random — …' picks to a positive "
+                                "attribute, composing with 'random_scope' above "
+                                "(e.g. a franchise scope + 'People only' keeps that "
+                                "franchise's mascots and beasts out of the roll). "
+                                "'All characters' applies no filter. No effect when "
+                                "a specific character is picked.",
+                    ),
                 ],
                 outputs=[io.String.Output(display_name="character_json")],
             )
@@ -920,7 +988,11 @@ if _COMFY_AVAILABLE:
             # #11905); returning a never-equal value (NaN) makes this node's cache
             # signature always differ, so it re-executes and reads the new seed.
             # Pure cache control -- no RNG here, so a fixed seed still reproduces
-            # exactly and nothing biases the randomization.
+            # exactly and nothing biases the randomization. Unconditional (ignores
+            # kwargs entirely), so a new widget such as random_pool needs no entry
+            # here: caching is already bypassed for every input, not enumerated
+            # per-field -- see docs/architecture.md "Seeded nodes re-roll every
+            # queue".
             return float("nan")
 
         @classmethod
@@ -932,6 +1004,7 @@ if _COMFY_AVAILABLE:
                 kwargs.get("mask", _MASK_DEFAULT),
                 kwargs.get("props", _PROP_OFF) == _PROP_ON,
                 kwargs.get("random_scope", _SCOPE_ANY),
+                kwargs.get("random_pool", _POOL_ALL),
             )
             character_json = merge_preset_documents(kwargs.get("upstream", ""), own)
             return io.NodeOutput(character_json)

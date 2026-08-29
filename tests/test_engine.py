@@ -75,10 +75,13 @@ from nodes.identity_forge_cosplayer import (
     _pick_look, _resolve_character, _SPECIAL_SCOPES,
     _FRANCHISE_SCOPES, _PREDICATE_SCOPES, _FRANCHISE_SCOPE_MINIMUM,
     _FRANCHISE_SCOPE_PREFIX, _FERAL, _FERAL_POSES,
+    _POOL_ALL, _POOL_PEOPLE, _POOL_MASCOT,
+    _scope_is_mascot, _scope_is_feral,
+    _RANDOM_ANY, _RANDOM_FEMALE, _RANDOM_MALE,
 )
 from nodes.identity_forge_modifier import build_modifier_json, _parse_modifier_text
 from data.templates import ARCHETYPES
-from data.cosplayers import COSPLAYERS, get_cosplayer_names
+from data.cosplayers import COSPLAYERS, get_cosplayer_names, get_cosplayer_category
 from data.creatures import CREATURES
 from tests.validate_data import validate
 
@@ -371,8 +374,19 @@ class ScopeAnnounceTests(unittest.TestCase):
         cn._SCOPE_NOTICE_SEEN.clear()
         cn._announce_scope("Random - female", "Masked", "Female", 7, cn._SCOPE_OK)
         cn._announce_scope("Random - female", "Masked", "Female", 7, cn._SCOPE_OK)
-        self.assertIn(("Random - female", "Masked"), cn._SCOPE_NOTICE_SEEN)
+        # 1.1.0: `pool` joined the cache key (defaults to `_POOL_ALL` here, since
+        # neither call passed one) -- a different pool over the same scope is a
+        # different combo and must not be silently suppressed by this one.
+        self.assertIn(("Random - female", "Masked", cn._POOL_ALL), cn._SCOPE_NOTICE_SEEN)
         self.assertEqual(len(cn._SCOPE_NOTICE_SEEN), 1)
+
+    def test_announce_key_includes_pool(self):
+        import nodes.identity_forge_cosplayer as cn
+        cn._SCOPE_NOTICE_SEEN.clear()
+        cn._announce_scope("Random - any", "Masked", None, 5, cn._SCOPE_OK, cn._POOL_PEOPLE)
+        cn._announce_scope("Random - any", "Masked", None, 2, cn._SCOPE_OK, cn._POOL_MASCOT)
+        # Same character + scope, two different pools: both must announce.
+        self.assertEqual(len(cn._SCOPE_NOTICE_SEEN), 2)
 
     def test_empty_gender_combo_keeps_the_scope(self):
         """An all-one-gender franchise must still return a character FROM it.
@@ -5393,6 +5407,117 @@ class SpecialRandomScopeTests(unittest.TestCase):
         self.assertTrue(picked, "Non-human scope produced no characters")
         for name in picked:
             self.assertTrue(predicate(COSPLAYERS[name]))
+
+
+class RandomPoolTests(unittest.TestCase):
+    """`random_pool` (1.1.0): a POSITIVE attribute filter that composes with
+    `random_scope`, not a seventh scope -- `random_scope` stays single-select
+    (see `SpecialRandomScopeTests.test_scopes_are_registered` above, which must
+    stay unchanged). Reuses `_scope_is_mascot`/`_scope_is_feral` rather than new
+    detection logic, so it self-maintains as the roster grows.
+    """
+
+    @staticmethod
+    def _is_mascot_or_beast(entry: dict) -> bool:
+        return _scope_is_mascot(entry) or _scope_is_feral(entry)
+
+    def test_pool_value_strings_match_the_phase4_interface_exactly(self):
+        # The Phase 4 picker modal (a later, separate task) mirrors these three
+        # strings verbatim as browsing facets -- an accidental rewording here
+        # would silently break that interface. Pin them exactly, em dash included.
+        self.assertEqual(_POOL_ALL, "All characters")
+        self.assertEqual(_POOL_PEOPLE, "People only — no mascot suits or beasts")
+        self.assertEqual(_POOL_MASCOT, "Mascot suits and beasts only")
+
+    def test_people_only_excludes_mascots_and_ferals(self):
+        for seed in range(250):
+            doc = json.loads(build_cosplayer_json(
+                _RANDOM_MALE, seed, random_pool=_POOL_PEOPLE))
+            name = doc["_meta"]["cosplay_of"]
+            self.assertFalse(
+                self._is_mascot_or_beast(COSPLAYERS[name]),
+                f"{name} (seed {seed}) is a mascot/feral entry under 'People only'")
+
+    def test_mascot_pool_returns_only_mascots_and_ferals(self):
+        for seed in range(250):
+            doc = json.loads(build_cosplayer_json(
+                _RANDOM_ANY, seed, random_pool=_POOL_MASCOT))
+            name = doc["_meta"]["cosplay_of"]
+            self.assertTrue(
+                self._is_mascot_or_beast(COSPLAYERS[name]),
+                f"{name} (seed {seed}) is not mascot/feral under 'Mascot suits and "
+                f"beasts only'")
+
+    def test_composes_with_a_broad_category_scope(self):
+        # A non-`Franchise:` category scope combined with the pool filter must
+        # honour BOTH constraints on every pick.
+        category = "Anime & Manga"
+        for seed in range(60):
+            doc = json.loads(build_cosplayer_json(
+                _RANDOM_ANY, seed, random_scope=category, random_pool=_POOL_PEOPLE))
+            name = doc["_meta"]["cosplay_of"]
+            entry = COSPLAYERS[name]
+            self.assertFalse(self._is_mascot_or_beast(entry),
+                             f"{name} (seed {seed}) leaked a mascot/feral entry")
+            self.assertEqual(
+                get_cosplayer_category(entry.get("franchise", "")), category,
+                f"{name} (seed {seed}) escaped the '{category}' scope")
+
+    def test_composes_with_a_franchise_scope(self):
+        scope = _FRANCHISE_SCOPE_PREFIX + "Pokemon"
+        self.assertIn(scope, _FRANCHISE_SCOPES,
+                     "Pokemon must still qualify as a browsable franchise scope")
+        for seed in range(60):
+            doc = json.loads(build_cosplayer_json(
+                _RANDOM_ANY, seed, random_scope=scope, random_pool=_POOL_MASCOT))
+            name = doc["_meta"]["cosplay_of"]
+            entry = COSPLAYERS[name]
+            self.assertTrue(self._is_mascot_or_beast(entry),
+                            f"{name} (seed {seed}) is not mascot/feral")
+            self.assertEqual(entry.get("franchise"), "Pokemon",
+                             f"{name} (seed {seed}) escaped the Pokemon franchise scope")
+
+    def test_people_and_mascot_pools_are_exact_complements(self):
+        # Exhaustive, not sampled: for a fixed scope, "People only" and "Mascot
+        # suits and beasts only" must partition the in-scope roster exactly --
+        # union is the whole scope, intersection is empty.
+        category = "Anime & Manga"
+        names = [n for n, e in COSPLAYERS.items()
+                 if get_cosplayer_category(e.get("franchise", "")) == category]
+        self.assertTrue(names, "sanity: category must be non-empty")
+        people = {n for n in names if not self._is_mascot_or_beast(COSPLAYERS[n])}
+        mascot = {n for n in names if self._is_mascot_or_beast(COSPLAYERS[n])}
+        self.assertEqual(people | mascot, set(names))
+        self.assertEqual(people & mascot, set())
+
+    def test_all_characters_reproduces_pre_1_1_0_picks_seed_for_seed(self):
+        # Pinned against build_cosplayer_json output from immediately before
+        # random_pool was added (verified by diffing both versions over 2100
+        # sampled character/scope/seed combos) -- the no-drift guarantee for
+        # every workflow saved before 1.1.0. `random_pool` defaults to
+        # "All characters", so these calls don't even pass it.
+        expected = {
+            (_RANDOM_ANY, 0): "Tanjiro Kamado",
+            (_RANDOM_ANY, 1): "Carmen Sandiego",
+            (_RANDOM_ANY, 2): "Zealot",
+            (_RANDOM_ANY, 3): "Elora",
+            (_RANDOM_ANY, 4): "Elle Driver",
+            (_RANDOM_FEMALE, 0): "Tanya",
+            (_RANDOM_FEMALE, 1): "Catwoman",
+            (_RANDOM_FEMALE, 2): "Tina Armstrong",
+            (_RANDOM_FEMALE, 3): "Fatality",
+            (_RANDOM_FEMALE, 4): "Fairy Godmother",
+            (_RANDOM_MALE, 0): "Syndrome",
+            (_RANDOM_MALE, 1): "Captain Planet",
+            (_RANDOM_MALE, 2): "Worf",
+            (_RANDOM_MALE, 3): "Dr. McCoy",
+            (_RANDOM_MALE, 4): "Dr. Jekyll",
+        }
+        for (character, seed), name in expected.items():
+            doc = json.loads(build_cosplayer_json(character, seed))
+            self.assertEqual(
+                doc["_meta"]["cosplay_of"], name,
+                f"{character!r} seed {seed} drifted from its pre-1.1.0 pick")
 
 
 class ArticleTests(unittest.TestCase):

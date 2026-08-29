@@ -121,10 +121,11 @@ three families, in this order:
 1. **Attribute scopes** — Giant characters, Tiny characters, Non-human / colored, Masked,
    Mascot / full-suit, Beast / non-humanoid. Filtered by a predicate over the entry
    (`_SPECIAL_SCOPES` in the node), not by franchise. *Mascot / full-suit* is derived from
-   `covers_body and covers_face` — a person inside a full creature suit (Pikachu, the TMNT,
-   Godzilla, Moogle, Teemo); around 109 entries that were previously findable only by luck.
-   *Beast / non-humanoid* (0.95.0) is derived from `body_plan == "feral"` — the animal
-   itself rather than someone dressed as it (Appa, Toothless, Catbus, Bantha).
+   `covers_body and covers_face` (`_scope_is_mascot`) — a person inside a full creature suit
+   (Pikachu, the TMNT, Godzilla, Moogle, Teemo), previously findable only by luck.
+   *Beast / non-humanoid* (0.95.0) is derived from `body_plan == "feral"`
+   (`_scope_is_feral`) — the animal itself rather than someone dressed as it (Appa,
+   Toothless, Catbus, Bantha).
 2. **Broad categories** — Anime & Manga, Marvel, DC, Star Wars, Disney, Video Games,
    Fantasy & Literature, Movies & TV, Comics & Cartoons.
 3. **Single franchises** — `Franchise: Pokemon`, `Franchise: Final Fantasy`, … Derived at
@@ -137,12 +138,25 @@ three families, in this order:
 
 Any scope **combines** with the gender scope — `Random — female` + `Marvel` draws a random
 female Marvel character — and is ignored when a specific character is chosen; `Any`
-(default) applies no limit. The first time you use a `(character, scope)` combination the
-console prints how many characters are in scope, so a small pool that repeats across seeds
-is legible rather than looking broken. If a combination is empty it falls back to the full
-gender pool and says so loudly. Each franchise's category lives in `_FRANCHISE_CATEGORY` in
-`data/cosplayers.py`; an unmapped franchise falls back to a default so a new entry still
+(default) applies no limit. The first time you use a `(character, scope, pool)` combination
+the console prints how many characters are in scope, so a small pool that repeats across
+seeds is legible rather than looking broken. If a combination is empty it falls back to the
+full gender pool and says so loudly. Each franchise's category lives in `_FRANCHISE_CATEGORY`
+in `data/cosplayers.py`; an unmapped franchise falls back to a default so a new entry still
 scopes sensibly.
+
+### Filtering the pool: `random_pool` (1.1.0)
+
+**`random_pool`** is a *positive attribute filter* over the same Random draw, and composes
+with `random_scope` rather than replacing it — `random_scope` stays single-select, so
+"Franchise: Marvel" + "People only" stays reachable as scope + pool together. Three values:
+`All characters` (default, no filter), `People only — no mascot suits or beasts`, and
+`Mascot suits and beasts only` (the exact complement of "People only" over any fixed scope).
+It reuses `_scope_is_mascot` / `_scope_is_feral` — the same predicates the "Mascot / full-suit"
+and "Beast / non-humanoid" scopes use — so it self-maintains as the roster grows and needs no
+new detection logic. Only the source gender is ever relaxed to fill an empty (gender, scope,
+pool) combo; scope and pool are both deliberate, visible choices and are never silently
+dropped.
 
 ## Known limitations
 
