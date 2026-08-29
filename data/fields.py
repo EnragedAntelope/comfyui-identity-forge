@@ -2158,7 +2158,7 @@ NEON_SIGNAGE_VENUE_LOCATIONS: frozenset[str] = frozenset([
     # food_drink: the bar/club members (a wine bar, gastropub, cafe or diner is
     # not a nightlife venue and stays out).
     'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge',
-    'neon-lit nightclub', 'wine bar with exposed brick', 'speakeasy-style basement bar',
+    'neon-lit nightclub', 'speakeasy-style basement bar',
     # leisure_fitness: arcade / karaoke / casino / bowling / skating / cinema,
     # plus the music- and stage-performance venues four shipped archetypes need
     # (Musician, Punk Rocker, Hair Metal Rocker, Rapper, Visual Kei) -- a
