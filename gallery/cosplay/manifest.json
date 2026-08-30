@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-08-28T16:27:31.979372",
-  "version": "1.0.1",
+  "generated": "2026-08-30T13:15:32.219688",
+  "version": "1.1.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -119,10 +119,11 @@
     "0.97.0",
     "0.98.0",
     "1.0.0",
-    "1.0.1"
+    "1.0.1",
+    "1.1.0"
   ],
-  "total_entries": 1977,
-  "entries_with_images": 1977,
+  "total_entries": 1994,
+  "entries_with_images": 1994,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1213,6 +1214,14 @@
       "group": "Mortal Kombat",
       "added": "0.7.0",
       "image": "images/Baraka.jpeg"
+    },
+    {
+      "name": "Barbarella",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Barbarella",
+      "added": "1.1.0",
+      "image": "images/Barbarella.jpeg"
     },
     {
       "name": "Barney Rubble",
@@ -4463,6 +4472,14 @@
       "image": "images/Firestorm.jpeg"
     },
     {
+      "name": "Flash Gordon",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Flash Gordon",
+      "added": "1.1.0",
+      "image": "images/Flash Gordon.jpeg"
+    },
+    {
       "name": "Fleur Delacour",
       "has_image": true,
       "gender": "Female",
@@ -4845,6 +4862,14 @@
       "group": "Star Wars",
       "added": "0.16.0",
       "image": "images/General Grievous.jpeg"
+    },
+    {
+      "name": "General Kala",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Flash Gordon",
+      "added": "1.1.0",
+      "image": "images/General Kala.jpeg"
     },
     {
       "name": "Gengar",
@@ -6783,6 +6808,14 @@
       "image": "images/Julia Carpenter.jpeg"
     },
     {
+      "name": "Julie",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Heavy Metal",
+      "added": "1.1.0",
+      "image": "images/Julie.jpeg"
+    },
+    {
       "name": "Juliet Starling",
       "has_image": true,
       "gender": "Female",
@@ -7399,6 +7432,14 @@
       "image": "images/Klingon.jpeg"
     },
     {
+      "name": "Klytus",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Flash Gordon",
+      "added": "1.1.0",
+      "image": "images/Klytus.jpeg"
+    },
+    {
       "name": "Kokoro",
       "has_image": true,
       "gender": "Female",
@@ -7653,6 +7694,14 @@
       "group": "Bloodborne",
       "added": "0.74.0",
       "image": "images/Lady Maria.jpeg"
+    },
+    {
+      "name": "Lady Penelope",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Thunderbirds",
+      "added": "1.1.0",
+      "image": "images/Lady Penelope.jpeg"
     },
     {
       "name": "Lady Shiva",
@@ -8959,6 +9008,14 @@
       "image": "images/Maya Fey.jpeg"
     },
     {
+      "name": "Mayor McCheese",
+      "has_image": true,
+      "gender": "Male",
+      "group": "McDonald's",
+      "added": "1.1.0",
+      "image": "images/Mayor McCheese.jpeg"
+    },
+    {
       "name": "Mayura",
       "has_image": true,
       "gender": "Female",
@@ -9341,6 +9398,14 @@
       "group": "Harry Potter",
       "added": "0.74.0",
       "image": "images/Minerva McGonagall.jpeg"
+    },
+    {
+      "name": "Ming the Merciless",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Flash Gordon",
+      "added": "1.1.0",
+      "image": "images/Ming the Merciless.jpeg"
     },
     {
       "name": "Minnie Mouse",
@@ -11031,12 +11096,28 @@
       "image": "images/Prince Eric.jpeg"
     },
     {
+      "name": "Prince Vultan",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Flash Gordon",
+      "added": "1.1.0",
+      "image": "images/Prince Vultan.jpeg"
+    },
+    {
       "name": "Princess Allura",
       "has_image": true,
       "gender": "Female",
       "group": "Voltron",
       "added": "0.74.0",
       "image": "images/Princess Allura.jpeg"
+    },
+    {
+      "name": "Princess Ardala",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Buck Rogers",
+      "added": "1.1.0",
+      "image": "images/Princess Ardala.jpeg"
     },
     {
       "name": "Princess Aura",
@@ -11845,6 +11926,14 @@
       "group": "Looney Tunes",
       "added": "0.98.0",
       "image": "images/Road Runner.jpeg"
+    },
+    {
+      "name": "Robby the Robot",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Forbidden Planet",
+      "added": "1.1.0",
+      "image": "images/Robby the Robot.jpeg"
     },
     {
       "name": "Robin",
@@ -14231,6 +14320,14 @@
       "image": "images/The Great Gazoo.jpeg"
     },
     {
+      "name": "The Great Tyrant (Black Queen)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Barbarella",
+      "added": "1.1.0",
+      "image": "images/The Great Tyrant (Black Queen).jpeg"
+    },
+    {
       "name": "The Grinch",
       "has_image": true,
       "gender": "Male",
@@ -14277,6 +14374,14 @@
       "group": "Star Wars",
       "added": "0.7.0",
       "image": "images/The Mandalorian.jpeg"
+    },
+    {
+      "name": "The Martian Ambassador",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Mars Attacks!",
+      "added": "1.1.0",
+      "image": "images/The Martian Ambassador.jpeg"
     },
     {
       "name": "The Martyr",
@@ -14351,6 +14456,14 @@
       "image": "images/The Riddler.jpeg"
     },
     {
+      "name": "The Rocketeer",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Rocketeer",
+      "added": "1.1.0",
+      "image": "images/The Rocketeer.jpeg"
+    },
+    {
       "name": "The Shadow",
       "has_image": true,
       "gender": "Male",
@@ -14405,6 +14518,14 @@
       "group": "The Tick",
       "added": "0.19.0",
       "image": "images/The Tick.jpeg"
+    },
+    {
+      "name": "The Toxic Avenger",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Toxic Avenger",
+      "added": "1.1.0",
+      "image": "images/The Toxic Avenger.jpeg"
     },
     {
       "name": "The Wolf Man",
@@ -14671,6 +14792,14 @@
       "image": "images/Trafalgar Law.jpeg"
     },
     {
+      "name": "Triana Orpheus",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Venture Bros",
+      "added": "1.1.0",
+      "image": "images/Triana Orpheus.jpeg"
+    },
+    {
       "name": "Trinity",
       "has_image": true,
       "gender": "Female",
@@ -14741,6 +14870,14 @@
       "group": "Looney Tunes",
       "added": "0.98.0",
       "image": "images/Tweety.jpeg"
+    },
+    {
+      "name": "Twiki",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Buck Rogers",
+      "added": "1.1.0",
+      "image": "images/Twiki.jpeg"
     },
     {
       "name": "Twintelle",
