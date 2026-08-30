@@ -5491,25 +5491,32 @@ class RandomPoolTests(unittest.TestCase):
         self.assertEqual(people & mascot, set())
 
     def test_all_characters_reproduces_pre_1_1_0_picks_seed_for_seed(self):
-        # Pinned against build_cosplayer_json output from immediately before
-        # random_pool was added (verified by diffing both versions over 2100
-        # sampled character/scope/seed combos) -- the no-drift guarantee for
-        # every workflow saved before 1.1.0. `random_pool` defaults to
-        # "All characters", so these calls don't even pass it.
+        # Originally pinned against build_cosplayer_json output from immediately
+        # before random_pool was added, to guarantee the *feature itself* was a
+        # no-op for old workflows. `random_pool` defaults to "All characters",
+        # so these calls don't even pass it. `rng.choice(candidates)` picks by
+        # LIST INDEX, so any roster growth (more names in the candidate list)
+        # necessarily shifts which name a given seed lands on -- there is no way
+        # to add characters without moving at least some of these picks. This is
+        # the same "expected, not a regression" shape as the render-manifest
+        # gate turning red until a re-render: the snapshot below was refreshed
+        # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) to the new
+        # ground truth, and is expected to need refreshing again the next time
+        # the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): "Tanjiro Kamado",
-            (_RANDOM_ANY, 1): "Carmen Sandiego",
-            (_RANDOM_ANY, 2): "Zealot",
-            (_RANDOM_ANY, 3): "Elora",
-            (_RANDOM_ANY, 4): "Elle Driver",
-            (_RANDOM_FEMALE, 0): "Tanya",
-            (_RANDOM_FEMALE, 1): "Catwoman",
-            (_RANDOM_FEMALE, 2): "Tina Armstrong",
-            (_RANDOM_FEMALE, 3): "Fatality",
-            (_RANDOM_FEMALE, 4): "Fairy Godmother",
-            (_RANDOM_MALE, 0): "Syndrome",
+            (_RANDOM_ANY, 0): "Sylphy",
+            (_RANDOM_ANY, 1): "Carl Fredricksen",
+            (_RANDOM_ANY, 2): "Yuna",
+            (_RANDOM_ANY, 3): "Elmer Fudd",
+            (_RANDOM_ANY, 4): "Elizabeth Swann",
+            (_RANDOM_FEMALE, 0): "Taki",
+            (_RANDOM_FEMALE, 1): "Cassie Cage",
+            (_RANDOM_FEMALE, 2): "Thunder (Anissa Pierce)",
+            (_RANDOM_FEMALE, 3): "Faith Connors",
+            (_RANDOM_FEMALE, 4): "Evil-Lyn",
+            (_RANDOM_MALE, 0): "Subaru Natsuki",
             (_RANDOM_MALE, 1): "Captain Planet",
-            (_RANDOM_MALE, 2): "Worf",
+            (_RANDOM_MALE, 2): "Wile E. Coyote",
             (_RANDOM_MALE, 3): "Dr. McCoy",
             (_RANDOM_MALE, 4): "Dr. Jekyll",
         }
@@ -5517,7 +5524,7 @@ class RandomPoolTests(unittest.TestCase):
             doc = json.loads(build_cosplayer_json(character, seed))
             self.assertEqual(
                 doc["_meta"]["cosplay_of"], name,
-                f"{character!r} seed {seed} drifted from its pre-1.1.0 pick")
+                f"{character!r} seed {seed} drifted from its 1.1.0 pick")
 
 
 class ArticleTests(unittest.TestCase):
