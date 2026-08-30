@@ -59,6 +59,19 @@ export function makeFakeNode(nodeId, { extraWidgets = [], graph = null } = {}) {
     setSize(sz) { this.size = sz; },
     computeSize() { return [300, 24 * this.widgets.length]; },
     setDirtyCanvas() {},
+    // Mirrors the real (comfyui-frontend-package) `LGraphNode.prototype
+    // .getLayoutWidgets` used by `_arrangeWidgets` to decide DRAW order --
+    // filtered by `.hidden`, otherwise in `this.widgets` array order. Needed
+    // so a node-instance override of this method (identity_forge_cosplayer.js's
+    // visual-only reorder) has something real to shadow, the same as it would
+    // on a live node.
+    getLayoutWidgets() { return this.widgets.filter((w) => !w.hidden); },
+    // Mirrors the real LGraphNode field of the same name: `_arrangeWidgets`
+    // (which reads `getLayoutWidgets()` to compute each widget's drawn `.y`)
+    // only runs on the graph's next draw pass when this is true, and only
+    // `arrange()` finishing clears it. A caught-live bug: overriding
+    // `getLayoutWidgets` alone does nothing until something sets this.
+    _widgetSlotsDirty: false,
     // Deliberately mirrors a verified real-frontend quirk (0.85.0 worklog,
     // Phase 5b): passing `{serialize: false}` here sets `widget.options.serialize`
     // only -- it does NOT also set a top-level `widget.serialize` property, even

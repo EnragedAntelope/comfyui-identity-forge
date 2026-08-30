@@ -3131,6 +3131,113 @@ function dodgeUpstreamMigrationBug(node, values) {
   return values;
 }
 
+/**
+ * Visual order the maintainer wants `random_pool` grouped near `random_scope`,
+ * the other randomization-constraint widget -- distinct from `node.widgets`'
+ * real array order (see the `WIDGETS_ADDED_BY_RELEASE` comment above for why
+ * that array order, and therefore `random_pool`'s index, can never move: it
+ * IS a serializing, Python-schema widget, unlike `franchise_filter`). Any
+ * widget not named here (e.g. the `control_after_generate` companion LiteGraph
+ * auto-adds next to `seed`) keeps its normal position relative to its
+ * neighbours.
+ */
+const VISUAL_WIDGET_ORDER = [
+  CHARACTER_WIDGET,
+  FILTER_WIDGET,
+  "random_scope",
+  "random_pool",
+  "look_level",
+  "mask",
+  "props",
+  "seed",
+];
+
+/**
+ * Make widgets DRAW in `VISUAL_WIDGET_ORDER` without moving anything in
+ * `node.widgets` itself.
+ *
+ * `franchise_filter`'s own reorder above (see the comment on its splice) is
+ * NOT a precedent for this: it works by physically moving the widget's index
+ * in `node.widgets`, which is safe for it ONLY in the writing direction
+ * because it declares `serialize: false` -- and even that turned out to be
+ * unsafe in the reading direction (see the `WIDGETS_ADDED_BY_RELEASE` comment:
+ * `serialize()` still emits one value per `node.widgets` entry regardless of
+ * `serialize: false`, which is exactly the legacy-load bug that comment
+ * documents). `random_pool` IS a serializing widget, so physically moving it
+ * would directly break `configure()`'s index-based mapping of
+ * `widgets_values` -- the one invariant this whole release protects. That
+ * mechanism does not generalize here, so this uses a different one.
+ *
+ * Read directly out of the pinned `comfyui-frontend-package` 1.51.9 bundle
+ * (`static/assets/settingStore-*.js`, minified, decoded by hand for this fix --
+ * see the task-4c report for the exact excerpts): `LGraphNode.prototype
+ * ._arrangeWidgets` assigns each widget's `.y` (its drawn vertical offset) by
+ * iterating `node.getLayoutWidgets()` -- NOT `node.widgets` directly -- and
+ * accumulating height in THAT order:
+ *
+ *   getLayoutWidgets(){ return this.widgets?.filter(w => !w.hidden) ?? [] }
+ *   ...
+ *   let l = n; for (let w of layoutWidgets) w.y = l, l += w.computedHeight ?? 0;
+ *
+ * `drawWidgets()` then iterates `node.widgets` (real array order) only to
+ * draw each widget AT the `.y` it was already assigned -- so the draw loop's
+ * own order never matters, only `getLayoutWidgets()`'s does. Overriding
+ * `getLayoutWidgets()` on this one node instance therefore retargets only
+ * where things draw; `node.widgets`, `serialize()`, `configure()`, and
+ * `widgets_values` indexing never see it. Hit-testing reads back each
+ * widget's own `.last_y` (set from that same `.y` during the same draw pass),
+ * so clicks land on the right widget wherever it actually drew, regardless of
+ * array position -- nothing extra is needed there.
+ *
+ * Cross-frontend-version note: `getLayoutWidgets` is a method on this forked
+ * LiteGraph's `LGraphNode`, not a documented/stable public API, and classic
+ * (pre-fork) LiteGraph computes widget `.y` by iterating `node.widgets`
+ * directly with no such indirection point to hook. Feature-detected below:
+ * on a frontend with no `getLayoutWidgets` method, this override is simply
+ * never called by anything, so it is inert -- widgets draw in their natural
+ * array-order position, exactly as they did before this function existed.
+ * Either way `node.widgets`' order is untouched, so the worst case of this
+ * being wrong on some frontend version is that the cosmetic reorder silently
+ * does not apply there, never a compatibility regression. Reasoned from the
+ * bundle source above; not independently confirmed live on an older frontend
+ * that lacks this method.
+ *
+ * One more thing the bundle source above does NOT show: `_arrangeWidgets`
+ * (and therefore this override) only actually RUNS when LiteGraph's own
+ * per-frame draw loop sees `node._widgetSlotsDirty === true` -- the same flag
+ * `addCustomWidget`/`removeWidget` set, and the ONLY thing that clears it is
+ * `arrange()` itself finishing. Overriding `getLayoutWidgets()` alone changes
+ * what a FUTURE layout pass would compute but does not invalidate a `.y` a
+ * PAST pass already cached -- and every widget on this node already went
+ * through one such pass (from its own construction) before this override
+ * ever attaches. Caught live: without the line below, `random_pool` kept
+ * drawing at its pre-fix position through a fresh node add AND a full
+ * ComfyUI restart, because nothing had touched a widget slot (add/remove)
+ * since that first, pre-override layout pass. Setting the same flag the
+ * engine itself uses to invalidate this cache is what makes the NEXT draw
+ * actually call `arrange()` again, this time through our override.
+ */
+function applyVisualWidgetOrder(node) {
+  if (node.__ifVisualOrderApplied) return;
+  if (typeof node.getLayoutWidgets !== "function") return;
+  const baseGetLayoutWidgets = node.getLayoutWidgets.bind(node);
+  const rank = (name) => {
+    const i = VISUAL_WIDGET_ORDER.indexOf(name);
+    return i === -1 ? VISUAL_WIDGET_ORDER.length : i;
+  };
+  node.getLayoutWidgets = function () {
+    return baseGetLayoutWidgets()
+      .map((w, i) => [w, i])
+      .sort(([wa, ia], [wb, ib]) => rank(wa.name) - rank(wb.name) || ia - ib)
+      .map(([w]) => w);
+  };
+  node.__ifVisualOrderApplied = true;
+  // Force the next draw to redo the (now-overridden) layout pass -- see the
+  // comment above. Feature-detected the same way: an older/classic LiteGraph
+  // node without this field simply never had a cached `.y` to invalidate.
+  if ("_widgetSlotsDirty" in node) node._widgetSlotsDirty = true;
+}
+
 app.registerExtension({
   name: "identity_forge.cosplayer.ui",
   async beforeRegisterNodeDef(nodeType, nodeData) {
@@ -3142,6 +3249,11 @@ app.registerExtension({
         setupCosplayer(this);
       } catch (err) {
         console.error("[IdentityForgeCosplayer] franchise filter setup failed", err);
+      }
+      try {
+        applyVisualWidgetOrder(this);
+      } catch (err) {
+        console.error("[IdentityForgeCosplayer] visual widget reorder failed", err);
       }
       return result;
     };

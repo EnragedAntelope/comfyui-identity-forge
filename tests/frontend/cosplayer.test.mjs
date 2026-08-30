@@ -12,7 +12,7 @@ import assert from "node:assert/strict";
 import { installDom } from "./dom.mjs";
 import { __getExtension } from "./stubs/app.js";
 import {
-  createNode, makeFakeNode, widgetsFor, driveBeforeRegisterNodeDef,
+  createNode, createNodeTwice, makeFakeNode, widgetsFor, driveBeforeRegisterNodeDef,
 } from "./fake_node.mjs";
 
 installDom();
@@ -293,5 +293,123 @@ test("a character the generated map does not know stays visible under every filt
   assert.ok(
     optionsOf(character).includes("My Private OC"),
     "an unknown name is treated as unfiltered -- hiding a user's own character is the worst failure",
+  );
+});
+
+// Task 4c: `random_pool` visually draws grouped with `random_scope` (the other
+// randomization-constraint widget) without moving in `node.widgets` -- unlike
+// `franchise_filter` above, `random_pool` IS a serializing, Python-schema
+// widget, so its array index must never change (see `js/identity_forge_cosplayer.js`'s
+// `applyVisualWidgetOrder` comment for the full mechanism and why
+// `franchise_filter`'s own array-splice trick does not generalize to it).
+
+const APPROVED_VISUAL_ORDER = [
+  "character", "franchise_filter", "random_scope", "random_pool",
+  "look_level", "mask", "props", "seed",
+  // LiteGraph's own auto-added companion widget for an int with
+  // control_after_generate -- not in the brief's list, so it keeps its
+  // natural place directly after the widget it belongs to.
+  "control_after_generate",
+];
+
+test("random_pool's visual reorder never moves node.widgets' real array order", async () => {
+  const node = await createNode(ext, "IdentityForgeCosplayer");
+  const fromSchema = widgetsFor("IdentityForgeCosplayer").map((w) => w.name);
+  const expectedRealOrder = [
+    fromSchema[0], "franchise_filter", ...fromSchema.slice(1),
+  ];
+  assert.deepEqual(
+    node.widgets.map((w) => w.name),
+    expectedRealOrder,
+    "random_pool must stay in its define_schema()-appended (last) slot in node.widgets",
+  );
+  assert.equal(
+    node.widgets[node.widgets.length - 1].name,
+    "random_pool",
+    "random_pool must remain the LAST widget in the real array, exactly as define_schema() put it",
+  );
+});
+
+test("random_pool draws grouped with random_scope via getLayoutWidgets, not array order", async () => {
+  const node = await createNode(ext, "IdentityForgeCosplayer");
+
+  assert.equal(
+    typeof node.getLayoutWidgets,
+    "function",
+    "sanity: the fake node must expose getLayoutWidgets for this override to have anything to shadow",
+  );
+  assert.deepEqual(
+    node.getLayoutWidgets().map((w) => w.name),
+    APPROVED_VISUAL_ORDER,
+    "getLayoutWidgets() -- what LiteGraph's _arrangeWidgets iterates to assign each " +
+    "widget's drawn `.y` -- must reflect the approved visual order",
+  );
+  // The override must return the SAME widget objects, not copies -- otherwise
+  // `.y`/`.last_y` assigned during layout would land on a throwaway object and
+  // hit-testing/serialization (which use the real node.widgets objects) would
+  // never see it.
+  const realRandomPool = widgetNamed(node, "random_pool");
+  const layoutRandomPool = node.getLayoutWidgets().find((w) => w.name === "random_pool");
+  assert.equal(layoutRandomPool, realRandomPool, "getLayoutWidgets must return the real widget object");
+
+  // And the real array is still untouched (belt-and-suspenders alongside the
+  // dedicated test above -- this is the one hard constraint nothing here may break).
+  assert.equal(
+    node.widgets[node.widgets.length - 1].name,
+    "random_pool",
+    "the getLayoutWidgets override must not have moved random_pool in node.widgets",
+  );
+});
+
+// Caught live against the real :8288 instance: overriding getLayoutWidgets alone
+// visually did NOTHING, through a fresh node add and a full ComfyUI restart,
+// because LiteGraph's _arrangeWidgets (which reads getLayoutWidgets) only re-runs
+// when node._widgetSlotsDirty is true, and every widget here already went through
+// one such pass -- using the OLD order -- during the node's own construction,
+// before onNodeCreated (and this override) ever ran. Nothing else flips that flag
+// back on for a getLayoutWidgets-only change, so the stale `.y` from that first
+// pass would otherwise just keep drawing forever.
+test("the reorder marks the node's widget layout dirty so LiteGraph actually redraws it", async () => {
+  const node = await createNode(ext, "IdentityForgeCosplayer");
+  assert.equal(
+    node._widgetSlotsDirty,
+    true,
+    "must flip the same dirty flag addWidget/removeWidget use, or the graph's draw " +
+    "loop never calls arrange() again and the old layout keeps drawing forever",
+  );
+});
+
+test("visual reorder is idempotent across a duplicate onNodeCreated firing", async () => {
+  const node = await createNodeTwice(ext, "IdentityForgeCosplayer");
+  assert.deepEqual(
+    node.getLayoutWidgets().map((w) => w.name),
+    APPROVED_VISUAL_ORDER,
+    "a second onNodeCreated firing must not double-wrap or corrupt the layout order",
+  );
+  assert.equal(
+    node.widgets[node.widgets.length - 1].name,
+    "random_pool",
+    "a second onNodeCreated firing must not move random_pool in node.widgets either",
+  );
+});
+
+test("the visual reorder is inert (never throws, never moves node.widgets) on a frontend with no getLayoutWidgets", async () => {
+  // Older/classic LiteGraph has no getLayoutWidgets indirection point at all --
+  // this is the fallback this fix must degrade to safely rather than error.
+  const node = makeFakeNode("IdentityForgeCosplayer");
+  delete node.getLayoutWidgets;
+
+  const FakeNodeType = await driveBeforeRegisterNodeDef(ext, "IdentityForgeCosplayer");
+  assert.doesNotThrow(() => FakeNodeType.prototype.onNodeCreated.call(node));
+
+  assert.equal(
+    typeof node.getLayoutWidgets,
+    "undefined",
+    "no getLayoutWidgets must be synthesized on a node whose frontend never had one",
+  );
+  assert.equal(
+    node.widgets[node.widgets.length - 1].name,
+    "random_pool",
+    "node.widgets must still be untouched even when the cosmetic reorder cannot apply",
   );
 });
