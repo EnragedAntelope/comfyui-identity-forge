@@ -210,7 +210,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 84px;
+    /* Taller than the original 84px (fix round, bug 7): the gallery's source
+       renders are full-body portraits, and a short, wide box left almost
+       every thumbnail center-cropped to a chest/torso band with `object-fit:
+       cover`'s default center object-position -- confirmed visually across
+       ~20 different cosplayer entries. More vertical room means less of the
+       image has to be discarded to fill the box at all. */
+    height: 150px;
     border-radius: 6px;
     background: rgba(128, 128, 128, 0.15);
     overflow: hidden;
@@ -220,6 +226,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Bias the crop toward the top of the frame rather than dead-center: for
+       a full-body portrait the head and upper costume are the identifying
+       content at thumbnail scale, and `cover` + centered cropping was
+       discarding exactly that in favour of a mid-torso band. `cover` (not
+       `contain`) is kept so every card still fills its box uniformly rather
+       than mixing letterboxed and full-bleed tiles across the grid. */
+    object-position: top;
 }
 
 .if-picker-glyph {

@@ -191,6 +191,94 @@ test("configure leaves a full 9-value (1.1.0) widgets_values untouched", async (
   }
 });
 
+/**
+ * Bug 2 (1.1.0 fix round, critical): ComfyUI's own V3 `ComfyNode.prototype.configure`
+ * runs a `migrateWidgetsValues(nodeData.inputs, node.widgets, widgets_values)` step
+ * -- shipped in ComfyUI's own frontend bundle, not this repo's code -- before handing
+ * off to the real positional assignment. That helper strips a stale `widgets_values`
+ * slot for any schema input that is now `forceInput` (always a socket, e.g. this
+ * node's `upstream` chaining input), based on a slot count computed PURELY from the
+ * Python schema. It has no idea this file adds an extra JS-only widget
+ * (`franchise_filter`), so when its schema-derived count coincidentally equals the
+ * real `widgets_values.length` -- which it always does for this node's current
+ * (1.1.0) shape: 6 plain inputs + 2 slots for `seed`'s `control_after_generate` + 1
+ * for the always-`forceInput` `upstream` = 9, matching this node's real 9-widget
+ * count once `franchise_filter` and `random_pool` both exist -- it unconditionally
+ * strips the LAST element of `widgets_values`, because `upstream` is the last schema
+ * input and always keeps its mask slot. That is `random_pool`'s slot. Confirmed live
+ * against a real ComfyUI instance via Playwright (see the fix-round report); this
+ * test reproduces the exact algorithm (mirrored from the shipped bundle, decompiled
+ * via `configure.toString()` during that live investigation) against a fake node so
+ * a regression is caught without a browser.
+ */
+function reproduceRealComfyMigrateWidgetsValues(node, values) {
+  const widgetNames = new Set((node.widgets || []).map((w) => w.name));
+  const inputs = node.constructor.nodeData.inputs;
+  const mask = [];
+  for (const input of Object.values(inputs)) {
+    if (!(widgetNames.has(input.name) || input.forceInput)) continue;
+    if (input.control_after_generate) mask.push(false, false);
+    else mask.push(Boolean(input.forceInput));
+  }
+  if (mask.length !== values.length) return values;
+  return values.filter((_, i) => !mask[i]);
+}
+
+test("random_pool survives ComfyUI's own widgets_values migration step (bug 2 regression)", async () => {
+  class FakeNodeType {}
+  // Mirrors nodes/identity_forge_cosplayer.py's real define_schema() input shape --
+  // in particular, `upstream` is `forceInput: true` and is the LAST schema input,
+  // and `seed` carries `control_after_generate`.
+  FakeNodeType.nodeData = {
+    inputs: {
+      character: { name: "character" },
+      random_scope: { name: "random_scope" },
+      look_level: { name: "look_level" },
+      mask: { name: "mask" },
+      props: { name: "props" },
+      seed: { name: "seed", control_after_generate: true },
+      random_pool: { name: "random_pool" },
+      upstream: { name: "upstream", forceInput: true },
+    },
+  };
+  // A minimal base `configure()` that ONLY does what ComfyUI's real one does before
+  // the (unmodelled here) LiteGraph positional assignment: run the migration, then
+  // assign positionally. This is deliberately the same shape as
+  // createConfigurableNode()'s fake base configure elsewhere in this file, plus the
+  // migration step that reproduces the real bug.
+  FakeNodeType.prototype.configure = function (info) {
+    const values = reproduceRealComfyMigrateWidgetsValues(this, info?.widgets_values || []);
+    (this.widgets || []).forEach((w, i) => { if (i < values.length) w.value = values[i]; });
+  };
+  await ext.beforeRegisterNodeDef(FakeNodeType, { name: "IdentityForgeCosplayer" });
+  const node = makeFakeNode("IdentityForgeCosplayer");
+  node.constructor = FakeNodeType;
+  FakeNodeType.prototype.onNodeCreated.call(node);
+
+  const saved = [
+    "Chun-Li", "Any", "Any", "Costume only", "Default", "No prop", 12345, "fixed",
+    "Mascot suits and beasts only",
+  ];
+  assert.equal(node.widgets.length, saved.length, "sanity: 9 widgets for 9 saved values");
+
+  FakeNodeType.prototype.configure.call(node, { widgets_values: saved });
+
+  assert.equal(
+    widgetNamed(node, "random_pool").value,
+    "Mascot suits and beasts only",
+    "random_pool must round-trip through ComfyUI's own migration step, not silently revert to its default",
+  );
+  // Every other widget must still land correctly too -- the fix must not shift
+  // anything else to compensate.
+  const expected = ["character", "franchise_filter", "random_scope", "look_level",
+    "mask", "props", "seed", "control_after_generate", "random_pool"];
+  assert.deepEqual(node.widgets.map((w) => w.name), expected, "sanity: widget order unchanged");
+  for (const [i, name] of expected.entries()) {
+    if (name === "franchise_filter") continue; // view-only, not part of `saved`'s intent
+    assert.equal(widgetNamed(node, name).value, saved[i], `${name} must hold its saved value`);
+  }
+});
+
 test("a character the generated map does not know stays visible under every filter", async () => {
   // Stands in for a user_options.json addition: present in the live combo, absent
   // from the AST-generated map. It must never be hidden by a filter.

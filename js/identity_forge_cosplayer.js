@@ -3064,6 +3064,73 @@ function padLegacyCosplayerValues(node, values) {
   return padded.length === total ? padded : values;
 }
 
+/**
+ * Length ComfyUI's OWN V3 `ComfyNode.configure()` expects `widgets_values` to
+ * have, per its internal (and here unavoidably reproduced) `migrateWidgetsValues`
+ * rule -- see `dodgeUpstreamMigrationBug` below for why this exists at all.
+ * Mirrors that rule exactly: for every schema input that is either already a
+ * named widget on this node or `forceInput` (always a socket), count 2 slots if
+ * it carries `control_after_generate`, else 1.
+ */
+function schemaMigrationMaskLength(node) {
+  try {
+    const inputs = node?.constructor?.nodeData?.inputs;
+    if (!inputs) return null;
+    const widgetNames = new Set((node.widgets || []).map((w) => w.name));
+    let length = 0;
+    for (const input of Object.values(inputs)) {
+      if (!(widgetNames.has(input.name) || input.forceInput)) continue;
+      length += input.control_after_generate ? 2 : 1;
+    }
+    return length;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Work around a ComfyUI-core bug (not ours to fix, lives in the shipped
+ * frontend bundle's V3 `ComfyNode.prototype.configure`) that silently drops
+ * `random_pool`'s saved value on EVERY load of this node, verified live via
+ * Playwright against a real instance (1.1.0 picker fix round; see
+ * docs/worklog or the task-4 fix report for the trace).
+ *
+ * `ComfyNode.configure()` runs `e.widgets_values = migrateWidgetsValues(
+ * ComfyNode.nodeData.inputs, this.widgets, e.widgets_values)` before handing
+ * off to the real (LiteGraph) positional assignment. That helper exists to
+ * strip a stale `widgets_values` slot for an input that is now `forceInput`
+ * (always a socket, e.g. this node's `upstream` chaining input) -- but it
+ * derives how many slots to expect PURELY from the Python schema
+ * (`ComfyNode.nodeData.inputs`), with no idea this file adds an extra
+ * JS-only widget (`franchise_filter`) outside that schema. When its
+ * schema-derived count happens to equal our actual `widgets_values.length`
+ * (it does, unconditionally, for every 1.1.0-shaped save of this node: 6
+ * plain inputs + 2 slots for `seed`'s `control_after_generate` + 1 for the
+ * always-`forceInput` `upstream` = 9, which is also this node's real widget
+ * count once `franchise_filter` and `random_pool` both exist), it applies its
+ * filter -- and because `upstream` is the LAST schema input and always
+ * "forceInput ⇒ keep its mask slot", that filter unconditionally strips the
+ * LAST element of `widgets_values`. That is exactly `random_pool`'s slot.
+ *
+ * We cannot patch ComfyUI's shipped bundle. The only lever available here is
+ * the LENGTH of the array handed to the base `configure()`: the bug's `if
+ * (i.length === n?.length)` guard only fires on an exact match. So this
+ * mirrors that same length calculation and, only when our already-correctly
+ * padded array would collide with it, appends one inert trailing value
+ * (a duplicate of the last real value). The real LiteGraph assignment loop
+ * that runs afterward only ever consumes one value per entry in
+ * `node.widgets`, so a longer array is harmless -- nothing ever reads the
+ * extra element.
+ */
+function dodgeUpstreamMigrationBug(node, values) {
+  if (!Array.isArray(values) || !values.length) return values;
+  const maskLength = schemaMigrationMaskLength(node);
+  if (maskLength !== null && values.length === maskLength) {
+    return [...values, values[values.length - 1]];
+  }
+  return values;
+}
+
 app.registerExtension({
   name: "identity_forge.cosplayer.ui",
   async beforeRegisterNodeDef(nodeType, nodeData) {
@@ -3088,7 +3155,10 @@ app.registerExtension({
         if (info && Array.isArray(info.widgets_values)) {
           info = {
             ...info,
-            widgets_values: padLegacyCosplayerValues(this, info.widgets_values),
+            widgets_values: dodgeUpstreamMigrationBug(
+              this,
+              padLegacyCosplayerValues(this, info.widgets_values),
+            ),
           };
         }
       } catch (err) {

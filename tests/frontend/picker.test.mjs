@@ -384,3 +384,165 @@ test("facet predicates match real entries with the corresponding trait word", ()
   assert.ok(!__testing.FACET_PREDICATES["People only — no mascot suits or beasts"](teemo));
   assert.ok(__testing.FACET_PREDICATES["Mascot suits and beasts only"](teemo));
 });
+
+test('"Non-human / colored" also matches the "an even ... coat of" phrasing, not just the two "smooth"/"uniform" wordings', () => {
+  // Fix-round finding: the facet originally checked only two of the backend
+  // regex's three alternatives, missing every entry using the legacy
+  // "an even, all-over coat of <colour> <material>" wording (Maui among them)
+  // -- 97 of ~301 backend-flagged entries in the real roster.
+  const maui = REAL_ROSTER.find((e) => e.name === "Maui");
+  assert.ok(maui, "sanity: Maui exists in the real roster");
+  assert.ok(
+    __testing.FACET_PREDICATES["Non-human / colored"](maui),
+    'Maui uses "coat of" phrasing and must match the facet',
+  );
+});
+
+// --- bug 1 (critical): the trigger button must be inert while its node is a
+// LiteGraph "ghost" (spawned from the node-search palette, still following
+// the mouse, not yet placed) -- clicking it in that state, then pressing
+// Escape, let LiteGraph's own "cancel node placement" shortcut delete the
+// node from underneath an open dialog. Verified live via Playwright before
+// this fix (see the 1.1.0 fix-round report); this pins the click-side guard,
+// which holds regardless of whether the position-tracking rAF loop is
+// running (it never runs at all under this jsdom harness).
+
+test("the trigger button does nothing while its node is still a LiteGraph ghost (unplaced)", async () => {
+  resetDom();
+  const node = await createNode(pickerExt, "IdentityForgeCosplayer");
+  node.flags = { ghost: true };
+  const button = node.__identityForgePickerButton;
+  button.click();
+  assert.equal(
+    document.querySelector('[role="dialog"]'),
+    null,
+    "clicking the trigger while the node is an unplaced ghost must not open the picker",
+  );
+});
+
+test("the trigger button works normally once the node is no longer a ghost", async () => {
+  resetDom();
+  const node = await createNode(pickerExt, "IdentityForgeCosplayer");
+  node.flags = { ghost: false };
+  const button = node.__identityForgePickerButton;
+  button.click();
+  assert.ok(
+    document.querySelector('[role="dialog"]'),
+    "a placed (non-ghost) node's trigger button must still open the picker",
+  );
+});
+
+// --- bug 3 (moderate): loadManifest() must stay a Promise on repeat calls ---
+
+test("loadManifest() returns a thenable on every call, including repeats after a successful fetch", async () => {
+  __testing.__resetForTests();
+  const stub = installFetchStub((url) => {
+    if (url.includes("manifest.json")) {
+      return {
+        ok: true,
+        json: async () => ({
+          entries: [{ name: "Chun-Li", has_image: true, image: "images/Chun-Li.jpeg" }],
+        }),
+      };
+    }
+    return { ok: false, status: 404 };
+  });
+  try {
+    const first = __testing.loadManifest("cosplayer");
+    assert.equal(typeof first.then, "function", "the first call must return a thenable");
+    const firstMap = await first;
+    assert.equal(firstMap.get("Chun-Li"), "images/Chun-Li.jpeg");
+
+    // The regression: after a successful resolution, the cache used to hold
+    // the bare resolved Map instead of the Promise, so this second call
+    // returned a non-Promise and `.then()` on it threw synchronously.
+    const second = __testing.loadManifest("cosplayer");
+    assert.equal(
+      typeof second.then,
+      "function",
+      "a repeat call for an already-loaded kind must still return a thenable, not the raw resolved value",
+    );
+    const secondMap = await second;
+    assert.equal(secondMap.get("Chun-Li"), "images/Chun-Li.jpeg");
+  } finally {
+    stub.restore();
+  }
+});
+
+// --- bug 4 (minor): the query must survive a tab click ----------------------
+
+test("switching tabs preserves the current search query, per the documented cross-tab design", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const node = makeFakeNode("IdentityForgeCosplayer");
+    const picker = new __testing.IdentityForgePicker({
+      kind: "cosplayer",
+      targetWidgetName: "character",
+      title: "test",
+      node,
+    });
+    picker.open();
+    await flush();
+    picker.query = "tatt";
+    picker.renderGrid();
+    const before = picker.visible.length;
+    assert.ok(before > 0 && before < REAL_ROSTER.length, "sanity: the query narrowed the grid");
+
+    const archetypesTab = Array.from(picker.tabs.children).find((el) => el.textContent === "Archetypes");
+    assert.ok(archetypesTab, "sanity: an Archetypes tab exists");
+    archetypesTab.click();
+
+    assert.equal(picker.query, "tatt", "the query must survive a tab click");
+    assert.equal(
+      picker.visible.length,
+      before,
+      "the grid must still reflect the query, not reset to the clicked tab's full list",
+    );
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+// --- bug 6 (minor): closing and reopening must show a consistent default ----
+// state -- previously the search <input> reset to empty on rebuild but the
+// `query`/`facet` state it reads from did not, so the box read empty while
+// the grid stayed narrowed to whatever was typed or picked last time.
+
+test("closing and reopening the picker resets both the search box and the grid together", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const node = makeFakeNode("IdentityForgeCosplayer");
+    const picker = new __testing.IdentityForgePicker({
+      kind: "cosplayer",
+      targetWidgetName: "character",
+      title: "test",
+      node,
+    });
+    picker.open();
+    await flush();
+    picker.query = "tatt";
+    picker.renderGrid();
+    assert.ok(picker.visible.length < REAL_ROSTER.length, "sanity: the query narrowed the grid");
+    picker.facet = "Giant characters";
+
+    picker.close();
+    picker.open();
+    await flush();
+
+    assert.equal(picker.searchInput.value, "", "the reopened search box must be empty");
+    assert.equal(picker.query, "", "the query state must be reset, not just the input's displayed value");
+    assert.equal(picker.facet, "All characters", "the facet must reset to its default too");
+    assert.ok(
+      picker.visible.every((e) => e.kind === "cosplayer") && picker.visible.length > 1,
+      "the grid must show the default unfiltered view for this node's kind, not the stale filtered set",
+    );
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});

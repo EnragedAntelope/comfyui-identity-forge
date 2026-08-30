@@ -140,13 +140,19 @@ function matchesQuery(entry, tokens) {
 // the backend detects it with a regex over the costume prose instead. Rather
 // than reproduce that regex against a haystack that only carries a *lowercased*
 // copy of the costume text (the "naive regex over prose" trap this repo has
-// already paid for twice; see architecture.md), this checks for the two
-// literal, non-wildcard phrases the regex requires ("smooth, flawless", or
-// "uniform, all-over") as plain substrings. That is narrower than the backend
-// predicate (it misses the legacy "an even ... coat of" wording and the
-// free-text `skin` override, neither of which is in the haystack at all) --
-// a deliberate, documented approximation for a browse-time facet, not a data
-// integrity assertion.
+// already paid for twice; see architecture.md), this checks for the three
+// literal, non-wildcard phrases the regex's three alternatives require:
+// "smooth, flawless", "uniform, all-over", and "coat of" (the stable,
+// non-wildcard tail of `\ban even\b.*?\bcoat of\b` -- the leading "an even"
+// is dropped only because plain substring matching cannot express the `.*?`
+// gap between the two words, not because it doesn't matter). Fixed in the
+// 1.1.0 fix round: the first revision checked only the first two phrases,
+// which missed 97 of ~301 backend-flagged entries that use the "coat of"
+// wording (e.g. Maui) -- verified against the real roster after the fix.
+// Still narrower than the backend predicate in one respect (the free-text
+// `skin` override is never in the haystack at all) -- a deliberate,
+// documented approximation for a browse-time facet, not a data integrity
+// assertion.
 const FACET_ALL = "All characters";
 const FACET_GIANT = "Giant characters";
 const FACET_TINY = "Tiny characters";
@@ -173,7 +179,7 @@ const FACET_PREDICATES = {
   [FACET_MASKED]: (e) => e.haystack.includes("masked"),
   [FACET_MASCOT]: (e) => e.haystack.includes("mascot"),
   [FACET_BEAST]: (e) => hasAny(e.haystack, ["feral", "beast"]),
-  [FACET_NONHUMAN]: (e) => hasAny(e.haystack, ["smooth, flawless", "uniform, all-over"]),
+  [FACET_NONHUMAN]: (e) => hasAny(e.haystack, ["smooth, flawless", "uniform, all-over", "coat of"]),
   [FACET_PEOPLE]: (e) => !hasAny(e.haystack, ["mascot", "feral", "beast"]),
   [FACET_MASCOT_POOL]: (e) => hasAny(e.haystack, ["mascot", "feral", "beast"]),
 };
@@ -222,10 +228,20 @@ function savePreviewPref(value) {
   }
 }
 
-//: kind -> Map<name, image-relative-path> | Promise<that Map>. Never surfaces
-//: an error: a failed or offline fetch resolves to an empty Map so cards
-//: silently stay text-only, and the cache entry is dropped so a later attempt
-//: (toggle off/on, or back online) can retry.
+//: kind -> Promise<Map<name, image-relative-path>>. ALWAYS a Promise, never
+//: unwrapped to the resolved Map -- a fulfilled Promise stays a perfectly
+//: valid thenable forever, so every caller can uniformly `.then()` the result
+//: whether this is the first fetch or the hundredth repeat call. (An earlier
+//: revision overwrote this cache with the bare Map once the fetch resolved,
+//: which made every *second* call to loadManifest() for an already-loaded
+//: kind return a non-Promise; the sole call site unconditionally chains
+//: `.then()` on the result, so that threw `TypeError: ...then is not a
+//: function` inside open()'s try/catch, silently breaking the dialog open
+//: for that kind until a full page reload reset the module-level cache. See
+//: the 1.1.0 fix-round report.)
+//: Never surfaces an error: a failed or offline fetch resolves (not rejects)
+//: to an empty Map so cards silently stay text-only, and the cache entry is
+//: dropped so a later attempt (toggle off/on, or back online) can retry.
 const manifestCache = new Map();
 
 function loadManifest(kind) {
@@ -240,7 +256,6 @@ function loadManifest(kind) {
       for (const entry of (data && data.entries) || []) {
         if (entry && entry.has_image && entry.image) map.set(entry.name, entry.image);
       }
-      manifestCache.set(kind, map);
       return map;
     })
     .catch(() => {
@@ -388,6 +403,19 @@ class IdentityForgePicker {
       clearTimeout(this._searchTimer);
       this._searchTimer = null;
     }
+    // Reset filtering state to the clean default view (1.1.0 fix round: this
+    // used to reset only the DOM -- a fresh <input> always starts empty, but
+    // `this.query`/`this.facet` survived close() untouched, so reopening
+    // showed an empty search box next to a grid still narrowed by whatever
+    // was typed or picked last time. Not just cosmetic: `query` and `facet`
+    // are read by visibleEntries() on every render, so the mismatch was
+    // between what the box *showed* and what the grid actually *used*.
+    // `showPreviews` is deliberately excluded -- that is a persisted user
+    // preference (localStorage-backed), not per-open scratch state.
+    this.query = "";
+    this.activeTab = this.config.kind;
+    this.facet = FACET_ALL;
+    this.focusIndex = 0;
     try {
       if (this.previousFocus && this.previousFocus.focus) this.previousFocus.focus();
     } catch (_) { /* ignore */ }
@@ -525,7 +553,17 @@ class IdentityForgePicker {
   onKeyDown(event) {
     if (event.key === "Escape") {
       event.preventDefault();
-      event.stopPropagation();
+      // stopImmediatePropagation, not just stopPropagation: defense in depth
+      // against any other capture-phase listener attached to this same
+      // overlay element. (The reported "Escape deletes the node" bug traced
+      // to something this handler cannot reach at all -- LiteGraph's own
+      // ghost-node-placement cancel, which fires at the window/document level
+      // strictly before an overlay-level listener ever runs, so no amount of
+      // stopping propagation *here* could have prevented it. The actual fix
+      // is gating the trigger button on `node.flags.ghost`, see
+      // setupPickerButton/updateButtonPosition. This still stands on its own
+      // merits for the dialog's normal, non-ghost operation.)
+      event.stopImmediatePropagation();
       this.close();
       return;
     }
@@ -619,10 +657,15 @@ class IdentityForgePicker {
         }
       });
       button.addEventListener("click", () => {
+        // The query is deliberately left untouched: "a query spans every
+        // tab" (visibleEntries()) means switching tabs while searching is
+        // just picking which tab will apply once the query is cleared --
+        // clearing it here was a bug (1.1.0 fix round), not the design: it
+        // silently discarded whatever the user had just typed the moment
+        // they touched a tab, which is the opposite of "persists across
+        // tabs" that both the brief and this file's own header promise.
         this.activeTab = tab;
-        this.query = "";
         this.focusIndex = 0;
-        if (this.searchInput) this.searchInput.value = "";
         this.renderTabs();
         this.renderGrid();
       });
@@ -825,7 +868,24 @@ let tickingButtons = false;
 function updateButtonPosition(node, button) {
   const canvas = app.canvas;
   if (!canvas || !canvas.canvas || typeof canvas.canvas.getBoundingClientRect !== "function") return;
-  if (!node.pos || !node.size || (node.flags && node.flags.collapsed)) {
+  if (!node.pos || !node.size || (node.flags && (node.flags.collapsed || node.flags.ghost))) {
+    // `flags.ghost`: LiteGraph's own "still following the mouse, not yet
+    // placed" state for a node just spawned from the node-search palette
+    // (double-click canvas -> type a name -> Enter, with no click yet to
+    // commit it). Hiding the button here is the real fix for a critical
+    // 1.1.0 bug: a DOM overlay button is clickable even while the node
+    // underneath is still a ghost, and if a user opened the picker from
+    // that state and then pressed Escape, LiteGraph's OWN "cancel node
+    // placement" handler (bound at the window/document level, ahead of
+    // this dialog's own overlay-level Escape handler in the capture order,
+    // so nothing this file does to its own keydown listener can outrun it)
+    // deleted the still-ghost node -- confirmed live via Playwright: the
+    // dialog stayed open (this file's handler never even ran) and the node
+    // vanished. Making the trigger unusable during ghost mode closes the
+    // actual hole rather than trying to win an unwinnable propagation race
+    // against a framework-level shortcut. See isGhost() below for the
+    // matching guard on the click handler itself, for frontends where this
+    // position-tracking loop never starts at all.
     button.style.display = "none";
     return;
   }
@@ -906,11 +966,24 @@ function setupPickerButton(node, config) {
   button.textContent = config.buttonLabel;
   button.setAttribute("aria-haspopup", "dialog");
   button.style.position = "fixed";
-  button.style.zIndex = "9999";
+  // Deliberately modest, not the overlay dialog's own 10000: a full modal
+  // legitimately belongs above everything, but this is just a trigger sitting
+  // in open canvas space, and a very high value risks outranking a native
+  // widget dropdown a user has open on the node underneath (reported live by
+  // the maintainer on a newer "Nodes 2.0" frontend this repo cannot run
+  // locally to verify against -- see the 1.1.0 fix-round report for what
+  // could and couldn't be confirmed).
+  button.style.zIndex = "100";
   button.style.display = "none";
   button.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
+    // Belt-and-suspenders alongside the ghost check in updateButtonPosition:
+    // that check hides the button once the position-tracking loop's next
+    // frame runs, but a click landing in the same frame the node became a
+    // ghost (or on a frontend where the loop never starts at all -- see the
+    // guard around `activeButtons.push` below) would still reach here.
+    if (node.flags && node.flags.ghost) return;
     picker.open();
   });
   // Never dragged onto the canvas as a node-move gesture.
