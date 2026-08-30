@@ -87,7 +87,6 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Marinette Dupain-Cheng, Adrien Agreste (civilian) | Ordinary modern teen dress. Their transformed looks (Ladybug, Cat Noir) carry them. |
 | Jessica Jones, Marion Ravenwood, Baby Houseman, Frankie Foster, Peggy Hill, Luanne Platter | Everyday modern dress. Fails the "iconic *and* specific outfit" bar that admitted Trinity, Mia Wallace and Sandy Olsson. |
 | Anya Forger, Beatrice (Re:Zero) | Human children in ordinary clothes. Distinct from the accepted child *cosplays* (Dora, the Powerpuff Girls, Tina Belcher, Charlie Brown), whose looks are ordinary clothing on an adult wearer. See the mascot-suit distinction in architecture.md — it does **not** rescue these two. |
-| Barbarella | Re-confirmed skip. |
 | Shanna / "Shana the She-Devil" | The available description conflates her with **Red Sonja**, who already ships. |
 | Alice Abernathy | *Resident Evil* films only; `Resident Evil` is registered under Video Games, so she would file in the wrong category, and a `Resident Evil (film)` franchise is not worth the split. |
 | Bard (League of Legends) | A floating cosmic spirit with a chime-and-bell body. No worn garments at all. |

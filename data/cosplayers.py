@@ -23911,12 +23911,27 @@ COSPLAYERS: dict[str, dict] = {
         # list-style like Mr. Hyde's fixed version, using the same "with
         # uniform, all-over X skin" idiom positioned mid-sentence rather than
         # trailing a long chain of costume items.
-        "costume": "a severely ripped sleeveless tank top over torn checkered "
-                   "pants and heavy combat boots, a tattered pink ballet tutu "
-                   "worn over the pants, with uniform, all-over warped and "
-                   "blistered toxic-green mutant skin, sparse patches of thin, "
-                   "balding hair on a misshapen head, and one eye drooping "
-                   "and sagging noticeably lower than the other",
+        # Second fix round: that version fixed the skin colour (now uniform,
+        # consistent green across all renders) but the deformity clause
+        # itself still did not read -- the render came back as an ordinary
+        # healthy man with a full head of hair, no blistered texture, no
+        # misshapen head, no drooping eye. It was still trailing after two
+        # full clothing clauses (tank top+pants+boots, then the tutu) in one
+        # long sentence -- the exact "buried at the end of one long run-on
+        # sentence" shape this file's Ming the Merciless entry documents and
+        # fixes by leading with the face clause and giving the garment its
+        # own sentence. Applied the identical restructure here: the
+        # misshapen-head/hair/eye/skin clause now leads, in its own short
+        # sentence, and the clothing (tank top, pants, boots, tutu) follows
+        # in a second sentence. Re-rendered (see task-7-report.md Fix round 1
+        # for the honest result -- this did not fully resolve either).
+        "costume": "a misshapen head with sparse patches of thin, balding "
+                   "hair, one eye drooping and sagging noticeably lower than "
+                   "the other, and uniform, all-over warped and blistered "
+                   "toxic-green mutant skin. A severely ripped sleeveless "
+                   "tank top over torn checkered pants and heavy combat "
+                   "boots, with a tattered pink ballet tutu worn over the "
+                   "pants",
         "signature": {"body_type": "stocky", "height": "very tall",
                       "shoulder_width": "very broad", "fitness_level": "muscular"},
         "prop": "a battered industrial janitor's mop with grime-crusted "
