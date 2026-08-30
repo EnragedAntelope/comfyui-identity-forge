@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1977 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1994 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (379)
 
@@ -662,7 +662,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (262)
+## Comics & Cartoons (264)
 
 ### Adventure Time
 
@@ -828,6 +828,7 @@
 
 ### Heavy Metal
 
+- **Julie** (F)
 - **Taarna** (F, prop)
 
 ### Hellboy
@@ -1099,6 +1100,10 @@
 ### The Tick
 
 - **The Tick** (M, masked)
+
+### The Venture Bros
+
+- **Triana Orpheus** (F)
 
 ### The Walking Dead
 
@@ -1916,7 +1921,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (222)
+## Movies & TV (237)
 
 ### A Nightmare on Elm Street
 
@@ -1948,6 +1953,11 @@
 
 - **Marty McFly** (M)
 
+### Barbarella
+
+- **Barbarella** (F)
+- **The Great Tyrant (Black Queen)** (F)
+
 ### Battlestar Galactica
 
 - **Cylon Centurion** (M, giant, masked)
@@ -1972,6 +1982,11 @@
 ### Braveheart
 
 - **William Wallace** (M, prop)
+
+### Buck Rogers
+
+- **Princess Ardala** (F)
+- **Twiki** (M, masked)
 
 ### Buffy the Vampire Slayer
 
@@ -2063,7 +2078,16 @@
 
 ### Flash Gordon
 
+- **Flash Gordon** (M)
+- **General Kala** (F)
+- **Klytus** (M, masked)
+- **Ming the Merciless** (M)
+- **Prince Vultan** (M)
 - **Princess Aura** (F)
+
+### Forbidden Planet
+
+- **Robby the Robot** (M, masked)
 
 ### Friday the 13th
 
@@ -2190,10 +2214,15 @@
 - **Imperator Furiosa** (F)
 - **Mad Max** (M)
 
+### Mars Attacks!
+
+- **The Martian Ambassador** (M, masked)
+
 ### McDonald's
 
 - **Grimace** (M, masked)
 - **Hamburglar** (M, masked)
+- **Mayor McCheese** (M, masked)
 - **Ronald McDonald** (M)
 
 ### Metropolis
@@ -2410,6 +2439,10 @@
 - **Tulio** (M)
 - **Tzekel-Kan** (M, prop)
 
+### The Rocketeer
+
+- **The Rocketeer** (M)
+
 ### The Rocky Horror Picture Show
 
 - **Columbia** (F)
@@ -2429,6 +2462,14 @@
 ### The Texas Chain Saw Massacre
 
 - **Leatherface** (M, masked, prop)
+
+### The Toxic Avenger
+
+- **The Toxic Avenger** (M, prop)
+
+### Thunderbirds
+
+- **Lady Penelope** (F)
 
 ### Tron
 

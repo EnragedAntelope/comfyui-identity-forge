@@ -185,6 +185,10 @@ const COSPLAYER_FRANCHISES = {
     "Mizora",
     "Shadowheart"
   ],
+  "Barbarella": [
+    "Barbarella",
+    "The Great Tyrant (Black Queen)"
+  ],
   "Barsoom": [
     "Dejah Thoris"
   ],
@@ -293,6 +297,10 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Braveheart": [
     "William Wallace"
+  ],
+  "Buck Rogers": [
+    "Princess Ardala",
+    "Twiki"
   ],
   "Buffy the Vampire Slayer": [
     "Buffy Summers"
@@ -918,6 +926,11 @@ const COSPLAYER_FRANCHISES = {
     "River Tam"
   ],
   "Flash Gordon": [
+    "Flash Gordon",
+    "General Kala",
+    "Klytus",
+    "Ming the Merciless",
+    "Prince Vultan",
     "Princess Aura"
   ],
   "Folklore": [
@@ -933,6 +946,9 @@ const COSPLAYER_FRANCHISES = {
     "Megumi Tadokoro",
     "Rindou Kobayashi",
     "Soma Yukihira"
+  ],
+  "Forbidden Planet": [
+    "Robby the Robot"
   ],
   "Friday the 13th": [
     "Jason Voorhees"
@@ -1102,6 +1118,7 @@ const COSPLAYER_FRANCHISES = {
     "Alastor"
   ],
   "Heavy Metal": [
+    "Julie",
     "Taarna"
   ],
   "Hell's Paradise": [
@@ -1425,6 +1442,9 @@ const COSPLAYER_FRANCHISES = {
   "Magic: The Gathering": [
     "Liliana Vess"
   ],
+  "Mars Attacks!": [
+    "The Martian Ambassador"
+  ],
   "Marvel": [
     "Abomination",
     "Agatha Harkness",
@@ -1632,6 +1652,7 @@ const COSPLAYER_FRANCHISES = {
   "McDonald's": [
     "Grimace",
     "Hamburglar",
+    "Mayor McCheese",
     "Ronald McDonald"
   ],
   "Medaka Box": [
@@ -2677,6 +2698,9 @@ const COSPLAYER_FRANCHISES = {
     "Tulio",
     "Tzekel-Kan"
   ],
+  "The Rocketeer": [
+    "The Rocketeer"
+  ],
   "The Rocky Horror Picture Show": [
     "Columbia",
     "Dr. Frank-N-Furter",
@@ -2728,6 +2752,12 @@ const COSPLAYER_FRANCHISES = {
   "The Tick": [
     "The Tick"
   ],
+  "The Toxic Avenger": [
+    "The Toxic Avenger"
+  ],
+  "The Venture Bros": [
+    "Triana Orpheus"
+  ],
   "The Walking Dead": [
     "Michonne"
   ],
@@ -2744,6 +2774,9 @@ const COSPLAYER_FRANCHISES = {
     "Scarecrow (Wizard of Oz)",
     "Tin Man",
     "Wicked Witch of the West"
+  ],
+  "Thunderbirds": [
+    "Lady Penelope"
   ],
   "Thundercats": [
     "Cheetara",
