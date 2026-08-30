@@ -3198,9 +3198,28 @@ const VISUAL_WIDGET_ORDER = [
  * array-order position, exactly as they did before this function existed.
  * Either way `node.widgets`' order is untouched, so the worst case of this
  * being wrong on some frontend version is that the cosmetic reorder silently
- * does not apply there, never a compatibility regression. Reasoned from the
- * bundle source above; not independently confirmed live on an older frontend
- * that lacks this method.
+ * does not apply there, never a compatibility regression.
+ *
+ * CONFIRMED GAP, not a residual risk (an earlier version of this comment
+ * called this "unconfirmed" -- it has since been checked directly and does
+ * not work): this override has NO effect when the "Nodes 2.0" / VueNodes DOM
+ * renderer is active, which is a *different* rendering path entirely, not a
+ * fallback of the one described above. Read directly out of the same 1.51.9
+ * bundle: VueNodes' `NodeWidgets.vue` component renders `processedWidgets`
+ * (from `useProcessedWidgets` -> `computeProcessedWidgets`), which builds its
+ * list with a single `for (let [i, w] of nodeData.widgets.entries())` --
+ * straight array order, no sort, no `getLayoutWidgets` call anywhere in that
+ * function. `nodeData.widgets` is not a separate copy either: `extractVueNodeData`
+ * redefines `node.widgets` itself as an accessor (`Object.defineProperty`)
+ * backed by a reactive-mirrored array of the SAME order, so in VueNodes mode
+ * `node.widgets` IS the one and only order Vue renders from -- there is no
+ * second, overridable channel analogous to `getLayoutWidgets()` for the DOM
+ * path. Confirmed live (Playwright against `:8288` in actual Nodes-2.0 mode,
+ * querying real rendered DOM order): `random_pool` still draws last. See the
+ * task-4c report for the full trace and why a CSS-`order` / MutationObserver
+ * workaround on the rendered DOM was considered and rejected rather than
+ * shipped -- this file has no test infrastructure for real Vue-rendered DOM,
+ * unlike everything else in this comment block.
  *
  * One more thing the bundle source above does NOT show: `_arrangeWidgets`
  * (and therefore this override) only actually RUNS when LiteGraph's own
