@@ -292,14 +292,23 @@
     outline-offset: 2px;
 }
 
+/* Fix round 2: a small icon button anchored to the node's title bar rather
+   than a full-width labelled button below the node -- see
+   updateButtonPosition()'s comment in identity_forge_picker.js for why
+   (a bottom-anchored button sat exactly where the last widget's dropdown
+   expands, and lost a real click to a native combo's own popup on a newer
+   ComfyUI frontend). Width/height are set inline (fixed CSS px, matching
+   TRIGGER_BUTTON_SIZE) since they must stay in sync with the JS constant
+   used for position math. */
 .if-picker-trigger-btn {
-    padding: 4px 10px;
+    padding: 0;
     border: 1px solid var(--border-color, #4a4a4a);
-    border-radius: 6px;
+    border-radius: 4px;
     background: var(--comfy-input-bg, #131313);
     color: var(--input-text, #e8e8e8);
     cursor: pointer;
-    font-size: 11px;
+    font-size: 12px;
+    line-height: 1;
     pointer-events: auto;
 }
 

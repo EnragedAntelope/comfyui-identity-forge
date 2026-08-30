@@ -15,7 +15,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { installDom, resetDom } from "./dom.mjs";
-import { __getExtension } from "./stubs/app.js";
+import { app, __getExtension } from "./stubs/app.js";
 import { createNode, createNodeTwice, makeFakeNode } from "./fake_node.mjs";
 
 installDom();
@@ -432,9 +432,93 @@ test("the trigger button works normally once the node is no longer a ghost", asy
   );
 });
 
-// --- bug 3 (moderate): loadManifest() must stay a Promise on repeat calls ---
+// --- fix round 2: the trigger button must sit in the node's title bar, -----
+// --- not below the node's bottom edge -- a real, confirmed bug -------------
+//
+// A bottom-anchored button (the original placement) sat exactly where the
+// LAST widget's own dropdown expands. Confirmed live with "Nodes 2.0 BETA"
+// toggled on in a real ComfyUI instance: opening random_pool's native
+// dropdown put the button (z-index 100) over the dropdown's own popup
+// (z-index 3000, its own stacking context) at the actual click point, so a
+// real click there opened the picker instead of selecting the dropdown
+// option -- misdirected input, not a cosmetic glitch. The fix anchors the
+// button to the title bar instead, where no widget dropdown ever expands.
 
-test("loadManifest() returns a thenable on every call, including repeats after a successful fetch", async () => {
+test("the trigger button is positioned in the node's title bar, above node.pos[1] -- not below node.size[1]", () => {
+  const previousCanvas = app.canvas;
+  try {
+    const rect = { left: 0, top: 0 };
+    app.canvas = {
+      setDirty() {},
+      canvas: { getBoundingClientRect: () => rect },
+      ds: { scale: 1, offset: [0, 0] },
+    };
+    const node = { pos: [100, 200], size: [300, 400], flags: {} };
+    const button = { style: {} };
+
+    __testing.updateButtonPosition(node, button);
+
+    assert.equal(button.style.display, "flex", "a placed, non-ghost, non-collapsed node's button must be shown");
+    const top = parseFloat(button.style.top);
+    const left = parseFloat(button.style.left);
+    // The body (widget area) starts at node.pos[1] = 200 screen px (scale 1,
+    // zero offset). The title bar sits ABOVE that boundary, so the button's
+    // top must be strictly less than 200 -- and specifically must not be
+    // anywhere near node.pos[1] + node.size[1] (600), which is where the
+    // original, buggy bottom-anchored placement put it.
+    assert.ok(top < 200, `button top (${top}) must be above the node body, i.e. in the title bar, not at/below it`);
+    assert.ok(
+      top < 200 - __testing.TRIGGER_BUTTON_SIZE,
+      "the button must fit entirely above the body boundary, not straddle it",
+    );
+    assert.ok(
+      Math.abs(top - 600) > 50,
+      "sanity: this must not be anywhere near the old bottom-anchored position (node.pos[1] + node.size[1] = 600)",
+    );
+    // Horizontally within the node's own width, biased toward the right edge
+    // (title-bar icon convention) -- node spans screen x in [100, 400].
+    assert.ok(left >= 100 && left + __testing.TRIGGER_BUTTON_SIZE <= 400, "the button must sit within the node's own width");
+    assert.ok(left > 100 + 150, "the button must be biased toward the right edge of the title bar, not the left");
+  } finally {
+    app.canvas = previousCanvas;
+  }
+});
+
+test("the trigger button still hides for a ghost or collapsed node in its new title-bar position", () => {
+  const previousCanvas = app.canvas;
+  try {
+    app.canvas = {
+      setDirty() {},
+      canvas: { getBoundingClientRect: () => ({ left: 0, top: 0 }) },
+      ds: { scale: 1, offset: [0, 0] },
+    };
+    const button = { style: {} };
+    __testing.updateButtonPosition({ pos: [0, 0], size: [100, 100], flags: { ghost: true } }, button);
+    assert.equal(button.style.display, "none", "a ghost node's button must stay hidden");
+
+    const button2 = { style: {} };
+    __testing.updateButtonPosition({ pos: [0, 0], size: [100, 100], flags: { collapsed: true } }, button2);
+    assert.equal(button2.style.display, "none", "a collapsed node's button must stay hidden");
+  } finally {
+    app.canvas = previousCanvas;
+  }
+});
+
+// --- bug 3 (moderate): loadManifest() must stay a Promise on repeat calls, ---
+// --- and must not cache the resolved value indefinitely (fix-round follow-up) --
+//
+// The original fix kept loadManifest() returning a Promise forever by never
+// unwrapping the cache entry -- correct as far as it went, but it meant a
+// kind's manifest was fetched exactly once per page load and then served
+// from an indefinite, never-expiring JS-level cache for the rest of the
+// tab's lifetime, defeating the live gh-pages manifest's own HTTP freshness
+// contract (`Cache-Control: max-age=600` + an `ETag`, confirmed via `curl -I`
+// against the real URL). The revised fix caches only the in-flight Promise
+// (to dedupe concurrent calls) and clears it the instant it settles, so the
+// browser's own HTTP cache -- not this file -- decides whether a later call
+// needs the network at all.
+
+test("loadManifest() dedupes concurrent calls but does not cache the resolved value", async () => {
   __testing.__resetForTests();
   const stub = installFetchStub((url) => {
     if (url.includes("manifest.json")) {
@@ -448,22 +532,39 @@ test("loadManifest() returns a thenable on every call, including repeats after a
     return { ok: false, status: 404 };
   });
   try {
-    const first = __testing.loadManifest("cosplayer");
-    assert.equal(typeof first.then, "function", "the first call must return a thenable");
-    const firstMap = await first;
-    assert.equal(firstMap.get("Chun-Li"), "images/Chun-Li.jpeg");
+    // Two calls issued before either has resolved (renderGrid() calling this
+    // once per visible kind on the same render) must share one fetch, not
+    // fire a duplicate concurrent request.
+    const concurrentA = __testing.loadManifest("cosplayer");
+    const concurrentB = __testing.loadManifest("cosplayer");
+    assert.equal(typeof concurrentA.then, "function", "must return a thenable");
+    assert.equal(concurrentA, concurrentB, "concurrent calls for the same kind must share the same in-flight promise");
+    await concurrentA;
+    const callsAfterFirstResolve = stub.calls.filter((u) => u.includes("manifest.json")).length;
+    assert.equal(callsAfterFirstResolve, 1, "two concurrent calls must produce exactly one fetch");
 
-    // The regression: after a successful resolution, the cache used to hold
-    // the bare resolved Map instead of the Promise, so this second call
-    // returned a non-Promise and `.then()` on it threw synchronously.
-    const second = __testing.loadManifest("cosplayer");
+    // The original regression: after resolving, the cache used to hold the
+    // bare resolved Map instead of a Promise, so this next call returned a
+    // non-Promise and `.then()` on it threw synchronously.
+    const afterResolve = __testing.loadManifest("cosplayer");
     assert.equal(
-      typeof second.then,
+      typeof afterResolve.then,
       "function",
-      "a repeat call for an already-loaded kind must still return a thenable, not the raw resolved value",
+      "a call after the in-flight fetch has resolved must still return a thenable, not the raw resolved value",
     );
-    const secondMap = await second;
-    assert.equal(secondMap.get("Chun-Li"), "images/Chun-Li.jpeg");
+    const map = await afterResolve;
+    assert.equal(map.get("Chun-Li"), "images/Chun-Li.jpeg");
+
+    // The freshness fix: that call must have gone back to `fetch()` rather
+    // than replaying a cached value forever -- the browser's own HTTP cache
+    // (Cache-Control/ETag from the live gh-pages response) is what should
+    // make this cheap, not an indefinite cache at this layer.
+    const callsAfterSecondResolve = stub.calls.filter((u) => u.includes("manifest.json")).length;
+    assert.equal(
+      callsAfterSecondResolve,
+      2,
+      "a call after the previous fetch already settled must issue a fresh fetch, not replay a stale cached value",
+    );
   } finally {
     stub.restore();
   }

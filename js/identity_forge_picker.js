@@ -228,24 +228,38 @@ function savePreviewPref(value) {
   }
 }
 
-//: kind -> Promise<Map<name, image-relative-path>>. ALWAYS a Promise, never
-//: unwrapped to the resolved Map -- a fulfilled Promise stays a perfectly
-//: valid thenable forever, so every caller can uniformly `.then()` the result
-//: whether this is the first fetch or the hundredth repeat call. (An earlier
-//: revision overwrote this cache with the bare Map once the fetch resolved,
-//: which made every *second* call to loadManifest() for an already-loaded
-//: kind return a non-Promise; the sole call site unconditionally chains
-//: `.then()` on the result, so that threw `TypeError: ...then is not a
-//: function` inside open()'s try/catch, silently breaking the dialog open
-//: for that kind until a full page reload reset the module-level cache. See
-//: the 1.1.0 fix-round report.)
+//: kind -> Promise<Map<name, image-relative-path>>, held ONLY while a fetch
+//: for that kind is in flight -- cleared the instant it settles, success or
+//: failure, via `.finally()`. This is deliberately NOT a cache of the
+//: resolved value (an earlier revision was, and that had two problems: (1)
+//: it overwrote itself with the bare Map once the fetch resolved, so every
+//: *second* call to loadManifest() for an already-loaded kind returned a
+//: non-Promise -- the sole call site unconditionally chains `.then()` on the
+//: result, so that threw `TypeError: ...then is not a function` inside
+//: open()'s try/catch, silently breaking the dialog open for that kind until
+//: a full page reload reset the module-level cache; (2) even fixed to always
+//: return a Promise, an indefinite JS-level cache never expires for the life
+//: of the tab, defeating GitHub Pages' own freshness contract for this file
+//: -- confirmed via `curl -I` on the live manifest: `Cache-Control:
+//: max-age=600` plus an `ETag`. A long-lived ComfyUI tab could show a stale
+//: manifest forever with no way to force a refresh short of reloading the
+//: whole page. Letting every call past the in-flight window issue a plain
+//: `fetch()` again hands both problems to the browser's own HTTP cache,
+//: which already does this correctly: within the 10-minute window it serves
+//: the response from cache with no network round trip; past it, the
+//: `ETag` lets the server answer 304 instead of re-sending the body. The
+//: in-flight Promise is still cached (not skipped entirely) so that
+//: `renderGrid()` firing once per currently-visible kind -- on open, every
+//: tab switch, every debounced keystroke, every facet change -- can't fire
+//: duplicate concurrent requests for the same kind while one is already on
+//: the wire. See the 1.1.0 fix-round report (bug 3) for the full history.
 //: Never surfaces an error: a failed or offline fetch resolves (not rejects)
-//: to an empty Map so cards silently stay text-only, and the cache entry is
-//: dropped so a later attempt (toggle off/on, or back online) can retry.
-const manifestCache = new Map();
+//: to an empty Map so cards silently stay text-only, and (per the above) the
+//: very next call retries on its own -- no separate retry bookkeeping needed.
+const manifestFetches = new Map();
 
 function loadManifest(kind) {
-  if (manifestCache.has(kind)) return manifestCache.get(kind);
+  if (manifestFetches.has(kind)) return manifestFetches.get(kind);
   const promise = fetch(galleryFolderURL(kind) + "manifest.json")
     .then((response) => {
       if (!response.ok) throw new Error("HTTP " + response.status);
@@ -258,11 +272,11 @@ function loadManifest(kind) {
       }
       return map;
     })
-    .catch(() => {
-      manifestCache.delete(kind);
-      return new Map();
+    .catch(() => new Map())
+    .finally(() => {
+      manifestFetches.delete(kind);
     });
-  manifestCache.set(kind, promise);
+  manifestFetches.set(kind, promise);
   return promise;
 }
 
@@ -861,6 +875,24 @@ class IdentityForgePicker {
 // node.widgets or widgets_values. If app.canvas does not expose the expected
 // shape (older/unknown frontend, or a headless test harness), the button is
 // still created and clickable -- it simply is not position-tracked.
+//
+// Anchored to the node's TITLE BAR (fix round 2), not below the node's
+// bottom edge (the original placement). The bottom edge is exactly where the
+// LAST widget's dropdown expands, and a native combo's own popup lives in a
+// separate, high stacking context this button's z-index cannot reliably
+// out-rank -- confirmed live with "Nodes 2.0 BETA" toggled on in a real
+// ComfyUI instance: opening `random_pool`'s dropdown put this button's
+// z-index-100 box directly over the dropdown's own z-index-3000 popup at the
+// exact click target, so a real click there opened the picker instead of
+// selecting the dropdown option. That is misdirected input, not a cosmetic
+// glitch, and no z-index this button could plausibly claim is guaranteed to
+// beat every native popup's own stacking context in every ComfyUI frontend
+// version. Moving the button to the title bar removes the collision class
+// entirely, because no widget's dropdown ever expands upward into the title
+// bar -- there is nowhere left for the two to overlap.
+
+const TRIGGER_BUTTON_SIZE = 22; // fixed CSS px; never scaled with zoom, so it stays legible at any zoom level
+const TRIGGER_BUTTON_MARGIN = 4;
 
 const activeButtons = [];
 let tickingButtons = false;
@@ -883,21 +915,31 @@ function updateButtonPosition(node, button) {
     // dialog stayed open (this file's handler never even ran) and the node
     // vanished. Making the trigger unusable during ghost mode closes the
     // actual hole rather than trying to win an unwinnable propagation race
-    // against a framework-level shortcut. See isGhost() below for the
-    // matching guard on the click handler itself, for frontends where this
-    // position-tracking loop never starts at all.
+    // against a framework-level shortcut. The click handler in
+    // setupPickerButton carries the same `node.flags.ghost` guard directly
+    // (belt-and-suspenders, and the only guard at all on a frontend where
+    // this position-tracking loop never starts in the first place).
     button.style.display = "none";
     return;
   }
   const rect = canvas.canvas.getBoundingClientRect();
   const scale = (canvas.ds && canvas.ds.scale) || 1;
   const offset = (canvas.ds && canvas.ds.offset) || [0, 0];
-  const left = rect.left + (node.pos[0] + offset[0]) * scale;
-  const bottom = rect.top + (node.pos[1] + node.size[1] + offset[1]) * scale;
-  button.style.display = "block";
-  button.style.left = left + "px";
-  button.style.top = bottom + 4 + "px";
-  button.style.width = Math.max(80, node.size[0] * scale) + "px";
+  // node.pos is the top-left of the node's BODY, i.e. the boundary between
+  // the title bar (above it) and the widget area (below it) -- the title
+  // bar itself occupies the titleHeight graph-units immediately above
+  // node.pos[1]. Read LiteGraph's own constant defensively (a bare
+  // `LiteGraph` global reference would throw in this ES module if the
+  // frontend ever stops exposing it) with the long-standing 30 default as
+  // the fallback.
+  const titleHeight = (typeof window !== "undefined" && window.LiteGraph && window.LiteGraph.NODE_TITLE_HEIGHT) || 30;
+  const nodeScreenRight = rect.left + (node.pos[0] + node.size[0] + offset[0]) * scale;
+  const bodyScreenTop = rect.top + (node.pos[1] + offset[1]) * scale;
+  const titleBarScreenTop = bodyScreenTop - titleHeight * scale;
+  const titleBarScreenHeight = titleHeight * scale;
+  button.style.display = "flex";
+  button.style.left = (nodeScreenRight - TRIGGER_BUTTON_SIZE - TRIGGER_BUTTON_MARGIN) + "px";
+  button.style.top = (titleBarScreenTop + (titleBarScreenHeight - TRIGGER_BUTTON_SIZE) / 2) + "px";
 }
 
 function ensureButtonTicking() {
@@ -963,16 +1005,26 @@ function setupPickerButton(node, config) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "if-picker-trigger-btn";
-  button.textContent = config.buttonLabel;
+  // Icon-only: the button now lives in the node's title bar (fix round 2),
+  // which has no room for the full "🔍 Browse roster…" label the original
+  // bottom-anchored placement could afford. The full text survives as the
+  // accessible name (aria-label) and the native hover tooltip (title).
+  button.textContent = "🔍";
+  button.setAttribute("aria-label", config.buttonLabel);
+  button.title = config.buttonLabel;
   button.setAttribute("aria-haspopup", "dialog");
   button.style.position = "fixed";
+  button.style.width = TRIGGER_BUTTON_SIZE + "px";
+  button.style.height = TRIGGER_BUTTON_SIZE + "px";
+  button.style.alignItems = "center";
+  button.style.justifyContent = "center";
   // Deliberately modest, not the overlay dialog's own 10000: a full modal
   // legitimately belongs above everything, but this is just a trigger sitting
-  // in open canvas space, and a very high value risks outranking a native
-  // widget dropdown a user has open on the node underneath (reported live by
-  // the maintainer on a newer "Nodes 2.0" frontend this repo cannot run
-  // locally to verify against -- see the 1.1.0 fix-round report for what
-  // could and couldn't be confirmed).
+  // on the node's title bar. Kept modest even after the fix-round-2
+  // repositioning (which is the real fix for the confirmed "Nodes 2.0"
+  // click-misdirection collision -- see updateButtonPosition's comment) as
+  // continued defense in depth, since no title bar is guaranteed collision-free
+  // in every current or future ComfyUI frontend.
   button.style.zIndex = "100";
   button.style.display = "none";
   button.addEventListener("click", (event) => {
@@ -1043,9 +1095,11 @@ export const __testing = {
   setWidgetValue,
   galleryFolderURL,
   ROSTER_FILE,
+  updateButtonPosition,
+  TRIGGER_BUTTON_SIZE,
   __resetForTests() {
     roster = null;
     rosterPromise = null;
-    manifestCache.clear();
+    manifestFetches.clear();
   },
 };
