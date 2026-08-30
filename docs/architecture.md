@@ -3009,3 +3009,172 @@ clearing a real search), and the **"Clear search" button in the markup was never
 anything** — a dead control, shipped for releases. Search and the two toggles now funnel through
 one `applyView()` so they compose instead of overwriting each other, and the empty-state panel
 fires for any narrowing rather than only for a search.
+
+### Neon signage: a fixture split instead of a reprice (1.1.0)
+
+`neon_venue` (weight 297 of 2508, 6 variants) was legal at every location except the four void
+studio backdrops. Because `_pick_family_weighted` keeps a family's full frozen weight when it
+retains even one surviving variant, excluding `daylight` (36.8% of the field, indoors-only)
+inflated `neon_venue` to **22.76% of indoor draws**; outdoors, `neon_venue` + `neon_street`
+reached **19.6%**. Roughly one render in four carried a neon or signage cue — measured, not
+estimated, before any fix landed.
+
+**Why a reprice was the wrong tool.** Halving `neon_venue`'s weight would only lower its
+*frequency*; it does nothing about *where* it lands — a neon sign in a cathedral is wrong
+regardless of how rarely it's drawn. The actual bug is location-coherence, the same class this
+file has closed twice before (0.82.0's hearth/TV/stained-glass split, 0.83.0's `studio_stage`
+split): fixture values need a location allowlist, and a per-location rule may only remove a
+**whole** family, or the excluded family's frozen weight dumps onto whatever survives inside it
+(see "Fixture lighting: indoors is necessary, not sufficient" above). `neon_venue` mixed three
+different fixture claims in one six-variant family, so it could not be gated as a unit without
+also gating its two unrelated members — the fix had to split the family along the fixture seam
+first, then gate the pieces.
+
+**The split.** Every `LIGHTING_FAMILIES` weight was rescaled ×2 first (2508 → 5016), which keeps
+every sub-weight integral and reproduces the pre-gate distribution **exactly** — no taste-based
+reweighting anywhere in this change. `neon_venue`'s 297 was then split three ways, proportional
+to each half's variant count (3:2:1):
+
+| new family | weight | variants |
+|---|---|---|
+| `neon_signage` | 297 | `neon sign glow in multiple colors`, `single neon light from one side`, `purple and teal neon wash` |
+| `venue_rig` | 198 | `club strobe lighting`, `colored gel lighting` |
+| `bokeh` | 99 | `golden bokeh lights in background` |
+
+`neon_street`'s weight was also doubled (99 → 198) by the same ×2 rescale, unsplit — it was
+already its own two-value family. Total weight is 5016 across **13 families, not 11** (seeds
+drift for `lighting`, the same accepted precedent as 0.64.0 / 0.66.0 / 0.78.0 / 0.81.0 / 0.82.0 /
+0.83.0). No variant string was renamed, added, or removed — all six original `neon_venue`
+strings reappear byte-identical, now split across three families.
+
+**The allowlists.** `NEON_SIGNAGE_VENUE_LOCATIONS` (24 locations) gates `neon_signage` and
+`venue_rig` to nightlife/entertainment/urban-strip locations: 6 `food_drink` bar/club members
+(`crowded bar and grill`, `wood-paneled pub`, `dimly lit cocktail lounge`, `neon-lit nightclub`,
+`wine bar with exposed brick`, `speakeasy-style basement bar`), 10 `leisure_fitness`
+arcade/karaoke/casino/bowling/skating/cinema and music/performance venues, 5 `urban_outdoor`
+night-street members, 3 signage-dense `urban_landmark` members (`Times Square`, `Shibuya
+Crossing`, `the Bund waterfront in Shanghai`), and one `retail_services` addition (`tattoo
+parlor`, added because the shipped `Tattoo Artist` archetype locks it and the pairing is as
+iconic as a nightclub). `NEON_STREET_LOCATIONS` gates `neon_street` to `urban_outdoor` ∪ any
+outdoor `transit_travel` member — **computed, not hand-listed** (currently just `urban_outdoor`,
+32 locations, since no `transit_travel` member ships outdoors today), so a new outdoor transit
+location is picked up automatically. `bokeh` deliberately never appears in `FIXTURE_LIGHTING` —
+it is a light quality with no fixture claim, so it stays broadly legal. `data/constraints.py`
+needed no changes: its existing generic loop over `FIXTURE_LIGHTING` already turns any new entry
+into a per-location exclusion rule.
+
+**The mandatory pre-flight audit.** Every archetype's location×lighting combination was
+enumerated exhaustively (not sampled) against the real `data/templates.py` and checked against
+the new gate. A handful of allowlist additions beyond the brief's literal category list were
+justified by a shipped archetype actually needing them (`recording studio`, `cobblestone
+old-town street`, `tattoo parlor`, …); seven pairs were deliberately left as declared,
+individually-tested exceptions rather than widening the allowlist to cover them, because
+widening for one archetype's sake would have reopened the exact frequency problem this task
+closes for every *non*-archetype character — including one, `Grim Reaper` / `misty moor`, that
+is the identical bug class this task's own motivating example describes (a streetlamp on a
+Yosemite meadow), left as a flagged pre-existing authoring miss rather than a reason to widen
+`NEON_STREET_LOCATIONS` to `nature_outdoor`. `NeonSignageGateTests` and
+`ArchetypeNeonLocationTests` pin the weight/family-count invariant, per-location reachability,
+and the exception set itself (so it cannot silently go stale).
+
+### `random_pool` composes with `random_scope` instead of a seventh scope (1.1.0)
+
+`random_pool` is a third `io.Combo.Input` on `IdentityForgeCosplayer`, appended at the end of
+`define_schema()` (after `upstream`, per the widget-append convention — see "Adding a field
+without breaking saved workflows"), offering three values: `All characters`, `People only — no
+mascot suits or beasts`, `Mascot suits and beasts only`.
+
+**Why a filter, not a scope value.** `random_scope`'s existing values already partition the
+roster by franchise/category — the nine broad `_FRANCHISE_CATEGORY` buckets plus per-franchise
+`Franchise: …` scopes once a franchise crosses `_FRANCHISE_SCOPE_MINIMUM`. Person-vs-mascot is an
+orthogonal axis: multiplying every existing scope value by a mascot/people toggle would double
+the widget's option list and mint mostly-dead combinations (a franchise with zero mascot entries
+would grow a `Franchise: X — mascot only` option with nothing behind it). Composing two
+independent filters instead keeps both option lists exactly the size they already are, and every
+combination that has *any* matching entry stays reachable — the filters intersect inside
+`_resolve_character`'s `in_scope()` closure rather than being enumerated as a cross-product.
+
+**Composition and fallback order.** The pool filter (`_pool_is_people` / `_pool_is_mascot_or_beast`,
+built on the existing `_scope_is_mascot` / `_scope_is_feral` predicates — no new detection logic)
+applies inside `in_scope()` after the `random_scope` predicate, so both constrain the same
+candidate list together. The pre-existing fallback order is preserved exactly: a gender mismatch
+relaxes first (so scope/pool is never silently dropped just because a scope had no entries of the
+rolled gender), and the loud full-roster fallback fires only if the pool is still empty after
+that relaxation. This means `random_pool` **stacks** with `random_scope` — "Franchise: Pokemon" +
+"Mascot suits and beasts only" is a real, correctly-intersected query, not two competing filters
+that only one of which can win.
+
+**`fingerprint_inputs` needed no change.** This node's `fingerprint_inputs` already ignores every
+kwarg and unconditionally returns `float("nan")` — a pre-existing workaround for
+ComfyUI#11905 that forces a re-roll on every queue regardless of any single field's value. Since
+caching is already bypassed for every input, there is nothing to add for `random_pool`
+specifically; the code documents this in a comment rather than a no-op kwargs read that would
+otherwise look like an oversight to a future reader.
+
+`_announce_scope` folds `pool` into its cache key and message text, but the default pool
+(`All characters`) omits the note entirely, so a pre-1.1.0 announcement string is unchanged
+byte-for-byte — the new widget is additive to the message surface, never a rewording of it.
+
+### The roster picker: text-first cards, sprite atlases rejected (1.1.0)
+
+The picker (`js/identity_forge_picker.js` / `.css`) is a searchable modal over the whole roster —
+cosplayers, archetypes, creatures — attached to the `character` / `archetype` / `creature` combo
+on their respective preset nodes via a trigger button. It is a **pure DOM overlay appended to
+`document.body`, never a member of `node.widgets`** (not `addDOMWidget`): even a `serialize:
+false` widget still counts toward `node.widgets.length`, which the pre-existing legacy
+`widgets_values` padding logic (`WIDGETS_ADDED_BY_RELEASE`) depends on matching exactly, so a DOM
+overlay outside that array is the only option that adds zero risk to backward-compatible
+workflow loading.
+
+**The search index.** `scripts/generate_js_data.py` emits `js/identity_forge_roster.json`, a flat
+JSON array tagging every entry with a `kind` discriminator (`cosplayer` / `archetype` /
+`creature`) and a precomputed, lowercased `haystack` string (name + franchise/category + costume
+prose + derived trait words such as `masked`, `mascot`, `feral`, `giant`, `tiny`) for
+substring/keyword search. Search is case-insensitive substring matching with multi-word tokens
+AND'd (order-independent), spanning every kind regardless of the active tab — only an *empty*
+query scopes to the active tab. The generator reads the data modules with `ast.parse` only, never
+by importing them, for the same reason `stamp_versions.py` does: importing runs
+`apply_user_*` and would bake a maintainer's private `user_options.json` entries into a committed,
+published file. The file sits under a **~1.5 MB budget** (`tests/test_js_sync.py`), and ships as
+`.json`, never `.js` — a startup-tax rule that applies to any future generated frontend data file
+(see the memory note of the same name): `.js` is parsed and executed by every ComfyUI page load
+regardless of whether the picker ever opens, while `.json` is only fetched, and only lazily, the
+first time a user actually opens the dialog.
+
+**Why sprite atlases were rejected — the Registry-zip-size argument.** An atlas image (or a
+per-entry thumbnail set) bundled into the pack would ship inside every Registry download and
+every git clone, growing the distributed package for a feature most sessions never open. The
+existing sample-render images already solve this correctly for the *public galleries*:
+`gallery/.gitignore` keeps them off `main` entirely, living only on `gh-pages`. The picker follows
+that same boundary instead of re-litigating it — cards are **text-first by default** (name,
+franchise/category, kind badge, trait chips), carrying zero image payload, so the picker itself
+adds nothing to package size.
+
+**The opt-in thumbnail layer.** "Show preview images" is an unchecked checkbox by default; its
+state persists to `localStorage` (`identity_forge.picker.show_previews`, wrapped in try/catch so
+a blocked storage API degrades to text-only rather than throwing). Only once enabled does the
+picker fetch `.../gallery/<folder>/manifest.json` from the public `gh-pages` site over a plain,
+absolute `fetch` — never ComfyUI's own `api.fetchApi` — where `<folder>` is the gallery's own
+directory name (`cosplay`, not the roster's `cosplayer` kind string; a real naming mismatch caught
+and handled explicitly). A failed or offline fetch resolves to an empty `Map` silently, with no
+error dialog, and the fetch promise is only cached **while in flight** (cleared via `.finally()`
+the instant it settles) so a later call issues a fresh `fetch()` that the browser's own HTTP cache
+serves from the manifest's real `Cache-Control: max-age=600` + `ETag` contract — not an indefinite
+JS-level cache that would otherwise show a stale roster for an entire long-lived tab, a real bug
+caught and fixed during this task's review rounds. `<img>` tags lazy-load via
+`IntersectionObserver` once a kind's manifest resolves, mirroring the public gallery page's own
+lazy-load pattern, so opening the dialog with previews on does not eagerly fetch hundreds of
+images at once.
+
+**Two Critical bugs surfaced only by live testing**, not by the automated jsdom suite (documented
+at length in the task's own reports; named here because they shaped what shipped): the trigger
+button was fully clickable while its node was still an unplaced LiteGraph "ghost" (Escape then
+appeared to delete the *dialog's node* — actually a pre-existing, unrelated LiteGraph platform
+shortcut for cancelling ghost placement, reproduced identically on a stock core `Note` node with
+no Identity Forge code involved), and `random_pool` was silently stripped from every saved
+workflow on reload by a real bug in ComfyUI's own shipped `migrateWidgetsValues()` — a coincidence
+where this node's total widget count exactly matched that function's schema-derived migration
+mask length. Neither bug lived in this pack's business logic; both were closed by working around
+platform behaviour (gating the trigger on `node.flags.ghost`, and padding one inert trailing
+`widgets_values` element to dodge the length collision) rather than by touching the platform
+itself.

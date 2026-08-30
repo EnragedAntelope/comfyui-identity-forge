@@ -1955,8 +1955,8 @@
 
 ### Barbarella
 
-- **Barbarella** (F)
-- **The Great Tyrant (Black Queen)** (F)
+- **Barbarella** (F, +2 alt)
+- **The Great Tyrant (Black Queen)** (F, prop)
 
 ### Battlestar Galactica
 
@@ -1986,7 +1986,7 @@
 ### Buck Rogers
 
 - **Princess Ardala** (F)
-- **Twiki** (M, masked)
+- **Twiki** (M, tiny, masked)
 
 ### Buffy the Vampire Slayer
 

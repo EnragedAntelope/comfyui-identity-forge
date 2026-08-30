@@ -23710,11 +23710,45 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Flash Gordon",
         "gender": "Male",
         "bald": True,
-        "costume": "a close-fitting black skullcap over a bald head, a high stiff "
-                   "upright collar framing the neck, and floor-length "
-                   "crimson-and-gold brocade robes with wide sweeping shoulders",
-        "signature": {"eyebrows": "thin and arched", "facial_hair": "van dyke"},
-        "physique": {"body_type": "lean", "height": "tall"},
+        # 1.1.0 fix round: maintainer-supplied fuller canon after the first
+        # render came back clean-shaven, tan-skinned, warm-expressioned and
+        # bare-fingered. facial_hair's closest enum (van_dyke = mustache +
+        # disconnected pointed chin beard) can't encode the exact "thin
+        # pencil mustache + Fu Manchu goatee" shape, so the costume prose
+        # restates it explicitly rather than leaving the shape to the enum
+        # alone (same pattern as the eyes-authoring asymmetry convention).
+        # Second fix round: the face/mustache/rings clause was buried at the
+        # end of one long run-on sentence after the full robe description --
+        # T2I models weight earlier prompt content more heavily, so the face
+        # now leads and the garment follows in its own sentence. "smirking"
+        # also read too soft for "a permanent sneering look of utter
+        # contempt" -- "steely" (intense family) is the closest enum for a
+        # cold, hard stare, and the prose spells out the sneer/contempt shape
+        # explicitly the same way the mustache/goatee shape is spelled out.
+        # Third fix round: two re-renders after the reorder still came back
+        # clean-shaven. The composed prompt showed why -- signature's "van
+        # dyke" enum injects its own "sharply trimmed van dyke beard" clause
+        # (mustache + disconnected pointed CHIN beard) right before the
+        # costume prose's "Fu Manchu-style goatee" clause, two different,
+        # competing beard shapes in the same prompt. Switched the enum to the
+        # plain "goatee" option, which does not name a conflicting shape and
+        # lets the costume prose's specific mustache+goatee description stand
+        # unopposed.
+        "costume": "a cold, piercing, sneering expression of utter contempt "
+                   "beneath thin, arched eyebrows, a thin, sharply "
+                   "pencil-lined mustache above a pointed Fu Manchu-style "
+                   "goatee, and heavy ornate gold rings stacked on the "
+                   "fingers. A close-fitting black skullcap covers a "
+                   "completely bald head above a high stiff upright collar "
+                   "framing the neck, with floor-length crimson-and-gold "
+                   "brocade robes patterned with tiny shimmering gold "
+                   "bugle-beads in starburst and geometric imperial-crest "
+                   "motifs across the chest and on the triangular cuffs, and "
+                   "golden brocade slippers peeking beneath the hem",
+        "signature": {"eyebrows": "thin and arched", "facial_hair": "goatee",
+                      "expression": "steely", "rings": "statement ring"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale",
+                     "cheekbones": "very high and prominent"},
     },
     "Klytus": {
         "franchise": "Flash Gordon",
@@ -23864,13 +23898,25 @@ COSPLAYERS: dict[str, dict] = {
         # updo cannot render over "patchy, thinning hair" -- caught live via
         # preview_cosplayer.py.
         "covers_hair": True,
-        "costume": "a severely ripped sleeveless tank top exposing a scarred, "
-                   "mutated chest, torn checkered pants, heavy combat boots, "
-                   "and a tattered pink ballet tutu worn over the torn pants, "
-                   "over uniform, all-over warped, blistered toxic-green "
-                   "mutant skin covering a misshapen asymmetric body and head "
-                   "with patchy, thinning hair, one eye drooping and sagging "
-                   "noticeably lower than the other",
+        # 1.1.0 fix round: the first render came back as a healthy-skinned man
+        # with a full head of dark hair -- none of the deformity read. First
+        # attempt just removed a stray "over uniform," debris fragment and
+        # moved the hair/eye clause up, but re-rendering that version still
+        # came back as an ordinary healthy man -- the real cause, confirmed
+        # against this same file's Mr. Hyde entry (its comment documents the
+        # identical failure: "a longer single run-on clause ... diluted
+        # attention and the render lost the skin colour ... rendering as an
+        # ordinary pale Victorian man"), is sentence length diluting
+        # attention, not just the one broken fragment. Rewritten short and
+        # list-style like Mr. Hyde's fixed version, using the same "with
+        # uniform, all-over X skin" idiom positioned mid-sentence rather than
+        # trailing a long chain of costume items.
+        "costume": "a severely ripped sleeveless tank top over torn checkered "
+                   "pants and heavy combat boots, a tattered pink ballet tutu "
+                   "worn over the pants, with uniform, all-over warped and "
+                   "blistered toxic-green mutant skin, sparse patches of thin, "
+                   "balding hair on a misshapen head, and one eye drooping "
+                   "and sagging noticeably lower than the other",
         "signature": {"body_type": "stocky", "height": "very tall",
                       "shoulder_width": "very broad", "fitness_level": "muscular"},
         "prop": "a battered industrial janitor's mop with grime-crusted "
@@ -23894,20 +23940,24 @@ COSPLAYERS: dict[str, dict] = {
     "Julie": {
         "franchise": "Heavy Metal",
         "gender": "Female",
-        "costume": "a revealing metallic black-and-silver halter-neck bra "
-                   "with sharply cut cups joined at a metallic ring clasp at "
-                   "the center, an extreme high-cut asymmetric G-string with "
-                   "a small metallic panel over the pelvis and thin black "
-                   "straps sitting high on the hips, asymmetric black leather "
-                   "straps crossing the bare midriff with more straps wrapped "
-                   "around the upper thighs, fingerless black leather gloves "
-                   "extending into forearm gauntlets, thigh-high black combat "
-                   "boots plated in silver with heavy buckles and thick "
-                   "platform soles, and empty tactical leather holsters and "
-                   "belts fastened around the bare waist and thighs",
-        "signature": {"hair_color": "jet black", "hair_length": "very long",
+        # 1.1.0 fix round: the maintainer supplied a fuller, corrected
+        # description (based on Julie Strain's design) after the first
+        # black-and-silver render contradicted it -- canon is RED armor with
+        # deep red/auburn hair, not black. Superseding the original build
+        # from the initial request entirely.
+        "costume": "a minimal red metallic bikini-style bra with sharply cut "
+                   "plate cups and a plunging neckline joined at a metallic "
+                   "ring clasp at the center, red metallic loincloth-style "
+                   "hip armor with high-cut sides held by thin straps sitting "
+                   "high on the hips, red-and-silver metallic gauntlets on "
+                   "the forearms, thigh-high red combat boots with silver "
+                   "metallic knee-guards, straps, and buckle accents, a "
+                   "sleek telescopic tracking visor worn over the eyes, and "
+                   "empty tactical leather holsters and belts fastened "
+                   "around the bare waist and thighs",
+        "signature": {"hair_color": "deep red", "hair_length": "very long",
                       "hair_texture": "thick and voluminous",
-                      "hair_style": "windswept", "eye_color": "deep blue",
+                      "hair_style": "windswept", "eye_color": "ice blue",
                       "eyebrows": "thick and straight",
                       "cheekbones": "high and defined", "lips": "full"},
         "physique": {"body_type": "hourglass", "height": "tall",
@@ -23918,9 +23968,27 @@ COSPLAYERS: dict[str, dict] = {
     "Barbarella": {
         "franchise": "Barbarella",
         "gender": "Female",
-        "costume": "a metallic silver spacesuit with detachable puffed sleeves and "
-                   "leg coverings, a plunging halter-cut bodice, thigh-high silver "
-                   "boots, and a rounded silver space helmet with a clear visor",
+        # 1.1.0: "detachable" was reworded out of the base look per the
+        # maintainer's steer -- a t2i model reads "detachable" as an
+        # instruction/relationship rather than a static garment feature, so
+        # each element is described as its own worn piece instead. She has
+        # three iconic film looks; the other two ship as plain-string
+        # `costumes` alternates since neither needs a different signature
+        # (see "An iconic variant is an alternate, not a second entry").
+        "costume": "a metallic silver spacesuit with puffed, elbow-length "
+                   "sleeves and matching silver leggings, a plunging "
+                   "halter-cut bodice, thigh-high silver boots, and a rounded "
+                   "silver space helmet with a clear visor",
+        "costumes": [
+            # The Black Astronavigatrix
+            "a sleeveless black leotard with sheer plastic mesh geometric "
+            "cutout windows over the chest and stomach, paired with high "
+            "black tights",
+            # The Green Chainmail battle outfit
+            "an olive-green chainmail sleeveless tunic-leotard, and "
+            "thigh-high brown leather boots connected by thin leather thigh "
+            "straps",
+        ],
         "signature": {"hair_color": "strawberry blonde", "hair_length": "shoulder length",
                       "hair_texture": "wavy", "hair_style": "tousled bedhead"},
         "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
@@ -23928,13 +23996,24 @@ COSPLAYERS: dict[str, dict] = {
     "The Great Tyrant (Black Queen)": {
         "franchise": "Barbarella",
         "gender": "Female",
+        # 1.1.0 fix round: the first render kept the eyepatch and gloves but
+        # dropped every silhouette-defining element -- the maintainer's fuller
+        # canon adds the feather collar, cape and boots that actually make
+        # this read as "Great Tyrant" rather than a generic red-and-black
+        # catsuit.
         "costume": "a skintight black bodysuit with a circular cutout baring the "
-                   "midriff, a red bodice panel, black opera gloves, a black choker, "
-                   "a single black eyepatch over one eye, and a small white horn "
-                   "rising from the brow",
+                   "midriff, a red bodice panel, a massive high-standing "
+                   "fan-like collar of tiered iridescent black feathers "
+                   "framing the shoulders, a long flowing cape of sheer black "
+                   "netting trailing behind, thigh-high black leather boots "
+                   "with sharp stiletto heels, black opera gloves, a black "
+                   "choker, a single black eyepatch over one eye, and a small "
+                   "white horn rising from the brow",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
-                      "hair_style": "slicked back"},
+                      "hair_style": "tousled bedhead", "eyeliner": "bold cat eye"},
         "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slender black leather whip coiled in one hand as a symbol "
+                "of authority",
     },
     "The Rocketeer": {
         "franchise": "The Rocketeer",
@@ -23974,12 +24053,39 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",  # genderless mascot convention -- see The Knight (Hollow Knight)
         "covers_face": True,
         "covers_body": True,
-        "mask": "a rounded chrome robot head with a horizontal red scanning-light "
-                "visor and small round audio ports",
-        "costume": "a squat chrome robot body on stubby legs, with short arms "
-                   "ending in mechanical pincer hands, and a small pouch worn at "
-                   "the chest",
-        "physique": {"body_type": "stocky", "height": "short"},
+        # 1.1.0 fix round: the first render came back adult-height with a
+        # full motorcycle-helmet-style head and no Dr. Theopolis -- the
+        # maintainer's canon pins him child-sized (the actor in the suit was
+        # a small-statured performer), so size_scale/scale_prose lock the
+        # height the same way Prince Vultan's build is pinned in signature.
+        # Theopolis is WORN (hung around the neck), not held, so per this
+        # file's own "worn items never go in prop" rule it lives in costume
+        # prose rather than the `prop` mechanism. The disc description was
+        # also moved to the front of the costume string (was third in a
+        # robot-body/arms/disc list) -- same front-loading principle as
+        # Ming's face clause.
+        # Second fix round: the mask itself did not match canon -- it read as
+        # a generic acorn-shaped dome with a scanning-light band and side
+        # audio ports, when real Twiki has a pageboy/bowl-cut helmet shape
+        # with sculpted bangs, two round dark eye-lenses (not a light strip),
+        # and a minimal mouth slit (not side ports). Replaced with the
+        # maintainer-supplied canon description, plus an oversized-head note
+        # that may also help the scale read independently of scale_prose.
+        "size_scale": "tiny",
+        "scale_prose": "tiny and just over three feet tall",
+        "mask": "a smooth, domed metallic helmet-head shaped like a 1970s "
+                "pageboy haircut, with a sculpted fringe of bangs across the "
+                "forehead, a flush metallic face-plate set into the helmet "
+                "frame, two simple round dark eye-lens openings set "
+                "symmetrically for a fixed, wide-eyed expression, and a "
+                "minimal horizontal speaker-slit mouth below the eyes, the "
+                "head noticeably oversized against the small body",
+        "costume": "a circular, glowing computer-companion disc hung around "
+                   "the neck on a cord, its face lit with a flashing light "
+                   "and a speaking-matrix grille, over a squat chrome robot "
+                   "body on stubby legs with short arms ending in mechanical "
+                   "pincer hands",
+        "physique": {"body_type": "stocky"},
     },
     "The Martian Ambassador": {
         "franchise": "Mars Attacks!",
@@ -24010,16 +24116,27 @@ COSPLAYERS: dict[str, dict] = {
     "Triana Orpheus": {
         "franchise": "The Venture Bros",
         "gender": "Female",
+        # 1.1.0 fix round: footwear corrected from sneakers to her actual
+        # canon Mary Janes; eye_makeup locked to the closest valid enum for
+        # her purple eyeshadow (no literal "purple" option exists on this
+        # field -- "rosy mauve" is the nearest real match, same closest-enum
+        # pattern as Ming's facial_hair). hair_color, unlike those two, is
+        # NOT a closest-enum compromise: HAIR_COLOR_FAMILIES["vivid"] already
+        # has an exact "deep purple" option, and the first render's
+        # structured "jet black" directly contradicted the costume prose's
+        # own "violet sheen" line. Locked to "deep purple" and the prose
+        # reworded to agree (violet-black bob) instead of fighting it.
         "costume": "a black short-sleeve top printed with a large white "
                    "stylized skull-and-crossbones graphic, a high-waisted "
                    "black mini skirt, black-and-white horizontally striped "
-                   "tights, cherry-red low-top sneakers with white caps and "
-                   "laces, a tight black choker, a black studded-leather "
-                   "wristband on one wrist, and a silver metallic bracelet on "
-                   "the other, with a violet sheen catching in the choppy "
-                   "jet-black bob",
-        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
-                      "hair_style": "blunt bangs", "makeup_style": "gothic dark makeup"},
+                   "tights, dark red Mary Janes with a classic single strap "
+                   "across the instep and a low heel, a tight black choker, "
+                   "a black studded-leather wristband on one wrist, and a "
+                   "silver metallic bracelet on the other, with a violet "
+                   "sheen catching in the choppy violet-black bob",
+        "signature": {"hair_color": "deep purple", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "makeup_style": "gothic dark makeup",
+                      "eye_makeup": "rosy mauve"},
         "physique": {"body_type": "slim", "height": "average height",
                      "skin_tone": "pale", "age": "18"},
     },

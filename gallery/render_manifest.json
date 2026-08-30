@@ -1552,6 +1552,11 @@
         "hash": "356b3b5e3ef33bd6",
         "rendered": "pre-existing"
       },
+      "Barbarella": {
+        "hash": "06e8eb5d81277a53",
+        "rendered": "2026-08-30",
+        "seed": 410370770738048411
+      },
       "Barney Rubble": {
         "hash": "1a1b93038b6d0215",
         "rendered": "pre-existing"
@@ -1958,8 +1963,8 @@
         "rendered": "pre-existing"
       },
       "Bulma": {
-        "hash": "a97dbade9bd14441",
-        "rendered": "pre-existing"
+        "hash": "9f2830d99f7616bd",
+        "rendered": "2026-08-30"
       },
       "Bumblebee (DC)": {
         "hash": "d14385cc40d1bdad",
@@ -3178,6 +3183,10 @@
         "hash": "38311cd57e32a3ad",
         "rendered": "pre-existing"
       },
+      "Flash Gordon": {
+        "hash": "b6811d2d8037ad4e",
+        "rendered": "2026-08-30"
+      },
       "Fleur Delacour": {
         "hash": "215e4e4eb7d7273e",
         "rendered": "pre-existing"
@@ -3370,6 +3379,10 @@
       "General Grievous": {
         "hash": "0671df12f3b9d35d",
         "rendered": "2026-08-22"
+      },
+      "General Kala": {
+        "hash": "e31a7f112ed15fd8",
+        "rendered": "2026-08-30"
       },
       "Gengar": {
         "hash": "4b87bb6fc7330a3c",
@@ -4341,6 +4354,11 @@
         "hash": "1cf3d63aeb8de973",
         "rendered": "pre-existing"
       },
+      "Julie": {
+        "hash": "79711fab98f6f852",
+        "rendered": "2026-08-30",
+        "seed": 773113407684410896
+      },
       "Juliet Starling": {
         "hash": "5e4bb0614cadb315",
         "rendered": "pre-existing"
@@ -4649,6 +4667,10 @@
         "hash": "0850743faf37c013",
         "rendered": "pre-existing"
       },
+      "Klytus": {
+        "hash": "090eaf969cff9d90",
+        "rendered": "2026-08-30"
+      },
       "Kokoro": {
         "hash": "e5f8156c0209cc3d",
         "rendered": "pre-existing"
@@ -4776,6 +4798,10 @@
       "Lady Maria": {
         "hash": "b3306d7f19c9424e",
         "rendered": "pre-existing"
+      },
+      "Lady Penelope": {
+        "hash": "e35e41a3ad964059",
+        "rendered": "2026-08-30"
       },
       "Lady Shiva": {
         "hash": "df6142e85b873c2b",
@@ -5431,6 +5457,10 @@
         "hash": "17a9824821ce6882",
         "rendered": "2026-08-26"
       },
+      "Mayor McCheese": {
+        "hash": "bc415537e7a1ddf5",
+        "rendered": "2026-08-30"
+      },
       "Mayura": {
         "hash": "c717b7098a19a42d",
         "rendered": "pre-existing"
@@ -5622,6 +5652,10 @@
       "Minerva McGonagall": {
         "hash": "663153676929a558",
         "rendered": "pre-existing"
+      },
+      "Ming the Merciless": {
+        "hash": "b6e916fc4cf86453",
+        "rendered": "2026-08-30"
       },
       "Minnie Mouse": {
         "hash": "7203825034198757",
@@ -6469,13 +6503,21 @@
         "hash": "7ea70aa96641c171",
         "rendered": "pre-existing"
       },
+      "Prince Vultan": {
+        "hash": "d33479d1903f65f7",
+        "rendered": "2026-08-30"
+      },
       "Princess Allura": {
         "hash": "b09982096395d9c7",
         "rendered": "pre-existing"
       },
+      "Princess Ardala": {
+        "hash": "d08d238daf8cf958",
+        "rendered": "2026-08-30"
+      },
       "Princess Aura": {
-        "hash": "c4e4b98cc5ea29f2",
-        "rendered": "2026-08-26"
+        "hash": "bd68daa5656ab4a1",
+        "rendered": "2026-08-30"
       },
       "Princess Bubblegum": {
         "hash": "173377f5a2e9b8b7",
@@ -6876,6 +6918,10 @@
       "Road Runner": {
         "hash": "9eafb3d712054b12",
         "rendered": "2026-08-24"
+      },
+      "Robby the Robot": {
+        "hash": "582fc9283a3d054f",
+        "rendered": "2026-08-30"
       },
       "Robin": {
         "hash": "8dd7778b8d9a841f",
@@ -8069,6 +8115,11 @@
         "hash": "798aa555ce803384",
         "rendered": "pre-existing"
       },
+      "The Great Tyrant (Black Queen)": {
+        "hash": "e36ec5dc817e2cbd",
+        "rendered": "2026-08-30",
+        "seed": 674709838590640366
+      },
       "The Grinch": {
         "hash": "519d83ab8f9b2de7",
         "rendered": "pre-existing"
@@ -8092,6 +8143,11 @@
       "The Mandalorian": {
         "hash": "ef53625ed7141991",
         "rendered": "pre-existing"
+      },
+      "The Martian Ambassador": {
+        "hash": "ec4b19741fcc3030",
+        "rendered": "2026-08-30",
+        "seed": 687882878581256465
       },
       "The Martyr": {
         "hash": "71d4c9063d133ed3",
@@ -8129,6 +8185,10 @@
         "hash": "c729d4b8221128a0",
         "rendered": "pre-existing"
       },
+      "The Rocketeer": {
+        "hash": "114b05a3c29d2cd7",
+        "rendered": "2026-08-30"
+      },
       "The Shadow": {
         "hash": "386ffe6c5f30d87c",
         "rendered": "2026-08-26"
@@ -8156,6 +8216,10 @@
       "The Tick": {
         "hash": "2fe9b631d1f22962",
         "rendered": "pre-existing"
+      },
+      "The Toxic Avenger": {
+        "hash": "18814b05f42362c2",
+        "rendered": "2026-08-30"
       },
       "The Wolf Man": {
         "hash": "e2289365ac48e9d0",
@@ -8289,6 +8353,11 @@
         "hash": "75d95fed292a4892",
         "rendered": "pre-existing"
       },
+      "Triana Orpheus": {
+        "hash": "637d801561e0a127",
+        "rendered": "2026-08-30",
+        "seed": 208107991219052519
+      },
       "Trinity": {
         "hash": "3f4fd4eb389e29a7",
         "rendered": "pre-existing"
@@ -8324,6 +8393,10 @@
       "Tweety": {
         "hash": "65c52629c7be9662",
         "rendered": "2026-08-24"
+      },
+      "Twiki": {
+        "hash": "40b81cb682dcb63d",
+        "rendered": "2026-08-30"
       },
       "Twintelle": {
         "hash": "e76f051f97c7506d",
@@ -9946,7 +10019,7 @@
       }
     }
   },
-  "generated": "2026-08-28T15:30:39",
+  "generated": "2026-08-30T17:49:02",
   "render": {
     "cfg": 1,
     "height": 2432,
