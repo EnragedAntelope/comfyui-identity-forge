@@ -204,8 +204,8 @@ test("configure leaves a full 9-value (1.1.0) widgets_values untouched", async (
  * (1.1.0) shape: 6 plain inputs + 2 slots for `seed`'s `control_after_generate` + 1
  * for the always-`forceInput` `upstream` = 9, matching this node's real 9-widget
  * count once `franchise_filter` and `random_pool` both exist -- it unconditionally
- * strips the LAST element of `widgets_values`, because `upstream` is the last schema
- * input and always keeps its mask slot. That is `random_pool`'s slot. Confirmed live
+ * strips the LAST element of `widgets_values`, because `random_pool` (not
+ * `upstream`) is actually the last schema input. That is `random_pool`'s slot. Confirmed live
  * against a real ComfyUI instance via Playwright (see the fix-round report); this
  * test reproduces the exact algorithm (mirrored from the shipped bundle, decompiled
  * via `configure.toString()` during that live investigation) against a fake node so
@@ -227,8 +227,9 @@ function reproduceRealComfyMigrateWidgetsValues(node, values) {
 test("random_pool survives ComfyUI's own widgets_values migration step (bug 2 regression)", async () => {
   class FakeNodeType {}
   // Mirrors nodes/identity_forge_cosplayer.py's real define_schema() input shape --
-  // in particular, `upstream` is `forceInput: true` and is the LAST schema input,
-  // and `seed` carries `control_after_generate`.
+  // in particular, `upstream` is `forceInput: true` and `random_pool` is the LAST
+  // schema input (appended after `upstream`), and `seed` carries
+  // `control_after_generate`.
   FakeNodeType.nodeData = {
     inputs: {
       character: { name: "character" },
@@ -237,8 +238,8 @@ test("random_pool survives ComfyUI's own widgets_values migration step (bug 2 re
       mask: { name: "mask" },
       props: { name: "props" },
       seed: { name: "seed", control_after_generate: true },
-      random_pool: { name: "random_pool" },
       upstream: { name: "upstream", forceInput: true },
+      random_pool: { name: "random_pool" },
     },
   };
   // A minimal base `configure()` that ONLY does what ComfyUI's real one does before

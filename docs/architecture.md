@@ -3048,9 +3048,9 @@ drift for `lighting`, the same accepted precedent as 0.64.0 / 0.66.0 / 0.78.0 / 
 strings reappear byte-identical, now split across three families.
 
 **The allowlists.** `NEON_SIGNAGE_VENUE_LOCATIONS` (24 locations) gates `neon_signage` and
-`venue_rig` to nightlife/entertainment/urban-strip locations: 6 `food_drink` bar/club members
+`venue_rig` to nightlife/entertainment/urban-strip locations: 5 `food_drink` bar/club members
 (`crowded bar and grill`, `wood-paneled pub`, `dimly lit cocktail lounge`, `neon-lit nightclub`,
-`wine bar with exposed brick`, `speakeasy-style basement bar`), 10 `leisure_fitness`
+`speakeasy-style basement bar`), 10 `leisure_fitness`
 arcade/karaoke/casino/bowling/skating/cinema and music/performance venues, 5 `urban_outdoor`
 night-street members, 3 signage-dense `urban_landmark` members (`Times Square`, `Shibuya
 Crossing`, `the Bund waterfront in Shanghai`), and one `retail_services` addition (`tattoo

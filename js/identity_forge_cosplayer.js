@@ -3141,9 +3141,11 @@ function schemaMigrationMaskLength(node) {
  * plain inputs + 2 slots for `seed`'s `control_after_generate` + 1 for the
  * always-`forceInput` `upstream` = 9, which is also this node's real widget
  * count once `franchise_filter` and `random_pool` both exist), it applies its
- * filter -- and because `upstream` is the LAST schema input and always
- * "forceInput ⇒ keep its mask slot", that filter unconditionally strips the
- * LAST element of `widgets_values`. That is exactly `random_pool`'s slot.
+ * filter -- and because `random_pool` (not `upstream`) is the actual LAST
+ * schema input (see `define_schema()` in nodes/identity_forge_cosplayer.py,
+ * which appends it after `upstream` precisely so its slot only ever grows at
+ * the tail), that filter unconditionally strips the LAST element of
+ * `widgets_values`. That is exactly `random_pool`'s slot.
  *
  * We cannot patch ComfyUI's shipped bundle. The only lever available here is
  * the LENGTH of the array handed to the base `configure()`: the bug's `if

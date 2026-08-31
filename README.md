@@ -27,7 +27,7 @@ The Cosplayer node is where Identity Forge really shines. Most character wildcar
 
 Ask a plain wildcard for Chun-Li and your prompt says `Chun-Li`. Ask this Cosplayer node and you get: *the blue qipao with gold trim, brown tights, white cross-laced boots, and spiked bracelets.* The look renders even on checkpoints that have never heard of the character.
 
-**Find one fast:** open the in-node picker to browse and search the whole roster without leaving the node — trait facets (Giant, Masked, Mascot/full-suit, Beast, franchise) and optional thumbnail previews.
+**Find one fast:** open the in-node picker to browse and search the whole roster without leaving the node — trait facets (Giant, Masked, Mascot/full-suit, Beast) and optional thumbnail previews. Franchise is searchable too, just not a dedicated facet chip.
 
 **Characters from every major franchise:** Marvel, DC, Star Wars, anime, video games, fantasy, sci-fi, horror. Each one with multiple costume variants where applicable (Harley Quinn's three iconic looks, Catwoman's different suits, etc.). Characters rotate between variants by seed, so the same name yields a different signature costume each roll.
 
@@ -128,9 +128,9 @@ randomized identities, so your own results will vary:
 | Node | What it does |
 | --- | --- |
 | **Identity Forge** | Lockable dropdowns in collapsible groups + the constraint engine → `prompt_text` (prose) and `prompt_json`. |
-| **Archetype** | Themed presets (knight, sorceress, pirate, samurai, pop star, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes. |
+| **Archetype** | Themed presets (knight, sorceress, pirate, samurai, pop star, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes. Also has the in-node roster picker. |
 | **Cosplayer** | Fictional characters (Spider-Man, 2B, She-Hulk, Zelda…) as a *cosplay look* — the costume on a random, optionally cross-gender person. An in-node picker browses and searches the whole roster with trait facets and thumbnails. |
-| **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. Generic species only — a *named* fictional beast (Appa, Toothless) is a Cosplayer entry. |
+| **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. Generic species only — a *named* fictional beast (Appa, Toothless) is a Cosplayer entry. Also has the in-node roster picker. |
 | **Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`). |
 | **Vault Save / Load** | Save a generated character (with a thumbnail) to a local vault; recall it later as a chainable preset, with a Manage Vault gallery. |
 | **Turnaround** | A reference-sheet builder: wire Identity Forge's `prompt_json` in and it emits front / three-quarter / profile / back as a **list**, so one queue renders the whole set of the same person. It only moves the camera - the character and the scene stay configured on Identity Forge. |

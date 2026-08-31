@@ -2160,7 +2160,7 @@ NEON_SIGNAGE_VENUE_LOCATIONS: frozenset[str] = frozenset([
     'crowded bar and grill', 'wood-paneled pub', 'dimly lit cocktail lounge',
     'neon-lit nightclub', 'speakeasy-style basement bar',
     # leisure_fitness: arcade / karaoke / casino / bowling / skating / cinema,
-    # plus the music- and stage-performance venues four shipped archetypes need
+    # plus the music- and stage-performance venues five shipped archetypes need
     # (Musician, Punk Rocker, Hair Metal Rocker, Rapper, Visual Kei) -- a
     # recording studio, a concert backstage, and a stage under gelled rig light.
     'bowling alley', 'roller skating rink', 'movie theater lobby',
@@ -2171,8 +2171,10 @@ NEON_SIGNAGE_VENUE_LOCATIONS: frozenset[str] = frozenset([
     # urban_outdoor: the specific night-street members that plausibly carry
     # signage or rig light, not the whole family (that broader outdoor pass is
     # neon_street's job below). Every one of these is also a location a shipped
-    # archetype locks a signage/rig value against (Bosozoku, 1980s Action Star,
-    # Mardi Gras Reveler, E-Girl / E-Boy, Cybergoth, Rapper).
+    # archetype locks a signage/rig value against (1980s Action Star, Mardi
+    # Gras Reveler, E-Girl / E-Boy, Cybergoth, Rapper) -- NOT Bosozoku, whose
+    # own 'neon-lit city street' lock pairs with 'fog-diffused streetlamp
+    # glow', a neon_street fixture, not a signage/rig one.
     'neon-lit city street', 'urban alley with graffiti', 'cobblestone old-town street',
     'open-air street food market', 'graffiti-covered skate park',
     # urban_landmark: the three landmarks actually known for dense illuminated
