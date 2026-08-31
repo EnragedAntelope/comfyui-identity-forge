@@ -156,27 +156,147 @@ test("substring and two-token queries match plausible, non-empty sets in the rea
   }
 });
 
-test("cross-tab search: a query matches entries from every kind, not just the active tab", async () => {
+async function openPicker(kind = "cosplayer", targetWidgetName = "character") {
+  const node = makeFakeNode(
+    kind === "cosplayer" ? "IdentityForgeCosplayer"
+      : kind === "archetype" ? "IdentityForgeArchetype" : "IdentityForgeCreature",
+  );
+  const picker = new __testing.IdentityForgePicker({ kind, targetWidgetName, title: "test", node });
+  picker.open();
+  await flush();
+  return picker;
+}
+
+function tabButton(picker, tab) {
+  return Array.from(picker.tabs.children).find((el) => el.dataset.tab === tab);
+}
+
+test("a query is scoped to the active tab, and the All tab is what searches every kind", async () => {
   resetDom();
   __testing.__resetForTests();
   const stub = installFetchStub(rosterOkHandler);
   try {
-    const node = await createNode(pickerExt, "IdentityForgeCosplayer");
-    const picker = new __testing.IdentityForgePicker({
-      kind: "cosplayer",
-      targetWidgetName: "character",
-      title: "test",
-      node,
-    });
-    picker.open();
-    await flush();
+    const picker = await openPicker();
     // "armor" matches cosplayer, archetype AND creature entries in the real
     // roster. The active tab defaults to "cosplayer" (this node's own kind).
     picker.query = "armor";
     picker.renderGrid();
+    assert.ok(picker.visible.length > 0, "sanity: the query matches cosplayers");
+    assert.ok(
+      picker.visible.every((e) => e.kind === "cosplayer"),
+      "a query on the Cosplayers tab must not leak archetype/creature matches into the grid",
+    );
+
+    tabButton(picker, "__all__").click();
     const kinds = new Set(picker.visible.map((e) => e.kind));
-    assert.ok(kinds.has("archetype"), "a query must surface archetype matches while on the cosplayer tab");
-    assert.ok(kinds.has("creature"), "a query must surface creature matches while on the cosplayer tab");
+    assert.ok(kinds.has("cosplayer") && kinds.has("archetype") && kinds.has("creature"),
+      "the All tab must search every kind at once");
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("switching tabs mid-search re-scopes the same query to the clicked category", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    picker.query = "armor";
+    picker.renderGrid();
+
+    tabButton(picker, "archetype").click();
+    assert.equal(picker.query, "armor", "the query must survive the tab click");
+    assert.ok(picker.visible.length > 0, "sanity: archetypes match this query too");
+    assert.ok(
+      picker.visible.every((e) => e.kind === "archetype"),
+      "after clicking Archetypes, only archetype matches may show",
+    );
+
+    tabButton(picker, "creature").click();
+    assert.ok(
+      picker.visible.every((e) => e.kind === "creature"),
+      "and clicking Creatures re-scopes the same query again",
+    );
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("the trait facet composes with both the tab and the query", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    picker.activeTab = "__all__";
+    picker.facet = "Giant characters";
+    picker.renderGrid();
+    const facetOnly = picker.visible.length;
+    assert.ok(facetOnly > 0, "sanity: the giant facet matches something");
+    assert.ok(picker.visible.every((e) => e.haystack.includes("giant")), "facet must hold on the All tab");
+
+    picker.activeTab = "creature";
+    picker.renderGrid();
+    assert.ok(picker.visible.length > 0 && picker.visible.length < facetOnly,
+      "tab + facet must narrow further than the facet alone");
+    assert.ok(
+      picker.visible.every((e) => e.kind === "creature" && e.haystack.includes("giant")),
+      "both the tab and the facet must apply at once",
+    );
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("while filtering, every tab shows its own match count so other kinds stay discoverable", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    // Nothing typed: plain labels, no counts.
+    assert.equal(tabButton(picker, "creature").textContent, "Creatures");
+
+    picker.query = "armor";
+    picker.renderGrid();
+    const tokens = __testing.tokenize("armor");
+    const expected = REAL_ROSTER.filter((e) => __testing.matchesQuery(e, tokens));
+    const creatures = expected.filter((e) => e.kind === "creature").length;
+    assert.equal(tabButton(picker, "creature").textContent, `Creatures (${creatures})`,
+      "the Creatures tab must report its own match count while the Cosplayers tab is active");
+    assert.equal(tabButton(picker, "__all__").textContent, `All (${expected.length})`);
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("a tab with no matches is marked empty, and the dead-end state offers a switch to All", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker("creature", "creature");
+    picker.activeTab = "creature";
+    // A franchise name: cosplayer matches only, never a generic creature.
+    picker.query = "chun-li";
+    picker.renderGrid();
+    assert.equal(picker.visible.length, 0, "sanity: no creature matches this query");
+    assert.ok(tabButton(picker, "creature").className.includes("empty"), "the active tab is a dead end");
+    assert.ok(!tabButton(picker, "cosplayer").className.includes("empty"), "but cosplayers do match");
+
+    const message = picker.grid.querySelector(".if-picker-empty");
+    assert.ok(/in other categories/.test(message.textContent),
+      `the empty state must point at the other categories, got: ${message.textContent}`);
+    const showAll = message.querySelector("button");
+    assert.ok(showAll, "and offer a one-click switch");
+    showAll.click();
+    assert.equal(picker.activeTab, "__all__");
+    assert.ok(picker.visible.some((e) => e.name === "Chun-Li"), "which shows the matches it promised");
     picker.close();
   } finally {
     stub.restore();
@@ -571,34 +691,26 @@ test("loadManifest() dedupes concurrent calls but does not cache the resolved va
 });
 
 // --- bug 4 (minor): the query must survive a tab click ----------------------
+// Still true after tab/query composition landed; what changed is that the
+// surviving query is now re-applied *inside* the clicked tab rather than
+// overriding it (see the re-scoping test above).
 
-test("switching tabs preserves the current search query, per the documented cross-tab design", async () => {
+test("switching tabs preserves the current search query rather than discarding it", async () => {
   resetDom();
   __testing.__resetForTests();
   const stub = installFetchStub(rosterOkHandler);
   try {
-    const node = makeFakeNode("IdentityForgeCosplayer");
-    const picker = new __testing.IdentityForgePicker({
-      kind: "cosplayer",
-      targetWidgetName: "character",
-      title: "test",
-      node,
-    });
-    picker.open();
-    await flush();
+    const picker = await openPicker();
     picker.query = "tatt";
     picker.renderGrid();
-    const before = picker.visible.length;
-    assert.ok(before > 0 && before < REAL_ROSTER.length, "sanity: the query narrowed the grid");
+    assert.ok(picker.visible.length > 0 && picker.visible.length < REAL_ROSTER.length,
+      "sanity: the query narrowed the grid");
 
-    const archetypesTab = Array.from(picker.tabs.children).find((el) => el.textContent === "Archetypes");
-    assert.ok(archetypesTab, "sanity: an Archetypes tab exists");
-    archetypesTab.click();
+    tabButton(picker, "archetype").click();
 
     assert.equal(picker.query, "tatt", "the query must survive a tab click");
-    assert.equal(
-      picker.visible.length,
-      before,
+    assert.ok(
+      picker.visible.length < REAL_ROSTER.filter((e) => e.kind === "archetype").length,
       "the grid must still reflect the query, not reset to the clicked tab's full list",
     );
     picker.close();

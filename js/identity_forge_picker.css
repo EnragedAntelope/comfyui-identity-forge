@@ -164,6 +164,16 @@
     opacity: 1;
 }
 
+/* A tab with no matches under the current query/facet: still clickable (so its
+   zero count can be read as an answer), just visibly not worth clicking. */
+.if-picker-tab.empty {
+    opacity: 0.35;
+}
+
+.if-picker-tab.empty:hover {
+    opacity: 0.6;
+}
+
 .if-picker-tab.active {
     opacity: 1;
     background: var(--comfy-input-bg, #131313);
