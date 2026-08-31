@@ -21,4 +21,6 @@ Thumbs.db
 # Local agent / working notes (not for distribution)
 .claude/
 .omo/
+.superpowers/
 docs/worklog/
+worklog-*.md

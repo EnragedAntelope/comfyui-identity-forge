@@ -1,11 +1,11 @@
 [project]
 name = "comfyui-identity-forge"
-version = "1.0.1"
-description = "A character creator and person generator for ComfyUI. Build a believable, coherent person from dropdowns - a constraint engine keeps every trait sensible and a seed makes any result reproducible. Optional preset nodes layer on themed archetypes, a creature/monster/alien form with slot-by-slot hybridization, per-element style modifiers, and a cosplay layer whose characters each ship a hand-written, canon-checked visual description - garments, colours, masks, markings, signature props - so the look renders on any checkpoint. Plus a studio/solid backdrop mode, a save/load character vault, and dual prose/JSON output."
+version = "1.1.0"
+description = "Create believable, coherent people, cosplayers and creatures from dropdowns - no prompt engineering required. A constraint engine keeps every trait sensible and a seed makes any result reproducible. Cosplay characters carry a hand-written, canon-checked costume description - garments, colours, masks, markings, signature props - that renders on any checkpoint, and are searchable from an in-node picker with trait facets and thumbnail previews. A Turnaround node builds a one-queue reference sheet: front, three-quarter, profile and back views of the same resolved character. Public galleries showcase every entry with a sample render and its exact workflow. Optional preset layers add themed archetypes, creature/monster/alien hybridization, per-element style modifiers, and a save/load character vault."
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = ["comfyui", "character", "character creator", "character generator", "character description", "costume", "canon", "person", "person generator", "portrait", "face", "prompt", "prompt generator", "randomizer", "random", "wildcard", "constraint", "cosplay", "archetype", "creature", "monster", "alien", "anthro", "diversity", "ethnicity", "OC"]
+keywords = ["comfyui", "character", "character creator", "character generator", "character description", "costume", "canon", "person", "person generator", "portrait", "face", "prompt", "prompt generator", "randomizer", "random", "wildcard", "constraint", "cosplay", "crossplay", "archetype", "creature", "monster", "alien", "anthro", "mascot", "turnaround", "reference sheet", "search", "vault", "ethnicity", "OC"]
 dependencies = []
 
 [[project.authors]]

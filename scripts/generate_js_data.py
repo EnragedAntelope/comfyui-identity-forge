@@ -30,6 +30,7 @@ deduped union (female order first, male-only appended).
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import sys
 from pathlib import Path
@@ -45,6 +46,7 @@ from nodes.identity_forge import (  # noqa: E402
 
 _JS_PATH = ROOT / "js" / "identity_forge.js"
 _COSPLAYER_JS_PATH = ROOT / "js" / "identity_forge_cosplayer.js"
+_ROSTER_JSON_PATH = ROOT / "js" / "identity_forge_roster.json"
 _START = "// >>> GENERATED DATA"
 _END = "// <<< GENERATED DATA <<<"
 _HEADER = (
@@ -118,8 +120,6 @@ def _builtin_cosplayer_franchises() -> dict[str, list[str]]:
     failure mode: the frontend treats an unknown name as unfiltered and always shows
     it, so a user entry can never be hidden by the filter.
     """
-    import ast
-
     source = (ROOT / "data" / "cosplayers.py").read_text(encoding="utf-8")
     by_franchise: dict[str, list[str]] = {}
     for node in ast.walk(ast.parse(source)):
@@ -145,6 +145,185 @@ def render_cosplayer_block() -> str:
         f"{json.dumps(_builtin_cosplayer_franchises(), indent=2, ensure_ascii=False)};",
         _END,
     ])
+
+
+# --- js/identity_forge_roster.json: the picker modal's bulk search index -------
+#
+# A separate, later task builds the frontend search/picker modal
+# (js/identity_forge_picker.js) that fetches this file lazily (mirroring how
+# comfyui-stylebook's picker fetches stylebook_data.json rather than paying for a
+# multi-hundred-KB corpus on every ComfyUI page load). This generator only produces
+# the data side.
+#
+# Read via ``ast`` only, exactly like ``_builtin_cosplayer_franchises`` above and for
+# the same reason: importing data/cosplayers.py, data/templates.py or
+# data/creatures.py runs their ``apply_user_*`` merge at module bottom, which would
+# bake a maintainer's private roster additions into this committed, published file.
+# Every dataset in those three modules is built from plain literals (strings,
+# numbers, lists, tuples, dicts, bools, None) with no function calls, so
+# ``ast.literal_eval`` on the parsed assignment node reproduces the true committed
+# data with no import and no merge.
+
+
+def _module_literal(path: Path, name: str):
+    """Return the literal value of the top-level ``name = ...`` in ``path``.
+
+    ``name`` may be annotated (``NAME: T = {...}``) or plain (``NAME = {...}``).
+    Raises if no such literal assignment exists — a silent empty-dict fallback
+    would make a renamed source constant look like an empty (but valid) roster.
+    """
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            target = node.target.id
+        elif isinstance(node, ast.Assign):
+            names = [t.id for t in node.targets if isinstance(t, ast.Name)]
+            target = names[0] if len(names) == 1 else None
+        else:
+            continue
+        if target == name:
+            return ast.literal_eval(node.value)
+    raise ValueError(f"{name!r} not found as a top-level literal assignment in {path}")
+
+
+def _cosplayer_franchise_categories() -> tuple[dict[str, str], str]:
+    """``{franchise: broad category}`` plus the fallback, mirroring
+    ``data.cosplayers.get_cosplayer_category`` without importing the module."""
+    path = ROOT / "data" / "cosplayers.py"
+    by_category = _module_literal(path, "_CATEGORY_FRANCHISES")
+    default_category = _module_literal(path, "_DEFAULT_CATEGORY")
+    franchise_categories = {
+        franchise: category
+        for category, franchises in by_category.items()
+        for franchise in franchises
+    }
+    return franchise_categories, default_category
+
+
+def _cosplayer_trait_words(entry: dict) -> list[str]:
+    """Trait words derived from ``covers_face``/``covers_body``/``body_plan``/
+    ``size_scale``, mirroring the ``_scope_is_*`` predicates in
+    ``nodes/identity_forge_cosplayer.py`` (not imported — same reason as above;
+    those predicates are pure and cheap enough to restate here)."""
+    words: list[str] = []
+    if entry.get("body_plan") == "feral":
+        words += ["feral", "beast"]
+    else:
+        covers_face = bool(entry.get("covers_face"))
+        covers_body = bool(entry.get("covers_body"))
+        if covers_face:
+            words.append("masked")
+        if covers_face and covers_body:
+            words.append("mascot")
+    size_scale = entry.get("size_scale")
+    if size_scale == "giant":
+        words.append("giant")
+    elif size_scale == "tiny":
+        words.append("tiny")
+    return words
+
+
+def _cosplayer_roster_entry(
+    name: str, entry: dict, franchise_categories: dict[str, str], default_category: str,
+) -> dict:
+    franchise = entry.get("franchise", "")
+    gender = entry.get("gender", "")
+    category = franchise_categories.get(franchise, default_category)
+    haystack_parts = [name, franchise, category, gender, entry.get("costume", "")]
+    mask = entry.get("mask")
+    if mask:
+        haystack_parts.append(mask)
+    prop = entry.get("prop")
+    if prop:
+        haystack_parts.append(prop)
+    for section in ("signature", "physique"):
+        haystack_parts.extend(str(v) for v in entry.get(section, {}).values())
+    haystack_parts.extend(_cosplayer_trait_words(entry))
+    aliases = entry.get("aliases")
+    if aliases:
+        haystack_parts.extend(aliases)
+    return {
+        "kind": "cosplayer",
+        "name": name,
+        "franchise": franchise,
+        "category": category,
+        "gender": gender,
+        "haystack": " ".join(haystack_parts).lower(),
+    }
+
+
+def _flatten_field_values(fields: dict) -> list[str]:
+    """String-ify every value in an archetype field map, skipping ``variants``
+    (the caller recurses into it separately). A value may be a plain string or a
+    curated list of alternatives (``eye_color``, ``outfit_description``, ...)."""
+    values: list[str] = []
+    for key, value in fields.items():
+        if key == "variants":
+            continue
+        if isinstance(value, list):
+            values.extend(str(v) for v in value)
+        else:
+            values.append(str(value))
+    return values
+
+
+def _archetype_roster_entry(name: str, template: dict) -> dict:
+    values = _flatten_field_values(template)
+    for look in (template.get("variants") or {}).values():
+        if isinstance(look, dict):
+            values.extend(_flatten_field_values(look))
+    entry = {
+        "kind": "archetype",
+        "name": name,
+        "haystack": " ".join([name, *values]).lower(),
+    }
+    gender = template.get("gender")
+    if gender:
+        entry["gender"] = gender
+    return entry
+
+
+def _creature_roster_entry(name: str, entry: dict, slots: tuple[str, ...]) -> dict:
+    creature_class = entry.get("class", "")
+    haystack_parts = [name, creature_class]
+    for slot in slots:
+        text = entry.get(slot)
+        if text:
+            haystack_parts.append(text)
+    return {
+        "kind": "creature",
+        "name": name,
+        "category": creature_class,
+        "haystack": " ".join(haystack_parts).lower(),
+    }
+
+
+def _roster_entries() -> list[dict]:
+    """Every cosplayer, archetype and creature as one flat, ``kind``-tagged list.
+
+    See the module-level comment above for why this reads the three data modules
+    with ``ast`` rather than importing them.
+    """
+    cosplayers = _module_literal(ROOT / "data" / "cosplayers.py", "COSPLAYERS")
+    franchise_categories, default_category = _cosplayer_franchise_categories()
+    archetypes = _module_literal(ROOT / "data" / "templates.py", "ARCHETYPES")
+    creatures = _module_literal(ROOT / "data" / "creatures.py", "CREATURES")
+    creature_slots = _module_literal(ROOT / "data" / "creatures.py", "CREATURE_SLOTS")
+
+    entries: list[dict] = []
+    for name, entry in cosplayers.items():
+        entries.append(_cosplayer_roster_entry(name, entry, franchise_categories, default_category))
+    for name, template in archetypes.items():
+        entries.append(_archetype_roster_entry(name, template))
+    for name, entry in creatures.items():
+        entries.append(_creature_roster_entry(name, entry, creature_slots))
+    return entries
+
+
+def render_roster_json() -> str:
+    """The full ``js/identity_forge_roster.json`` contents (compact — this is a
+    fetched bulk data file, not hand-read source)."""
+    return json.dumps(_roster_entries(), ensure_ascii=False, sort_keys=True)
 
 
 def _splice(source: str, block: str) -> str:
@@ -186,6 +365,28 @@ def main(argv: list[str] | None = None) -> int:
             print(f"wrote {rel}")
         else:
             print(f"{rel} already up to date")
+
+    # js/identity_forge_roster.json is a standalone generated file (not a marker
+    # region spliced into hand-written JS), so it is compared/written directly.
+    roster_json = render_roster_json()
+    roster_rel = _ROSTER_JSON_PATH.relative_to(ROOT)
+    existing_roster = (
+        _ROSTER_JSON_PATH.read_text(encoding="utf-8") if _ROSTER_JSON_PATH.is_file() else None
+    )
+    if args.check:
+        if existing_roster != roster_json:
+            print(f"{roster_rel} is STALE relative to data/cosplayers.py, "
+                  f"data/templates.py and data/creatures.py.")
+            print("Regenerate with: python scripts/generate_js_data.py")
+            stale = True
+        else:
+            print(f"{roster_rel} generated data is up to date.")
+    elif existing_roster != roster_json:
+        _ROSTER_JSON_PATH.write_text(roster_json, encoding="utf-8")
+        print(f"wrote {roster_rel}")
+    else:
+        print(f"{roster_rel} already up to date")
+
     return 1 if stale else 0
 
 

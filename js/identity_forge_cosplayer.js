@@ -185,6 +185,10 @@ const COSPLAYER_FRANCHISES = {
     "Mizora",
     "Shadowheart"
   ],
+  "Barbarella": [
+    "Barbarella",
+    "The Great Tyrant (Black Queen)"
+  ],
   "Barsoom": [
     "Dejah Thoris"
   ],
@@ -293,6 +297,10 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Braveheart": [
     "William Wallace"
+  ],
+  "Buck Rogers": [
+    "Princess Ardala",
+    "Twiki"
   ],
   "Buffy the Vampire Slayer": [
     "Buffy Summers"
@@ -918,6 +926,11 @@ const COSPLAYER_FRANCHISES = {
     "River Tam"
   ],
   "Flash Gordon": [
+    "Flash Gordon",
+    "General Kala",
+    "Klytus",
+    "Ming the Merciless",
+    "Prince Vultan",
     "Princess Aura"
   ],
   "Folklore": [
@@ -933,6 +946,9 @@ const COSPLAYER_FRANCHISES = {
     "Megumi Tadokoro",
     "Rindou Kobayashi",
     "Soma Yukihira"
+  ],
+  "Forbidden Planet": [
+    "Robby the Robot"
   ],
   "Friday the 13th": [
     "Jason Voorhees"
@@ -1102,6 +1118,7 @@ const COSPLAYER_FRANCHISES = {
     "Alastor"
   ],
   "Heavy Metal": [
+    "Julie",
     "Taarna"
   ],
   "Hell's Paradise": [
@@ -1425,6 +1442,9 @@ const COSPLAYER_FRANCHISES = {
   "Magic: The Gathering": [
     "Liliana Vess"
   ],
+  "Mars Attacks!": [
+    "The Martian Ambassador"
+  ],
   "Marvel": [
     "Abomination",
     "Agatha Harkness",
@@ -1632,6 +1652,7 @@ const COSPLAYER_FRANCHISES = {
   "McDonald's": [
     "Grimace",
     "Hamburglar",
+    "Mayor McCheese",
     "Ronald McDonald"
   ],
   "Medaka Box": [
@@ -2677,6 +2698,9 @@ const COSPLAYER_FRANCHISES = {
     "Tulio",
     "Tzekel-Kan"
   ],
+  "The Rocketeer": [
+    "The Rocketeer"
+  ],
   "The Rocky Horror Picture Show": [
     "Columbia",
     "Dr. Frank-N-Furter",
@@ -2728,6 +2752,12 @@ const COSPLAYER_FRANCHISES = {
   "The Tick": [
     "The Tick"
   ],
+  "The Toxic Avenger": [
+    "The Toxic Avenger"
+  ],
+  "The Venture Bros": [
+    "Triana Orpheus"
+  ],
   "The Walking Dead": [
     "Michonne"
   ],
@@ -2744,6 +2774,9 @@ const COSPLAYER_FRANCHISES = {
     "Scarecrow (Wizard of Oz)",
     "Tin Man",
     "Wicked Witch of the West"
+  ],
+  "Thunderbirds": [
+    "Lady Penelope"
   ],
   "Thundercats": [
     "Cheetara",
@@ -3016,11 +3049,22 @@ function setupCosplayer(node) {
  * the filter sits at index 1 -- every widget after `character` was restored one slot
  * out. Reported by the maintainer, who had to recreate each Cosplayer node by hand.
  *
+ * `random_pool` (1.1.0) is a Python-appended input, always the LAST widget (schema
+ * appends it after `upstream`, and `upstream` is a pure socket with no widget of its
+ * own) -- the direct precedent is `FIELDS_ADDED_BY_RELEASE` in identity_forge.js.
+ * Newest-first here also means highest-target-index-first: `random_pool`'s slot
+ * (last) is padded before `franchise_filter`'s (right after `character`), so the
+ * splice below still lands correctly even from a 7-value pre-0.89.0 array where
+ * neither widget has a slot yet -- verified by hand for all three legacy lengths
+ * (7 -> 9 needs both pads, 8 -> 9 needs one, 9 -> 9 is untouched) and pinned in
+ * tests/frontend/cosplayer.test.mjs.
+ *
  * Same table and same repair as `FIELDS_ADDED_BY_RELEASE` in identity_forge.js; the
  * two nodes hit the identical trap from opposite directions (a JS-inserted view widget
  * here, a Python-appended input there).
  */
 const WIDGETS_ADDED_BY_RELEASE = [
+  ["random_pool"], // 1.1.0
   [FILTER_WIDGET], // 0.89.0
 ];
 
@@ -3053,6 +3097,201 @@ function padLegacyCosplayerValues(node, values) {
   return padded.length === total ? padded : values;
 }
 
+/**
+ * Length ComfyUI's OWN V3 `ComfyNode.configure()` expects `widgets_values` to
+ * have, per its internal (and here unavoidably reproduced) `migrateWidgetsValues`
+ * rule -- see `dodgeUpstreamMigrationBug` below for why this exists at all.
+ * Mirrors that rule exactly: for every schema input that is either already a
+ * named widget on this node or `forceInput` (always a socket), count 2 slots if
+ * it carries `control_after_generate`, else 1.
+ */
+function schemaMigrationMaskLength(node) {
+  try {
+    const inputs = node?.constructor?.nodeData?.inputs;
+    if (!inputs) return null;
+    const widgetNames = new Set((node.widgets || []).map((w) => w.name));
+    let length = 0;
+    for (const input of Object.values(inputs)) {
+      if (!(widgetNames.has(input.name) || input.forceInput)) continue;
+      length += input.control_after_generate ? 2 : 1;
+    }
+    return length;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Work around a ComfyUI-core bug (not ours to fix, lives in the shipped
+ * frontend bundle's V3 `ComfyNode.prototype.configure`) that silently drops
+ * `random_pool`'s saved value on EVERY load of this node, verified live via
+ * Playwright against a real instance (1.1.0 picker fix round; see
+ * docs/worklog or the task-4 fix report for the trace).
+ *
+ * `ComfyNode.configure()` runs `e.widgets_values = migrateWidgetsValues(
+ * ComfyNode.nodeData.inputs, this.widgets, e.widgets_values)` before handing
+ * off to the real (LiteGraph) positional assignment. That helper exists to
+ * strip a stale `widgets_values` slot for an input that is now `forceInput`
+ * (always a socket, e.g. this node's `upstream` chaining input) -- but it
+ * derives how many slots to expect PURELY from the Python schema
+ * (`ComfyNode.nodeData.inputs`), with no idea this file adds an extra
+ * JS-only widget (`franchise_filter`) outside that schema. When its
+ * schema-derived count happens to equal our actual `widgets_values.length`
+ * (it does, unconditionally, for every 1.1.0-shaped save of this node: 6
+ * plain inputs + 2 slots for `seed`'s `control_after_generate` + 1 for the
+ * always-`forceInput` `upstream` = 9, which is also this node's real widget
+ * count once `franchise_filter` and `random_pool` both exist), it applies its
+ * filter -- and because `random_pool` (not `upstream`) is the actual LAST
+ * schema input (see `define_schema()` in nodes/identity_forge_cosplayer.py,
+ * which appends it after `upstream` precisely so its slot only ever grows at
+ * the tail), that filter unconditionally strips the LAST element of
+ * `widgets_values`. That is exactly `random_pool`'s slot.
+ *
+ * We cannot patch ComfyUI's shipped bundle. The only lever available here is
+ * the LENGTH of the array handed to the base `configure()`: the bug's `if
+ * (i.length === n?.length)` guard only fires on an exact match. So this
+ * mirrors that same length calculation and, only when our already-correctly
+ * padded array would collide with it, appends one inert trailing value
+ * (a duplicate of the last real value). The real LiteGraph assignment loop
+ * that runs afterward only ever consumes one value per entry in
+ * `node.widgets`, so a longer array is harmless -- nothing ever reads the
+ * extra element.
+ */
+function dodgeUpstreamMigrationBug(node, values) {
+  if (!Array.isArray(values) || !values.length) return values;
+  const maskLength = schemaMigrationMaskLength(node);
+  if (maskLength !== null && values.length === maskLength) {
+    return [...values, values[values.length - 1]];
+  }
+  return values;
+}
+
+/**
+ * Visual order the maintainer wants `random_pool` grouped near `random_scope`,
+ * the other randomization-constraint widget -- distinct from `node.widgets`'
+ * real array order (see the `WIDGETS_ADDED_BY_RELEASE` comment above for why
+ * that array order, and therefore `random_pool`'s index, can never move: it
+ * IS a serializing, Python-schema widget, unlike `franchise_filter`). Any
+ * widget not named here (e.g. the `control_after_generate` companion LiteGraph
+ * auto-adds next to `seed`) keeps its normal position relative to its
+ * neighbours.
+ */
+const VISUAL_WIDGET_ORDER = [
+  CHARACTER_WIDGET,
+  FILTER_WIDGET,
+  "random_scope",
+  "random_pool",
+  "look_level",
+  "mask",
+  "props",
+  "seed",
+];
+
+/**
+ * Make widgets DRAW in `VISUAL_WIDGET_ORDER` without moving anything in
+ * `node.widgets` itself.
+ *
+ * `franchise_filter`'s own reorder above (see the comment on its splice) is
+ * NOT a precedent for this: it works by physically moving the widget's index
+ * in `node.widgets`, which is safe for it ONLY in the writing direction
+ * because it declares `serialize: false` -- and even that turned out to be
+ * unsafe in the reading direction (see the `WIDGETS_ADDED_BY_RELEASE` comment:
+ * `serialize()` still emits one value per `node.widgets` entry regardless of
+ * `serialize: false`, which is exactly the legacy-load bug that comment
+ * documents). `random_pool` IS a serializing widget, so physically moving it
+ * would directly break `configure()`'s index-based mapping of
+ * `widgets_values` -- the one invariant this whole release protects. That
+ * mechanism does not generalize here, so this uses a different one.
+ *
+ * Read directly out of the pinned `comfyui-frontend-package` 1.51.9 bundle
+ * (`static/assets/settingStore-*.js`, minified, decoded by hand for this fix --
+ * see the task-4c report for the exact excerpts): `LGraphNode.prototype
+ * ._arrangeWidgets` assigns each widget's `.y` (its drawn vertical offset) by
+ * iterating `node.getLayoutWidgets()` -- NOT `node.widgets` directly -- and
+ * accumulating height in THAT order:
+ *
+ *   getLayoutWidgets(){ return this.widgets?.filter(w => !w.hidden) ?? [] }
+ *   ...
+ *   let l = n; for (let w of layoutWidgets) w.y = l, l += w.computedHeight ?? 0;
+ *
+ * `drawWidgets()` then iterates `node.widgets` (real array order) only to
+ * draw each widget AT the `.y` it was already assigned -- so the draw loop's
+ * own order never matters, only `getLayoutWidgets()`'s does. Overriding
+ * `getLayoutWidgets()` on this one node instance therefore retargets only
+ * where things draw; `node.widgets`, `serialize()`, `configure()`, and
+ * `widgets_values` indexing never see it. Hit-testing reads back each
+ * widget's own `.last_y` (set from that same `.y` during the same draw pass),
+ * so clicks land on the right widget wherever it actually drew, regardless of
+ * array position -- nothing extra is needed there.
+ *
+ * Cross-frontend-version note: `getLayoutWidgets` is a method on this forked
+ * LiteGraph's `LGraphNode`, not a documented/stable public API, and classic
+ * (pre-fork) LiteGraph computes widget `.y` by iterating `node.widgets`
+ * directly with no such indirection point to hook. Feature-detected below:
+ * on a frontend with no `getLayoutWidgets` method, this override is simply
+ * never called by anything, so it is inert -- widgets draw in their natural
+ * array-order position, exactly as they did before this function existed.
+ * Either way `node.widgets`' order is untouched, so the worst case of this
+ * being wrong on some frontend version is that the cosmetic reorder silently
+ * does not apply there, never a compatibility regression.
+ *
+ * CONFIRMED GAP, not a residual risk (an earlier version of this comment
+ * called this "unconfirmed" -- it has since been checked directly and does
+ * not work): this override has NO effect when the "Nodes 2.0" / VueNodes DOM
+ * renderer is active, which is a *different* rendering path entirely, not a
+ * fallback of the one described above. Read directly out of the same 1.51.9
+ * bundle: VueNodes' `NodeWidgets.vue` component renders `processedWidgets`
+ * (from `useProcessedWidgets` -> `computeProcessedWidgets`), which builds its
+ * list with a single `for (let [i, w] of nodeData.widgets.entries())` --
+ * straight array order, no sort, no `getLayoutWidgets` call anywhere in that
+ * function. `nodeData.widgets` is not a separate copy either: `extractVueNodeData`
+ * redefines `node.widgets` itself as an accessor (`Object.defineProperty`)
+ * backed by a reactive-mirrored array of the SAME order, so in VueNodes mode
+ * `node.widgets` IS the one and only order Vue renders from -- there is no
+ * second, overridable channel analogous to `getLayoutWidgets()` for the DOM
+ * path. Confirmed live (Playwright against `:8288` in actual Nodes-2.0 mode,
+ * querying real rendered DOM order): `random_pool` still draws last. See the
+ * task-4c report for the full trace and why a CSS-`order` / MutationObserver
+ * workaround on the rendered DOM was considered and rejected rather than
+ * shipped -- this file has no test infrastructure for real Vue-rendered DOM,
+ * unlike everything else in this comment block.
+ *
+ * One more thing the bundle source above does NOT show: `_arrangeWidgets`
+ * (and therefore this override) only actually RUNS when LiteGraph's own
+ * per-frame draw loop sees `node._widgetSlotsDirty === true` -- the same flag
+ * `addCustomWidget`/`removeWidget` set, and the ONLY thing that clears it is
+ * `arrange()` itself finishing. Overriding `getLayoutWidgets()` alone changes
+ * what a FUTURE layout pass would compute but does not invalidate a `.y` a
+ * PAST pass already cached -- and every widget on this node already went
+ * through one such pass (from its own construction) before this override
+ * ever attaches. Caught live: without the line below, `random_pool` kept
+ * drawing at its pre-fix position through a fresh node add AND a full
+ * ComfyUI restart, because nothing had touched a widget slot (add/remove)
+ * since that first, pre-override layout pass. Setting the same flag the
+ * engine itself uses to invalidate this cache is what makes the NEXT draw
+ * actually call `arrange()` again, this time through our override.
+ */
+function applyVisualWidgetOrder(node) {
+  if (node.__ifVisualOrderApplied) return;
+  if (typeof node.getLayoutWidgets !== "function") return;
+  const baseGetLayoutWidgets = node.getLayoutWidgets.bind(node);
+  const rank = (name) => {
+    const i = VISUAL_WIDGET_ORDER.indexOf(name);
+    return i === -1 ? VISUAL_WIDGET_ORDER.length : i;
+  };
+  node.getLayoutWidgets = function () {
+    return baseGetLayoutWidgets()
+      .map((w, i) => [w, i])
+      .sort(([wa, ia], [wb, ib]) => rank(wa.name) - rank(wb.name) || ia - ib)
+      .map(([w]) => w);
+  };
+  node.__ifVisualOrderApplied = true;
+  // Force the next draw to redo the (now-overridden) layout pass -- see the
+  // comment above. Feature-detected the same way: an older/classic LiteGraph
+  // node without this field simply never had a cached `.y` to invalidate.
+  if ("_widgetSlotsDirty" in node) node._widgetSlotsDirty = true;
+}
+
 app.registerExtension({
   name: "identity_forge.cosplayer.ui",
   async beforeRegisterNodeDef(nodeType, nodeData) {
@@ -3064,6 +3303,11 @@ app.registerExtension({
         setupCosplayer(this);
       } catch (err) {
         console.error("[IdentityForgeCosplayer] franchise filter setup failed", err);
+      }
+      try {
+        applyVisualWidgetOrder(this);
+      } catch (err) {
+        console.error("[IdentityForgeCosplayer] visual widget reorder failed", err);
       }
       return result;
     };
@@ -3077,7 +3321,10 @@ app.registerExtension({
         if (info && Array.isArray(info.widgets_values)) {
           info = {
             ...info,
-            widgets_values: padLegacyCosplayerValues(this, info.widgets_values),
+            widgets_values: dodgeUpstreamMigrationBug(
+              this,
+              padLegacyCosplayerValues(this, info.widgets_values),
+            ),
           };
         }
       } catch (err) {

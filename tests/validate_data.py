@@ -541,6 +541,18 @@ def validate() -> list[str]:
         if skin and (entry.get("signature", {}).get("skin_tone")
                      or entry.get("physique", {}).get("skin_tone")):
             errors.append(f"cosplayer '{name}': set either 'skin' or skin_tone, not both")
+        # Optional extra searchable names (a codename vs. a civilian name). Schema
+        # support only -- not authored for the existing roster, grows opportunistically.
+        # Folded into the roster search index's haystack by generate_js_data.py.
+        aliases = entry.get("aliases")
+        if aliases is not None:
+            if not isinstance(aliases, list) or not aliases:
+                errors.append(f"cosplayer '{name}': 'aliases' must be a non-empty list")
+            else:
+                for alias in aliases:
+                    if not isinstance(alias, str) or not alias or not alias.isascii():
+                        errors.append(f"cosplayer '{name}': alias {alias!r} must be a "
+                                      f"non-empty ASCII string")
         # Size-scale characters: ``size_scale`` flags the tier and MUST pair with a
         # hand-authored ``scale_prose`` (free text the builder locks into the height
         # slot so the scale reads in the lead sentence). Both texts must be

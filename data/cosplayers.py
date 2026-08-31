@@ -24,6 +24,7 @@ Schema per entry (keyed by character name)::
         "physique":  {                    # body/skin/height — applied ONLY in "Full character" mode
             "body_type": "slender", "height": "average height", "skin_tone": "porcelain",
         },
+        "aliases":   ["YoRHa No. 2 Type B"],  # OPTIONAL — extra searchable names
     }
 
 Curation rules (so the data stays coherent with the engine):
@@ -56,6 +57,15 @@ Curation rules (so the data stays coherent with the engine):
   fields and every value must be a valid option for that field. Prefer unisex
   fields (hair, eyes, body) so the look survives the downstream gender gate for
   crossplay. ``tests/validate_data.py`` enforces this.
+* **Aliases (optional, schema support only).** A character with an alternate name
+  worth searching by (a codename vs. a civilian name, a hero identity vs. a secret
+  one) may carry an ``"aliases": [...]`` list of extra name strings. ``tests/
+  validate_data.py`` requires each to be a non-empty ASCII string.
+  ``scripts/generate_js_data.py`` folds them into the character's entry in
+  ``js/identity_forge_roster.json`` (the search index the picker modal fetches), so
+  an alias becomes another way to find the entry. This is schema support only —
+  the existing roster is not being backfilled; add aliases opportunistically as
+  characters are touched.
 * Non-human characters are included: their non-mappable features (green/blue/
   orange skin, montrals, antennae, wings, scales) live in ``costume`` as worn
   cosplay elements, and ``skin_tone`` is left out so the person underneath
@@ -238,8 +248,12 @@ COSPLAYERS: dict[str, dict] = {
     "Bulma": {
         "franchise": "Dragon Ball",
         "gender": "Female",
-        "costume": "a casual pink sleeveless top with the word logo, denim shorts, and "
-                   "white sneakers, with a red hair band",
+        # Canon is a shirt reading "BULMA" -- the old "with the word logo" phrasing named
+        # no actual text. Canonical-accuracy rule: authored text is never reworded away
+        # for render-quality reasons (same doctrine as the 1.1.0 neon coherence fix).
+        # Changes this entry's entry_hash; picked up by a later re-render pass.
+        "costume": "a casual pink sleeveless top with 'BULMA' emblazoned across the chest, "
+                   "denim shorts, and white sneakers, with a red hair band",
         "signature": {"hair_color": "teal", "hair_length": "shoulder length",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
@@ -10103,6 +10117,19 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a huge rounded fuzzy purple mascot body with short stubby arms and legs",
         "mask": "a rounded fuzzy purple mascot head with two small black dot eyes and a wide grin",
         "physique": {"body_type": "chubby", "height": "very tall"},
+    },
+    "Mayor McCheese": {
+        "franchise": "McDonald's",
+        "gender": "Male",  # genderless mascot convention -- see The Knight (Hollow Knight)
+        "covers_face": True,
+        "covers_body": True,  # full mascot suit, no bare skin
+        "costume": "a tall black top hat banded in ribbon, a gold monocle on a fine "
+                   "chain, a wide diplomatic sash crossing the chest, a formal black "
+                   "frock coat with a white cravat, striped grey trousers, and white "
+                   "spats over black shoes",
+        "mask": "an oversized sesame-seed hamburger bun head, the beef patty and "
+                "melted cheese layers visible beneath the domed top bun",
+        "physique": {"body_type": "chubby", "height": "average height"},
     },
     "Wendy": {
         "franchise": "Wendy's",
@@ -23641,12 +23668,139 @@ COSPLAYERS: dict[str, dict] = {
     "Princess Aura": {
         "franchise": "Flash Gordon",
         "gender": "Female",
-        "costume": "a green silk gown cut on the bias with a jeweled collar, "
-                   "golden armbands, a cape of darker green pooling behind, and "
-                   "gilded sandals",
-        "signature": {"hair_color": "jet black", "hair_length": "hip length",
-                      "hair_style": "worn down", "eye_color": "dark brown"},
-        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "light medium"},
+        # 1980 film (Ornella Muti), Danilo Donati's design. Refined at 1.1.0: the
+        # prior "green silk gown" was not this costume at all -- her signature look
+        # is the sculpted gold filigree bra/hip-skirt below.
+        "costume": "a molded metallic-gold sculpted bra shaped like fragmented "
+                   "carved alien filigree with a structured push-up cut, an "
+                   "entirely bare midriff baring the navel, an asymmetrical "
+                   "low-slung segmented gold hip-skirt covering only the right "
+                   "hip and thigh while the left leg stays bare from the hip "
+                   "down, shimmering individual gold armor fragments wrapped "
+                   "around the bare left thigh and calf, a multicolored feather "
+                   "boa draped over the shoulders and arms, and a gold tiara "
+                   "topped with sharp needle-like spikes in an aggressive "
+                   "sunburst pattern",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_style": "updo", "eye_color": "hazel",
+                      "cheekbones": "high and defined", "lips": "full"},
+        "physique": {"body_type": "hourglass", "height": "petite", "skin_tone": "light medium"},
+    },
+    "Flash Gordon": {
+        "franchise": "Flash Gordon",
+        "gender": "Male",
+        # 1980 film (Sam J. Jones), costume design by Danilo Donati. The chest
+        # emblem is a gold-embroidered sunburst, NOT a text wordmark -- verified
+        # against the film; do not "correct" this to a "FLASH" logo.
+        "costume": "a skintight sleeveless muscle-shirt top, crimson red across the "
+                   "upper chest and thick shoulder straps fading to solid black from "
+                   "just under the chest down to the waist, a gold-embroidered "
+                   "multi-pointed star and sunburst emblem centered on the chest "
+                   "with a red field and a black geometric cross at its center, "
+                   "tight black trousers blending seamlessly into the shirt's black "
+                   "lower half for one unified silhouette, a wide black leather belt "
+                   "with an oversized gold-and-red rectangular buckle, and knee-high "
+                   "black leather boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "ear length",
+                      "hair_texture": "thick and voluminous",
+                      "hair_style": "freshly blown out"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Ming the Merciless": {
+        "franchise": "Flash Gordon",
+        "gender": "Male",
+        "bald": True,
+        # 1.1.0 fix round: maintainer-supplied fuller canon after the first
+        # render came back clean-shaven, tan-skinned, warm-expressioned and
+        # bare-fingered. facial_hair's closest enum (van_dyke = mustache +
+        # disconnected pointed chin beard) can't encode the exact "thin
+        # pencil mustache + Fu Manchu goatee" shape, so the costume prose
+        # restates it explicitly rather than leaving the shape to the enum
+        # alone (same pattern as the eyes-authoring asymmetry convention).
+        # Second fix round: the face/mustache/rings clause was buried at the
+        # end of one long run-on sentence after the full robe description --
+        # T2I models weight earlier prompt content more heavily, so the face
+        # now leads and the garment follows in its own sentence. "smirking"
+        # also read too soft for "a permanent sneering look of utter
+        # contempt" -- "steely" (intense family) is the closest enum for a
+        # cold, hard stare, and the prose spells out the sneer/contempt shape
+        # explicitly the same way the mustache/goatee shape is spelled out.
+        # Third fix round: two re-renders after the reorder still came back
+        # clean-shaven. The composed prompt showed why -- signature's "van
+        # dyke" enum injects its own "sharply trimmed van dyke beard" clause
+        # (mustache + disconnected pointed CHIN beard) right before the
+        # costume prose's "Fu Manchu-style goatee" clause, two different,
+        # competing beard shapes in the same prompt. Switched the enum to the
+        # plain "goatee" option, which does not name a conflicting shape and
+        # lets the costume prose's specific mustache+goatee description stand
+        # unopposed.
+        "costume": "a cold, piercing, sneering expression of utter contempt "
+                   "beneath thin, arched eyebrows, a thin, sharply "
+                   "pencil-lined mustache above a pointed Fu Manchu-style "
+                   "goatee, and heavy ornate gold rings stacked on the "
+                   "fingers. A close-fitting black skullcap covers a "
+                   "completely bald head above a high stiff upright collar "
+                   "framing the neck, with floor-length crimson-and-gold "
+                   "brocade robes patterned with tiny shimmering gold "
+                   "bugle-beads in starburst and geometric imperial-crest "
+                   "motifs across the chest and on the triangular cuffs, and "
+                   "golden brocade slippers peeking beneath the hem",
+        "signature": {"eyebrows": "thin and arched", "facial_hair": "goatee",
+                      "expression": "steely", "rings": "statement ring"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "pale",
+                     "cheekbones": "very high and prominent"},
+    },
+    "Klytus": {
+        "franchise": "Flash Gordon",
+        "gender": "Male",
+        "covers_face": True,
+        # Maintainer-verified canon: the most distinctive silhouette in the
+        # franchise -- a fully hidden gold face with a hinged jaw-plate, and a
+        # dead mechanical right arm exposed by an asymmetric sleeveless robe.
+        "mask": "a multi-faceted gold metallic mask with a separate hinged "
+                "jaw-plate that visibly moves with speech",
+        "costume": "heavy shimmering black robes with a hood tightly framing "
+                   "the gold face, sleeveless on the right to expose a rigid "
+                   "gold mechanical prosthetic arm and fitted with a standard "
+                   "black fabric sleeve on the left, high triangular pointed "
+                   "shoulder pieces lined in gold, and an elongated triangular "
+                   "sash hanging down the front bearing a compass-like gold "
+                   "starburst secret-police insignia",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Prince Vultan": {
+        "franchise": "Flash Gordon",
+        "gender": "Male",
+        "covers_hair": True,
+        # Wings are a worn cosplay element, not an anatomy override (see Goliath /
+        # Hawks elsewhere in this file for the same convention) -- mounted at the
+        # back so they read as attached, never a "floating" part. skin_tone
+        # deliberately left out of physique so the wearer randomizes. Build
+        # pinned in signature (not physique) so the massive frame survives a
+        # costume-only render.
+        "costume": "a horned helmet with massive protruding lightning-bolt "
+                   "wing motifs at the sides, heavy dark leather chest armor "
+                   "sculpted with overlapping gilded feather-like plating "
+                   "leaving the massive arms fully bare, a pair of massive "
+                   "golden-tipped wings mounted at the back, dark leather "
+                   "pants secured by a thick girdle-style belt, and tall boots",
+        "signature": {"facial_hair": "full beard", "body_type": "stocky",
+                      "height": "very tall", "shoulder_width": "very broad",
+                      "fitness_level": "muscular"},
+    },
+    "General Kala": {
+        "franchise": "Flash Gordon",
+        "gender": "Female",  # the franchise's second female entry
+        "covers_hair": True,
+        "costume": "a form-fitting black leather military tunic with gold "
+                   "trim, aggressively pointed gold-spiked shoulder pads, "
+                   "intricate circular gold patterns across the chest, "
+                   "structured black shorts over bare legs, high-heeled black "
+                   "leather boots, and an elaborate domed helmet crested with "
+                   "a massive wide gold-and-black crest rising upward and a "
+                   "star-shaped secret-police insignia centered on the forehead",
+        "signature": {"makeup_style": "bold glam"},
+        "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Vanessa Ives": {
         "franchise": "Penny Dreadful",
@@ -23727,6 +23881,279 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
                       "hair_style": "worn down"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "medium olive"},
+    },
+
+    # --- 1.1.0: Toxic Avenger (maintainer-requested) ------------------------
+    "The Toxic Avenger": {
+        "franchise": "The Toxic Avenger",
+        "gender": "Male",
+        # Maintainer-verified canon. Face is visibly deformed, not masked -- no
+        # covers_face. Body build pinned in signature (not physique) so the
+        # ~7'6" mutant frame survives a costume-only render, matching Mr.
+        # Hyde's transformation pattern. The asymmetric drooping eye is an
+        # asymmetry detail, so per the eyes-authoring convention it goes in
+        # costume prose rather than the free-text 'eyes' key (which must stay a
+        # plain noun phrase). covers_hair drops the randomized Hair group
+        # (color/style/facial_hair) so a random full beard or styled blonde
+        # updo cannot render over "patchy, thinning hair" -- caught live via
+        # preview_cosplayer.py.
+        "covers_hair": True,
+        # 1.1.0 fix round: the first render came back as a healthy-skinned man
+        # with a full head of dark hair -- none of the deformity read. First
+        # attempt just removed a stray "over uniform," debris fragment and
+        # moved the hair/eye clause up, but re-rendering that version still
+        # came back as an ordinary healthy man -- the real cause, confirmed
+        # against this same file's Mr. Hyde entry (its comment documents the
+        # identical failure: "a longer single run-on clause ... diluted
+        # attention and the render lost the skin colour ... rendering as an
+        # ordinary pale Victorian man"), is sentence length diluting
+        # attention, not just the one broken fragment. Rewritten short and
+        # list-style like Mr. Hyde's fixed version, using the same "with
+        # uniform, all-over X skin" idiom positioned mid-sentence rather than
+        # trailing a long chain of costume items.
+        # Second fix round: that version fixed the skin colour (now uniform,
+        # consistent green across all renders) but the deformity clause
+        # itself still did not read -- the render came back as an ordinary
+        # healthy man with a full head of hair, no blistered texture, no
+        # misshapen head, no drooping eye. It was still trailing after two
+        # full clothing clauses (tank top+pants+boots, then the tutu) in one
+        # long sentence -- the exact "buried at the end of one long run-on
+        # sentence" shape this file's Ming the Merciless entry documents and
+        # fixes by leading with the face clause and giving the garment its
+        # own sentence. Applied the identical restructure here: the
+        # misshapen-head/hair/eye/skin clause now leads, in its own short
+        # sentence, and the clothing (tank top, pants, boots, tutu) follows
+        # in a second sentence. Re-rendered (see task-7-report.md Fix round 1
+        # for the honest result -- this did not fully resolve either).
+        "costume": "a misshapen head with sparse patches of thin, balding "
+                   "hair, one eye drooping and sagging noticeably lower than "
+                   "the other, and uniform, all-over warped and blistered "
+                   "toxic-green mutant skin. A severely ripped sleeveless "
+                   "tank top over torn checkered pants and heavy combat "
+                   "boots, with a tattered pink ballet tutu worn over the "
+                   "pants",
+        "signature": {"body_type": "stocky", "height": "very tall",
+                      "shoulder_width": "very broad", "fitness_level": "muscular"},
+        "prop": "a battered industrial janitor's mop with grime-crusted "
+                "strings, dripping with toxic sludge",
+    },
+
+    # --- 1.1.0: Heavy Metal (maintainer-requested + survey) -----------------
+    # Taarna already ships (see above). "Julie" below is the genuine Heavy
+    # Metal 2000 / Heavy Metal: F.A.K.K. 2 protagonist (modeled on/voiced by
+    # Julie Strain) -- a real second Heavy Metal entry. "Triana Orpheus" was
+    # also explicitly requested, but the maintainer confirmed she is NOT a
+    # Heavy Metal character at all: she is from the unrelated Adult Swim
+    # series The Venture Bros, and ships below under that franchise instead
+    # (this was a name mix-up in the original request, not a Heavy Metal
+    # near-duplicate judgment call). Other Heavy Metal candidates considered
+    # and declined: Den (1981 "Den" segment) is a bald, musclebound barbarian
+    # in a plain loincloth -- reads as a generic sword-and-sorcery barbarian
+    # (the roster already has a Conan the Barbarian entry) rather than a
+    # Heavy-Metal-specific silhouette. Loc-Nar is a glowing orb with no
+    # wearable silhouette at all.
+    "Julie": {
+        "franchise": "Heavy Metal",
+        "gender": "Female",
+        # 1.1.0 fix round: the maintainer supplied a fuller, corrected
+        # description (based on Julie Strain's design) after the first
+        # black-and-silver render contradicted it -- canon is RED armor with
+        # deep red/auburn hair, not black. Superseding the original build
+        # from the initial request entirely.
+        "costume": "a minimal red metallic bikini-style bra with sharply cut "
+                   "plate cups and a plunging neckline joined at a metallic "
+                   "ring clasp at the center, red metallic loincloth-style "
+                   "hip armor with high-cut sides held by thin straps sitting "
+                   "high on the hips, red-and-silver metallic gauntlets on "
+                   "the forearms, thigh-high red combat boots with silver "
+                   "metallic knee-guards, straps, and buckle accents, a "
+                   "sleek telescopic tracking visor worn over the eyes, and "
+                   "empty tactical leather holsters and belts fastened "
+                   "around the bare waist and thighs",
+        "signature": {"hair_color": "deep red", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous",
+                      "hair_style": "windswept", "eye_color": "ice blue",
+                      "eyebrows": "thick and straight",
+                      "cheekbones": "high and defined", "lips": "full"},
+        "physique": {"body_type": "hourglass", "height": "tall",
+                     "bust": "very large", "waist": "very narrow", "hips": "wide"},
+    },
+
+    # --- 1.1.0: retro/camp survey (5c) --------------------------------------
+    "Barbarella": {
+        "franchise": "Barbarella",
+        "gender": "Female",
+        # 1.1.0: "detachable" was reworded out of the base look per the
+        # maintainer's steer -- a t2i model reads "detachable" as an
+        # instruction/relationship rather than a static garment feature, so
+        # each element is described as its own worn piece instead. She has
+        # three iconic film looks; the other two ship as plain-string
+        # `costumes` alternates since neither needs a different signature
+        # (see "An iconic variant is an alternate, not a second entry").
+        "costume": "a metallic silver spacesuit with puffed, elbow-length "
+                   "sleeves and matching silver leggings, a plunging "
+                   "halter-cut bodice, thigh-high silver boots, and a rounded "
+                   "silver space helmet with a clear visor",
+        "costumes": [
+            # The Black Astronavigatrix
+            "a sleeveless black leotard with sheer plastic mesh geometric "
+            "cutout windows over the chest and stomach, paired with high "
+            "black tights",
+            # The Green Chainmail battle outfit
+            "an olive-green chainmail sleeveless tunic-leotard, and "
+            "thigh-high brown leather boots connected by thin leather thigh "
+            "straps",
+        ],
+        "signature": {"hair_color": "strawberry blonde", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "hair_style": "tousled bedhead"},
+        "physique": {"body_type": "hourglass", "height": "average height", "skin_tone": "fair"},
+    },
+    "The Great Tyrant (Black Queen)": {
+        "franchise": "Barbarella",
+        "gender": "Female",
+        # 1.1.0 fix round: the first render kept the eyepatch and gloves but
+        # dropped every silhouette-defining element -- the maintainer's fuller
+        # canon adds the feather collar, cape and boots that actually make
+        # this read as "Great Tyrant" rather than a generic red-and-black
+        # catsuit.
+        "costume": "a skintight black bodysuit with a circular cutout baring the "
+                   "midriff, a red bodice panel, a massive high-standing "
+                   "fan-like collar of tiered iridescent black feathers "
+                   "framing the shoulders, a long flowing cape of sheer black "
+                   "netting trailing behind, thigh-high black leather boots "
+                   "with sharp stiletto heels, black opera gloves, a black "
+                   "choker, a single black eyepatch over one eye, and a small "
+                   "white horn rising from the brow",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "tousled bedhead", "eyeliner": "bold cat eye"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
+        "prop": "a slender black leather whip coiled in one hand as a symbol "
+                "of authority",
+    },
+    "The Rocketeer": {
+        "franchise": "The Rocketeer",
+        "gender": "Male",
+        "costume": "a brown leather bomber jacket with a diagonal zip and a fur "
+                   "collar, fingerless leather gloves, tall brown leather boots, a "
+                   "sleek copper-bronze rocket pack strapped to the back with twin "
+                   "exhaust nozzles, and an art-deco bronze helmet topped with a "
+                   "tall streamlined fin",
+        "signature": {},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Robby the Robot": {
+        "franchise": "Forbidden Planet",
+        "gender": "Male",  # genderless mascot convention -- see The Knight (Hollow Knight)
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a clear glass-domed head packed with intricate whirring machinery "
+                "and blinking lights, ringed by a pair of rotating radar-like antennae",
+        "costume": "a barrel-shaped ribbed metal torso mounted on short mechanical "
+                   "legs, thick articulated arms ending in mechanical clamp hands, "
+                   "and a chest panel lit with rows of small dials",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Princess Ardala": {
+        "franchise": "Buck Rogers",
+        "gender": "Female",
+        "costume": "a gold breastplate-style bikini top and matching gold hip "
+                   "panels, a jeweled collar, and a tall gold horned headdress "
+                   "trimmed in fur with jewels hanging from the brow",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "hourglass", "height": "tall"},
+    },
+    "Twiki": {
+        "franchise": "Buck Rogers",
+        "gender": "Male",  # genderless mascot convention -- see The Knight (Hollow Knight)
+        "covers_face": True,
+        "covers_body": True,
+        # 1.1.0 fix round: the first render came back adult-height with a
+        # full motorcycle-helmet-style head and no Dr. Theopolis -- the
+        # maintainer's canon pins him child-sized (the actor in the suit was
+        # a small-statured performer), so size_scale/scale_prose lock the
+        # height the same way Prince Vultan's build is pinned in signature.
+        # Theopolis is WORN (hung around the neck), not held, so per this
+        # file's own "worn items never go in prop" rule it lives in costume
+        # prose rather than the `prop` mechanism. The disc description was
+        # also moved to the front of the costume string (was third in a
+        # robot-body/arms/disc list) -- same front-loading principle as
+        # Ming's face clause.
+        # Second fix round: the mask itself did not match canon -- it read as
+        # a generic acorn-shaped dome with a scanning-light band and side
+        # audio ports, when real Twiki has a pageboy/bowl-cut helmet shape
+        # with sculpted bangs, two round dark eye-lenses (not a light strip),
+        # and a minimal mouth slit (not side ports). Replaced with the
+        # maintainer-supplied canon description, plus an oversized-head note
+        # that may also help the scale read independently of scale_prose.
+        "size_scale": "tiny",
+        "scale_prose": "tiny and just over three feet tall",
+        "mask": "a smooth, domed metallic helmet-head shaped like a 1970s "
+                "pageboy haircut, with a sculpted fringe of bangs across the "
+                "forehead, a flush metallic face-plate set into the helmet "
+                "frame, two simple round dark eye-lens openings set "
+                "symmetrically for a fixed, wide-eyed expression, and a "
+                "minimal horizontal speaker-slit mouth below the eyes, the "
+                "head noticeably oversized against the small body",
+        "costume": "a circular, glowing computer-companion disc hung around "
+                   "the neck on a cord, its face lit with a flashing light "
+                   "and a speaking-matrix grille, over a squat chrome robot "
+                   "body on stubby legs with short arms ending in mechanical "
+                   "pincer hands",
+        "physique": {"body_type": "stocky"},
+    },
+    "The Martian Ambassador": {
+        "franchise": "Mars Attacks!",
+        "gender": "Male",  # genderless mascot convention -- see The Knight (Hollow Knight)
+        "covers_face": True,
+        "mask": "an exposed great domed brain sitting bare above a grinning skull "
+                "face with hollow eyes and bared teeth",
+        "costume": "a tall stiff collar sweeping up behind the head, segmented "
+                   "ribbed armor down both forearms, and a long ceremonial robe "
+                   "falling to the floor, over smooth, flawless pale green skin",
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Lady Penelope": {
+        "franchise": "Thunderbirds",
+        "gender": "Female",
+        "costume": "a pink above-the-knee shift dress under a matching pink "
+                   "waist-length collarless jacket, a pearl necklace, and a "
+                   "wide-brimmed pink hat with a sheer veil",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+
+    # --- 1.1.0: The Venture Bros (maintainer correction) --------------------
+    # Triana Orpheus was originally requested as a Heavy Metal 2000 addition
+    # (see the Heavy Metal comment block above); the maintainer confirmed she
+    # is actually this unrelated Adult Swim character, not a Heavy Metal one.
+    "Triana Orpheus": {
+        "franchise": "The Venture Bros",
+        "gender": "Female",
+        # 1.1.0 fix round: footwear corrected from sneakers to her actual
+        # canon Mary Janes; eye_makeup locked to the closest valid enum for
+        # her purple eyeshadow (no literal "purple" option exists on this
+        # field -- "rosy mauve" is the nearest real match, same closest-enum
+        # pattern as Ming's facial_hair). hair_color, unlike those two, is
+        # NOT a closest-enum compromise: HAIR_COLOR_FAMILIES["vivid"] already
+        # has an exact "deep purple" option, and the first render's
+        # structured "jet black" directly contradicted the costume prose's
+        # own "violet sheen" line. Locked to "deep purple" and the prose
+        # reworded to agree (violet-black bob) instead of fighting it.
+        "costume": "a black short-sleeve top printed with a large white "
+                   "stylized skull-and-crossbones graphic, a high-waisted "
+                   "black mini skirt, black-and-white horizontally striped "
+                   "tights, dark red Mary Janes with a classic single strap "
+                   "across the instep and a low heel, a tight black choker, "
+                   "a black studded-leather wristband on one wrist, and a "
+                   "silver metallic bracelet on the other, with a violet "
+                   "sheen catching in the choppy violet-black bob",
+        "signature": {"hair_color": "deep purple", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "makeup_style": "gothic dark makeup",
+                      "eye_makeup": "rosy mauve"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "pale", "age": "18"},
     },
 
 }
@@ -23858,6 +24285,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Corpse Bride", "Hotel Transylvania", "Metropolis",
         "Firefly", "Flash Gordon", "Penny Dreadful",
         "The Craft", "Jennifer's Body", "The 100",
+        "The Rocketeer", "Barbarella", "Forbidden Planet", "Buck Rogers",
+        "Mars Attacks!", "Thunderbirds", "The Toxic Avenger",  # 1.1.0
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.
@@ -23884,7 +24313,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Tank Girl", "Aeon Flux", "Heavy Metal",
         "Scott Pilgrim", "The Walking Dead", "Kick-Ass",
         "Archie", "Kabuki"
-        "The Owl House", "Totally Spies!"
+        "The Owl House", "Totally Spies!",
+        "The Venture Bros",  # 1.1.0
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {
