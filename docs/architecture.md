@@ -3131,8 +3131,18 @@ JSON array tagging every entry with a `kind` discriminator (`cosplayer` / `arche
 `creature`) and a precomputed, lowercased `haystack` string (name + franchise/category + costume
 prose + derived trait words such as `masked`, `mascot`, `feral`, `giant`, `tiny`) for
 substring/keyword search. Search is case-insensitive substring matching with multi-word tokens
-AND'd (order-independent), spanning every kind regardless of the active tab — only an *empty*
-query scopes to the active tab. The generator reads the data modules with `ast.parse` only, never
+AND'd (order-independent), **filtered within the active tab** — the "All" tab is what searches
+every kind at once, and the trait facet composes on top of both. This replaced the original
+"a query spans every tab, tabs only apply to an empty box" rule, which meant a user who had
+narrowed to one category lost that scope the instant they typed, with no way to search inside a
+single kind at all. Because a tab-scoped search can hide matches the user would have wanted to
+see, two things carry the cross-kind discoverability the old rule provided for free: while a
+query or a non-default facet is active, **each tab renders its own match count** (`Creatures (7)`
+is readable from the Cosplayers tab, and a zero-count tab renders dimmed via
+`.if-picker-tab.empty`), and an active tab with no matches shows how many matches exist elsewhere
+plus a one-click **"Search all categories"** button rather than a bare dead end. Kind badges on
+the cards now appear only on the "All" tab, since every other tab is single-kind by construction.
+The generator reads the data modules with `ast.parse` only, never
 by importing them, for the same reason `stamp_versions.py` does: importing runs
 `apply_user_*` and would bake a maintainer's private `user_options.json` entries into a committed,
 published file. The file sits under a **~1.5 MB budget** (`tests/test_js_sync.py`), and ships as

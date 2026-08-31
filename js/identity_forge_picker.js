@@ -21,8 +21,17 @@ import { app } from "../../scripts/app.js";
  * Search: case-insensitive substring over the precomputed `haystack`, with
  * every whitespace-split query token required (AND, order-independent) --
  * the one deliberate improvement over stylebook's single-substring match.
- * A query searches every kind regardless of the active tab; tabs only narrow
- * the view when the search box is empty.
+ * The tab and the query compose: a query is filtered *within* the active tab,
+ * and the "All" tab is what searches every kind at once. This replaced the
+ * original "a query spans every tab, tabs only apply to an empty box"
+ * behaviour, which silently threw away the category the user had chosen the
+ * moment they typed -- there was no way to search inside one kind at all.
+ * Discoverability of the other kinds is kept by two additions rather than by
+ * overriding the tab: while filtering, each tab shows its own match count
+ * (so "Creatures (7)" is visible from the Cosplayers tab), and a tab whose
+ * count is zero under the current query/facet renders dimmed. When the active
+ * tab has no matches but another does, the empty state says so and offers a
+ * one-click switch to "All".
  *
  * Scope note (also destined for the docs, by a later task): this searches
  * *roster entries* -- named cosplayers, archetypes, creatures -- not the
@@ -653,15 +662,23 @@ class IdentityForgePicker {
     }
   }
 
-  renderTabs() {
+  renderTabs(matching) {
     if (!this.tabs) return;
     this.tabs.replaceChildren();
+    // Counts are shown only while a query or facet is narrowing the roster:
+    // with nothing typed they would just restate each kind's total, and the
+    // information the user actually lost when tabs started scoping the search
+    // is "how many matches are in the tab I'm not looking at".
+    const filtering = this.isFiltering();
+    const counts = filtering ? this.tabCounts(matching || this.matchingEntries()) : null;
     for (const tab of TABS) {
       const button = document.createElement("div");
       button.tabIndex = 0;
-      const active = tab === this.activeTab && !this.query;
-      button.className = "if-picker-tab" + (active ? " active" : "");
-      button.textContent = tabLabel(tab);
+      const active = tab === this.activeTab;
+      const count = counts ? counts[tab] : null;
+      button.className = "if-picker-tab" + (active ? " active" : "") + (count === 0 ? " empty" : "");
+      button.dataset.tab = tab;
+      button.textContent = tabLabel(tab) + (counts ? " (" + count + ")" : "");
       button.setAttribute("role", "tab");
       button.setAttribute("aria-selected", active ? "true" : "false");
       button.addEventListener("keydown", (event) => {
@@ -671,13 +688,10 @@ class IdentityForgePicker {
         }
       });
       button.addEventListener("click", () => {
-        // The query is deliberately left untouched: "a query spans every
-        // tab" (visibleEntries()) means switching tabs while searching is
-        // just picking which tab will apply once the query is cleared --
-        // clearing it here was a bug (1.1.0 fix round), not the design: it
-        // silently discarded whatever the user had just typed the moment
-        // they touched a tab, which is the opposite of "persists across
-        // tabs" that both the brief and this file's own header promise.
+        // The query is deliberately left untouched -- clearing it here was a
+        // bug (1.1.0 fix round). Tab and query compose, so a tab click while
+        // searching re-scopes the same search to another category rather
+        // than discarding what was typed.
         this.activeTab = tab;
         this.focusIndex = 0;
         this.renderTabs();
@@ -687,20 +701,41 @@ class IdentityForgePicker {
     }
   }
 
-  visibleEntries() {
+  /**
+   * Everything matching the current query + facet, across every kind --
+   * deliberately NOT tab-scoped. This is what feeds the per-tab counts, so
+   * the Cosplayers tab can still say how many creatures the same query hits.
+   */
+  matchingEntries() {
     if (!roster) return [];
     const tokens = tokenize(this.query);
-    // A query spans every tab; only the empty query is tab-scoped.
-    let list = tokens.length
-      ? roster.filter((entry) => matchesQuery(entry, tokens))
-      : this.activeTab === TAB_ALL
-        ? roster
-        : roster.filter((entry) => entry.kind === this.activeTab);
+    let list = tokens.length ? roster.filter((entry) => matchesQuery(entry, tokens)) : roster;
     if (this.facet !== FACET_ALL) {
       const predicate = FACET_PREDICATES[this.facet] || FACET_PREDICATES[FACET_ALL];
       list = list.filter(predicate);
     }
     return list;
+  }
+
+  /** The grid's contents: the query/facet matches, narrowed to the active tab. */
+  visibleEntries(matching) {
+    const list = matching || this.matchingEntries();
+    return this.activeTab === TAB_ALL ? list : list.filter((entry) => entry.kind === this.activeTab);
+  }
+
+  /** Match count per tab under the current query + facet, TAB_ALL being the total. */
+  tabCounts(matching) {
+    const counts = { [TAB_ALL]: 0, cosplayer: 0, archetype: 0, creature: 0 };
+    for (const entry of matching || []) {
+      counts[TAB_ALL] += 1;
+      if (counts[entry.kind] !== undefined) counts[entry.kind] += 1;
+    }
+    return counts;
+  }
+
+  /** True while anything is narrowing the roster -- when the counts are worth showing. */
+  isFiltering() {
+    return Boolean(tokenize(this.query).length) || this.facet !== FACET_ALL;
   }
 
   renderGrid() {
@@ -709,11 +744,14 @@ class IdentityForgePicker {
     this.grid.replaceChildren();
     this._focused = null;
 
-    this.visible = this.visibleEntries();
-    this.renderTabs();
+    const matching = this.matchingEntries();
+    this.visible = this.visibleEntries(matching);
+    this.renderTabs(matching);
 
     // Kind badges only matter where the tab strip does not already say it.
-    this._showKind = this.activeTab === TAB_ALL || Boolean(this.query);
+    // Any tab other than "All" now scopes the grid to a single kind, query or
+    // not, so the badge is redundant there.
+    this._showKind = this.activeTab === TAB_ALL;
 
     if (this.count) {
       this.count.textContent = this.visible.length + (this.visible.length === 1 ? " result" : " results");
@@ -722,9 +760,34 @@ class IdentityForgePicker {
     if (!this.visible.length) {
       const empty = document.createElement("div");
       empty.className = "if-picker-empty";
-      empty.textContent = this.query
-        ? 'Nothing matches "' + this.query + '".'
-        : "Nothing in this category.";
+      // The tab now scopes the search, so "nothing here" is only half the
+      // answer -- say whether the same query hits another category, and make
+      // getting there one click rather than a hunt across the tab strip.
+      const elsewhere = this.activeTab === TAB_ALL ? 0 : matching.length;
+      if (this.query && this.activeTab === TAB_ALL) {
+        empty.textContent = 'Nothing matches "' + this.query + '".';
+      } else if (this.query) {
+        empty.textContent = 'No ' + tabLabel(this.activeTab).toLowerCase()
+          + ' match "' + this.query + '"'
+          + (elsewhere ? ' — ' + elsewhere + ' match' + (elsewhere === 1 ? "" : "es")
+            + ' in other categories.' : ".");
+      } else {
+        empty.textContent = "Nothing in this category"
+          + (elsewhere ? " — " + elsewhere + " match" + (elsewhere === 1 ? "" : "es")
+            + " in other categories." : ".");
+      }
+      if (elsewhere) {
+        const showAll = document.createElement("button");
+        showAll.type = "button";
+        showAll.className = "if-picker-btn";
+        showAll.textContent = "Search all categories";
+        showAll.addEventListener("click", () => {
+          this.activeTab = TAB_ALL;
+          this.focusIndex = 0;
+          this.renderGrid();
+        });
+        empty.append(document.createElement("br"), showAll);
+      }
       this.grid.appendChild(empty);
       return;
     }
