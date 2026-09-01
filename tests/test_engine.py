@@ -1110,6 +1110,25 @@ class CosplayerTests(unittest.TestCase):
         self.assertEqual(COSPLAYERS[name]["gender"], "Female")
         self.assertEqual(get_cosplayer_category(COSPLAYERS[name]["franchise"]), "DC")
 
+    def test_previously_unmapped_franchises_scope_to_their_category(self):
+        # 1.2.0: 13 entries across 12 franchises were absent from
+        # _CATEGORY_FRANCHISES and fell through to _DEFAULT_CATEGORY, so their
+        # random_scope category could never draw them. Two of the twelve were
+        # created by a missing comma between adjacent string literals. One entry
+        # per previously-broken category; validate_data.py holds the general gate.
+        for entry, expected in (
+            ("Maomao", "Anime & Manga"),
+            ("Goliath", "Comics & Cartoons"),
+            ("Eda Clawthorne", "Comics & Cartoons"),   # was "KabukiThe Owl House"
+            ("Yuri", "Video Games"),
+            ("Zorro", "Fantasy & Literature"),
+            ("Captain Nemo", "Fantasy & Literature"),
+        ):
+            with self.subTest(entry=entry):
+                self.assertIn(entry, COSPLAYERS)
+                self.assertEqual(
+                    get_cosplayer_category(COSPLAYERS[entry]["franchise"]), expected)
+
     def test_eyes_override_renders_free_text(self):
         # A canonical non-standard eye colour ("eyes" override) is voiced verbatim,
         # without being a selectable option on the main node's eye_color dropdown, and
