@@ -19,6 +19,8 @@ Design notes
 """
 from __future__ import annotations
 
+import logging
+
 from collections import OrderedDict
 import json
 import random
@@ -27,6 +29,12 @@ from typing import Any
 
 # Dual import: package-relative inside ComfyUI (avoids polluting sys.path with
 # the generic "data"/"nodes" names), absolute when run standalone for tests.
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
+
 try:
     from ..data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -37,7 +45,7 @@ try:
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
-    from ..data.constraints import CONSTRAINT_RULES
+    from ..data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -48,7 +56,7 @@ except ImportError:  # pragma: no cover — standalone/test context
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
-    from data.constraints import CONSTRAINT_RULES
+    from data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
 
 # ---------------------------------------------------------------------------
 # ComfyUI V3 API import — guarded so the engine helpers remain importable
@@ -1346,6 +1354,38 @@ def _wearable_legwear(pool: list[str], resolved: dict[str, str]) -> list[str]:
     return pool
 
 
+def _style_appropriate_legwear(pool: list[str], resolved: dict[str, str]) -> list[str]:
+    """Drop men's socks the chosen ``outfit_style`` would not wear (1.2.0).
+
+    The allowlist itself is ``LEGWEAR_BY_STYLE`` in ``data/constraints.py``, and it
+    mirrors ``FOOTWEAR_BY_STYLE`` in shape and safety model: a value absent from a
+    style's set is excluded there, so a future men's legwear addition is excluded
+    everywhere until it is deliberately listed.
+
+    **It cannot be a CONSTRAINT_RULES exclusion, and that is not a style choice.**
+    ``legwear`` is in :data:`_DEFERRED_FIELDS`, so it is drawn after the constraint
+    loop has finished -- an ``outfit_style`` -> ``legwear`` rule never runs. Written
+    as a rule first and measured: 132 violations over 400 seeds per style, against 0
+    for the identical footwear rule, which works only because ``footwear`` is drawn
+    inside the loop. See the comment above ``LEGWEAR_BY_STYLE``.
+
+    Scoped to ``_GATED_LEGWEAR`` -- the three male values added at 1.2.0 -- so every
+    female value passes through untouched and women's draws stay byte-identical to
+    1.1.0. ``no visible legwear`` is in no style's ban set, so the pool can never
+    empty.
+    """
+    style = resolved.get("outfit_style") or ""
+    if not style:
+        return pool
+    allowed = LEGWEAR_BY_STYLE.get(style)
+    if allowed is None:
+        return pool
+    banned = _GATED_LEGWEAR - allowed
+    if not banned:
+        return pool
+    return [v for v in pool if v not in banned]
+
+
 def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> list[str]:
     """Drop tattoo placements the character's clothing would cover.
 
@@ -1405,7 +1445,7 @@ def _resolve_deferred_fields(
         field_def = FIELD_DEFINITIONS[field_name]
         pool = _build_option_pool(field_name, field_def, gender, resolved)
         if field_name == "legwear":
-            pool = _wearable_legwear(pool, resolved)
+            pool = _style_appropriate_legwear(_wearable_legwear(pool, resolved), resolved)
         elif field_name == "tattoo_placement":
             pool = _visible_tattoo_placements(pool, resolved)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
@@ -1775,7 +1815,7 @@ def _apply_constraints(
         key = (field, detail)
         if key not in warned:
             warned.add(key)
-            warnings.append(f"[IdentityForge] {detail}")
+            warnings.append(detail)
 
     for _ in range(_MAX_CONSTRAINT_ITERATIONS):
         changed = False
@@ -2522,7 +2562,7 @@ def _load_document(raw: str) -> dict:
     try:
         data = json.loads(raw)
     except (ValueError, TypeError):
-        print("[IdentityForge] Ignoring malformed preset JSON during merge.")
+        _LOG.warning("Ignoring malformed preset JSON during merge.")
         return {}
     return data if isinstance(data, dict) else {}
 
@@ -2896,9 +2936,8 @@ def generate_character(
         if phrase:
             locked_clean["height"] = phrase
         else:
-            print(f"[IdentityForge] Unknown size_scale {size_scale!r}; ignoring. "
-                  f"Expected 'Auto' or one of: "
-                  f"{', '.join(_SIZE_SCALE_PHRASES)}.")
+            _LOG.warning("Unknown size_scale %r; ignoring. Expected 'Auto' or "
+                         "one of: %s.", size_scale, ", ".join(_SIZE_SCALE_PHRASES))
 
     # Which scale, if any, the scene has to be able to show. Empty for ordinary
     # output, so every pool below is untouched unless a scale is genuinely in play.
@@ -2962,8 +3001,8 @@ def generate_character(
         ):
             continue
         del locked_clean[name]
-        print(f"[IdentityForge] '{name}={value}' is not valid for gender "
-              f"'{gender}'; re-randomizing within the {gender} pool.")
+        _LOG.info("'%s=%s' is not valid for gender '%s'; re-randomizing "
+                  "within the %s pool.", name, value, gender, gender)
 
     resolved = _randomize_fields(
         locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
@@ -2979,7 +3018,7 @@ def generate_character(
         resolved, gender, set(locked_clean), rng, presentation, scale_class
     )
     for message in warnings:
-        print(message)
+        _LOG.info("%s", message)
 
     # A costume override (outfit_description supplied by an archetype/cosplayer)
     # is already a complete outfit, so the separately-randomized garment fields
@@ -3281,7 +3320,7 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
     try:
         data = json.loads(raw)
     except (ValueError, TypeError):
-        print("[IdentityForge] Ignoring malformed archetype_json input.")
+        _LOG.warning("Ignoring malformed archetype_json input.")
         return {}
     if not isinstance(data, dict):
         return {}

@@ -40,7 +40,20 @@ jobs:
         # runs before any test_*.py file imports a node module. Without it,
         # `discover` imports test files as bare top-level modules and the
         # package __init__ never runs first.
+        #
+        # This stays THE command: it is what guarantees the pack is
+        # dependency-free, and CI installs nothing. `pytest` also works as of
+        # 1.2.0 (rootdir conftest.py + a ComfyExtension export on the stub) so a
+        # contributor who reaches for it does not get a silently different
+        # suite -- but it is a convenience, not the gate.
         run: python -m unittest discover -s tests -t . -v
+      - name: Check public docs carry no categorical leaks
+        # Contributor-runnable, stdlib only. Flags Windows/home paths, RFC1918
+        # addresses, KEY=value secrets and long base64/hex blobs in tracked
+        # markdown. This is NOT the maintainer's denylist checker -- that one
+        # lives outside the repo, encodes private terms, and still has to pass
+        # before AGENTS.md or CLAUDE.md is pushed.
+        run: python scripts/check_public_safety.py
       - name: Check generated reference docs are current
         run: python scripts/generate_reference_docs.py --check
       - name: Check generated frontend data is current

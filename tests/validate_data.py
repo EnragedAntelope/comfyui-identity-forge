@@ -104,6 +104,68 @@ def _duplicate_literal_keys(source_path: Path, dict_name: str) -> list[str]:
     return []
 
 
+def _builtin_category_map_errors(source_path: Path) -> list[str]:
+    """Errors where ``_CATEGORY_FRANCHISES`` and the shipped roster disagree.
+
+    Bidirectional on purpose. A mapped name that no entry uses is either a stale
+    reservation or a missing comma: adjacent string literals concatenate silently
+    ("Kabuki" "The Owl House" -> one string) and the merged literal is internally
+    valid, so nothing else in this file can see it. A live franchise that is NOT
+    mapped falls through to ``_DEFAULT_CATEGORY`` and is unreachable under the
+    ``random_scope`` category it belongs to -- 13 entries were in that state when
+    this check was written, across 21 total defects.
+
+    Read with ``ast``, never by importing, for the reason
+    ``scripts/generate_js_data.py`` documents at length: importing
+    ``data/cosplayers.py`` runs ``apply_user_cosplayers(COSPLAYERS)``, so an
+    import-based check would fail on a maintainer's private ``user_options.json``
+    franchises. A user entry is unmapped by design and scopes to the default.
+    """
+    tree = ast.parse(source_path.read_text(encoding="utf-8"))
+    mapped: set[str] = set()
+    live: set[str] = set()
+    for node in ast.walk(tree):
+        target = ""
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            target = node.target.id
+        elif isinstance(node, ast.Assign):
+            target = next((t.id for t in node.targets if isinstance(t, ast.Name)), "")
+        if not target or not isinstance(node.value, ast.Dict):
+            continue
+        if target == "_CATEGORY_FRANCHISES":
+            for franchises in node.value.values:
+                for item in getattr(franchises, "elts", []):
+                    if isinstance(item, ast.Constant) and isinstance(item.value, str):
+                        mapped.add(item.value)
+        elif target == "COSPLAYERS":
+            for entry in node.value.values:
+                if not isinstance(entry, ast.Dict):
+                    continue
+                for key, value in zip(entry.keys, entry.values):
+                    if (isinstance(key, ast.Constant) and key.value == "franchise"
+                            and isinstance(value, ast.Constant)
+                            and isinstance(value.value, str) and value.value):
+                        live.add(value.value)
+
+    errors: list[str] = []
+    if not mapped or not live:
+        errors.append("_CATEGORY_FRANCHISES check: could not read both "
+                      "_CATEGORY_FRANCHISES and COSPLAYERS out of "
+                      f"{source_path.name}")
+        return errors
+    for orphan in sorted(mapped - live):
+        errors.append(
+            f"_CATEGORY_FRANCHISES maps '{orphan}' but no shipped entry uses that "
+            f"franchise. Either it is a stale reservation (delete it) or a comma "
+            f"is missing and two names concatenated into one literal.")
+    for missing in sorted(live - mapped):
+        errors.append(
+            f"franchise '{missing}' is used by a shipped entry but is not in "
+            f"_CATEGORY_FRANCHISES, so it falls through to _DEFAULT_CATEGORY and "
+            f"is unreachable under its own random_scope category. Map it.")
+    return errors
+
+
 def validate() -> list[str]:
     """Return a list of error strings; empty means the data layer is valid."""
     errors: list[str] = []
@@ -485,6 +547,42 @@ def validate() -> list[str]:
                 f"narrower than its franchise '{franchise}'. Installments are not "
                 f"separate franchises here -- use '({franchise})' so the key agrees "
                 f"with docs/reference/cosplayers.md.")
+
+    # --- outfit_style allowlists: every gated value must be reachable ----
+    # FOOTWEAR_BY_STYLE and LEGWEAR_BY_STYLE are ALLOWLISTS, which is the right
+    # safety model (a new value is excluded everywhere until deliberately listed)
+    # but has one silent failure: a value added to the field and to no style's set
+    # is excluded from every style at once and can never be drawn. Measured, not
+    # theorised -- 'platform boots', 'hiking boots' and 'clogs' were added at 1.2.0
+    # and drew 0/1500 until their rows landed, with every other check still green.
+    from data.constraints import FOOTWEAR_BY_STYLE, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    for label, allowlist, gated in (
+        ("footwear", FOOTWEAR_BY_STYLE, _options("footwear")),
+        ("legwear", LEGWEAR_BY_STYLE, set(_GATED_LEGWEAR)),
+    ):
+        stray_styles = sorted(set(allowlist) - _EXPECTED_OUTFIT_STYLES)
+        if stray_styles:
+            errors.append(f"{label.upper()}_BY_STYLE keys are not outfit styles: "
+                          f"{stray_styles}")
+        missing_styles = sorted(_EXPECTED_OUTFIT_STYLES - set(allowlist))
+        if missing_styles:
+            errors.append(f"{label.upper()}_BY_STYLE has no row for {missing_styles} "
+                          f"-- an unlisted style allows everything, silently")
+        listed = {value for values in allowlist.values() for value in values}
+        unknown = sorted(listed - gated)
+        if unknown:
+            errors.append(f"{label.upper()}_BY_STYLE allows {unknown}, which "
+                          f"{'is not a' if len(unknown) == 1 else 'are not'} "
+                          f"'{label}' option{'' if len(unknown) == 1 else 's'}")
+        unreachable = sorted(gated - listed)
+        if unreachable:
+            errors.append(f"{label} value{'' if len(unreachable) == 1 else 's'} "
+                          f"{unreachable} appear(s) in no {label.upper()}_BY_STYLE "
+                          f"row, so {'it is' if len(unreachable) == 1 else 'they are'} "
+                          f"excluded from every outfit_style and can never be drawn")
+
+    # --- cosplayers: the category map and the roster must agree ----------
+    errors.extend(_builtin_category_map_errors(ROOT / "data" / "cosplayers.py"))
 
     # --- cosplayers: costume/signature/physique validity -------------
     if len(COSPLAYERS) < 50:

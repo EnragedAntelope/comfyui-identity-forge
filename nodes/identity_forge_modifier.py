@@ -34,11 +34,19 @@ ComfyUI.
 """
 from __future__ import annotations
 
+import logging
+
 import json
 from collections import OrderedDict
 from typing import Any
 
 # Dual import: package-relative inside ComfyUI, absolute when run standalone.
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
+
 try:
     from ..data.fields import FIELD_DEFINITIONS
     from .identity_forge import merge_preset_documents, _GROUP_ORDER, _MODIFIERS_DOC_KEY
@@ -106,7 +114,7 @@ def _parse_modifier_text(text: str) -> "OrderedDict[str, str]":
         if not line or line.startswith("#"):
             continue
         if ":" not in line:
-            print(f"[IdentityForgeModifier] Skipping line without 'key: descriptor' -> {raw!r}")
+            _LOG.warning("Skipping line without 'key: descriptor' -> %r", raw)
             continue
         key, _, descriptor = line.partition(":")
         key, descriptor = key.strip(), descriptor.strip()
@@ -114,7 +122,7 @@ def _parse_modifier_text(text: str) -> "OrderedDict[str, str]":
             continue
         canonical = field_by_lc.get(key.lower()) or group_by_lc.get(key.lower())
         if canonical is None:
-            print(f"[IdentityForgeModifier] Unknown key {key!r}; use a field name or a "
+            _LOG.warning(f"Unknown key {key!r}; use a field name or a "
                   f"group header. Skipping.")
             continue
         mods[canonical] = descriptor  # a later line for the same key wins

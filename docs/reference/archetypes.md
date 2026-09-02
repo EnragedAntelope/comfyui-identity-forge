@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**251 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**255 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -35,6 +35,7 @@
 - **Arctic Explorer** -- athletic
 - **Artificer** [Male] -- vintage retro
 - **Artist** -- bohemian
+- **Aso-Ebi with Gele** [Female] -- evening formal
 - **Astronaut** -- athletic
 - **Astronomer** -- smart casual
 - **Athlete** [Female] -- athletic
@@ -65,6 +66,7 @@
 - **Celestial Cleric** [Female] -- evening formal
 - **Cheerleader** [Female] -- athletic
 - **Chef** [Male] -- casual
+- **Chimney Sweep** [Any] -- casual
 - **Circus Clown** [Any]
 - **Classic Hollywood Leading Man** [Male] -- evening formal
 - **Classic Hollywood Starlet** [Female] -- evening formal
@@ -99,6 +101,7 @@
 - **Fencer** -- athletic
 - **Fighter Pilot** -- athletic
 - **Figure Skater** [Any]
+- **Filipiniana Terno** [Any] -- evening formal
 - **Firefighter** [Male] -- athletic
 - **Flamenco Dancer** [Female]
 - **Flight Attendant** [Female] -- business casual
@@ -113,6 +116,7 @@
 - **Gibson Girl** [Female] -- vintage retro
 - **Gladiator** [Male] -- athletic
 - **Glassblower** -- casual
+- **Gondolier** [Male] -- smart casual
 - **Gothic Doll** [Female] -- edgy alternative
 - **Graduate** -- smart casual
 - **Greek Goddess** [Female] -- evening formal

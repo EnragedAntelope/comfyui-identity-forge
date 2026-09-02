@@ -702,6 +702,9 @@ const COSPLAYER_FRANCHISES = {
   "Despicable Me": [
     "Gru"
   ],
+  "Destiny": [
+    "Mara Sov"
+  ],
   "Devil May Cry": [
     "Dante",
     "Lady (Devil May Cry)",
@@ -713,6 +716,7 @@ const COSPLAYER_FRANCHISES = {
     "Astarte"
   ],
   "Doctor Who": [
+    "Cyberman",
     "The Fourth Doctor",
     "The Tenth Doctor",
     "Weeping Angel"
@@ -923,6 +927,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Firefly": [
     "Inara Serra",
+    "Jayne Cobb",
     "River Tam"
   ],
   "Flash Gordon": [
@@ -2756,6 +2761,8 @@ const COSPLAYER_FRANCHISES = {
     "The Toxic Avenger"
   ],
   "The Venture Bros": [
+    "Dr. Mrs. The Monarch",
+    "The Monarch",
     "Triana Orpheus"
   ],
   "The Walking Dead": [

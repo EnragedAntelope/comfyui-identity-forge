@@ -27,6 +27,8 @@ thumbnail, keeping torch / numpy / folder_paths out of the tested core.
 """
 from __future__ import annotations
 
+import logging
+
 import datetime as _dt
 import json
 import re
@@ -34,6 +36,12 @@ import shutil
 from collections import OrderedDict
 from pathlib import Path
 from typing import Any
+
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
 
 try:
     from comfy_api.latest import io  # type: ignore[import-not-found]
@@ -325,13 +333,13 @@ if _COMFY_AVAILABLE:
                 try:
                     thumbnail = _tensor_to_pil(image)
                 except Exception as exc:  # noqa: BLE001 — a bad image must not block saving
-                    print(f"[IdentityForgeVaultSave] Could not build thumbnail: {exc}")
+                    _LOG.warning("Could not build thumbnail: %s", exc)
 
             try:
                 saved_as = save_character(root, name, prompt_json,
                                           on_existing=on_existing, thumbnail=thumbnail)
-                print(f"[IdentityForgeVaultSave] Saved character '{saved_as}'.")
+                _LOG.info("Saved character '%s'.", saved_as)
             except Exception as exc:  # noqa: BLE001 — saving must never break a run
-                print(f"[IdentityForgeVaultSave] Save failed: {exc}")
+                _LOG.warning("Save failed: %s", exc)
 
             return io.NodeOutput()

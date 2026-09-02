@@ -4182,6 +4182,173 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "full body shot",
         "mood": "self-assured",
     },
+
+    # --- 1.2.0 ------------------------------------------------------------
+    # Two cultural-dress entries and two occupational, deliberately balanced.
+    # None encloses the head, so the 0.87.0 Hazmat rule (makeup_style "no makeup"
+    # on a gender "Any" archetype with a sealed head) does not apply to any of them.
+    "Filipiniana Terno": {
+        # The stiff, elevated butterfly sleeves are a silhouette nothing else in
+        # the pack has. Southeast Asia was represented only by Vietnamese Ao Dai.
+        # The masculine Barong Tagalog rides as a variant rather than a second
+        # entry, the same way Maasai carries its two.
+        "gender": "Any",
+        "ethnicity": "Filipino",
+        "skin_tone": ["light medium", "medium", "warm tan"],
+        "eye_color": "dark brown",
+        "hair_color": "jet black",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": ["gentle smile", "calm and composed"],
+        "location": ["grand cathedral interior", "castle courtyard"],
+        "lighting": ["soft window light from the side", "golden hour sunlight"],
+        "shot_type": "full body shot",
+        "mood": "radiant",
+        "variants": {
+            "Female": {
+                "hair_length": "mid back",
+                "hair_texture": "sleek straight",
+                "hair_style": "chignon",
+                "makeup_style": "soft glam",
+                "nails": "french manicure",
+                "earrings": "pearl studs",
+                "necklace": "pearl necklace",
+                "outfit_description": [
+                    "a floor-length {jewel_tone} silk terno gown with enormous stiff "
+                    "butterfly sleeves standing up in a sharp angular arc from each "
+                    "shoulder, a fitted bodice with {accent}, and a smooth column "
+                    "skirt falling to the floor",
+                    "a floor-length {pastel} pina-cloth terno with towering rigid "
+                    "butterfly sleeves, a bateau neckline, {accent} scattered across "
+                    "the bodice, and a long sweeping train",
+                ],
+            },
+            "Male": {
+                "hair_length": "very short",
+                "hair_style": "slicked back",
+                "facial_hair": "clean shaven",
+                "outfit_description": [
+                    "a sheer cream pina-cloth barong tagalog worn untucked over a "
+                    "white undershirt, with dense {accent} panelled down the chest "
+                    "and along the cuffs, over black dress trousers",
+                    "a sheer ivory jusi barong tagalog with an open collar and "
+                    "elaborate {accent} across the front, worn loose over black "
+                    "tailored trousers and polished black shoes",
+                ],
+            },
+        },
+    },
+    "Aso-Ebi with Gele": {
+        # West Africa was entirely absent -- Sapeur is Congolese and is a suit.
+        # The sculptural fan-folded gele is the silhouette; distinct from Maasai
+        # (beaded disc collar) and Tuareg (indigo tagelmust).
+        "gender": "Female",
+        "ethnicity": "Nigerian",
+        "skin_tone": ["brown", "dark brown", "deep"],
+        "eye_color": "dark brown",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "makeup_style": "bold glam",
+        "nails": "long nails",
+        "earrings": "chandelier earrings",
+        "necklace": "beaded necklace",
+        "expression": ["confident", "beaming"],
+        "location": ["rooftop terrace overlooking the skyline", "castle courtyard"],
+        "lighting": ["golden hour sunlight", "soft studio three-point lighting"],
+        "shot_type": "full body shot",
+        "mood": "exuberant",
+        "variants": {
+            "Female": {
+                "hair_style": "updo",
+                "outfit_description": [
+                    "a towering sculptural gele head-tie in stiff {jewel_tone} "
+                    "aso-oke cloth, fanned into crisp radiating pleats and flaring "
+                    "wide above the head, over a matching fitted long-sleeved blouse "
+                    "and a floor-length wrapper skirt edged with {accent}",
+                    "an enormous fan-folded {color} gele rising in stiff sculpted "
+                    "loops above the head, with a matching beaded blouse and a "
+                    "wrapped floor-length skirt in the same cloth, finished with "
+                    "{accent}",
+                ],
+            },
+        },
+    },
+    "Gondolier": {
+        # Legible at silhouette scale and no incumbent; balances the two
+        # cultural-dress adds with an occupational one.
+        "gender": "Male",
+        "ethnicity": "Italian",
+        "skin_tone": ["light medium", "medium olive", "olive"],
+        "outfit_style": "smart casual",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "footwear": "loafers",
+        "expression": ["confident", "warm smile"],
+        "location": ["the Grand Canal in Venice", "stone bridge over a river"],
+        "lighting": ["golden hour sunlight", "late afternoon warm sunlight"],
+        "shot_type": "full body shot",
+        "mood": "lighthearted",
+        "variants": {
+            "Male": {
+                "hair_length": "very short",
+                "facial_hair": ["clean shaven", "stubble"],
+                "outfit_description": [
+                    "a horizontally striped navy-and-white jersey with a boat neck, "
+                    "black tailored trousers, a wide {color} sash knotted at the "
+                    "waist, and a flat straw boater hat with a long ribbon trailing "
+                    "from the band",
+                    "a red-and-white striped long-sleeved jersey, dark slim "
+                    "trousers, a {color} silk sash tied at the hip, and a straw "
+                    "boater tilted back with its ribbon hanging loose",
+                ],
+            },
+        },
+    },
+    "Chimney Sweep": {
+        # Victorian. Distinct from Coal Miner (helmet lamp, modern) and Victorian
+        # Dandy (immaculate). The brush-rod bundle is WORN slung, not held, so it
+        # stays in the costume rather than needing a prop key.
+        "gender": "Any",
+        "skin_tone": ["fair", "light", "light medium"],
+        "complexion": "ruddy",
+        "outfit_style": "casual",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "nails": "bare nails",
+        "makeup_style": "no makeup",
+        "expression": ["determined", "quiet amusement"],
+        "location": ["cobblestone old-town street", "urban alley with graffiti"],
+        "lighting": ["fog-diffused streetlamp glow", "overcast diffused daylight"],
+        "shot_type": "full body shot",
+        "mood": "nostalgic",
+        "variants": {
+            "Female": {
+                "hair_style": "messy bun",
+                "outfit_description":
+                    "a battered black stovepipe top hat, a rough {dark_color} "
+                    "waistcoat over a collarless shirt with the sleeves rolled, a "
+                    "knotted {color} neckerchief, patched work trousers, heavy "
+                    "boots, and a coiled bundle of cane brush-rods slung across the "
+                    "back, with soot smudged across the face and hands",
+            },
+            "Male": {
+                "hair_length": "very short",
+                "facial_hair": ["stubble", "short beard"],
+                "outfit_description":
+                    "a battered black stovepipe top hat, a rough {dark_color} "
+                    "waistcoat over a collarless shirt with the sleeves rolled, a "
+                    "knotted {color} neckerchief, patched work trousers, heavy "
+                    "boots, and a coiled bundle of cane brush-rods slung across the "
+                    "back, with soot smudged across the face and hands",
+            },
+        },
+    },
 }
 
 

@@ -24156,6 +24156,105 @@ COSPLAYERS: dict[str, dict] = {
                      "skin_tone": "pale", "age": "18"},
     },
 
+    # --- 1.2.0 ------------------------------------------------------------
+    "Mara Sov": {
+        "franchise": "Destiny",
+        "gender": "Female",
+        # First Destiny entry in the roster. `Destiny` was already mapped in
+        # _CATEGORY_FRANCHISES with no entry using it; 1.2.0 dropped the orphan and
+        # this entry restores it, so the map and the roster agree.
+        "costume": "an ornate high-collared gown-armor in white, gold and pale blue "
+                   "with layered angular pauldrons and long trailing sleeves, a tall "
+                   "rayed crown-like headdress rising behind the head, and a long "
+                   "trailing cape, with smooth, flawless pale lilac-grey skin",
+        "signature": {"hair_color": "platinum white", "hair_length": "long",
+                      "hair_style": "updo", "eyebrows": "thin and arched",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "height": "tall", "age": "35"},
+        "aliases": ["Queen of the Reef", "Awoken Queen"],
+    },
+    "Jayne Cobb": {
+        "franchise": "Firefly",
+        "gender": "Male",
+        # The Cunning Tuque is the silhouette, so it leads the costume rather than
+        # trailing it as one more item. `facial_hair` is deliberately NOT in
+        # `signature`: it is a gender-divergent field (1 female option, 10 male) and
+        # the schema prefers unisex fields so the look survives the gender gate for
+        # crossplay -- the goatee is folded into the costume prose instead.
+        "costume": "a hand-knitted chullo-style hat with long earflaps and a large "
+                   "pom-pom, in clashing international orange, mustard yellow and "
+                   "tomato red, over utilitarian olive military-style cargo trousers, "
+                   "a snug olive combat t-shirt and tactical fingerless gloves",
+        "signature": {"hair_color": "medium brown", "hair_length": "very short",
+                      "hair_style": "crew cut", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "fitness_level": "muscular", "bust": "broad"},
+        "prop": "Vera, a heavily customised assault rifle with an oversized "
+                "futuristic black receiver, a skeletonized muzzle brake, a long "
+                "scope and brushed metallic detailing along the barrel",
+    },
+    "Cyberman": {
+        "franchise": "Doctor Who",
+        "gender": "Male",  # genderless mascot convention -- see Robby the Robot
+        # Mascot-suit route. Distinct from `Robby the Robot` (barrel body, no
+        # humanoid frame) and the shipped `Weeping Angel` (stone, no plating).
+        # All three covers_* flags: the plating leaves no skin (covers_body), the
+        # helmet leaves no face (covers_face) and replaces the hair outright
+        # (covers_hair), which also drops the run-a-hand-through-the-hair gesture.
+        # The harvested organic brain is deliberately NOT described: it is not
+        # visible, and stating an interior or an absence is the never-negate trap.
+        "covers_face": True,
+        "covers_body": True,
+        "covers_hair": True,
+        "costume": "a full suit of polished silver metal plating over a strictly "
+                   "humanoid frame, with a rectangular mechanical chest unit on the "
+                   "torso and exposed hydraulic tubing and wiring running along the "
+                   "neck, limbs and joints",
+        "mask": "a blank silver helmet with round hollow eye sockets lit faint cold "
+                "blue, a narrow horizontal mouth slit, and a metal handlebar looping "
+                "over the crown between both sides of the head",
+    },
+    "Dr. Mrs. The Monarch": {
+        "franchise": "The Venture Bros",
+        "gender": "Female",
+        # Two looks. `costume` is the S3-onward leotard the key name refers to;
+        # `costumes[0]` is the S1-2 "Dr. Girlfriend" nurse suit. The wings are worn,
+        # so they belong in `costume`; there is no held prop.
+        "costume": "a tight strapless black-and-yellow leotard with a deep plunging "
+                   "slit down to the navel and thick yellow trim along the borders, "
+                   "two orange oval patches over the hips, large semi-translucent "
+                   "yellow cloth wings attached at the back trailing behind the legs, "
+                   "a thick black choker, yellow opera-length gloves, a tiny stylised "
+                   "gold crown pinned to the centre of the hair, and matching "
+                   "thigh-high gold-yellow high-heeled boots",
+        "costumes": [
+            # S1-2 "Dr. Girlfriend": a Jackie-Kennedy-derived nurse-cut minidress.
+            "a thigh-high light magenta minidress cut like a vintage nurse uniform "
+            "with long sleeves, structured shoulders, white cuffs, a white collar and "
+            "white buttons down the front, a matching light magenta pillbox cap "
+            "squarely atop the hair, and white high-heeled go-go boots reaching to "
+            "just below the knee",
+        ],
+        "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
+                      "hair_style": "freshly blown out", "hair_texture": "thick and voluminous",
+                      "eyebrows": "thin and arched", "makeup_style": "vintage 1950s pin-up makeup",
+                      "eye_makeup": "smoky black"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+        "aliases": ["Dr. Girlfriend", "Sheila"],
+    },
+    "The Monarch": {
+        "franchise": "The Venture Bros",
+        "gender": "Male",
+        # Domino mask only, so the face is visible: no covers_face, no mask string.
+        "costume": "an orange-and-black butterfly supervillain costume with a pointed "
+                   "orange hood, two long black antennae curving up from the crown, "
+                   "and large scalloped orange-and-black wings spread from the "
+                   "shoulders, over a black domino mask, black gloves and black boots",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "hair_style": "slicked back"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+    },
+
 }
 
 
@@ -24169,7 +24268,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "My Hero Academia", "JoJo's Bizarre Adventure", "Fullmetal Alchemist", "Death Note",
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
-        "Pokemon", "Madoka Magica", "Studio Ghibli", "Anime", "Speed Racer",
+        "Pokemon", "Madoka Magica", "Studio Ghibli", "Speed Racer",
         "Record of Ragnarok",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
@@ -24192,13 +24291,14 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Durarara!!", "Panty & Stocking with Garterbelt", "Gintama",
         "Golden Kamuy", "Magi", "Soul Eater",
         "Black Clover", "Dorohedoro", "Eureka Seven",
-        "Dandadan", "Oh My Goddess!"
+        "Dandadan", "Oh My Goddess!",
+        "The Apothecary Diaries",  # 1.2.0
     ),
     "Marvel": ("Marvel",),
     "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
     "Star Wars": ("Star Wars",),
     "Disney": (
-        "Disney", "The Little Mermaid", "Sleeping Beauty", "Frozen", "Snow White", "Tangled",
+        "The Little Mermaid", "Sleeping Beauty", "Frozen", "Snow White", "Tangled",
         "Pocahontas", "Mulan", "Moana", "The Princess and the Frog", "Peter Pan", "Cinderella",
         "The Emperor's New Groove",
         "Beauty and the Beast", "Aladdin", "Hercules", "Tarzan", "Brave",
@@ -24239,10 +24339,12 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Chrono Trigger", "Clair Obscur: Expedition 33",  # 1.0.0
         "Xenoblade Chronicles", "Valkyria Chronicles", "Magic: The Gathering",
         "Ace Attorney", "The Rising of the Shield Hero", "A Certain Scientific Railgun",
-        "Destiny", "Ratchet & Clank", "Spyro",
-        "WarioWare", "Little Nightmares", "Five Nights at Freddy's",
-        "Skyrim", "Hades", "Red Dead Redemption",
-        "Samurai Shodown"
+        "Destiny",  # 1.2.0 -- Mara Sov
+        "Ratchet & Clank", "Spyro",
+        "WarioWare", "Little Nightmares",
+        "Hades", "Red Dead Redemption",
+        "Samurai Shodown",
+        "Red Alert",  # 1.2.0
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -24251,7 +24353,11 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Charlie and the Chocolate Factory", "The BFG", "Fantastic Mr Fox",
         "Conan the Barbarian", "Nancy Drew", "Little House on the Prairie", "Dune",
         "Sherlock Holmes",  # 0.97.0
-        "Barsoom"
+        "Barsoom",
+        # 1.2.0 -- pulp-literature originals, the same precedent that put
+        # Sherlock Holmes and Barsoom here rather than in Movies & TV.
+        "Zorro", "Twenty Thousand Leagues Under the Sea",
+        "Dr. Jekyll and Mr. Hyde",
     ),
     "Movies & TV": (
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
@@ -24281,7 +24387,11 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         # 0.95.0, all three singletons -- below _FRANCHISE_SCOPE_MINIMUM, so no new
         # random_scope option appears.
         "How to Train Your Dragon", "The NeverEnding Story",
-        "Hocus Pocus"
+        # 1.2.0: "Hocus Pocus" had no trailing comma, so it concatenated with
+        # "Corpse Bride" into one literal and BOTH franchises fell through to
+        # _DEFAULT_CATEGORY. Inert here (the default IS "Movies & TV") but the
+        # same latent bug as the Kabuki one below, which was not inert.
+        "Hocus Pocus",
         "Corpse Bride", "Hotel Transylvania", "Metropolis",
         "Firefly", "Flash Gordon", "Penny Dreadful",
         "The Craft", "Jennifer's Body", "The 100",
@@ -24294,7 +24404,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
         "Invincible", "Image", "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
         "The Smurfs", "Adventure Time", "Thundercats", "G.I. Joe", "TMNT", "Monster High",
-        "Fathom", "Chaos! Comics", "Comics", "Betty Boop", "The Flintstones", "The Jetsons",
+        "Fathom", "Chaos! Comics", "Betty Boop", "The Flintstones", "The Jetsons",
         "Top Cow", "Witchblade", "Youngblood", "WildStorm",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
         "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
@@ -24312,9 +24422,14 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Hazbin Hotel",
         "Tank Girl", "Aeon Flux", "Heavy Metal",
         "Scott Pilgrim", "The Walking Dead", "Kick-Ass",
-        "Archie", "Kabuki"
-        "The Owl House", "Totally Spies!",
+        # 1.2.0: "Kabuki" had no trailing comma, so it concatenated with
+        # "The Owl House" into one literal and both Kabuki and Eda Clawthorne
+        # scoped as "Movies & TV". "Totally Spies!" was mapped but no entry
+        # uses it -- the trio was decided against, so the mapping is dropped.
+        "Archie", "Kabuki",
+        "The Owl House",
         "The Venture Bros",  # 1.1.0
+        "Felix the Cat", "Gargoyles", "The Shadow",  # 1.2.0
     ),
 }
 _FRANCHISE_CATEGORY: dict[str, str] = {

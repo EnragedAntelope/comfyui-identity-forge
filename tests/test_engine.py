@@ -661,26 +661,25 @@ class ContrapositiveRequirementTests(unittest.TestCase):
         # undone every pass. _requirement_pins must block the repair here and
         # fall back to warn-and-keep -- the lock still wins, and the loop
         # terminates instead of churning to the iteration cap.
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
+        # 1.2.0: these messages go to the logger, not stdout.
+        with self.assertLogs("nodes.identity_forge", level="INFO") as caught:
             _, js = generate_character(
                 3, "Male", {"lips_makeup": "classic red"}, wardrobe="Match gender")
         flat = self._flat(js)
         self.assertEqual(flat.get("lips_makeup"), "classic red")
         self.assertEqual(flat.get("makeup_style"), "no makeup")
-        self.assertIn("keeping lock", buf.getvalue())
+        self.assertIn("keeping lock", "\n".join(caught.output))
 
     def test_both_locked_still_warns_and_keeps(self):
         # A user locking both sides of a genuine contradiction keeps both.
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
+        with self.assertLogs("nodes.identity_forge", level="INFO") as caught:
             _, js = generate_character(
                 5, "Female",
                 {"makeup_style": "no makeup", "lips_makeup": "classic red"})
         flat = self._flat(js)
         self.assertEqual(flat.get("makeup_style"), "no makeup")
         self.assertEqual(flat.get("lips_makeup"), "classic red")
-        self.assertIn("keeping lock", buf.getvalue())
+        self.assertIn("keeping lock", "\n".join(caught.output))
 
     def test_unlocked_output_is_untouched(self):
         # The repair only runs when a target is locked, so ordinary random
@@ -1109,6 +1108,25 @@ class CosplayerTests(unittest.TestCase):
         )["_meta"]["cosplay_of"]
         self.assertEqual(COSPLAYERS[name]["gender"], "Female")
         self.assertEqual(get_cosplayer_category(COSPLAYERS[name]["franchise"]), "DC")
+
+    def test_previously_unmapped_franchises_scope_to_their_category(self):
+        # 1.2.0: 13 entries across 12 franchises were absent from
+        # _CATEGORY_FRANCHISES and fell through to _DEFAULT_CATEGORY, so their
+        # random_scope category could never draw them. Two of the twelve were
+        # created by a missing comma between adjacent string literals. One entry
+        # per previously-broken category; validate_data.py holds the general gate.
+        for entry, expected in (
+            ("Maomao", "Anime & Manga"),
+            ("Goliath", "Comics & Cartoons"),
+            ("Eda Clawthorne", "Comics & Cartoons"),   # was "KabukiThe Owl House"
+            ("Yuri", "Video Games"),
+            ("Zorro", "Fantasy & Literature"),
+            ("Captain Nemo", "Fantasy & Literature"),
+        ):
+            with self.subTest(entry=entry):
+                self.assertIn(entry, COSPLAYERS)
+                self.assertEqual(
+                    get_cosplayer_category(COSPLAYERS[entry]["franchise"]), expected)
 
     def test_eyes_override_renders_free_text(self):
         # A canonical non-standard eye colour ("eyes" override) is voiced verbatim,
@@ -1846,6 +1864,220 @@ class CompositionTests(unittest.TestCase):
                                   f"{shot!r} / {comp!r}")
             if shot == "wide shot with subject off-center":
                 self.assertNotEqual(comp, "centered symmetry", f"{shot!r} / {comp!r}")
+
+
+class LegwearMalePoolTests(unittest.TestCase):
+    """1.2.0: `legwear` stops being silent for every male character.
+
+    The field shipped 10 female options and exactly one male option (the absent
+    token), so it never said anything about a man. Three men's values were added,
+    with TWO independent conservatisms on top, which is why the realized absence
+    rate is far above the bare pool lean:
+
+    * `male_weights` leans the pool 2x to 'no visible legwear' (the `makeup_style`
+      precedent), and
+    * `LEGWEAR_BY_STYLE` removes socks entirely from the styles that wear none.
+
+    `legwear` is a DEFERRED field, so the style gate is a POOL FILTER in
+    `_resolve_deferred_fields`, not a CONSTRAINT_RULES exclusion -- a rule there
+    never runs. `test_the_style_gate_is_not_a_constraint_rule` pins that.
+    """
+
+    _NEW = ('ribbed crew socks', 'athletic crew socks', 'dark dress socks')
+
+    def test_the_three_male_values_ship_and_the_female_pool_is_untouched(self):
+        meta = FIELD_DEFINITIONS["legwear"]
+        self.assertEqual(len(meta["male_options"]), 4)
+        for value in self._NEW:
+            self.assertIn(value, meta["male_options"])
+            self.assertNotIn(value, meta["female_options"])
+        self.assertEqual(len(meta["female_options"]), 10)
+        self.assertEqual(meta["male_weights"], {"no visible legwear": 2})
+
+    def test_the_style_gate_is_not_a_constraint_rule(self):
+        # A CONSTRAINT_RULES exclusion on a deferred field is inert -- it was
+        # written that way first and measured at 132 violations. If someone
+        # "helpfully" re-adds one, this fails and points at the pool filter.
+        from data.constraints import CONSTRAINT_RULES
+        stray = [r for r in CONSTRAINT_RULES if r.get("excludes_field") == "legwear"]
+        self.assertEqual(stray, [], "legwear is deferred: a CONSTRAINT_RULES "
+                                     "exclusion on it never runs -- gate it in "
+                                     "_style_appropriate_legwear instead")
+
+    def test_no_gated_sock_reaches_a_disallowed_outfit_style(self):
+        from data.constraints import LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+        seed = 0
+        for style, allowed in LEGWEAR_BY_STYLE.items():
+            banned = _GATED_LEGWEAR - allowed
+            for _ in range(120):
+                _, js = generate_character(seed, "Male", {"outfit_style": style})
+                seed += 1
+                clothing = json.loads(js)["Clothing"]
+                if clothing.get("outfit_style") != style:
+                    continue
+                drawn = clothing.get("legwear")
+                if drawn:
+                    self.assertNotIn(drawn, banned, f"{style!r} drew {drawn!r}")
+
+    def test_every_new_male_value_is_reachable(self):
+        seen = set()
+        for seed in range(3000):
+            drawn = json.loads(
+                generate_character(seed, "Male", {})[1])["Clothing"].get("legwear")
+            if drawn:
+                seen.add(drawn)
+        for value in self._NEW:
+            self.assertIn(value, seen, f"{value!r} unreachable in 3000 male seeds")
+
+    def test_absence_stays_the_male_default(self):
+        # The point of the lean plus the style gate: adding three values must not
+        # flip the field from silent-for-every-man to socks-on-most-men. Measured
+        # at 90.8%; the floor is asserted well below it so ordinary drift in the
+        # outfit_style distribution does not turn this red.
+        absent = total = 0
+        for seed in range(3000):
+            drawn = json.loads(
+                generate_character(seed, "Male", {})[1])["Clothing"].get("legwear")
+            if not drawn:
+                continue
+            total += 1
+            absent += drawn == "no visible legwear"
+        self.assertGreater(total, 300, "too few voiced draws to measure")
+        self.assertGreater(absent / total, 0.75,
+                            f"absence fell to {absent / total:.1%}: socks became the "
+                            f"male default")
+
+
+class NewFieldOptionsTests(unittest.TestCase):
+    """1.2.0 field-option growth, and the reachability each addition needs."""
+
+    def test_new_footwear_values_are_reachable(self):
+        # A new shoe is excluded from EVERY outfit_style until FOOTWEAR_BY_STYLE
+        # lists it, and nothing else catches that -- these three were measured at
+        # 0/1500 draws before the allowlist rows were added.
+        seen = {json.loads(generate_character(seed, "Any", {})[1])["Clothing"]["footwear"]
+                for seed in range(1500)}
+        for value in ("platform boots", "hiking boots", "clogs"):
+            self.assertIn(value, seen, f"{value!r} unreachable in 1500 seeds")
+
+    def test_new_piercings_and_composition_values_are_reachable(self):
+        pierc, comp = set(), set()
+        for seed in range(1200):
+            data = json.loads(generate_character(seed, "Any", {})[1])
+            drawn = data["Jewelry & Nails"].get("piercings")
+            if drawn:
+                pierc.add(drawn)
+            comp.add(data["Setting & Shot"]["composition"])
+        for value in ("bridge piercing", "snake bites"):
+            self.assertIn(value, pierc, f"{value!r} unreachable in 1200 seeds")
+        self.assertIn("a strong diagonal across the frame", comp)
+
+    def test_the_new_composition_value_asserts_no_sky(self):
+        # So it must NOT have joined the 1.2.0 indoor sky exclusion.
+        from data.constraints import _SKY_COMPOSITIONS
+        self.assertNotIn("a strong diagonal across the frame", _SKY_COMPOSITIONS)
+
+    def test_the_grown_fields_are_still_flat(self):
+        from data.fields import FIELD_FAMILIES
+        for field in ("footwear", "piercings", "composition"):
+            with self.subTest(field=field):
+                self.assertNotIn(field, FIELD_FAMILIES)
+                self.assertNotIn("weights", FIELD_DEFINITIONS[field])
+                self.assertNotIn("male_weights", FIELD_DEFINITIONS[field])
+
+
+class CompositionLocationCoherenceTests(unittest.TestCase):
+    """1.2.0: composition is gated against the PLACE, not only the camera.
+
+    The 0.85.0 CompositionTests above gate composition against `shot_type`. Both
+    sky values ASSERT open sky as a fact about the frame, and an interior has
+    none -- the same class of incoherence the 0.64.0 location -> lighting rules
+    remove. `location` is the trigger, so the picked place stands and the
+    composition adapts.
+
+    `composition` is flat (absent from FIELD_FAMILIES, no `weights` map), so each
+    exclusion re-picks uniform over the survivors -- pinned below.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        from data.constraints import _INDOOR_LOCATIONS, _SKY_COMPOSITIONS, _VOID_BACKDROPS
+        from data.fields import OUTDOOR_LOCATIONS
+        cls.sky = frozenset(_SKY_COMPOSITIONS)
+        cls.indoor = list(_INDOOR_LOCATIONS)
+        cls.outdoor = sorted(OUTDOOR_LOCATIONS)
+        cls.backdrops = list(_VOID_BACKDROPS)
+
+    def test_the_two_sky_values_are_the_real_ones(self):
+        # Derived by substring out of _ENVIRONMENT_DEPENDENT_COMPOSITIONS, so a
+        # rename there must not silently empty the rules.
+        self.assertEqual(self.sky, {"a low horizon line and open sky above",
+                                     "a high horizon line and a sliver of sky"})
+        options = set(FIELD_DEFINITIONS["composition"]["female_options"])
+        self.assertTrue(self.sky <= options)
+
+    def test_composition_is_flat_so_the_sky_exclusions_repick_uniform(self):
+        from data.fields import FIELD_FAMILIES
+        self.assertNotIn("composition", FIELD_FAMILIES)
+        self.assertNotIn("weights", FIELD_DEFINITIONS["composition"])
+        self.assertNotIn("male_weights", FIELD_DEFINITIONS["composition"])
+
+    def test_indoor_locations_never_draw_a_sky_composition(self):
+        # >= 300 draws spread over the indoor bucket. The seed ADVANCES across the
+        # whole loop rather than restarting per location: `composition` is drawn
+        # off the seed and is otherwise independent of `location`, so restarting
+        # at 0 would sample the same two compositions 179 times and pass whether
+        # or not the gate exists.
+        seed = 0
+        for loc in self.indoor:
+            for _ in range(2):
+                _, js = generate_character(seed, "Any", {"location": loc})
+                seed += 1
+                setting = json.loads(js)["Setting & Shot"]
+                self.assertEqual(setting["location"], loc)
+                self.assertNotIn(setting["composition"], self.sky,
+                                  f"{loc!r} (indoors) composed with "
+                                  f"{setting['composition']!r}")
+        self.assertGreaterEqual(seed, 300)
+
+    def test_studio_backdrops_never_draw_sky_or_leading_lines(self):
+        gated = self.sky | {"leading lines drawing the eye to the subject"}
+        seed = 0
+        for backdrop in self.backdrops:
+            for _ in range(80):
+                _, js = generate_character(seed, "Any", {"location": backdrop})
+                seed += 1
+                setting = json.loads(js)["Setting & Shot"]
+                self.assertEqual(setting["location"], backdrop)
+                self.assertNotIn(setting["composition"], gated,
+                                  f"{backdrop!r} composed with "
+                                  f"{setting['composition']!r}")
+
+    def test_a_studio_backdrop_still_reaches_open_negative_space(self):
+        # Deliberately NOT excluded: negative space is precisely what a sweep does.
+        for backdrop in self.backdrops:
+            hit = any(
+                json.loads(generate_character(
+                    seed, "Any", {"location": backdrop})[1]
+                )["Setting & Shot"]["composition"]
+                == "the subject small against open negative space"
+                for seed in range(300))
+            self.assertTrue(hit, f"negative space unreachable at {backdrop!r}")
+
+    def test_outdoor_locations_still_reach_both_sky_compositions(self):
+        # The counter-example: the gate must not have removed the values outright.
+        seen = set()
+        for loc in self.outdoor:
+            for seed in range(40):
+                _, js = generate_character(seed, "Any", {"location": loc})
+                comp = json.loads(js)["Setting & Shot"]["composition"]
+                if comp in self.sky:
+                    seen.add(comp)
+            if seen == self.sky:
+                break
+        self.assertEqual(seen, self.sky,
+                          "a sky composition is unreachable outdoors -- the gate is "
+                          "too wide")
 
 
 class FixtureLightingTests(unittest.TestCase):
@@ -3026,10 +3258,9 @@ class ManualSizeScaleTests(unittest.TestCase):
         self.assertNotIn("enormously tall and hulking", prose)
 
     def test_unknown_tier_is_ignored_loudly(self):
-        buffer = io.StringIO()
-        with contextlib.redirect_stdout(buffer):
+        with self.assertLogs("nodes.identity_forge", level="WARNING") as caught:
             prose, _ = generate_character(1, "Female", {}, size_scale="enormous")
-        self.assertIn("Unknown size_scale", buffer.getvalue())
+        self.assertIn("Unknown size_scale", "\n".join(caught.output))
         for phrase in ("barely six inches", "fifty feet"):
             self.assertNotIn(phrase, prose)
 
@@ -5500,25 +5731,25 @@ class RandomPoolTests(unittest.TestCase):
         # to add characters without moving at least some of these picks. This is
         # the same "expected, not a regression" shape as the render-manifest
         # gate turning red until a re-render: the snapshot below was refreshed
-        # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) to the new
-        # ground truth, and is expected to need refreshing again the next time
-        # the roster grows.
+        # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
+        # 1.2.0 (1994 -> 1999) to the new ground truth, and is expected to need
+        # refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): "Sylphy",
+            (_RANDOM_ANY, 0): "Superman",
             (_RANDOM_ANY, 1): "Carl Fredricksen",
-            (_RANDOM_ANY, 2): "Yuna",
-            (_RANDOM_ANY, 3): "Elmer Fudd",
-            (_RANDOM_ANY, 4): "Elizabeth Swann",
-            (_RANDOM_FEMALE, 0): "Taki",
+            (_RANDOM_ANY, 2): "Yoshimitsu",
+            (_RANDOM_ANY, 3): "Ellen Ripley",
+            (_RANDOM_ANY, 4): "Elizabeth (BioShock)",
+            (_RANDOM_FEMALE, 0): "Symmetra",
             (_RANDOM_FEMALE, 1): "Cassie Cage",
-            (_RANDOM_FEMALE, 2): "Thunder (Anissa Pierce)",
-            (_RANDOM_FEMALE, 3): "Faith Connors",
-            (_RANDOM_FEMALE, 4): "Evil-Lyn",
-            (_RANDOM_MALE, 0): "Subaru Natsuki",
+            (_RANDOM_FEMALE, 2): "Thorn",
+            (_RANDOM_FEMALE, 3): "Fairy Godmother",
+            (_RANDOM_FEMALE, 4): "Evil Queen",
+            (_RANDOM_MALE, 0): "Stormtrooper",
             (_RANDOM_MALE, 1): "Captain Planet",
-            (_RANDOM_MALE, 2): "Wile E. Coyote",
-            (_RANDOM_MALE, 3): "Dr. McCoy",
-            (_RANDOM_MALE, 4): "Dr. Jekyll",
+            (_RANDOM_MALE, 2): "White Rabbit",
+            (_RANDOM_MALE, 3): "Dr. Krieger",
+            (_RANDOM_MALE, 4): "Dr. Frank-N-Furter",
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
@@ -6604,8 +6835,15 @@ class TattooAndLegwearTests(unittest.TestCase):
                 outfit = resolved.get("outfit_description") or ""
                 if not _BARE_LEG_RE.search(outfit):
                     offenders.append((seed, gender, legwear, outfit[:45]))
-                if gender == "Male":
-                    offenders.append((seed, "male pool leaked", legwear))
+                # Until 1.2.0 a visible male value WAS the contradiction: the male
+                # pool held the absent token alone, so anything else meant a female
+                # value had leaked. 1.2.0 gives men three real values, so the check
+                # becomes "it came from the man's own pool" rather than "there is
+                # nothing here". LegwearMalePoolTests pins the outfit_style gate and
+                # the absence rate; this only pins the pool boundary.
+                pool_key = "male_options" if gender == "Male" else "female_options"
+                if legwear not in FIELD_DEFINITIONS["legwear"][pool_key]:
+                    offenders.append((seed, f"{gender} pool leaked", legwear))
                 if "knee" in legwear and _TALL_BOOT_RE.search(resolved.get("footwear") or ""):
                     offenders.append((seed, gender, legwear, resolved.get("footwear")))
         self.assertEqual(offenders, [], f"legwear contradictions: {offenders[:5]}")

@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**1994 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1999 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (379)
+## Anime & Manga (380)
 
 ### Akame ga Kill
 
@@ -622,6 +622,10 @@
 
 - **Milim Nava** (F)
 
+### The Apothecary Diaries
+
+- **Maomao** (F, prop)
+
 ### The Seven Deadly Sins
 
 - **Diane** (F, giant, +2 alt)
@@ -662,7 +666,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (264)
+## Comics & Cartoons (271)
 
 ### Adventure Time
 
@@ -794,6 +798,10 @@
 
 - **Aspen Matthews** (F)
 
+### Felix the Cat
+
+- **Felix the Cat** (M, masked, prop)
+
 ### Futurama
 
 - **Amy Wong** (F)
@@ -813,6 +821,10 @@
 - **Scarlett** (F, prop)
 - **Snake Eyes** (M, masked, prop)
 - **Storm Shadow** (M, masked, prop)
+
+### Gargoyles
+
+- **Goliath** (M)
 
 ### Gen13
 
@@ -878,6 +890,10 @@
 ### Josie and the Pussycats
 
 - **Josie McCoy** (F, prop)
+
+### Kabuki
+
+- **Kabuki** (F)
 
 ### Kick-Ass
 
@@ -1065,6 +1081,10 @@
 
 - **The Mask** (M, masked)
 
+### The Owl House
+
+- **Eda Clawthorne** (F, prop)
+
 ### The Phantom
 
 - **The Phantom** (M)
@@ -1075,6 +1095,10 @@
 - **Bubbles** (F)
 - **Buttercup** (F)
 - **Mojo Jojo** (M, masked)
+
+### The Shadow
+
+- **The Shadow** (M, prop)
 
 ### The Simpsons
 
@@ -1103,6 +1127,8 @@
 
 ### The Venture Bros
 
+- **Dr. Mrs. The Monarch** (F, +1 alt)
+- **The Monarch** (M)
 - **Triana Orpheus** (F)
 
 ### The Walking Dead
@@ -1584,7 +1610,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (87)
+## Fantasy & Literature (91)
 
 ### Anne of Green Gables
 
@@ -1602,6 +1628,11 @@
 ### Conan the Barbarian
 
 - **Conan the Barbarian** (M, prop)
+
+### Dr. Jekyll and Mr. Hyde
+
+- **Dr. Jekyll** (M, prop)
+- **Mr. Hyde** (M)
 
 ### Dr. Seuss
 
@@ -1731,6 +1762,10 @@
 - **Tin Man** (M, prop)
 - **Wicked Witch of the West** (F, prop)
 
+### Twenty Thousand Leagues Under the Sea
+
+- **Captain Nemo** (M, prop)
+
 ### Winnie the Pooh
 
 - **Christopher Robin** (M)
@@ -1738,6 +1773,10 @@
 - **Piglet** (M, tiny, masked)
 - **Tigger** (M, masked)
 - **Winnie the Pooh** (M, masked, prop)
+
+### Zorro
+
+- **Zorro** (M, prop)
 
 ## Marvel (177)
 
@@ -1921,7 +1960,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (237)
+## Movies & TV (228)
 
 ### A Nightmare on Elm Street
 
@@ -2025,14 +2064,10 @@
 
 ### Doctor Who
 
+- **Cyberman** (M, masked)
 - **The Fourth Doctor** (M)
 - **The Tenth Doctor** (M, prop)
 - **Weeping Angel** (F, masked)
-
-### Dr. Jekyll and Mr. Hyde
-
-- **Dr. Jekyll** (M, prop)
-- **Mr. Hyde** (M)
 
 ### Duolingo
 
@@ -2063,10 +2098,6 @@
 - **Rygel XVI** (M, tiny, masked)
 - **Scorpius** (M, masked)
 
-### Felix the Cat
-
-- **Felix the Cat** (M, masked, prop)
-
 ### FernGully
 
 - **Crysta** (F, tiny)
@@ -2074,6 +2105,7 @@
 ### Firefly
 
 - **Inara Serra** (F)
+- **Jayne Cobb** (M, prop)
 - **River Tam** (F)
 
 ### Flash Gordon
@@ -2092,10 +2124,6 @@
 ### Friday the 13th
 
 - **Jason Voorhees** (M, masked, prop)
-
-### Gargoyles
-
-- **Goliath** (M)
 
 ### Geico
 
@@ -2175,10 +2203,6 @@
 - **Mira** (F, prop)
 - **Rumi** (F, prop)
 - **Zoey** (F, prop)
-
-### Kabuki
-
-- **Kabuki** (F)
 
 ### Keebler
 
@@ -2278,10 +2302,6 @@
 
 - **Rambo** (M, prop)
 
-### Red Alert
-
-- **Yuri** (M)
-
 ### Rise of the Guardians
 
 - **Jack Frost** (M, prop)
@@ -2359,10 +2379,6 @@
 - **Uncle Fester** (M, prop)
 - **Wednesday Addams** (F)
 
-### The Apothecary Diaries
-
-- **Maomao** (F, prop)
-
 ### The Big Lebowski
 
 - **The Dude** (M)
@@ -2420,10 +2436,6 @@
 
 - **Falkor** (M, giant, beast)
 
-### The Owl House
-
-- **Eda Clawthorne** (F, prop)
-
 ### The Partridge Family
 
 - **Laurie Partridge** (F)
@@ -2450,10 +2462,6 @@
 - **Magenta** (F)
 - **Riff Raff** (M)
 
-### The Shadow
-
-- **The Shadow** (M, prop)
-
 ### The Terminator
 
 - **Sarah Connor** (F)
@@ -2474,10 +2482,6 @@
 ### Tron
 
 - **Quorra** (F)
-
-### Twenty Thousand Leagues Under the Sea
-
-- **Captain Nemo** (M, prop)
 
 ### Ultraman
 
@@ -2515,10 +2519,6 @@
 ### Xena: Warrior Princess
 
 - **Xena** (F, prop)
-
-### Zorro
-
-- **Zorro** (M, prop)
 
 ## Star Wars (117)
 
@@ -2642,7 +2642,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (450)
+## Video Games (452)
 
 ### A Certain Scientific Railgun
 
@@ -2800,6 +2800,10 @@
 - **Ryu Hayabusa** (M, prop)
 - **Tina Armstrong** (F)
 - **Zack** (M)
+
+### Destiny
+
+- **Mara Sov** (F)
 
 ### Devil May Cry
 
@@ -3155,6 +3159,10 @@
 ### Ratchet & Clank
 
 - **Rivet** (F, masked)
+
+### Red Alert
+
+- **Yuri** (M)
 
 ### Red Dead Redemption
 

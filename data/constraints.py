@@ -759,7 +759,8 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ("casual", frozenset([
         'sneakers', 'loafers', 'boots', 'flats', 'sandals', 'ankle boots', 'mules',
         'chelsea boots', 'combat boots', 'ballet flats', 'high-top sneakers',
-        'espadrilles', 'mary janes', 'cowboy boots'])),
+        'espadrilles', 'mary janes', 'cowboy boots',
+        'hiking boots', 'clogs'])),  # 1.2.0
     ("smart casual", frozenset([
         'sneakers', 'loafers', 'boots', 'heels', 'flats', 'oxfords', 'ankle boots',
         'wedges', 'mules', 'chelsea boots', 'knee-high boots', 'ballet flats',
@@ -775,25 +776,30 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
         'kitten heels', 'knee-high boots'])),
     ("streetwear", frozenset([
         'sneakers', 'boots', 'ankle boots', 'combat boots', 'high-top sneakers',
-        'chelsea boots', 'mules', 'cowboy boots'])),
+        'chelsea boots', 'mules', 'cowboy boots',
+        'platform boots'])),  # 1.2.0
     ("bohemian", frozenset([
         'sandals', 'boots', 'flats', 'ankle boots', 'wedges', 'mules', 'bare feet',
-        'espadrilles', 'ballet flats', 'knee-high boots', 'cowboy boots'])),
-    ("athletic", frozenset(['sneakers', 'high-top sneakers'])),
+        'espadrilles', 'ballet flats', 'knee-high boots', 'cowboy boots',
+        'clogs'])),  # 1.2.0
+    ("athletic", frozenset(['sneakers', 'high-top sneakers',
+                             'hiking boots'])),  # 1.2.0
     ("resort vacation", frozenset([
         'sandals', 'flats', 'wedges', 'mules', 'bare feet', 'espadrilles',
         'sneakers', 'ballet flats'])),
     ("edgy alternative", frozenset([
         'boots', 'combat boots', 'ankle boots', 'chelsea boots', 'knee-high boots',
-        'heels', 'sneakers', 'high-top sneakers', 'cowboy boots', 'mary janes'])),
+        'heels', 'sneakers', 'high-top sneakers', 'cowboy boots', 'mary janes',
+        'platform boots'])),  # 1.2.0
     ("preppy", frozenset([
         'loafers', 'oxfords', 'sneakers', 'flats', 'ankle boots', 'chelsea boots',
         'ballet flats', 'derbies', 'espadrilles', 'kitten heels', 'mary janes'])),
     ("vintage retro", frozenset([
         'loafers', 'oxfords', 'heels', 'flats', 'ankle boots', 'wedges', 'mules',
         'derbies', 'kitten heels', 'ballet flats', 'chelsea boots', 'mary janes',
-        'cowboy boots'])),
-    ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats'])),
+        'cowboy boots', 'platform boots'])),  # 1.2.0
+    ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats',
+                               'clogs'])),  # 1.2.0
 ])
 
 for _style, _allowed in FOOTWEAR_BY_STYLE.items():
@@ -803,6 +809,60 @@ for _style, _allowed in FOOTWEAR_BY_STYLE.items():
             "type": "exclusion", "field": "outfit_style", "value": _style,
             "excludes_field": "footwear", "excludes_values": _banned,
             "reason": f"these shoes do not belong with {_style} dress"})
+
+
+# --- legwear x outfit_style (1.2.0) ------------------------------------------------
+# Mirrors FOOTWEAR_BY_STYLE above exactly, including the allowlist-not-denylist safety
+# model: a value absent from a style's set is excluded there, so a future men's legwear
+# addition is excluded everywhere until it is deliberately listed. Without this,
+# 'athletic crew socks' lands on `business formal`.
+#
+# SCOPE: the three MALE values added at 1.2.0, and nothing else. `_GATED_LEGWEAR`
+# below is the entire universe this loop bans from, so every female value is
+# untouched and women's draws stay byte-identical to 1.1.0 -- which is the point.
+# Gating the female pool as well is genuinely missing ('fishnet tights' can still land
+# on `business formal`), but it would move `legwear` prose across the shipped roster
+# and `entry_hash` hashes the entry dict, not the resolved prose, so `--check` could
+# not flag one invalidated gallery image. Logged in docs/suggested-additions.md
+# "Still to consider" instead of done here.
+#
+# BIAS: `legwear` is FLAT -- no FIELD_FAMILIES entry -- so an exclusion re-picks
+# uniform over the survivors, with the `male_weights` lean on 'no visible legwear'
+# applied on top. 'no visible legwear' is in every style's set, so the pool can
+# never empty.
+LEGWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
+    ("casual", frozenset(['ribbed crew socks', 'athletic crew socks'])),
+    ("smart casual", frozenset(['dark dress socks'])),
+    ("business casual", frozenset(['dark dress socks'])),
+    ("business formal", frozenset(['dark dress socks'])),
+    ("evening formal", frozenset(['dark dress socks'])),
+    ("cocktail semi-formal", frozenset(['dark dress socks'])),
+    ("streetwear", frozenset(['ribbed crew socks', 'athletic crew socks'])),
+    ("bohemian", frozenset()),
+    ("athletic", frozenset(['athletic crew socks'])),
+    ("resort vacation", frozenset()),
+    ("edgy alternative", frozenset()),
+    ("preppy", frozenset(['ribbed crew socks'])),
+    ("vintage retro", frozenset(['ribbed crew socks'])),
+    ("loungewear", frozenset(['ribbed crew socks'])),
+])
+#: The only values LEGWEAR_BY_STYLE may exclude. Deliberately not the whole pool.
+_GATED_LEGWEAR: frozenset[str] = frozenset(
+    ['ribbed crew socks', 'athletic crew socks', 'dark dress socks'])
+
+# NO CONSTRAINT_RULES LOOP HERE, and that is the whole point of this comment.
+# `legwear` is a DEFERRED field (`nodes.identity_forge._DEFERRED_FIELDS`): it is drawn
+# after the constraint-resolution loop has already finished, because it has to gate on
+# the composed `outfit_description`, which does not exist while the loop runs. An
+# `outfit_style` -> `legwear` exclusion rule is therefore structurally INERT -- measured,
+# not assumed: the rule loop this replaced produced 132 violations over 400 seeds per
+# style (socks on `bohemian`, `resort vacation` and `edgy alternative`, all of which
+# allow none), while the identical FOOTWEAR_BY_STYLE loop produced 0, because `footwear`
+# is an ordinary in-loop field.
+#
+# The map above is consumed instead by `nodes.identity_forge._style_appropriate_legwear`,
+# a pool filter applied in `_resolve_deferred_fields` alongside `_wearable_legwear` --
+# the mechanism that actually runs for a deferred field.
 
 # `mixed prints` is a PATTERN claim living in the colour field (a pre-existing wart, and
 # not worth a breaking rename), while `all black` / `all white` / `black monochrome` /
@@ -895,3 +955,49 @@ CONSTRAINT_RULES.append({
     "excludes_field": "composition",
     "excludes_values": list(_ENVIRONMENT_DEPENDENT_COMPOSITIONS),
     "reason": "an arm's-length selfie leaves no environment in frame to compose"})
+
+
+# --- composition <-> location coherence (1.2.0) -------------------------------------
+# The 0.85.0 block above gates composition against the CAMERA. This one gates it
+# against the PLACE, which is the gap that was left: "a low horizon line and open sky
+# above" asserts open sky, and an indoor location has none. Three sampled renders with
+# an indoor location and a sky composition came back as tight close-ups instead of the
+# requested framing, even with a correct locked shot_type -- the model resolved the
+# contradiction by discarding the composition.
+#
+# The justification does not need the render theory. Both sky values ASSERT open sky as
+# a fact about the frame; an interior contradicts that assertion outright. That is the
+# same incoherence the 0.64.0 location -> lighting rules exist to remove, and the same
+# doctrine applies: **location is the TRIGGER**, so the picked place stands and the
+# composition adapts. Gating the other way round would hand a locked composition the
+# engine's contrapositive repair and re-roll the location out from under the user.
+#
+# `composition` is FLAT (absent from FIELD_FAMILIES, no `weights` map), so each
+# exclusion below re-picks uniform over the survivors and no weight concentrates --
+# the same arithmetic stated in the 0.85.0 block above.
+#
+# Taken by name out of _ENVIRONMENT_DEPENDENT_COMPOSITIONS rather than retyped, so a
+# future edit to that list cannot leave these two rules pointing at dead strings.
+_SKY_COMPOSITIONS: list[str] = [
+    _comp for _comp in _ENVIRONMENT_DEPENDENT_COMPOSITIONS if "sky" in _comp
+]
+
+for _loc in _INDOOR_LOCATIONS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "composition", "excludes_values": list(_SKY_COMPOSITIONS),
+        "reason": f"'{_loc}' is indoors: there is no horizon line or open sky to place"})
+
+# A void backdrop loses one more: a seamless sweep is a featureless void, so there is
+# nothing in it to lead the eye with either. Deliberately KEPT is "the subject small
+# against open negative space", which is precisely what a sweep does, along with the
+# four camera-side values ("a tight crop and little headroom", "centered symmetry",
+# "the subject filling most of the frame", "the subject on a rule-of-thirds line").
+for _backdrop in _VOID_BACKDROPS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _backdrop,
+        "excludes_field": "composition",
+        "excludes_values": _SKY_COMPOSITIONS + [
+            "leading lines drawing the eye to the subject"],
+        "reason": f"a {_backdrop} is a seamless sweep: no horizon, no sky, and no "
+                  f"lines in it to lead the eye"})

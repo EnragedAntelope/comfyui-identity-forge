@@ -20,6 +20,7 @@ import io
 import json
 import subprocess
 import sys
+import re
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -131,6 +132,110 @@ class GalleryShotPoolTests(unittest.TestCase):
             self.assertNotEqual(shot, "Random", f"seed {seed} picked the control value")
             self.assertNotIn(shot, render_gallery._BACK_FACING_SHOTS,
                               f"seed {seed} picked a back-facing shot")
+
+
+class RuntimeLoggingTests(unittest.TestCase):
+    """1.2.0: node runtime messages go to `logging`, not stdout.
+
+    Only the RUNTIME modules were converted (`nodes/*.py` and the entrypoint,
+    18 call sites). `scripts/` and `gallery/` are CLI tools where `print` IS the
+    output, and `data/user_options.py` prints at import time on behalf of those
+    same CLIs -- both deliberately left alone, so this test is scoped to the
+    runtime tree rather than the whole repo.
+
+    No handler and no `basicConfig()` is configured anywhere in the pack:
+    ComfyUI owns root logging, and a library that grabs it is a library that
+    fights its host.
+    """
+
+    _RUNTIME = ("nodes", "__init__.py")
+
+    def _runtime_files(self):
+        root = Path(__file__).resolve().parents[1]
+        files = [root / "__init__.py"]
+        files += sorted((root / "nodes").glob("*.py"))
+        return files
+
+    def test_no_print_remains_in_the_runtime_tree(self):
+        offenders = []
+        for path in self._runtime_files():
+            for number, line in enumerate(
+                    path.read_text(encoding="utf-8").splitlines(), 1):
+                if re.search(r"(?<![\w.])print\s*\(", line):
+                    offenders.append(f"{path.name}:{number}")
+        self.assertEqual(offenders, [], "use _LOG.<level>(...) in runtime code; "
+                                        "print is for the scripts/ CLIs")
+
+    def test_every_runtime_module_that_logs_has_its_own_logger(self):
+        for path in self._runtime_files():
+            text = path.read_text(encoding="utf-8")
+            if "_LOG." not in text:
+                continue
+            with self.subTest(module=path.name):
+                self.assertIn("_LOG = logging.getLogger(__name__)", text)
+                self.assertIn("\nimport logging\n", text)
+
+    def test_the_pack_never_configures_root_logging(self):
+        # ComfyUI owns it; a handler or a basicConfig() call here hijacks the
+        # host. COMMENTS ARE STRIPPED FIRST: every module carries a comment
+        # explaining that it makes no such call, and a naive substring scan
+        # matches that explanation -- the check has to read code, not prose.
+        for path in self._runtime_files():
+            code = "\n".join(
+                line for line in path.read_text(encoding="utf-8").splitlines()
+                if not line.lstrip().startswith(("#", "#:")))
+            with self.subTest(module=path.name):
+                self.assertNotIn("basicConfig", code)
+                self.assertNotIn("addHandler", code)
+                self.assertNotIn("logging.getLogger()", code)  # never the root
+
+    def test_messages_dropped_the_bracket_prefix(self):
+        # The logger name carries it now; keeping both double-prints it.
+        for path in self._runtime_files():
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(module=path.name):
+                self.assertNotIn("[IdentityForge]", text)
+                self.assertNotIn("[IdentityForgeCosplayer]", text)
+
+
+class StubRegistrationTests(unittest.TestCase):
+    """1.2.0: `pytest` works, and the stub covers the entrypoint too.
+
+    Two independent things had to be true and only the first was:
+
+    * the stub has to be registered before any node module is imported --
+      `tests/__init__.py` gets that from `-t .` under unittest, and the rootdir
+      `conftest.py` gets it under pytest; and
+    * the stub has to export everything the pack imports from `comfy_api`.
+      It did not. The repo-root `__init__.py` does
+      `from comfy_api.latest import ComfyExtension, io`, and the stub package
+      was empty, so `pytest` failed all 772 tests with
+      `ImportError: cannot import name 'ComfyExtension'`. unittest never
+      imported the root package, so the gap was invisible there.
+    """
+
+    def test_comfy_api_resolves(self):
+        import comfy_api.latest  # noqa: F401
+        from comfy_api.latest import io  # noqa: F401
+        self.assertTrue(hasattr(io, "ComfyNode"))
+
+    def test_the_entrypoints_import_surface_exists(self):
+        # Exactly the import the repo-root __init__.py performs.
+        from comfy_api.latest import ComfyExtension, io  # noqa: F401
+        self.assertTrue(callable(getattr(ComfyExtension, "get_node_list", None)))
+
+    def test_node_modules_saw_the_api(self):
+        # The ordering guarantee itself: if the stub had been registered late,
+        # this would be False for the rest of the process.
+        from nodes.identity_forge import _COMFY_AVAILABLE
+        self.assertTrue(_COMFY_AVAILABLE,
+                        "a node module was imported before the comfy_api stub "
+                        "was registered -- check conftest.py / tests/__init__.py")
+
+    def test_a_rootdir_conftest_exists(self):
+        root = Path(__file__).resolve().parents[1]
+        self.assertTrue((root / "conftest.py").is_file(),
+                        "the rootdir conftest.py is what makes pytest correct")
 
 
 class ImportIsInertTests(unittest.TestCase):

@@ -2641,6 +2641,169 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   would also have silently invalidated ~189 published gallery images, because `entry_hash` hashes
   the entry dict and cannot see a prose-only change.
 
+### A hand-maintained mirror needs a bidirectional gate (1.2.0)
+
+`_CATEGORY_FRANCHISES` in `data/cosplayers.py` maps a broad category to the franchise
+strings that belong to it, and `get_cosplayer_category()` inverts it to drive the
+Cosplayer node's `random_scope` control. It is a **hand-maintained mirror** of the
+`franchise` value on ~2000 roster entries, and until 1.2.0 nothing checked that the two
+agreed. 1.1.0 logged "two pre-existing adjacent-string-literal typos". The real count was
+**21 defects**, and 13 shipped entries were mis-scoped.
+
+**Failure mode one: adjacent string literals concatenate silently.**
+
+```python
+"Archie", "Kabuki"          # <- no trailing comma
+"The Owl House", ...        #    becomes ONE string: "KabukiThe Owl House"
+```
+
+The merged literal is perfectly valid Python and perfectly valid data. Nothing else in
+the file can see it: the tuple still contains strings, every string is still non-empty,
+and the *count* of entries is one lower than intended in a tuple nobody counts. There
+were two of these. One was inert (both halves were "Movies & TV", which is also the
+default); the other silently moved `Kabuki` and `Eda Clawthorne` out of
+"Comics & Cartoons".
+
+**Failure mode two: an unmapped franchise defaults, it does not error.**
+`get_cosplayer_category()` ends in `.get(franchise, _DEFAULT_CATEGORY)`, and
+`_DEFAULT_CATEGORY` is `"Movies & TV"`. That fallback is deliberate and good — a newly
+added entry still scopes *somewhere* until it is mapped — but it means forgetting to map
+a franchise is invisible rather than loud. Twelve franchises were in that state, so
+`Maomao` could never be drawn by an "Anime & Manga" scope, `Goliath` and `Felix the Cat`
+were absent from "Comics & Cartoons", `Yuri` from "Video Games", and `Zorro`,
+`Captain Nemo` and `Dr. Jekyll`/`Mr. Hyde` from "Fantasy & Literature".
+
+**The gate has to run in both directions**, because the two failure modes sit on opposite
+sides of it:
+
+* *mapped but unused* catches the stale reservation **and** the missing comma (the
+  concatenated literal matches no entry, so it surfaces as an orphan);
+* *used but unmapped* catches the silent default.
+
+A one-way check would have caught the typos and missed all thirteen mis-scoped entries.
+
+**It reads the source with `ast`, never by importing it** — the same rule
+`scripts/generate_js_data.py` and `scripts/stamp_versions.py` follow, for the same
+reason. `data/cosplayers.py` runs `apply_user_cosplayers(COSPLAYERS)` at the bottom, so
+an import-based gate would see a maintainer's private `user_options.json` characters and
+fail on their unmapped franchises. A user entry is unmapped by design and scopes to the
+default; that is the right failure mode, not an error.
+
+Note what the fix did *not* touch: it changes category **membership**, not per-franchise
+entry counts, so no franchise crossed `_FRANCHISE_SCOPE_MINIMUM` and **no new
+"Franchise: X" scope option appeared**. Verified by diffing
+`tests/frontend/fixtures/nodes.json`, which came back byte-identical. And because
+`entry_hash()` hashes the entry dict rather than resolved prose, the render gate stayed
+green throughout — the same blind spot that hides prose-only drift also means a
+scope-only fix costs no re-renders.
+
+### Composition answers to the place, not only the camera (1.2.0)
+
+0.85.0 gave `composition` its coherence gates against `shot_type` — a tight shot leaves no
+environment to compose, a wide establishing shot cannot also be a tight crop. All of those
+answer to the **camera**. The axis left ungated was the **place**: `"a low horizon line and
+open sky above"` and `"a high horizon line and a sliver of sky"` both *assert open sky as a
+fact about the frame*, and an interior has none. Nothing stopped either from landing on
+`"yoga studio with wood floors"`.
+
+This was carried in the backlog as "measured 3/3 renders, but not proven — no counter-example
+checked". It did not need the render theory to justify closing. The pairing is a flat
+contradiction in the prose, which is precisely the incoherence the 0.64.0 `location` ->
+`lighting` rules exist to remove, and the same doctrine applies: **`location` is the trigger**,
+so the picked place stands and the composition adapts. Gating the other way round — locking
+composition and excluding indoor locations — hands the engine its contrapositive repair and
+re-rolls the location out from under a user who chose it.
+
+Two loops, both reusing constants that already existed rather than re-deriving them:
+
+* every value in `_INDOOR_LOCATIONS` excludes the two sky compositions;
+* every value in `_VOID_BACKDROPS` excludes those two **plus** `"leading lines drawing the
+  eye to the subject"` — a seamless sweep is a featureless void, with no horizon and no lines
+  in it to lead with. Deliberately **kept** at a backdrop is `"the subject small against open
+  negative space"`, which is exactly what a sweep does, along with the four camera-side values
+  (tight crop, centered symmetry, filling the frame, rule-of-thirds line).
+
+The two sky strings are taken **by name** out of `_ENVIRONMENT_DEPENDENT_COMPOSITIONS`
+(filtered on `"sky"`) rather than retyped, so a future rename there cannot leave these rules
+pointing at dead strings; a test pins that the filter still resolves to exactly those two.
+
+**Bias:** `composition` is FLAT — absent from `FIELD_FAMILIES` and carrying no `weights` map —
+so each exclusion re-picks uniform over the survivors and no weight concentrates. Measured: at
+an indoor location the six survivors come back 57-77 out of 400 draws each; at a void backdrop
+the five survivors likewise. The counter-example the backlog asked for holds analytically —
+both sky values remain reachable outdoors, so the gate removed a pairing, not a value.
+
+### A deferred field cannot be gated by a constraint rule (1.2.0)
+
+`legwear` shipped with **10 female options and exactly one male option** (`no visible
+legwear`), so the field said nothing at all about a man. The field's own comment recorded
+that as a deliberate curation call while also noting the reasoning did not hold — the pool
+is reached with bare legs (shorts, a kilt, a sarong) and still drew nothing. 1.2.0
+reverses it: three men's values (`ribbed crew socks`, `athletic crew socks`, `dark dress
+socks`), a `male_weights` lean, and an `outfit_style` allowlist.
+
+**The allowlist is where the real lesson is.** It was written first as a
+`CONSTRAINT_RULES` exclusion loop, character-for-character identical to `FOOTWEAR_BY_STYLE`
+directly above it. It was completely inert — **132 violations over 400 seeds per style**
+(socks on `bohemian`, `resort vacation` and `edgy alternative`, which allow none), against
+**0** for the footwear loop it was copied from.
+
+The cause is draw order, not the rule. `legwear` is in `_DEFERRED_FIELDS`: it has to gate
+on the composed `outfit_description`, which does not exist while the constraint loop is
+running, so it is drawn afterwards in `_resolve_deferred_fields`. **The constraint loop has
+already finished by then, so an exclusion naming `legwear` never executes.** `footwear` is
+an ordinary in-loop field, which is the only reason the copied idiom worked there.
+
+The fix is the mechanism that actually runs for a deferred field: a **pool filter**,
+`_style_appropriate_legwear`, applied alongside `_wearable_legwear`.
+`LEGWEAR_BY_STYLE` stays in `data/constraints.py` as data; only its consumer moved.
+`LegwearMalePoolTests::test_the_style_gate_is_not_a_constraint_rule` asserts no
+`CONSTRAINT_RULES` entry names `legwear`, so a future contributor cannot re-add the inert
+form and believe it works.
+
+**The generalisation:** before gating a field, check whether it is deferred. The three
+deferred fields are `tattoos`, `legwear` and `tattoo_placement`.
+
+#### Two conservatisms stack, and the realized rate is not the pool lean
+
+The `male_weights` lean and the allowlist are independent, and they compound. Measured
+over 3000 male seeds (488 voice the field):
+
+* **49% of voiced male draws land on a style that allows no socks at all** —
+  `resort vacation` 31.6%, `bohemian` 12.9%, `edgy alternative` 4.9%, all correctly
+  sockless. Those are forced absent regardless of the weight, so **realized absence
+  cannot fall below ~49% at any weight**.
+* On top of that, the lean applies to whatever survives.
+
+A first attempt used a 6x lean to hit a 66.7% *pool* share and measured **96.9%** realized
+absence — the field was still very nearly silent for men, which is the thing the change
+existed to fix. It ships at **2x**, the same figure `makeup_style` uses for `no makeup`,
+measuring **90.8%** realized absence: socks on 9.2% of voiced male draws. The lesson is
+that a pool-share target is not a behaviour target once a second filter is in play;
+measure the realized rate, and measure it after every dial you turn.
+
+The female pool is deliberately **not** gated. `fishnet tights` can still land on
+`business formal`, which is a genuine gap — but gating it moves `legwear` prose across the
+shipped roster and `entry_hash` hashes the entry dict, not the resolved prose, so `--check`
+could not flag one invalidated gallery image. Logged in the backlog with that cost. Proven
+rather than asserted: over 1500 fixed seeds with only the legwear change reverted, **0
+female draws differ**.
+
+### An allowlist's silent failure is an unreachable value (1.2.0)
+
+`FOOTWEAR_BY_STYLE` fails safe by design — a new shoe is excluded from every style until
+deliberately listed. The failure mode nothing was checking is what happens when it is
+*never* listed: the value is excluded from all fourteen styles at once and can never be
+drawn. `platform boots`, `hiking boots` and `clogs` were added to the field at 1.2.0 and
+measured **0 draws in 1500** while `validate_data.py`, the unit suite, ruff and the render
+gate were all green.
+
+`validate_data.py` now checks both allowlists in both directions: every style has a row
+(an unlisted style allows everything, silently), every listed value is a real option of
+its field, and every gated value appears in at least one row. `composition` and
+`piercings` need no such row — neither field has an allowlist — which is why their two
+new values were reachable immediately.
+
 ### Both contrapositive repairs must share one ban list (0.92.0)
 
 The 0.82.0 note above ends on the right principle — *"the conflicting set is the union over

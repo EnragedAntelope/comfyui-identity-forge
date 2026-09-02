@@ -31,12 +31,20 @@ ComfyUI.
 """
 from __future__ import annotations
 
+import logging
+
 import json
 import random
 from collections import OrderedDict
 from typing import Any
 
 # Dual import: package-relative inside ComfyUI, absolute when run standalone.
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
+
 try:
     from ..data.creatures import (
         CREATURES, CREATURE_CLASSES, CREATURE_SLOTS,
@@ -163,7 +171,7 @@ def _resolve_creature(creature: str, rng: random.Random) -> str | None:
     if creature in _RANDOM_CLASS_LABELS:
         pool = get_creature_names_by_class(_RANDOM_CLASS_LABELS[creature])
         if not pool:
-            print(f"[IdentityForgeCreature] No creatures available for '{creature}'.")
+            _LOG.warning("No creatures available for '%s'.", creature)
             return None
         return rng.choice(pool)
     if creature == _NONE or creature not in CREATURES:

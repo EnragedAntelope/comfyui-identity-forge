@@ -46,6 +46,8 @@ without ComfyUI.
 """
 from __future__ import annotations
 
+import logging
+
 from collections import OrderedDict
 import json
 import random
@@ -53,6 +55,12 @@ import re
 from typing import Any
 
 # Dual import: package-relative inside ComfyUI, absolute when run standalone.
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
+
 try:
     from ..data.cosplayers import (
         COSPLAYERS, get_cosplayer, get_cosplayer_names,
@@ -557,16 +565,16 @@ def _announce_scope(
     # characters") reproduces the pre-1.1.0 message text byte-for-byte.
     pool_note = f" + pool '{pool}'" if pool != _POOL_ALL else ""
     if outcome == _SCOPE_GENDER_RELAXED:
-        print(f"[IdentityForgeCosplayer] scope '{category}'{pool_note} has no "
+        _LOG.warning(f"scope '{category}'{pool_note} has no "
               f"{gender_word} characters; keeping the scope and picking from all "
               f"{count} character{plural} in it instead. Set the person's gender "
               f"on the IdentityForge node for crossplay.")
     elif outcome == _SCOPE_ABANDONED:
-        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}'{pool_note} "
+        _LOG.warning(f"'{character}' + scope '{category}'{pool_note} "
               f"matched no characters; falling back to the full {gender_word} pool "
               f"({count} characters). The result will be OUT OF SCOPE.")
     else:
-        print(f"[IdentityForgeCosplayer] '{character}' + scope '{category}'{pool_note}: "
+        _LOG.info(f"'{character}' + scope '{category}'{pool_note}: "
               f"{count} character{plural} in scope.")
 
 
@@ -622,7 +630,7 @@ def _resolve_character(
             outcome = _SCOPE_ABANDONED if scoped else _SCOPE_OK
             candidates = get_cosplayer_names(gender=gender)
         if not candidates:
-            print(f"[IdentityForgeCosplayer] No characters available for '{character}'.")
+            _LOG.warning("No characters available for '%s'.", character)
             return None
         if scoped:
             _announce_scope(character, category, gender, len(candidates), outcome, pool)
