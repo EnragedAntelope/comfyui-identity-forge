@@ -895,3 +895,49 @@ CONSTRAINT_RULES.append({
     "excludes_field": "composition",
     "excludes_values": list(_ENVIRONMENT_DEPENDENT_COMPOSITIONS),
     "reason": "an arm's-length selfie leaves no environment in frame to compose"})
+
+
+# --- composition <-> location coherence (1.2.0) -------------------------------------
+# The 0.85.0 block above gates composition against the CAMERA. This one gates it
+# against the PLACE, which is the gap that was left: "a low horizon line and open sky
+# above" asserts open sky, and an indoor location has none. Three sampled renders with
+# an indoor location and a sky composition came back as tight close-ups instead of the
+# requested framing, even with a correct locked shot_type -- the model resolved the
+# contradiction by discarding the composition.
+#
+# The justification does not need the render theory. Both sky values ASSERT open sky as
+# a fact about the frame; an interior contradicts that assertion outright. That is the
+# same incoherence the 0.64.0 location -> lighting rules exist to remove, and the same
+# doctrine applies: **location is the TRIGGER**, so the picked place stands and the
+# composition adapts. Gating the other way round would hand a locked composition the
+# engine's contrapositive repair and re-roll the location out from under the user.
+#
+# `composition` is FLAT (absent from FIELD_FAMILIES, no `weights` map), so each
+# exclusion below re-picks uniform over the survivors and no weight concentrates --
+# the same arithmetic stated in the 0.85.0 block above.
+#
+# Taken by name out of _ENVIRONMENT_DEPENDENT_COMPOSITIONS rather than retyped, so a
+# future edit to that list cannot leave these two rules pointing at dead strings.
+_SKY_COMPOSITIONS: list[str] = [
+    _comp for _comp in _ENVIRONMENT_DEPENDENT_COMPOSITIONS if "sky" in _comp
+]
+
+for _loc in _INDOOR_LOCATIONS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "composition", "excludes_values": list(_SKY_COMPOSITIONS),
+        "reason": f"'{_loc}' is indoors: there is no horizon line or open sky to place"})
+
+# A void backdrop loses one more: a seamless sweep is a featureless void, so there is
+# nothing in it to lead the eye with either. Deliberately KEPT is "the subject small
+# against open negative space", which is precisely what a sweep does, along with the
+# four camera-side values ("a tight crop and little headroom", "centered symmetry",
+# "the subject filling most of the frame", "the subject on a rule-of-thirds line").
+for _backdrop in _VOID_BACKDROPS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _backdrop,
+        "excludes_field": "composition",
+        "excludes_values": _SKY_COMPOSITIONS + [
+            "leading lines drawing the eye to the subject"],
+        "reason": f"a {_backdrop} is a seamless sweep: no horizon, no sky, and no "
+                  f"lines in it to lead the eye"})

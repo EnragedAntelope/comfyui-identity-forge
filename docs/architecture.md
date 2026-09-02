@@ -2641,6 +2641,42 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   would also have silently invalidated ~189 published gallery images, because `entry_hash` hashes
   the entry dict and cannot see a prose-only change.
 
+### Composition answers to the place, not only the camera (1.2.0)
+
+0.85.0 gave `composition` its coherence gates against `shot_type` — a tight shot leaves no
+environment to compose, a wide establishing shot cannot also be a tight crop. All of those
+answer to the **camera**. The axis left ungated was the **place**: `"a low horizon line and
+open sky above"` and `"a high horizon line and a sliver of sky"` both *assert open sky as a
+fact about the frame*, and an interior has none. Nothing stopped either from landing on
+`"yoga studio with wood floors"`.
+
+This was carried in the backlog as "measured 3/3 renders, but not proven — no counter-example
+checked". It did not need the render theory to justify closing. The pairing is a flat
+contradiction in the prose, which is precisely the incoherence the 0.64.0 `location` ->
+`lighting` rules exist to remove, and the same doctrine applies: **`location` is the trigger**,
+so the picked place stands and the composition adapts. Gating the other way round — locking
+composition and excluding indoor locations — hands the engine its contrapositive repair and
+re-rolls the location out from under a user who chose it.
+
+Two loops, both reusing constants that already existed rather than re-deriving them:
+
+* every value in `_INDOOR_LOCATIONS` excludes the two sky compositions;
+* every value in `_VOID_BACKDROPS` excludes those two **plus** `"leading lines drawing the
+  eye to the subject"` — a seamless sweep is a featureless void, with no horizon and no lines
+  in it to lead with. Deliberately **kept** at a backdrop is `"the subject small against open
+  negative space"`, which is exactly what a sweep does, along with the four camera-side values
+  (tight crop, centered symmetry, filling the frame, rule-of-thirds line).
+
+The two sky strings are taken **by name** out of `_ENVIRONMENT_DEPENDENT_COMPOSITIONS`
+(filtered on `"sky"`) rather than retyped, so a future rename there cannot leave these rules
+pointing at dead strings; a test pins that the filter still resolves to exactly those two.
+
+**Bias:** `composition` is FLAT — absent from `FIELD_FAMILIES` and carrying no `weights` map —
+so each exclusion re-picks uniform over the survivors and no weight concentrates. Measured: at
+an indoor location the six survivors come back 57-77 out of 400 draws each; at a void backdrop
+the five survivors likewise. The counter-example the backlog asked for holds analytically —
+both sky values remain reachable outdoors, so the gate removed a pairing, not a value.
+
 ### Both contrapositive repairs must share one ban list (0.92.0)
 
 The 0.82.0 note above ends on the right principle — *"the conflicting set is the union over

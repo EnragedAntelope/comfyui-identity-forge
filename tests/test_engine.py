@@ -1867,6 +1867,100 @@ class CompositionTests(unittest.TestCase):
                 self.assertNotEqual(comp, "centered symmetry", f"{shot!r} / {comp!r}")
 
 
+class CompositionLocationCoherenceTests(unittest.TestCase):
+    """1.2.0: composition is gated against the PLACE, not only the camera.
+
+    The 0.85.0 CompositionTests above gate composition against `shot_type`. Both
+    sky values ASSERT open sky as a fact about the frame, and an interior has
+    none -- the same class of incoherence the 0.64.0 location -> lighting rules
+    remove. `location` is the trigger, so the picked place stands and the
+    composition adapts.
+
+    `composition` is flat (absent from FIELD_FAMILIES, no `weights` map), so each
+    exclusion re-picks uniform over the survivors -- pinned below.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        from data.constraints import _INDOOR_LOCATIONS, _SKY_COMPOSITIONS, _VOID_BACKDROPS
+        from data.fields import OUTDOOR_LOCATIONS
+        cls.sky = frozenset(_SKY_COMPOSITIONS)
+        cls.indoor = list(_INDOOR_LOCATIONS)
+        cls.outdoor = sorted(OUTDOOR_LOCATIONS)
+        cls.backdrops = list(_VOID_BACKDROPS)
+
+    def test_the_two_sky_values_are_the_real_ones(self):
+        # Derived by substring out of _ENVIRONMENT_DEPENDENT_COMPOSITIONS, so a
+        # rename there must not silently empty the rules.
+        self.assertEqual(self.sky, {"a low horizon line and open sky above",
+                                     "a high horizon line and a sliver of sky"})
+        options = set(FIELD_DEFINITIONS["composition"]["female_options"])
+        self.assertTrue(self.sky <= options)
+
+    def test_composition_is_flat_so_the_sky_exclusions_repick_uniform(self):
+        from data.fields import FIELD_FAMILIES
+        self.assertNotIn("composition", FIELD_FAMILIES)
+        self.assertNotIn("weights", FIELD_DEFINITIONS["composition"])
+        self.assertNotIn("male_weights", FIELD_DEFINITIONS["composition"])
+
+    def test_indoor_locations_never_draw_a_sky_composition(self):
+        # >= 300 draws spread over the indoor bucket. The seed ADVANCES across the
+        # whole loop rather than restarting per location: `composition` is drawn
+        # off the seed and is otherwise independent of `location`, so restarting
+        # at 0 would sample the same two compositions 179 times and pass whether
+        # or not the gate exists.
+        seed = 0
+        for loc in self.indoor:
+            for _ in range(2):
+                _, js = generate_character(seed, "Any", {"location": loc})
+                seed += 1
+                setting = json.loads(js)["Setting & Shot"]
+                self.assertEqual(setting["location"], loc)
+                self.assertNotIn(setting["composition"], self.sky,
+                                  f"{loc!r} (indoors) composed with "
+                                  f"{setting['composition']!r}")
+        self.assertGreaterEqual(seed, 300)
+
+    def test_studio_backdrops_never_draw_sky_or_leading_lines(self):
+        gated = self.sky | {"leading lines drawing the eye to the subject"}
+        seed = 0
+        for backdrop in self.backdrops:
+            for _ in range(80):
+                _, js = generate_character(seed, "Any", {"location": backdrop})
+                seed += 1
+                setting = json.loads(js)["Setting & Shot"]
+                self.assertEqual(setting["location"], backdrop)
+                self.assertNotIn(setting["composition"], gated,
+                                  f"{backdrop!r} composed with "
+                                  f"{setting['composition']!r}")
+
+    def test_a_studio_backdrop_still_reaches_open_negative_space(self):
+        # Deliberately NOT excluded: negative space is precisely what a sweep does.
+        for backdrop in self.backdrops:
+            hit = any(
+                json.loads(generate_character(
+                    seed, "Any", {"location": backdrop})[1]
+                )["Setting & Shot"]["composition"]
+                == "the subject small against open negative space"
+                for seed in range(300))
+            self.assertTrue(hit, f"negative space unreachable at {backdrop!r}")
+
+    def test_outdoor_locations_still_reach_both_sky_compositions(self):
+        # The counter-example: the gate must not have removed the values outright.
+        seen = set()
+        for loc in self.outdoor:
+            for seed in range(40):
+                _, js = generate_character(seed, "Any", {"location": loc})
+                comp = json.loads(js)["Setting & Shot"]["composition"]
+                if comp in self.sky:
+                    seen.add(comp)
+            if seen == self.sky:
+                break
+        self.assertEqual(seen, self.sky,
+                          "a sky composition is unreachable outdoors -- the gate is "
+                          "too wide")
+
+
 class FixtureLightingTests(unittest.TestCase):
     """0.82.0: indoors is necessary but not sufficient for fixture lighting.
 
