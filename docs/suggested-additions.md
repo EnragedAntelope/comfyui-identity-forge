@@ -95,11 +95,24 @@ expensive one, and it is not visible from the option list.
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
-**Researched and skipped — do not re-survey.** Valorant, Apex Legends, Destiny,
+**Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft. Each is an armoured,
 abstract or mascot silhouette
 that would render as something generic without the name doing the work — the same
 reason Ryze, Swain and Viktor were declined below.
+
+> **Destiny left that list at 1.2.0**, on a character rather than a franchise
+> argument. The skip reasoning is about *Guardians* — helmeted, armoured, generic
+> without the name. `Mara Sov` is none of those: the Awoken Queen is bare-faced, with
+> pale lilac-grey skin, white-silver hair and an ornate white-and-gold gown-armour
+> with a rayed crown headdress, and reads as herself at silhouette scale. The rest of
+> the franchise stays skipped.
+>
+> This also removed a real contradiction. `_CATEGORY_FRANCHISES` mapped `Destiny`,
+> `Skyrim` and `Five Nights at Freddy's` while this list said all three were skipped
+> and no entry used any of them. 1.2.0 deleted the `Skyrim` and FNAF mappings and made
+> `Destiny` live, and the new bidirectional gate in `tests/validate_data.py` means the
+> map can no longer disagree with the roster in either direction.
 
 > **Animal Crossing, Undertale and Cuphead were removed from that list at 0.98.0 and
 > shipped**, on the same argument as Warhammer 40K below: the skip treated whole

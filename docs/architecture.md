@@ -2641,6 +2641,62 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   would also have silently invalidated ~189 published gallery images, because `entry_hash` hashes
   the entry dict and cannot see a prose-only change.
 
+### A hand-maintained mirror needs a bidirectional gate (1.2.0)
+
+`_CATEGORY_FRANCHISES` in `data/cosplayers.py` maps a broad category to the franchise
+strings that belong to it, and `get_cosplayer_category()` inverts it to drive the
+Cosplayer node's `random_scope` control. It is a **hand-maintained mirror** of the
+`franchise` value on ~2000 roster entries, and until 1.2.0 nothing checked that the two
+agreed. 1.1.0 logged "two pre-existing adjacent-string-literal typos". The real count was
+**21 defects**, and 13 shipped entries were mis-scoped.
+
+**Failure mode one: adjacent string literals concatenate silently.**
+
+```python
+"Archie", "Kabuki"          # <- no trailing comma
+"The Owl House", ...        #    becomes ONE string: "KabukiThe Owl House"
+```
+
+The merged literal is perfectly valid Python and perfectly valid data. Nothing else in
+the file can see it: the tuple still contains strings, every string is still non-empty,
+and the *count* of entries is one lower than intended in a tuple nobody counts. There
+were two of these. One was inert (both halves were "Movies & TV", which is also the
+default); the other silently moved `Kabuki` and `Eda Clawthorne` out of
+"Comics & Cartoons".
+
+**Failure mode two: an unmapped franchise defaults, it does not error.**
+`get_cosplayer_category()` ends in `.get(franchise, _DEFAULT_CATEGORY)`, and
+`_DEFAULT_CATEGORY` is `"Movies & TV"`. That fallback is deliberate and good — a newly
+added entry still scopes *somewhere* until it is mapped — but it means forgetting to map
+a franchise is invisible rather than loud. Twelve franchises were in that state, so
+`Maomao` could never be drawn by an "Anime & Manga" scope, `Goliath` and `Felix the Cat`
+were absent from "Comics & Cartoons", `Yuri` from "Video Games", and `Zorro`,
+`Captain Nemo` and `Dr. Jekyll`/`Mr. Hyde` from "Fantasy & Literature".
+
+**The gate has to run in both directions**, because the two failure modes sit on opposite
+sides of it:
+
+* *mapped but unused* catches the stale reservation **and** the missing comma (the
+  concatenated literal matches no entry, so it surfaces as an orphan);
+* *used but unmapped* catches the silent default.
+
+A one-way check would have caught the typos and missed all thirteen mis-scoped entries.
+
+**It reads the source with `ast`, never by importing it** — the same rule
+`scripts/generate_js_data.py` and `scripts/stamp_versions.py` follow, for the same
+reason. `data/cosplayers.py` runs `apply_user_cosplayers(COSPLAYERS)` at the bottom, so
+an import-based gate would see a maintainer's private `user_options.json` characters and
+fail on their unmapped franchises. A user entry is unmapped by design and scopes to the
+default; that is the right failure mode, not an error.
+
+Note what the fix did *not* touch: it changes category **membership**, not per-franchise
+entry counts, so no franchise crossed `_FRANCHISE_SCOPE_MINIMUM` and **no new
+"Franchise: X" scope option appeared**. Verified by diffing
+`tests/frontend/fixtures/nodes.json`, which came back byte-identical. And because
+`entry_hash()` hashes the entry dict rather than resolved prose, the render gate stayed
+green throughout — the same blind spot that hides prose-only drift also means a
+scope-only fix costs no re-renders.
+
 ### Composition answers to the place, not only the camera (1.2.0)
 
 0.85.0 gave `composition` its coherence gates against `shot_type` — a tight shot leaves no
