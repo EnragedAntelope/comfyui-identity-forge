@@ -5733,25 +5733,25 @@ class RandomPoolTests(unittest.TestCase):
         # to add characters without moving at least some of these picks. This is
         # the same "expected, not a regression" shape as the render-manifest
         # gate turning red until a re-render: the snapshot below was refreshed
-        # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) to the new
-        # ground truth, and is expected to need refreshing again the next time
-        # the roster grows.
+        # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
+        # 1.2.0 (1994 -> 1999) to the new ground truth, and is expected to need
+        # refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): "Sylphy",
+            (_RANDOM_ANY, 0): "Superman",
             (_RANDOM_ANY, 1): "Carl Fredricksen",
-            (_RANDOM_ANY, 2): "Yuna",
-            (_RANDOM_ANY, 3): "Elmer Fudd",
-            (_RANDOM_ANY, 4): "Elizabeth Swann",
-            (_RANDOM_FEMALE, 0): "Taki",
+            (_RANDOM_ANY, 2): "Yoshimitsu",
+            (_RANDOM_ANY, 3): "Ellen Ripley",
+            (_RANDOM_ANY, 4): "Elizabeth (BioShock)",
+            (_RANDOM_FEMALE, 0): "Symmetra",
             (_RANDOM_FEMALE, 1): "Cassie Cage",
-            (_RANDOM_FEMALE, 2): "Thunder (Anissa Pierce)",
-            (_RANDOM_FEMALE, 3): "Faith Connors",
-            (_RANDOM_FEMALE, 4): "Evil-Lyn",
-            (_RANDOM_MALE, 0): "Subaru Natsuki",
+            (_RANDOM_FEMALE, 2): "Thorn",
+            (_RANDOM_FEMALE, 3): "Fairy Godmother",
+            (_RANDOM_FEMALE, 4): "Evil Queen",
+            (_RANDOM_MALE, 0): "Stormtrooper",
             (_RANDOM_MALE, 1): "Captain Planet",
-            (_RANDOM_MALE, 2): "Wile E. Coyote",
-            (_RANDOM_MALE, 3): "Dr. McCoy",
-            (_RANDOM_MALE, 4): "Dr. Jekyll",
+            (_RANDOM_MALE, 2): "White Rabbit",
+            (_RANDOM_MALE, 3): "Dr. Krieger",
+            (_RANDOM_MALE, 4): "Dr. Frank-N-Furter",
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))

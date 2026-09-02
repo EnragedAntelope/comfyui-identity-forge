@@ -3,9 +3,9 @@
 
 # Creature reference
 
-**253 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**259 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
-## Mammals (51)
+## Mammals (54)
 
 - **aardvark** (dull pinkish grey)
 - **alpaca** (creamy fawn)
@@ -34,6 +34,7 @@
 - **lion** (tawny gold)
 - **lynx** (silvery grey)
 - **mandrill** (olive brown)
+- **markhor** (pale grizzled grey)
 - **meerkat** (sandy tan)
 - **mole** (blue-black)
 - **moose** (dark bark brown)
@@ -44,11 +45,13 @@
 - **panda** (black and white)
 - **pangolin** (warm bronze)
 - **platypus** (dark umber)
+- **proboscis monkey** (warm russet orange)
 - **rabbit** (dove-grey)
 - **raccoon** (salt-and-pepper grey)
 - **rat** (dusty brown)
 - **red panda** (rusty red and cream)
 - **rhinoceros** (slate grey)
+- **saiga antelope** (sandy fawn)
 - **skunk** (glossy black)
 - **sloth** (grey-brown)
 - **squirrel** (russet-brown)
@@ -59,7 +62,7 @@
 - **wolverine** (dark chocolate)
 - **zebra** (black-and-white)
 
-## Birds (30)
+## Birds (31)
 
 - **albatross** (chalk white)
 - **cardinal** (vivid crimson)
@@ -87,6 +90,7 @@
 - **puffin** (black and white)
 - **raven** (iridescent black)
 - **rooster** (iridescent black and orange)
+- **secretary bird** (pale grey and black)
 - **shoebill** (slate grey)
 - **swan** (pure white)
 - **toucan** (black and white)
@@ -119,7 +123,7 @@
 - **triceratops** (slate grey-green)
 - **tyrannosaurus rex** (mottled olive-green)
 
-## Insects & Arachnids (26)
+## Insects & Arachnids (27)
 
 - **ant** (reddish black)
 - **antlion** (sand beige)
@@ -146,9 +150,10 @@
 - **stag beetle** (deep mahogany)
 - **stick insect** (twig brown)
 - **tarantula** (dusky brown)
+- **tardigrade** (translucent amber)
 - **wasp** (black and yellow)
 
-## Marine Life (28)
+## Marine Life (29)
 
 - **anglerfish** (abyssal black)
 - **clownfish** (bright orange)
@@ -168,6 +173,7 @@
 - **narwhal** (mottled blue-grey)
 - **nautilus** (cream and russet)
 - **nudibranch** (electric blue and orange)
+- **ocean sunfish** (mottled silver-grey)
 - **octopus** (mottled coral-red)
 - **orca** (black and white)
 - **pufferfish** (sandy beige)

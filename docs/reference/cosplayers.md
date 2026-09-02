@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1994 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**1999 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (380)
 
@@ -666,7 +666,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (269)
+## Comics & Cartoons (271)
 
 ### Adventure Time
 
@@ -1127,6 +1127,8 @@
 
 ### The Venture Bros
 
+- **Dr. Mrs. The Monarch** (F, +1 alt)
+- **The Monarch** (M)
 - **Triana Orpheus** (F)
 
 ### The Walking Dead
@@ -1958,7 +1960,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (226)
+## Movies & TV (228)
 
 ### A Nightmare on Elm Street
 
@@ -2062,6 +2064,7 @@
 
 ### Doctor Who
 
+- **Cyberman** (M, masked)
 - **The Fourth Doctor** (M)
 - **The Tenth Doctor** (M, prop)
 - **Weeping Angel** (F, masked)
@@ -2102,6 +2105,7 @@
 ### Firefly
 
 - **Inara Serra** (F)
+- **Jayne Cobb** (M, prop)
 - **River Tam** (F)
 
 ### Flash Gordon
@@ -2638,7 +2642,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (451)
+## Video Games (452)
 
 ### A Certain Scientific Railgun
 
@@ -2796,6 +2800,10 @@
 - **Ryu Hayabusa** (M, prop)
 - **Tina Armstrong** (F)
 - **Zack** (M)
+
+### Destiny
+
+- **Mara Sov** (F)
 
 ### Devil May Cry
 

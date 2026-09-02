@@ -3150,6 +3150,100 @@ CREATURES: dict[str, dict] = {
         "tail": "a short thick bare tail",
         "extras": "the nose tentacles glistening with moisture, in constant motion tasting the air",
     },
+
+    # --- 1.2.0 ------------------------------------------------------------
+    "tardigrade": {
+        # No incumbent body: `caterpillar` is a legless-soft segmented tube and
+        # `centipede` is linear and many-legged. Eight stubby clawed legs on a
+        # plump barrel with a radial terminal mouth is neither.
+        "class": "Insects & Arachnids",
+        "palette": "translucent amber",
+        "palette_pool": ["translucent amber", "milky white", "mossy olive",
+                         "dusty rose"],
+        "head": "a blunt headless-looking front end with a round radial mouth ringed by rasping stylets",
+        "eyes": "two tiny simple eyespots set far apart",
+        "integument": "a plump wrinkled segmented cuticle",
+        "arms": "short stubby forelimbs held close to the body",
+        "hands": "blunt paws tipped with four curved claws each",
+        "legs_feet": "squat telescoping legs ending in clawed pads",
+        "extras": "a barrel-shaped body drawn into visible rings, moving in a slow deliberate lumber",
+    },
+    "ocean sunfish": {
+        # The fish class ships "the ones with a shape". This is the most extreme
+        # fish shape there is: a vertical disc with no tail at all, which every
+        # shipped fish (anglerfish, pufferfish, seahorse, koi, lionfish,
+        # clownfish) has. No palette_pool -- the silver-grey IS the animal.
+        "class": "Marine Life",
+        "palette": "mottled silver-grey",
+        "head": "a blunt vertical head merging straight into the body, with a small puckered beak-like mouth",
+        "eyes": "large round staring eyes set high on the flanks",
+        "integument": "thick rough rubbery hide",
+        "arms": "tall narrow fin-like arms raised high",
+        "hands": "stiff rounded fin tips",
+        "legs_feet": "a matching tall narrow fin below in place of legs",
+        "extras": "a towering flattened disc of a body ending abruptly in a stiff ruffled rudder instead of a tail",
+    },
+    "saiga antelope": {
+        # Horn shape is an accepted axis here (goat vs stag), but this entry is
+        # about the NOSE: a bulbous downturned proboscis nothing in the roster
+        # has. An elephant's trunk is a different structure entirely.
+        "class": "Mammals",
+        "palette": "sandy fawn",
+        "palette_pool": ["sandy fawn", "pale winter cream", "dusty grey-brown"],
+        "head": "a narrow antelope head dominated by a bulbous downturned proboscis nose hanging over the mouth, with short ridged amber horns rising straight up",
+        "eyes": "large dark set-wide eyes",
+        "integument": "short dense woolly fur",
+        "arms": "slim sinewy forelegs",
+        "hands": "small neat cloven forefeet",
+        "legs_feet": "long slender legs ending in cloven hooves",
+        "tail": "a very short tufted tail",
+    },
+    "markhor": {
+        # Horn GEOMETRY, the axis that already separates goat (curved) from stag
+        # (branched). Nothing in the roster spirals.
+        "class": "Mammals",
+        "palette": "pale grizzled grey",
+        "palette_pool": ["pale grizzled grey", "reddish brown", "dark winter brown"],
+        "head": "a heavy goat head carrying a pair of enormous corkscrew-spiralled horns twisting straight up, with a long shaggy chin beard",
+        "eyes": "amber rectangular-pupiled eyes",
+        "integument": "long shaggy fur with a flowing neck ruff",
+        "arms": "powerful short forelegs",
+        "hands": "hard cloven forefeet",
+        "legs_feet": "muscular legs ending in gripping cloven hooves",
+        "tail": "a short upturned tail",
+    },
+    "secretary bird": {
+        # A combination the class does not hold: the raptors (eagle, falcon,
+        # vulture) perch, and the long-legged waders (heron, crane, shoebill)
+        # have no hooked raptor head.
+        "class": "Birds",
+        "palette": "pale grey and black",
+        "head": "a small hooked raptor head with a bare orange-red face mask and a crest of long black quills fanning back from the crown",
+        "eyes": "keen forward-set dark eyes",
+        "integument": "sleek close-lying plumage",
+        "arms": "long feathered arms",
+        "hands": "clawed grasping hands",
+        "legs_feet": "extraordinarily long crane-like legs in black feathered breeches, ending in short blunt stamping toes",
+        "wings": "broad black-tipped wings",
+        "tail": "two long central tail plumes trailing well past the rest",
+    },
+    "proboscis monkey": {
+        # The nose is the whole silhouette. `mandrill` is facial COLOUR; the
+        # other primates (orangutan, chimpanzee, gorilla) have no such feature.
+        "class": "Mammals",
+        "palette": "warm russet orange",
+        "head": "a primate head with an enormous pendulous drooping nose hanging past the mouth, framed by a pale ruff",
+        "eyes": "small close-set dark eyes",
+        # Colour-free per the schema: the hue lives in `palette` so the node can
+        # recolour it. "russet fur paling to grey" baked both in and rendered as
+        # "warm russet orange short russet fur paling to grey at the limbs".
+        "integument": "short dense fur paling at the limbs",
+        "arms": "long slender arms",
+        "hands": "narrow leathery grasping hands",
+        "legs_feet": "sturdy legs ending in long gripping toes",
+        "tail": "a long thick pale tail",
+        "extras": "a heavy rounded pot belly",
+    },
 }
 
 
