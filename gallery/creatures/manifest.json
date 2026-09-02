@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-08-26T21:45:41.710770",
-  "version": "1.0.0",
+  "generated": "2026-09-02T09:23:31.831495",
+  "version": "1.2.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -118,10 +118,13 @@
     "0.96.0",
     "0.97.0",
     "0.98.0",
-    "1.0.0"
+    "1.0.0",
+    "1.0.1",
+    "1.1.0",
+    "1.2.0"
   ],
-  "total_entries": 253,
-  "entries_with_images": 253,
+  "total_entries": 259,
+  "entries_with_images": 259,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1254,6 +1257,14 @@
       "image": "images/mantis shrimp.jpeg"
     },
     {
+      "name": "markhor",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.2.0",
+      "image": "images/markhor.jpeg"
+    },
+    {
       "name": "meerkat",
       "has_image": true,
       "gender": "any",
@@ -1396,6 +1407,14 @@
       "group": "Marine Life",
       "added": "0.87.0",
       "image": "images/nudibranch.jpeg"
+    },
+    {
+      "name": "ocean sunfish",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "added": "1.2.0",
+      "image": "images/ocean sunfish.jpeg"
     },
     {
       "name": "octopus",
@@ -1590,6 +1609,14 @@
       "image": "images/praying mantis.jpeg"
     },
     {
+      "name": "proboscis monkey",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.2.0",
+      "image": "images/proboscis monkey.jpeg"
+    },
+    {
       "name": "pteranodon",
       "has_image": true,
       "gender": "any",
@@ -1734,6 +1761,14 @@
       "image": "images/rooster.jpeg"
     },
     {
+      "name": "saiga antelope",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.2.0",
+      "image": "images/saiga antelope.jpeg"
+    },
+    {
       "name": "salamander",
       "has_image": true,
       "gender": "any",
@@ -1788,6 +1823,14 @@
       "group": "Marine Life",
       "added": "0.67.0",
       "image": "images/seal.jpeg"
+    },
+    {
+      "name": "secretary bird",
+      "has_image": true,
+      "gender": "any",
+      "group": "Birds",
+      "added": "1.2.0",
+      "image": "images/secretary bird.jpeg"
     },
     {
       "name": "selkie",
@@ -1956,6 +1999,14 @@
       "group": "Insects & Arachnids",
       "added": "0.14.0",
       "image": "images/tarantula.jpeg"
+    },
+    {
+      "name": "tardigrade",
+      "has_image": true,
+      "gender": "any",
+      "group": "Insects & Arachnids",
+      "added": "1.2.0",
+      "image": "images/tardigrade.jpeg"
     },
     {
       "name": "tengu",
