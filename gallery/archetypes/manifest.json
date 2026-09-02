@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-08-26T21:45:18.625161",
-  "version": "1.0.0",
+  "generated": "2026-09-02T09:23:26.860085",
+  "version": "1.2.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -118,10 +118,13 @@
     "0.96.0",
     "0.97.0",
     "0.98.0",
-    "1.0.0"
+    "1.0.0",
+    "1.0.1",
+    "1.1.0",
+    "1.2.0"
   ],
-  "total_entries": 251,
-  "entries_with_images": 251,
+  "total_entries": 255,
+  "entries_with_images": 255,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -366,6 +369,14 @@
       "image": "images/Artist.jpeg"
     },
     {
+      "name": "Aso-Ebi with Gele",
+      "has_image": true,
+      "gender": "Female",
+      "group": "evening formal",
+      "added": "1.2.0",
+      "image": "images/Aso-Ebi with Gele.jpeg"
+    },
+    {
       "name": "Astronaut",
       "has_image": true,
       "gender": "any",
@@ -604,6 +615,14 @@
       "group": "casual",
       "added": "0.5.0",
       "image": "images/Chef.jpeg"
+    },
+    {
+      "name": "Chimney Sweep",
+      "has_image": true,
+      "gender": "Any",
+      "group": "casual",
+      "added": "1.2.0",
+      "image": "images/Chimney Sweep.jpeg"
     },
     {
       "name": "Circus Clown",
@@ -878,6 +897,14 @@
       "image": "images/Figure Skater.jpeg"
     },
     {
+      "name": "Filipiniana Terno",
+      "has_image": true,
+      "gender": "Any",
+      "group": "evening formal",
+      "added": "1.2.0",
+      "image": "images/Filipiniana Terno.jpeg"
+    },
+    {
       "name": "Firefighter",
       "has_image": true,
       "gender": "Male",
@@ -988,6 +1015,14 @@
       "group": "casual",
       "added": "0.5.0",
       "image": "images/Glassblower.jpeg"
+    },
+    {
+      "name": "Gondolier",
+      "has_image": true,
+      "gender": "Male",
+      "group": "smart casual",
+      "added": "1.2.0",
+      "image": "images/Gondolier.jpeg"
     },
     {
       "name": "Gothic Doll",
