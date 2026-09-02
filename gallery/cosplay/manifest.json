@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-08-31T13:38:05.439518",
-  "version": "1.1.0",
+  "generated": "2026-09-02T09:23:20.283486",
+  "version": "1.2.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -120,10 +120,11 @@
     "0.98.0",
     "1.0.0",
     "1.0.1",
-    "1.1.0"
+    "1.1.0",
+    "1.2.0"
   ],
-  "total_entries": 1994,
-  "entries_with_images": 1994,
+  "total_entries": 1999,
+  "entries_with_images": 1999,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -2976,6 +2977,14 @@
       "image": "images/Curious George.jpeg"
     },
     {
+      "name": "Cyberman",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Doctor Who",
+      "added": "1.2.0",
+      "image": "images/Cyberman.jpeg"
+    },
+    {
       "name": "Cyblade",
       "has_image": true,
       "gender": "Female",
@@ -3742,6 +3751,14 @@
       "group": "Peepoodo",
       "added": "0.69.0",
       "image": "images/Dr. Monique Pussycat.jpeg"
+    },
+    {
+      "name": "Dr. Mrs. The Monarch",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Venture Bros",
+      "added": "1.2.0",
+      "image": "images/Dr. Mrs. The Monarch.jpeg"
     },
     {
       "name": "Dr. Mundo",
@@ -6440,6 +6457,14 @@
       "image": "images/Jay Garrick.jpeg"
     },
     {
+      "name": "Jayne Cobb",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Firefly",
+      "added": "1.2.0",
+      "image": "images/Jayne Cobb.jpeg"
+    },
+    {
       "name": "Jean Grey",
       "has_image": true,
       "gender": "Female",
@@ -8774,6 +8799,14 @@
       "group": "Star Wars",
       "added": "0.6.0",
       "image": "images/Mara Jade.jpeg"
+    },
+    {
+      "name": "Mara Sov",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Destiny",
+      "added": "1.2.0",
+      "image": "images/Mara Sov.jpeg"
     },
     {
       "name": "Marceline the Vampire Queen",
@@ -14406,6 +14439,14 @@
       "group": "Image",
       "added": "0.69.0",
       "image": "images/The Maxx.jpeg"
+    },
+    {
+      "name": "The Monarch",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Venture Bros",
+      "added": "1.2.0",
+      "image": "images/The Monarch.jpeg"
     },
     {
       "name": "The Mummy",
