@@ -37,7 +37,7 @@ try:
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
-    from ..data.constraints import CONSTRAINT_RULES
+    from ..data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -48,7 +48,7 @@ except ImportError:  # pragma: no cover — standalone/test context
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
     )
-    from data.constraints import CONSTRAINT_RULES
+    from data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
 
 # ---------------------------------------------------------------------------
 # ComfyUI V3 API import — guarded so the engine helpers remain importable
@@ -1346,6 +1346,38 @@ def _wearable_legwear(pool: list[str], resolved: dict[str, str]) -> list[str]:
     return pool
 
 
+def _style_appropriate_legwear(pool: list[str], resolved: dict[str, str]) -> list[str]:
+    """Drop men's socks the chosen ``outfit_style`` would not wear (1.2.0).
+
+    The allowlist itself is ``LEGWEAR_BY_STYLE`` in ``data/constraints.py``, and it
+    mirrors ``FOOTWEAR_BY_STYLE`` in shape and safety model: a value absent from a
+    style's set is excluded there, so a future men's legwear addition is excluded
+    everywhere until it is deliberately listed.
+
+    **It cannot be a CONSTRAINT_RULES exclusion, and that is not a style choice.**
+    ``legwear`` is in :data:`_DEFERRED_FIELDS`, so it is drawn after the constraint
+    loop has finished -- an ``outfit_style`` -> ``legwear`` rule never runs. Written
+    as a rule first and measured: 132 violations over 400 seeds per style, against 0
+    for the identical footwear rule, which works only because ``footwear`` is drawn
+    inside the loop. See the comment above ``LEGWEAR_BY_STYLE``.
+
+    Scoped to ``_GATED_LEGWEAR`` -- the three male values added at 1.2.0 -- so every
+    female value passes through untouched and women's draws stay byte-identical to
+    1.1.0. ``no visible legwear`` is in no style's ban set, so the pool can never
+    empty.
+    """
+    style = resolved.get("outfit_style") or ""
+    if not style:
+        return pool
+    allowed = LEGWEAR_BY_STYLE.get(style)
+    if allowed is None:
+        return pool
+    banned = _GATED_LEGWEAR - allowed
+    if not banned:
+        return pool
+    return [v for v in pool if v not in banned]
+
+
 def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> list[str]:
     """Drop tattoo placements the character's clothing would cover.
 
@@ -1405,7 +1437,7 @@ def _resolve_deferred_fields(
         field_def = FIELD_DEFINITIONS[field_name]
         pool = _build_option_pool(field_name, field_def, gender, resolved)
         if field_name == "legwear":
-            pool = _wearable_legwear(pool, resolved)
+            pool = _style_appropriate_legwear(_wearable_legwear(pool, resolved), resolved)
         elif field_name == "tattoo_placement":
             pool = _visible_tattoo_placements(pool, resolved)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)

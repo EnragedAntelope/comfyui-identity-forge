@@ -32,6 +32,48 @@ here with the exact cost so a future pass can decide whether to pay it.
 | **hime cut** | Its natural home is `loose_styled`, which is a **split** sub-family — adding a sixth variant broke the `loose` split's proportionality (140 vs 116.67 per variant). It also requires long hair, so any length exclusion would be a *partial* cull of the sub-family and would concentrate its frozen weight on the survivors. Needs its own sub-family and a reprice of the whole `loose` group. |
 | **wolf cut** | Belongs in `barbered_shag`, an **added** family pinned to the field's "everyday cut" rate. Growing it needs the family repriced *and* `_DILUTION` in `HairStyleFamilyTests` restated. |
 
+**`outerwear` — the field the pack does not have (raised 1.2.0).** A coat or jacket is
+one of the largest visual elements on a person and there is no axis for it at all;
+`accessories` carries gloves, hats and scarves but no outer garment. Worth building, and
+it is a phase of its own rather than an option list. What it needs:
+
+* A **new widget, appended at the end** of `define_schema()` — never inserted, or every
+  saved workflow's `widgets_values` array shifts — plus a `FIELD_HELP` entry, a
+  `generate_js_data.py` regeneration for `FIELD_TO_GROUP`, and prose-builder work to
+  voice it.
+* **A coherence gate on four axes, not one.** This is what makes it a phase:
+  * **`season`** — no parka in summer, no linen duster in winter.
+  * **`location`** — no heavy winter coat in an office, a yoga studio or a restaurant
+    interior. Reuse the existing `_INDOOR_LOCATIONS` / `OUTDOOR_LOCATIONS` split rather
+    than building a third bucket.
+  * **`outfit_style`** — an allowlist mirroring `FOOTWEAR_BY_STYLE`, so a parka never
+    lands on `evening formal` and a tailored overcoat never lands on `athletic`.
+  * **`accessories` co-occurrence** — a winter coat should be able to draw gloves, a
+    knit scarf and a beanie; a linen blazer should not. This is the harder half:
+    `accessories` is a single-value field with a `weights` map, so "co-occur" means
+    conditioning its pool on the drawn outerwear, not adding a second accessory slot.
+* **Suppression:** a `covers_body` shell or mascot suit must drop it, the way
+  `_CONCEALED_BODY_FIELDS` already drops tattoos.
+* **Bias, priced up front:** the field must ship a heavily-weighted `no outerwear` value
+  or every random person is suddenly wearing a coat. See the 1.2.0 `legwear` note in
+  architecture.md for how the lean and an allowlist stack — the realized absence rate
+  came out far above the bare pool lean, and that surprise is worth expecting here.
+* **If `legwear` is anything to go by, check the draw order first.** `legwear` is a
+  DEFERRED field, so its `outfit_style` gate had to be a pool filter rather than a
+  `CONSTRAINT_RULES` exclusion; a rule would have been silently inert. Establish whether
+  `outerwear` is drawn inside or outside the constraint loop before writing its gate.
+
+**This is the phase the 0.97.0 `accessories` decline was waiting for.** That decline
+reads: *"Blocked on a gate that does not exist, not on merit... Building that gate is a
+phase of its own; the three values are worth revisiting after it, not before."* Building
+`outerwear` builds the season/style gate, which **unblocks `earmuffs`, `knit winter
+scarf` and `headphones worn around the neck`** — fold them into the same phase.
+
+**`outfit_style`: western, utility/workwear, grunge (raised 1.2.0).** Priced, not
+declined on merit: each needs `OUTFIT_DESCRIPTIONS` entries per gender, a
+`FOOTWEAR_BY_STYLE` row and a `LEGWEAR_BY_STYLE` row, and each dilutes a 14-value pool
+by about 7%.
+
 The two that *did* ship (`side-swept bangs`, `wispy bangs`) went into `bangs` — a
 pre-existing, non-split family with no length restriction — so the total weight stayed
 7140 and no share moved at all. That is the difference between a cheap addition and an
@@ -244,6 +286,21 @@ are reusable — **most of them are the roster's own bars pointed at the option 
 | `footwear`: riding boots | `knee-high boots` is the same tall polished shaft. |
 | `footwear`: flip-flops | `sandals` is the generic beach shoe and already reaches `resort vacation`. |
 | `accessories`: earmuffs, knit winter scarf, headphones worn around the neck | **Blocked on a gate that does not exist, not on merit.** `accessories` has no season or `outfit_style` allowlist — only `footwear` does (`FOOTWEAR_BY_STYLE`, 0.83.0) — so a knit winter scarf would land on `resort vacation` at a beach. Building that gate is a phase of its own; the three values are worth revisiting *after* it, not before. |
+
+### Field options — declined (1.2.0)
+
+`footwear` (22 -> 25), `piercings` (12 -> 14) and `composition` (8 -> 9) all grew this
+pass; `legwear` gained its three men's values. These were considered alongside them and
+did not ship. All four fields are FLAT, so the growth re-picks uniform and concentrates
+nothing — the arithmetic is in [architecture.md](architecture.md).
+
+| Candidate | Why |
+|---|---|
+| `composition`: framed by a foreground element | **Violates the field's own load-bearing rule.** `data/fields.py` states composition may "never [name] a physical object (0.63.0 deleted doorway / window / foliage framing from `shot_type` for exactly that reason — an object in the frame that the model has to invent)". Wording it generically as "element" evades the word-level test without answering the rule: the model still has to invent the object. Its sibling, `a strong diagonal across the frame`, shipped — it is pure layout. |
+| `skin_details`: a third scar value, freckled shoulders, sun-weathered creases | Saturated at 12. Two scars already ship, and `freckles_density` and `laugh lines` own the other two proposals outright. |
+| `nails` (22), `bag` (29), `eye_color` (23) | Saturated. Another polish colour dilutes the **shape** variety that is what actually carries `nails`; the same argument holds for the other two. |
+| `accessories`: anything | Carries a literal `weights` map, and the 0.97.0 decline above still stands unchanged: there is still no season or `outfit_style` gate for accessories, so a seasonal item lands at a beach. `LEGWEAR_BY_STYLE` (1.2.0) did **not** build it — it gates one field, scoped to three values. Build the real gate first; see the `outerwear` case under [Under consideration](#under-consideration), which is the phase that would build it. |
+| `outfit_style` (14): western, utility/workwear, grunge | **Not an option add.** A new style needs `OUTFIT_DESCRIPTIONS` entries per gender, a `FOOTWEAR_BY_STYLE` row, a `LEGWEAR_BY_STYLE` row as of 1.2.0, and it dilutes a 14-value pool by 7%. A real feature; logged under [Under consideration](#under-consideration) with that cost written down rather than declined on merit. |
 
 ### Archetypes — declined
 

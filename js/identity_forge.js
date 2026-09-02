@@ -521,6 +521,9 @@ const GENDER_POOLS = {
     ],
     "Male": [
       "Random",
+      "ribbed crew socks",
+      "athletic crew socks",
+      "dark dress socks",
       "None"
     ],
     "Any": [
@@ -534,6 +537,9 @@ const GENDER_POOLS = {
       "ribbed knee-high socks",
       "over-the-knee socks",
       "slouchy ankle socks",
+      "ribbed crew socks",
+      "athletic crew socks",
+      "dark dress socks",
       "None"
     ]
   }

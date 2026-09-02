@@ -548,6 +548,39 @@ def validate() -> list[str]:
                 f"separate franchises here -- use '({franchise})' so the key agrees "
                 f"with docs/reference/cosplayers.md.")
 
+    # --- outfit_style allowlists: every gated value must be reachable ----
+    # FOOTWEAR_BY_STYLE and LEGWEAR_BY_STYLE are ALLOWLISTS, which is the right
+    # safety model (a new value is excluded everywhere until deliberately listed)
+    # but has one silent failure: a value added to the field and to no style's set
+    # is excluded from every style at once and can never be drawn. Measured, not
+    # theorised -- 'platform boots', 'hiking boots' and 'clogs' were added at 1.2.0
+    # and drew 0/1500 until their rows landed, with every other check still green.
+    from data.constraints import FOOTWEAR_BY_STYLE, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    for label, allowlist, gated in (
+        ("footwear", FOOTWEAR_BY_STYLE, _options("footwear")),
+        ("legwear", LEGWEAR_BY_STYLE, set(_GATED_LEGWEAR)),
+    ):
+        stray_styles = sorted(set(allowlist) - _EXPECTED_OUTFIT_STYLES)
+        if stray_styles:
+            errors.append(f"{label.upper()}_BY_STYLE keys are not outfit styles: "
+                          f"{stray_styles}")
+        missing_styles = sorted(_EXPECTED_OUTFIT_STYLES - set(allowlist))
+        if missing_styles:
+            errors.append(f"{label.upper()}_BY_STYLE has no row for {missing_styles} "
+                          f"-- an unlisted style allows everything, silently")
+        listed = {value for values in allowlist.values() for value in values}
+        unknown = sorted(listed - gated)
+        if unknown:
+            errors.append(f"{label.upper()}_BY_STYLE allows {unknown}, which "
+                          f"{'is not a' if len(unknown) == 1 else 'are not'} "
+                          f"'{label}' option{'' if len(unknown) == 1 else 's'}")
+        unreachable = sorted(gated - listed)
+        if unreachable:
+            errors.append(f"{label} value{'' if len(unreachable) == 1 else 's'} "
+                          f"{unreachable} appear(s) in no {label.upper()}_BY_STYLE "
+                          f"row, so {'it is' if len(unreachable) == 1 else 'they are'} "
+                          f"excluded from every outfit_style and can never be drawn")
+
     # --- cosplayers: the category map and the roster must agree ----------
     errors.extend(_builtin_category_map_errors(ROOT / "data" / "cosplayers.py"))
 

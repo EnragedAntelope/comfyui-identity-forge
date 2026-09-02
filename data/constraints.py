@@ -759,7 +759,8 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ("casual", frozenset([
         'sneakers', 'loafers', 'boots', 'flats', 'sandals', 'ankle boots', 'mules',
         'chelsea boots', 'combat boots', 'ballet flats', 'high-top sneakers',
-        'espadrilles', 'mary janes', 'cowboy boots'])),
+        'espadrilles', 'mary janes', 'cowboy boots',
+        'hiking boots', 'clogs'])),  # 1.2.0
     ("smart casual", frozenset([
         'sneakers', 'loafers', 'boots', 'heels', 'flats', 'oxfords', 'ankle boots',
         'wedges', 'mules', 'chelsea boots', 'knee-high boots', 'ballet flats',
@@ -775,25 +776,30 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
         'kitten heels', 'knee-high boots'])),
     ("streetwear", frozenset([
         'sneakers', 'boots', 'ankle boots', 'combat boots', 'high-top sneakers',
-        'chelsea boots', 'mules', 'cowboy boots'])),
+        'chelsea boots', 'mules', 'cowboy boots',
+        'platform boots'])),  # 1.2.0
     ("bohemian", frozenset([
         'sandals', 'boots', 'flats', 'ankle boots', 'wedges', 'mules', 'bare feet',
-        'espadrilles', 'ballet flats', 'knee-high boots', 'cowboy boots'])),
-    ("athletic", frozenset(['sneakers', 'high-top sneakers'])),
+        'espadrilles', 'ballet flats', 'knee-high boots', 'cowboy boots',
+        'clogs'])),  # 1.2.0
+    ("athletic", frozenset(['sneakers', 'high-top sneakers',
+                             'hiking boots'])),  # 1.2.0
     ("resort vacation", frozenset([
         'sandals', 'flats', 'wedges', 'mules', 'bare feet', 'espadrilles',
         'sneakers', 'ballet flats'])),
     ("edgy alternative", frozenset([
         'boots', 'combat boots', 'ankle boots', 'chelsea boots', 'knee-high boots',
-        'heels', 'sneakers', 'high-top sneakers', 'cowboy boots', 'mary janes'])),
+        'heels', 'sneakers', 'high-top sneakers', 'cowboy boots', 'mary janes',
+        'platform boots'])),  # 1.2.0
     ("preppy", frozenset([
         'loafers', 'oxfords', 'sneakers', 'flats', 'ankle boots', 'chelsea boots',
         'ballet flats', 'derbies', 'espadrilles', 'kitten heels', 'mary janes'])),
     ("vintage retro", frozenset([
         'loafers', 'oxfords', 'heels', 'flats', 'ankle boots', 'wedges', 'mules',
         'derbies', 'kitten heels', 'ballet flats', 'chelsea boots', 'mary janes',
-        'cowboy boots'])),
-    ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats'])),
+        'cowboy boots', 'platform boots'])),  # 1.2.0
+    ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats',
+                               'clogs'])),  # 1.2.0
 ])
 
 for _style, _allowed in FOOTWEAR_BY_STYLE.items():
@@ -803,6 +809,60 @@ for _style, _allowed in FOOTWEAR_BY_STYLE.items():
             "type": "exclusion", "field": "outfit_style", "value": _style,
             "excludes_field": "footwear", "excludes_values": _banned,
             "reason": f"these shoes do not belong with {_style} dress"})
+
+
+# --- legwear x outfit_style (1.2.0) ------------------------------------------------
+# Mirrors FOOTWEAR_BY_STYLE above exactly, including the allowlist-not-denylist safety
+# model: a value absent from a style's set is excluded there, so a future men's legwear
+# addition is excluded everywhere until it is deliberately listed. Without this,
+# 'athletic crew socks' lands on `business formal`.
+#
+# SCOPE: the three MALE values added at 1.2.0, and nothing else. `_GATED_LEGWEAR`
+# below is the entire universe this loop bans from, so every female value is
+# untouched and women's draws stay byte-identical to 1.1.0 -- which is the point.
+# Gating the female pool as well is genuinely missing ('fishnet tights' can still land
+# on `business formal`), but it would move `legwear` prose across the shipped roster
+# and `entry_hash` hashes the entry dict, not the resolved prose, so `--check` could
+# not flag one invalidated gallery image. Logged in docs/suggested-additions.md
+# "Still to consider" instead of done here.
+#
+# BIAS: `legwear` is FLAT -- no FIELD_FAMILIES entry -- so an exclusion re-picks
+# uniform over the survivors, with the `male_weights` lean on 'no visible legwear'
+# applied on top. 'no visible legwear' is in every style's set, so the pool can
+# never empty.
+LEGWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
+    ("casual", frozenset(['ribbed crew socks', 'athletic crew socks'])),
+    ("smart casual", frozenset(['dark dress socks'])),
+    ("business casual", frozenset(['dark dress socks'])),
+    ("business formal", frozenset(['dark dress socks'])),
+    ("evening formal", frozenset(['dark dress socks'])),
+    ("cocktail semi-formal", frozenset(['dark dress socks'])),
+    ("streetwear", frozenset(['ribbed crew socks', 'athletic crew socks'])),
+    ("bohemian", frozenset()),
+    ("athletic", frozenset(['athletic crew socks'])),
+    ("resort vacation", frozenset()),
+    ("edgy alternative", frozenset()),
+    ("preppy", frozenset(['ribbed crew socks'])),
+    ("vintage retro", frozenset(['ribbed crew socks'])),
+    ("loungewear", frozenset(['ribbed crew socks'])),
+])
+#: The only values LEGWEAR_BY_STYLE may exclude. Deliberately not the whole pool.
+_GATED_LEGWEAR: frozenset[str] = frozenset(
+    ['ribbed crew socks', 'athletic crew socks', 'dark dress socks'])
+
+# NO CONSTRAINT_RULES LOOP HERE, and that is the whole point of this comment.
+# `legwear` is a DEFERRED field (`nodes.identity_forge._DEFERRED_FIELDS`): it is drawn
+# after the constraint-resolution loop has already finished, because it has to gate on
+# the composed `outfit_description`, which does not exist while the loop runs. An
+# `outfit_style` -> `legwear` exclusion rule is therefore structurally INERT -- measured,
+# not assumed: the rule loop this replaced produced 132 violations over 400 seeds per
+# style (socks on `bohemian`, `resort vacation` and `edgy alternative`, all of which
+# allow none), while the identical FOOTWEAR_BY_STYLE loop produced 0, because `footwear`
+# is an ordinary in-loop field.
+#
+# The map above is consumed instead by `nodes.identity_forge._style_appropriate_legwear`,
+# a pool filter applied in `_resolve_deferred_fields` alongside `_wearable_legwear` --
+# the mechanism that actually runs for a deferred field.
 
 # `mixed prints` is a PATTERN claim living in the colour field (a pre-existing wart, and
 # not worth a breaking rename), while `all black` / `all white` / `black monochrome` /

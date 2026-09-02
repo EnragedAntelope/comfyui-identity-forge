@@ -2677,6 +2677,77 @@ an indoor location the six survivors come back 57-77 out of 400 draws each; at a
 the five survivors likewise. The counter-example the backlog asked for holds analytically —
 both sky values remain reachable outdoors, so the gate removed a pairing, not a value.
 
+### A deferred field cannot be gated by a constraint rule (1.2.0)
+
+`legwear` shipped with **10 female options and exactly one male option** (`no visible
+legwear`), so the field said nothing at all about a man. The field's own comment recorded
+that as a deliberate curation call while also noting the reasoning did not hold — the pool
+is reached with bare legs (shorts, a kilt, a sarong) and still drew nothing. 1.2.0
+reverses it: three men's values (`ribbed crew socks`, `athletic crew socks`, `dark dress
+socks`), a `male_weights` lean, and an `outfit_style` allowlist.
+
+**The allowlist is where the real lesson is.** It was written first as a
+`CONSTRAINT_RULES` exclusion loop, character-for-character identical to `FOOTWEAR_BY_STYLE`
+directly above it. It was completely inert — **132 violations over 400 seeds per style**
+(socks on `bohemian`, `resort vacation` and `edgy alternative`, which allow none), against
+**0** for the footwear loop it was copied from.
+
+The cause is draw order, not the rule. `legwear` is in `_DEFERRED_FIELDS`: it has to gate
+on the composed `outfit_description`, which does not exist while the constraint loop is
+running, so it is drawn afterwards in `_resolve_deferred_fields`. **The constraint loop has
+already finished by then, so an exclusion naming `legwear` never executes.** `footwear` is
+an ordinary in-loop field, which is the only reason the copied idiom worked there.
+
+The fix is the mechanism that actually runs for a deferred field: a **pool filter**,
+`_style_appropriate_legwear`, applied alongside `_wearable_legwear`.
+`LEGWEAR_BY_STYLE` stays in `data/constraints.py` as data; only its consumer moved.
+`LegwearMalePoolTests::test_the_style_gate_is_not_a_constraint_rule` asserts no
+`CONSTRAINT_RULES` entry names `legwear`, so a future contributor cannot re-add the inert
+form and believe it works.
+
+**The generalisation:** before gating a field, check whether it is deferred. The three
+deferred fields are `tattoos`, `legwear` and `tattoo_placement`.
+
+#### Two conservatisms stack, and the realized rate is not the pool lean
+
+The `male_weights` lean and the allowlist are independent, and they compound. Measured
+over 3000 male seeds (488 voice the field):
+
+* **49% of voiced male draws land on a style that allows no socks at all** —
+  `resort vacation` 31.6%, `bohemian` 12.9%, `edgy alternative` 4.9%, all correctly
+  sockless. Those are forced absent regardless of the weight, so **realized absence
+  cannot fall below ~49% at any weight**.
+* On top of that, the lean applies to whatever survives.
+
+A first attempt used a 6x lean to hit a 66.7% *pool* share and measured **96.9%** realized
+absence — the field was still very nearly silent for men, which is the thing the change
+existed to fix. It ships at **2x**, the same figure `makeup_style` uses for `no makeup`,
+measuring **90.8%** realized absence: socks on 9.2% of voiced male draws. The lesson is
+that a pool-share target is not a behaviour target once a second filter is in play;
+measure the realized rate, and measure it after every dial you turn.
+
+The female pool is deliberately **not** gated. `fishnet tights` can still land on
+`business formal`, which is a genuine gap — but gating it moves `legwear` prose across the
+shipped roster and `entry_hash` hashes the entry dict, not the resolved prose, so `--check`
+could not flag one invalidated gallery image. Logged in the backlog with that cost. Proven
+rather than asserted: over 1500 fixed seeds with only the legwear change reverted, **0
+female draws differ**.
+
+### An allowlist's silent failure is an unreachable value (1.2.0)
+
+`FOOTWEAR_BY_STYLE` fails safe by design — a new shoe is excluded from every style until
+deliberately listed. The failure mode nothing was checking is what happens when it is
+*never* listed: the value is excluded from all fourteen styles at once and can never be
+drawn. `platform boots`, `hiking boots` and `clogs` were added to the field at 1.2.0 and
+measured **0 draws in 1500** while `validate_data.py`, the unit suite, ruff and the render
+gate were all green.
+
+`validate_data.py` now checks both allowlists in both directions: every style has a row
+(an unlisted style allows everything, silently), every listed value is a real option of
+its field, and every gated value appears in at least one row. `composition` and
+`piercings` need no such row — neither field has an allowlist — which is why their two
+new values were reachable immediately.
+
 ### Both contrapositive repairs must share one ban list (0.92.0)
 
 The 0.82.0 note above ends on the right principle — *"the conflicting set is the union over

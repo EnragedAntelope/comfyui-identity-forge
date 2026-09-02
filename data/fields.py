@@ -360,8 +360,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("piercings", {
         "group": 'Jewelry & Nails',
-        "female_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing', 'stretched lobes'],
-        "male_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing', 'stretched lobes'],
+        "female_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing', 'stretched lobes', 'bridge piercing', 'snake bites'],
+        "male_options": ['no piercings beyond ears', 'nose stud', 'small septum ring', 'multiple ear piercings', 'industrial earring', 'tragus piercing', 'helix piercing', 'eyebrow piercing', 'labret stud', 'double nostril piercing', 'medusa piercing', 'stretched lobes', 'bridge piercing', 'snake bites'],
         "optional": True
     }),
     ("nails", {
@@ -518,8 +518,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("footwear", {
         "group": 'Clothing',
-        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots'],
-        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots'],
+        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots', 'platform boots', 'hiking boots', 'clogs'],
+        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots', 'platform boots', 'hiking boots', 'clogs'],
         "optional": False
     }),
     ("clothing_color", {
@@ -618,20 +618,32 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # "composed with ...". Deliberately absent from FIELD_FAMILIES, like shot_type:
         # a flat field, so any coherence exclusion (see constraints.py) re-picks
         # uniform rather than concentrating weight on survivors.
+        #
+        # 1.2.0 adds 'a strong diagonal across the frame' (8 -> 9): a standard
+        # compositional device with no incumbent -- the eight shipped values cover
+        # subject placement, crop tightness, symmetry, leading lines and horizon,
+        # and diagonal emphasis is none of them. It asserts no sky, so it does NOT
+        # join the 1.2.0 location sky gate, and it names no object, so the rule
+        # above holds. 'framed by a foreground element' was proposed alongside it
+        # and DECLINED for exactly that rule: "element" names no specific object,
+        # but the model still has to invent one, which is the class of value 0.63.0
+        # deleted. See docs/suggested-additions.md -> "Field options -- declined".
         "female_options": ['the subject on a rule-of-thirds line', 'centered symmetry',
                             'the subject small against open negative space',
                             'a tight crop and little headroom',
                             'leading lines drawing the eye to the subject',
                             'a low horizon line and open sky above',
                             'a high horizon line and a sliver of sky',
-                            'the subject filling most of the frame'],
+                            'the subject filling most of the frame',
+                            'a strong diagonal across the frame'],
         "male_options": ['the subject on a rule-of-thirds line', 'centered symmetry',
                           'the subject small against open negative space',
                           'a tight crop and little headroom',
                           'leading lines drawing the eye to the subject',
                           'a low horizon line and open sky above',
                           'a high horizon line and a sliver of sky',
-                          'the subject filling most of the frame'],
+                          'the subject filling most of the frame',
+                          'a strong diagonal across the frame'],
         "optional": False
     }),
 
@@ -702,16 +714,40 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # leg-showing garment before this pool is ever read -- a man in shorts, a
         # kilt or a sarong reaches here with bare legs and still draws nothing, and
         # 'slouchy ankle socks' / 'ribbed knee-high socks' would read fine on him.
-        # Left as-is deliberately: this is a curation call, not an oversight, and
-        # widening it shifts the realized absence rate (measured 0.70 across genders
-        # versus the 0.55 floor, precisely because half the draws are male and
-        # forced). Recorded here so the next reader does not "fix" it by accident.
+        # 1.2.0 REVERSES that curation call, on the note's own reasoning: the pool
+        # was reached with bare legs and drew nothing, so the field was silent for
+        # 100% of men. Three men's values are added.
+        #
+        # The `male_weights` lean is REQUIRED, not decoration. A bare append takes
+        # 'no visible legwear' from 100% to 25% of the male pool -- socks on three
+        # men in four on every random male render that shows leg. The 2x weight is
+        # the same mechanism and the same figure `makeup_style` uses to lean its
+        # male pool to 'no makeup' -- never duplicate a value in an options list to
+        # weight it, the validator rejects duplicates.
+        #
+        # 2x, not more, because the lean is only HALF the conservatism here: the
+        # LEGWEAR_BY_STYLE allowlist independently forces absence in the styles men
+        # draw most, and those two effects stack. Measured over 3000 male seeds
+        # (488 voice the field): 49% of voiced draws land on a style that allows no
+        # socks at all -- `resort vacation` 31.6%, `bohemian` 12.9%, `edgy
+        # alternative` 4.9%, all correctly sockless -- so realized absence cannot
+        # fall below ~49% at ANY weight. At 2x it settles near 82%; at 6x it was
+        # measured at 96.9%, which left the field almost as silent for men as the
+        # empty pool it replaced.
+        #
+        # The three new values are gated by LEGWEAR_BY_STYLE in constraints.py, an
+        # allowlist scoped to THESE THREE ONLY. The female pool is deliberately left
+        # ungated: gating it would shift legwear prose across the shipped roster and
+        # `entry_hash` cannot see a prose-only change, so `--check` would not flag a
+        # single invalidated gallery image. Logged as its own backlog row instead.
         "female_options": ['no visible legwear', 'sheer black tights',
                             'opaque black tights', 'opaque cream tights',
                             'fishnet tights', 'patterned tights', 'sheer stockings',
                             'ribbed knee-high socks', 'over-the-knee socks',
                             'slouchy ankle socks'],
-        "male_options": ['no visible legwear'],
+        "male_options": ['no visible legwear', 'ribbed crew socks',
+                          'athletic crew socks', 'dark dress socks'],
+        "male_weights": {'no visible legwear': 2},
         "optional": True
     }),
     ("tattoo_placement", {

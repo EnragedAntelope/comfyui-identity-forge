@@ -1096,6 +1096,8 @@
         "double nostril piercing",
         "medusa piercing",
         "stretched lobes",
+        "bridge piercing",
+        "snake bites",
         "None"
       ]
     },
@@ -1829,6 +1831,9 @@
         "kitten heels",
         "mary janes",
         "cowboy boots",
+        "platform boots",
+        "hiking boots",
+        "clogs",
         "None"
       ]
     },
@@ -1989,6 +1994,7 @@
         "a low horizon line and open sky above",
         "a high horizon line and a sliver of sky",
         "the subject filling most of the frame",
+        "a strong diagonal across the frame",
         "None"
       ]
     },
@@ -2027,6 +2033,9 @@
         "ribbed knee-high socks",
         "over-the-knee socks",
         "slouchy ankle socks",
+        "ribbed crew socks",
+        "athletic crew socks",
+        "dark dress socks",
         "None"
       ]
     },

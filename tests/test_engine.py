@@ -1867,6 +1867,126 @@ class CompositionTests(unittest.TestCase):
                 self.assertNotEqual(comp, "centered symmetry", f"{shot!r} / {comp!r}")
 
 
+class LegwearMalePoolTests(unittest.TestCase):
+    """1.2.0: `legwear` stops being silent for every male character.
+
+    The field shipped 10 female options and exactly one male option (the absent
+    token), so it never said anything about a man. Three men's values were added,
+    with TWO independent conservatisms on top, which is why the realized absence
+    rate is far above the bare pool lean:
+
+    * `male_weights` leans the pool 2x to 'no visible legwear' (the `makeup_style`
+      precedent), and
+    * `LEGWEAR_BY_STYLE` removes socks entirely from the styles that wear none.
+
+    `legwear` is a DEFERRED field, so the style gate is a POOL FILTER in
+    `_resolve_deferred_fields`, not a CONSTRAINT_RULES exclusion -- a rule there
+    never runs. `test_the_style_gate_is_not_a_constraint_rule` pins that.
+    """
+
+    _NEW = ('ribbed crew socks', 'athletic crew socks', 'dark dress socks')
+
+    def test_the_three_male_values_ship_and_the_female_pool_is_untouched(self):
+        meta = FIELD_DEFINITIONS["legwear"]
+        self.assertEqual(len(meta["male_options"]), 4)
+        for value in self._NEW:
+            self.assertIn(value, meta["male_options"])
+            self.assertNotIn(value, meta["female_options"])
+        self.assertEqual(len(meta["female_options"]), 10)
+        self.assertEqual(meta["male_weights"], {"no visible legwear": 2})
+
+    def test_the_style_gate_is_not_a_constraint_rule(self):
+        # A CONSTRAINT_RULES exclusion on a deferred field is inert -- it was
+        # written that way first and measured at 132 violations. If someone
+        # "helpfully" re-adds one, this fails and points at the pool filter.
+        from data.constraints import CONSTRAINT_RULES
+        stray = [r for r in CONSTRAINT_RULES if r.get("excludes_field") == "legwear"]
+        self.assertEqual(stray, [], "legwear is deferred: a CONSTRAINT_RULES "
+                                     "exclusion on it never runs -- gate it in "
+                                     "_style_appropriate_legwear instead")
+
+    def test_no_gated_sock_reaches_a_disallowed_outfit_style(self):
+        from data.constraints import LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+        seed = 0
+        for style, allowed in LEGWEAR_BY_STYLE.items():
+            banned = _GATED_LEGWEAR - allowed
+            for _ in range(120):
+                _, js = generate_character(seed, "Male", {"outfit_style": style})
+                seed += 1
+                clothing = json.loads(js)["Clothing"]
+                if clothing.get("outfit_style") != style:
+                    continue
+                drawn = clothing.get("legwear")
+                if drawn:
+                    self.assertNotIn(drawn, banned, f"{style!r} drew {drawn!r}")
+
+    def test_every_new_male_value_is_reachable(self):
+        seen = set()
+        for seed in range(3000):
+            drawn = json.loads(
+                generate_character(seed, "Male", {})[1])["Clothing"].get("legwear")
+            if drawn:
+                seen.add(drawn)
+        for value in self._NEW:
+            self.assertIn(value, seen, f"{value!r} unreachable in 3000 male seeds")
+
+    def test_absence_stays_the_male_default(self):
+        # The point of the lean plus the style gate: adding three values must not
+        # flip the field from silent-for-every-man to socks-on-most-men. Measured
+        # at 90.8%; the floor is asserted well below it so ordinary drift in the
+        # outfit_style distribution does not turn this red.
+        absent = total = 0
+        for seed in range(3000):
+            drawn = json.loads(
+                generate_character(seed, "Male", {})[1])["Clothing"].get("legwear")
+            if not drawn:
+                continue
+            total += 1
+            absent += drawn == "no visible legwear"
+        self.assertGreater(total, 300, "too few voiced draws to measure")
+        self.assertGreater(absent / total, 0.75,
+                            f"absence fell to {absent / total:.1%}: socks became the "
+                            f"male default")
+
+
+class NewFieldOptionsTests(unittest.TestCase):
+    """1.2.0 field-option growth, and the reachability each addition needs."""
+
+    def test_new_footwear_values_are_reachable(self):
+        # A new shoe is excluded from EVERY outfit_style until FOOTWEAR_BY_STYLE
+        # lists it, and nothing else catches that -- these three were measured at
+        # 0/1500 draws before the allowlist rows were added.
+        seen = {json.loads(generate_character(seed, "Any", {})[1])["Clothing"]["footwear"]
+                for seed in range(1500)}
+        for value in ("platform boots", "hiking boots", "clogs"):
+            self.assertIn(value, seen, f"{value!r} unreachable in 1500 seeds")
+
+    def test_new_piercings_and_composition_values_are_reachable(self):
+        pierc, comp = set(), set()
+        for seed in range(1200):
+            data = json.loads(generate_character(seed, "Any", {})[1])
+            drawn = data["Jewelry & Nails"].get("piercings")
+            if drawn:
+                pierc.add(drawn)
+            comp.add(data["Setting & Shot"]["composition"])
+        for value in ("bridge piercing", "snake bites"):
+            self.assertIn(value, pierc, f"{value!r} unreachable in 1200 seeds")
+        self.assertIn("a strong diagonal across the frame", comp)
+
+    def test_the_new_composition_value_asserts_no_sky(self):
+        # So it must NOT have joined the 1.2.0 indoor sky exclusion.
+        from data.constraints import _SKY_COMPOSITIONS
+        self.assertNotIn("a strong diagonal across the frame", _SKY_COMPOSITIONS)
+
+    def test_the_grown_fields_are_still_flat(self):
+        from data.fields import FIELD_FAMILIES
+        for field in ("footwear", "piercings", "composition"):
+            with self.subTest(field=field):
+                self.assertNotIn(field, FIELD_FAMILIES)
+                self.assertNotIn("weights", FIELD_DEFINITIONS[field])
+                self.assertNotIn("male_weights", FIELD_DEFINITIONS[field])
+
+
 class CompositionLocationCoherenceTests(unittest.TestCase):
     """1.2.0: composition is gated against the PLACE, not only the camera.
 
@@ -6717,8 +6837,15 @@ class TattooAndLegwearTests(unittest.TestCase):
                 outfit = resolved.get("outfit_description") or ""
                 if not _BARE_LEG_RE.search(outfit):
                     offenders.append((seed, gender, legwear, outfit[:45]))
-                if gender == "Male":
-                    offenders.append((seed, "male pool leaked", legwear))
+                # Until 1.2.0 a visible male value WAS the contradiction: the male
+                # pool held the absent token alone, so anything else meant a female
+                # value had leaked. 1.2.0 gives men three real values, so the check
+                # becomes "it came from the man's own pool" rather than "there is
+                # nothing here". LegwearMalePoolTests pins the outfit_style gate and
+                # the absence rate; this only pins the pool boundary.
+                pool_key = "male_options" if gender == "Male" else "female_options"
+                if legwear not in FIELD_DEFINITIONS["legwear"][pool_key]:
+                    offenders.append((seed, f"{gender} pool leaked", legwear))
                 if "knee" in legwear and _TALL_BOOT_RE.search(resolved.get("footwear") or ""):
                     offenders.append((seed, gender, legwear, resolved.get("footwear")))
         self.assertEqual(offenders, [], f"legwear contradictions: {offenders[:5]}")
