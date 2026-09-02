@@ -661,26 +661,25 @@ class ContrapositiveRequirementTests(unittest.TestCase):
         # undone every pass. _requirement_pins must block the repair here and
         # fall back to warn-and-keep -- the lock still wins, and the loop
         # terminates instead of churning to the iteration cap.
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
+        # 1.2.0: these messages go to the logger, not stdout.
+        with self.assertLogs("nodes.identity_forge", level="INFO") as caught:
             _, js = generate_character(
                 3, "Male", {"lips_makeup": "classic red"}, wardrobe="Match gender")
         flat = self._flat(js)
         self.assertEqual(flat.get("lips_makeup"), "classic red")
         self.assertEqual(flat.get("makeup_style"), "no makeup")
-        self.assertIn("keeping lock", buf.getvalue())
+        self.assertIn("keeping lock", "\n".join(caught.output))
 
     def test_both_locked_still_warns_and_keeps(self):
         # A user locking both sides of a genuine contradiction keeps both.
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
+        with self.assertLogs("nodes.identity_forge", level="INFO") as caught:
             _, js = generate_character(
                 5, "Female",
                 {"makeup_style": "no makeup", "lips_makeup": "classic red"})
         flat = self._flat(js)
         self.assertEqual(flat.get("makeup_style"), "no makeup")
         self.assertEqual(flat.get("lips_makeup"), "classic red")
-        self.assertIn("keeping lock", buf.getvalue())
+        self.assertIn("keeping lock", "\n".join(caught.output))
 
     def test_unlocked_output_is_untouched(self):
         # The repair only runs when a target is locked, so ordinary random
@@ -3259,10 +3258,9 @@ class ManualSizeScaleTests(unittest.TestCase):
         self.assertNotIn("enormously tall and hulking", prose)
 
     def test_unknown_tier_is_ignored_loudly(self):
-        buffer = io.StringIO()
-        with contextlib.redirect_stdout(buffer):
+        with self.assertLogs("nodes.identity_forge", level="WARNING") as caught:
             prose, _ = generate_character(1, "Female", {}, size_scale="enormous")
-        self.assertIn("Unknown size_scale", buffer.getvalue())
+        self.assertIn("Unknown size_scale", "\n".join(caught.output))
         for phrase in ("barely six inches", "fifty feet"):
             self.assertNotIn(phrase, prose)
 

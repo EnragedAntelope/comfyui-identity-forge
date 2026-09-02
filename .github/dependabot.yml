@@ -1,0 +1,19 @@
+version: 2
+
+updates:
+  # GitHub Actions ONLY. Every action in ci.yml and publish_action.yml is
+  # SHA-pinned, which is the right call for supply-chain safety but means a
+  # pinned action never picks up its own security fixes -- this is what turns
+  # that into a PR instead of silent rot.
+  #
+  # There is deliberately no `pip` ecosystem entry: the pack ships
+  # `dependencies = []` and CI installs nothing, so a Python ecosystem watcher
+  # would have nothing to watch and would only add noise.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"

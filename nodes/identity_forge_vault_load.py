@@ -23,11 +23,19 @@ ComfyUI; it reuses the path-safety helpers from
 """
 from __future__ import annotations
 
+import logging
+
 import json
 from pathlib import Path
 from typing import Any
 
 # Dual import: package-relative inside ComfyUI, absolute when run standalone.
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
+
 try:
     from .identity_forge import merge_preset_documents
     from .identity_forge_vault_save import (
@@ -217,7 +225,7 @@ if _COMFY_AVAILABLE:
             if character and character != _NO_CHARACTERS:
                 own, _ = load_character(_vault_root(), character)
                 if own == "{}":
-                    print(f"[IdentityForgeVaultLoad] Saved character {character!r} not "
+                    _LOG.warning(f"Saved character {character!r} not "
                           f"found; passing upstream through.")
             character_json = merge_preset_documents(kwargs.get("upstream", ""), own)
             return io.NodeOutput(character_json)

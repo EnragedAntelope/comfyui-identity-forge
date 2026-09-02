@@ -20,7 +20,16 @@ Discovery uses the ComfyUI V3 ``comfy_entrypoint`` mechanism. Frontend widgets
 live in ``./js`` and are served via ``WEB_DIRECTORY``. The vault nodes also
 register a few read/management HTTP routes (see ``_register_vault_routes``).
 """
+import logging
+
 from comfy_api.latest import ComfyExtension, io
+
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so the pack deliberately installs no handler and
+#: never calls logging.basicConfig(). The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with the
+#: prints.
+_LOG = logging.getLogger(__name__)
 
 # Package-relative inside ComfyUI; absolute fallback keeps the entrypoint
 # importable in flatter layouts.
@@ -85,7 +94,7 @@ def _register_vault_routes() -> None:
             delete_characters, list_characters, rename_character,
         )
     except Exception as exc:  # noqa: BLE001 — never block node registration
-        print(f"[IdentityForge] Vault API routes not registered: {exc}")
+        _LOG.warning("Vault API routes not registered: %s", exc)
         return
 
     routes = PromptServer.instance.routes
@@ -143,7 +152,7 @@ def _register_vault_routes() -> None:
             return web.json_response({"error": str(exc)}, status=400)
         return web.json_response({"name": new_name})
 
-    print("[IdentityForge] Vault API routes registered.")
+    _LOG.info("Vault API routes registered.")
 
 
 _register_vault_routes()

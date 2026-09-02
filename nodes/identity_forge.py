@@ -19,6 +19,8 @@ Design notes
 """
 from __future__ import annotations
 
+import logging
+
 from collections import OrderedDict
 import json
 import random
@@ -27,6 +29,12 @@ from typing import Any
 
 # Dual import: package-relative inside ComfyUI (avoids polluting sys.path with
 # the generic "data"/"nodes" names), absolute when run standalone for tests.
+#: 1.2.0: runtime messages go to the logger, not stdout. ComfyUI owns root
+#: logging configuration, so there is deliberately no handler and no
+#: logging.basicConfig() call here. The logger NAME carries what the old
+#: '[NodeName]' message prefix used to say, so those prefixes went with them.
+_LOG = logging.getLogger(__name__)
+
 try:
     from ..data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -1807,7 +1815,7 @@ def _apply_constraints(
         key = (field, detail)
         if key not in warned:
             warned.add(key)
-            warnings.append(f"[IdentityForge] {detail}")
+            warnings.append(detail)
 
     for _ in range(_MAX_CONSTRAINT_ITERATIONS):
         changed = False
@@ -2554,7 +2562,7 @@ def _load_document(raw: str) -> dict:
     try:
         data = json.loads(raw)
     except (ValueError, TypeError):
-        print("[IdentityForge] Ignoring malformed preset JSON during merge.")
+        _LOG.warning("Ignoring malformed preset JSON during merge.")
         return {}
     return data if isinstance(data, dict) else {}
 
@@ -2928,9 +2936,8 @@ def generate_character(
         if phrase:
             locked_clean["height"] = phrase
         else:
-            print(f"[IdentityForge] Unknown size_scale {size_scale!r}; ignoring. "
-                  f"Expected 'Auto' or one of: "
-                  f"{', '.join(_SIZE_SCALE_PHRASES)}.")
+            _LOG.warning("Unknown size_scale %r; ignoring. Expected 'Auto' or "
+                         "one of: %s.", size_scale, ", ".join(_SIZE_SCALE_PHRASES))
 
     # Which scale, if any, the scene has to be able to show. Empty for ordinary
     # output, so every pool below is untouched unless a scale is genuinely in play.
@@ -2994,8 +3001,8 @@ def generate_character(
         ):
             continue
         del locked_clean[name]
-        print(f"[IdentityForge] '{name}={value}' is not valid for gender "
-              f"'{gender}'; re-randomizing within the {gender} pool.")
+        _LOG.info("'%s=%s' is not valid for gender '%s'; re-randomizing "
+                  "within the %s pool.", name, value, gender, gender)
 
     resolved = _randomize_fields(
         locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
@@ -3011,7 +3018,7 @@ def generate_character(
         resolved, gender, set(locked_clean), rng, presentation, scale_class
     )
     for message in warnings:
-        print(message)
+        _LOG.info("%s", message)
 
     # A costume override (outfit_description supplied by an archetype/cosplayer)
     # is already a complete outfit, so the separately-randomized garment fields
@@ -3313,7 +3320,7 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
     try:
         data = json.loads(raw)
     except (ValueError, TypeError):
-        print("[IdentityForge] Ignoring malformed archetype_json input.")
+        _LOG.warning("Ignoring malformed archetype_json input.")
         return {}
     if not isinstance(data, dict):
         return {}

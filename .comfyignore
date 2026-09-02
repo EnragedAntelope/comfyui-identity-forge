@@ -8,6 +8,7 @@ tests/
 scripts/
 gallery/
 .github/
+conftest.py
 package.json
 package-lock.json
 node_modules/
