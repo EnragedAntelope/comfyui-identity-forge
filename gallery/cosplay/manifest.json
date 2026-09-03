@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-09-02T09:23:20.283486",
-  "version": "1.2.0",
+  "generated": "2026-09-03T00:11:24.505306",
+  "version": "1.3.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -121,10 +121,11 @@
     "1.0.0",
     "1.0.1",
     "1.1.0",
-    "1.2.0"
+    "1.2.0",
+    "1.3.0"
   ],
-  "total_entries": 1999,
-  "entries_with_images": 1999,
+  "total_entries": 2023,
+  "entries_with_images": 2023,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -713,6 +714,14 @@
       "image": "images/Ant-Man.jpeg"
     },
     {
+      "name": "Apache Chief",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Super Friends",
+      "added": "1.3.0",
+      "image": "images/Apache Chief.jpeg"
+    },
+    {
       "name": "Aphrodite (Hercules)",
       "has_image": true,
       "gender": "Female",
@@ -809,12 +818,28 @@
       "image": "images/Aragorn.jpeg"
     },
     {
+      "name": "Arbiter",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Halo",
+      "added": "1.3.0",
+      "image": "images/Arbiter.jpeg"
+    },
+    {
       "name": "Arcanine",
       "has_image": true,
       "gender": "Male",
       "group": "Pokemon",
       "added": "0.95.0",
       "image": "images/Arcanine.jpeg"
+    },
+    {
+      "name": "Archon",
+      "has_image": true,
+      "gender": "Male",
+      "group": "StarCraft",
+      "added": "1.3.0",
+      "image": "images/Archon.jpeg"
     },
     {
       "name": "Ariel",
@@ -855,6 +880,14 @@
       "group": "Studio Ghibli",
       "added": "0.63.0",
       "image": "images/Arrietty Clock.jpeg"
+    },
+    {
+      "name": "Artanis",
+      "has_image": true,
+      "gender": "Male",
+      "group": "StarCraft",
+      "added": "1.3.0",
+      "image": "images/Artanis.jpeg"
     },
     {
       "name": "Artemis",
@@ -1103,6 +1136,14 @@
       "group": "Chrono Trigger",
       "added": "1.0.0",
       "image": "images/Ayla.jpeg"
+    },
+    {
+      "name": "Azucena Ortiz",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tekken",
+      "added": "1.3.0",
+      "image": "images/Azucena Ortiz.jpeg"
     },
     {
       "name": "Azula",
@@ -1639,6 +1680,14 @@
       "group": "The Boys",
       "added": "0.62.0",
       "image": "images/Black Noir.jpeg"
+    },
+    {
+      "name": "Black Orchid",
+      "has_image": true,
+      "gender": "Female",
+      "group": "DC",
+      "added": "1.3.0",
+      "image": "images/Black Orchid.jpeg"
     },
     {
       "name": "Black Panther",
@@ -2711,6 +2760,14 @@
       "group": "Black Butler",
       "added": "0.87.0",
       "image": "images/Ciel Phantomhive.jpeg"
+    },
+    {
+      "name": "Cinder",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Cinder.jpeg"
     },
     {
       "name": "Cinderella",
@@ -4305,6 +4362,14 @@
       "image": "images/Evil-Lyn.jpeg"
     },
     {
+      "name": "Eyedol",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Eyedol.jpeg"
+    },
+    {
       "name": "Ezio Auditore",
       "has_image": true,
       "gender": "Male",
@@ -4817,6 +4882,14 @@
       "image": "images/Gargamel.jpeg"
     },
     {
+      "name": "Gargos",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Gargos.jpeg"
+    },
+    {
       "name": "Garnet",
       "has_image": true,
       "gender": "Female",
@@ -4887,6 +4960,14 @@
       "group": "Flash Gordon",
       "added": "1.1.0",
       "image": "images/General Kala.jpeg"
+    },
+    {
+      "name": "General RAAM",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Gears of War",
+      "added": "1.3.0",
+      "image": "images/General RAAM.jpeg"
     },
     {
       "name": "Gengar",
@@ -5055,6 +5136,14 @@
       "group": "Demon Slayer",
       "added": "0.16.0",
       "image": "images/Giyu Tomioka.jpeg"
+    },
+    {
+      "name": "Glacius",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Glacius.jpeg"
     },
     {
       "name": "Glinda",
@@ -5735,6 +5824,14 @@
       "group": "Big Hero 6",
       "added": "0.77.0",
       "image": "images/Hiro Hamada.jpeg"
+    },
+    {
+      "name": "Hisako",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Hisako.jpeg"
     },
     {
       "name": "Hisoka Morow",
@@ -7321,6 +7418,14 @@
       "image": "images/Kim Possible.jpeg"
     },
     {
+      "name": "Kim Wu",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Kim Wu.jpeg"
+    },
+    {
       "name": "Kimberly (Space Ace)",
       "has_image": true,
       "gender": "Female",
@@ -8745,6 +8850,14 @@
       "image": "images/Malenia, Blade of Miquella.jpeg"
     },
     {
+      "name": "Malfurion Stormrage",
+      "has_image": true,
+      "gender": "Male",
+      "group": "World of Warcraft",
+      "added": "1.3.0",
+      "image": "images/Malfurion Stormrage.jpeg"
+    },
+    {
       "name": "Malory Archer",
       "has_image": true,
       "gender": "Female",
@@ -9031,6 +9144,14 @@
       "group": "Guilty Gear",
       "added": "0.88.0",
       "image": "images/May (Guilty Gear).jpeg"
+    },
+    {
+      "name": "Maya (Killer Instinct)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Maya (Killer Instinct).jpeg"
     },
     {
       "name": "Maya Fey",
@@ -10577,6 +10698,14 @@
       "image": "images/Olivier Armstrong.jpeg"
     },
     {
+      "name": "Omen",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Omen.jpeg"
+    },
+    {
       "name": "Omni-Man",
       "has_image": true,
       "gender": "Male",
@@ -10615,6 +10744,14 @@
       "group": "Transformers",
       "added": "0.7.0",
       "image": "images/Optimus Prime.jpeg"
+    },
+    {
+      "name": "Orchid",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Orchid.jpeg"
     },
     {
       "name": "Origami Tobiichi",
@@ -12017,6 +12154,14 @@
       "image": "images/Rocket Raccoon.jpeg"
     },
     {
+      "name": "Rocky Balboa",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Rocky",
+      "added": "1.3.0",
+      "image": "images/Rocky Balboa.jpeg"
+    },
+    {
       "name": "Roger Rabbit",
       "has_image": true,
       "gender": "Male",
@@ -12295,6 +12440,14 @@
       "group": "Red Dead Redemption",
       "added": "1.0.0",
       "image": "images/Sadie Adler.jpeg"
+    },
+    {
+      "name": "Sadira",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Sadira.jpeg"
     },
     {
       "name": "Sadness",
@@ -13609,6 +13762,14 @@
       "image": "images/Spike Spiegel.jpeg"
     },
     {
+      "name": "Spinal",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Spinal.jpeg"
+    },
+    {
       "name": "Spinel",
       "has_image": true,
       "gender": "Female",
@@ -14105,6 +14266,14 @@
       "image": "images/Tanya.jpeg"
     },
     {
+      "name": "Taroman",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Taroman",
+      "added": "1.3.0",
+      "image": "images/Taroman.jpeg"
+    },
+    {
       "name": "Tartaglia",
       "has_image": true,
       "gender": "Male",
@@ -14593,6 +14762,14 @@
       "image": "images/Thorn.jpeg"
     },
     {
+      "name": "Thrall",
+      "has_image": true,
+      "gender": "Male",
+      "group": "World of Warcraft",
+      "added": "1.3.0",
+      "image": "images/Thrall.jpeg"
+    },
+    {
       "name": "Thresh",
       "has_image": true,
       "gender": "Male",
@@ -14615,6 +14792,14 @@
       "group": "DC",
       "added": "0.69.0",
       "image": "images/Thunder (Anissa Pierce).jpeg"
+    },
+    {
+      "name": "Thunder (Killer Instinct)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Killer Instinct",
+      "added": "1.3.0",
+      "image": "images/Thunder (Killer Instinct).jpeg"
     },
     {
       "name": "Tiana",
@@ -15999,6 +16184,14 @@
       "group": "Borderlands",
       "added": "0.97.0",
       "image": "images/Zer0.jpeg"
+    },
+    {
+      "name": "Zeratul",
+      "has_image": true,
+      "gender": "Male",
+      "group": "StarCraft",
+      "added": "1.3.0",
+      "image": "images/Zeratul.jpeg"
     },
     {
       "name": "Zeri",
