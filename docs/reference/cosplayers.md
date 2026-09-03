@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**1999 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2023 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (380)
 
@@ -1185,7 +1185,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (173)
+## DC (175)
 
 ### DC
 
@@ -1205,6 +1205,7 @@
 - **Black Adam** (M)
 - **Black Canary** (F)
 - **Black Manta** (M, masked)
+- **Black Orchid** (F)
 - **Blackfire** (F)
 - **Bloodsport** (M, prop)
 - **Blue Beetle (Jaime Reyes)** (M, masked)
@@ -1355,6 +1356,10 @@
 ### Fables
 
 - **Bloody Mary** (F)
+
+### Super Friends
+
+- **Apache Chief** (M, giant)
 
 ### The Sandman
 
@@ -1960,7 +1965,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (228)
+## Movies & TV (230)
 
 ### A Nightmare on Elm Street
 
@@ -2310,6 +2315,10 @@
 
 - **RoboCop** (M, masked)
 
+### Rocky
+
+- **Rocky Balboa** (M)
+
 ### Scooby-Doo
 
 - **Daphne Blake** (F)
@@ -2365,6 +2374,10 @@
 ### Stranger Things
 
 - **Eleven** (F)
+
+### Taroman
+
+- **Taroman** (M, giant, masked)
 
 ### The 100
 
@@ -2642,7 +2655,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (452)
+## Video Games (472)
 
 ### A Certain Scientific Railgun
 
@@ -2899,6 +2912,10 @@
 - **Azura** (F)
 - **Lucina** (F, prop)
 
+### Gears of War
+
+- **General RAAM** (M, giant, masked, prop)
+
 ### Genshin Impact
 
 - **Furina** (F)
@@ -2940,6 +2957,7 @@
 
 ### Halo
 
+- **Arbiter** (M, giant, masked, prop)
 - **Cortana** (F)
 - **Master Chief** (M, masked, prop)
 
@@ -2962,6 +2980,21 @@
 ### Kid Icarus
 
 - **Palutena** (F, prop)
+
+### Killer Instinct
+
+- **Cinder** (M, masked)
+- **Eyedol** (M, masked, prop)
+- **Gargos** (M, masked)
+- **Glacius** (M, masked)
+- **Hisako** (F, prop)
+- **Kim Wu** (F, prop)
+- **Maya (Killer Instinct)** (F, +1 alt, prop)
+- **Omen** (M, masked)
+- **Orchid** (F, +1 alt, prop)
+- **Sadira** (F, prop)
+- **Spinal** (M, masked, prop)
+- **Thunder (Killer Instinct)** (M, prop)
 
 ### Kingdom Hearts
 
@@ -3235,8 +3268,11 @@
 
 ### StarCraft
 
+- **Archon** (M, giant, masked)
+- **Artanis** (M, masked)
 - **Nova Terra** (F)
 - **Sarah Kerrigan** (F)
+- **Zeratul** (M, masked)
 
 ### Street Fighter
 
@@ -3300,6 +3336,7 @@
 
 - **Anna Williams** (F)
 - **Asuka Kazama** (F)
+- **Azucena Ortiz** (F)
 - **Christie Monteiro** (F)
 - **Heihachi Mishima** (M)
 - **Hwoarang** (M)
@@ -3383,7 +3420,9 @@
 - **Arthas Menethil** (M, masked, prop)
 - **Illidan Stormrage** (M, prop)
 - **Jaina Proudmoore** (F, prop)
+- **Malfurion Stormrage** (M, prop)
 - **Sylvanas Windrunner** (F, prop)
+- **Thrall** (M, prop)
 - **Tyrande Whisperwind** (F)
 
 ### Xenoblade Chronicles

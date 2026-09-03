@@ -446,6 +446,7 @@ const COSPLAYER_FRANCHISES = {
     "Black Adam",
     "Black Canary",
     "Black Manta",
+    "Black Orchid",
     "Blackfire",
     "Bloodsport",
     "Blue Beetle (Jaime Reyes)",
@@ -1015,6 +1016,9 @@ const COSPLAYER_FRANCHISES = {
   "Gargoyles": [
     "Goliath"
   ],
+  "Gears of War": [
+    "General RAAM"
+  ],
   "Geico": [
     "Geico Gecko"
   ],
@@ -1095,6 +1099,7 @@ const COSPLAYER_FRANCHISES = {
     "Michael Myers"
   ],
   "Halo": [
+    "Arbiter",
     "Cortana",
     "Master Chief"
   ],
@@ -1304,6 +1309,20 @@ const COSPLAYER_FRANCHISES = {
     "Ragyo Kiryuin",
     "Ryuko Matoi",
     "Satsuki Kiryuin"
+  ],
+  "Killer Instinct": [
+    "Cinder",
+    "Eyedol",
+    "Gargos",
+    "Glacius",
+    "Hisako",
+    "Kim Wu",
+    "Maya (Killer Instinct)",
+    "Omen",
+    "Orchid",
+    "Sadira",
+    "Spinal",
+    "Thunder (Killer Instinct)"
   ],
   "Kim Possible": [
     "Bonnie Rockwaller",
@@ -2090,6 +2109,9 @@ const COSPLAYER_FRANCHISES = {
   "RoboCop": [
     "RoboCop"
   ],
+  "Rocky": [
+    "Rocky Balboa"
+  ],
   "Rosario + Vampire": [
     "Moka Akashiya"
   ],
@@ -2367,8 +2389,11 @@ const COSPLAYER_FRANCHISES = {
     "Star Butterfly"
   ],
   "StarCraft": [
+    "Archon",
+    "Artanis",
     "Nova Terra",
-    "Sarah Kerrigan"
+    "Sarah Kerrigan",
+    "Zeratul"
   ],
   "Steins;Gate": [
     "Makise Kurisu"
@@ -2436,6 +2461,9 @@ const COSPLAYER_FRANCHISES = {
     "Princess Mononoke",
     "Totoro"
   ],
+  "Super Friends": [
+    "Apache Chief"
+  ],
   "Super Mario": [
     "Bowser",
     "Daisy",
@@ -2476,6 +2504,9 @@ const COSPLAYER_FRANCHISES = {
   "Tank Girl": [
     "Tank Girl"
   ],
+  "Taroman": [
+    "Taroman"
+  ],
   "Tarzan": [
     "Jane Porter",
     "Tarzan"
@@ -2492,6 +2523,7 @@ const COSPLAYER_FRANCHISES = {
   "Tekken": [
     "Anna Williams",
     "Asuka Kazama",
+    "Azucena Ortiz",
     "Christie Monteiro",
     "Heihachi Mishima",
     "Hwoarang",
@@ -2918,7 +2950,9 @@ const COSPLAYER_FRANCHISES = {
     "Arthas Menethil",
     "Illidan Stormrage",
     "Jaina Proudmoore",
+    "Malfurion Stormrage",
     "Sylvanas Windrunner",
+    "Thrall",
     "Tyrande Whisperwind"
   ],
   "Wreck-It Ralph": [

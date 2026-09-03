@@ -24255,6 +24255,562 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
     },
 
+    # --- 1.3.0 ------------------------------------------------------------
+    "Azucena Ortiz": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        # Tekken 8. The asymmetric hair is authored in the costume because
+        # `hair_style` has no one-side-braided value.
+        "costume": "a fitted athletic sports-bra top leaving the midriff bare under a bright "
+                   "open-front jacket patterned with bold geometric Peruvian weaving in red, "
+                   "orange and turquoise, high-waisted athletic leggings printed with large "
+                   "botanical leaves down one leg only, high-traction running sneakers, large "
+                   "silver hoop earrings, and a multicolored feather fascinator pinned with a "
+                   "silver clasp beside a flower over one ear, with the dark hair braided tight "
+                   "and hung with small silver danglers on one side and left long, loose and "
+                   "side-swept on the other",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan",
+                     "ethnicity": "Peruvian"},
+    },
+    "Taroman": {
+        "franchise": "Taroman",
+        "gender": "Male",
+        # Tokusatsu parody built on Taro Okamoto's Tower of the Sun. The suit IS
+        # the body -> covers_body; the sun mask IS the head -> covers_face.
+        # Deliberate asymmetry is the point, so nothing here is symmetrized.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a sleek metallic silver bodysuit sliced across the torso and limbs with "
+                   "bold jagged red and black abstract linework in deliberately asymmetric "
+                   "patterns, three red eye-shaped crests set in a row across the chest, and a "
+                   "matching red eye motif on the palm of each hand, on a colossal "
+                   "skyscraper-high frame",
+        "mask": "a broad metallic golden face shaped as a stylized radiating sun, ringed by "
+                "eleven flame-like horns rising from the crown and sides, with flat abstract "
+                "asymmetric features in place of a nose and mouth",
+        "size_scale": "giant",
+        "scale_prose": "colossal and over a hundred feet tall",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Rocky Balboa": {
+        "franchise": "Rocky",
+        "gender": "Male",
+        # Mid-1980s championship look (Rocky III / IV). Gloves and boots are WORN,
+        # so they stay in the costume and there is no `prop`.
+        "costume": "high-waisted satin boxing trunks in vertical red and white stripes with a "
+                   "blue star-spangled waistband, oversized bright red leather boxing gloves "
+                   "laced over white wrist tape, white high-top lace-up boxing boots with black "
+                   "trim, striped leg warmers pulled to the calves, and a thin gold boxing-glove "
+                   "pendant on a chain at the collarbone, over a bare, heavily cut and vascular "
+                   "torso beaded with sweat, with a drooping left eyelid and small bloodied cuts "
+                   "over the brows",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_texture": "wavy", "hair_style": "mullet",
+                      "eye_color": "dark brown", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "light medium",
+                     "fitness_level": "muscular"},
+    },
+    "Black Orchid": {
+        "franchise": "DC",
+        "gender": "Female",
+        # The Gaiman / Justice League Dark plant-elemental avatar, NOT the classic
+        # purple bodysuit -- that look near-duplicates the shipped `Huntress`.
+        "covers_body": True,
+        # The elemental form sheds petals -- the same worn-scale effect idiom as
+        # `Hisako`'s ash drift. It is what reads as "plant elemental" rather than
+        # "woman in a flower dress"; the petal body and the violet-glowing eyes
+        # are the canon identifiers, so the drift supports them rather than
+        # replacing them.
+        "costume": "a seamless body formed entirely of layered dark purple-black orchid petals "
+                   "with no join or garment anywhere, a tall upswept collar of open petals "
+                   "rising behind the neck and framing the face, finer petals tapering down "
+                   "the arms in place of gloves, and a slow drift of loose petals lifting off "
+                   "the body in a faint violet glow, over smooth, flawless deep violet skin",
+        "eyes": "glowing violet",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "wavy", "makeup_style": "editorial makeup"},
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Apache Chief": {
+        "franchise": "Super Friends",
+        "gender": "Male",
+        # 1970s Super Friends. Human proportions scaled up symmetrically; the
+        # clothing grows with him, so nothing is torn or ill-fitting.
+        "costume": "a thick red fabric headband tied across the forehead, a sleeveless "
+                   "open-front red vest over a bare muscular chest, a plain tan loincloth "
+                   "secured by a wide dark brown belt, knee-high fringed brown moccasin boots, "
+                   "and matching red bands at both wrists, scaled up to the colossal body of a "
+                   "fifty-foot giant",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "pin straight", "hair_style": "worn down",
+                      "eye_color": "dark brown", "facial_hair": "clean shaven"},
+        "size_scale": "giant",
+        "scale_prose": "colossal and fifty feet tall",
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "warm tan",
+                     "ethnicity": "Native American"},
+    },
+
+    # --- Killer Instinct --------------------------------------------------
+    "Cinder": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        # Cleared against `Magma` / `Firestorm` by the Ultratech restraint rig --
+        # the hardware, not the glow, is the silhouette, so it leads the costume.
+        "covers_face": True,
+        "covers_body": True,
+        # Same fix as `Glacius`: the first pass led with the worn plating and came
+        # back as a man in an orange suit. The BODY has to lead the costume for a
+        # non-human body to render at all -- the plating is what is clamped ONTO
+        # it, not the subject of the sentence.
+        "costume": "an even, all-over coat of roaring molten orange flame over the whole body, "
+                   "burning white-hot in the ridged cooled-magma seams that run along the torso "
+                   "and limbs, with dark carbon-fiber Ultratech restraint plates clamped over "
+                   "the chest and shoulders, mechanical restraints wrapping both forearms, and "
+                   "matching dark greaves on the shins",
+        "mask": "a head wholly engulfed in roaring orange flame with no solid features, its eye "
+                "openings burning intense yellow, a dark metal brace clamped over the temples",
+        "physique": {"body_type": "athletic", "height": "tall"},
+    },
+    "Eyedol": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        # The split head is the character. covers_face carries it. The glowing
+        # body art is worded as MARKINGS, never "tattoo" -- test_engine.py:7343
+        # bans the word on any covers_face + covers_body entry.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "thick coiled ropes slung across the torso, a single heavy iron pauldron on "
+                   "the right shoulder, and a tattered loincloth, over uniform, all-over ashen "
+                   "grey ogre hide with swirling purple-glowing mystical markings covering one "
+                   "half of the body, on beastly digitigrade legs ending in three-toed feet "
+                   "with heavy blunt nails",
+        "mask": "a heavy ogre head split cleanly in two down the middle with the brain exposed "
+                "in the gap and red and purple lightning crackling between the halves, the "
+                "right half carrying a glowing red eye above a snapped-off horn and the left "
+                "half a glowing purple eye beneath a long intact horn",
+        "prop": "a massive studded war club laced with human skulls",
+        "physique": {"body_type": "plus size", "height": "very tall"},
+    },
+    "Gargos": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        # Distinct from `Etrigan the Demon` (yellow scales, small horns): cracked
+        # volcanic stone, ram horns, hooves, shredded wings.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an enormous pair of leathery bat wings shredded and frayed at the edges "
+                   "spread from the back, over uniform, all-over cracked dark grey volcanic "
+                   "stone hide, with blackened claws on five-fingered hands, cloven hooves in "
+                   "place of feet, and dark smoky purple energy crackling off the whole body",
+        "mask": "a horned demonic face with two massive ribbed ram horns sweeping back from "
+                "the brow, long pointed ears, pupil-less glowing yellow eyes, and a wide mouth "
+                "full of razor fangs",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Glacius": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        # An ALIEN, not a human in ice -- which is what separates it from
+        # `Iceman` / `Killer Frost` / `Mr. Freeze` / `Sub-Zero`. The digit and toe
+        # counts are the silhouette, so they go in anatomy_note where they render
+        # BEFORE the exo-shell clause.
+        "covers_face": True,
+        "covers_body": True,
+        "anatomy_note": "four long digits on each hand and two broad gripping toes on each "
+                        "foot, on a long flexible neck",
+        # First pass rendered as an ordinary man wearing an ice suit: the costume
+        # described the shell but never said what the BODY was made of, and with
+        # a transparent containment suit over it the model supplied human skin.
+        # The skin-native marker is what anchors an alien body (see the module
+        # docstring on non-natural skin).
+        "costume": "a tall hairless alien body of solid translucent aquamarine ice, glowing "
+                   "pulsing blue lines running the length of its limbs and a glowing apparatus "
+                   "set on the chest and running up the neck, sheathed in a jagged crystalline "
+                   "exo-shell of deep blue and frosted white ice that bristles with sharp "
+                   "erratic spikes across the shoulders, back and forearms, over uniform, "
+                   "all-over translucent aquamarine alien flesh",
+        "mask": "a smooth hairless translucent aquamarine alien head, blank and featureless "
+                "across the brow, with a pair of downward-pointing insectoid mandibles hanging "
+                "at the jaw and eyes burning neon blue",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Hisako": {
+        "franchise": "Killer Instinct",
+        "gender": "Female",
+        # Onryo. Distinct from the shipped `Samara` by the kimono, the broken head
+        # tilt, the mouth and the naginata. Face is authored, so makeup_style is
+        # pinned (test_engine.py:3473).
+        # First pass rendered as a living woman in a nice kimono: every onryo trait
+        # trailed a long garment list. Front-loaded so the broken neck, the hair
+        # over the face and the ash drift lead the sentence.
+        "costume": "the head snapped over to one side at a broken angle, long stringy black "
+                   "hair hanging forward across a corpse-pale face, and a drift of dark smoke, "
+                   "ash and embers rising off the body, over a weathered rose-pink kimono "
+                   "printed with faded white flowers, hanging loosely off both shoulders and "
+                   "torn off raggedly at the knees over a tightly bound dark red obi sash, "
+                   "worn barefoot with the feet and shins caked in dried grave mud, and a "
+                   "golden neko-te finger blade on the left hand",
+        "eyes": "sunken with pitch-black sclera and pinprick white",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "pin straight", "hair_style": "worn down",
+                      "makeup_style": "gothic dark makeup"},
+        "prop": "a long naginata polearm with a curved blade and a tattered red ribbon tied "
+                "below the hilt",
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "very pale"},
+    },
+    "Kim Wu": {
+        "franchise": "Killer Instinct",
+        "gender": "Female",
+        # A plain entry (no covers_face / covers_body and no _FULL_COVER_RE match),
+        # so the dragon tattoo in the costume prose is allowed.
+        "costume": "a short black button-up vest leaving the midriff bare, a vivid magenta cape "
+                   "with blue trim cut asymmetrically with a single sleeve covering only the "
+                   "left arm, black compression shorts with a magenta martial-arts belt marked "
+                   "in gold characters, black thigh-high socks under magenta boot-sandals with "
+                   "gold buckles, a single fingerless glove on the left hand, and a rose-red "
+                   "and gold dragon tattoo winding the full length of the right arm and across "
+                   "the back of the hand",
+        "signature": {"hair_color": "bright red", "hair_length": "long",
+                      "hair_style": "high ponytail", "eye_color": "dark brown"},
+        "prop": "a pair of nunchaku wrapped in golden fire",
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
+    },
+    "Maya (Killer Instinct)": {
+        "franchise": "Killer Instinct",
+        "gender": "Female",
+        # Modern (2013) design is canonical here; the 1996 jungle look ships as an
+        # alternate rather than a second roster entry, which would duplicate
+        # `Shanna the She-Devil` / `Sheena, Queen of the Jungle`. The alternate
+        # carries its own `signature` because the hair changes between looks --
+        # that is what keeps a two-variant character to ONE entry.
+        "costume": "a form-fitting corset-style leather bodice in dark brown and black heavily "
+                   "plated with ornate polished gold across the collarbone, chest and hips, "
+                   "dark leather strapping and gold bracers wrapping the upper arms and "
+                   "forearms, heavy gold-and-black armored boots running to the knee, and "
+                   "thigh sheaths for a pair of crescent daggers, with a long battle scar down "
+                   "one leg",
+        "costumes": [
+            {
+                # KI2 (1996) / the 2013 Retro costume.
+                "costume": "a minimal yellow-and-black leopard-pelt halter bikini top and a "
+                           "matching low-slung leopard-pelt loincloth skirt open at both sides "
+                           "on thin black leather ties, black leather thigh straps carrying "
+                           "dagger sheaths and pouches, matching leopard-pelt bracers and "
+                           "shin-high greaves, a tribal tiara set with a large green gemstone "
+                           "on the forehead, and a heavy gold medallion at the waist, worn "
+                           "barefoot",
+                "signature": {"hair_color": "light blonde", "hair_length": "long",
+                              "hair_texture": "thick and voluminous",
+                              "hair_style": "crown braid", "eye_color": "dark brown"},
+            },
+        ],
+        "signature": {"hair_color": "dark blonde", "hair_length": "very long",
+                      "hair_style": "locs", "eye_color": "dark brown"},
+        "prop": "a pair of crescent-bladed ceremonial daggers",
+        "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "olive"},
+    },
+    "Omen": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a body of dark smoky blue shadow burning to stark white at the fingertips "
+                   "and toes, with bright blue and white lightning crackling across it, a "
+                   "glowing skeletal ribcage of thick vein-like conduits visible through the "
+                   "translucent chest and branching down the arms and legs, and hands and feet "
+                   "tapering to sharp glowing claw points, over an even, all-over coat of "
+                   "shadow smoke",
+        "mask": "a fixed metallic Japanese oni mask sitting flush where the face would be, two "
+                "horns rising from its brow, its expression despondent and glaring, its eye "
+                "holes hollow and glowing",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Orchid": {
+        "franchise": "Killer Instinct",
+        "gender": "Female",
+        # Modern (2013) tactical design canonical; the 1994 leotard ships as an
+        # alternate. Its printed "HOT" lettering is CANON and is written as such --
+        # current t2i models render short in-image text badly, but the data has to
+        # outlive the model. See docs/architecture.md on canon over model limits.
+        "costume": "a structured green armored bustier layered over a white crop top, black "
+                   "cut-off tactical gloves with white bandages wrapped at the wrists, a "
+                   "compact computer strapped to the right forearm, a single green cloth band "
+                   "tied around the left bicep, short green tactical shorts on a utility belt "
+                   "hung with pouches, a single green shin guard strapped over the right leg, "
+                   "ankle-high heeled combat boots, and large multi-lens tactical goggles "
+                   "pushed up above the forehead",
+        "costumes": [
+            {
+                # KI (1994).
+                "costume": "a tight green leotard with yellow lining across the thighs and the "
+                           "word HOT printed vertically in yellow block letters down one side, "
+                           "a green and yellow headband tied around the head, green gloves, a "
+                           "single shin guard on the right leg held by a wrapped cloth strap, "
+                           "and ankle-length green high-heeled combat boots with yellow cuffs "
+                           "and extra weapon straps",
+            },
+        ],
+        "signature": {"hair_color": "raven black", "hair_length": "very long",
+                      "hair_texture": "sleek straight", "hair_style": "worn down",
+                      "makeup_style": "bold glam"},
+        "prop": "a pair of eskrima batons blazing with bright yellow plasma light",
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "warm tan"},
+    },
+    "Sadira": {
+        "franchise": "Killer Instinct",
+        "gender": "Female",
+        # A decorative eye mask is not `covers_face` -- the face is visible, so the
+        # authored eyes pin `makeup_style` like any other authored face.
+        "costume": "a mulberry hooded assassin's wrap drawn close around the head, dark "
+                   "severely ripped and laddered stockings, large bladed metal gauntlets on "
+                   "both forearms with two long talons projecting past the knuckles, a small "
+                   "decorative mask accenting the eyes, and glowing spider silk spooling out of "
+                   "the palms and chest",
+        "eyes": "unnaturally glowing yellow",
+        "signature": {"hair_color": "jet black", "hair_length": "slightly past shoulders",
+                      "hair_texture": "pin straight", "hair_style": "worn down",
+                      "makeup_style": "gothic dark makeup"},
+        "prop": "a fan of threaded throwing knives trailing spider silk",
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "very pale"},
+    },
+    "Spinal": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        "bald": True,
+        "covers_face": True,
+        "covers_body": True,
+        # First pass rendered as a living man twice running. The costume never said
+        # SKELETON -- "an even, all-over coat of aged cracked bone" reads as a
+        # covering over a body. Rewritten onto the shipped skeleton idiom
+        # (`Sans`, `Papyrus`, `Hector Rivera`): a short list-style garment run
+        # ending "on a bare weathered skeleton frame", plus a `very slim` body
+        # type so the physique sentence stops asserting muscle against it.
+        "costume": "a bare fleshless skeleton from grinning skull to foot bones, of aged cracked "
+                   "bone stained with dirt, moss and sea grime, every rib, vertebra and finger "
+                   "bone exposed, hung with thick "
+                   "ropes binding a large splintered wooden ship's wheel flat against the back, "
+                   "a shredded dark vest, a tattered cloth kilt on a heavy leather belt, "
+                   "buckled leather pirate boots to the knee, and metal armbands on the "
+                   "forearms",
+        "mask": "a bare weathered human skull wrapped in a tattered dark red bandana, its "
+                "hollow sockets burning with green spectral fire and its fleshless jaw hanging "
+                "wide open",
+        "prop": "a broad serrated cutlass with a glowing green edge, paired with a heavy shield "
+                "carved as a kraken's face and cut with glowing green runes",
+        "physique": {"body_type": "very slim", "height": "tall"},
+    },
+    "Thunder (Killer Instinct)": {
+        "franchise": "Killer Instinct",
+        "gender": "Male",
+        # Nez Perce warrior, redesigned in 2013 with the tribe. No headdress.
+        # Parenthesised because the roster already ships `Thunder (Anissa Pierce)`
+        # and a bare key would be unfindable in the dropdown.
+        # The warpaint is the face and did not render when it trailed the garment
+        # list -- front-loaded, same fix as `Hisako`.
+        "costume": "bold yellow and black warpaint split in broad blocks across the eyes, "
+                   "cheeks and jaw, a multi-tiered beaded choker at the throat, dark leather "
+                   "arm bracers worked with pink and green geometric Nez Perce beadwork, "
+                   "buckskin trousers with matching geometric beadwork down the sides, a thick "
+                   "leather belt with a large round buckle, and handmade moccasins, over a bare "
+                   "heavily muscled chest",
+        "signature": {"hair_color": "jet black", "hair_length": "lower back",
+                      "hair_style": "pompadour", "eye_color": "dark brown",
+                      "facial_hair": "clean shaven"},
+        "prop": "a pair of steel trade tomahawks with worn wooden hafts",
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "warm brown",
+                     "ethnicity": "Native American"},
+    },
+
+    # --- Gears of War / Halo / StarCraft / Warcraft ------------------------
+    "General RAAM": {
+        "franchise": "Gears of War",
+        "gender": "Male",
+        "bald": True,
+        # Ten-foot Locust. Face is VISIBLE, but it is a non-human face, so it goes
+        # through covers_face + mask ("what the head looks like"). The Kryll cloud
+        # is a worn-scale effect, like Hisako's ash drift.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "custom-molded dark Locust battle armor with massive raised metal pauldrons "
+                   "rising over the collarbones, a long heavy black leather kama split at the "
+                   "front and hanging past the shins from a wide combat belt, an oversized "
+                   "serrated combat knife sheathed at the hip, and heavy plated boots and "
+                   "gauntlets, over uniform, all-over pale grey scaled hide, wrapped in a "
+                   "swirling dark cloud of small bat-like kryll circling close to the body, on "
+                   "a colossal ten-foot frame",
+        "mask": "a broad reptilian head locked in a permanent snaggle-toothed snarl beneath "
+                "heavy bony brow ridges, the right brow drooping lower than the left over "
+                "deep-golden eyes, with a dark leathery strip running like a stiff crest down "
+                "the center of the bald scalp",
+        "prop": "a heavy belt-fed Troika machine gun, a weapon normally bolted to a tripod, "
+                "carried level in one hand",
+        "size_scale": "giant",
+        "scale_prose": "colossal and nearly ten feet tall",
+        "physique": {"body_type": "plus size", "height": "very tall",
+                     "shoulder_width": "very broad"},
+    },
+    "Arbiter": {
+        "franchise": "Halo",
+        "gender": "Male",
+        # Thel 'Vadam, Sangheili. The four-mandible jaw, the two-thumbed hands and
+        # the S-jointed digitigrade legs are the silhouette, so the limb/digit
+        # counts go in anatomy_note where they render BEFORE the armor clause.
+        "covers_face": True,
+        "covers_body": True,
+        "anatomy_note": "four fingers on each hand made up of two thumbs and two long primary "
+                        "digits, and double-jointed digitigrade legs bent in a deep forward "
+                        "s-curve",
+        "costume": "the ancient ceremonial Kaidon-Arbiter harness of sharp overlapping "
+                   "weathered bronze and copper plates etched with archaic Covenant glyphs, "
+                   "cut away to leave much of the torso bare, with a small flashlight module "
+                   "clamped to the left shoulder, over uniform, all-over dark grey-brown scaled "
+                   "hide, on a towering eight-foot frame",
+        "mask": "a heavy reptilian head with a quad-hinged jaw splitting into four sharp-toothed "
+                "mandibles below deeply recessed eyes, crowned by a pointed bronze helm that "
+                "sweeps back into a long tapering crest",
+        "prop": "a two-pronged energy sword on a curved hand-forged dark gold-bronze hilt, "
+                "projecting a pair of parallel hook-curved plasma tines that burn pale "
+                "salmon-orange shading to fiery gold and shed rippling arcs of heat",
+        "size_scale": "giant",
+        "scale_prose": "towering and nearly eight feet tall",
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "shoulder_width": "very broad"},
+    },
+    "Zeratul": {
+        "franchise": "StarCraft",
+        "gender": "Male",
+        # Dark Templar. The first Protoss on the roster. The warp blade is
+        # projected from a WORN gauntlet, so it stays in the costume and there is
+        # no `prop` -- worn items never go in prop.
+        "covers_face": True,
+        "covers_body": True,
+        "anatomy_note": "long digitigrade legs ending in three broad toes",
+        "costume": "a tattered drab-brown hooded cloak and a plain loincloth, heavy asymmetric "
+                   "bronze and copper pauldrons etched with angular geometric patterns, simple "
+                   "leather and cloth bindings wrapping the shins and feet, and a gauntlet on "
+                   "the right forearm projecting a long crackling blade of brilliant green "
+                   "energy, over uniform, all-over mottled slate-grey leathery alien hide "
+                   "creased deep with age",
+        "mask": "a narrow featureless alien head dominated by sharp prominent brow ridges, "
+                "with short severed stumps of nerve cords cropped close at the back of the "
+                "skull",
+        "eyes": "glowing neon green",
+        "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "Artanis": {
+        "franchise": "StarCraft",
+        "gender": "Male",
+        # Daelaam Hierarch, Legacy of the Void. Deliberately the opposite
+        # silhouette to Zeratul: gilded knight vs ragged rogue.
+        "covers_face": True,
+        "covers_body": True,
+        "anatomy_note": "long digitigrade legs ending in three broad toes",
+        "costume": "heavy ornate templar armor of polished gold and deep blue, layered with "
+                   "intricate crests and set with glowing cyan energy cores at the chest and "
+                   "shoulders, with matching plated gauntlets projecting twin blades of "
+                   "blue-white energy from the wrists, over uniform, all-over smooth blue-grey "
+                   "alien hide",
+        "mask": "an open-faced golden helm framing a sharp angular featureless alien face, from "
+                "the back of which several long thick nerve cords fall to the shoulders, each "
+                "cut off in a raw truncated end",
+        "eyes": "glowing gold",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Archon": {
+        "franchise": "StarCraft",
+        "gender": "Male",  # genderless merged entity -- see Cyberman / Robby the Robot
+        # Two Protoss Templar merged into one psionic being (StarCraft II).
+        # Written against the maintainer-supplied reference image, which is the
+        # dark gunmetal-and-cyan model, NOT the golden Khalai skin: the face is
+        # PLAIN pale bone, not hidden inside a fireball.
+        #
+        # The hands are canonically detached and the body canonically hovers,
+        # but "floating"/"detached" is banned -- an unexplained gap is a hole a
+        # t2i model fills with a person (the Bill Cipher bug). So each gap is
+        # written as what SPANS it: the hands are strung to the shoulders on
+        # arcs of energy, and the tapering spike is carried in the plasma
+        # column. Canon preserved, no gap left unexplained.
+        "covers_face": True,
+        "covers_body": True,
+        "anatomy_note": "each large hand carried far out to one side at the end of a long "
+                        "bright crackling arc of energy running down from the shoulder in "
+                        "place of an arm",
+        "costume": "angular dark gunmetal and charcoal Protoss plating cut with bright glowing "
+                   "cyan seams and set with inset glowing cyan gems, worn as a segmented "
+                   "chestpiece, a heavy hanging groin plate and a tall pointed crest, with "
+                   "enormous curved talon-shaped pauldrons rising off both shoulders to flank "
+                   "the head, and matching dark armored gauntlets on the two hands, over "
+                   "uniform, all-over pale luminous bone-white energy, the torso tapering below "
+                   "the hips into a long downward-pointing armored spike sheathed in a churning "
+                   "column of cyan and blue plasma, with the whole body wrapped in a swirling "
+                   "cloud of that plasma shot through with white lightning, on a colossal "
+                   "twelve-foot frame",
+        "mask": "a bare elongated angular Protoss head of pale bone-white, narrowing to a "
+                "sharp smooth beak-like face lit by a pair of narrow glowing eyes, with a "
+                "tall dark armored crest rising from the crown and curved plates sweeping "
+                "down either side of the jaw",
+        "size_scale": "giant",
+        "scale_prose": "colossal and twelve feet tall",
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "shoulder_width": "very broad"},
+    },
+    "Thrall": {
+        "franchise": "World of Warcraft",
+        "gender": "Male",
+        # Orc shaman / former Warchief. The roster's WoW entries are all human or
+        # elf; there is no orc anywhere in it.
+        "costume": "heavy dark ringmail over a fur-lined leather jerkin, enormous spiked "
+                   "pauldrons trimmed with coarse black fur, broad plated gauntlets and "
+                   "fur-topped boots, and a wide studded belt hung with shaman totems and "
+                   "carved bone fetishes, over smooth, flawless green orcish skin, with two "
+                   "heavy lower tusks jutting up from the jaw",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_style": "loose braids", "facial_hair": "full beard",
+                      "eye_color": "deep blue"},
+        "prop": "the Doomhammer, a squat black two-handed warhammer with a heavy blunt "
+                "rectangular head of dark elemental stone carved with runes, on a "
+                "leather-wrapped haft",
+        "physique": {"body_type": "stocky", "height": "very tall",
+                     "fitness_level": "muscular", "shoulder_width": "very broad"},
+    },
+    "Malfurion Stormrage": {
+        "franchise": "World of Warcraft",
+        "gender": "Male",
+        # Night elf Archdruid. Sharply distinct from the shipped `Illidan
+        # Stormrage`: antlers instead of horns, feathers instead of bat wings,
+        # green instead of black hair. Same flag shape as Illidan -- covers_body
+        # ONLY, because the face is visible, which is also why the glowing
+        # lineage tattoos are allowed here (the ban is on covers_face + covers_body).
+        # The antlers LEAD the costume: they are the silhouette, and a trait that
+        # trails a long garment list does not render.
+        "covers_body": True,
+        # The antlers came back missing when they LED the costume: the hair
+        # sentence ("very long ... emerald green") renders before the costume and
+        # the model had already filled the head. `anatomy_note` is voiced as its
+        # own "He has ..." BEFORE the costume, which is the mechanism for exactly
+        # this. Stated once, here only -- repeating it in the costume would be the
+        # competing-description trap.
+        "anatomy_note": "a huge spreading rack of stag antlers growing straight up from the "
+                        "forehead",
+        "costume": "long feathered mantles of deep green and blue plumage flaring back from "
+                   "the shoulders and along the outside of both forearms, organic druidic "
+                   "armor of living wood, bark and layered leaves over heavy fur-trimmed "
+                   "shoulder wraps and long earth-toned robes belted at the waist, and heavy "
+                   "curved bear-like claws on the fingers, over smooth, flawless deep "
+                   "purple-blue skin covered in glowing blue-green geometric tattoos",
+        "eyes": "glowing amber",
+        "signature": {"hair_color": "emerald green", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous", "hair_style": "worn down",
+                      "facial_hair": "full beard"},
+        "prop": "the Horn of Cenarius, a long curved ivory-pale horn bound with woven vines "
+                "and carved with flowing nature runes",
+        "physique": {"body_type": "athletic", "height": "very tall",
+                     "fitness_level": "muscular"},
+    },
+
 }
 
 
@@ -24295,7 +24851,9 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Apothecary Diaries",  # 1.2.0
     ),
     "Marvel": ("Marvel",),
-    "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables"),
+    "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables",
+           "Super Friends",  # 1.3.0
+           ),
     "Star Wars": ("Star Wars",),
     "Disney": (
         "The Little Mermaid", "Sleeping Beauty", "Frozen", "Snow White", "Tangled",
@@ -24345,6 +24903,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Hades", "Red Dead Redemption",
         "Samurai Shodown",
         "Red Alert",  # 1.2.0
+        "Killer Instinct", "Gears of War",  # 1.3.0
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -24397,6 +24956,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Craft", "Jennifer's Body", "The 100",
         "The Rocketeer", "Barbarella", "Forbidden Planet", "Buck Rogers",
         "Mars Attacks!", "Thunderbirds", "The Toxic Avenger",  # 1.1.0
+        "Rocky", "Taroman",  # 1.3.0
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.

@@ -282,12 +282,12 @@ Two engine-facing traps this rewrite hit, both silent, both now pinned by tests:
   steering a new one, and has no such widgets to override — so it restores both off `_meta`.
   Measured before the fix: a character generated with `wardrobe: "Any"` (which unlocks
   mixed-gender features) came back rebuilt under "Match gender" in **150 of 150** sampled seeds.
-  **The vault had the same hole; fixed at 0.102.0** — `IdentityForgeVaultLoad` recall of a
+  **The vault had the same hole; fixed at 1.0.0** — `IdentityForgeVaultLoad` recall of a
   `wardrobe: "Any"` character used to rebuild a different person for exactly this reason. Fixed
   by the "Auto (preset)" sentinel on the two widgets (see "Vault recall and the control
   sentinels"); the Turnaround did not wait, because it has no widget to add one to.
 
-### Vault recall and the control sentinels (0.102.0)
+### Vault recall and the control sentinels (1.0.0)
 
 `wardrobe` and `hair_color_scope` are control fields — they live only in `_meta`, never in
 the body, and `execute` reads them from the widget, not from a wired character. That is
@@ -335,7 +335,7 @@ each of these. The Turnaround shipped its first draft missing the last two.
   read from their toggle, never randomized, never described. `_CONTROL_FIELDS` collects them.
   They are **widget-owned**: `execute` filters `_CONTROL_FIELDS` out of `archetype_locked`, so a
   preset cannot set one from its `_meta`. `gender` is the exception, and `wardrobe` /
-  `hair_color_scope` joined it at 0.102.0: each widget carries an `"Auto (preset)"` defer
+  `hair_color_scope` joined it at 1.0.0: each widget carries an `"Auto (preset)"` defer
   sentinel, so `execute` reads the saved value back by name (from `__wardrobe__` /
   `__hair_color_scope__` surfaced by `_parse_archetype_json`) only when the widget is set to
   it — the widget default otherwise wins, so a recall never silently overrides a deliberate
@@ -1209,6 +1209,95 @@ a tangle of limbs. All nine were rewritten as positive statements at 0.96.0 — 
 given over entirely to the wings"). `-less` adjectives count too (`scaleless`,
 `featherless`); `lipless` is kept because it names a real mouth shape rather than an
 absence. Applies to `mask`, `costume` and every `anatomy` slot.
+
+### A creature's defining trait must lead its slot (1.3.0)
+
+The same position rule as above, applied to `data/creatures.py`, where it bites harder.
+Every filled species slot is joined into **one** sentence -- `"It has <head>, <eyes>,
+<integument>, <arms>, <hands>, <legs_feet>, <tail>, <extras>"` (`_SPECIES_SLOT_ORDER`,
+`nodes/identity_forge.py`). A creature therefore gets no second sentence to fall back on:
+whatever opens the `head` slot opens the whole anatomy sentence, and everything after it
+competes with up to seven following clauses.
+
+`proboscis monkey` shipped at 1.2.0 with `head` reading "a primate head with an enormous
+pendulous drooping nose hanging past the mouth, framed by a pale ruff". The model drew a
+generic primate head and dropped the nose -- the defining trait of the animal -- because
+the trait sat mid-clause behind a generic noun. Rewritten to lead the slot ("an enormous
+fleshy pendulous nose drooping far down past the mouth, on a primate head framed by a
+pale ruff"), so **write the slot with the distinguishing feature as its grammatical
+subject and the generic body part after it**, not the other way round.
+
+**The reorder did not fix this particular render** (3/3 seeds, prose confirmed correct via
+`--dry-run`), which puts it in the same class as Ming the Merciless's facial hair: a
+documented model limitation, not a text bug -- see "canon over model limitation" below and
+`docs/creature-notes.md`. The rule still holds; it is the ordering every other confirmed
+case responded to, and the entry is now correct data regardless of what today's checkpoint
+draws. Do not soften the text to chase the render.
+
+### A non-human body must LEAD its costume, not trail the worn items (1.3.0, measured)
+
+The clause-position rule again, with a sharper form found by rendering the 1.3.0 roster.
+For an entry whose *body* is not human, **what the body is made of has to be the subject
+of the costume sentence.** If the costume opens with worn items and leaves the body to a
+trailing `over uniform, all-over ...` marker, the render comes back as **an ordinary
+person wearing a costume** -- the marker is read as the material of the suit rather than
+of the body.
+
+Measured on two entries in the same release:
+
+* **`Glacius`** opened with "a jagged crystalline exo-shell ... laced over a transparent
+  containment suit" and rendered twice as a bald man in an ice suit -- a *transparent* suit
+  invites the model to fill it with skin. Rewritten to open "a tall hairless alien body of
+  solid translucent aquamarine ice ... sheathed in a jagged crystalline exo-shell", and the
+  next render was unmistakably alien.
+* **`Cinder`** opened with "dark metallic carbon-fiber plating strapped across the chest"
+  and rendered three times as a man in an orange-and-black suit. It only came back molten
+  once the costume opened with the `Human Torch` idiom -- the skin-native marker *itself*
+  leading the sentence ("an even, all-over coat of roaring molten orange flame over the
+  whole body ... with dark carbon-fiber restraint plates clamped over ...").
+
+So the shipped idiom for a body-of-energy or body-of-material entry is: **marker first,
+worn items clamped onto it afterwards.** `Human Torch` had it right and is the model to
+copy. This is distinct from `mask`: a correct `mask` does **not** rescue a costume that
+opens with clothing -- both entries above had accurate mask text throughout and it was
+ignored until the body clause moved.
+
+The same reorder fixed two face-level traits that had failed the same way: `Thunder`'s
+yellow-and-black warpaint and, via `anatomy_note` rather than the costume, `Malfurion
+Stormrage`'s antlers (a trait competing with an already-rendered hair sentence has to move
+into a sentence that precedes it).
+
+### Accepted model limitations found at 1.3.0
+
+All four went through the full diagnostic order (prose verified by `--dry-run`, three or
+more seeds, competing-description check, clause reorder) before being called. Per
+canon-over-model-limitation the data is left **accurate, not softened**:
+
+* **`Spinal` does not render as a skeleton.** Five attempts, including the explicit shipped
+  skeleton idiom (`Sans` / `Papyrus` / `Hector Rivera`), a `very slim` body type to stop the
+  physique sentence asserting muscle, and the skull moved into the body clause. Every render
+  is a living pirate with the correct wheel, shield, cutlass and bandana. "Pirate" dominates
+  "skeleton" completely at this checkpoint.
+* **`Hisako` does not render as an onryo.** Three attempts including a full front-load of the
+  broken neck, the hair across the face and the ash drift. The kimono, obi, naginata and
+  neko-te are all correct; the ghost is not there.
+* **`Cinder`'s head** stays a human face under the brace even with a flame-head `mask` and a
+  flame-dominant costume. The body itself renders correctly molten.
+* **`Malfurion Stormrage`'s antlers** do not render, in the costume or in `anatomy_note`,
+  across two seeds. Everything else about him does.
+
+### Canon includes in-costume lettering (1.3.0)
+
+An application of the standing canon-over-model-limitation principle, extended from traits
+to *text printed on a garment*. Current t2i models render short in-image lettering badly --
+misspelled, mirrored, or dropped. **Write it anyway.** `Orchid`'s 1994 leotard carries the
+word HOT printed vertically down one side, and the `costumes` alternate says so.
+
+The reasoning is the same as for every other canon detail: the data has to outlive the
+model. A costume rewritten to avoid lettering is permanently wrong about the character in
+exchange for a fix that stops mattering the next time the checkpoint changes. Describe the
+lettering plainly -- the word, its colour, its orientation, where it sits -- and let the
+renderer do what it can with it.
 
 ## Considered and deferred
 

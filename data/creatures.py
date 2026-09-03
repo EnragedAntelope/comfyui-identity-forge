@@ -3230,17 +3230,21 @@ CREATURES: dict[str, dict] = {
     "proboscis monkey": {
         # The nose is the whole silhouette. `mandrill` is facial COLOUR; the
         # other primates (orangutan, chimpanzee, gorilla) have no such feature.
+        # The nose LEADS the head slot -- and therefore the whole joined anatomy
+        # sentence -- because it did not render when it sat mid-clause behind
+        # "a primate head with".
         "class": "Mammals",
         "palette": "warm russet orange",
-        "head": "a primate head with an enormous pendulous drooping nose hanging past the mouth, framed by a pale ruff",
+        "head": "an enormous fleshy pendulous nose drooping far down past the mouth, on a "
+                "primate head framed by a pale ruff",
         "eyes": "small close-set dark eyes",
         # Colour-free per the schema: the hue lives in `palette` so the node can
         # recolour it. "russet fur paling to grey" baked both in and rendered as
         # "warm russet orange short russet fur paling to grey at the limbs".
         "integument": "short dense fur paling at the limbs",
         "arms": "long slender arms",
-        "hands": "narrow leathery grasping hands",
-        "legs_feet": "sturdy legs ending in long gripping toes",
+        "hands": "narrow leathery grasping hands with partly webbed fingers",
+        "legs_feet": "sturdy legs ending in long gripping partly webbed toes",
         "tail": "a long thick pale tail",
         "extras": "a heavy rounded pot belly",
     },

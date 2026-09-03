@@ -113,6 +113,15 @@ cosplayer + an integument creature drop both the face and the skin).
 6. **One preset socket on Identity Forge.** As with the other presets, chain through
    the `upstream` inputs rather than competing for the single `archetype_json` socket.
 
+7. **A defining trait can lead its slot and still not render.** Every filled slot is
+   joined into one sentence, so the ordering rule is real -- the distinguishing feature
+   has to be the grammatical subject of its slot, not a detail hung off a generic body
+   part (`docs/architecture.md` -> "A creature's defining trait must lead its slot").
+   `proboscis monkey` is the case that established it, and also the case where the
+   reorder alone was not enough: the enormous pendulous nose is confirmed absent across
+   three seeds with the composed prose verified correct. Left as accurate data and an
+   accepted model limitation rather than watered down.
+
 ## Extending the creature set
 
 Add your own without editing the source (survives `git pull`) via the `creatures`
