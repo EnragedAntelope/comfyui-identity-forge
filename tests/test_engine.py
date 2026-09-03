@@ -5732,24 +5732,25 @@ class RandomPoolTests(unittest.TestCase):
         # the same "expected, not a regression" shape as the render-manifest
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
-        # 1.2.0 (1994 -> 1999) to the new ground truth, and is expected to need
-        # refreshing every time the roster grows.
+        # 1.2.0 (1994 -> 1999) and again at 1.3.0 (1999 -> 2023) to the new
+        # ground truth, and is expected to need refreshing every time the roster
+        # grows.
         expected = {
-            (_RANDOM_ANY, 0): "Superman",
-            (_RANDOM_ANY, 1): "Carl Fredricksen",
-            (_RANDOM_ANY, 2): "Yoshimitsu",
-            (_RANDOM_ANY, 3): "Ellen Ripley",
-            (_RANDOM_ANY, 4): "Elizabeth (BioShock)",
-            (_RANDOM_FEMALE, 0): "Symmetra",
-            (_RANDOM_FEMALE, 1): "Cassie Cage",
-            (_RANDOM_FEMALE, 2): "Thorn",
-            (_RANDOM_FEMALE, 3): "Fairy Godmother",
-            (_RANDOM_FEMALE, 4): "Evil Queen",
-            (_RANDOM_MALE, 0): "Stormtrooper",
-            (_RANDOM_MALE, 1): "Captain Planet",
-            (_RANDOM_MALE, 2): "White Rabbit",
-            (_RANDOM_MALE, 3): "Dr. Krieger",
-            (_RANDOM_MALE, 4): "Dr. Frank-N-Furter",
+            (_RANDOM_ANY, 0): "Stay Puft Marshmallow Man",
+            (_RANDOM_ANY, 1): "Captain Picard",
+            (_RANDOM_ANY, 2): "Wonder Woman",
+            (_RANDOM_ANY, 3): "Eleven",
+            (_RANDOM_ANY, 4): "Electro",
+            (_RANDOM_FEMALE, 0): "Summer Smith",
+            (_RANDOM_FEMALE, 1): "Cassandra Alexandra",
+            (_RANDOM_FEMALE, 2): "Zeri",
+            (_RANDOM_FEMALE, 3): "Evil Queen",
+            (_RANDOM_FEMALE, 4): "Eureka",
+            (_RANDOM_MALE, 0): "Sauron",
+            (_RANDOM_MALE, 1): "Engineer (Team Fortress 2)",
+            (_RANDOM_MALE, 2): "Brotherhood of Steel Knight",
+            (_RANDOM_MALE, 3): "Kakashi Hatake",
+            (_RANDOM_MALE, 4): "Ka D'Argo",
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))

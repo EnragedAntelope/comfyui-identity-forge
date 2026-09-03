@@ -182,6 +182,30 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Diabolik / Fantômas (1.1.0 retro/camp survey) | A black full-face bodysuit duplicates multiple existing black-bodysuit/full-cover incumbents already shipped in the roster. |
 | The Prisoner's Rover (1.1.0 retro/camp survey) | Not a wearable human silhouette (a giant weather-balloon prop — the Fry Guys/Loc-Nar case). |
 | Tokusatsu (Ultraman, Kamen Rider, Super Sentai) / kaiju (Mothra, King Ghidorah) (1.1.0 retro/camp survey) | Ultraman, Godzilla, Mothra, and King Ghidorah all already ship in the roster; no new specific, well-known, non-duplicative candidate was surveyed strongly enough to add this round. Revisit with a specific named character if requested. |
+| Rocky (Project Hail Mary) | **Authored, render-gated, and cut on the gate.** A radially symmetric pentagonal stone body with five identical limbs and no face is genuinely unlike anything in `creatures.py`, which is why it was drafted. It does not render: across three seeds with the prose verified correct (limb count in `anatomy_note`, a faceless dome in `mask`, both worded positively), two came back as a **person** -- one an ordinary man with brown skin, one a humanoid rock-man with a human face -- and the third as a faceless stone idol that was still bipedal, not radial. A radial body plan with no face is outside what the current model will hold, and the fix would have meant softening the text into something that renders but is no longer the character. Closing the property: `Ryland Grace` was already declined above, so nothing from it ships and the franchise is unmapped. Reopen only with a model that can hold a non-bilateral body. |
+| Ryland Grace (Project Hail Mary) | A coloured jumpsuit, wire-rimmed glasses and sandy hair. Renders as "a man in a yellow jumpsuit" without the name doing the work — the bar that closed Jessica Jones, Marion Ravenwood and Dr. Hans Zarkov, and the roster already ships a long run of jumpsuit entries. `Rocky` carries the property alone, the `Captain Mizuki` / `Bill Cipher` pattern. |
+| Black Orchid — the classic purple-bodysuit look | Near-duplicate of the shipped `Huntress` (a dark purple-and-black bodysuit, a flowing purple cape and a black domino mask); only the chest emblem differs. Shipped in the Gaiman / Justice League Dark plant-elemental form instead. |
+| Maya (Killer Instinct) — the 1996 jungle look as a separate entry | Standalone it duplicates `Shanna the She-Devil` and `Sheena, Queen of the Jungle`. Ships as a `costumes` alternate on the modern entry, which carries its own `signature` because the hair changes between looks. |
+| Orchid — the 1994 look as a separate entry | Same call; ships as a `costumes` alternate, with the leotard's canonical printed lettering kept. |
+| Rash (Battletoads) | A green anthropomorphic toad in shades and a black vest. The funny-animal mascot ride-along closed at 0.85.0 (the Shadow/Tails/Knuckles call), and the `frog` creature already renders the body. Nothing here reopens it. |
+| Jago (Killer Instinct) | The closest call in the cast, but a bare chest under a hood with wrapped forearms is the covered martial-artist silhouette (`Jin Kazama`, `Hwoarang`, `Paul Phoenix` class) and needs the name to read. |
+| Fulgore (Killer Instinct) | "Chrome robot with glowing red eyes" is what a model draws unprompted, and `Ultron` already ships exactly that. The samurai crest and spine reactor do not survive at silhouette scale. |
+| Sabrewulf (Killer Instinct) | The `werewolf` creature renders him and `The Wolf Man` already ships the two-legged wolf silhouette. The differentiator is bandaged forearms — same-silhouette-plus-one-accessory, the Officer Big Mac call. |
+| Aganos (Killer Instinct) | The `stone golem` creature renders him. Fails the 0.95.0 feral test: brings no body `data/creatures.py` cannot draw. |
+| Riptor (Killer Instinct) | The `raptor` creature renders her. Same test. |
+| Kan-Ra (Killer Instinct) | `The Mummy` ships and the `mummy` creature exists; a bandaged desiccated sorcerer adds no new silhouette. |
+| ARIA (Killer Instinct) | A faceless silver android — the `android` and `porcelain cyborg` creatures plus `Vision` and `Ultron` cover it, and her three-bodied nature is not renderable in one frame. |
+| TJ Combo (Killer Instinct) | A boxer. `Rocky Balboa` carries that silhouette; chrome arm implants are not enough on top of it. |
+| Tusk (Killer Instinct) | A long-haired barbarian with a greatsword. `Conan the Barbarian` ships, and the backlog already closed `Den (Heavy Metal)` on this exact ground. |
+| Mira (Killer Instinct) | One more vampire in red and black; the roster is well covered. |
+| Eagle (Killer Instinct) | Thunder's brother in near-identical Nez Perce dress. Duplicates the shipped `Thunder (Killer Instinct)`. |
+| Kilgore (Killer Instinct) | A Fulgore prototype — a loadout swap on an already-declined design. |
+| Shadow Jago, Shin Hisako (Killer Instinct) | Recolours of Jago and Hisako. The Miraculous / Power Rangers case. |
+| Jim Raynor, Tychus Findlay (StarCraft) | Bulky powered marine armor. `Master Chief`, the four Warhammer 40,000 entries and `Samus Aran` already carry that silhouette; a cigar and an open faceplate are not a new shape. |
+| Zergling, Hydralisk, Ultralisk (StarCraft) | Non-humanoid bio-beasts with no worn look — Creature-node ground, and `insectoid xeno` / `hive drone` already render them. |
+| Garrosh Hellscream (World of Warcraft) | A second orc. `Thrall` carries the tusked-orc silhouette. |
+| Anduin Wrynn, Varian Wrynn, Kel'Thuzad, Medivh (World of Warcraft) | A plate-armored king and robed wizards — both shapes are heavily covered across Fantasy & Literature and Video Games. |
+| Deathwing, Ragnaros (World of Warcraft) | Not humanoid-wearable; the Loc-Nar / Fry Guys case. |
 
 ### Whole classes
 

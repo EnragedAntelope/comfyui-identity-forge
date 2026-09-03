@@ -1315,6 +1315,10 @@
         "hash": "611a9f3335a644c2",
         "rendered": "pre-existing"
       },
+      "Apache Chief": {
+        "hash": "a8395a66b3fad268",
+        "rendered": "2026-09-02"
+      },
       "Aphrodite (Hercules)": {
         "hash": "1fc1afa45a3b60fa",
         "rendered": "pre-existing"
@@ -1363,9 +1367,17 @@
         "hash": "6e3b2d3d719291d4",
         "rendered": "pre-existing"
       },
+      "Arbiter": {
+        "hash": "e9554e80048896a7",
+        "rendered": "2026-09-02"
+      },
       "Arcanine": {
         "hash": "cfc0b343b225136b",
         "rendered": "2026-08-22"
+      },
+      "Archon": {
+        "hash": "6f1ee0aea06b5049",
+        "rendered": "2026-09-02"
       },
       "Ariel": {
         "hash": "9e9f1b2470b7b3f7",
@@ -1386,6 +1398,10 @@
       "Arrietty Clock": {
         "hash": "0556d684fbc891f8",
         "rendered": "pre-existing"
+      },
+      "Artanis": {
+        "hash": "3edd2164b4df6658",
+        "rendered": "2026-09-02"
       },
       "Artemis": {
         "hash": "f1c9a8fe59ca9c06",
@@ -1510,6 +1526,10 @@
       "Ayla": {
         "hash": "4dd1d3c52b1c440a",
         "rendered": "2026-08-26"
+      },
+      "Azucena Ortiz": {
+        "hash": "b0e1a5e9aa52a49c",
+        "rendered": "2026-09-02"
       },
       "Azula": {
         "hash": "c57ebdae8367ead3",
@@ -1781,6 +1801,10 @@
       "Black Noir": {
         "hash": "d8eee67670b99c4f",
         "rendered": "pre-existing"
+      },
+      "Black Orchid": {
+        "hash": "2c21640b6d933ddc",
+        "rendered": "2026-09-03"
       },
       "Black Panther": {
         "hash": "097af7b19f526593",
@@ -2317,6 +2341,10 @@
       "Ciel Phantomhive": {
         "hash": "274ec031b1823937",
         "rendered": "2026-08-09"
+      },
+      "Cinder": {
+        "hash": "6408246cca6b1f83",
+        "rendered": "2026-09-02"
       },
       "Cinderella": {
         "hash": "df55d21a55cb8a84",
@@ -3114,6 +3142,10 @@
         "hash": "80caa0ba38a4bcdd",
         "rendered": "pre-existing"
       },
+      "Eyedol": {
+        "hash": "d9ee50fb3993d431",
+        "rendered": "2026-09-02"
+      },
       "Ezio Auditore": {
         "hash": "b18e0f8d08bae359",
         "rendered": "2026-08-09"
@@ -3372,6 +3404,10 @@
         "hash": "855192951f470683",
         "rendered": "pre-existing"
       },
+      "Gargos": {
+        "hash": "dfb5b5485276196b",
+        "rendered": "2026-09-02"
+      },
       "Garnet": {
         "hash": "d1fa3b61e5941864",
         "rendered": "pre-existing"
@@ -3407,6 +3443,10 @@
       "General Kala": {
         "hash": "e31a7f112ed15fd8",
         "rendered": "2026-08-30"
+      },
+      "General RAAM": {
+        "hash": "c94ea169e293b88d",
+        "rendered": "2026-09-02"
       },
       "Gengar": {
         "hash": "4b87bb6fc7330a3c",
@@ -3491,6 +3531,10 @@
       "Giyu Tomioka": {
         "hash": "112797a6deedc289",
         "rendered": "pre-existing"
+      },
+      "Glacius": {
+        "hash": "3c37a4f77923c69a",
+        "rendered": "2026-09-02"
       },
       "Glinda": {
         "hash": "5ecfadc75851d0e9",
@@ -3832,6 +3876,11 @@
       "Hiro Hamada": {
         "hash": "d1abc1ee6e48fabb",
         "rendered": "pre-existing"
+      },
+      "Hisako": {
+        "hash": "6cae930dd7cca095",
+        "rendered": "2026-09-03",
+        "seed": 172183307091907216
       },
       "Hisoka Morow": {
         "hash": "b87db3a583ea32cd",
@@ -4627,6 +4676,10 @@
         "hash": "b4ba6fad1489a847",
         "rendered": "pre-existing"
       },
+      "Kim Wu": {
+        "hash": "0a2c906f4cdf570f",
+        "rendered": "2026-09-02"
+      },
       "Kimberly (Space Ace)": {
         "hash": "3d00c4c781c979b9",
         "rendered": "pre-existing"
@@ -5341,6 +5394,11 @@
         "hash": "36e722298488bfcd",
         "rendered": "pre-existing"
       },
+      "Malfurion Stormrage": {
+        "hash": "32f56c1596723b33",
+        "rendered": "2026-09-02",
+        "seed": 928083459678921911
+      },
       "Malory Archer": {
         "hash": "19db85b51f9326e0",
         "rendered": "pre-existing"
@@ -5484,6 +5542,10 @@
       "May (Guilty Gear)": {
         "hash": "4b584c8eb77deac6",
         "rendered": "2026-08-10"
+      },
+      "Maya (Killer Instinct)": {
+        "hash": "cc0ecf2360813bb6",
+        "rendered": "2026-09-02"
       },
       "Maya Fey": {
         "hash": "17a9824821ce6882",
@@ -6258,6 +6320,10 @@
         "hash": "ece621b924292967",
         "rendered": "pre-existing"
       },
+      "Omen": {
+        "hash": "fcb1ce353cbc8f5a",
+        "rendered": "2026-09-02"
+      },
       "Omni-Man": {
         "hash": "b5a488309b93e73d",
         "rendered": "pre-existing"
@@ -6277,6 +6343,11 @@
       "Optimus Prime": {
         "hash": "cd1c63afcdd81f65",
         "rendered": "pre-existing"
+      },
+      "Orchid": {
+        "hash": "4a2ae3f356ee03bc",
+        "rendered": "2026-09-02",
+        "seed": 841994468360876365
       },
       "Origami Tobiichi": {
         "hash": "7569d24634486a6e",
@@ -6979,6 +7050,10 @@
         "hash": "9806eb396c0a2eea",
         "rendered": "pre-existing"
       },
+      "Rocky Balboa": {
+        "hash": "5679c028bcb4a62f",
+        "rendered": "2026-09-02"
+      },
       "Roger Rabbit": {
         "hash": "d4107045e5b907aa",
         "rendered": "pre-existing"
@@ -7118,6 +7193,11 @@
       "Sadie Adler": {
         "hash": "4004f822dd25fac2",
         "rendered": "2026-08-26"
+      },
+      "Sadira": {
+        "hash": "4b3a84e75724ef76",
+        "rendered": "2026-09-02",
+        "seed": 1101575304097350374
       },
       "Sadness": {
         "hash": "bac3c728a9c7b48f",
@@ -7775,6 +7855,10 @@
         "hash": "ecf0ef8f37bad871",
         "rendered": "pre-existing"
       },
+      "Spinal": {
+        "hash": "dc00962897751596",
+        "rendered": "2026-09-02"
+      },
       "Spinel": {
         "hash": "8077442dd2379d8a",
         "rendered": "2026-08-26"
@@ -8023,6 +8107,10 @@
         "hash": "e1a6d3e906e6e4c1",
         "rendered": "pre-existing"
       },
+      "Taroman": {
+        "hash": "72933c91240fa741",
+        "rendered": "2026-09-02"
+      },
       "Tartaglia": {
         "hash": "f58d875441a5c105",
         "rendered": "pre-existing"
@@ -8269,6 +8357,10 @@
         "hash": "e6edd980c347f19f",
         "rendered": "pre-existing"
       },
+      "Thrall": {
+        "hash": "8dc49f3f086f1ccc",
+        "rendered": "2026-09-02"
+      },
       "Thresh": {
         "hash": "136748ce5e87da37",
         "rendered": "pre-existing"
@@ -8280,6 +8372,10 @@
       "Thunder (Anissa Pierce)": {
         "hash": "b3cc4f8ca714a1e1",
         "rendered": "pre-existing"
+      },
+      "Thunder (Killer Instinct)": {
+        "hash": "ce54e2f03bc1ab70",
+        "rendered": "2026-09-02"
       },
       "Tiana": {
         "hash": "ca1a9c6a5d217b3b",
@@ -8974,6 +9070,10 @@
       "Zer0": {
         "hash": "5989b6ed9262062a",
         "rendered": "2026-08-23"
+      },
+      "Zeratul": {
+        "hash": "38ae3da49218aaba",
+        "rendered": "2026-09-02"
       },
       "Zeri": {
         "hash": "f7ee3baa5455e959",
@@ -9781,8 +9881,8 @@
         "rendered": "pre-existing"
       },
       "proboscis monkey": {
-        "hash": "b1e30cf78000eb3e",
-        "rendered": "2026-09-01"
+        "hash": "74d30acd4661e5fa",
+        "rendered": "2026-09-02"
       },
       "pteranodon": {
         "hash": "dc70ad815ebd6aae",
@@ -10079,7 +10179,7 @@
       }
     }
   },
-  "generated": "2026-09-01T22:26:39",
+  "generated": "2026-09-03T00:03:27",
   "render": {
     "cfg": 1,
     "height": 2432,
