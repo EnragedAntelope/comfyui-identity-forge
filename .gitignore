@@ -9,6 +9,10 @@ __pycache__/
 # User-supplied dropdown options (keep local; survives git pull)
 user_options.json
 
+# Local gallery-renderer overrides (host/port, model, sampler). Documented as
+# gitignored in architecture.md and render_gallery.py, but the rule was missing.
+scripts/render_config.json
+
 # Node (dev-only frontend test harness, tests/frontend/)
 node_modules/
 

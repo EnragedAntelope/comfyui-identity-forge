@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2023 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2052 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (380)
+## Anime & Manga (381)
 
 ### Akame ga Kill
 
@@ -330,10 +330,11 @@
 
 ### KonoSuba
 
-- **Aqua (KonoSuba)** (F)
+- **Aqua (KonoSuba)** (F, +1 alt)
 - **Darkness (KonoSuba)** (F, prop)
 - **Kazuma Satou** (M, prop)
 - **Megumin** (F, prop)
+- **Vanir** (M, masked)
 
 ### Lupin III
 
@@ -1380,7 +1381,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M)
 
-## Disney (110)
+## Disney (111)
 
 ### 101 Dalmatians
 
@@ -1512,6 +1513,10 @@
 ### Mulan
 
 - **Mulan** (F)
+
+### Onward
+
+- **Barley Lightfoot** (M)
 
 ### Peter Pan
 
@@ -1783,7 +1788,7 @@
 
 - **Zorro** (M, prop)
 
-## Marvel (177)
+## Marvel (178)
 
 ### Marvel
 
@@ -1861,6 +1866,7 @@
 - **Kraven the Hunter** (M, prop)
 - **Krystalin** (F)
 - **La Lunatica** (F)
+- **Lady Hellbender** (F, prop)
 - **Lady Sif** (F, prop)
 - **Lascivious** (F)
 - **Loki** (M)
@@ -1965,7 +1971,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (230)
+## Movies & TV (232)
 
 ### A Nightmare on Elm Street
 
@@ -2205,8 +2211,9 @@
 
 ### KPop Demon Hunters
 
+- **Jinu** (M, +1 alt)
 - **Mira** (F, prop)
-- **Rumi** (F, prop)
+- **Rumi** (F, +1 alt, prop)
 - **Zoey** (F, prop)
 
 ### Keebler
@@ -2346,6 +2353,7 @@
 
 - **Front Man** (M, masked)
 - **Pink Guard** (M, masked)
+- **Pink Guard (Squid Game)** (M, masked, +2 alt)
 - **Seong Gi-hun** (M)
 
 ### Star Trek
@@ -2655,7 +2663,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (472)
+## Video Games (496)
 
 ### A Certain Scientific Railgun
 
@@ -2701,6 +2709,10 @@
 - **Big Daddy** (M, giant, masked)
 - **Elizabeth (BioShock)** (F, prop)
 - **Splicer** (M, masked)
+
+### Black Myth: Wukong
+
+- **Destined One (Black Myth: Wukong)** (M, masked)
 
 ### BloodRayne
 
@@ -2918,13 +2930,17 @@
 
 ### Genshin Impact
 
+- **Arlecchino** (F)
 - **Furina** (F)
 - **Ganyu** (F)
 - **Hu Tao** (F)
 - **Kaedehara Kazuha** (M)
+- **Lumine** (F, prop)
+- **Mona** (F)
 - **Raiden Shogun** (F)
 - **Tartaglia** (M)
 - **Venti** (M)
+- **Wanderer (Genshin Impact)** (M)
 - **Yae Miko** (F)
 - **Zhongli** (M)
 
@@ -2932,6 +2948,10 @@
 
 - **Freya** (F)
 - **Kratos** (M, prop)
+
+### Goddess of Victory: NIKKE
+
+- **Scarlet (NIKKE)** (F, prop)
 
 ### Guilty Gear
 
@@ -2971,6 +2991,7 @@
 
 ### Hollow Knight
 
+- **Hornet** (F, masked, prop)
 - **The Knight (Hollow Knight)** (M, tiny, masked, prop)
 
 ### Horizon
@@ -3144,6 +3165,7 @@
 - **Ana** (F)
 - **Ashe (Overwatch)** (F, prop)
 - **Brigitte** (F, prop)
+- **Cassidy** (M, prop)
 - **D.Va** (F)
 - **Doomfist** (M)
 - **Genji** (M, masked, prop)
@@ -3151,18 +3173,23 @@
 - **Junker Queen** (F, prop)
 - **Junkrat** (M)
 - **Kiriko** (F)
+- **Lucio** (M, prop)
 - **Mei** (F)
 - **Mercy** (F, prop)
 - **Moira** (F)
 - **Pharah** (F)
 - **Reaper** (M, masked)
 - **Reinhardt** (M, giant, masked, prop)
+- **Roadhog** (M, masked, prop)
 - **Soldier 76** (M, masked)
 - **Sombra** (F)
 - **Symmetra** (F)
+- **Torbjorn** (M, prop)
 - **Tracer** (F)
 - **Widowmaker** (F, prop)
+- **Winston** (M, masked, prop)
 - **Zarya** (F, giant)
+- **Zenyatta** (M, masked)
 
 ### Pac-Man
 
@@ -3274,6 +3301,10 @@
 - **Sarah Kerrigan** (F)
 - **Zeratul** (M, masked)
 
+### Stellar Blade
+
+- **EVE (Stellar Blade)** (F)
+
 ### Street Fighter
 
 - **AKI** (F)
@@ -3281,12 +3312,15 @@
 - **Blanka** (M)
 - **Cammy White** (F)
 - **Chun-Li** (F)
+- **Cody Travers** (M)
 - **Crimson Viper** (F)
 - **Dhalsim** (M)
 - **E. Honda** (M)
 - **Elena** (F)
 - **Guile** (M)
+- **Ibuki** (F, prop)
 - **Juri Han** (F)
+- **Karin Kanzuki** (F)
 - **Ken Masters** (M)
 - **Kimberly Jackson** (F, prop)
 - **Laura Matsuda** (F)
@@ -3298,7 +3332,8 @@
 - **Menat** (F, +1 alt, prop)
 - **Poison** (F, prop)
 - **Rainbow Mika** (F)
-- **Ryu** (M)
+- **Rose (Street Fighter)** (F)
+- **Ryu** (M, +1 alt)
 - **Sagat** (M)
 - **Sakura Kasugano** (F)
 - **Vega** (M, masked)
@@ -3312,7 +3347,7 @@
 - **Mario** (M)
 - **Pauline** (F)
 - **Princess Peach** (F)
-- **Rosalina** (F, giant, prop)
+- **Rosalina** (F, prop)
 - **Toad** (M)
 - **Waluigi** (M)
 - **Wario** (M)
@@ -3415,6 +3450,10 @@
 
 - **Ashley** (F, prop)
 
+### Wing Commander
+
+- **Prince Thrakhath** (M, masked)
+
 ### World of Warcraft
 
 - **Arthas Menethil** (M, masked, prop)
@@ -3425,6 +3464,17 @@
 - **Thrall** (M, prop)
 - **Tyrande Whisperwind** (F)
 
+### Wuthering Waves
+
+- **Camellya** (F)
+- **Changli** (F)
+- **Jinhsi** (F)
+
 ### Xenoblade Chronicles
 
 - **Pyra** (F, +1 alt)
+
+### Zenless Zone Zero
+
+- **Ellen Joe** (F, prop)
+- **Von Lycaon** (M, masked)

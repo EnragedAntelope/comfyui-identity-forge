@@ -5732,25 +5732,26 @@ class RandomPoolTests(unittest.TestCase):
         # the same "expected, not a regression" shape as the render-manifest
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
-        # 1.2.0 (1994 -> 1999) and again at 1.3.0 (1999 -> 2023) to the new
+        # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
+        # 1.4.0 (2023 -> 2052) to the new
         # ground truth, and is expected to need refreshing every time the roster
         # grows.
         expected = {
-            (_RANDOM_ANY, 0): "Stay Puft Marshmallow Man",
-            (_RANDOM_ANY, 1): "Captain Picard",
-            (_RANDOM_ANY, 2): "Wonder Woman",
-            (_RANDOM_ANY, 3): "Eleven",
-            (_RANDOM_ANY, 4): "Electro",
-            (_RANDOM_FEMALE, 0): "Summer Smith",
-            (_RANDOM_FEMALE, 1): "Cassandra Alexandra",
-            (_RANDOM_FEMALE, 2): "Zeri",
-            (_RANDOM_FEMALE, 3): "Evil Queen",
-            (_RANDOM_FEMALE, 4): "Eureka",
-            (_RANDOM_MALE, 0): "Sauron",
-            (_RANDOM_MALE, 1): "Engineer (Team Fortress 2)",
-            (_RANDOM_MALE, 2): "Brotherhood of Steel Knight",
-            (_RANDOM_MALE, 3): "Kakashi Hatake",
-            (_RANDOM_MALE, 4): "Ka D'Argo",
+            (_RANDOM_ANY, 0): "Salaak",
+            (_RANDOM_ANY, 1): "Fell Beast",
+            (_RANDOM_ANY, 2): "Brigitte",
+            (_RANDOM_ANY, 3): "Lady Hellbender",
+            (_RANDOM_ANY, 4): "Kyo Kusanagi",
+            (_RANDOM_FEMALE, 0): "Squirrel Girl",
+            (_RANDOM_FEMALE, 1): "Carmen Sandiego",
+            (_RANDOM_FEMALE, 2): "Yuffie Kisaragi",
+            (_RANDOM_FEMALE, 3): "Erza Scarlet",
+            (_RANDOM_FEMALE, 4): "Erina Nakiri",
+            (_RANDOM_MALE, 0): "Samwise Gamgee",
+            (_RANDOM_MALE, 1): "Elroy Jetson",
+            (_RANDOM_MALE, 2): "Brook",
+            (_RANDOM_MALE, 3): "K-2SO",
+            (_RANDOM_MALE, 4): "Juggernaut",
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
@@ -7991,6 +7992,75 @@ class AnatomyNoteTests(unittest.TestCase):
         for name, entry in COSPLAYERS.items():
             if isinstance(entry, dict) and entry.get("body_plan") == "feral":
                 self.assertIsNone(entry.get("anatomy_note"), name)
+
+class MaleAccessoryTrimTests(unittest.TestCase):
+    """``accessories`` and ``brooch`` get masculine trims (1.4.0).
+
+    Reported as "men with female-type jewellery/accessories" under the default
+    ``gender="Any"`` + ``wardrobe="Match gender"``. The gender-gated *pools* were
+    proved correct first -- 400 seeds, 191 men, zero values drawn from the wrong
+    gender pool for bust / facial_hair / hair_style / hair_length / hair_accessory /
+    makeup_style / legwear -- so the leak was in the unisex pools, which are governed
+    only by these trims:
+
+    * ``accessories`` had no ``_MALE_EXCLUDED_VALUES`` entry at all (the 0.97.0 ``bag``
+      case). MEASURED over 297 default male renders: 18 drew ``long opera gloves`` or
+      ``belt cinching waist``.
+    * ``other_jewelry`` had an entry but omitted ``brooch``. MEASURED at 50 of those
+      297 men (17%).
+
+    Both are wardrobe choices rather than anatomy, so the trims are
+    ``presentation_gated``: an explicit Feminine/"Any" wardrobe still opens the pool.
+    """
+
+    ACCESSORIES = ("long opera gloves", "belt cinching waist",
+                   "cat eye sunglasses", "cat-eye eyeglasses")
+    #: Kept available to men on purpose -- the trim is not "every soft-looking item".
+    MASCULINE_KEEPS = ("wide brim sun hat", "beret", "silk neck scarf", "statement belt")
+
+    def _male(self, seed, wardrobe="Match gender"):
+        return generate_character(
+            seed, "Male", {}, hair_color_scope="Natural only", wardrobe=wardrobe,
+            accessory_density="Balanced", location_setting="Any")[0]
+
+    def test_the_trims_name_only_real_pool_values(self):
+        from data.constraints import _MALE_EXCLUDED_VALUES
+        pool = set(FIELD_DEFINITIONS["accessories"]["female_options"])
+        self.assertTrue(set(self.ACCESSORIES) <= pool)
+        self.assertTrue(set(self.MASCULINE_KEEPS) <= pool)
+        self.assertEqual(set(_MALE_EXCLUDED_VALUES["accessories"]), set(self.ACCESSORIES))
+        self.assertIn("brooch", _MALE_EXCLUDED_VALUES["other_jewelry"])
+        self.assertIn("brooch", set(FIELD_DEFINITIONS["other_jewelry"]["female_options"]))
+
+    def test_neither_field_is_a_weighted_family_cull(self):
+        # architecture.md -> only a FIELD_FAMILIES member concentrates frozen weight.
+        self.assertNotIn("accessories", FIELD_FAMILIES)
+        self.assertNotIn("other_jewelry", FIELD_FAMILIES)
+
+    def test_accessories_is_drawn_inside_the_constraint_loop(self):
+        # A deferred field cannot be gated by a rule at all (the 1.2.0 legwear trap),
+        # so a trim on it would be silently inert.
+        from nodes.identity_forge import _DEFERRED_FIELDS
+        self.assertNotIn("accessories", _DEFERRED_FIELDS)
+        self.assertNotIn("other_jewelry", _DEFERRED_FIELDS)
+
+    def test_a_default_male_never_draws_a_feminine_accessory(self):
+        for seed in range(400):
+            prose = self._male(seed)
+            for value in self.ACCESSORIES:
+                self.assertNotIn(value, prose, f"seed {seed}")
+            self.assertNotIn("brooch", prose, f"seed {seed}")
+
+    def test_a_feminine_wardrobe_still_opens_the_pool(self):
+        # The gate is what separates "not a male default" from "banned for men".
+        seen = False
+        for seed in range(400):
+            prose = self._male(seed, wardrobe="Feminine")
+            if any(v in prose for v in self.ACCESSORIES) or "brooch" in prose:
+                seen = True
+                break
+        self.assertTrue(seen, "a Feminine wardrobe should still reach the trimmed values")
+
 
 class MaleBagTrimTests(unittest.TestCase):
     """``bag`` gets a masculine trim, and three men's carriers (0.97.0).

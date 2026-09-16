@@ -248,6 +248,9 @@ const COSPLAYER_FRANCHISES = {
     "Balalaika",
     "Revy"
   ],
+  "Black Myth: Wukong": [
+    "Destined One (Black Myth: Wukong)"
+  ],
   "Blade Runner": [
     "Pris",
     "Rachael",
@@ -1029,13 +1032,17 @@ const COSPLAYER_FRANCHISES = {
     "Count Chocula"
   ],
   "Genshin Impact": [
+    "Arlecchino",
     "Furina",
     "Ganyu",
     "Hu Tao",
     "Kaedehara Kazuha",
+    "Lumine",
+    "Mona",
     "Raiden Shogun",
     "Tartaglia",
     "Venti",
+    "Wanderer (Genshin Impact)",
     "Yae Miko",
     "Zhongli"
   ],
@@ -1052,6 +1059,9 @@ const COSPLAYER_FRANCHISES = {
   "God of War": [
     "Freya",
     "Kratos"
+  ],
+  "Goddess of Victory: NIKKE": [
+    "Scarlet (NIKKE)"
   ],
   "Godzilla": [
     "Godzilla",
@@ -1178,6 +1188,7 @@ const COSPLAYER_FRANCHISES = {
     "Winifred Sanderson"
   ],
   "Hollow Knight": [
+    "Hornet",
     "The Knight (Hollow Knight)"
   ],
   "Horizon": [
@@ -1275,6 +1286,7 @@ const COSPLAYER_FRANCHISES = {
     "Colonel Sanders"
   ],
   "KPop Demon Hunters": [
+    "Jinu",
     "Mira",
     "Rumi",
     "Zoey"
@@ -1351,7 +1363,8 @@ const COSPLAYER_FRANCHISES = {
     "Aqua (KonoSuba)",
     "Darkness (KonoSuba)",
     "Kazuma Satou",
-    "Megumin"
+    "Megumin",
+    "Vanir"
   ],
   "Kool-Aid": [
     "Kool-Aid Man"
@@ -1544,6 +1557,7 @@ const COSPLAYER_FRANCHISES = {
     "Kraven the Hunter",
     "Krystalin",
     "La Lunatica",
+    "Lady Hellbender",
     "Lady Sif",
     "Lascivious",
     "Loki",
@@ -1890,6 +1904,9 @@ const COSPLAYER_FRANCHISES = {
     "Saitama",
     "Tatsumaki"
   ],
+  "Onward": [
+    "Barley Lightfoot"
+  ],
   "Oshi no Ko": [
     "Ai Hoshino"
   ],
@@ -1902,6 +1919,7 @@ const COSPLAYER_FRANCHISES = {
     "Ana",
     "Ashe (Overwatch)",
     "Brigitte",
+    "Cassidy",
     "D.Va",
     "Doomfist",
     "Genji",
@@ -1909,18 +1927,23 @@ const COSPLAYER_FRANCHISES = {
     "Junker Queen",
     "Junkrat",
     "Kiriko",
+    "Lucio",
     "Mei",
     "Mercy",
     "Moira",
     "Pharah",
     "Reaper",
     "Reinhardt",
+    "Roadhog",
     "Soldier 76",
     "Sombra",
     "Symmetra",
+    "Torbjorn",
     "Tracer",
     "Widowmaker",
-    "Zarya"
+    "Winston",
+    "Zarya",
+    "Zenyatta"
   ],
   "Pac-Man": [
     "Pac-Man"
@@ -2239,6 +2262,7 @@ const COSPLAYER_FRANCHISES = {
   "Squid Game": [
     "Front Man",
     "Pink Guard",
+    "Pink Guard (Squid Game)",
     "Seong Gi-hun"
   ],
   "Star Fox": [
@@ -2398,6 +2422,9 @@ const COSPLAYER_FRANCHISES = {
   "Steins;Gate": [
     "Makise Kurisu"
   ],
+  "Stellar Blade": [
+    "EVE (Stellar Blade)"
+  ],
   "Steven Universe": [
     "Amethyst (Steven Universe)",
     "Garnet",
@@ -2421,12 +2448,15 @@ const COSPLAYER_FRANCHISES = {
     "Blanka",
     "Cammy White",
     "Chun-Li",
+    "Cody Travers",
     "Crimson Viper",
     "Dhalsim",
     "E. Honda",
     "Elena",
     "Guile",
+    "Ibuki",
     "Juri Han",
+    "Karin Kanzuki",
     "Ken Masters",
     "Kimberly Jackson",
     "Laura Matsuda",
@@ -2438,6 +2468,7 @@ const COSPLAYER_FRANCHISES = {
     "Menat",
     "Poison",
     "Rainbow Mika",
+    "Rose (Street Fighter)",
     "Ryu",
     "Sagat",
     "Sakura Kasugano",
@@ -2936,6 +2967,9 @@ const COSPLAYER_FRANCHISES = {
     "Midnighter",
     "Zealot"
   ],
+  "Wing Commander": [
+    "Prince Thrakhath"
+  ],
   "Winnie the Pooh": [
     "Christopher Robin",
     "Eeyore",
@@ -2959,6 +2993,11 @@ const COSPLAYER_FRANCHISES = {
     "Vanellope von Schweetz",
     "Wreck-It Ralph"
   ],
+  "Wuthering Waves": [
+    "Camellya",
+    "Changli",
+    "Jinhsi"
+  ],
   "Xena: Warrior Princess": [
     "Xena"
   ],
@@ -2980,6 +3019,10 @@ const COSPLAYER_FRANCHISES = {
     "Dark Magician",
     "Dark Magician Girl",
     "Yami Yugi"
+  ],
+  "Zenless Zone Zero": [
+    "Ellen Joe",
+    "Von Lycaon"
   ],
   "Zootopia": [
     "Judy Hopps",

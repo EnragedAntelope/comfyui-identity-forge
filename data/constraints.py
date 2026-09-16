@@ -560,7 +560,24 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
         "pearl necklace", "pearl strand", "locket necklace", "choker",
         "velvet choker", "statement necklace", "collar necklace",
     ],
-    "other_jewelry": ["anklet", "body chain", "waist chain"],
+    # 1.4.0: `brooch` was missing from this list, so it stayed in the random male
+    # pool -- MEASURED at 50 of 297 default male renders (17%) with
+    # `wardrobe="Match gender"`, the most visible feminine-coded piece still landing
+    # on men. `arm cuff` stays available, so the masculine pool is not just absence.
+    "other_jewelry": ["anklet", "body chain", "waist chain", "brooch"],
+    # 1.4.0. `accessories` was the last shared pool with NO masculine trim at all --
+    # the same class of miss as the 0.83.0 `footwear` and 0.97.0 `bag` entries, and
+    # found the same way (a measured sweep). MEASURED before the fix over 297 default
+    # male renders: 18 drew long opera gloves or a waist-cinching belt. Unlike those
+    # two fields `accessories` carries a `weights` map, but it covers only the nine
+    # eyewear values and the field is absent from FIELD_FAMILIES, so the cull re-picks
+    # proportionally among the survivors and concentrates no family weight.
+    # Deliberately NOT trimmed, because a man wears them too: `wide brim sun hat`,
+    # `beret`, `silk neck scarf`, `statement belt`.
+    "accessories": [
+        "long opera gloves", "belt cinching waist",
+        "cat eye sunglasses", "cat-eye eyeglasses",
+    ],
     "rings": ["stacked thin bands", "delicate gemstone", "midi ring"],
     "bracelet": ["tennis bracelet", "charm bracelet", "bangle stack"],
     # 0.83.0. `footwear` is a unisex pool, so feminine-coded shoes could always land on
@@ -610,8 +627,9 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
 # structural/anatomical male defaults and always apply for a male character.
 _PRESENTATION_GATED_FIELDS: frozenset[str] = frozenset({
     "nails", "earrings", "necklace", "other_jewelry", "rings", "bracelet",
-    "footwear",   # 0.83.0 -- a wardrobe choice, not anatomy, so it gates like jewellery
-    "bag",        # 0.97.0 -- likewise
+    "footwear",     # 0.83.0 -- a wardrobe choice, not anatomy, so it gates like jewellery
+    "bag",          # 0.97.0 -- likewise
+    "accessories",  # 1.4.0 -- gloves, belts and frames are wardrobe, not anatomy
 })
 for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
     CONSTRAINT_RULES.append({

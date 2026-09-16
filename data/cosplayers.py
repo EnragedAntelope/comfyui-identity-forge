@@ -465,14 +465,20 @@ COSPLAYERS: dict[str, dict] = {
     "Widowmaker": {
         "franchise": "Overwatch",
         "gender": "Female",
-        "costume": "a form-fitting dark purple bodysuit with technological enhancements, a high "
-                   "collar, integrated armor, a visor, stealth boots, and smooth, flawless "
-                   "blue-violet skin",
-        "eyes": "glowing yellow",
-        "signature": {"hair_color": "raven black", "hair_length": "long",
-                      "hair_style": "low ponytail"},
+        # 1.4.0: classic design refined (Wikipedia / The Art of Overwatch): dark blue
+        # ponytail, spider-eye visor, web tattoo on the right forearm, hook on the left.
+        "costume": "a form-fitting short-sleeved purple bodysuit with a deep plunging neckline "
+                   "and an open back, segmented black armor plating down the legs with spikes "
+                   "at the knees and heels, a spider-eye targeting visor of three sliding "
+                   "plates over the brow, a grappling-hook gauntlet on the left forearm, and a "
+                   "spider-web tattoo with a line of script across the right forearm, over "
+                   "smooth, flawless blue-violet skin",
+        "eyes": "golden yellow",
+        "signature": {"hair_color": "navy blue", "hair_length": "waist length",
+                      "hair_style": "high ponytail"},
         "physique": {"body_type": "slender", "height": "tall"},
-        "prop": "a long purple sniper rifle with a heavy scope",
+        "prop": "Widow's Kiss, a long purple sniper rifle with an extending scope and a glowing "
+                "red hourglass emblem",
     },
     "Pharah": {
         "franchise": "Overwatch",
@@ -3181,6 +3187,16 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a white sleeveless karate gi with frayed cuffs and a black belt, a red "
                    "headband, and red hand wraps, barefoot",
+        # 1.4.0: Evil Ryu (Satsui no Hado) ships as an alternate, not a second entry.
+        # The overlay signature replaces the base one whole, so it restates the hair
+        # and drops eye_color for the glowing red `eyes` of this look.
+        "costumes": [
+            {"costume": "a torn black sleeveless karate gi with a black belt, a torn black "
+                        "headband, torn dark fighting gloves, and a crackling red demonic "
+                        "aura of ki, barefoot",
+             "signature": {"hair_color": "jet black", "hair_length": "very short"},
+             "eyes": "glowing red"},
+        ],
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
@@ -7649,16 +7665,21 @@ COSPLAYERS: dict[str, dict] = {
     "Rosalina": {
         "franchise": "Super Mario",
         "gender": "Female",
-        "costume": "a floor-length turquoise dress patterned with stars, white gloves, a "
-                   "small crown, a cosmic shimmer to the skin, and platinum starlight hair "
-                   "sweeping past the waist and partly over one eye, on a towering "
-                   "seven-foot cosmic-guardian frame",
+        # Super Mario Galaxy design (Mario Wiki). 1.4.0: rewritten onto canon and the
+        # giant flag removed -- she is taller than every human character except Waluigi,
+        # which is "very tall", not building-scale.
+        "costume": "an aqua floor-length gown that bares the shoulders, with a powder-blue "
+                   "band looping around the bared shoulders, long flared sleeves topped with "
+                   "powder-blue frills, a silver star-shaped brooch set with a gold gem at the "
+                   "chest, and a hem with a light blue flap that turns up to a point at the "
+                   "front over a pale petticoat; a small silver crown inlaid with pink and blue "
+                   "gems, golden star-shaped earrings, silver high heels, and a long platinum "
+                   "bang sweeping down over the right eye",
         "signature": {"hair_color": "platinum blonde", "hair_length": "waist length",
-                      "hair_texture": "sleek straight", "eye_color": "bright blue"},
-        "size_scale": "giant",
-        "scale_prose": "towering and seven feet tall",
+                      "hair_texture": "sleek straight", "hair_style": "worn down",
+                      "eye_color": "pale blue"},
         "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "pale"},
-        "prop": "a star-topped wand trailing cosmic sparkles",
+        "prop": "a thin silver Star Wand topped with a hollow golden star",
     },
     "Sarah Kerrigan": {
         "franchise": "StarCraft",
@@ -12256,20 +12277,39 @@ COSPLAYERS: dict[str, dict] = {
     "Rumi": {
         "franchise": "KPop Demon Hunters",
         "gender": "Female",
-        "costume": "an edgy streetwear K-pop stage outfit - a cropped bright yellow bomber jacket "
-                   "with black-trimmed collar, cuffs and zipper, bold graphic patches, and a black "
-                   "spiked pad on the left shoulder, worn over a white mockneck crop top with two "
-                   "layered necklaces, high-waisted dark indigo denim shorts, a hot pink belt with "
-                   "a small lilac norigae charm, and black calf-high platform boots with red "
-                   "stripes; a thick dragon-style braid tied with a golden silk daenggi ribbon, "
-                   "and glowing purple eldritch-pattern markings tracing the arms",
+        # 1.4.0: outfit verified against Netflix Tudum's costume breakdown; braid to the
+        # calves; film phase-1 saingeom (the finale blade is curved and single-edged).
+        # Her demon patterns are hidden in the idol look, so they ride in an alternate.
+        # The braid LEADS the costume: `hair_length` tops out at "hip length", so the
+        # Hair sentence states a shorter length earlier in the prompt and the two
+        # claims compete (the Yuri/bald-clause case). Front-loading is the fix that
+        # works; trailing it behind sixty words of streetwear does not.
+        "costume": "an enormously long thick purple dragon-style braid falling all the way to "
+                   "the calves, tied with a golden silk daenggi ribbon, with long face-framing "
+                   "side pieces, worn with an edgy streetwear K-pop stage outfit - a cropped "
+                   "bright yellow bomber jacket with black-trimmed collar, cuffs and zipper, "
+                   "bold graphic patches, and a black spiked pad on the left shoulder, over a "
+                   "white mockneck crop top with two layered necklaces, high-waisted dark "
+                   "indigo denim shorts, a hot pink belt with a small lilac norigae charm, and "
+                   "black calf-high platform boots with red stripes",
+        "costumes": [
+            "an enormously long thick purple dragon-style braid falling all the way to the "
+            "calves, tied with a golden silk daenggi ribbon, with long face-framing side "
+            "pieces, worn with an edgy streetwear K-pop stage outfit - a cropped bright "
+            "yellow bomber jacket with black-trimmed collar, cuffs and zipper, bold graphic "
+            "patches, and a black spiked pad on the left shoulder, over a white mockneck crop "
+            "top with two layered necklaces, high-waisted dark indigo denim shorts, a hot "
+            "pink belt with a small lilac norigae charm, and black calf-high platform boots "
+            "with red stripes, and purple eldritch demon-pattern markings glowing pink along "
+            "the arms, neck and shoulders",
+        ],
         "signature": {"hair_color": "purple", "hair_length": "hip length",
                       "hair_style": "braided ponytail", "hair_texture": "pin straight",
                       "eye_color": "dark brown", "eye_shape": "monolid", "face_shape": "oval"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light"},
-        "prop": "an ornate art-deco Korean saingeom sword with a slender midnight-purple blade "
-                "etched with glowing wave and constellation patterns, a heart-shaped siren-pink "
-                "guard bearing a crest, and a faux-leather handle wrapped with purple tassels",
+        "prop": "a double-edged straight saingeom sword with a translucent blue-glowing blade "
+                "engraved with bright star constellations, a gold hilt with a simple crossguard, "
+                "a grip wrapped in spiraling gold bands, and an ornate pommel set with a purple gem",
     },
     "Mira": {
         "franchise": "KPop Demon Hunters",
@@ -17959,12 +17999,26 @@ COSPLAYERS: dict[str, dict] = {
     "Aqua (KonoSuba)": {
         "franchise": "KonoSuba",
         "gender": "Female",
-        "costume": "a sleeveless blue and white water-goddess dress with a short "
-                   "layered skirt, a wide blue hooped belt at the hips, long "
-                   "detached blue sleeves, blue thigh-high boots, and a green "
-                   "gemmed choker",
-        "signature": {"hair_color": "electric blue", "hair_length": "hip length",
-                      "hair_style": "high ponytail", "eye_color": "bright blue"},
+        # 1.4.0: sleeves corrected to white; collar bow, underskirt, stockings and the
+        # water-drop hair clip added. The pink hagoromo is summoned, so it is an alternate.
+        "costume": "a fitted sleeveless dark blue vest with white trim and a high collar "
+                   "tied with a green bow and set with a blue gem, detached white sleeves "
+                   "with blue and gold trim, a layered dark blue miniskirt over a "
+                   "translucent purple underskirt, white stockings with blue trim, "
+                   "thigh-high blue heeled boots, and a spherical water-drop clip "
+                   "holding a high loop of hair at the crown",
+        "costumes": [
+            "a fitted sleeveless dark blue vest with white trim and a high collar "
+            "tied with a green bow and set with a blue gem, detached white sleeves "
+            "with blue and gold trim, a layered dark blue miniskirt over a "
+            "translucent purple underskirt, white stockings with blue trim, "
+            "thigh-high blue heeled boots, a spherical water-drop clip holding a "
+            "high loop of hair at the crown, and a translucent pink hagoromo shawl "
+            "draped around the arms",
+        ],
+        "signature": {"hair_color": "electric blue", "hair_length": "waist length",
+                      "hair_style": "half up half down", "eye_color": "bright blue",
+                      "necklace": "no necklace"},
         "physique": {"body_type": "slim", "height": "average height",
                      "skin_tone": "fair"},
     },
@@ -24811,6 +24865,459 @@ COSPLAYERS: dict[str, dict] = {
                      "fitness_level": "muscular"},
     },
 
+    # --- 1.4.0 ------------------------------------------------------------
+
+    "Barley Lightfoot": {
+        "franchise": "Onward",
+        "gender": "Male",
+        # Onward elves are blue-skinned humanoids, so the skin-native marker trails
+        # the worn items (Widowmaker idiom). Ian is declined: a hoodie on the same body.
+        "costume": "a black beanie over pointed elf ears tipped in pink, a t-shirt printed "
+                   "with a large Q emblem, a big sleeveless denim vest covered in heavy-metal "
+                   "band patches and pins, army green shorts, chunky black-and-white sneakers, "
+                   "a band tattoo around the right arm, and freckles across the cheeks, over "
+                   "smooth, flawless light blue skin",
+        "signature": {"hair_color": "navy blue", "hair_length": "shoulder length",
+                      "hair_style": "mullet", "hair_texture": "pin straight",
+                      "eye_color": "hazel", "facial_hair": "stubble", "body_type": "stocky",
+                      "height": "tall"},
+    },
+    "Lady Hellbender": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Marvel's Guardians of the Galaxy (2021) design, filed under Marvel so the
+        # franchise filter finds her beside the rest of the Marvel roster. The armor is
+        # built from the monsters she collects.
+        "costume": "a red draconic leotard under spiked, clawed armor built from alien "
+                   "monster carapace, red draconic gauntlets, and red draconic boots, over "
+                   "smooth, flawless blue skin",
+        "signature": {"hair_color": "orange", "hair_length": "very long",
+                      "hair_style": "braided ponytail", "eye_color": "bright green",
+                      "height": "statuesque", "fitness_level": "very fit"},
+        "physique": {"body_type": "athletic"},
+        "prop": "a massive war hammer",
+    },
+    "Prince Thrakhath": {
+        "franchise": "Wing Commander",
+        "gender": "Male",
+        # Kilrathi crown prince (Wing Commander III). Canon varies across the games
+        # and the 1999 film; this follows the maintainer-supplied description (1.4.0).
+        # Fur is not skin, so covers_body, and the body leads the costume (1.3.0 rule).
+        # Roughly two metres tall: very tall, not a size_scale tier.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a broad ferocious lion-like feline head with a heavy muzzle, bared fangs and "
+                "a thick yellowish-tan mane, a long braided golden-brown chin beard, and gold "
+                "rings through the ears",
+        "costume": "an even, all-over coat of red-brown fur with lighter yellowish-tan "
+                   "tones over a heavily muscled body, under segmented plate armor with layered "
+                   "gold chest pieces, heavy shoulder pauldrons and engraved glyphs and crests, "
+                   "a massive crimson ceremonial cloak with a tall stiffened collar framing the "
+                   "head and black-padded shoulders embroidered in gold, and thick claws at the "
+                   "fingertips",
+        "signature": {"height": "very tall", "fitness_level": "muscular"},
+        "physique": {"body_type": "stocky"},
+    },
+    "EVE (Stellar Blade)": {
+        "franchise": "Stellar Blade",
+        "gender": "Female",
+        # Default Planet Diving Suit (7th). Parenthesised so a three-letter name is
+        # searchable and cannot collide with WALL-E's EVE. The rest of the squad is
+        # declined in suggested-additions.md.
+        "costume": "a green skin-tight nano bodysuit with a metallic sheen, a green tie at "
+                   "the collar, white fingerless gloves, and opaque cape-like panels trailing "
+                   "from the back of the suit, with long bangs framing the face",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_style": "high ponytail", "eye_color": "dark brown",
+                      "height": "tall"},
+        "physique": {"body_type": "slender"},
+    },
+    "Ibuki": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        # Street Fighter III kunoichi. The mask covers only the lower face, so it stays
+        # in the costume with no covers_face (the domino-mask rule).
+        "costume": "a traditional ninja dogi - a sleeveless black top, baggy black trousers "
+                   "slit at the sides, and dark arm guards - a black cloth mask over the lower "
+                   "half of the face, cloth bandages wrapped around the shins, ankles and "
+                   "insteps in place of shoes, and three angular bangs over a topknot ponytail "
+                   "falling to mid-thigh",
+        "signature": {"hair_color": "jet black", "hair_length": "hip length",
+                      "hair_style": "high ponytail", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height"},
+        "prop": "a black kunai throwing knife",
+    },
+    "Karin Kanzuki": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        # Street Fighter V default. The oversized ringlets carry the silhouette; the
+        # outfit is a jacket-and-frills ojou look, not a plain school uniform.
+        "costume": "a red long-sleeved jacket over a blue frilled shirt with white frilled "
+                   "folded cuffs and a white ascot tie at the collar, a red frilled skirt, "
+                   "black tights, and a blue bow at the back of the head, with long oversized "
+                   "ringlet curls and thin braids encircling the head",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "average height"},
+    },
+    "Rose (Street Fighter)": {
+        "franchise": "Street Fighter",
+        "gender": "Female",
+        # Street Fighter Alpha. Parenthesised beside Rose Wilson, Marie Rose, Amy Rose
+        # and Rose Quartz. The Soul Power scarf is worn, so it stays in the costume.
+        "costume": "a loose red evening gown with a belt and large gold buttons over a violet "
+                   "top and matching violet stockings, red high heels, and a large golden scarf "
+                   "wrapped around the neck, shoulders and arms and glowing with soul power, "
+                   "with long wavy hair sweeping out to the side behind a large zigzag forelock",
+        "eyes": "violet",
+        "signature": {"hair_color": "deep purple", "hair_length": "waist length",
+                      "hair_texture": "loosely wavy"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
+    },
+    "Cody Travers": {
+        "franchise": "Street Fighter",
+        "gender": "Male",
+        # Street Fighter Alpha 3 jailbird look. The cuffs are worn, not held.
+        "costume": "an old-fashioned blue-and-white striped prison jumpsuit, handcuffs on both "
+                   "wrists joined by a long chain, white bandages wrapping the hands with the "
+                   "fingers left bare, and white sneakers",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "facial_hair": "stubble", "eye_color": "bright blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Lucio": {
+        "franchise": "Overwatch",
+        "gender": "Male",
+        # ASCII key for Lucio. Overwatch 2 default: darker locs with green-dyed tips.
+        "costume": "a green shirt, workout gloves, black arm and leg guards with fluorescent "
+                   "green trim, and high-tech rollerblades, with green-dyed tips on the locs",
+        "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
+                      "hair_style": "locs", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "brown"},
+        "prop": "a Sonic Amplifier, a chunky sound-blaster gun",
+    },
+    "Roadhog": {
+        "franchise": "Overwatch",
+        "gender": "Male",
+        # The gas mask is the whole head, so covers_face; the belly is bare skin, so no
+        # covers_body. The bulk is pinned in signature because the costume asserts it.
+        "covers_face": True,
+        "mask": "a pig-snouted gas mask with round goggle lenses and respirator canisters",
+        "costume": "a leather chest harness loaded with ammunition over a huge bare belly "
+                   "tattooed with crossed double-barreled shotguns, studded bracelets, grey "
+                   "cargo trousers, and black combat boots",
+        "signature": {"body_type": "plus size", "height": "very tall"},
+        "prop": "a scrap gun, a heavy junk-built shrapnel cannon",
+    },
+    "Torbjorn": {
+        "franchise": "Overwatch",
+        "gender": "Male",
+        # ASCII key for Torbjorn. Overwatch 2 default: goggles replace the welding mask,
+        # black-and-red scheme. 140 cm canon is human-scale short, not a size_scale tier.
+        "costume": "black-and-red engineer's work armor with an Ironclad belt buckle, a "
+                   "smoking forge backpack, a mechanical claw prosthetic in place of the left "
+                   "hand, goggles pushed up on the forehead, an eyepatch, and the beard worn in "
+                   "thick braids",
+        "signature": {"facial_hair": "full beard", "height": "very petite",
+                      "body_type": "stocky"},
+        "prop": "a heavy forge hammer",
+    },
+    "Cassidy": {
+        "franchise": "Overwatch",
+        "gender": "Male",
+        # The right holster stays empty so the revolver in `prop` is not drawn twice.
+        "costume": "a cowboy hat, a red serape draped over the shoulders past the waist, a "
+                   "metal vest with tubing over a shirt, a cybernetic prosthetic left forearm, "
+                   "a glove on the right hand, a big belt buckle spelling BAMF, an ammo belt "
+                   "between two hip holsters with the right one empty, a kneepad on the right "
+                   "leg, and spurred boots",
+        "signature": {"hair_color": "medium brown", "facial_hair": "short beard"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
+        "prop": "the Peacekeeper, a large six-shot revolver",
+    },
+    "Ellen Joe": {
+        "franchise": "Zenless Zone Zero",
+        "gender": "Female",
+        # Shark Thiren: the tail and gills are anatomy she wears a maid uniform over,
+        # so the tail leads the costume and the uniform follows. The spray-painted
+        # lettering is canon (the Black Orchid precedent).
+        "costume": "a long grey shark tail marked with two stickers, a band-aid and the word "
+                   "SHARK spray-painted in white, and gill slits at the neck, under a black "
+                   "and white shark-themed maid uniform with a frilled apron and headpiece, "
+                   "with pinkish-red streaks through the black hair",
+        "signature": {"hair_color": "near black", "hair_length": "shoulder length"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "pale"},
+        "prop": "a pair of giant shark-toothed scissor blades",
+    },
+    "Von Lycaon": {
+        "franchise": "Zenless Zone Zero",
+        "gender": "Male",
+        # A wolf Thiren butler -- the animal-in-real-garments case (Maid Marian
+        # class), not the funny-animal ride-along: the tailcoat and prosthetics are
+        # the look. Fur is not skin, so covers_body, and the body leads.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a long-muzzled grey wolf head with upright ears, a black bandage covering "
+                "the right eye, and a black strap harness across the snout",
+        "costume": "an even, all-over coat of pale grey fur, under a white button-up shirt "
+                   "with the sleeves rolled and black straps at the arms, a black "
+                   "double-breasted waistcoat with screw-shaped buttons, a red cascade cravat, "
+                   "a gold pocket watch on a chain, black trousers with broad straps wrapped "
+                   "over the thighs, black fingerless gloves with gold knuckle-dusters, and "
+                   "heeled mechanical prosthetic legs worn from below the knee",
+        "signature": {"height": "very tall", "body_type": "lean"},
+    },
+    "Lumine": {
+        "franchise": "Genshin Impact",
+        "gender": "Female",
+        # The Traveler. Aether is declined: the same kit and silhouette in the other
+        # gender, and the node's gender control already crossplays.
+        "costume": "a sleeveless white dress with gold trim over a light blue skirt, a long "
+                   "two-tailed scarf fading from white to light blue with a flat gold "
+                   "diamond ornament on each tail, a white and blue cape, bracers and gloves "
+                   "that cover only the thumb, white stockings and white boots, with two "
+                   "white Inteyvat flowers pinned in the hair and small feather ornaments at "
+                   "the ears",
+        "eyes": "bright golden",
+        "signature": {"hair_color": "golden blonde", "hair_length": "chin length bob",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+        "prop": "a plain straight sword",
+    },
+    "Mona": {
+        "franchise": "Genshin Impact",
+        "gender": "Female",
+        # The astrologer. The oversized compass-rose witch hat carries the silhouette.
+        "costume": "a large blue-purple witch hat decorated with gold compass-rose ornaments, "
+                   "a low-cut backless blue-purple leotard with detached blue-purple sleeves "
+                   "and black gloves, a short blue-purple cloak clasped with a gold compass "
+                   "rose, a black choker set with a compass rose, a single gold compass-rose "
+                   "earring on the left ear, and a gold ornament at the right thigh, with the "
+                   "hair in twin tails tied with black ribbons and tipped with gold compass "
+                   "roses",
+        "signature": {"hair_style": "pigtails", "hair_length": "waist length"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
+    },
+    "Wanderer (Genshin Impact)": {
+        "franchise": "Genshin Impact",
+        "gender": "Male",
+        # Parenthesised because "Wanderer" is a bare common noun in a 2,000-row
+        # dropdown. The engine never gives a man makeup, so the crimson eyeliner is
+        # authored into the costume.
+        "costume": "a large circular navy blue kasa hat topped with a gold lotus and hung "
+                   "with pale cyan fabric strips and diamond-shaped trinkets at the back, a "
+                   "dark turtleneck bodysuit patterned at the neck, shoulders, chest and "
+                   "arms, shorts, and gloves, with crimson eyeliner rimming the eyes",
+        "signature": {"hair_color": "navy blue", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "eye_color": "bright blue",
+                      "facial_hair": "clean shaven", "height": "short"},
+        "physique": {"body_type": "slender", "skin_tone": "pale"},
+    },
+    "Arlecchino": {
+        "franchise": "Genshin Impact",
+        "gender": "Female",
+        # The Knave. The X-shaped pupils are the signature, so they take the free-text
+        # `eyes` override rather than a pool eye colour.
+        "costume": "a men's-style ash-white tailcoat with a high standing shawl lapel, broad "
+                   "shoulder pads and a cinched waist over a dark grey waistcoat, grey stripes "
+                   "down the sleeves, red eye-shaped ornaments at the collar and waist, black "
+                   "and red layered lace at the cuffs, black suit trousers, and a fine chain "
+                   "running down the spine at the back",
+        "eyes": "pitch black with red X-shaped pupils",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_style": "low ponytail", "height": "tall"},
+        "physique": {"body_type": "slender", "skin_tone": "pale"},
+    },
+    "Hornet": {
+        "franchise": "Hollow Knight",
+        "gender": "Female",
+        # Silksong protagonist, built on the shipped `The Knight (Hollow Knight)`
+        # idiom: a shell mask and a matte black body, with the cloak over it.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a curved bone-white shell mask with two long pale horns rising from it and "
+                "two dark eye-holes low on its face",
+        "costume": "a red dress-like cloak falling from the neck to the legs over an even, "
+                   "all-over coat of matte black, on a very slender frame with pointed arms "
+                   "and legs",
+        "physique": {"body_type": "very slim", "height": "petite"},
+        "prop": "a long sharp needle trailing a length of silk thread",
+    },
+    "Destined One (Black Myth: Wukong)": {
+        "franchise": "Black Myth: Wukong",
+        "gender": "Male",
+        # Parenthesised so "Wukong" finds it. A furred monkey body is not skin, so
+        # covers_body, and the fur leads the costume. The golden armor and the
+        # Ruyi Jingu Bang are the look the game is known by.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a monkey face with sharp intelligent eyes, a heavy brow and a fringe of "
+                "golden-brown fur",
+        "costume": "an even, all-over coat of golden-brown fur with greyish-tan tones and a "
+                   "long thin tail, under layered gold and bronze scale armor with broad "
+                   "shoulder guards and a tiger-hide kilt, black claws at the fingertips, and "
+                   "bare feet",
+        "signature": {"body_type": "athletic", "height": "average height"},
+    },
+    "Pink Guard (Squid Game)": {
+        "franchise": "Squid Game",
+        "gender": "Male",
+        # A masked uniform: filed Male by the same convention as `Stormtrooper`,
+        # though the guards are mixed-gender. The rank symbol is the only thing that
+        # varies, so the triangle and square ranks ride as mask-only alternates.
+        "covers_face": True,
+        "covers_hair": True,
+        "mask": "a black ant-faced mask with mandible lines across the lower half and a white "
+                "circle at the brow",
+        "costume": "a hooded hot pink boiler suit zipped to the throat, a black belt, black "
+                   "gloves and black boots",
+        # A dict alternate must carry its own `costume` (validate_data enforces it),
+        # so the uniform is restated and only the rank symbol changes.
+        "costumes": [
+            {"costume": "a hooded hot pink boiler suit zipped to the throat, a black belt, "
+                        "black gloves and black boots",
+             "mask": "a black ant-faced mask with mandible lines across the lower half and a "
+                     "white triangle at the brow"},
+            {"costume": "a hooded hot pink boiler suit zipped to the throat, a black belt, "
+                        "black gloves and black boots",
+             "mask": "a black ant-faced mask with mandible lines across the lower half and a "
+                     "white square at the brow"},
+        ],
+        "physique": {"body_type": "athletic", "height": "average height"},
+    },
+    "Jinu": {
+        "franchise": "KPop Demon Hunters",
+        "gender": "Male",
+        # The Saja Boys' leader, in the "Your Idol" stage look. His true demon form
+        # is the iconic second look, so it ships as a dict alternate: the overlay
+        # signature replaces the base one whole, so it restates the hair.
+        "costume": "a wide-brimmed black gat over a black sochangui overcoat patterned with "
+                   "demon marks at the cuffs and hem, a jeogori top, a pendant at the chest, "
+                   "two chains across the chest and one at the left thigh, tight black "
+                   "trousers, and black combat boots",
+        "costumes": [
+            {"costume": "a wide-brimmed black gat over a black hanbok robe, two chains across "
+                        "the chest and one at the left thigh, and black combat boots, over "
+                        "smooth, flawless pale purple-blue skin marked with dark demon "
+                        "patterns, with clawed fingers and fangs",
+             "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                           "hair_style": "curtain bangs", "facial_hair": "clean shaven"},
+             "eyes": "bright yellow with black slit pupils"},
+        ],
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_style": "curtain bangs", "eye_color": "medium brown",
+                      "facial_hair": "clean shaven", "height": "tall"},
+        "physique": {"body_type": "slender", "skin_tone": "pale"},
+    },
+    "Jinhsi": {
+        "franchise": "Wuthering Waves",
+        "gender": "Female",
+        # Magistrate of Jinzhou. The heel-length looped twin tails and the draconic
+        # white-and-gold vest are the silhouette.
+        "costume": "a form-fitting short black dress under a sleeveless white vest worked "
+                   "with intricate gold draconic accents, a white and gold belt at the waist, "
+                   "armored plates at the shoulders, a pale turquoise cape stitched in a "
+                   "rippling pattern, white thigh-high heeled boots, and ornamental hairpieces "
+                   "holding the hair in looped twin tails that fall to the heels",
+        "eyes": "luminous white",
+        "signature": {"hair_color": "platinum white", "hair_length": "hip length",
+                      "hair_style": "pigtails"},
+        "physique": {"body_type": "petite and slim", "skin_tone": "fair"},
+    },
+    "Changli": {
+        "franchise": "Wuthering Waves",
+        "gender": "Female",
+        # Phoenix imagery throughout: the ribbon-and-ring ponytail styled to mimic
+        # tail feathers, and the feather-shaped burn marks down the left arm.
+        "costume": "a short white gown over a black gown with a black and gold neck piece, "
+                   "long black sleeves lined in a red diamond pattern, a matching coattail "
+                   "tied at the waist, panels worked with fiery patterns, golden tassel "
+                   "earrings, and feather-shaped burn marks down the left arm, with the hair "
+                   "bound by a dark grey and white ribbon and gold rings into a long ponytail "
+                   "styled to mimic phoenix tail feathers",
+        "eyes": "yellow with ringed irises",
+        "signature": {"hair_color": "rose gold", "hair_length": "very long",
+                      "hair_style": "low ponytail", "height": "tall"},
+        "physique": {"body_type": "slender", "skin_tone": "pale"},
+    },
+    "Camellya": {
+        "franchise": "Wuthering Waves",
+        "gender": "Female",
+        # The Blake Blooms and the vines growing from the bases of her pigtails are
+        # the differentiator; the red diamond pupils take the free-text override.
+        "costume": "a short ruffled white dress with red, gold and black accents, asymmetric "
+                   "white stockings with the left leg covered and a string of flower-shaped "
+                   "fabric wrapped around the right, black blooms scattered across the outfit, "
+                   "and long curly vines budding with small blossoms growing from the bases of "
+                   "the twin tails",
+        "eyes": "dark gray with red diamond-shaped pupils",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_style": "pigtails", "height": "short"},
+        "physique": {"body_type": "slim", "skin_tone": "fair"},
+    },
+    "Zenyatta": {
+        "franchise": "Overwatch",
+        # Omnic monk. Filed Male by the shipped convention for genderless mascots
+        # (see The Knight): this key only scopes the "Random - female/male" picks.
+        # A metal body is not skin, so covers_body; the orbs ride as worn beads
+        # rather than as a floating part, which never renders.
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a smooth oval silver omnic faceplate with a gold lower jaw and a grid of "
+                "nine small blue lights across the brow",
+        "costume": "a thin silver robot body with gold highlights and visible pistons at the "
+                   "arms, torso, hands and feet, under yellow trousers torn off midway down "
+                   "the shin, a beige back skirt with a black pattern, a gold sash hung with "
+                   "tassel beads, a red dhoti draped down the front, and a ring of nine metal "
+                   "prayer-bead orbs about the shoulders",
+        "signature": {"height": "average height", "body_type": "very slim"},
+    },
+    "Vanir": {
+        "franchise": "KonoSuba",
+        "gender": "Male",
+        # A Duke of Hell whose true body IS the mask, which covers the face to the
+        # mouth -- so covers_face, and the slicked-back hair moves into the costume.
+        "covers_face": True,
+        "mask": "a large black-and-white demon mask with a small star beneath each eye hole "
+                "and a fixed grin",
+        "costume": "a black tuxedo with a white tie and white gloves, over slicked-back hair",
+        # Height in `signature`, not `physique`: physique applies in Full-character
+        # mode only, and a tall gentleman reads wrong at "short" in costume-only mode.
+        "signature": {"height": "tall"},
+        "physique": {"body_type": "lean"},
+    },
+    "Scarlet (NIKKE)": {
+        "franchise": "Goddess of Victory: NIKKE",
+        "gender": "Female",
+        # A NIKKE original, and the duel boss of Stellar Blade's 2025 NIKKE crossover
+        # DLC -- which is why she is often mistaken for a Stellar Blade character.
+        # The sheath is empty so the drawn sword in `prop` is not rendered twice.
+        "costume": "a large wide-brimmed jingasa hat, a white leotard styled like Japanese "
+                   "armor with cutouts, a single armored sode over the left shoulder, a kote "
+                   "armored sleeve on the right arm, a single haidate thigh guard on the left "
+                   "thigh, and an empty sword sheath slung across the back",
+        "eyes": "golden yellow",
+        "signature": {"hair_color": "silver", "hair_length": "very long"},
+        "physique": {"body_type": "slender"},
+        "prop": "a long single-edged Yedo sword",
+    },
+    "Winston": {
+        "franchise": "Overwatch",
+        "gender": "Male",
+        # A genetically engineered gorilla in a real spacesuit -- the worn-garments
+        # case, not the funny-animal ride-along. The glasses are his mentor's.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a broad gorilla face with a heavy brow, a bushy fur beard, and round "
+                "wire-rimmed glasses",
+        "costume": "an even, all-over coat of dark grey fur on a massive barrel-chested "
+                   "gorilla body, under a bulky white armored spacesuit with a jet-booster "
+                   "jump pack on the back and Horizon Lunar Colony logos on the shoulder pads",
+        "signature": {"height": "very tall", "body_type": "stocky"},
+        "prop": "a Tesla cannon, a bulky electrical projector crackling with lightning",
+    },
+
 }
 
 
@@ -24870,6 +25377,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         # (The Incredibles, Toy Story, Frozen are already here).
         "Inside Out", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
         "Encanto",
+        "Onward",  # 1.4.0
     ),
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
@@ -24904,6 +25412,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Samurai Shodown",
         "Red Alert",  # 1.2.0
         "Killer Instinct", "Gears of War",  # 1.3.0
+        "Wing Commander", "Stellar Blade", "Goddess of Victory: NIKKE",  # 1.4.0
+        "Zenless Zone Zero", "Wuthering Waves", "Black Myth: Wukong",  # 1.4.0
     ),
     "Fantasy & Literature": (
         "The Lord of the Rings", "Harry Potter", "Game of Thrones", "The Hunger Games",
@@ -24919,6 +25429,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Dr. Jekyll and Mr. Hyde",
     ),
     "Movies & TV": (
+        "Squid Game",  # 1.4.0
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
         "Judge Dredd", "Mad Max", "Evil Dead",  # Evil Dead 0.97.0
         "Escape from New York", "Pirates of the Caribbean", "The Addams Family",
