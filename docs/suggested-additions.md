@@ -89,14 +89,14 @@ expensive one, and it is not visible from the option list.
 
 | Candidate | Case |
 |---|---|
-| **Kliff** (Crimson Desert) | The game shipped March 2026, but protagonist appearance is vendor-customizable in-game (barber, dye and tattoo vendors at the Greymane camp), so no single canonical default look is documented well enough to describe canonically. Revisit once post-launch reference material settles the default design; the same pass could weigh the other two playable leads, Oongka and Damiane. |
+| **Kliff** (Crimson Desert) | **Revisited and DECLINED at 1.4.0.** The original reason was wrong: Kliff is a *fixed* protagonist (set face, body and voice, the Geralt model), not a vendor-built one -- only his hair, facial hair, tattoos and outfit *colours* are customizable. The decline stands on the other half: his equipment and clothing are explicitly "highly customizable", so there is still no single canonical outfit to describe, and what is left -- a bearded man in fantasy leathers -- is the silhouette `Geralt` and `Conan the Barbarian` already carry. Reopen only if a marketing-canonical outfit becomes the settled default look. |
 
 **Everything else remains empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
-Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft. Each is an armoured,
+Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,
 abstract or mascot silhouette
 that would render as something generic without the name doing the work — the same
 reason Ryze, Swain and Viktor were declined below.
@@ -207,10 +207,29 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Anduin Wrynn, Varian Wrynn, Kel'Thuzad, Medivh (World of Warcraft) | A plate-armored king and robed wizards — both shapes are heavily covered across Fantasy & Literature and Video Games. |
 | Deathwing, Ragnaros (World of Warcraft) | Not humanoid-wearable; the Loc-Nar / Fry Guys case. |
 
+| Ingrid (Street Fighter) | A deep cut -- one crossover game plus a handheld port -- and the look is a schoolgirl-style blouse, pleated skirt, gloves and tights: the shape the Persona row closes against. Silver hair and two gold hairpins do not carry it without the name. |
+| Gill (Street Fighter) | His standard outfit is a loincloth, so there is no describable worn look (the Record of Ragnarok bar). The red/blue split body is the whole identity, and two competing descriptions of the same trait are the documented render failure -- the `Ming the Merciless` case. |
+| Dan Hibiki, Evil Ryu, Violent Ken, Shin Akuma (Street Fighter) | Recolours or powered-up states of the shipped `Ryu` / `Ken Masters` / `Akuma` gi silhouettes -- the Shadow Jago call. **Evil Ryu ships as a `costumes` alternate on `Ryu`** (torn black gi, red aura, glowing red eyes), which is the shape rule 2 asks for. |
+| Seth, Dee Jay, Necro, Hakan (Street Fighter) | Bare-chested fighters whose remaining garment is trousers; the body alone does not separate them from shipped fighters. |
+| Q, Twelve, JP, Rashid, Sodom (Street Fighter) | Q's trench coat, fedora and featureless mask duplicate the shipped `Rorschach`; Twelve has no worn look at all; JP is an older man in a long coat who needs the name; Rashid and Sodom are narrower cuts whose shapes the roster already carries. |
+| Bastion, Orisa, Echo, Wrecking Ball (Overwatch) | Machines with no worn garments -- the Fulgore and Claptrap calls. Nobody can be inside Wrecking Ball's ball mech. |
+| The rest of the Overwatch cast (Sigma, Baptiste, Sojourn, Ramattra, Mauga, Lifeweaver, Illari, Venture, Juno, Hazard, Freja, Wuyang) | Real looks, but each repeats a silhouette the curated set already carries (armoured soldier, robed omnic, tattooed brawler, sci-fi ranger). Overwatch stops where new entries stop adding visual ground. |
+| Aether (Genshin Impact) | The same kit and silhouette as the shipped `Lumine` in the other gender; the node's own gender control already crossplays. |
+| Keqing, Nilou, Eula, Xiao, Diluc (Genshin Impact) | Each is a well-drawn anime fantasy look, but the differentiator against a shipped neighbour is hair colour and elemental trim. `Mona`, `Wanderer` and `Arlecchino` shipped because a hat, a hat-and-veil and a pair of X-shaped pupils survive at silhouette scale. |
+| Paimon, Klee, Nahida, Qiqi (Genshin Impact) | Floating or child-bodied -- the Anya Forger rule, and "floating" is a part that never renders. |
+| Hoshimi Miyabi, Jane Doe, Burnice White, Nicole Demara (Zenless Zone Zero) | Animal-eared or tactical anime women whose silhouettes are covered several times over. `Ellen Joe` (shark tail and maid uniform) and `Von Lycaon` (a wolf in a butler's tailcoat) shipped because the body itself is the look. |
+| Rover, The Shorekeeper, Lingyang, Encore, Yinlin, Carlotta (Wuthering Waves) | Not shipped in the 1.4.0 curation: the protagonist coat and the rest read as fantasy-RPG neighbours of entries already on the roster, and `Encore` is a child-bodied design. `Jinhsi`, `Changli` and `Camellya` carry the franchise. |
+| Tachy, Raven, Lily, Adam (Stellar Blade) | `EVE (Stellar Blade)` carries the franchise. Tachy and Raven are further armoured bodysuits on EVE's silhouette; Lily is a goggled engineer in a jumpsuit and Adam a generic scavenger. |
+| Sylvia (KonoSuba: Legend of Crimson) | A film-only antagonist whose worn look -- a crimson leather dress, white gloves and stockings, with elf ears -- renders as a generic elf woman in a red dress without the name doing the work. |
+| Yunyun, Wiz, Chris / Eris, Beldia (KonoSuba) | Yunyun's Crimson Demon outfit without Megumin's hat and staff reads as a generic anime girl; Wiz is a plain robed shopkeeper; Chris/Eris is a thief outfit or a generic goddess gown; Beldia is black plate armour whose one distinguishing trait, a carried head, does not render. |
+| Ian Lightfoot (Onward) | A hoodie and jeans on a blue elf; `Barley Lightfoot` carries the film (the Captain Mizuki pattern). |
+| Proxima the Broodseeker, and the Mortal Shell / Mortal Shell 2 shells | Full-plate knights under closed or horned helmets -- the armoured silhouette the "Researched and skipped" list closes against -- from a niche soulslike series. |
+
 ### Whole classes
 
 | Class | Why |
 |---|---|
+| The rest of the gacha rosters -- Genshin Impact, Zenless Zone Zero, Wuthering Waves | Curated hard at 1.4.0 (four, two and three entries respectively, chosen individually rather than to a quota). Most remaining designs differ from a shipped neighbour by hair colour and elemental trim -- the Kaguya-sama / Dragon Maid uniformity bar -- and a full roster would let one game steer the Video Games share the way the League decline describes. Reopen only with a character-level argument. |
 | Akumatized Miraculous villains (Volpina, Antibug, Style Queen, Timebreaker, Miracle Queen…) | Mostly one-episode designs. **Chat Blanc** is the exception and ships as an *alternate* on Cat Noir, not a separate entry. |
 | The kwamis (Tikki, Plagg, Wayzz…) | Palm-sized floating creatures with no worn look. Re-checked against the 0.95.0 feral test and still closed: each is a simple coloured blob with a head, which is not a body `data/creatures.py` cannot render, and at palm scale nothing distinguishing survives. |
 | Quadrupeds with no worn look — Nala, Simba, Baloo, Shere Khan, Yogi Bear, Tom & Jerry, Courage | **Reason replaced at 0.95.0, verdict unchanged for these seven.** The old reason ("the Creature node already covers this ground exactly") was wrong, and `Appa`, `Momo`, `Luna` and `Reptar` shipped at 0.95.0 under `body_plan: "feral"`. The real test is the mirror of the creature roster's *anatomy, not species* bar: **does the beast bring a body `data/creatures.py` cannot render?** These seven do not — `lion`, `bear`, `tiger` and `cat` render them and the name changes nothing a model draws, so by the 0.93.0 rule the difference is a `palette` and a `size_scale`. Appa (six legs, brown arrow) and Catbus (twelve legs, lit windows) do. See [architecture.md → "Animal characters split four ways"](architecture.md). |

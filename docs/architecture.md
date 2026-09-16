@@ -543,6 +543,29 @@ list; the working principles at the top of this file also apply):
 
 #### Judgement calls that keep recurring
 
+- **A supplied description is a lead, not a source (1.4.0).** Reference text pasted into a
+  request can be AI-written or lifted from cosplay-shop listings — the tells are product
+  words ("shoe covers", "resin rhinestone"), replica dimensions in inches, and hedged "X or
+  Y" pairs. `Rosalina`'s supplied text contradicted Mario Wiki on six points (bare shoulders
+  and long flared sleeves, not a high collar and puffy sleeves; a *silver* crown with pink
+  and blue gems, not gold with a red jewel) and `Rumi`'s contradicted the Netflix costume
+  breakdown the shipped entry already matched. Verify against a primary source and report
+  the conflict; a maintainer description with no contradicting source is accepted and marked
+  as such in a comment (`Prince Thrakhath`).
+- **Tall is not giant (1.4.0).** `size_scale` is for building-scale or genuinely hulking
+  canon. `Rosalina` shipped as a seven-foot giant for many releases although canon only
+  makes her the tallest human character after Waluigi; the flag came off, which also took
+  her out of the `Giant` random_scope and the giant scale gates.
+- **Canon sizing belongs in `signature`, not `physique` (1.4.0).** `physique` applies in
+  Full-character mode only, so a costume-only render re-randomizes height: `Barley Lightfoot`
+  (a large stocky elf) came out "very petite" and `Vanir` (a tall gentleman) came out
+  "short". Pin a height or build that the character is *known* for in `signature`, which
+  applies in both modes — the same argument as the 0.90.0 body-trait pattern.
+- **A gacha roster is curated like League (1.4.0).** Pick per character, never to a quota:
+  1.4.0 took four from Genshin Impact, two from Zenless Zone Zero and three from Wuthering
+  Waves, and declined the rest because the differentiator was hair colour and elemental trim.
+  A new franchise stays under `_FRANCHISE_SCOPE_MINIMUM` unless a scope option is wanted.
+
 Rules learned from curation passes, kept here rather than in the backlog file so they
 outlive any one candidate list.
 
