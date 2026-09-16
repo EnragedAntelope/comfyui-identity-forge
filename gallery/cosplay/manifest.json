@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-09-04T11:27:49.734515",
-  "version": "1.3.0",
+  "generated": "2026-09-15T22:06:33.209218",
+  "version": "1.4.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -122,10 +122,11 @@
     "1.0.1",
     "1.1.0",
     "1.2.0",
-    "1.3.0"
+    "1.3.0",
+    "1.4.0"
   ],
-  "total_entries": 2023,
-  "entries_with_images": 2023,
+  "total_entries": 2052,
+  "entries_with_images": 2052,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -858,6 +859,14 @@
       "image": "images/Arisia Rrab.jpeg"
     },
     {
+      "name": "Arlecchino",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Genshin Impact",
+      "added": "1.4.0",
+      "image": "images/Arlecchino.jpeg"
+    },
+    {
       "name": "Armin Arlert",
       "has_image": true,
       "gender": "Male",
@@ -1264,6 +1273,14 @@
       "group": "Barbarella",
       "added": "1.1.0",
       "image": "images/Barbarella.jpeg"
+    },
+    {
+      "name": "Barley Lightfoot",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Onward",
+      "added": "1.4.0",
+      "image": "images/Barley Lightfoot.jpeg"
     },
     {
       "name": "Barney Rubble",
@@ -2210,6 +2227,14 @@
       "image": "images/Calypso (Tia Dalma).jpeg"
     },
     {
+      "name": "Camellya",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Wuthering Waves",
+      "added": "1.4.0",
+      "image": "images/Camellya.jpeg"
+    },
+    {
       "name": "Cammy White",
       "has_image": true,
       "gender": "Female",
@@ -2442,6 +2467,14 @@
       "image": "images/Cassian Andor.jpeg"
     },
     {
+      "name": "Cassidy",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Overwatch",
+      "added": "1.4.0",
+      "image": "images/Cassidy.jpeg"
+    },
+    {
       "name": "Cassie Cage",
       "has_image": true,
       "gender": "Female",
@@ -2544,6 +2577,14 @@
       "group": "Solo Leveling",
       "added": "1.0.0",
       "image": "images/Cha Hae-in.jpeg"
+    },
+    {
+      "name": "Changli",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Wuthering Waves",
+      "added": "1.4.0",
+      "image": "images/Changli.jpeg"
     },
     {
       "name": "Char Aznable",
@@ -2824,6 +2865,14 @@
       "group": "G.I. Joe",
       "added": "0.17.0",
       "image": "images/Cobra Commander.jpeg"
+    },
+    {
+      "name": "Cody Travers",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Street Fighter",
+      "added": "1.4.0",
+      "image": "images/Cody Travers.jpeg"
     },
     {
       "name": "Colonel Sanders",
@@ -3466,6 +3515,14 @@
       "image": "images/Despero.jpeg"
     },
     {
+      "name": "Destined One (Black Myth: Wukong)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Black Myth: Wukong",
+      "added": "1.4.0",
+      "image": "images/Destined One (Black Myth Wukong).jpeg"
+    },
+    {
       "name": "Destiny of the Endless",
       "has_image": true,
       "gender": "Male",
@@ -3930,6 +3987,14 @@
       "image": "images/E. Honda.jpeg"
     },
     {
+      "name": "EVE (Stellar Blade)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Stellar Blade",
+      "added": "1.4.0",
+      "image": "images/EVE (Stellar Blade).jpeg"
+    },
+    {
       "name": "Eda Clawthorne",
       "has_image": true,
       "gender": "Female",
@@ -4080,6 +4145,14 @@
       "group": "Kill Bill",
       "added": "0.76.0",
       "image": "images/Elle Driver.jpeg"
+    },
+    {
+      "name": "Ellen Joe",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Zenless Zone Zero",
+      "added": "1.4.0",
+      "image": "images/Ellen Joe.jpeg"
     },
     {
       "name": "Ellen Ripley",
@@ -5954,6 +6027,14 @@
       "image": "images/Honoka.jpeg"
     },
     {
+      "name": "Hornet",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hollow Knight",
+      "added": "1.4.0",
+      "image": "images/Hornet.jpeg"
+    },
+    {
       "name": "Horton",
       "has_image": true,
       "gender": "Male",
@@ -6048,6 +6129,14 @@
       "group": "Star Wars",
       "added": "0.20.0",
       "image": "images/IG-88.jpeg"
+    },
+    {
+      "name": "Ibuki",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Street Fighter",
+      "added": "1.4.0",
+      "image": "images/Ibuki.jpeg"
     },
     {
       "name": "Ice",
@@ -6706,6 +6795,22 @@
       "image": "images/Jin Kazama.jpeg"
     },
     {
+      "name": "Jinhsi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Wuthering Waves",
+      "added": "1.4.0",
+      "image": "images/Jinhsi.jpeg"
+    },
+    {
+      "name": "Jinu",
+      "has_image": true,
+      "gender": "Male",
+      "group": "KPop Demon Hunters",
+      "added": "1.4.0",
+      "image": "images/Jinu.jpeg"
+    },
+    {
       "name": "Jinx (League of Legends)",
       "has_image": true,
       "gender": "Female",
@@ -7200,6 +7305,14 @@
       "group": "TMNT",
       "added": "0.74.0",
       "image": "images/Karai.jpeg"
+    },
+    {
+      "name": "Karin Kanzuki",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Street Fighter",
+      "added": "1.4.0",
+      "image": "images/Karin Kanzuki.jpeg"
     },
     {
       "name": "Karlach",
@@ -7808,6 +7921,14 @@
       "group": "Resident Evil",
       "added": "0.18.0",
       "image": "images/Lady Dimitrescu.jpeg"
+    },
+    {
+      "name": "Lady Hellbender",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Marvel",
+      "added": "1.4.0",
+      "image": "images/Lady Hellbender.jpeg"
     },
     {
       "name": "Lady Jessica",
@@ -8450,6 +8571,14 @@
       "image": "images/Lucina.jpeg"
     },
     {
+      "name": "Lucio",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Overwatch",
+      "added": "1.4.0",
+      "image": "images/Lucio.jpeg"
+    },
+    {
       "name": "Lucy",
       "has_image": true,
       "gender": "Female",
@@ -8528,6 +8657,14 @@
       "group": "Star Wars",
       "added": "0.69.0",
       "image": "images/Luminara Unduli.jpeg"
+    },
+    {
+      "name": "Lumine",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Genshin Impact",
+      "added": "1.4.0",
+      "image": "images/Lumine.jpeg"
     },
     {
       "name": "Luna (Sailor Moon)",
@@ -9810,6 +9947,14 @@
       "image": "images/Mon Mothma.jpeg"
     },
     {
+      "name": "Mona",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Genshin Impact",
+      "added": "1.4.0",
+      "image": "images/Mona.jpeg"
+    },
+    {
       "name": "Monkey D. Luffy",
       "has_image": true,
       "gender": "Male",
@@ -11082,6 +11227,14 @@
       "image": "images/Pink Guard.jpeg"
     },
     {
+      "name": "Pink Guard (Squid Game)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Squid Game",
+      "added": "1.4.0",
+      "image": "images/Pink Guard (Squid Game).jpeg"
+    },
+    {
       "name": "Pinocchio",
       "has_image": true,
       "gender": "Male",
@@ -11264,6 +11417,14 @@
       "group": "The Little Mermaid",
       "added": "0.77.0",
       "image": "images/Prince Eric.jpeg"
+    },
+    {
+      "name": "Prince Thrakhath",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Wing Commander",
+      "added": "1.4.0",
+      "image": "images/Prince Thrakhath.jpeg"
     },
     {
       "name": "Prince Vultan",
@@ -12098,6 +12259,14 @@
       "image": "images/Road Runner.jpeg"
     },
     {
+      "name": "Roadhog",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Overwatch",
+      "added": "1.4.0",
+      "image": "images/Roadhog.jpeg"
+    },
+    {
       "name": "Robby the Robot",
       "has_image": true,
       "gender": "Male",
@@ -12240,6 +12409,14 @@
       "group": "Lollipop Chainsaw",
       "added": "0.69.0",
       "image": "images/Rosalind Starling.jpeg"
+    },
+    {
+      "name": "Rose (Street Fighter)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Street Fighter",
+      "added": "1.4.0",
+      "image": "images/Rose (Street Fighter).jpeg"
     },
     {
       "name": "Rose Quartz",
@@ -12840,6 +13017,14 @@
       "group": "The Wizard of Oz",
       "added": "0.59.0",
       "image": "images/Scarecrow (Wizard of Oz).jpeg"
+    },
+    {
+      "name": "Scarlet (NIKKE)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Goddess of Victory: NIKKE",
+      "added": "1.4.0",
+      "image": "images/Scarlet (NIKKE).jpeg"
     },
     {
       "name": "Scarlet Witch",
@@ -14978,6 +15163,14 @@
       "image": "images/Toph Beifong.jpeg"
     },
     {
+      "name": "Torbjorn",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Overwatch",
+      "added": "1.4.0",
+      "image": "images/Torbjorn.jpeg"
+    },
+    {
       "name": "Toshiro Hitsugaya",
       "has_image": true,
       "gender": "Male",
@@ -15298,6 +15491,14 @@
       "image": "images/Vanessa Ives.jpeg"
     },
     {
+      "name": "Vanir",
+      "has_image": true,
+      "gender": "Male",
+      "group": "KonoSuba",
+      "added": "1.4.0",
+      "image": "images/Vanir.jpeg"
+    },
+    {
       "name": "Vash the Stampede",
       "has_image": true,
       "gender": "Male",
@@ -15506,6 +15707,14 @@
       "image": "images/Voldo.jpeg"
     },
     {
+      "name": "Von Lycaon",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Zenless Zone Zero",
+      "added": "1.4.0",
+      "image": "images/Von Lycaon.jpeg"
+    },
+    {
       "name": "Vulcan",
       "has_image": true,
       "gender": "Male",
@@ -15536,6 +15745,14 @@
       "group": "Star Wars",
       "added": "0.20.0",
       "image": "images/Wampa.jpeg"
+    },
+    {
+      "name": "Wanderer (Genshin Impact)",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Genshin Impact",
+      "added": "1.4.0",
+      "image": "images/Wanderer (Genshin Impact).jpeg"
     },
     {
       "name": "War Machine",
@@ -15752,6 +15969,14 @@
       "group": "Fullmetal Alchemist",
       "added": "0.16.0",
       "image": "images/Winry Rockbell.jpeg"
+    },
+    {
+      "name": "Winston",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Overwatch",
+      "added": "1.4.0",
+      "image": "images/Winston.jpeg"
     },
     {
       "name": "Winter Soldier",
@@ -16176,6 +16401,14 @@
       "group": "Demon Slayer",
       "added": "0.16.0",
       "image": "images/Zenitsu Agatsuma.jpeg"
+    },
+    {
+      "name": "Zenyatta",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Overwatch",
+      "added": "1.4.0",
+      "image": "images/Zenyatta.jpeg"
     },
     {
       "name": "Zer0",
