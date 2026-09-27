@@ -3575,3 +3575,104 @@ Search, tab and facet now survive close/reopen on the per-node picker instance a
 back into the rebuilt controls (the search text pre-selected, so typing replaces it). That keeps
 the 1.1.0 invariant — the box never reads empty over a narrowed grid — while matching Stylebook's
 "remembers my filter" behaviour. Nothing is persisted, so a reload or a new workflow starts clean.
+
+### Round 2: what the maintainer's test renders found (1.5.0)
+
+A 49-image test batch, read against its PNG metadata (so locks were known, not guessed).
+
+**Men read feminine through RANDOM draws, not locks.** Three causes, all fixed on the
+wardrobe PRESENTATION (a man with a Feminine/"Any" wardrobe keeps the full odds — that is
+the crossplay switch):
+
+- **One absence table for everyone.** `_EXTRA_ABSENCE` forces the absent value with a base
+  probability, and the rest is uniform over the pool, so the realized rate is
+  `(1 - base) * (n - 1) / n`. For men that put earrings on 56%, a necklace on 54%, an arm cuff
+  on 25%, a facial piercing on 37%, highlights on 41%, a bandana or headband on 30%.
+  `_EXTRA_ABSENCE_MASCULINE` (engine) holds everyday men's rates; `_maybe_absent` reads it for
+  a Masculine presentation. Same RNG shape, only the threshold moves.
+- **Men drew hair families at the women's odds** (`braid_long` alone was a fifth of the
+  mass, and all fifteen lengths were flat). `MASCULINE_FAMILY_WEIGHTS` (fields.py) re-weights
+  whole families for a Masculine presentation in `_pick_family_weighted`, and `hair_length`
+  gained `masculine_weights` (a new draw-weight map beside `weights` / `male_weights`, read
+  by `_weighted_choice`). Measured: long hair 50% -> 11%.
+- **Trims were missing.** Presentation-gated `_MASCULINE_EXCLUDED_VALUES` (feminine braids,
+  chignon, blowout, bangs, "short pixie") beside the structural hair trims, and the wardrobe
+  trims grew (saddlebags, small crossbodies, mini backpacks, flats, platform boots, delicate
+  and jewelled pendants, a medusa piercing). Seven "unisex" outfit phrases were dresses,
+  camisoles or leggings and moved to the female bucket (a man was rendered in a tiered dress).
+  `presentation` is threaded through `_randomize_fields`, `_repick` and the deferred draw;
+  `generate_character` computes it before the fill.
+
+**Patterns and palettes.** Every pattern weighed 8/15 of `solid`, so 80% of outfits were
+patterned and camouflage/tie-dye/animal print were ~5% each. Plain now carries ~70%, and
+`PATTERN_BY_STYLE` (allowlist, validated both ways) keeps each pattern to the styles that wear
+it; `PALETTE_DENIED_BY_STYLE` keeps ombre / mixed prints / bold primaries off tailored dress.
+The new palettes are two-tone ("blue and white", "burgundy and grey", "camel and cream"): a
+single-hue palette read as one colour head to toe.
+
+**A locked coat now adapts the random scene.** Rules triggered by `outerwear` only ever fire
+on a lock (a random coat is drawn after the loop), which is exactly when they are needed: the
+place goes outdoors (every interior is a whole location family), the season, shoes and style
+follow the coat, and `_resolve_outfit_description` drops garments with their own outer layer.
+
+**Scene gates.** `fire and flame warm flicker` rendered literal flames (a lavender field, an
+airplane cabin): split into its own `artificial_fire` family at the family's own rate and
+gated as a fixture (`FIRE_LOCATIONS`). The `studio_shape` family is excluded outdoors (whole
+family). `seated` split into `seated` / `seated_floor` (proportional) so public and formal
+places drop the floor poses whole, and `_repair_pose` now honours live exclusions
+(`_live_exclusions`) instead of re-opening them. Also: grey hair needs age 35+ (whole
+`gray_white` family), a comb over needs short hair, a hat requires no hair accessory, sun
+hats stay outdoors, barefoot means no legwear, a watch excludes the watch-like bracelets, a
+high-top fade needs coily hair, paired accessories are voiced as "a pair of", and
+`outfit_style: None` no longer voices a random "earth tones houndstooth clothing, in flats".
+Pinned by `MasculinePresentationTests`, `PatternByStyleTests`, `LockedCoatAdaptsTests`,
+`RoundTwoSceneGateTests`.
+
+**Natural colouring follows ethnicity and age (round 2, found in the QA renders).** Eye
+colour was flat (57% of everyone drew blue, grey or green eyes) and natural hair ignored
+ethnicity, so blonde Sudanese and Tibetan men and blue-eyed Somali men were common -- and a
+blonde head pulls a T2I model toward rendering a white person, quietly eroding the
+diversity the ethnicity roll exists to give. `_bias_hair_color` / `_bias_eye_color` add the
+same soft, per-band lean the skin tone already had (`_HAIR_INBAND_PROBABILITY`,
+`_EYE_INBAND_PROBABILITY`): light hair is now ~2-4% outside the fair and olive bands, light
+eyes ~5%, and the fair band keeps its blondes. Grey hair was 20% at every age; it is now
+drawn by age at the pool (`_GREY_BY_AGE`: 0 under 35, ~78% at 65+). **Decide it at the draw,
+not with a rule:** the first version excluded grey under 35 with a constraint, and every
+re-pick it forced ignored the ethnicity lean (light hair stayed ~10%); a locked grey still
+ages a random person up through a grey -> `age` rule. Also: streetwear and casual caps stay
+out of formal rooms, dense freckles stay off deep skin, and the three places named for their
+sunlight are never lit by night. Pinned by `EthnicAndAgeColouringTests`.
+
+**Round 3: the maintainer's review of the QA renders.** Three causes behind "still strange
+for straight men", each measured before the fix:
+
+- **Palette families rendered as colour-blocking.** A family adjective ("bold
+  primary-colored", "pastel", "jewel-toned", "navy-and-white") made the model paint several
+  colours across one garment: rainbow knits, a patchwork safari jacket. `PALETTE_HUES` now
+  resolves a family to ONE named hue per render, voiced on the lead garment
+  (`_compose_outfit_clause`, which gained `rng` and `presentation`); a Masculine presentation
+  draws from `PALETTE_HUES_MASCULINE` (no blush pink, lavender or butter yellow), and the loud
+  palettes carry `masculine_weights`. Whole-look palettes (all black, all white) keep their
+  adjective. The JSON still records the family.
+- **Independent odds still stacked.** Each adornment's rate was realistic, but they are
+  independent, so one man could draw chains, a thumb ring, a wrap bracelet and an earring.
+  `_cap_adornments` (after the constraint loop, no RNG) holds a Masculine presentation to 2
+  pieces and a Feminine one to 4, dropping the least everyday first and never a lock.
+- **Menswear that renders feminine.** "Cropped" puffers and harringtons rendered
+  belly-out on men (rewritten or moved to the female bucket); leather totes rendered as purses
+  (trimmed; two backpacks joined the bag pool); "layered gold chains", "posing with a hand on
+  one hip" and "kneeling gracefully" are masculine-trimmed, with `MASCULINE_FAMILY_WEIGHTS`
+  keeping each pose family's survivors at their old rate; the `playful` expression family is
+  halved for men. `clothing_pattern` also carries `masculine_weights` (floral, paisley, polka
+  dot, animal, tie-dye, abstract made rare): a floral knit with flares read as costume on a man.
+  The `longline knit vest` phrase became a plain sweater vest -- it rendered as a dress over jeans.
+
+Also: bare feet and slippers only where shoes come off (home, water, soft ground, the
+barefoot studios); `denim` yields to a garment that names its own fabric
+(`FABRIC_WORD_RE`); pocket squares need a tailored style and evening clutches an evening
+style; formal suits lose fingerless gloves and casual hats. Review fixes in the same pass:
+the grey -> age rule covers only the three age-greys (white and silver are also dye and
+fiction -- the first version aged every white-haired anime character past 35), Full spectrum
+drops only the age-greys under 35, `_live_exclusions` is now the one union helper both the
+constraint loop and `_repair_pose` use, and the Welder / Glassblower archetypes' locked fire
+light is legal at their workshops. Pinned by `RoundThreeQaTests`.

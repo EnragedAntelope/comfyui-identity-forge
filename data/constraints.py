@@ -297,7 +297,9 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "accessories",
      "excludes_values": ["baseball cap", "woven hat", "wide brim sun hat",
-                         "earmuffs", "headphones worn around the neck"],  # 1.5.0
+                         "earmuffs", "headphones worn around the neck",  # 1.5.0
+                         "fingerless gloves", "bucket hat", "wool beanie",
+                         "western belt"],  # 1.5.0 round 3
      "reason": "casual headwear clashes with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "watch_type", "excludes_values": ["smart watch"],
@@ -310,7 +312,8 @@ CONSTRAINT_RULES: list[dict] = [
      "excludes_field": "accessories",
      "excludes_values": ["cat eye sunglasses", "round sunglasses",
                          "baseball cap", "beret",
-                         "earmuffs", "headphones worn around the neck"],  # 1.5.0
+                         "earmuffs", "headphones worn around the neck",  # 1.5.0
+                         "fingerless gloves", "bucket hat", "wool beanie"],  # 1.5.0 r3
      "reason": "playful accessories undercut a formal suit"},
     {"type": "exclusion", "field": "outfit_style", "value": "cocktail semi-formal",
      "excludes_field": "accessories",
@@ -590,7 +593,12 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     "necklace": [
         "pearl necklace", "pearl strand", "locket necklace", "choker",
         "velvet choker", "statement necklace", "collar necklace",
+        # 1.5.0 round 2: delicate / jewelled / layered pendants read feminine on men.
+        "delicate gold chain", "diamond pendant", "gemstone pendant",
+        "layered pendant necklaces", "layered gold chains",
     ],
+    # 1.5.0 round 2: an upper-lip medusa is a feminine-coded placement.
+    "piercings": ["medusa piercing"],
     # 1.4.0: `brooch` was missing from this list, so it stayed in the random male
     # pool -- MEASURED at 50 of 297 default male renders (17%) with
     # `wardrobe="Match gender"`, the most visible feminine-coded piece still landing
@@ -619,7 +627,8 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     # keeps them available -- the whole point of that mechanism. `wedges` / `mules` /
     # `heels` were in the pool before 0.83.0 and were already landing on men invisibly.
     "footwear": ["heels", "kitten heels", "wedges", "mules", "ballet flats",
-                 "knee-high boots", "mary janes"],  # mary janes 0.97.0
+                 "knee-high boots", "mary janes",  # mary janes 0.97.0
+                 "flats", "platform boots"],  # 1.5.0 round 2
     # 0.97.0, and the same class of miss as the footwear trim above: `bag` shares one
     # pool across genders and was the last feminine-coded field with no trim at all.
     # MEASURED before the fix, over 1000 male renders at the default
@@ -638,6 +647,12 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
         "envelope clutch in gold", "envelope clutch in nude", "woven rattan bag",
         "small quilted chain bag", "beaded evening clutch", "velvet evening bag",
         "straw beach tote", "printed silk scarf tied as bag accent",
+        # 1.5.0 round 2: rendered as handbags on men in maintainer testing.
+        "saddlebag in brown", "saddlebag in black", "saddlebag in cognac",
+        "small black leather crossbody", "tan leather crossbody",
+        "mini backpack in black", "mini backpack in tan",
+        # 1.5.0 round 3: a leather tote on a man rendered as a purse.
+        "leather tote in black", "leather tote in tan", "leather tote in cognac",
     ],
     "hair_style": [
         "space buns", "pigtails", "high pigtails", "low pigtails", "curled pigtails",
@@ -674,6 +689,7 @@ _PRESENTATION_GATED_FIELDS: frozenset[str] = frozenset({
     "footwear",     # 0.83.0 -- a wardrobe choice, not anatomy, so it gates like jewellery
     "bag",          # 0.97.0 -- likewise
     "accessories",  # 1.4.0 -- gloves, belts and frames are wardrobe, not anatomy
+    "piercings",    # 1.5.0 -- adornment, not anatomy
 })
 for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
     CONSTRAINT_RULES.append({
@@ -681,6 +697,29 @@ for _field, _excluded in _MALE_EXCLUDED_VALUES.items():
         "excludes_field": _field, "excludes_values": _excluded,
         "presentation_gated": _field in _PRESENTATION_GATED_FIELDS,
         "reason": f"feminine-coded {_field} is not a male default"})
+
+#: 1.5.0 round 2: feminine-coded HAIR, trimmed only for a MASCULINE presentation. The
+#: 0.x `hair_style` trims above are structural (always on); these are styling, so a
+#: man with a Feminine/"Any" wardrobe keeps them -- the maintainer's crossplay rule.
+#: Partial culls of their families are deliberate and cheap here: the masculine
+#: family weights (fields.py MASCULINE_FAMILY_WEIGHTS) already shrink those families.
+_MASCULINE_EXCLUDED_VALUES: dict[str, list[str]] = {
+    "hair_style": [
+        "milkmaid braids", "waterfall braid", "braided bun", "side braid", "French braid",
+        "loose braids", "rope braid", "chignon", "sleek bun", "freshly blown out",
+        "blunt bangs", "micro bangs", "wispy bangs", "side ponytail", "bubble ponytail",
+        "hair puff",
+    ],
+    "hair_length": ["short pixie"],
+    # 1.5.0 round 3: read as a feminine pose on men in the QA renders.
+    "pose": ["posing with a hand on one hip", "kneeling gracefully"],
+}
+for _field, _excluded in _MASCULINE_EXCLUDED_VALUES.items():
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "gender", "value": "Male",
+        "excludes_field": _field, "excludes_values": _excluded,
+        "presentation_gated": True,
+        "reason": f"feminine-coded {_field} is not a masculine default"})
 
 # --- Setting: a featureless backdrop has no environment ------------------
 # Since 0.63.0 every shot_type describes the camera only, so shot choice is
@@ -1246,6 +1285,10 @@ for _places, _styles in (
       "Shinto shrine interior", "art gallery opening night", "city hall rotunda"],
      frozenset(["athletic"])),
     (["neon-lit nightclub"], frozenset(["athletic", "business formal"])),
+    # 1.5.0 round 2: a hoodie-and-cargo look at a formal dinner or in court.
+    (["fine dining restaurant interior", "elegant hotel dining room",
+      "dimly lit cocktail lounge", "courtroom", "art gallery opening night"],
+     frozenset(["streetwear"])),
     (["university dormitory room"], frozenset(["business formal"])),
     (["graffiti-covered skate park", "outdoor basketball court with chain nets",
       "fire escape landing", "community garden allotment", "country dirt road",
@@ -1348,7 +1391,7 @@ SEASON_EXCLUSIONS: dict[str, dict[str, list[str]]] = {
         "accessories": ["knit winter scarf", "earmuffs"],
     },
     "winter": {
-        "footwear": ["sandals", "espadrilles", "bare feet", "slides"],
+        "footwear": ["sandals", "espadrilles", "bare feet", "slides", "boat shoes"],
         "accessories": ["wide brim sun hat", "woven hat"],
         "bag": ["straw beach tote", "woven rattan bag"],
         "outfit_style": ["resort vacation"],
@@ -1362,7 +1405,9 @@ SEASON_EXCLUSIONS: dict[str, dict[str, list[str]]] = {
 #: triggered by the blank season would make a locked scarf re-roll a season that the
 #: indoor requirement pins straight back, and the two repairs would ping-pong to the
 #: iteration cap. On the location, the contrapositive moves the place outdoors instead.
-_WINTER_ONLY_ACCESSORIES: list[str] = ["knit winter scarf", "earmuffs"]
+_WINTER_ONLY_ACCESSORIES: list[str] = ["knit winter scarf", "earmuffs",
+                                        # 1.5.0 round 2: sun hats stay outside too
+                                        "wide brim sun hat", "woven hat"]
 for _loc in _LOCATION_FAMILY:
     if _loc not in OUTDOOR_LOCATIONS:
         CONSTRAINT_RULES.append({
@@ -1459,3 +1504,272 @@ OUTERWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ("utility workwear", frozenset([
         "parka", "quilted jacket", "waxed field jacket", "rain jacket", "puffer coat"])),
 ])
+
+
+# =====================================================================================
+# 1.5.0 ROUND 2 -- found by the maintainer's test renders
+# =====================================================================================
+
+# --- a pattern belongs to a style -----------------------------------------------------
+# Patterns applied to the whole generated outfit with no reference to its style: tie-dye
+# on a notch-lapel suit, camouflage on a preppy cable-knit, an abstract print on a
+# tuxedo. Allowlist per style (fail-safe like FOOTWEAR_BY_STYLE). `clothing_pattern` is
+# FLAT with a `weights` map and no family, so a cull re-picks proportionally. Every row
+# keeps `solid`, so no style can run out.
+_PLAIN = frozenset(["solid", "subtle texture"])
+PATTERN_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
+    ("casual", _PLAIN | {"stripes", "plaid", "floral", "geometric", "denim", "polka dot",
+                         "gingham", "paisley", "tie-dye", "camouflage", "animal print",
+                         "abstract", "argyle", "houndstooth"}),
+    ("smart casual", _PLAIN | {"stripes", "plaid", "floral", "geometric", "houndstooth",
+                               "pinstripe", "gingham", "polka dot", "paisley", "argyle"}),
+    ("business casual", _PLAIN | {"stripes", "plaid", "pinstripe", "houndstooth",
+                                  "gingham", "geometric", "polka dot", "floral"}),
+    ("business formal", _PLAIN | {"pinstripe", "houndstooth", "plaid", "stripes"}),
+    ("evening formal", _PLAIN | {"floral"}),
+    ("cocktail semi-formal", _PLAIN | {"floral", "geometric", "polka dot", "abstract",
+                                       "animal print", "stripes"}),
+    ("streetwear", _PLAIN | {"stripes", "plaid", "camouflage", "tie-dye", "geometric",
+                             "abstract", "denim", "animal print"}),
+    ("bohemian", _PLAIN | {"floral", "paisley", "tie-dye", "geometric", "abstract",
+                           "stripes", "plaid"}),
+    ("athletic", _PLAIN | {"stripes", "camouflage", "geometric"}),
+    ("resort vacation", _PLAIN | {"floral", "stripes", "gingham", "geometric",
+                                  "polka dot", "paisley", "abstract"}),
+    ("edgy alternative", _PLAIN | {"plaid", "animal print", "camouflage", "stripes",
+                                   "abstract", "geometric", "denim"}),
+    ("preppy", _PLAIN | {"stripes", "plaid", "gingham", "argyle", "houndstooth",
+                         "pinstripe", "polka dot", "floral"}),
+    ("vintage retro", _PLAIN | {"polka dot", "gingham", "houndstooth", "plaid", "paisley",
+                                "floral", "stripes", "argyle", "geometric", "denim"}),
+    ("loungewear", _PLAIN | {"stripes", "plaid", "gingham", "polka dot", "floral"}),
+    ("utility workwear", _PLAIN | {"plaid", "denim", "camouflage", "stripes"}),
+])
+for _style, _allowed in PATTERN_BY_STYLE.items():
+    _banned = sorted(set(_ALL_PATTERNS) - _allowed)
+    if _banned:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "outfit_style", "value": _style,
+            "excludes_field": "clothing_pattern", "excludes_values": _banned,
+            "reason": f"these patterns do not belong on {_style} clothing"})
+
+# --- outdoors is lit by the sky, not a studio rig ------------------------------------
+# The whole `studio_shape` family (Rembrandt, butterfly, split, soft-box, spotlights)
+# was legal at every outdoor place: "a city fountain plaza, under Rembrandt lighting",
+# "tide pools, under a harsh angled spotlight". Whole-family exclusion outdoors, so the
+# surviving families keep their proportions. Indoors a portrait setup stays legal.
+_STUDIO_SHAPE_LIGHTS: list[str] = list(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+for _loc in sorted(OUTDOOR_LOCATIONS):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "lighting", "excludes_values": list(_STUDIO_SHAPE_LIGHTS),
+        "reason": f"'{_loc}' is outdoors: no studio lighting rig"})
+
+# --- nobody sits on the floor of a public or formal place ---------------------------
+# `seated_floor` is a whole POSE_FAMILIES sub-family (the 1.5.0 split), so dropping it
+# keeps `seated` (chairs) and every other family proportional.
+_FLOOR_POSES: list[str] = list(FIELD_FAMILIES["pose"]["seated_floor"]["variants"])
+_FLOOR_FREE_FAMILIES = ("food_drink", "retail_services", "civic_institutional",
+                        "work_industrial", "transit_travel")
+_FLOOR_FREE_PLACES = frozenset([
+    "bowling alley", "billiards hall", "casino floor with card tables", "movie theater lobby",
+    "independent cinema auditorium", "arcade with glowing cabinets", "indoor ice rink",
+    "roller skating rink", "karaoke room with song menus", "busy city crosswalk",
+    "neon-lit city street", "rainy street with umbrellas", "bus stop shelter",
+    "pedestrian shopping street", "open-air street food market",
+    "construction site with scaffolding", "working harbor dock", "Times Square",
+    "Shibuya Crossing", "the Brooklyn Bridge pedestrian walkway", "Trafalgar Square",
+    "rooftop cocktail bar",
+])
+for _loc, _fam in _LOCATION_FAMILY.items():
+    if _fam in _FLOOR_FREE_FAMILIES or _loc in _FLOOR_FREE_PLACES:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "pose", "excludes_values": list(_FLOOR_POSES),
+            "reason": f"nobody kneels, crouches or sits on the floor at '{_loc}'"})
+
+# --- grey hair comes with age -------------------------------------------------------
+# The DRAW is age-aware (nodes.identity_forge._GREY_BY_AGE), so a random character never
+# needs a re-pick. This rule is the other direction, for a LOCKED age-grey: it moves a
+# random age to 35+ (`age` is flat, so the re-pick is uniform). Only the three colours
+# that ARE age -- white and silver are also stylistic (dye, and a great many white- or
+# silver-haired young fictional characters lock them), so they never age anyone up.
+AGE_GREY_HAIR: list[str] = ["salt and pepper", "gray-streaked dark hair", "charcoal gray"]
+_YOUNG: list[str] = [a for a in FIELD_DEFINITIONS["age"]["female_options"]
+                     if a.isdigit() and int(a) < 35]
+for _grey in AGE_GREY_HAIR:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_color", "value": _grey,
+        "excludes_field": "age", "excludes_values": list(_YOUNG),
+        "reason": f"{_grey} hair is not a natural colour under 35"})
+
+# --- a comb over needs short hair ---------------------------------------------------
+for _length in ("shoulder length", "slightly past shoulders", "mid back", "lower back",
+                "long", "very long", "waist length", "hip length"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_length", "value": _length,
+        "excludes_field": "hair_style", "excludes_values": ["comb over"],
+        "reason": f"a comb over is a short cut, not {_length} hair"})
+
+# --- a hat covers the hair accessory -----------------------------------------------
+# "a wool beanie" over "a bandana tied over his hair" -- two things on one head.
+for _hat in ("wide brim sun hat", "baseball cap", "beret", "woven hat", "flat cap",
+             "bucket hat", "wool beanie", "earmuffs"):
+    CONSTRAINT_RULES.append({
+        "type": "requirement", "field": "accessories", "value": _hat,
+        "requires_field": "hair_accessory", "requires_value": "no hair accessory",
+        "reason": f"a {_hat} leaves no room for a hair accessory"})
+
+# --- a LOCKED coat makes the random scene fit it -------------------------------------
+# A random coat is already gated by `_eligible_outerwear`. A LOCKED one wins by the
+# lock rule, but nothing adapted around it: a parka in a museum atrium, a wool overcoat
+# "during summer", a windbreaker over slides. `outerwear` is deferred, so these rules
+# only ever fire on a lock (a random coat is not drawn until after the loop) -- which
+# is exactly the case they are for. The place goes outdoors (every built-in interior
+# is a whole location family, so the re-pick is proportional), the season, shoes and
+# style follow the coat, and `_resolve_outfit_description` drops garments that bring
+# their own outer layer.
+_OPEN_FOOTWEAR: list[str] = ["bare feet", "sandals", "espadrilles", "slides", "slippers"]
+_INTERIORS: list[str] = [_loc for _loc in _LOCATION_FAMILY if _loc not in OUTDOOR_LOCATIONS]
+for _coat, _seasons in OUTERWEAR_SEASONS.items():
+    # A seasonal place whose season the coat can never share (a parka in the autumn
+    # park) would leave `season` with no legal value at all, so it goes too. Only on a
+    # locked coat, and a few variants of one family -- a small, lock-only cull.
+    _off_season = [_loc for _loc, _allowed in SEASONS_BY_LOCATION.items()
+                   if not (_allowed & _seasons)]
+    _rules = [
+        ("season", sorted(set(_SEASONS) - _seasons), "is not worn then"),
+        ("location", list(_INTERIORS) + _off_season, "is not worn there"),
+        ("footwear", list(_OPEN_FOOTWEAR), "does not go with open shoes"),
+        ("outfit_style", sorted(_s for _s, _c in OUTERWEAR_BY_STYLE.items()
+                                if _coat not in _c), "is not worn with that style"),
+    ]
+    for _target, _values, _why in _rules:
+        if _values:
+            CONSTRAINT_RULES.append({
+                "type": "exclusion", "field": "outerwear", "value": _coat,
+                "excludes_field": _target, "excludes_values": _values,
+                "reason": f"a {_coat} {_why}"})
+
+# --- a high-top fade needs coily hair ------------------------------------------------
+# It is built by standing tightly coiled hair straight up; on straight or wavy hair it
+# does not exist. Partial cull of `barbered_crop`: the crew cut and textured crop that
+# absorb it are the generic everyday crops, which is the right place for the weight.
+for _texture in ("pin straight", "sleek straight", "silky and glossy", "slightly wavy",
+                 "loosely wavy", "wavy", "beachy waves"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": ["high-top fade"],
+        "reason": f"a high-top fade needs coily hair, not {_texture}"})
+
+# --- one watch -----------------------------------------------------------------------
+# A cuff or a leather wrap bracelet beside a watch rendered as "a watch on both wrists"
+# in maintainer testing. Both fields are flat, so the cull is uniform.
+for _watch in ("minimal analog", "chronograph", "smart watch", "vintage leather", "metal link"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "watch_type", "value": _watch,
+        "excludes_field": "bracelet", "excludes_values": ["cuff", "leather wrap bracelet"],
+        "reason": "a cuff or a wrap bracelet beside a watch reads as a second watch"})
+
+# --- a palette belongs to a style too -------------------------------------------------
+# The loud palettes read as costume on tailored or uniform-like dress: an ombre tuxedo,
+# a mixed-print suit, a bold-primary business suit, pastel workwear. `clothing_color`
+# is FLAT with a `weights` map, so these small denials re-pick proportionally.
+PALETTE_DENIED_BY_STYLE: dict[str, list[str]] = {
+    "smart casual": ["gradient ombre", "mixed prints"],
+    "business casual": ["gradient ombre", "mixed prints"],
+    "business formal": ["gradient ombre", "mixed prints", "bold primary colors", "pastels"],
+    "evening formal": ["gradient ombre", "mixed prints"],
+    "cocktail semi-formal": ["mixed prints"],
+    "preppy": ["gradient ombre", "mixed prints"],
+    "utility workwear": ["gradient ombre", "mixed prints", "bold primary colors", "pastels"],
+}
+for _style, _denied in PALETTE_DENIED_BY_STYLE.items():
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "outfit_style", "value": _style,
+        "excludes_field": "clothing_color", "excludes_values": list(_denied),
+        "reason": f"that palette reads as costume on {_style} clothing"})
+
+
+# --- casual headwear stays out of formal rooms; freckles on deep skin ----------------
+for _loc in ("fine dining restaurant interior", "elegant hotel dining room",
+             "dimly lit cocktail lounge", "courtroom", "grand cathedral interior",
+             "small chapel interior", "art gallery opening night", "formal dining room with chandelier"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "accessories",
+        "excludes_values": ["baseball cap", "bucket hat", "wool beanie"],
+        "reason": f"a casual cap comes off at '{_loc}'"})
+# Dense freckling is a fair-skin trait; on deep skin tones it drew speckled faces in
+# maintainer testing. `freckles_density` is flat, so the cull is uniform.
+for _tone in sorted(DEEP_SKIN_TONES):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "skin_tone", "value": _tone,
+        "excludes_field": "freckles_density", "excludes_values": ["heavy", "all-over"],
+        "reason": f"dense freckling does not read on {_tone} skin"})
+
+# --- a place named for its sun is not lit by night -------------------------------------
+# "a sunny city park, under blue hour twilight". Three night lights at the three places
+# whose NAME asserts daylight; a small partial cull of `daylight` at three places only.
+for _loc in ("sunny city park", "sunlit vineyard", "sunlit sunroom"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "lighting",
+        "excludes_values": ["blue hour twilight", "pre-dawn darkness with ambient glow",
+                            "moonlight with cool blue tones", "fog-diffused streetlamp glow"],
+        "reason": f"'{_loc}' is named for its sunlight"})
+
+
+# --- bare feet and slippers stay where people take their shoes off --------------------
+# "barefoot, set in a subway car interior". Bare feet belong at home, by water, on soft
+# nature ground and in the studios where people train or pose barefoot; slippers only
+# indoors at home or in a room you sleep in. `footwear` is flat, so the cull re-picks
+# uniformly among the style's surviving shoes.
+_BAREFOOT_FAMILIES = ("domestic", "nature_outdoor", "nature_landmark", "studio")
+_BAREFOOT_PLACES = frozenset([
+    "yoga studio with wood floors", "dance studio with mirrors", "martial arts dojo",
+    "photography studio with backdrop", "indoor swimming pool", "poolside cabana",
+    "quiet suburban backyard", "rooftop garden", "sunny city park", "community garden allotment",
+    "grand hotel suite", "budget motel room", "university dormitory room",
+])
+_SLIPPER_FAMILIES = ("domestic",)
+_SLIPPER_PLACES = frozenset(["grand hotel suite", "budget motel room",
+                             "university dormitory room", "hospital room"])
+for _loc, _fam in _LOCATION_FAMILY.items():
+    _no = []
+    if not (_fam in _BAREFOOT_FAMILIES or _loc in _BAREFOOT_PLACES):
+        _no.append("bare feet")
+    if not (_fam in _SLIPPER_FAMILIES or _loc in _SLIPPER_PLACES):
+        _no.append("slippers")
+    if _no:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "footwear", "excludes_values": _no,
+            "reason": f"nobody goes {'barefoot or ' if 'bare feet' in _no else ''}in slippers at '{_loc}'"})
+
+# --- dress-up accessories belong to dress-up styles -----------------------------------
+# A pocket square needs a jacket's breast pocket; an evening clutch needs an evening.
+# QA renders put "a silk pocket square" on a mesh dress and "a beaded evening clutch"
+# on a boho maxi at home. Both fields are flat (accessories carries only the eyewear
+# weights), so the culls re-pick proportionally.
+_TAILORED = {"smart casual", "business casual", "business formal", "evening formal",
+             "cocktail semi-formal", "preppy", "vintage retro"}
+_EVENING = {"evening formal", "cocktail semi-formal"}
+_DRESSY_BAGS = {"smart casual", "business casual", "business formal", "evening formal",
+                "cocktail semi-formal", "vintage retro"}
+for _style in FIELD_DEFINITIONS["outfit_style"]["female_options"]:
+    if _style not in _TAILORED:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "outfit_style", "value": _style,
+            "excludes_field": "accessories", "excludes_values": ["silk pocket square"],
+            "reason": f"{_style} clothing has no breast pocket for a pocket square"})
+    _bags = []
+    if _style not in _EVENING:
+        _bags += ["beaded evening clutch", "velvet evening bag"]
+    if _style not in _DRESSY_BAGS:
+        _bags += ["envelope clutch in black", "envelope clutch in gold", "envelope clutch in nude"]
+    if _bags:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "outfit_style", "value": _style,
+            "excludes_field": "bag", "excludes_values": _bags,
+            "reason": f"an evening or dress clutch does not go with {_style} clothing"})

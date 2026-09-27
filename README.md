@@ -205,6 +205,8 @@ for a ready-to-run workflow.
 - **The outfit fits the place.** An evening gown shows up at a gala, a cocktail lounge or a formal dinner, not in a laundromat; loungewear stays at home; workwear goes to the workshop, the dock and the farm. The **location** stands and the outfit style adapts — lock a style and the location re-rolls to somewhere it is worn.
 - **The season is weather, so it only shows outdoors.** Indoors and on a studio backdrop there is no season. Outside, what is worn follows it: no sandals, shorts or sun hats in winter, no heavy knits, beanies or gloves in summer, and seasonal places (a cherry blossom grove, a snowy pine forest) keep their own season.
 - **Coats come with the cold.** `outerwear` adds a coat or jacket over the outfit — only outdoors, never in summer, heavy coats only in winter, never over an outfit that already has its own outer layer, and always one the outfit style would wear. Lock one to force it.
+- **Men dress like men unless you ask otherwise.** A man with `wardrobe: Match gender` (or `Masculine`) gets everyday menswear odds — mostly short hair, few earrings or highlights, no handbags or dresses — while a `Feminine` or `Any` wardrobe opens the full range on purpose.
+- **Patterns fit the outfit.** Most clothing is plain, and prints stay with the styles that wear them — no camouflage suits or tie-dye tuxedos.
 - **Nothing is worn twice.** If a costume or outfit already names a necklace, earrings, a ring, a
   bangle, a bag or a hat, the randomizer does not add a second one.
 - **The pose fits the body.** Poses that reach for something the subject does not have are never

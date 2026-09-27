@@ -1191,6 +1191,8 @@
         "leather briefcase in black",
         "canvas messenger bag",
         "canvas duffel bag",
+        "canvas backpack",
+        "leather backpack in brown",
         "None"
       ]
     },
@@ -1868,10 +1870,10 @@
         "all white",
         "mixed prints",
         "navy and white",
-        "cool blues",
+        "blue and white",
         "olive and khaki",
-        "burgundy tones",
-        "camel and tan",
+        "burgundy and grey",
+        "camel and cream",
         "grey tones",
         "None"
       ]

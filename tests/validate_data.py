@@ -561,11 +561,13 @@ def validate() -> list[str]:
     # and drew 0/1500 until their rows landed, with every other check still green.
     from data.constraints import (
         FOOTWEAR_BY_STYLE, LEGWEAR_BY_STYLE, _GATED_LEGWEAR, OUTERWEAR_BY_STYLE,
+        PATTERN_BY_STYLE,
     )
     for label, allowlist, gated in (
         ("footwear", FOOTWEAR_BY_STYLE, _options("footwear")),
         ("legwear", LEGWEAR_BY_STYLE, set(_GATED_LEGWEAR)),
         ("outerwear", OUTERWEAR_BY_STYLE, _options("outerwear") - {"no outerwear"}),  # 1.5.0
+        ("clothing_pattern", PATTERN_BY_STYLE, _options("clothing_pattern")),  # 1.5.0 r2
     ):
         stray_styles = sorted(set(allowlist) - _EXPECTED_OUTFIT_STYLES)
         if stray_styles:
