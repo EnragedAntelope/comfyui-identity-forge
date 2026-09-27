@@ -22,7 +22,8 @@ if str(ROOT) not in sys.path:
 
 from data.fields import (
     FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS, SKIN_TONE_BANDS,
-    PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES, SHOE_RE, LEADING_ARTICLE_RE,
+    PALETTE_ADJECTIVES, PATTERN_TAILS, PATTERN_ADJECTIVES, WORN_ITEM_RES, SHOE_RE,
+    LEADING_ARTICLE_RE,
     ETHNICITY_REGION, STUDIO_BACKDROPS,
 )
 from data.constraints import CONSTRAINT_RULES
@@ -372,7 +373,10 @@ def validate() -> list[str]:
     # Every palette / pattern option must have a phrasing entry, or the composed prose
     # silently drops that clause -- the exact class of bug this phase exists to kill.
     for field, table, label in (("clothing_color", PALETTE_ADJECTIVES, "PALETTE_ADJECTIVES"),
-                                ("clothing_pattern", PATTERN_TAILS, "PATTERN_TAILS")):
+                                ("clothing_pattern", PATTERN_TAILS, "PATTERN_TAILS"),
+                                # 1.5.0 round 4: the pattern is voiced as an adjective on
+                                # the lead garment; a missing entry falls back to the tail.
+                                ("clothing_pattern", PATTERN_ADJECTIVES, "PATTERN_ADJECTIVES")):
         options = set(FIELD_DEFINITIONS.get(field, {}).get("female_options", []))
         missing = sorted(options - set(table))
         if missing:

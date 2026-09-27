@@ -217,7 +217,10 @@ CONSTRAINT_RULES: list[dict] = [
                          "space buns", "pigtails", "high pigtails", "low pigtails",
                          "curled pigtails", "braided pigtails",
                          "high ponytail", "low ponytail", "side ponytail",
-                         "braided ponytail", "box braids", "bantu knots",
+                         "braided ponytail",
+                         # 1.5.0 round 4: box braids and bantu knots left this list when
+                         # they moved into braid_short / texture (whole families only);
+                         # mini braids and knots on short natural hair are real looks.
                          "dutch braids", "crown braid",
                          # 0.83.0. `two-strand twists` is deliberately NOT here:
                          # like its family-mates `cornrows` and `locs` it is real at
@@ -708,9 +711,20 @@ _MASCULINE_EXCLUDED_VALUES: dict[str, list[str]] = {
         "milkmaid braids", "waterfall braid", "braided bun", "side braid", "French braid",
         "loose braids", "rope braid", "chignon", "sleek bun", "freshly blown out",
         "blunt bangs", "micro bangs", "wispy bangs", "side ponytail", "bubble ponytail",
-        "hair puff",
+        "hair puff", "braided ponytail",  # braided ponytail 1.5.0 round 4
     ],
     "hair_length": ["short pixie"],
+    "hair_part": ["zigzag part"],  # 1.5.0 round 4
+    # 1.5.0 round 4: hoops and an ear cuff read as women's earrings on men (studs stay);
+    # a thumb ring and a statement belt read feminine; a canvas tote reads as a purse;
+    # "ankle boots" on a man rendered a heeled boot.
+    "earrings": ["small gold hoops", "silver hoops", "ear cuff"],
+    "rings": ["thumb ring"],
+    "accessories": ["statement belt", "silk neck scarf"],
+    # 1.5.0 round 4 QA: a thin headband rendered as a women's hairband on a man.
+    "hair_accessory": ["thin headband"],
+    "bag": ["canvas tote"],
+    "footwear": ["ankle boots"],
     # 1.5.0 round 3: read as a feminine pose on men in the QA renders.
     "pose": ["posing with a hand on one hip", "kneeling gracefully"],
 }
@@ -934,26 +948,44 @@ for _style, _allowed in FOOTWEAR_BY_STYLE.items():
 # uniform over the survivors, with the `male_weights` lean on 'no visible legwear'
 # applied on top. 'no visible legwear' is in every style's set, so the pool can
 # never empty.
+#
+# 1.5.0 round 4: the women's values joined -- "a one-shoulder chiffon gown with fishnet
+# tights" and "a business-casual midi dress with patterned tights" were flagged renders,
+# and the gallery-hash worry above does not apply to an unreleased minor.
+_TIGHTS = ['sheer black tights', 'opaque black tights', 'sheer stockings']
 LEGWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
-    ("casual", frozenset(['ribbed crew socks', 'athletic crew socks'])),
-    ("smart casual", frozenset(['dark dress socks'])),
-    ("business casual", frozenset(['dark dress socks'])),
-    ("business formal", frozenset(['dark dress socks'])),
-    ("evening formal", frozenset(['dark dress socks'])),
-    ("cocktail semi-formal", frozenset(['dark dress socks'])),
-    ("streetwear", frozenset(['ribbed crew socks', 'athletic crew socks'])),
-    ("bohemian", frozenset()),
-    ("athletic", frozenset(['athletic crew socks'])),
+    ("casual", frozenset(['ribbed crew socks', 'athletic crew socks', 'sheer black tights',
+                          'opaque black tights', 'opaque cream tights',
+                          'ribbed knee-high socks', 'slouchy ankle socks'])),
+    ("smart casual", frozenset(['dark dress socks', 'opaque cream tights', *_TIGHTS])),
+    ("business casual", frozenset(['dark dress socks', *_TIGHTS])),
+    ("business formal", frozenset(['dark dress socks', *_TIGHTS])),
+    ("evening formal", frozenset(['dark dress socks', 'sheer black tights', 'sheer stockings'])),
+    ("cocktail semi-formal", frozenset(['dark dress socks', *_TIGHTS])),
+    ("streetwear", frozenset(['ribbed crew socks', 'athletic crew socks', 'fishnet tights',
+                              'opaque black tights', 'patterned tights', 'ribbed knee-high socks',
+                              'over-the-knee socks', 'slouchy ankle socks'])),
+    ("bohemian", frozenset(['opaque cream tights', 'patterned tights', 'opaque black tights',
+                            'slouchy ankle socks', 'over-the-knee socks'])),
+    ("athletic", frozenset(['athletic crew socks', 'slouchy ankle socks'])),
     ("resort vacation", frozenset()),
-    ("edgy alternative", frozenset()),
-    ("preppy", frozenset(['ribbed crew socks'])),
-    ("vintage retro", frozenset(['ribbed crew socks'])),
-    ("loungewear", frozenset(['ribbed crew socks'])),
-    ("utility workwear", frozenset(['ribbed crew socks', 'athletic crew socks'])),  # 1.5.0
+    ("edgy alternative", frozenset(['fishnet tights', 'opaque black tights', 'patterned tights',
+                                    'sheer black tights', 'over-the-knee socks',
+                                    'ribbed knee-high socks'])),
+    ("preppy", frozenset(['ribbed crew socks', 'ribbed knee-high socks', 'opaque black tights',
+                          'opaque cream tights', 'sheer black tights', 'over-the-knee socks'])),
+    ("vintage retro", frozenset(['ribbed crew socks', 'dark dress socks', 'sheer stockings',
+                                 'sheer black tights',
+                                 'opaque black tights', 'slouchy ankle socks',
+                                 'ribbed knee-high socks'])),
+    ("loungewear", frozenset(['ribbed crew socks', 'slouchy ankle socks'])),
+    ("utility workwear", frozenset(['ribbed crew socks', 'athletic crew socks',
+                                    'slouchy ankle socks'])),
 ])
-#: The only values LEGWEAR_BY_STYLE may exclude. Deliberately not the whole pool.
+#: Every value LEGWEAR_BY_STYLE may exclude: the shipped pool (a user value passes).
 _GATED_LEGWEAR: frozenset[str] = frozenset(
-    ['ribbed crew socks', 'athletic crew socks', 'dark dress socks'])
+    v for g in ("female_options", "male_options") for v in FIELD_DEFINITIONS["legwear"][g]
+    if v != "no visible legwear")
 
 # NO CONSTRAINT_RULES LOOP HERE, and that is the whole point of this comment.
 # `legwear` is a DEFERRED field (`nodes.identity_forge._DEFERRED_FIELDS`): it is drawn
@@ -1391,13 +1423,15 @@ SEASON_EXCLUSIONS: dict[str, dict[str, list[str]]] = {
         "accessories": ["knit winter scarf", "earmuffs"],
     },
     "winter": {
-        "footwear": ["sandals", "espadrilles", "bare feet", "slides", "boat shoes"],
+        "footwear": ["sandals", "espadrilles", "bare feet", "slides", "boat shoes",
+                     "mules", "wedges"],  # 1.5.0 round 4
         "accessories": ["wide brim sun hat", "woven hat"],
         "bag": ["straw beach tote", "woven rattan bag"],
         "outfit_style": ["resort vacation"],
     },
     "summer": {
-        "accessories": ["wool beanie", "leather gloves", "knit winter scarf", "earmuffs"],
+        "accessories": ["wool beanie", "leather gloves", "knit winter scarf", "earmuffs",
+                        "fingerless gloves"],  # 1.5.0 round 4
     },
 }
 #: Winter pieces are weather wear, so they also stay outdoors (the 0.97.0 decline these
@@ -1629,7 +1663,8 @@ for _hat in ("wide brim sun hat", "baseball cap", "beret", "woven hat", "flat ca
 # is a whole location family, so the re-pick is proportional), the season, shoes and
 # style follow the coat, and `_resolve_outfit_description` drops garments that bring
 # their own outer layer.
-_OPEN_FOOTWEAR: list[str] = ["bare feet", "sandals", "espadrilles", "slides", "slippers"]
+_OPEN_FOOTWEAR: list[str] = ["bare feet", "sandals", "espadrilles", "slides", "slippers",
+                              "mules", "wedges", "boat shoes"]  # last three 1.5.0 round 4
 _INTERIORS: list[str] = [_loc for _loc in _LOCATION_FAMILY if _loc not in OUTDOOR_LOCATIONS]
 for _coat, _seasons in OUTERWEAR_SEASONS.items():
     # A seasonal place whose season the coat can never share (a parka in the autumn
@@ -1668,8 +1703,12 @@ for _texture in ("pin straight", "sleek straight", "silky and glossy", "slightly
 for _watch in ("minimal analog", "chronograph", "smart watch", "vintage leather", "metal link"):
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "watch_type", "value": _watch,
-        "excludes_field": "bracelet", "excludes_values": ["cuff", "leather wrap bracelet"],
-        "reason": "a cuff or a wrap bracelet beside a watch reads as a second watch"})
+        # 1.5.0 round 4: every bracelet, not two -- a chain or charm bracelet beside
+        # the watch stacked on the same wrist in 5 of 47 flagged renders.
+        "excludes_field": "bracelet",
+        "excludes_values": [b for b in FIELD_DEFINITIONS["bracelet"]["female_options"]
+                            if b != "none"],
+        "reason": "a bracelet beside a watch stacks on one wrist"})
 
 # --- a palette belongs to a style too -------------------------------------------------
 # The loud palettes read as costume on tailored or uniform-like dress: an ombre tuxedo,
@@ -1678,11 +1717,13 @@ for _watch in ("minimal analog", "chronograph", "smart watch", "vintage leather"
 PALETTE_DENIED_BY_STYLE: dict[str, list[str]] = {
     "smart casual": ["gradient ombre", "mixed prints"],
     "business casual": ["gradient ombre", "mixed prints"],
-    "business formal": ["gradient ombre", "mixed prints", "bold primary colors", "pastels"],
+    "business formal": ["gradient ombre", "mixed prints", "bold primary colors", "pastels",
+                        "jewel tones"],  # 1.5.0 round 4: "a ruby two-piece suit"
     "evening formal": ["gradient ombre", "mixed prints"],
     "cocktail semi-formal": ["mixed prints"],
     "preppy": ["gradient ombre", "mixed prints"],
     "utility workwear": ["gradient ombre", "mixed prints", "bold primary colors", "pastels"],
+    "edgy alternative": ["pastels"],  # 1.5.0 round 4: "a mint utility harness"
 }
 for _style, _denied in PALETTE_DENIED_BY_STYLE.items():
     CONSTRAINT_RULES.append({
@@ -1773,3 +1814,669 @@ for _style in FIELD_DEFINITIONS["outfit_style"]["female_options"]:
             "type": "exclusion", "field": "outfit_style", "value": _style,
             "excludes_field": "bag", "excludes_values": _bags,
             "reason": f"an evening or dress clutch does not go with {_style} clothing"})
+
+
+# =====================================================================================
+# 1.5.0 round 4 -- the maintainer's 47 flagged renders. Every block below answers a
+# class of contradiction seen there; docs/architecture.md "Round 4" has the list.
+# =====================================================================================
+
+# --- extras belong to a style ---------------------------------------------------------
+# "a bucket hat" with a sequined cocktail top, "a flower crown" with an evening gown at
+# a casino, "a leather briefcase" with coveralls, "a leather backpack" with a suit, "a
+# belt bag" with a crewneck over a collared shirt, "a silk neck scarf" with a boxy tee.
+# One table per style, denials only: a value not listed stays legal, so a user-added
+# style or value is never banned. Every target is flat (accessories/skin weights only),
+# so each cull re-picks proportionally, and every field keeps its absent value.
+_CASUAL_HATS = ["baseball cap", "bucket hat", "wool beanie"]
+_SUN_HATS = ["wide brim sun hat", "woven hat"]
+_SUNGLASSES = ["classic black sunglasses", "cat eye sunglasses", "round sunglasses",
+               "aviator sunglasses"]
+_COLD_WEAR = ["knit winter scarf", "earmuffs"]
+_ALL_BAGS = [b for b in FIELD_DEFINITIONS["bag"]["female_options"] if b != "no bag"]
+_TOP_HANDLE = ["structured top handle bag in black", "structured top handle bag in cream",
+               "structured top handle bag in tan"]
+_CLUTCHES = ["envelope clutch in black", "envelope clutch in gold", "envelope clutch in nude",
+             "beaded evening clutch", "velvet evening bag", "small quilted chain bag"]
+_BELT_BAGS = ["belt bag in black", "belt bag in tan"]
+_MINI_BACKPACKS = ["mini backpack in black", "mini backpack in tan"]
+_SADDLEBAGS = ["saddlebag in brown", "saddlebag in black", "saddlebag in cognac"]
+_LEATHER_TOTES = ["leather tote in black", "leather tote in tan", "leather tote in cognac"]
+_BEACH_BAGS = ["straw beach tote", "woven rattan bag"]
+_STATEMENT_EARRINGS = ["chandelier earrings", "long drop earrings", "tassel earrings",
+                       "clip-on pearl earrings"]
+_EDGY_PIERCINGS = ["snake bites", "bridge piercing", "eyebrow piercing", "labret stud",
+                   "stretched lobes", "medusa piercing", "industrial earring",
+                   "double nostril piercing", "small septum ring"]
+_WORK_RINGS = ["statement ring", "delicate gemstone", "midi ring", "stacked thin bands"]
+
+
+def _only(allowed: list[str]) -> list[str]:
+    return [b for b in _ALL_BAGS if b not in allowed]
+
+
+EXTRAS_DENIED_BY_STYLE: dict[str, dict[str, list[str]]] = {
+    "casual": {
+        "accessories": ["long opera gloves"],
+        "bag": ["leather briefcase in black"],
+        "hair_accessory": ["jeweled hair comb"],
+        "earrings": ["chandelier earrings", "clip-on pearl earrings"],
+    },
+    "smart casual": {
+        "accessories": ["bucket hat", "wool beanie", "headphones worn around the neck",
+                        "fingerless gloves", "long opera gloves", "western belt"],
+        "bag": ["canvas duffel bag", *_BEACH_BAGS[:1], *_BELT_BAGS],
+        "hair_accessory": ["bandana tied over hair", "flower crown", "jeweled hair comb"],
+        "necklace": ["beaded necklace", "pendant on a leather cord"],
+    },
+    "business casual": {
+        "accessories": [*_CASUAL_HATS, *_SUN_HATS, "flat cap", "headphones worn around the neck",
+                        "fingerless gloves", "long opera gloves", "western belt"],
+        "bag": ["canvas duffel bag", *_BEACH_BAGS, *_BELT_BAGS, *_MINI_BACKPACKS],
+        "hair_accessory": ["bandana tied over hair", "flower crown", "jeweled hair comb",
+                           "oversized hair bow"],
+        "necklace": ["beaded necklace", "pendant on a leather cord", "velvet choker",
+                     "collar necklace"],
+        "bracelet": ["beaded bracelet"],
+        "rings": ["thumb ring"],
+        "earrings": ["tassel earrings", "mismatched earrings", "chandelier earrings"],
+        "piercings": list(_EDGY_PIERCINGS),
+    },
+    "business formal": {
+        "accessories": [*_CASUAL_HATS, *_SUN_HATS, "flat cap", "beret",
+                        "headphones worn around the neck", "fingerless gloves",
+                        "long opera gloves", "western belt", "statement belt", "suspenders",
+                        "reading glasses pushed up on head"],
+        "bag": ["canvas tote", "canvas messenger bag", "canvas duffel bag", "canvas backpack",
+                "leather backpack in brown", *_MINI_BACKPACKS, *_BELT_BAGS, *_BEACH_BAGS],
+        "hair_accessory": ["scrunchie", "bandana tied over hair", "flower crown",
+                           "oversized hair bow", "jeweled hair comb", "thin headband",
+                           "thin scarf tied in hair", "knotted headband"],
+        "necklace": ["beaded necklace", "pendant on a leather cord", "layered pendant necklaces",
+                     "choker", "velvet choker"],
+        "bracelet": ["beaded bracelet", "leather wrap bracelet", "charm bracelet", "bangle stack"],
+        "rings": ["thumb ring", "midi ring"],
+        "earrings": ["large bold gold hoops", "tassel earrings", "mismatched earrings",
+                     "chandelier earrings", "ear cuff"],
+        "piercings": list(_EDGY_PIERCINGS),
+    },
+    "evening formal": {
+        "accessories": [*_CASUAL_HATS, *_SUN_HATS, *_SUNGLASSES, *_COLD_WEAR, "flat cap",
+                        "beret", "headphones worn around the neck", "fingerless gloves",
+                        "western belt", "statement belt", "suspenders",
+                        "reading glasses pushed up on head"],
+        "bag": _only(_CLUTCHES),
+        "hair_accessory": ["scrunchie", "claw clip", "bandana tied over hair", "knotted headband",
+                           "flower crown", "thin headband", "thin scarf tied in hair",
+                           "padded headband"],
+        "necklace": ["beaded necklace", "pendant on a leather cord", "layered pendant necklaces"],
+        "bracelet": ["charm bracelet"],
+        "watch_type": ["chronograph"],
+        "rings": ["thumb ring"],
+        "earrings": ["mismatched earrings"],
+        "piercings": list(_EDGY_PIERCINGS),
+    },
+    "cocktail semi-formal": {
+        "accessories": [*_CASUAL_HATS, *_SUN_HATS, *_COLD_WEAR, "flat cap",
+                        "headphones worn around the neck", "fingerless gloves", "western belt",
+                        "suspenders", "reading glasses pushed up on head"],
+        "bag": _only(_CLUTCHES + _TOP_HANDLE + ["small black leather crossbody",
+                                                  "tan leather crossbody"]),
+        "hair_accessory": ["scrunchie", "bandana tied over hair", "flower crown", "thin headband",
+                           "claw clip"],
+        "necklace": ["beaded necklace", "pendant on a leather cord"],
+        "bracelet": ["beaded bracelet", "leather wrap bracelet"],
+        "watch_type": ["smart watch"],
+    },
+    "streetwear": {
+        "accessories": [*_SUN_HATS, "silk neck scarf", "lapel pin", "long opera gloves",
+                        "belt cinching waist"],
+        "bag": ["leather briefcase in black", *_TOP_HANDLE, *_BEACH_BAGS,
+                "small quilted chain bag", "printed silk scarf tied as bag accent"],
+        "hair_accessory": ["jeweled hair comb", "flower crown", "satin ribbon tied in hair"],
+        "earrings": ["clip-on pearl earrings", "chandelier earrings"],
+    },
+    "bohemian": {
+        "accessories": ["baseball cap", "bucket hat", "headphones worn around the neck",
+                        "long opera gloves", "suspenders", "lapel pin"],
+        "bag": ["leather briefcase in black", *_BELT_BAGS, *_TOP_HANDLE,
+                "small quilted chain bag"],
+        "watch_type": ["smart watch"],
+    },
+    "athletic": {
+        "accessories": [*_SUN_HATS, "beret", "flat cap", "silk neck scarf",
+                        "belt cinching waist", "western belt", "statement belt", "lapel pin",
+                        "long opera gloves", "leather gloves", "suspenders",
+                        "reading glasses pushed up on head", "cat eye sunglasses"],
+        "hair_accessory": ["flower crown", "jeweled hair comb", "satin ribbon tied in hair",
+                           "oversized hair bow", "hair bow", "decorative hair pins",
+                           "silk headband", "thin scarf tied in hair", "padded headband"],
+        "necklace": ["collar necklace", "velvet choker", "choker", "layered gold chains",
+                     "layered pendant necklaces", "locket necklace"],
+        "bracelet": ["tennis bracelet", "charm bracelet", "bangle stack", "cuff"],
+        "rings": list(_WORK_RINGS),
+        "earrings": [*_STATEMENT_EARRINGS, "large bold gold hoops", "pearl studs",
+                     "threader earrings"],
+    },
+    "resort vacation": {
+        "accessories": ["suspenders", "leather gloves", "fingerless gloves", "long opera gloves",
+                        "wool beanie", "lapel pin", *_COLD_WEAR],
+        "bag": ["leather briefcase in black", "leather backpack in brown"],
+        "necklace": ["velvet choker", "collar necklace", "pearl strand"],
+    },
+    "edgy alternative": {
+        "accessories": [*_SUN_HATS, "silk neck scarf"],
+        "bag": ["leather briefcase in black", *_BEACH_BAGS, "structured top handle bag in cream",
+                "structured top handle bag in tan", "printed silk scarf tied as bag accent"],
+    },
+    "preppy": {
+        "accessories": ["bucket hat", "headphones worn around the neck", "fingerless gloves",
+                        "long opera gloves", "western belt"],
+        "bag": list(_BELT_BAGS),
+        "hair_accessory": ["bandana tied over hair", "flower crown", "jeweled hair comb"],
+        "necklace": ["beaded necklace", "pendant on a leather cord", "velvet choker"],
+        "piercings": list(_EDGY_PIERCINGS),
+    },
+    "vintage retro": {
+        "accessories": ["headphones worn around the neck"],
+        "bag": ["canvas duffel bag"],
+        "watch_type": ["smart watch"],
+    },
+    "loungewear": {
+        "accessories": [*_CASUAL_HATS, *_SUN_HATS, *_SUNGLASSES, *_COLD_WEAR, "flat cap",
+                        "beret", "silk neck scarf", "belt cinching waist", "western belt",
+                        "statement belt", "lapel pin", "long opera gloves", "leather gloves",
+                        "fingerless gloves", "suspenders"],
+        "bag": _only(["canvas tote", *_BELT_BAGS, *_MINI_BACKPACKS, "canvas backpack"]),
+        "hair_accessory": ["jeweled hair comb", "flower crown", "decorative hair pins",
+                           "satin ribbon tied in hair", "oversized hair bow"],
+        "necklace": ["statement necklace", "collar necklace", "pearl strand", "pearl necklace",
+                     "diamond pendant", "layered gold chains", "layered pendant necklaces",
+                     "velvet choker", "choker"],
+        "bracelet": ["tennis bracelet", "bangle stack", "cuff"],
+        "earrings": list(_STATEMENT_EARRINGS),
+    },
+    "utility workwear": {
+        "accessories": ["long opera gloves"],
+        "bag": ["leather briefcase in black", *_TOP_HANDLE, "small quilted chain bag",
+                *_SADDLEBAGS, *_LEATHER_TOTES, *_BEACH_BAGS, *_MINI_BACKPACKS,
+                "printed silk scarf tied as bag accent"],
+        "hair_accessory": ["flower crown", "jeweled hair comb", "satin ribbon tied in hair",
+                           "oversized hair bow", "hair bow", "decorative hair pins",
+                           "silk headband"],
+        "bracelet": ["tennis bracelet", "charm bracelet", "bangle stack"],
+        "rings": list(_WORK_RINGS),
+        "earrings": [*_STATEMENT_EARRINGS, "large bold gold hoops"],
+    },
+}
+#: Body jewellery is style-bound too: a brooch on a sweatshirt, a waist chain over a
+#: hoodie. (The garment itself is checked after the outfit is composed, in
+#: nodes.identity_forge._fit_extras_to_garment; this is the style half.)
+_OTHER_JEWELRY_STYLES: dict[str, frozenset[str]] = {
+    "brooch": frozenset(["smart casual", "business casual", "business formal", "evening formal",
+                         "cocktail semi-formal", "preppy", "vintage retro"]),
+    "arm cuff": frozenset(["bohemian", "resort vacation", "edgy alternative", "evening formal",
+                           "cocktail semi-formal", "streetwear", "casual"]),
+    "body chain": frozenset(["resort vacation", "bohemian", "edgy alternative",
+                             "cocktail semi-formal"]),
+    "waist chain": frozenset(["resort vacation", "bohemian", "edgy alternative", "streetwear",
+                              "casual", "cocktail semi-formal"]),
+    "anklet": frozenset(["resort vacation", "bohemian", "casual", "streetwear", "loungewear",
+                         "cocktail semi-formal"]),
+}
+for _style in _ALL_STYLES:
+    _by_field = {f: list(v) for f, v in EXTRAS_DENIED_BY_STYLE.get(_style, {}).items()}
+    _jewels = [j for j, _ok in _OTHER_JEWELRY_STYLES.items() if _style not in _ok]
+    if _jewels:
+        _by_field["other_jewelry"] = _jewels
+    for _field, _values in _by_field.items():
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "outfit_style", "value": _style,
+            "excludes_field": _field, "excludes_values": _values,
+            "reason": f"that {_field.replace('_', ' ')} does not go with {_style} clothing"})
+
+# Opera gloves reach past the wrist: a watch or bracelet would sit on top of the glove.
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "accessories", "value": "long opera gloves",
+    "excludes_field": "watch_type",
+    "excludes_values": [w for w in FIELD_DEFINITIONS["watch_type"]["female_options"] if w != "none"],
+    "reason": "a watch does not go over an opera glove"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "accessories", "value": "long opera gloves",
+    "excludes_field": "bracelet",
+    "excludes_values": [b for b in FIELD_DEFINITIONS["bracelet"]["female_options"] if b != "none"],
+    "reason": "a bracelet does not go over an opera glove"})
+
+# --- where you are decides what you carry and wear ------------------------------------
+# "carrying a saddlebag" in a dining room at home, "a canvas messenger bag" with a robe in
+# the backyard; gloves, a beanie, a bucket hat and sunglasses indoors. Studio sweeps keep
+# them (a styled shoot), every other interior drops them.
+_AT_HOME: list[str] = [_loc for _loc, _fam in _LOCATION_FAMILY.items()
+                       if _fam == "domestic" and _loc != "mudroom entryway"] + [
+    "grand hotel suite", "budget motel room", "university dormitory room", "hospital room"]
+for _loc in _AT_HOME:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "bag", "excludes_values": list(_ALL_BAGS),
+        "reason": f"nobody carries a bag around '{_loc}'"})
+_OUTDOOR_WEAR: list[str] = ["leather gloves", "fingerless gloves", "wool beanie", "bucket hat",
+                            *_SUNGLASSES]
+for _loc, _fam in _LOCATION_FAMILY.items():
+    if _loc not in OUTDOOR_LOCATIONS and _fam != "studio":
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "accessories", "excludes_values": list(_OUTDOOR_WEAR),
+            "reason": f"'{_loc}' is indoors: gloves, sun hats and sunglasses come off"})
+# Rough ground: "in slides" on a rocky coastal cliff.
+_RUGGED_PLACES: list[str] = [
+    "rocky coastal cliff", "forest trail", "mountain overlook", "rolling desert dune",
+    "snowy pine forest", "misty moor", "alpine meadow with wildflowers", "bamboo forest path",
+    "tide pools at low tide", "golden savanna with acacia trees", "red rock desert arch",
+    "slot canyon with striated walls", "geothermal geyser basin",
+    "redwood grove with towering trunks", "alpine glacier lake", "coastal lighthouse bluff",
+    "waterfall plunge pool", "moss-draped rainforest trail", "frozen lake surface",
+    "sea cave mouth", "basalt column coastline", "high desert with joshua trees",
+    "the Grand Canyon south rim", "a Zion canyon riverbank", "the red desert plain below Uluru",
+    "the Table Mountain plateau", "the Cliffs of Moher", "the Mount Fuji foothills",
+    "construction site with scaffolding",
+]
+_DRESS_SHOES: list[str] = ["heels", "kitten heels", "wedges", "mules", "slides", "ballet flats",
+                           "flats", "mary janes", "platform boots", "oxfords", "derbies",
+                           "loafers"]
+for _loc in _RUGGED_PLACES:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "footwear", "excludes_values": list(_DRESS_SHOES),
+        "reason": f"'{_loc}' is rough ground for dress shoes"})
+
+# --- lamps and candles need a room ----------------------------------------------------
+# "warm candlelight" on a tree-lined boulevard, "warm incandescent lamp glow" in a cherry
+# blossom grove. Wild places lose the whole `artificial_open` family (bias-clean); urban
+# outdoor places keep the lantern and string lights (markets, patios) and lose the two
+# that need a table or a lampshade, except where a table exists.
+_PATIO_PLACES = frozenset(["rooftop cocktail bar", "rooftop terrace overlooking the skyline",
+                           "poolside cabana", "open-air street food market",
+                           "quiet suburban backyard"])
+_OPEN_LIGHTS: list[str] = list(FIELD_FAMILIES["lighting"]["artificial_open"]["variants"])
+for _loc, _fam in _LOCATION_FAMILY.items():
+    if _loc not in OUTDOOR_LOCATIONS or _loc in _PATIO_PLACES:
+        continue
+    _dark = (list(_OPEN_LIGHTS) if _fam in ("nature_outdoor", "nature_landmark")
+             else ["warm candlelight", "warm incandescent lamp glow"])
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "lighting", "excludes_values": _dark,
+        "reason": f"'{_loc}' has no lamp or candle to light it"})
+
+# --- hair: length, texture, parting, highlights, accessories ---------------------------
+# Whole families only (the hair_style family rule). Ear length and a chin-length bob
+# cannot be gathered into a ponytail, bun, updo, long braid or pigtails; jaw length
+# still makes a stubby ponytail or a small bun, but not a French twist or braids.
+_FAM = FIELD_FAMILIES["hair_style"]
+_GATHERED = [v for f in ("ponytail", "bun_small", "bun_gathered", "braid_long", "pigtails")
+             for v in _FAM[f]["variants"]]
+_LONG_BRAIDS_UPDOS = [v for f in ("bun_gathered", "braid_long", "pigtails")
+                      for v in _FAM[f]["variants"]]
+for _length, _styles in (("ear length", _GATHERED + list(_FAM["half-up"]["variants"])),
+                         ("chin length bob", _GATHERED),
+                         ("jaw length", _LONG_BRAIDS_UPDOS)):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_length", "value": _length,
+        "excludes_field": "hair_style", "excludes_values": _styles,
+        "reason": f"{_length} hair is too short to gather into that style"})
+# Texture on a buzz: waves and curls need length to show.
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "hair_length", "value": "buzzed very short",
+    "excludes_field": "hair_texture",
+    "excludes_values": ["slightly wavy", "loosely wavy", "wavy", "beachy waves",
+                        "loosely curled", "softly curled", "fine and wispy", "silky and glossy"],
+    "reason": "a buzz cut is too short to show a wave or a loose curl"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "hair_length", "value": "very short",
+    "excludes_field": "hair_texture", "excludes_values": ["beachy waves", "loosely wavy"],
+    "reason": "very short hair is too short for loose waves"})
+# An afro is volume from coils; fine, wispy hair cannot hold one. A high-top fade is
+# stood up from tight coils (thick straight or loose curls cannot hold it).
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "hair_texture", "value": "fine and wispy",
+    "excludes_field": "hair_style", "excludes_values": list(_TEXTURE_BOUND_STYLES),
+    "reason": "fine, wispy hair cannot form an afro or twist-out"})
+for _texture in ("thick and voluminous", "fine and wispy", "loosely curled", "softly curled"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": ["high-top fade"],
+        "reason": f"a high-top fade needs tight coils, not {_texture} hair"})
+# Parting. A comb over IS a side part; bangs hide the part or dictate it; the crops,
+# cornrows, locs and twists have no parting to describe; very short hair has no room
+# for a centre or zigzag part.
+for _style in ("blunt bangs", "micro bangs", "textured crop", "high-top fade", "cornrows",
+               "locs", "two-strand twists", "hair puff", "box braids"):
+    CONSTRAINT_RULES.append({
+        "type": "requirement", "field": "hair_style", "value": _style,
+        "requires_field": "hair_part", "requires_value": "no part",
+        "reason": f"a {_style} style shows no parting"})
+for _style, _parts in (("comb over", ["center part", "zigzag part", "diagonal"]),
+                       ("side-swept bangs", ["center part", "zigzag part", "diagonal"]),
+                       ("curtain bangs", ["side part", "deep side part", "zigzag part", "diagonal"]),
+                       ("wispy bangs", ["deep side part", "zigzag part", "diagonal"])):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_style", "value": _style,
+        "excludes_field": "hair_part", "excludes_values": _parts,
+        "reason": f"a {_style} dictates its own parting"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "hair_length", "value": "very short",
+    "excludes_field": "hair_part", "excludes_values": ["center part", "zigzag part", "diagonal"],
+    "reason": "very short hair has no room for a centre or zigzag part"})
+# Highlights need length to show, and grey or white hair is not highlighted.
+_HIGHLIGHTS = [h for h in FIELD_DEFINITIONS["hair_highlights"]["female_options"] if h != "none"]
+for _length, _keep in (("buzzed very short", []),
+                       ("very short", ["frosted tips", "chunky highlights"])):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_length", "value": _length,
+        "excludes_field": "hair_highlights",
+        "excludes_values": [h for h in _HIGHLIGHTS if h not in _keep],
+        "reason": f"{_length} hair is too short to carry those highlights"})
+for _grey in FIELD_FAMILIES["hair_color"]["gray_white"]["variants"]:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_color", "value": _grey,
+        "excludes_field": "hair_highlights", "excludes_values": list(_HIGHLIGHTS),
+        "reason": f"{_grey} hair is not highlighted"})
+# A headband on a buzz cut sits on bare scalp.
+_HAIR_ACCESSORIES = [a for g in ("female_options", "male_options")
+                     for a in FIELD_DEFINITIONS["hair_accessory"][g] if a != "no hair accessory"]
+for _length, _keep in (
+        ("buzzed very short", ["bandana tied over hair"]),
+        ("very short", ["bandana tied over hair", "small hair clip", "decorative hair pins",
+                        "silk headband", "knotted headband"]),
+        ("short pixie", [a for a in _HAIR_ACCESSORIES
+                         if a not in ("scrunchie", "claw clip", "oversized hair bow",
+                                      "satin ribbon tied in hair")])):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_length", "value": _length,
+        "excludes_field": "hair_accessory",
+        "excludes_values": sorted({a for a in _HAIR_ACCESSORIES if a not in _keep}),
+        "reason": f"{_length} hair has nothing for that accessory to hold"})
+# Wind does not blow indoors ("long windswept hair" in a home office).
+for _loc in _INDOOR_LOCATIONS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "hair_style", "excludes_values": ["windswept"],
+        "reason": f"'{_loc}' is indoors: no wind"})
+
+# --- one body --------------------------------------------------------------------------
+# "a plus size build ... a very fit physique ... a narrow waist", "a slim build ... very
+# broad shoulders, a muscular chest", "an hourglass build ... a very small bust ... narrow
+# hips". The build is the headline word, so it stands and the parts follow it. Every
+# target is flat, so each cull is uniform.
+_SLIM = ["very slim", "slim", "slender", "petite and slim"]
+_HEAVY = ["chubby", "plump", "plus size"]
+_ATHLETIC = ["athletic", "toned", "fit"]
+_CURVED = ["softly curved", "curvy", "voluptuous", "full figured", "petite and curvy", "hourglass"]
+_BODY_RULES: list[tuple[list[str], str, list[str]]] = [
+    (_SLIM + ["lean"], "waist", ["slightly wide", "wide", "full"]),
+    (_SLIM + ["lean"], "hips", ["wide", "full", "very full"]),
+    (_SLIM + ["lean"], "neck_length", ["thick"]),
+    (_SLIM, "shoulder_width", ["very broad"]),
+    (_SLIM, "bust", ["broad", "muscular", "very large", "generously proportioned"]),
+    (_SLIM, "fitness_level", ["muscular"]),
+    (_HEAVY, "waist", ["very narrow", "narrow", "defined"]),
+    (_HEAVY, "fitness_level", ["very fit", "athletic", "muscular"]),
+    (_HEAVY, "bust", ["flat", "very small"]),
+    (_HEAVY, "hips", ["narrow", "slightly narrow"]),
+    (_HEAVY, "neck_length", ["slender", "elegant"]),
+    (_ATHLETIC, "waist", ["wide", "full"]),
+    (_CURVED, "hips", ["narrow", "slightly narrow"]),
+    (["hourglass", "voluptuous"], "bust", ["very small", "small"]),
+    (["hourglass"], "waist", ["average", "slightly wide", "wide", "full"]),
+    (["stocky"], "shoulder_width", ["narrow", "slightly narrow", "sloped"]),
+    (["stocky"], "neck_length", ["slender", "elegant", "long"]),
+    (["stocky"], "waist", ["very narrow"]),
+    (["stocky"], "height", ["statuesque"]),
+]
+for _types, _target, _values in _BODY_RULES:
+    for _type in _types:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "body_type", "value": _type,
+            "excludes_field": _target, "excludes_values": list(_values),
+            "reason": f"a {_type} build contradicts that {_target.replace('_', ' ')}"})
+for _fit, _target, _values in (("sedentary", "bust", ["muscular"]),
+                               ("muscular", "bust", ["flat"]),
+                               ("very fit", "waist", ["wide", "full"]),
+                               ("muscular", "waist", ["full"])):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "fitness_level", "value": _fit,
+        "excludes_field": _target, "excludes_values": _values,
+        "reason": f"a {_fit} physique contradicts that {_target}"})
+
+# --- makeup: the look, the day and the place --------------------------------------------
+# "vintage 1950s pin-up makeup, colorful bold eyeshadow, graphic editorial liner",
+# "fresh-faced dewy look ... medium contour, glitter highlight", full glam in a cubicle
+# farm and an auto repair shop, heavy glam in a mosque, club makeup at 65 in workwear.
+_MAKEUP_DETAIL: dict[str, dict[str, list[str]]] = {
+    "vintage 1950s pin-up makeup": {
+        "eye_makeup": ["colorful bold eyeshadow", "glittery", "smoky black", "smoky gray",
+                       "deep navy", "floating liner look"],
+        "eyeliner": ["graphic editorial liner", "smudged kohl", "tight-lined waterline",
+                     "barely there", "thin subtle liner"],
+        "lips_makeup": ["tinted lip balm", "nude lipstick", "glossy clear", "brown nude",
+                        "dark brown", "MLBB lipstick", "ombre lip", "high shine gloss"],
+        "highlight": ["glitter highlight", "strobing"],
+    },
+    "mod 1960s eye makeup": {
+        "eyeliner": ["smudged kohl", "barely there", "thin subtle liner", "tight-lined waterline"],
+        "lips_makeup": ["deep red", "plum", "dark brown", "berry"],
+        "eye_makeup": ["smoky black", "glittery"],
+    },
+    "gothic dark makeup": {
+        "lips_makeup": ["coral", "pink", "glossy clear", "tinted lip balm", "nude lipstick",
+                        "MLBB lipstick"],
+        "blush": ["coral blush", "peach blush", "soft pink blush", "rosy blush",
+                  "bronzed sun-kissed", "warm terra cotta"],
+        "eye_makeup": ["rosy mauve", "warm earth tones", "copper and bronze", "warm bronze",
+                       "colorful bold eyeshadow"],
+        "skin_finish": ["sun-kissed glow"],
+    },
+}
+for _look in ("soft everyday glam", "soft glam"):
+    _MAKEUP_DETAIL[_look] = {
+        "eyeliner": ["graphic editorial liner", "dramatic winged", "smudged kohl"],
+        "eye_makeup": ["colorful bold eyeshadow", "smoky black", "smoky gray",
+                       "floating liner look"],
+        # (lash extensions stay: an everyday look, and banning them left a LOCKED
+        # lash-extension face with no legal makeup style under workwear.)
+        "lashes": ["dramatic falsies"],
+        "contour": ["heavy"],
+        "blush": ["heavy editorial blush"],
+    }
+for _look in _NATURAL_MAKEUP:
+    _MAKEUP_DETAIL[_look] = {
+        "eye_makeup": ["floating liner look"],
+        "contour": ["heavy", "medium"],
+        "highlight": ["glitter highlight", "strobing"],
+        "blush": ["heavy editorial blush", "monochromatic blush and eyeshadow"],
+        "lips_makeup": ["deep red", "plum", "dark brown", "ombre lip"],
+        "eyebrow_makeup": ["bold sculpted"],
+    }
+for _look, _by_field in _MAKEUP_DETAIL.items():
+    for _field, _values in _by_field.items():
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "makeup_style", "value": _look,
+            "excludes_field": _field, "excludes_values": list(_values),
+            "reason": f"'{_look}' does not wear that {_field.replace('_', ' ')}"})
+_STAGE_MAKEUP = ["full glam", "bold glam", "heavy glam", "editorial makeup", "gothic dark makeup",
+                 "club makeup", "vintage 1950s pin-up makeup", "mod 1960s eye makeup"]
+for _style, _looks in (
+        ("utility workwear", _STAGE_MAKEUP), ("loungewear", _STAGE_MAKEUP),
+        ("athletic", _STAGE_MAKEUP),
+        ("business casual", ["full glam", "bold glam", "heavy glam", "editorial makeup",
+                             "gothic dark makeup", "club makeup"]),
+        ("business formal", ["full glam", "bold glam", "heavy glam", "editorial makeup",
+                             "gothic dark makeup", "club makeup"]),
+        ("preppy", ["editorial makeup", "gothic dark makeup", "club makeup"]),
+        ("resort vacation", ["editorial makeup", "gothic dark makeup", "club makeup"])):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "outfit_style", "value": _style,
+        "excludes_field": "makeup_style", "excludes_values": list(_looks),
+        "reason": f"that makeup is a costume with {_style} clothing"})
+_SOBER_PLACES = ["grand cathedral interior", "small chapel interior", "mosque interior",
+                 "synagogue interior", "Buddhist temple hall", "Shinto shrine interior",
+                 "factory floor", "warehouse interior", "woodworking workshop",
+                 "commercial kitchen", "auto repair shop service bay",
+                 "print shop with running presses", "machine shop with lathes",
+                 "brewery tank room", "blacksmith forge with an anvil",
+                 "fishing trawler wheelhouse", "glassblowing studio with a furnace",
+                 "construction site with scaffolding", "home garage workshop",
+                 "courtroom"]
+for _loc in _SOBER_PLACES:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "makeup_style", "excludes_values": list(_STAGE_MAKEUP),
+        "reason": f"stage makeup is out of place at '{_loc}'"})
+
+# --- the pose has to fit the frame -------------------------------------------------------
+# "extreme close-up on face" + "stretching both arms overhead"; "selfie framing" +
+# "striding forward with purpose"; "view from directly behind" with a described face.
+_POSE = FIELD_FAMILIES["pose"]
+_BODY_POSES = [v for f in ("standing", "standing_hands_bound", "seated_floor", "motion",
+                           "gesture_two_hands", "gesture_pockets") for v in _POSE[f]["variants"]]
+for _shot in ("extreme close-up on face", "close-up portrait"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "shot_type", "value": _shot,
+        "excludes_field": "pose",
+        "excludes_values": list(_BODY_POSES) + ["posing with a hand on one hip"],
+        "reason": f"a {_shot} does not show a full-body pose"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "shot_type", "value": "selfie framing at arm's length",
+    "excludes_field": "pose",
+    "excludes_values": list(_POSE["motion"]["variants"]) + [
+        "in a confident power pose", "standing with feet planted wide",
+        "in a relaxed contrapposto stance", "standing tall with shoulders back",
+        "standing with arms relaxed at the sides"],
+    "reason": "a selfie is held at arm's length, not struck as a full-body pose"})
+_LOOK_BACK = ["looking over one shoulder", "glancing back", "turning toward the viewer mid-stride"]
+_ALL_POSES = [v for f in _POSE.values() for v in f["variants"]]
+for _shot in ("view from directly behind", "from behind and slightly below, looking up toward subject",
+              "from above and behind, looking down toward subject"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "shot_type", "value": _shot,
+        "excludes_field": "pose", "excludes_values": [p for p in _ALL_POSES if p not in _LOOK_BACK],
+        "reason": "seen from behind, the face only shows if the head turns back"})
+
+# --- the face and the mood agree, family by family ------------------------------------------
+# Round 2 gated warm faces off heavy moods and sad faces off positive ones; the flagged
+# renders still paired "solemn" with "triumphant", "mischievous" with "sorrowful",
+# "defiant" with "dreamy", "at ease" with "uncanny". A whole-family matrix (bias-clean).
+_MOODS_DENIED_BY_EXPRESSION: dict[str, list[str]] = {
+    "warm": ["heavy", "bold_fierce", "enigmatic"],
+    "calm": ["heavy", "bold_fierce", "bold_bright", "enigmatic"],
+    "intense": ["positive", "calm"],
+    "playful": ["heavy"],
+    "pensive": ["positive", "bold_fierce", "bold_bright"],
+    "reactive": ["bold_fierce", "bold_bright", "calm"],
+}
+for _efam, _mfams in _MOODS_DENIED_BY_EXPRESSION.items():
+    _moods = [m for f in _mfams for m in FIELD_FAMILIES["mood"][f]["variants"]]
+    for _expr in FIELD_FAMILIES["expression"][_efam]["variants"]:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "expression", "value": _expr,
+            "excludes_field": "mood", "excludes_values": list(_moods),
+            "reason": f"a '{_expr}' face contradicts that mood"})
+
+# --- age --------------------------------------------------------------------------------
+# Laugh lines at 18, "porcelain smooth" skin at 70, a velvet choker and a bridge piercing
+# at 65, an industrial earring at 70, club makeup at 65.
+_AGE_VALUES = [a for a in FIELD_DEFINITIONS["age"]["female_options"] if a.isdigit()]
+_AGE_RULES: list[tuple[int, int, str, list[str]]] = [
+    (0, 29, "skin_details", ["laugh lines"]),
+    (50, 999, "skin_details", ["porcelain smooth"]),
+    (55, 999, "piercings", list(_EDGY_PIERCINGS)),
+    (55, 999, "necklace", ["choker", "velvet choker"]),
+    (55, 999, "makeup_style", ["club makeup", "editorial makeup", "mod 1960s eye makeup",
+                               "gothic dark makeup"]),
+    # Pigtails and space buns read as a child's style from 45 ("braided pigtails" at 60).
+    (45, 999, "hair_style", list(FIELD_FAMILIES["hair_style"]["pigtails"]["variants"])
+     + list(FIELD_FAMILIES["hair_style"]["knots"]["variants"])),
+    (55, 999, "eye_makeup", ["glittery", "colorful bold eyeshadow"]),
+    (55, 999, "highlight", ["glitter highlight"]),
+]
+for _lo, _hi, _field, _values in _AGE_RULES:
+    for _age in _AGE_VALUES:
+        if _lo <= int(_age) <= _hi:
+            CONSTRAINT_RULES.append({
+                "type": "exclusion", "field": "age", "value": _age,
+                "excludes_field": _field, "excludes_values": list(_values),
+                "reason": f"that {_field.replace('_', ' ')} reads wrong at {_age}"})
+
+# --- dense freckling reads on fair skin only ----------------------------------------------
+for _tone in ("medium olive", "olive", "warm tan", "tan", "golden tan", "bronze", "caramel"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "skin_tone", "value": _tone,
+        "excludes_field": "freckles_density", "excludes_values": ["heavy", "all-over"],
+        "reason": f"dense freckling does not read on {_tone} skin"})
+
+
+# --- round 4, second pass (the 47 seeds re-read after the first pass) --------------------
+# A bird's-eye or high-angle camera sees ground, not a horizon.
+for _shot in ("steep overhead bird's-eye view", "high angle looking down",
+              "from above and behind, looking down toward subject"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "shot_type", "value": _shot,
+        "excludes_field": "composition", "excludes_values": list(_SKY_COMPOSITIONS),
+        "reason": f"a {_shot} shows no horizon or sky"})
+# Afro-textured styles need textured hair. Whole families: `texture` (afro, twist-out,
+# hair puff, bantu knots) and `braid_short` (cornrows, locs, two-strand twists). Box
+# braids leave the 11-variant braid_long family. "Loosely wavy two-strand twists" on a
+# German man, "sleek straight hair puff", "loosely wavy box braids".
+_AFRO_TEXTURE = list(FIELD_FAMILIES["hair_style"]["texture"]["variants"])
+_AFRO_BRAIDS = list(FIELD_FAMILIES["hair_style"]["braid_short"]["variants"])
+for _texture in ("pin straight", "sleek straight", "silky and glossy", "fine and wispy",
+                 "slightly wavy", "loosely wavy", "wavy", "beachy waves"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": _AFRO_TEXTURE + _AFRO_BRAIDS,
+        "reason": f"{_texture} hair does not hold an Afro-textured style"})
+for _texture in ("loosely curled", "softly curled"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": list(_AFRO_TEXTURE),
+        "reason": f"{_texture} hair is too loose for an afro, twist-out, puff or knots"})
+# A blowout straightens: not on tight coils, and not on very short hair; "worn down" says
+# (A partial loose_styled cull at very short would break the whole-family rule.)
+for _texture in ("tightly curled", "coily", "kinky coily"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": ["freshly blown out"],
+        "reason": f"a blowout is not {_texture} hair"})
+# A pixie has nothing to put in a bun or pull half up (whole families).
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "hair_length", "value": "short pixie",
+    "excludes_field": "hair_style",
+    "excludes_values": list(FIELD_FAMILIES["hair_style"]["bun_small"]["variants"])
+    + list(FIELD_FAMILIES["hair_style"]["half-up"]["variants"]),
+    "reason": "a pixie cut is too short for a bun, a top knot or a half-up"})
+# A zigzag part is a young styling choice.
+for _age in _AGE_VALUES:
+    if int(_age) >= 50:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "age", "value": _age,
+            "excludes_field": "hair_part", "excludes_values": ["zigzag part"],
+            "reason": f"a zigzag part reads young at {_age}"})
+# A shy face is not a fierce, commanding or triumphant picture.
+for _expr in ("slightly bashful", "coy", "quiet amusement"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "expression", "value": _expr,
+        "excludes_field": "mood",
+        "excludes_values": list(FIELD_FAMILIES["mood"]["bold_fierce"]["variants"]
+                                + FIELD_FAMILIES["mood"]["bold_bright"]["variants"]),
+        "reason": f"a '{_expr}' face contradicts a bold mood"})
+
+# Playful styles read as costume with business or evening dress ("milkmaid braids" with a
+# pinstripe suit). Whole `pigtails` and `knots` families, two braid variants.
+_PLAYFUL_HAIR = (list(FIELD_FAMILIES["hair_style"]["pigtails"]["variants"])
+                 + list(FIELD_FAMILIES["hair_style"]["knots"]["variants"])
+                 + ["milkmaid braids", "bubble ponytail"])
+for _style in ("business formal", "business casual", "evening formal", "cocktail semi-formal"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "outfit_style", "value": _style,
+        "excludes_field": "hair_style", "excludes_values": list(_PLAYFUL_HAIR),
+        "reason": f"a playful hairstyle reads as costume with {_style} dress"})
