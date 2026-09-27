@@ -2566,6 +2566,10 @@ _LEAD_SPLIT_RE = re.compile(r"\s(?:over|with|under|and)\s|,", re.IGNORECASE)
 _DENIMABLE_RE = re.compile(
     r"\b(?:jacket|shirt|overshirt|skirt|dress|shirtdress|vest|waistcoat|jumpsuit|overalls|"
     r"shorts|trousers|pinafore|shacket)\b", re.IGNORECASE)
+#: Jackets that never come in denim ("a denim track jacket").
+_NOT_DENIM_RE = re.compile(
+    r"\b(?:track|training|puffer|fleece|windbreaker|anorak|parka|quilted|knit|down|coach|"
+    r"shell|rain)\b", re.IGNORECASE)
 #: A matching set wears a pattern top to bottom ("a striped lounge set").
 _SET_LEAD_RE = re.compile(
     r"\b(?:set|tracksuit|co-ord|twinset|pyjamas?|pajamas?)\b", re.IGNORECASE)
@@ -2745,7 +2749,8 @@ def _compose_outfit_clause(
                       or (bool(_KNIT_LEAD_RE.search(lead))
                           and resolved.get("clothing_pattern") not in _KNIT_PATTERNS) or (
         resolved.get("clothing_pattern") == "denim"
-        and (bool(FABRIC_WORD_RE.search(lead)) or not _DENIMABLE_RE.search(lead))))
+        and (bool(FABRIC_WORD_RE.search(lead)) or not _DENIMABLE_RE.search(lead)
+             or bool(_NOT_DENIM_RE.search(lead)))))
     tail = ""
     if pattern:
         adjective = PATTERN_ADJECTIVES.get(pattern)

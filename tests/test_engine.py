@@ -8897,7 +8897,12 @@ class RoundThreeQaTests(unittest.TestCase):
             _, d = _resolved_1_5(seed)
             garment = d.get("outfit_description", "")
             if d.get("clothing_pattern") == "denim" and " denim " in garment:
-                lead = _LEAD_SPLIT_RE.split(garment.split(" over ", 1)[-1], 1)[0]
+                # Strip only a leading COAT (outerwear leads "X over ..."); a garment
+                # phrase may itself be layered ("a track jacket over a fitted tee").
+                coat = d.get("outerwear")
+                body = (garment.split(" over ", 1)[1]
+                        if coat and not _is_absent(coat) and " over " in garment else garment)
+                lead = _LEAD_SPLIT_RE.split(body, 1)[0]
                 self.assertIsNone(FABRIC_WORD_RE.search(lead), garment)
                 self.assertIsNotNone(_DENIMABLE_RE.search(lead), garment)
 
