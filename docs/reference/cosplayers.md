@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2052 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2057 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (381)
+## Anime & Manga (383)
 
 ### Akame ga Kill
 
@@ -366,7 +366,7 @@
 
 ### Monogatari
 
-- **Hitagi Senjougahara** (F)
+- **Hitagi Senjougahara** (F, prop)
 - **Kiss-Shot Acerola-Orion Heart-Under-Blade** (F)
 
 ### My Dress-Up Darling
@@ -453,6 +453,7 @@
 - **Shirahoshi** (F, giant)
 - **Trafalgar Law** (M, prop)
 - **Usopp** (M, prop)
+- **Yamato (One Piece)** (F, prop)
 
 ### One Punch Man
 
@@ -550,7 +551,7 @@
 
 ### Rent-a-Girlfriend
 
-- **Chizuru Mizuhara** (F)
+- **Chizuru Mizuhara** (F, +1 alt)
 
 ### Rosario + Vampire
 
@@ -646,6 +647,10 @@
 ### Urusei Yatsura
 
 - **Lum Invader** (F)
+
+### Violet Evergarden
+
+- **Violet Evergarden** (F, prop)
 
 ### Vocaloid
 
@@ -1971,7 +1976,7 @@
 - **Yelena Belova** (F, +1 alt)
 - **Yondu** (M, prop)
 
-## Movies & TV (232)
+## Movies & TV (233)
 
 ### A Nightmare on Elm Street
 
@@ -2387,6 +2392,10 @@
 
 - **Taroman** (M, giant, masked)
 
+### Terrifier
+
+- **Art the Clown** (M, prop)
+
 ### The 100
 
 - **Lexa** (F)
@@ -2663,7 +2672,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (496)
+## Video Games (498)
 
 ### A Certain Scientific Railgun
 
@@ -2993,6 +3002,11 @@
 
 - **Hornet** (F, masked, prop)
 - **The Knight (Hollow Knight)** (M, tiny, masked, prop)
+
+### Honkai: Star Rail
+
+- **Acheron** (F, prop)
+- **Kafka (Honkai: Star Rail)** (F)
 
 ### Horizon
 

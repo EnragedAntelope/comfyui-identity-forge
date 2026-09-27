@@ -565,6 +565,15 @@ list; the working principles at the top of this file also apply):
   1.4.0 took four from Genshin Impact, two from Zenless Zone Zero and three from Wuthering
   Waves, and declined the rest because the differentiator was hair colour and elemental trim.
   A new franchise stays under `_FRANCHISE_SCOPE_MINIMUM` unless a scope option is wanted.
+- **Approved is not shipped (1.5.0).** A maintainer-approved shortlist still passes through
+  research and, for creatures, a render test against the nearest incumbents. M3GAN was
+  approved and then declined (a child-sized doll: the adults-only bar), the saree was a
+  duplicate of `Bollywood Heroine`, and `arachne` rendered as a man in a suit beside a spider
+  twice. Report each decline with its reason; do not ship to honour the approval.
+- **Review a "soft" entry by re-sourcing it (1.5.0).** The two entries flagged as the roster's
+  softest were not soft, they were *wrong*: generic outfits standing in for specific canon
+  (`Hitagi Senjougahara`'s pink-and-purple Naoetsu uniform, `Chizuru Mizuhara`'s bib-collar
+  blouse). Judging the text alone would have left both.
 
 Rules learned from curation passes, kept here rather than in the backlog file so they
 outlive any one candidate list.
@@ -3463,3 +3472,106 @@ mask length. Neither bug lived in this pack's business logic; both were closed b
 platform behaviour (gating the trigger on `node.flags.ghost`, and padding one inert trailing
 `widgets_values` element to dodge the length collision) rather than by touching the platform
 itself.
+
+## 1.5.0 — the place, the weather and the face decide what is plausible
+
+Measured first, over 3,000–6,000 default renders on 1.4.0: `outfit_style` had no rule tying it
+to `location` (evening gowns in an emergency room, loungewear in a machine shop), `season` had
+**no rule at all** (~8% of renders wore sandals, shorts or a sun hat "during winter", or a beanie
+in summer), `expression` and `mood` contradicted each other in 5.4%, and 30% of default men drew
+a feminine-coded `body_type`. `docs/worklog/` holds the sweep; the tests named below pin each fix.
+
+### `outfit_style` answers to the place (1.5.0)
+
+`location` is the trigger, so the place stands and the style adapts — the lighting and
+composition doctrine. Data lives in `data/constraints.py`: a per-family allowlist
+(`OUTFIT_STYLES_BY_LOCATION_FAMILY`), `OUTFIT_STYLE_VENUES` for places narrower than their family
+(gyms, shop floors, beaches), then `OUTFIT_STYLE_EXTRAS` / `OUTFIT_STYLE_REMOVALS`;
+`outfit_styles_allowed_at()` resolves one place. A location the family map does not know (a
+`user_options.json` addition) returns `None` and gets no rule, so custom places are never
+narrowed. `outfit_style` is flat, so every re-pick is uniform over the survivors. The realized
+style mix moves the way the base node's brief says it should — streetwear/casual ~12% each,
+evening formal ~1%, loungewear and resort ~2% — which is realism, not bias: lock a style and the
+random location re-rolls to somewhere it is worn. `utility workwear` joined as the 15th style
+because workshops, docks, farms and building sites had nothing plausible to draw.
+**Archetypes:** some archetype style/location pairs disagree with the table, because an
+archetype's `outfit_style` is a proxy that steers accessories under a supplied costume. In Full
+lock level both are locked, so the rule only logs; in Essentials the location is free and is
+steered to a venue that fits. Pinned by `OutfitStyleByLocationTests`.
+
+### The season is an outdoor fact (1.5.0)
+
+Three layers, in rule order. **(1)** every built-in indoor or studio location *requires*
+`season = "None"`, so indoors the season is dropped from prose and JSON at zero RNG cost, and
+every season rule below is outdoors-only for free; a locked season moves a random location
+outdoors (the requirement branch's contrapositive). `validate_data.py` now accepts `"None"` as a
+requirement value — it is every widget's omit token. **(2)** `SEASONS_BY_LOCATION` pins seven
+seasonal places (cherry blossom = spring, snowy pine forest = winter, …). **(3)** the season gates
+what is worn (`SEASON_EXCLUSIONS` → footwear, accessories, bag, `outfit_style`), and
+`_garment_fits_season` drops warm-only garment phrases in winter and cold-only ones in summer
+(regexes beside `COLOUR_WORD_RE` in `data/fields.py`, read only against the engine's own corpus).
+
+Two traps. **Direction matters for bias:** the first draft let the two winter lights pin the
+season, which skewed outdoor seasons to 29% winter / 21.5% summer, because 2 of the 17
+`daylight` variants dragged the season. Flipped so the season is the trigger (a winter light
+drawn out of season is re-picked alone — the mixture property), the seasons measure uniform.
+**Never trigger a rule on `season = "None"`:** with a locked scarf, the exclusion's
+contrapositive re-rolls a season the indoor requirement pins straight back, and the two repairs
+ping-pong to the iteration cap. Indoor-only exclusions are keyed on each indoor *location*
+instead, whose contrapositive moves the place. Pinned by `SeasonGateTests`, `SeasonGarmentTests`.
+
+### `outerwear`: weather wear, drawn last (1.5.0)
+
+A deferred field appended at the end of `FIELD_DEFINITIONS` (the `legwear` template:
+`_DEFERRED_FIELDS`, `_COSTUME_SUPPRESSED_EXTRAS`, a pool filter instead of a rule). The coat
+LEADS the clause ("a trench coat over a pastel sweatshirt with shorts ..."): trailing it read
+as the shorts being under the coat. `_eligible_outerwear` returns `no outerwear` **without
+touching the RNG** unless the garment is engine-generated, the place is not a built-in
+interior (a *locked* season survives indoors, so the season alone is not enough), the season
+is voiced and not summer, the footwear is not open (bare feet, sandals, slides), and the
+garment has no outer layer of its own (`OUTER_LAYER_RE`); a light layer (`LIGHT_LAYER_RE`:
+blazer, cardigan, tailored jacket) takes a coat only in winter. A character who cannot wear
+a coat draws what it drew before the field existed; `outerwear` resolves before
+`tattoo_placement` (`_DEFERRED_ORDER`) so a coat hides sleeve-covered ink. A coat the user
+LOCKS onto a supplied costume is voiced too (never JSON-only), unless a recalled vault
+save's text already names it. A `user_options.json` coat with no season row fails open.
+`OUTERWEAR_BY_STYLE` (allowlist, validated both ways like `FOOTWEAR_BY_STYLE`) and
+`OUTERWEAR_SEASONS` (heavy = winter, mid = the cold half, light = spring/autumn) narrow the pool;
+winter outdoors always gets one, spring/autumn half the time. Measured over 4,000: 0 indoors,
+0 in summer, 83% winter outdoors, 31% spring/autumn, 9.4% overall. Why a field rather than coats
+in the garment corpus: 37% of corpus phrases already carry a layer, and a field adds the lock
+and the outfit × coat variety that fixed pairings cannot. Vault recall of an older character is
+unaffected — its saved `outfit_description` is the composed clause, which takes the costume
+path. Pinned by `OuterwearTests`.
+
+**The legacy `widgets_values` repair had a latent multi-release bug.** Both
+`padLegacyWidgetValues` and `padLegacyCosplayerValues` padded one release at a time, so a
+workflow two releases old got a newer widget one slot late whenever it sits *after* an older
+one — never exercised while the main node's table had one release. `outerwear` (slot 79) sits
+after `legwear` (78) and `tattoos` (25), so 1.5.0 would have hit it. Both now grow the missing set
+newest-first and splice it in one ascending pass; the jsdom suite pins a 1.4.0 and a 0.89.0
+array.
+
+### The face and the mood agree (1.5.0)
+
+A warm face drops the whole `heavy` mood family; a sad face (`melancholic`, `solemn`,
+`wistful`, `brooding`, `weary`) drops the whole `positive` family — whole families only, so the
+survivors stay proportional. 5.4% → 0.6%; the rest is a sad face with `triumphant`, which is a
+partial cull of `bold` and was left. Pinned by `ExpressionMoodTests`.
+
+### The male anatomy trim, and palette double-counting (1.5.0)
+
+The body half of the 1.4.0 "men with female body parts" report: `body_type`, `hips`, `waist`,
+`height` and `nose` share one list across genders and had no trim — 30% of default men drew a
+curvy/hourglass/voluptuous build and "petite" was in 35% of male prose. Added to
+`_MALE_EXCLUDED_VALUES` as anatomy (not presentation-gated); all five fields are flat.
+`clothing_color` carried black twice and white twice, so 36% of generated outfits were black or
+white; each pair now weighs as one value, six everyday palettes joined, and `PaletteShareTests`
+pins the pair weights.
+
+### The picker keeps its filter for the session (1.5.0)
+
+Search, tab and facet now survive close/reopen on the per-node picker instance and are written
+back into the rebuilt controls (the search text pre-selected, so typing replaces it). That keeps
+the 1.1.0 invariant — the box never reads empty over a narrowed grid — while matching Stylebook's
+"remembers my filter" behaviour. Nothing is persisted, so a reload or a new workflow starts clean.

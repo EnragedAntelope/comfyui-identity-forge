@@ -44,8 +44,13 @@ try:
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
+        WARM_ONLY_GARMENT_RE, BARE_TOP_RE, LAYER_WORD_RE, COLD_ONLY_GARMENT_RE,
+        OUTER_LAYER_RE, LIGHT_LAYER_RE,
     )
-    from ..data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    from ..data.constraints import (
+        CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR,
+        OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS,
+    )
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -55,8 +60,13 @@ except ImportError:  # pragma: no cover — standalone/test context
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
+        WARM_ONLY_GARMENT_RE, BARE_TOP_RE, LAYER_WORD_RE, COLD_ONLY_GARMENT_RE,
+        OUTER_LAYER_RE, LIGHT_LAYER_RE,
     )
-    from data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    from data.constraints import (
+        CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR,
+        OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS,
+    )
 
 # ---------------------------------------------------------------------------
 # ComfyUI V3 API import — guarded so the engine helpers remain importable
@@ -108,7 +118,12 @@ _PRESET_HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_i
 #: after the last pre-existing one, so an identical seed yields an identical
 #: character plus the new clauses. Verified, not assumed: see the seed-stability
 #: check in tests/test_engine.py.
-_DEFERRED_FIELDS: frozenset[str] = frozenset({"tattoos", "legwear", "tattoo_placement"})
+#: Draw order for the deferred fields. `outerwear` (1.5.0) goes BEFORE
+#: `tattoo_placement`: a coat hides forearm/wrist/collarbone ink, so the placement has to
+#: see it. It draws nothing when no coat is possible, so a coat-less character keeps the
+#: placement it drew before. The set below is derived from this, so the two cannot drift.
+_DEFERRED_ORDER: tuple[str, ...] = ("tattoos", "legwear", "outerwear", "tattoo_placement")
+_DEFERRED_FIELDS: frozenset[str] = frozenset(_DEFERRED_ORDER)
 
 #: The one shot_type value that occupies a hand (holding the camera at arm's length),
 #: same as a held prop. Read by _performable_poses so a selfie never draws a
@@ -522,6 +537,7 @@ _FULL_COVER_RE = re.compile(
 #: jewellery out of this set.
 _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
     "bag", "watch_type", "hair_accessory", "accessories", "legwear",
+    "outerwear",  # 1.5.0: a costume is a finished look; it is never drawn for one
 })
 
 #: ``footwear`` values that need a whole replacement clause rather than the default
@@ -1408,7 +1424,11 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
     outfit = resolved.get("outfit_description") or ""
     legwear = resolved.get("legwear") or ""
     excluded: set[str] = set()
-    if _LONG_SLEEVE_RE.search(outfit):
+    # 1.5.0: a coat covers what long sleeves and a high neck cover. `outerwear` is
+    # resolved before this field (see _DEFERRED_ORDER), so its value is settled here.
+    coat = resolved.get("outerwear")
+    coated = bool(coat) and not _is_absent(coat)
+    if coated or _LONG_SLEEVE_RE.search(outfit):
         excluded |= {"on one forearm", "across the back of one hand", "on the inner wrist"}
     # Three ways a leg tattoo ends up invisible: the garment covers the leg, the
     # garment shows leg but its hem still reaches past the thigh (a maxi skirt --
@@ -1418,7 +1438,7 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
         bool(_OPAQUE_LEGWEAR_RE.search(legwear))
     if not leg_bare or leg_covered_by_legwear:
         excluded |= {"down one thigh", "on one calf"}
-    if _HIGH_NECK_RE.search(outfit):
+    if coated or _HIGH_NECK_RE.search(outfit):
         excluded.add("across the collarbone")
     if not excluded:
         return pool
@@ -1426,7 +1446,9 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
 
 
 def _resolve_deferred_fields(
-    resolved: dict[str, str], gender: str, accessory_density: str, rng: random.Random
+    resolved: dict[str, str], gender: str, accessory_density: str, rng: random.Random,
+    # APPENDED (1.5.0): only an engine-generated garment can take outerwear.
+    generated_outfit: bool = False,
 ) -> None:
     """Draw :data:`_DEFERRED_FIELDS` now that ``outfit_description`` is final.
 
@@ -1439,11 +1461,14 @@ def _resolve_deferred_fields(
     shift any pre-existing field's random values: an identical seed produces an
     identical character, plus or minus the new clauses.
     """
-    for field_name in FIELD_DEFINITIONS:
-        if field_name not in _DEFERRED_FIELDS or field_name in resolved:
+    for field_name in _DEFERRED_ORDER:
+        if field_name in resolved:
             continue
         field_def = FIELD_DEFINITIONS[field_name]
         pool = _build_option_pool(field_name, field_def, gender, resolved)
+        if field_name == "outerwear":
+            resolved[field_name] = _eligible_outerwear(pool, resolved, generated_outfit, rng)
+            continue
         if field_name == "legwear":
             pool = _style_appropriate_legwear(_wearable_legwear(pool, resolved), resolved)
         elif field_name == "tattoo_placement":
@@ -1455,6 +1480,55 @@ def _resolve_deferred_fields(
             resolved[field_name] = _weighted_choice(field_def, pool, gender, rng)
         elif field_def["optional"]:
             resolved[field_name] = "None"
+
+
+_NO_OUTERWEAR = "no outerwear"
+#: Built-in places, so a known interior can veto a coat even when a LOCKED season kept
+#: the season voiced there. A user_options.json place is not in it and follows the season.
+_BUILTIN_LOCATIONS: frozenset[str] = frozenset(
+    v for fam in FIELD_FAMILIES["location"].values() for v in fam["variants"])
+#: Footwear that says the weather is warm: no coat goes over an outfit worn with these.
+_OPEN_FOOTWEAR: frozenset[str] = frozenset(
+    ["bare feet", "sandals", "espadrilles", "slides", "slippers"])
+
+
+def _eligible_outerwear(
+    pool: list[str], resolved: dict[str, str], generated_outfit: bool, rng: random.Random
+) -> str:
+    """Draw ``outerwear`` for a finished outfit, or return the absent token (1.5.0).
+
+    Weather wear, so it needs weather: an outdoor season other than summer (the season
+    is "None" indoors), an ENGINE-generated garment (a supplied costume is a finished
+    look), and a garment with no outer layer of its own. A light layer -- a blazer, a
+    cardigan, a tailored jacket -- can take a coat over it, but only in winter.
+
+    Every ineligible case returns without touching ``rng``, so a seed whose character
+    cannot wear a coat draws exactly what it drew before this field existed. Winter
+    outdoors always gets a coat; spring and autumn get one half the time.
+    """
+    season = resolved.get("season")
+    garment = resolved.get("outfit_description") or ""
+    location = resolved.get("location") or ""
+    indoors = location in _BUILTIN_LOCATIONS and location not in OUTDOOR_LOCATIONS
+    if (not generated_outfit or indoors or _is_absent(season) or season == "summer"
+            or resolved.get("footwear") in _OPEN_FOOTWEAR
+            or OUTER_LAYER_RE.search(garment)
+            or (season != "winter" and LIGHT_LAYER_RE.search(garment))):
+        return _NO_OUTERWEAR
+    style = resolved.get("outfit_style") or ""
+    allowed = OUTERWEAR_BY_STYLE.get(style)  # a user-added style allows every coat
+
+    def _in_season(coat: str) -> bool:
+        seasons = OUTERWEAR_SEASONS.get(coat)
+        return True if seasons is None else season in seasons  # user-added coat: fail open
+
+    coats = [c for c in pool if c != _NO_OUTERWEAR
+             and (allowed is None or c in allowed) and _in_season(c)]
+    if not coats:
+        return _NO_OUTERWEAR
+    if season != "winter" and rng.random() < 0.5:
+        return _NO_OUTERWEAR
+    return rng.choice(coats)
 
 
 def _repair_pose(
@@ -2003,7 +2077,21 @@ def _resolve_outfit_description(
         pool += buckets.get("male", [])
     else:  # "Any" — mix every wardrobe
         pool += buckets.get("female", []) + buckets.get("male", [])
+    # 1.5.0: dress for the weather. The season is "None" indoors, so this only ever
+    # narrows an outdoor scene. Fail-open: a style with nothing left for the season
+    # (only reachable when the user locks both) keeps its whole pool.
+    pool = [g for g in pool if _garment_fits_season(g, resolved.get("season"))] or pool
     return rng.choice(pool) if pool else ""
+
+
+def _garment_fits_season(garment: str, season: str | None) -> bool:
+    """False for a warm-only garment in winter or a cold-only one in summer (1.5.0)."""
+    if season == "winter":
+        return not (WARM_ONLY_GARMENT_RE.search(garment)
+                    or (BARE_TOP_RE.search(garment) and not LAYER_WORD_RE.search(garment)))
+    if season == "summer":
+        return not COLD_ONLY_GARMENT_RE.search(garment)
+    return True
 
 
 def _compose_outfit_clause(
@@ -2068,6 +2156,16 @@ def _compose_outfit_clause(
             resolved.pop("clothing_pattern", None)
         # A mapped-but-EMPTY tail ("solid") is deliberate silence and the field stays:
         # "solid" is true of the garment, it just does not need saying.
+
+    # --- outerwear (1.5.0) ---------------------------------------------------------
+    # No guard: _eligible_outerwear already forced the absent token wherever a coat
+    # does not belong, and a lock still wins, as above.
+    # The coat LEADS: "a trench coat over a pastel sweatshirt with shorts ...". Trailing
+    # it after the garment's own "with <bottoms>" tail read as the shorts being under
+    # the coat, and stacked a second "under" onto "a dress under a fitted blazer".
+    coat = _wanted("outerwear", False)
+    if coat:
+        phrase = f"{_article_if_singular(coat)} over {phrase}"
 
     # --- legwear ------------------------------------------------------------------
     # Sits between the garment and the shoes because that is the order it is worn in,
@@ -3036,7 +3134,8 @@ def generate_character(
         # picking the garment and composing around it. Parking the raw garment in
         # `resolved` first is what lets the deferred draw see it.
         resolved["outfit_description"] = garment or ""
-        _resolve_deferred_fields(resolved, gender, accessory_density, rng)
+        _resolve_deferred_fields(resolved, gender, accessory_density, rng,
+                                 generated_outfit=bool(garment))
         resolved["outfit_description"] = (
             _compose_outfit_clause(garment, resolved, set(locked_clean))
             if garment else garment
@@ -3105,6 +3204,16 @@ def generate_character(
         for field in _COSTUME_SUPPRESSED_EXTRAS:
             if field not in locked_clean:
                 resolved.pop(field, None)
+        # 1.5.0: a coat the user LOCKED onto a costume is voiced, so the JSON never
+        # carries a coat the prose does not show (and that hides tattoo placements).
+        coat = resolved.get("outerwear")
+        # A recalled 1.5.0 vault save already carries "a trench coat over ..." in its
+        # composed outfit text, so only voice a coat the text does not already name.
+        if "outerwear" in locked_clean and coat and not _is_absent(coat) \
+                and resolved.get("outfit_description") \
+                and coat.lower() not in resolved["outfit_description"].lower():
+            resolved["outfit_description"] = (
+                f"{_article_if_singular(coat)} over {resolved['outfit_description']}")
 
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or ring
     # would render on top of the glove (the reported bug). Two sources: the resolved

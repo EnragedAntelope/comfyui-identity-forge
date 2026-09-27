@@ -18085,24 +18085,39 @@ COSPLAYERS: dict[str, dict] = {
     "Hitagi Senjougahara": {
         "franchise": "Monogatari",
         "gender": "Female",
-        "costume": "a Naoetsu High School uniform of a white short-sleeved blouse "
-                   "with a dark ribbon tie, a pleated navy skirt, and dark low "
-                   "shoes",
-        "signature": {"hair_color": "lavender", "hair_length": "waist length",
-                      "hair_texture": "pin straight", "eye_color": "blue-gray"},
+        # 1.5.0 canon pass (the backlog's "softest entry" review): the Naoetsu girls'
+        # uniform is a pink shirt, purple tie and purple skirt with black stockings --
+        # the old white-blouse/navy text was a generic school uniform. The stapler is
+        # her trademark (the crab-claw motif).
+        "costume": "a Naoetsu High School uniform of a pink collared shirt with a purple "
+                   "tie, a pleated purple skirt, black stockings, and dark loafers",
+        "signature": {"hair_color": "purple", "hair_length": "waist length",
+                      "hair_texture": "pin straight", "hair_style": "blunt bangs",
+                      "eye_color": "deep blue"},
         "physique": {"body_type": "slender", "height": "tall",
                      "skin_tone": "porcelain"},
+        "prop": "an open stapler held up like a weapon",
     },
     "Chizuru Mizuhara": {
         "franchise": "Rent-a-Girlfriend",
         "gender": "Female",
-        "costume": "a cream ribbed knit sweater tucked into a pleated tartan "
-                   "skirt, sheer black tights, and low tan ankle boots",
-        "signature": {"hair_color": "dark brown", "hair_length": "hip length",
-                      "hair_style": "half up half down", "hair_texture": "silky and glossy"},
-        "eyes": "warm reddish brown",
+        # 1.5.0 canon pass (the backlog's "softest entry" review): her rental-date look
+        # is the pink blouse with a white bib collar and red ribbon, not the generic knit
+        # this shipped with. Her real-name campus disguise is the canonical alternate.
+        "costume": "a short-sleeved pink blouse with a white bib collar and a red ribbon "
+                   "tie, a white high-waisted pleated skirt, and red lace-up pumps",
+        "signature": {"hair_color": "chestnut", "hair_length": "waist length",
+                      "hair_style": "side braid", "hair_texture": "silky and glossy"},
+        "eyes": "light brown",
         "physique": {"body_type": "hourglass", "height": "average height",
                      "skin_tone": "fair"},
+        "costumes": [
+            # Chizuru Ichinose, her real-name campus disguise.
+            {"costume": "large dark-framed glasses, a plain oversized cardigan over a "
+                        "simple blouse, a long plain skirt, and flat shoes, with no makeup",
+             "signature": {"hair_color": "chestnut", "hair_length": "waist length",
+                           "hair_style": "braided pigtails"}},
+        ],
     },
 
     # === v0.77.0 franchise-lead audit: Anime & Manga ====================
@@ -25317,6 +25332,95 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"height": "very tall", "body_type": "stocky"},
         "prop": "a Tesla cannon, a bulky electrical projector crackling with lightning",
     },
+    # === 1.5.0 roster pass (maintainer-approved candidates) ================
+    "Violet Evergarden": {
+        "franchise": "Violet Evergarden",
+        "gender": "Female",
+        # Her Auto Memory Doll working attire. The prosthetics are silver adamantine
+        # metal, usually gloved; the emerald brooch was Gilbert's gift.
+        "costume": "a cropped Prussian-blue jacket over a white ribbon-tie dress with a "
+                   "long white pleated silk skirt, an emerald brooch pinned at the centre of "
+                   "the ribbon tie, dark brown gloves over silver-metal prosthetic arms, "
+                   "dark red ribbons woven through the braided hair, and deep brown heeled "
+                   "knee-high leather boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_style": "braided bun", "hair_texture": "silky and glossy",
+                      "eye_color": "pale blue"},
+        "physique": {"body_type": "slender", "skin_tone": "fair"},
+        "prop": "a compact antique typewriter",
+    },
+    "Yamato (One Piece)": {
+        "franchise": "One Piece",
+        # Female body; the character lives as Kozuki Oden's successor and calls themself
+        # Oden. `gender` drives the body the render needs, not the identity. 263 cm in
+        # canon -- the Rosalina call: `very tall` plus a stated frame, not a size tier.
+        "gender": "Female",
+        "costume": "two long curved red oni horns fading to flesh tone at the base, the "
+                   "white ponytail fading to mint green and then blue toward its ends, a "
+                   "sleeveless white short kimono top with diamond motifs at the sides and "
+                   "an indigo cloud-wisp pattern across its lower half, a thick braided "
+                   "shimenawa rope tied around the waist, loose red hakama trousers, straw "
+                   "sandals, a large purple-and-white nio-dasuki rope bow tied at the back, "
+                   "and gold hoop earrings, on a towering nearly nine-foot frame",
+        "eyes": "bright orange",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_style": "high ponytail", "hair_texture": "thick and voluminous",
+                      "height": "very tall"},
+        "physique": {"body_type": "athletic", "skin_tone": "fair"},
+        "prop": "a massive spiked iron kanabo club",
+    },
+    "Kafka (Honkai: Star Rail)": {
+        "franchise": "Honkai: Star Rail",
+        "gender": "Female",
+        # The Stellaron Hunter who collects coats. Boots are two lengths on purpose.
+        "costume": "a white dress shirt that bares the top of the back and shoulders, a "
+                   "black coat with a burgundy lining worn draped over the shoulders, a "
+                   "large spider-web pattern across its back and a silver butterfly pin on "
+                   "the left lapel, wine-red straps with gold fittings across the coat and "
+                   "thighs, wine-red gloves, sheer purple stockings, black heeled boots of "
+                   "two lengths, one over the knee and one just above the ankle, dark "
+                   "pince-nez sunglasses pushed up on the head, and a single pearl earring",
+        "eyes": "pale violet",
+        "signature": {"hair_color": "deep red", "hair_length": "long",
+                      "hair_style": "low ponytail", "hair_texture": "silky and glossy",
+                      "height": "tall"},
+        "physique": {"body_type": "slender", "skin_tone": "fair"},
+    },
+    "Acheron": {
+        "franchise": "Honkai: Star Rail",
+        "gender": "Female",
+        # The self-styled Galaxy Ranger. Sources disagree on WHICH leg has the thigh
+        # boot, so the prose says "one ... one" rather than guess. She fights with the
+        # blade sheathed, so the crimson-and-violet crackle on the scabbard is her
+        # signature effect; the solemn, distant look is locked as part of the canon.
+        "costume": "a long fringe with two white streaks falling over the left eye, a black "
+                   "crop top with a small inverted-V cutout and straps up to a purple-and-"
+                   "black choker, a backless open white cropped jacket with a single long "
+                   "furisode sleeve on the right arm printed with a purple oni-face flame "
+                   "design, black gloves, a black belt over black short shorts, a red and "
+                   "purple flame tattoo on one thigh, and asymmetrical black stiletto boots "
+                   "with silver heels, one thigh-high and one knee-high",
+        "eyes": "bright violet eyes with diamond-shaped pupils",
+        "signature": {"hair_color": "deep purple", "hair_length": "very long",
+                      "hair_style": "worn down", "hair_texture": "sleek straight",
+                      "height": "tall", "expression": "solemn"},
+        "physique": {"body_type": "slender", "skin_tone": "pale"},
+        "prop": "a long sheathed odachi crackling with crimson and violet lightning",
+    },
+    "Art the Clown": {
+        "franchise": "Terrifier",
+        "gender": "Male",
+        # Hood and bald cap hide all hair, so covers_hair. Described clean -- no blood.
+        "covers_hair": True,
+        "costume": "a baggy clown suit split straight down the middle, black on one half "
+                   "and white on the other, with black pom-pom buttons and a wide ruffled "
+                   "collar, gloves, a snug white hood over a bald cap, a tiny black top hat "
+                   "strapped on at a tilt, and stark white greasepaint over the whole face "
+                   "with black lips, black eye details and shaved-off eyebrows",
+        "signature": {"earrings": "no earrings", "necklace": "no necklace"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "a small brass bulb squeeze horn",
+    },
 
 }
 
@@ -25342,7 +25446,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Kakegurui", "Danganronpa", "Tokyo Ghoul", "Spice and Wolf",
         "Akame ga Kill", "Delicious in Dungeon", "Fate/Grand Order", "Nana",
         "Rascal Does Not Dream of Bunny Girl Senpai",
-        "Monogatari", "Rent-a-Girlfriend",
+        "Monogatari", "Rent-a-Girlfriend", "Violet Evergarden",
         "Food Wars", "Amagi Brilliant Park", "Prison School",
         "Berserk", "Future Diary", "Ergo Proxy", "Highschool of the Dead",
         "Rosario + Vampire", "Michiko & Hatchin", "Your Lie in April", "Noragami",
@@ -25382,7 +25486,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
         "Mortal Kombat", "Soul Calibur", "Tekken", "Overwatch", "League of Legends", "Arcane",
-        "Genshin Impact", "Devil May Cry",
+        "Genshin Impact", "Devil May Cry", "Honkai: Star Rail",
         "The Legend of Zelda", "Super Mario", "Star Fox", "F-Zero", "Kirby", "Donkey Kong",
         "Metroid", "Resident Evil", "Tomb Raider", "Mass Effect", "Halo",
         "Metal Gear", "God of War", "Kingdom Hearts", "Baldur's Gate 3", "The Witcher",
@@ -25436,7 +25540,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Universal Monsters", "Indiana Jones", "Godzilla", "Rambo",
         "KPop Demon Hunters",
         "Scooby-Doo", "Who Framed Roger Rabbit", "Mistress of the Dark", "Xena: Warrior Princess",
-        "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser",
+        "A Nightmare on Elm Street", "Friday the 13th", "Halloween", "IT", "Hellraiser", "Terrifier",
         "The Texas Chain Saw Massacre", "Scream", "Child's Play", "Shrek",
         "Attack of the 50 Foot Woman", "Buffy the Vampire Slayer",
         "Rise of the Guardians", "The Ring", "Ghostbusters", "Edward Scissorhands",

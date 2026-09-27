@@ -45,13 +45,13 @@ from collections import OrderedDict
 # package-relative inside ComfyUI, absolute when run standalone for tests.
 try:
     from .fields import (
-        DEEP_SKIN_TONES, FIELD_DEFINITIONS, FIXTURE_LIGHTING,
+        DEEP_SKIN_TONES, FIELD_DEFINITIONS, FIELD_FAMILIES, FIXTURE_LIGHTING,
         INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING,
         STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
     )
 except ImportError:  # pragma: no cover -- standalone/test context
     from data.fields import (
-        DEEP_SKIN_TONES, FIELD_DEFINITIONS, FIXTURE_LIGHTING,
+        DEEP_SKIN_TONES, FIELD_DEFINITIONS, FIELD_FAMILIES, FIXTURE_LIGHTING,
         INDOOR_ONLY_LIGHTING, OUTDOOR_LOCATIONS, OUTDOOR_ONLY_LIGHTING,
         STUDIO_BACKDROPS, VOID_ALLOWED_LIGHTING,
     )
@@ -249,9 +249,19 @@ CONSTRAINT_RULES: list[dict] = [
     # A shag is a layered MID-length cut; there is nothing to layer on a crop.
     *[
         {"type": "exclusion", "field": "hair_length", "value": length,
-         "excludes_field": "hair_style", "excludes_values": ["shag"],
+         "excludes_field": "hair_style", "excludes_values": ["shag", "wolf cut"],
          "reason": f"{length} hair is too short to cut into a shag's layers"}
         for length in ("buzzed very short", "very short", "short pixie")
+    ],
+    # 1.5.0: a hime cut is blunt sidelocks over long straight-hanging hair; below the
+    # shoulders there is nothing for the sidelocks to frame. Single-variant family, so
+    # a whole-family drop.
+    *[
+        {"type": "exclusion", "field": "hair_length", "value": length,
+         "excludes_field": "hair_style", "excludes_values": ["hime cut"],
+         "reason": f"{length} hair is too short for a hime cut"}
+        for length in ("buzzed very short", "very short", "short pixie", "ear length",
+                       "chin length bob", "jaw length")
     ],
     # 0.83.0: barbered_crop, excluded as a WHOLE family at every length from ear
     # length up. A crew cut is a very short cut by definition; a "chin length bob
@@ -286,7 +296,8 @@ CONSTRAINT_RULES: list[dict] = [
      "reason": "casual carryalls clash with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "accessories",
-     "excludes_values": ["baseball cap", "woven hat", "wide brim sun hat"],
+     "excludes_values": ["baseball cap", "woven hat", "wide brim sun hat",
+                         "earmuffs", "headphones worn around the neck"],  # 1.5.0
      "reason": "casual headwear clashes with black-tie dress"},
     {"type": "exclusion", "field": "outfit_style", "value": "evening formal",
      "excludes_field": "watch_type", "excludes_values": ["smart watch"],
@@ -298,8 +309,13 @@ CONSTRAINT_RULES: list[dict] = [
     {"type": "exclusion", "field": "outfit_style", "value": "business formal",
      "excludes_field": "accessories",
      "excludes_values": ["cat eye sunglasses", "round sunglasses",
-                         "baseball cap", "beret"],
+                         "baseball cap", "beret",
+                         "earmuffs", "headphones worn around the neck"],  # 1.5.0
      "reason": "playful accessories undercut a formal suit"},
+    {"type": "exclusion", "field": "outfit_style", "value": "cocktail semi-formal",
+     "excludes_field": "accessories",
+     "excludes_values": ["headphones worn around the neck", "baseball cap"],  # 1.5.0
+     "reason": "everyday gear undercuts a cocktail look"},
 
     {"type": "exclusion", "field": "outfit_style", "value": "edgy alternative",
      "excludes_field": "necklace",
@@ -315,6 +331,19 @@ CONSTRAINT_RULES: list[dict] = [
      "excludes_field": "accessories",
      "excludes_values": ["western belt"],
      "reason": "western office accessories clash with resort wear"},
+
+    # 1.5.0: hands-on dress keeps rugged or practical pieces only.
+    {"type": "exclusion", "field": "outfit_style", "value": "utility workwear",
+     "excludes_field": "necklace",
+     "excludes_values": ["pearl strand", "pearl necklace", "statement necklace",
+                         "diamond pendant", "collar necklace", "velvet choker"],
+     "reason": "fine or statement jewellery is out of place in workwear"},
+    {"type": "exclusion", "field": "outfit_style", "value": "utility workwear",
+     "excludes_field": "accessories",
+     "excludes_values": ["long opera gloves", "silk neck scarf", "silk pocket square",
+                         "belt cinching waist", "statement belt", "cat eye sunglasses",
+                         "wide brim sun hat", "beret", "lapel pin"],
+     "reason": "dress-up accessories clash with workwear"},
 
     # --- Hair: a buzz cut has no parting ----------------------------------
     {"type": "requirement", "field": "hair_length", "value": "buzzed very short",
@@ -462,13 +491,15 @@ _CLOSED_EXPRESSIONS = ["neutral", "serious", "stern", "intense gaze",
                        "steely", "focused", "brooding", "melancholic",
                        "lost in thought", "wistful", "skeptical", "daydreaming",
                        # 0.82.0 additions
-                       "defiant", "solemn", "unimpressed"]
+                       "defiant", "solemn", "unimpressed",
+                       # 1.5.0 additions
+                       "weary", "mildly annoyed"]
 _SOFT_SMILE_EXPRESSIONS = ["subtle soft smile", "warm smile", "bright smile",
                            "gentle smile",
                            # 0.82.0: "quietly content" is a closed-lip smile;
                            # "delighted" reads open-mouthed but is safest as a
                            # broad smile rather than a full toothy grin.
-                           "quietly content", "delighted"]
+                           "quietly content", "delighted", "hopeful"]  # hopeful 1.5.0
 _OPEN_EXPRESSIONS = ["wide toothy grin", "laughing", "candid mid-laugh", "beaming"]
 # `sly` is deliberately left unbucketed, matching `smirking` -- a sly look works
 # with a closed mouth or a one-sided smile, so the draw stays free.
@@ -620,6 +651,19 @@ _MALE_EXCLUDED_VALUES: dict[str, list[str]] = {
     "lips": ["bow-shaped", "heart-shaped", "petite and defined"],
     "eye_shape": ["doe-like"],
     "bust": ["large"],
+    # 1.5.0 -- the body half of the 1.4.0 "men with female body parts" report. These
+    # four fields share ONE list across genders and had no trim, so feminine-coded
+    # shape words landed on men. MEASURED over 1999 default male renders: 30% drew one
+    # of these seven body types (petite and curvy 5.7%, voluptuous 5.3%, curvy 5.1%,
+    # hourglass 4.9%, full figured 4.4%, softly curved 4.2%), and "petite" was in 35%
+    # of male prose (body type, height and nose together). Anatomy, so NOT
+    # presentation-gated. All four fields are flat, so the re-pick is bias-clean.
+    "body_type": ["softly curved", "curvy", "full figured", "voluptuous", "hourglass",
+                  "petite and slim", "petite and curvy"],
+    "hips": ["full", "very full", "rounded"],
+    "waist": ["very narrow"],
+    "height": ["very petite", "petite", "statuesque"],
+    "nose": ["petite"],
 }
 # Jewellery & nails are a wardrobe *presentation* choice, not anatomy: their trims
 # are gated on the resolved presentation so a man with a Feminine/"Any" wardrobe can
@@ -774,12 +818,12 @@ for _tone in sorted(DEEP_SKIN_TONES):
 # "a flat field is where a partial cull is FINE" note exists for; the whole-family
 # rule does not apply.
 FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
-    ("casual", frozenset([
+    ("casual", frozenset(['boat shoes', 'work boots', 'slides',  # 1.5.0
         'sneakers', 'loafers', 'boots', 'flats', 'sandals', 'ankle boots', 'mules',
         'chelsea boots', 'combat boots', 'ballet flats', 'high-top sneakers',
         'espadrilles', 'mary janes', 'cowboy boots',
         'hiking boots', 'clogs'])),  # 1.2.0
-    ("smart casual", frozenset([
+    ("smart casual", frozenset(['boat shoes',  # 1.5.0
         'sneakers', 'loafers', 'boots', 'heels', 'flats', 'oxfords', 'ankle boots',
         'wedges', 'mules', 'chelsea boots', 'knee-high boots', 'ballet flats',
         'derbies', 'kitten heels', 'mary janes'])),
@@ -792,7 +836,7 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ("cocktail semi-formal", frozenset([
         'heels', 'oxfords', 'loafers', 'ankle boots', 'mules', 'derbies',
         'kitten heels', 'knee-high boots'])),
-    ("streetwear", frozenset([
+    ("streetwear", frozenset(['work boots', 'slides',  # 1.5.0
         'sneakers', 'boots', 'ankle boots', 'combat boots', 'high-top sneakers',
         'chelsea boots', 'mules', 'cowboy boots',
         'platform boots'])),  # 1.2.0
@@ -800,24 +844,27 @@ FOOTWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
         'sandals', 'boots', 'flats', 'ankle boots', 'wedges', 'mules', 'bare feet',
         'espadrilles', 'ballet flats', 'knee-high boots', 'cowboy boots',
         'clogs'])),  # 1.2.0
-    ("athletic", frozenset(['sneakers', 'high-top sneakers',
+    ("athletic", frozenset(['slides', 'sneakers', 'high-top sneakers',
                              'hiking boots'])),  # 1.2.0
-    ("resort vacation", frozenset([
+    ("resort vacation", frozenset(['boat shoes', 'slides',  # 1.5.0
         'sandals', 'flats', 'wedges', 'mules', 'bare feet', 'espadrilles',
         'sneakers', 'ballet flats'])),
-    ("edgy alternative", frozenset([
+    ("edgy alternative", frozenset(['work boots',  # 1.5.0
         'boots', 'combat boots', 'ankle boots', 'chelsea boots', 'knee-high boots',
         'heels', 'sneakers', 'high-top sneakers', 'cowboy boots', 'mary janes',
         'platform boots'])),  # 1.2.0
-    ("preppy", frozenset([
+    ("preppy", frozenset(['boat shoes',  # 1.5.0
         'loafers', 'oxfords', 'sneakers', 'flats', 'ankle boots', 'chelsea boots',
         'ballet flats', 'derbies', 'espadrilles', 'kitten heels', 'mary janes'])),
     ("vintage retro", frozenset([
         'loafers', 'oxfords', 'heels', 'flats', 'ankle boots', 'wedges', 'mules',
         'derbies', 'kitten heels', 'ballet flats', 'chelsea boots', 'mary janes',
         'cowboy boots', 'platform boots'])),  # 1.2.0
-    ("loungewear", frozenset(['slippers', 'bare feet', 'flats', 'ballet flats',
+    ("loungewear", frozenset(['slides', 'slippers', 'bare feet', 'flats', 'ballet flats',
                                'clogs'])),  # 1.2.0
+    ("utility workwear", frozenset(['work boots',  # 1.5.0
+        'boots', 'hiking boots', 'combat boots', 'chelsea boots', 'ankle boots',
+        'sneakers', 'high-top sneakers', 'clogs', 'cowboy boots'])),  # 1.5.0
 ])
 
 for _style, _allowed in FOOTWEAR_BY_STYLE.items():
@@ -863,6 +910,7 @@ LEGWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ("preppy", frozenset(['ribbed crew socks'])),
     ("vintage retro", frozenset(['ribbed crew socks'])),
     ("loungewear", frozenset(['ribbed crew socks'])),
+    ("utility workwear", frozenset(['ribbed crew socks', 'athletic crew socks'])),  # 1.5.0
 ])
 #: The only values LEGWEAR_BY_STYLE may exclude. Deliberately not the whole pool.
 _GATED_LEGWEAR: frozenset[str] = frozenset(
@@ -1019,3 +1067,395 @@ for _backdrop in _VOID_BACKDROPS:
             "leading lines drawing the eye to the subject"],
         "reason": f"a {_backdrop} is a seamless sweep: no horizon, no sky, and no "
                   f"lines in it to lead the eye"})
+
+
+# --- outfit_style answers to the place (1.5.0) ------------------------------------
+# Before 1.5.0 `outfit_style` was drawn with no reference to `location` at all:
+# measured over 6000 default renders, evening gowns landed in an emergency room, a
+# laundromat and a suburban basement, loungewear in a chemistry lab and a machine shop,
+# resort wear in a prison visiting room. The base node exists to make a believable
+# everyday person, so the place now decides what is plausible to wear there.
+#
+# Same doctrine as lighting and composition: `location` is the TRIGGER, so the place
+# stands and the style adapts. Locking a style hands the engine its contrapositive
+# repair (the random location re-rolls to somewhere that style is worn), and locking
+# both keeps both. `outfit_style` is FLAT (no FIELD_FAMILIES entry, no `weights`), so
+# every cull re-picks uniform over the survivors.
+#
+# Resolution per location: an explicit VENUE set if it has one, else its location
+# family's set; then EXTRAS are added and REMOVALS taken away. A location the family
+# map does not know (a user_options.json addition) gets no rule, so it allows every
+# style -- custom places are never silently narrowed.
+_EVERYDAY_STYLES: frozenset[str] = frozenset([
+    "casual", "smart casual", "streetwear", "bohemian", "edgy alternative", "preppy",
+    "vintage retro"])
+_OUTDOORS_STYLES: frozenset[str] = frozenset([
+    "casual", "streetwear", "bohemian", "edgy alternative", "preppy", "vintage retro",
+    "athletic"])
+#: SHIPPED styles only -- the keys of FOOTWEAR_BY_STYLE, which the validator requires to
+#: be exactly the shipped set. A style added through user_options.json must never be
+#: banned: measured in the 1.5.0 blast-radius pass, reading the live option list here put
+#: a user style in every location's ban list and it drew 0 of 3000.
+_ALL_STYLES: list[str] = list(FOOTWEAR_BY_STYLE)
+
+OUTFIT_STYLES_BY_LOCATION_FAMILY: "OrderedDict[str, frozenset[str]]" = OrderedDict([
+    ("domestic", _EVERYDAY_STYLES | {"business casual", "athletic", "loungewear"}),
+    ("food_drink", _EVERYDAY_STYLES | {"business casual", "business formal", "athletic"}),
+    ("retail_services", _EVERYDAY_STYLES | {"business casual", "athletic"}),
+    ("leisure_fitness", _EVERYDAY_STYLES | {"athletic"}),
+    ("civic_institutional", _EVERYDAY_STYLES | {
+        "business casual", "business formal", "athletic"}),
+    ("work_industrial", _EVERYDAY_STYLES | {"business casual", "business formal"}),
+    ("transit_travel", _EVERYDAY_STYLES | {
+        "business casual", "business formal", "athletic", "resort vacation"}),
+    ("urban_outdoor", _EVERYDAY_STYLES | {
+        "business casual", "business formal", "athletic", "utility workwear"}),
+    ("urban_landmark", _EVERYDAY_STYLES | {
+        "business casual", "business formal", "athletic", "resort vacation",
+        "cocktail semi-formal"}),
+    ("nature_outdoor", _OUTDOORS_STYLES),
+    ("nature_landmark", _OUTDOORS_STYLES | {"smart casual", "resort vacation"}),
+    ("studio", frozenset(_ALL_STYLES)),
+])
+
+_GYM: frozenset[str] = frozenset(["athletic", "casual", "streetwear"])
+_SHOP_FLOOR: frozenset[str] = frozenset(["utility workwear", "casual", "streetwear"])
+_MAKERS: frozenset[str] = frozenset([
+    "utility workwear", "casual", "streetwear", "bohemian", "edgy alternative",
+    "vintage retro"])
+_WATERSIDE: frozenset[str] = frozenset([
+    "resort vacation", "casual", "athletic", "bohemian", "streetwear", "vintage retro",
+    "preppy"])
+_FORMAL_WORK: frozenset[str] = frozenset([
+    "business formal", "business casual", "smart casual", "preppy"])
+
+#: Places whose plausible wardrobe is narrower than their family's.
+OUTFIT_STYLE_VENUES: dict[str, frozenset[str]] = {
+    **dict.fromkeys([
+        "local gym weight room", "yoga studio with wood floors",
+        "climbing gym with colorful holds", "dance studio with mirrors",
+        "martial arts dojo", "boxing gym with hanging heavy bags",
+        "high school gymnasium", "trampoline park with foam pits"], _GYM),
+    "indoor swimming pool": frozenset(["athletic", "resort vacation", "casual"]),
+    **dict.fromkeys([
+        "factory floor", "warehouse interior", "auto repair shop service bay",
+        "print shop with running presses", "machine shop with lathes",
+        "brewery tank room", "blacksmith forge with an anvil",
+        "glassblowing studio with a furnace", "fishing trawler wheelhouse",
+        "woodworking workshop", "commercial kitchen", "working harbor dock"],
+        _SHOP_FLOOR),
+    "construction site with scaffolding": _SHOP_FLOOR | {"business casual"},
+    **dict.fromkeys([
+        "artist's painting studio", "ceramics studio with pottery wheels",
+        "home garage workshop"], _MAKERS),
+    **dict.fromkeys(["corner executive office", "hotel conference room"], _FORMAL_WORK),
+    "courtroom": _FORMAL_WORK | {"casual"},
+    **dict.fromkeys([
+        "wide sandy beach", "volcanic black sand beach", "tide pools at low tide",
+        "waterfall plunge pool", "steaming hot spring pool", "sea cave mouth",
+        "lakeside pier"], _WATERSIDE),
+    "poolside cabana": _WATERSIDE | {"smart casual", "cocktail semi-formal"},
+    "photography studio with backdrop": frozenset(_ALL_STYLES),
+}
+
+_DRESSY = frozenset(["cocktail semi-formal", "evening formal"])
+_WORKWEAR = frozenset(["utility workwear"])
+
+#: Styles a place adds on top of its family/venue set.
+OUTFIT_STYLE_EXTRAS: dict[str, frozenset[str]] = {}
+for _places, _styles in (
+    # Getting ready, dinner parties, galas and formal nights.
+    (["formal dining room with chandelier", "upscale penthouse living room with city view",
+      "fine dining restaurant interior", "elegant hotel dining room",
+      "dimly lit cocktail lounge", "speakeasy-style basement bar",
+      "casino floor with card tables", "backstage dressing room",
+      "concert hall backstage", "empty theater stage with the curtain up",
+      "art gallery opening night", "grand cathedral interior",
+      "hotel lobby with marble floors", "grand hotel suite",
+      "cruise ship interior corridor", "the back seat of a taxi", "rooftop cocktail bar",
+      "rooftop terrace overlooking the skyline", "castle courtyard"], _DRESSY),
+    (["walk-in closet with mirrors", "tiled bathroom with a large mirror",
+      "tidy bedroom with a neatly made bed"], _DRESSY | {"business formal"}),
+    # A night out, a date, a wedding guest -- cocktail but not black tie.
+    (["neon-lit nightclub", "wine bar with exposed brick", "crowded bar and grill",
+      "wood-paneled pub", "gastropub with an open kitchen",
+      "French bistro with mirrored walls", "sushi bar counter", "dim sum restaurant",
+      "upscale urban cafe", "karaoke room with song menus", "billiards hall",
+      "movie theater lobby", "independent cinema auditorium",
+      "community theatre auditorium", "luxury retail boutique",
+      "department store perfume counter", "hair salon", "nail salon",
+      "small chapel interior", "synagogue interior", "mosque interior",
+      "city hall rotunda", "neon-lit city street", "outdoor amphitheater",
+      "tree-lined boulevard", "cobblestone old-town street", "city fountain plaza",
+      "pier with a Ferris wheel", "riverside boardwalk", "sunlit vineyard",
+      "cherry blossom grove", "botanical garden path", "airport lounge"],
+     frozenset(["cocktail semi-formal"])),
+    (["home office with bookshelves", "bank lobby with teller windows",
+      "luxury retail boutique", "department store perfume counter",
+      "neighborhood dry cleaner counter", "old-school barbershop",
+      "upscale grocery market deli counter", "shopping mall concourse",
+      "casino floor with card tables"], frozenset(["business formal"])),
+    (["grand hotel suite", "budget motel room", "university dormitory room",
+      "laundromat", "corner bodega", "fire escape landing", "quiet suburban backyard",
+      "hospital room", "airplane cabin aisle"], frozenset(["loungewear"])),
+    # Holidaymakers: sights, promenades, markets, scenic nature.
+    (["juice bar with a chrome counter", "old-fashioned ice cream parlor",
+      "taqueria with a tiled counter", "indoor spice market stall",
+      "natural history museum hall", "aquarium tunnel", "science museum atrium",
+      "planetarium dome interior", "casino floor with card tables",
+      "palm-lined promenade", "riverside boardwalk", "pier with a Ferris wheel",
+      "harbor with moored boats", "open-air street food market",
+      "cobblestone old-town street", "city fountain plaza",
+      "rooftop terrace overlooking the skyline", "rooftop garden", "castle courtyard",
+      "crumbling stone ruin", "pedestrian shopping street", "sunny city park",
+      "stone bridge over a river", "canal towpath", "flower field in bloom",
+      "lavender field", "sunlit vineyard", "cherry blossom grove",
+      "botanical garden path", "mangrove boardwalk", "coastal lighthouse bluff",
+      "rocky coastal cliff", "basalt column coastline", "bamboo forest path",
+      "terraced rice paddies", "golden savanna with acacia trees",
+      "rolling desert dune"], frozenset(["resort vacation"])),
+    (["sunlit vineyard", "flower field in bloom", "lavender field",
+      "botanical garden path", "cherry blossom grove"], frozenset(["smart casual"])),
+    # Working people on a break, on the way, or at the counter.
+    (["suburban basement", "mudroom entryway", "farmhouse kitchen with open shelving",
+      "rustic log cabin interior", "small-town family diner", "old-school greasy spoon",
+      "barbecue joint with paper-lined trays", "bustling food court",
+      "taqueria with a tiled counter", "busy chain coffee shop", "crowded bar and grill",
+      "wood-paneled pub", "hardware store aisle", "bicycle repair shop",
+      "butcher shop counter", "garden centre greenhouse aisle",
+      "big box store warehouse aisle", "shoe repair and key cutting counter",
+      "farmers market indoor stall", "corner bodega", "small-town grocery store aisle",
+      "laundromat", "parking garage", "budget motel room", "long-distance bus station",
+      "subway car interior", "rolling wheat field", "apple orchard rows",
+      "terraced rice paddies", "sunlit vineyard", "open meadow"], _WORKWEAR),
+):
+    for _place in _places:
+        OUTFIT_STYLE_EXTRAS[_place] = OUTFIT_STYLE_EXTRAS.get(_place, frozenset()) | _styles
+
+#: Styles a place rules out although its family allows them. Accumulated like the
+#: extras, so a place named in two lists keeps BOTH removals (a dict literal with a
+#: repeated key silently kept only the last -- the rooftop bar lost its athletic ban).
+OUTFIT_STYLE_REMOVALS: dict[str, frozenset[str]] = {}
+for _places, _styles in (
+    (["fine dining restaurant interior", "elegant hotel dining room",
+      "dimly lit cocktail lounge", "speakeasy-style basement bar",
+      "wine bar with exposed brick", "rooftop cocktail bar",
+      "luxury retail boutique", "department store perfume counter",
+      "courtroom", "grand cathedral interior", "small chapel interior",
+      "mosque interior", "synagogue interior", "Buddhist temple hall",
+      "Shinto shrine interior", "art gallery opening night", "city hall rotunda"],
+     frozenset(["athletic"])),
+    (["neon-lit nightclub"], frozenset(["athletic", "business formal"])),
+    (["university dormitory room"], frozenset(["business formal"])),
+    (["graffiti-covered skate park", "outdoor basketball court with chain nets",
+      "fire escape landing", "community garden allotment", "country dirt road",
+      "quiet suburban backyard"], frozenset(["business formal"])),
+    (["rooftop cocktail bar", "palm-lined promenade", "castle courtyard",
+      "rooftop terrace overlooking the skyline"], _WORKWEAR),
+):
+    for _place in _places:
+        OUTFIT_STYLE_REMOVALS[_place] = OUTFIT_STYLE_REMOVALS.get(_place, frozenset()) | _styles
+
+#: location -> its FIELD_FAMILIES family, built-in locations only.
+_LOCATION_FAMILY: dict[str, str] = {
+    _v: _fam for _fam, _d in FIELD_FAMILIES["location"].items() for _v in _d["variants"]}
+
+
+def outfit_styles_allowed_at(location: str) -> "frozenset[str] | None":
+    """The outfit styles plausible at ``location``, or ``None`` for an unmapped place."""
+    family = _LOCATION_FAMILY.get(location)
+    if family is None:
+        return None
+    allowed = OUTFIT_STYLE_VENUES.get(location, OUTFIT_STYLES_BY_LOCATION_FAMILY[family])
+    return ((allowed | OUTFIT_STYLE_EXTRAS.get(location, frozenset()))
+            - OUTFIT_STYLE_REMOVALS.get(location, frozenset()))
+
+
+for _loc in _LOCATION_FAMILY:
+    _banned = sorted(set(_ALL_STYLES) - outfit_styles_allowed_at(_loc))
+    if _banned:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "outfit_style", "excludes_values": _banned,
+            "reason": f"nobody plausibly dresses like that at '{_loc}'"})
+
+
+# --- season is an outdoor fact (1.5.0) ---------------------------------------------
+# Before 1.5.0 `season` had no rule at all. Measured over 3000 default renders: winter
+# with sandals or espadrilles 3.1%, winter with shorts / a crop top / swim shorts 2.4%,
+# winter with a sun hat 1.1%, summer with a beanie or gloves 0.9%, and "cherry blossom
+# grove during winter" / "snowy pine forest during summer" for every seasonal place.
+#
+# THREE LAYERS, in rule order (a pass applies rules in list order, so the indoor drop
+# must come before anything season triggers):
+#
+# 1. Indoors and on a studio sweep the season is DROPPED ("None"), prose and JSON.
+#    Weather does not reach an office, and "during winter" in a windowless room only
+#    invites the model to paint snow on a wall. This is also what keeps every clothing
+#    rule below outdoors-only for free: they trigger on a season value, and indoors
+#    there is none. A locked season re-rolls a random location outdoors (the
+#    requirement branch's contrapositive); locking both keeps both. Zero RNG cost --
+#    season is still drawn, then blanked.
+# 2. A seasonal PLACE pins its season. `location` is the trigger, so the place stands.
+#    `season` is FLAT, so the re-pick is uniform over what survives. The two winter
+#    lights follow the season, not the other way round (see _WINTER_LIGHTING).
+# 3. The season then gates what is worn (footwear, accessories, bag, outfit_style) --
+#    the season stands and the clothes adapt, the lighting/composition doctrine.
+#    Every target here is flat or `weights`-only, so no family weight concentrates.
+#    The generated garment phrase itself is season-filtered in
+#    `nodes.identity_forge._resolve_outfit_description` (WARM_ONLY_GARMENT_RE /
+#    COLD_ONLY_GARMENT_RE), because the outfit is drawn after this loop has finished.
+_SEASONS: list[str] = list(FIELD_DEFINITIONS["season"]["female_options"])
+
+for _loc in _LOCATION_FAMILY:
+    if _loc not in OUTDOOR_LOCATIONS:
+        CONSTRAINT_RULES.append({
+            "type": "requirement", "field": "location", "value": _loc,
+            "requires_field": "season", "requires_value": "None",
+            "reason": f"'{_loc}' is indoors: the season does not show there"})
+
+#: Outdoor places that only look like themselves in some seasons.
+SEASONS_BY_LOCATION: dict[str, frozenset[str]] = {
+    "snowy pine forest": frozenset(["winter"]),
+    "frozen lake surface": frozenset(["winter"]),
+    "autumn park with falling leaves": frozenset(["autumn"]),
+    "cherry blossom grove": frozenset(["spring"]),
+    "flower field in bloom": frozenset(["spring", "summer"]),
+    "alpine meadow with wildflowers": frozenset(["spring", "summer"]),
+    "lavender field": frozenset(["summer"]),
+}
+#: Lights that only exist in winter. The SEASON is the trigger (below), not the light:
+#: pinning the season to the light skewed outdoor seasons to 29% winter / 21.5% summer
+#: over 4000 renders, because two of the 17 daylight variants dragged it to winter.
+#: This way round the season stays uniform and only a winter light drawn out of season
+#: is re-picked, which re-draws the rejected value alone (the 0.64.0 mixture property).
+_WINTER_LIGHTING: list[str] = ["hazy overcast winter light", "snow-reflected daylight"]
+
+for _loc, _allowed in SEASONS_BY_LOCATION.items():
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "season", "excludes_values": sorted(set(_SEASONS) - _allowed),
+        "reason": f"'{_loc}' only looks like that in {', '.join(sorted(_allowed))}"})
+for _season in ("spring", "summer", "autumn"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "season", "value": _season,
+        "excludes_field": "lighting", "excludes_values": list(_WINTER_LIGHTING),
+        "reason": f"winter light does not fall in {_season}"})
+
+#: What each season rules out. Read only outdoors: indoors the season is "None".
+SEASON_EXCLUSIONS: dict[str, dict[str, list[str]]] = {
+    "spring": {
+        "accessories": ["knit winter scarf", "earmuffs"],
+    },
+    "winter": {
+        "footwear": ["sandals", "espadrilles", "bare feet", "slides"],
+        "accessories": ["wide brim sun hat", "woven hat"],
+        "bag": ["straw beach tote", "woven rattan bag"],
+        "outfit_style": ["resort vacation"],
+    },
+    "summer": {
+        "accessories": ["wool beanie", "leather gloves", "knit winter scarf", "earmuffs"],
+    },
+}
+#: Winter pieces are weather wear, so they also stay outdoors (the 0.97.0 decline these
+#: were parked on). Keyed on each indoor LOCATION, not on season "None": a rule
+#: triggered by the blank season would make a locked scarf re-roll a season that the
+#: indoor requirement pins straight back, and the two repairs would ping-pong to the
+#: iteration cap. On the location, the contrapositive moves the place outdoors instead.
+_WINTER_ONLY_ACCESSORIES: list[str] = ["knit winter scarf", "earmuffs"]
+for _loc in _LOCATION_FAMILY:
+    if _loc not in OUTDOOR_LOCATIONS:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "accessories", "excludes_values": list(_WINTER_ONLY_ACCESSORIES),
+            "reason": f"'{_loc}' is indoors: winter outerwear comes off"})
+
+for _season, _by_field in SEASON_EXCLUSIONS.items():
+    for _field, _values in _by_field.items():
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "season", "value": _season,
+            "excludes_field": _field, "excludes_values": list(_values),
+            "reason": f"out of season outdoors in {_season}"})
+
+
+# --- the face and the mood agree (1.5.0) --------------------------------------------
+# `mood` is the picture's atmosphere and `expression` is the face in it; nothing tied
+# them, and 5.4% of 4000 default renders contradicted themselves ("laughing" with a
+# "somber" mood, "brooding" with a "lighthearted" one). The face is what a viewer reads
+# first, so it stands and the mood adapts.
+#
+# Both fields are FIELD_FAMILIES fields, so every cull here drops a WHOLE mood family --
+# `heavy` under a warm face, `positive` under a sad one -- and the surviving families
+# stay exactly proportional (architecture.md -> the family weight rule). Taken from the
+# family table by name so a regrouping cannot leave these pointing at dead strings.
+_MOOD_HEAVY: list[str] = list(FIELD_FAMILIES["mood"]["heavy"]["variants"])
+_MOOD_POSITIVE: list[str] = list(FIELD_FAMILIES["mood"]["positive"]["variants"])
+_SAD_EXPRESSIONS: list[str] = ["melancholic", "solemn", "wistful", "brooding", "weary"]
+
+for _expr in FIELD_FAMILIES["expression"]["warm"]["variants"]:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "expression", "value": _expr,
+        "excludes_field": "mood", "excludes_values": list(_MOOD_HEAVY),
+        "reason": f"a '{_expr}' face contradicts a heavy mood"})
+for _expr in _SAD_EXPRESSIONS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "expression", "value": _expr,
+        "excludes_field": "mood", "excludes_values": list(_MOOD_POSITIVE),
+        "reason": f"a '{_expr}' face contradicts a buoyant mood"})
+
+
+# --- outerwear (1.5.0) ----------------------------------------------------------------
+# NO CONSTRAINT_RULES here, for the `legwear` reason: `outerwear` is a DEFERRED field
+# (it gates on the finished garment), so a rule naming it would be inert. Both maps
+# are consumed by `nodes.identity_forge._eligible_outerwear`, a pool filter.
+#
+# Which seasons each coat is worn in. Heavy coats are winter-only; mid-weight ones
+# span the cold half; light jackets are the in-between seasons. Summer has none.
+_HEAVY_COATS = frozenset(["wool overcoat", "parka", "puffer coat", "shearling coat",
+                          "duffle coat", "faux fur coat"])
+_MID_COATS = frozenset(["trench coat", "peacoat", "wrap coat", "leather jacket",
+                        "quilted jacket", "waxed field jacket"])
+_LIGHT_COATS = frozenset(["denim jacket", "bomber jacket", "rain jacket", "windbreaker"])
+OUTERWEAR_SEASONS: dict[str, frozenset[str]] = {
+    **dict.fromkeys(_HEAVY_COATS, frozenset(["winter"])),
+    **dict.fromkeys(_MID_COATS, frozenset(["autumn", "winter", "spring"])),
+    **dict.fromkeys(_LIGHT_COATS, frozenset(["autumn", "spring"])),
+}
+
+#: What each outfit_style plausibly throws on over the top. Allowlist, fail-safe like
+#: FOOTWEAR_BY_STYLE: a coat not listed for a style is never drawn with it. An empty
+#: set means the style never takes outerwear.
+OUTERWEAR_BY_STYLE: "OrderedDict[str, frozenset[str]]" = OrderedDict([
+    ("casual", frozenset([
+        "denim jacket", "bomber jacket", "rain jacket", "quilted jacket", "parka",
+        "puffer coat", "leather jacket", "waxed field jacket", "peacoat", "trench coat",
+        "shearling coat", "duffle coat", "windbreaker"])),
+    ("smart casual", frozenset([
+        "trench coat", "wool overcoat", "peacoat", "leather jacket", "quilted jacket",
+        "wrap coat", "shearling coat", "duffle coat"])),
+    ("business casual", frozenset([
+        "trench coat", "wool overcoat", "peacoat", "wrap coat", "quilted jacket",
+        "rain jacket"])),
+    ("business formal", frozenset(["wool overcoat", "trench coat", "peacoat", "wrap coat"])),
+    ("evening formal", frozenset(["wool overcoat", "faux fur coat", "wrap coat"])),
+    ("cocktail semi-formal", frozenset([
+        "wool overcoat", "faux fur coat", "wrap coat", "trench coat", "leather jacket"])),
+    ("streetwear", frozenset([
+        "puffer coat", "parka", "bomber jacket", "denim jacket", "windbreaker",
+        "leather jacket", "shearling coat"])),
+    ("bohemian", frozenset(["shearling coat", "denim jacket", "wrap coat", "leather jacket"])),
+    ("athletic", frozenset(["windbreaker", "rain jacket", "puffer coat"])),
+    ("resort vacation", frozenset(["denim jacket"])),
+    ("edgy alternative", frozenset([
+        "leather jacket", "parka", "bomber jacket", "trench coat", "denim jacket",
+        "faux fur coat"])),
+    ("preppy", frozenset([
+        "waxed field jacket", "quilted jacket", "peacoat", "duffle coat", "trench coat",
+        "wool overcoat", "rain jacket"])),
+    ("vintage retro", frozenset([
+        "trench coat", "peacoat", "leather jacket", "wool overcoat", "duffle coat",
+        "faux fur coat", "denim jacket"])),
+    ("loungewear", frozenset()),
+    ("utility workwear", frozenset([
+        "parka", "quilted jacket", "waxed field jacket", "rain jacket", "puffer coat"])),
+])

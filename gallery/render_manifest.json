@@ -249,6 +249,10 @@
         "hash": "20032bd5fac56d30",
         "rendered": "2026-09-01"
       },
+      "Chinese Qipao": {
+        "hash": "7e889c1e65b6fee8",
+        "rendered": "2026-09-27"
+      },
       "Circus Clown": {
         "hash": "2d9c788b884fb253",
         "rendered": "pre-existing"
@@ -501,6 +505,11 @@
         "hash": "b8484bf34d8daf1c",
         "rendered": "pre-existing"
       },
+      "Irish Step Dancer": {
+        "hash": "aa2a528776a1757d",
+        "rendered": "2026-09-27",
+        "seed": 1020256245736513157
+      },
       "Italian Nonna": {
         "hash": "89574e3647b617c0",
         "rendered": "pre-existing"
@@ -508,6 +517,10 @@
       "Jeweler": {
         "hash": "4f95d89935ebb193",
         "rendered": "pre-existing"
+      },
+      "Jockey": {
+        "hash": "a4c641294dca1a72",
+        "rendered": "2026-09-27"
       },
       "Judge": {
         "hash": "45c990676f09c8ee",
@@ -724,6 +737,10 @@
       "Rapper": {
         "hash": "94d7914cd387cebf",
         "rendered": "pre-existing"
+      },
+      "Referee": {
+        "hash": "1af53c3c06410bea",
+        "rendered": "2026-09-27"
       },
       "Regency Aristocrat": {
         "hash": "0f0504b262ccfb75",
@@ -1071,6 +1088,10 @@
         "hash": "fbabb8d22ac66f6b",
         "rendered": "pre-existing"
       },
+      "Acheron": {
+        "hash": "c743ac2c9ad3ce52",
+        "rendered": "2026-09-27"
+      },
       "Ada Wong": {
         "hash": "647f123d4d444c75",
         "rendered": "pre-existing"
@@ -1402,6 +1423,10 @@
       "Arrietty Clock": {
         "hash": "0556d684fbc891f8",
         "rendered": "pre-existing"
+      },
+      "Art the Clown": {
+        "hash": "880436b9099f541a",
+        "rendered": "2026-09-27"
       },
       "Artanis": {
         "hash": "3edd2164b4df6658",
@@ -2323,8 +2348,8 @@
         "rendered": "pre-existing"
       },
       "Chizuru Mizuhara": {
-        "hash": "e2356e00b557c4e7",
-        "rendered": "pre-existing"
+        "hash": "4c2b88e336d164ee",
+        "rendered": "2026-09-27"
       },
       "Chocobo": {
         "hash": "e9fc91c2dbe6356a",
@@ -3931,8 +3956,8 @@
         "rendered": "2026-08-26"
       },
       "Hitagi Senjougahara": {
-        "hash": "ffa55534914d59ce",
-        "rendered": "pre-existing"
+        "hash": "5a0c02592a6666e0",
+        "rendered": "2026-09-27"
       },
       "Hitomi": {
         "hash": "597fe8c5cde38a60",
@@ -4547,6 +4572,10 @@
       "Kaedehara Kazuha": {
         "hash": "0b9a859475c3641c",
         "rendered": "pre-existing"
+      },
+      "Kafka (Honkai: Star Rail)": {
+        "hash": "5bf147233562bffc",
+        "rendered": "2026-09-27"
       },
       "Kagamine Rin": {
         "hash": "a067447bf25f3bc3",
@@ -8803,6 +8832,10 @@
         "hash": "06d221de6dcdf540",
         "rendered": "pre-existing"
       },
+      "Violet Evergarden": {
+        "hash": "a376e49917cabc26",
+        "rendered": "2026-09-27"
+      },
       "Viper": {
         "hash": "3a0713f99280413d",
         "rendered": "pre-existing"
@@ -9026,6 +9059,10 @@
       "Yamada Asaemon Sagiri": {
         "hash": "6408c070b565eaa9",
         "rendered": "pre-existing"
+      },
+      "Yamato (One Piece)": {
+        "hash": "44e197165703cdea",
+        "rendered": "2026-09-27"
       },
       "Yami Yugi": {
         "hash": "ad454d24f9ee91d1",
@@ -9321,6 +9358,10 @@
       "beaver": {
         "hash": "79c758da88d8df3d",
         "rendered": "2026-08-10"
+      },
+      "bighorn ram": {
+        "hash": "780e3665296e880e",
+        "rendered": "2026-09-27"
       },
       "biomechanical alien": {
         "hash": "7de279c6854959c1",
@@ -9941,6 +9982,10 @@
         "hash": "fdcfb746a0ee7a1d",
         "rendered": "pre-existing"
       },
+      "owlbear": {
+        "hash": "12c181b3c0d820b4",
+        "rendered": "2026-09-27"
+      },
       "panda": {
         "hash": "844ab3045052b086",
         "rendered": "pre-existing"
@@ -10296,7 +10341,7 @@
       }
     }
   },
-  "generated": "2026-09-15T22:11:56",
+  "generated": "2026-09-27T07:40:16",
   "render": {
     "cfg": 1,
     "height": 2432,

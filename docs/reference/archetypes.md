@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**255 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**259 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Male]
@@ -67,6 +67,7 @@
 - **Cheerleader** [Female] -- athletic
 - **Chef** [Male] -- casual
 - **Chimney Sweep** [Any] -- casual
+- **Chinese Qipao** [Female] -- vintage retro
 - **Circus Clown** [Any]
 - **Classic Hollywood Leading Man** [Male] -- evening formal
 - **Classic Hollywood Starlet** [Female] -- evening formal
@@ -130,8 +131,10 @@
 - **Holy Paladin** [Male] -- business formal
 - **Human Knight** [Male] -- business formal
 - **Indie Sleaze** -- edgy alternative
+- **Irish Step Dancer** [Female] -- cocktail semi-formal
 - **Italian Nonna** [Female] -- vintage retro
 - **Jeweler** -- business casual
+- **Jockey** -- athletic
 - **Judge** -- business formal
 - **K-Pop Idol**
 - **Kabuki Actor** -- evening formal
@@ -186,6 +189,7 @@
 - **Race Car Driver** [Male] -- athletic
 - **Rancher** -- vintage retro
 - **Rapper** -- streetwear
+- **Referee** -- athletic
 - **Regency Aristocrat** [Female]
 - **Renaissance Noble** -- evening formal
 - **Retail Cashier** -- smart casual

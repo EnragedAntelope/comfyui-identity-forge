@@ -191,3 +191,42 @@ test("a second onNodeCreated does not wrap the gender callback twice", async () 
   Object.defineProperty(hair.options, "values", realSetter ?? { value: hair.options.__v, writable: true, configurable: true });
   assert.equal(applied, 1, "the gender callback was wrapped more than once");
 });
+
+
+/* --- Legacy widgets_values padding across releases (1.5.0) -------------------
+   `outerwear` joined FIELDS_ADDED_BY_RELEASE and sits in Clothing, AFTER the 0.90.0
+   fields. Padding release by release put it one slot per older splice too late; the
+   missing set is now spliced in one ascending pass. */
+import { makeFakeNode } from "./fake_node.mjs";
+
+async function configurableMainNode() {
+  class FakeNodeType {}
+  FakeNodeType.prototype.configure = function (info) {
+    const values = info?.widgets_values || [];
+    (this.widgets || []).forEach((w, i) => { if (i < values.length) w.value = values[i]; });
+  };
+  await ext.beforeRegisterNodeDef(FakeNodeType, { name: "IdentityForge" });
+  const node = makeFakeNode("IdentityForge");
+  FakeNodeType.prototype.onNodeCreated.call(node);
+  return { node, FakeNodeType };
+}
+
+for (const [label, dropped] of [
+  ["1.4.0 (missing outerwear)", ["outerwear"]],
+  ["0.89.0 (missing outerwear + the three 0.90.0 fields)",
+   ["outerwear", "tattoos", "tattoo_placement", "legwear"]],
+]) {
+  test(`configure restores a ${label} workflow onto the right widgets`, async () => {
+    const { node, FakeNodeType } = await configurableMainNode();
+    const oldOrder = node.widgets.filter((w) => !dropped.includes(w.name));
+    const saved = oldOrder.map((w) => `saved-${w.name}`);
+    FakeNodeType.prototype.configure.call(node, { widgets_values: saved });
+    for (const [i, w] of oldOrder.entries()) {
+      assert.equal(w.value, saved[i], `${w.name} should hold its saved value`);
+    }
+    for (const name of dropped) {
+      const w = node.widgets.find((x) => x.name === name);
+      assert.ok(!String(w.value).startsWith("saved-"), `${name} must keep its default`);
+    }
+  });
+}

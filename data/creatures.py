@@ -3248,6 +3248,41 @@ CREATURES: dict[str, dict] = {
         "tail": "a long thick pale tail",
         "extras": "a heavy rounded pot belly",
     },
+    # --- 1.5.0, each render-tested against its nearest incumbent before shipping ---
+    # (`arachne` was tested too and declined: the anthropomorphic form rendered a man
+    # in a suit in front of a giant spider, twice -- see suggested-additions.md.)
+    # Owl front, bear back. Distinct from `gryphon` (eagle/lion, winged) by the
+    # flightless bear bulk and the round owl facial disc.
+    "owlbear": {
+        "class": "Mythic & Fantasy",
+        "palette": "brown-and-cream barred",
+        "palette_pool": ["brown-and-cream barred", "snowy white-and-grey",
+                         "dark umber", "tawny-and-black"],
+        "head": "a great horned owl's head with a round feathered facial disc, a hooked "
+                "beak and tall ear tufts, on the massive hulking body of a grizzly bear",
+        "eyes": "huge round unblinking owl eyes",
+        "integument": "shaggy grizzly fur turning to layered feathers across the head, "
+                      "neck and shoulders",
+        "arms": "massive grizzly bear forelimbs",
+        "hands": "huge curved bear claws",
+        "legs_feet": "heavy bear hind legs with broad clawed paws",
+        "tail": "a stubby feathered tail",
+    },
+    # The full-curl horn is the whole identity: `goat` has curved ridged horns and
+    # `markhor` corkscrews straight up, so the curl leads the head slot.
+    "bighorn ram": {
+        "class": "Mammals",
+        "palette": "warm grey-brown",
+        "palette_pool": ["warm grey-brown", "pale sandy fawn", "dark chocolate brown"],
+        "head": "massive ridged horns curling back and down around the ears in a full "
+                "spiral, on a broad blunt-nosed sheep head",
+        "eyes": "golden rectangular-pupiled eyes",
+        "integument": "a dense short coat with a pale rump patch",
+        "arms": "sturdy forelegs",
+        "hands": "hard cloven forefeet",
+        "legs_feet": "muscular legs ending in cloven hooves",
+        "tail": "a short dark tail",
+    },
 }
 
 

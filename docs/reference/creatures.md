@@ -3,15 +3,16 @@
 
 # Creature reference
 
-**259 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**261 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
-## Mammals (54)
+## Mammals (55)
 
 - **aardvark** (dull pinkish grey)
 - **alpaca** (creamy fawn)
 - **bat** (dusky brown)
 - **bear** (deep brown)
 - **beaver** (rich chestnut)
+- **bighorn ram** (warm grey-brown)
 - **bison** (deep umber)
 - **boar** (dark bristled brown)
 - **camel** (sandy tan)
@@ -229,7 +230,7 @@
 - **radial alien** (pale coral)
 - **reptilian alien** (venom-green)
 
-## Mythic & Fantasy (39)
+## Mythic & Fantasy (40)
 
 - **banshee** (spectral pale grey)
 - **basilisk** (venomous green)
@@ -258,6 +259,7 @@
 - **mothman** (charcoal grey)
 - **naga** (jade)
 - **oni** (crimson red)
+- **owlbear** (brown-and-cream barred)
 - **pegasus** (pearl white)
 - **phoenix** (fiery orange-gold)
 - **qilin** (burnished gold)

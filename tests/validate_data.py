@@ -40,6 +40,7 @@ _EXPECTED_OUTFIT_STYLES = {
     "evening formal", "cocktail semi-formal", "streetwear", "bohemian",
     "athletic", "resort vacation", "edgy alternative",
     "preppy", "vintage retro", "loungewear",
+    "utility workwear",  # 1.5.0
 }
 #: Hidden fields whose values are free-form prose (a costume override, a held
 #: prop), so their values are not validated against an option pool — and they are
@@ -404,7 +405,10 @@ def validate() -> list[str]:
         if target not in FIELD_DEFINITIONS:
             errors.append(f"rule {i}: unknown target field {target!r}")
         else:
-            bad = [v for v in values if v not in _options(target)]
+            # "None" is every widget's omit token, so a requirement may demand it
+            # (1.5.0: an indoor location drops the season).
+            bad = [v for v in values if v not in _options(target)
+                   and not (rule["type"] == "requirement" and v == "None")]
             if bad:
                 errors.append(f"rule {i}: values not options of {target}: {bad}")
 
@@ -555,10 +559,13 @@ def validate() -> list[str]:
     # is excluded from every style at once and can never be drawn. Measured, not
     # theorised -- 'platform boots', 'hiking boots' and 'clogs' were added at 1.2.0
     # and drew 0/1500 until their rows landed, with every other check still green.
-    from data.constraints import FOOTWEAR_BY_STYLE, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    from data.constraints import (
+        FOOTWEAR_BY_STYLE, LEGWEAR_BY_STYLE, _GATED_LEGWEAR, OUTERWEAR_BY_STYLE,
+    )
     for label, allowlist, gated in (
         ("footwear", FOOTWEAR_BY_STYLE, _options("footwear")),
         ("legwear", LEGWEAR_BY_STYLE, set(_GATED_LEGWEAR)),
+        ("outerwear", OUTERWEAR_BY_STYLE, _options("outerwear") - {"no outerwear"}),  # 1.5.0
     ):
         stray_styles = sorted(set(allowlist) - _EXPECTED_OUTFIT_STYLES)
         if stray_styles:

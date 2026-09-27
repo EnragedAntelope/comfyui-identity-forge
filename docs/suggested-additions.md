@@ -23,75 +23,7 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-**Two `hair_style` values, blocked on arithmetic rather than taste (0.90.0).** Both
-were written, tested, and backed out when `HairStyleFamilyTests` failed — recorded
-here with the exact cost so a future pass can decide whether to pay it.
-
-| Candidate | What it needs |
-|---|---|
-| **hime cut** | Its natural home is `loose_styled`, which is a **split** sub-family — adding a sixth variant broke the `loose` split's proportionality (140 vs 116.67 per variant). It also requires long hair, so any length exclusion would be a *partial* cull of the sub-family and would concentrate its frozen weight on the survivors. Needs its own sub-family and a reprice of the whole `loose` group. |
-| **wolf cut** | Belongs in `barbered_shag`, an **added** family pinned to the field's "everyday cut" rate. Growing it needs the family repriced *and* `_DILUTION` in `HairStyleFamilyTests` restated. |
-
-**`outerwear` — the field the pack does not have (raised 1.2.0).** A coat or jacket is
-one of the largest visual elements on a person and there is no axis for it at all;
-`accessories` carries gloves, hats and scarves but no outer garment. Worth building, and
-it is a phase of its own rather than an option list. What it needs:
-
-* A **new widget, appended at the end** of `define_schema()` — never inserted, or every
-  saved workflow's `widgets_values` array shifts — plus a `FIELD_HELP` entry, a
-  `generate_js_data.py` regeneration for `FIELD_TO_GROUP`, and prose-builder work to
-  voice it.
-* **A coherence gate on four axes, not one.** This is what makes it a phase:
-  * **`season`** — no parka in summer, no linen duster in winter.
-  * **`location`** — no heavy winter coat in an office, a yoga studio or a restaurant
-    interior. Reuse the existing `_INDOOR_LOCATIONS` / `OUTDOOR_LOCATIONS` split rather
-    than building a third bucket.
-  * **`outfit_style`** — an allowlist mirroring `FOOTWEAR_BY_STYLE`, so a parka never
-    lands on `evening formal` and a tailored overcoat never lands on `athletic`.
-  * **`accessories` co-occurrence** — a winter coat should be able to draw gloves, a
-    knit scarf and a beanie; a linen blazer should not. This is the harder half:
-    `accessories` is a single-value field with a `weights` map, so "co-occur" means
-    conditioning its pool on the drawn outerwear, not adding a second accessory slot.
-* **Suppression:** a `covers_body` shell or mascot suit must drop it, the way
-  `_CONCEALED_BODY_FIELDS` already drops tattoos.
-* **Bias, priced up front:** the field must ship a heavily-weighted `no outerwear` value
-  or every random person is suddenly wearing a coat. See the 1.2.0 `legwear` note in
-  architecture.md for how the lean and an allowlist stack — the realized absence rate
-  came out far above the bare pool lean, and that surprise is worth expecting here.
-* **If `legwear` is anything to go by, check the draw order first.** `legwear` is a
-  DEFERRED field, so its `outfit_style` gate had to be a pool filter rather than a
-  `CONSTRAINT_RULES` exclusion; a rule would have been silently inert. Establish whether
-  `outerwear` is drawn inside or outside the constraint loop before writing its gate.
-
-**This is the phase the 0.97.0 `accessories` decline was waiting for.** That decline
-reads: *"Blocked on a gate that does not exist, not on merit... Building that gate is a
-phase of its own; the three values are worth revisiting after it, not before."* Building
-`outerwear` builds the season/style gate, which **unblocks `earmuffs`, `knit winter
-scarf` and `headphones worn around the neck`** — fold them into the same phase.
-
-**`outfit_style`: western, utility/workwear, grunge (raised 1.2.0).** Priced, not
-declined on merit: each needs `OUTFIT_DESCRIPTIONS` entries per gender, a
-`FOOTWEAR_BY_STYLE` row and a `LEGWEAR_BY_STYLE` row, and each dilutes a 14-value pool
-by about 7%.
-
-The two that *did* ship (`side-swept bangs`, `wispy bangs`) went into `bangs` — a
-pre-existing, non-split family with no length restriction — so the total weight stayed
-7140 and no share moved at all. That is the difference between a cheap addition and an
-expensive one, and it is not visible from the option list.
-
-**Logged for future consideration (0.98.0 render session):**
-
-| Candidate | Case |
-|---|---|
-| **Vintage deep-sea diver** (archetype) | Copper breastplate helmet with viewports over a weighted canvas suit; reads instantly at silhouette scale and has no incumbent. Needs a check against existing helmeted archetypes for `_HAT_RE` / covers_hair interactions before building. |
-
-**Logged for future consideration (0.100.0 roster pass):**
-
-| Candidate | Case |
-|---|---|
-| **Kliff** (Crimson Desert) | **Revisited and DECLINED at 1.4.0.** The original reason was wrong: Kliff is a *fixed* protagonist (set face, body and voice, the Geralt model), not a vendor-built one -- only his hair, facial hair, tattoos and outfit *colours* are customizable. The decline stands on the other half: his equipment and clothing are explicitly "highly customizable", so there is still no single canonical outfit to describe, and what is left -- a bearded man in fantasy leathers -- is the silhouette `Geralt` and `Conan the Barbarian` already carry. Reopen only if a marketing-canonical outfit becomes the settled default look. |
-
-**Everything else remains empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
+**Under consideration is empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
@@ -139,6 +71,8 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 
 | Candidate | Why |
 |---|---|
+| Kliff (Crimson Desert) | **Revisited and DECLINED at 1.4.0.** The original reason was wrong: Kliff is a *fixed* protagonist (set face, body and voice, the Geralt model), not a vendor-built one -- only his hair, facial hair, tattoos and outfit *colours* are customizable. The decline stands on the other half: his equipment and clothing are explicitly "highly customizable", so there is still no single canonical outfit to describe, and what is left -- a bearded man in fantasy leathers -- is the silhouette `Geralt` and `Conan the Barbarian` already carry. Reopen only if a marketing-canonical outfit becomes the settled default look. |
+| M3GAN (1.5.0 maintainer shortlist) | **Adults-only bar.** Canonically a child-sized android doll modelled on a young girl: rendering her as a child breaks the bar, and rendering her as an adult is not canon. Approved on the shortlist, declined at research. |
 | Marinette Dupain-Cheng, Adrien Agreste (civilian) | Ordinary modern teen dress. Their transformed looks (Ladybug, Cat Noir) carry them. |
 | Jessica Jones, Marion Ravenwood, Baby Houseman, Frankie Foster, Peggy Hill, Luanne Platter | Everyday modern dress. Fails the "iconic *and* specific outfit" bar that admitted Trinity, Mia Wallace and Sandy Olsson. |
 | Anya Forger, Beatrice (Re:Zero) | Human children in ordinary clothes. Distinct from the accepted child *cosplays* (Dora, the Powerpuff Girls, Tina Belcher, Charlie Brown), whose looks are ordinary clothing on an adult wearer. See the mascot-suit distinction in architecture.md — it does **not** rescue these two. |
@@ -240,6 +174,8 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 
 ### Creature-node animals — the recurring rejects
 
+> **arachne / drider (1.5.0, render-tested and declined).** The spider-taur was built with its lower body leading the first slot and rendered twice; both times the anthropomorphic form produced an ordinary man in a suit standing in front of a giant spider. The Creature node keeps a humanoid body under that form by design, and only the centaur survives it (a horse body is too strongly learned to lose). `owlbear` and `bighorn ram` passed the same test against `owl` / `bear` / `gryphon` and `goat` / `markhor` and shipped.
+
 Two lists were sifted against the creature roster: ~600 animals at 0.93.0 (ten shipped)
 and ~390 insects at 0.94.0 (six shipped). These are the closed rejects from both. The bar
 they were judged against (**anatomy, not species**) lives in
@@ -317,6 +253,7 @@ butterfly** (the `translucent` finish), **death's-head hawkmoth** (a marking on 
 | Frank-N-Furter (1.1.0 retro/camp survey) | **Dr. Frank-N-Furter** (The Rocky Horror Picture Show) — identical character, no add needed. |
 | The Fourth Doctor (1.1.0 retro/camp survey) | **Ships verbatim** (Doctor Who) — the long multicoloured scarf, floppy hat, tweed coat description in the candidate matches the existing entry exactly. |
 | Captain Nemo (1.1.0 retro/camp survey) | **Ships** under Twenty Thousand Leagues Under the Sea — same character (Victorian submariner uniform, turban, diving helmet prop), no add needed. |
+| Vintage deep-sea diver (0.98.0 render session) | **Deep Sea Diver** archetype — its first costume is the brass-and-canvas suit with the helmet under one arm. The backlog row was never closed. |
 
 > **Those three came from an external audit at 0.97.0 that reported them "verified
 > absent" by grep.** Four of its five character proposals were already on the roster;
@@ -337,11 +274,10 @@ are reusable — **most of them are the roster's own bars pointed at the option 
 |---|---|
 | `ethnicity`: Belgian, Swiss, Kurdish, Albanian, Bosnian, Latvian, Lithuanian, Estonian, Belarusian | **Two independent reasons, either sufficient.** (1) None is visually distinguishable from a shipped neighbour in a T2I render — Belgian draws what Dutch and French draw. That is the same "the name would be doing the work" bar that declined Ryze, Swain and Scout. (2) `ethnicity` is a **flat 92-value field** already ~30% European; nine more takes Europe to ~35%, which is exactly the concentration the pack refuses everywhere else. A field whose values steer skin tone and facial features is the last place to let one region gain share for free. |
 | `skin_details`: heterochromia | **Wrong field.** It is an eye trait, not a skin mark. `eye_color` renders as `"{value} eyes"`, so putting it there emits "heterochromia eyes"; putting it in `skin_details` puts it in the complexion sentence. It would need its own handling to ship at all, which makes it a feature, not an option. |
-| `hair_style`: victory rolls | Exactly the `hime cut` price. `hair_style` is the 17-family weighted field; a new value needs its family repriced. Parked with the other two under [Under consideration](#under-consideration), not declined on taste. |
+| `hair_style`: victory rolls | **Theme, not arithmetic.** `hime cut` and `wolf cut` shipped at 1.5.0 once their families were priced; victory rolls stays out because it dates a random person to 1940s pin-up, which the `Pin-up Model` and `1940s Swing Dancer` archetypes already carry deliberately. |
 | `legwear`: thigh-high stockings with garter belt | Asserts a **visible undergarment** against most `outfit_style` values, and shifts the pack's tone on a random roll rather than on a deliberate one. `sheer stockings` and `over-the-knee socks` already hold the silhouette. |
 | `footwear`: riding boots | `knee-high boots` is the same tall polished shaft. |
 | `footwear`: flip-flops | `sandals` is the generic beach shoe and already reaches `resort vacation`. |
-| `accessories`: earmuffs, knit winter scarf, headphones worn around the neck | **Blocked on a gate that does not exist, not on merit.** `accessories` has no season or `outfit_style` allowlist — only `footwear` does (`FOOTWEAR_BY_STYLE`, 0.83.0) — so a knit winter scarf would land on `resort vacation` at a beach. Building that gate is a phase of its own; the three values are worth revisiting *after* it, not before. |
 
 ### Field options — declined (1.2.0)
 
@@ -355,13 +291,14 @@ nothing — the arithmetic is in [architecture.md](architecture.md).
 | `composition`: framed by a foreground element | **Violates the field's own load-bearing rule.** `data/fields.py` states composition may "never [name] a physical object (0.63.0 deleted doorway / window / foliage framing from `shot_type` for exactly that reason — an object in the frame that the model has to invent)". Wording it generically as "element" evades the word-level test without answering the rule: the model still has to invent the object. Its sibling, `a strong diagonal across the frame`, shipped — it is pure layout. |
 | `skin_details`: a third scar value, freckled shoulders, sun-weathered creases | Saturated at 12. Two scars already ship, and `freckles_density` and `laugh lines` own the other two proposals outright. |
 | `nails` (22), `bag` (29), `eye_color` (23) | Saturated. Another polish colour dilutes the **shape** variety that is what actually carries `nails`; the same argument holds for the other two. |
-| `accessories`: anything | Carries a literal `weights` map, and the 0.97.0 decline above still stands unchanged: there is still no season or `outfit_style` gate for accessories, so a seasonal item lands at a beach. `LEGWEAR_BY_STYLE` (1.2.0) did **not** build it — it gates one field, scoped to three values. Build the real gate first; see the `outerwear` case under [Under consideration](#under-consideration), which is the phase that would build it. |
-| `outfit_style` (14): western, utility/workwear, grunge | **Not an option add.** A new style needs `OUTFIT_DESCRIPTIONS` entries per gender, a `FOOTWEAR_BY_STYLE` row, a `LEGWEAR_BY_STYLE` row as of 1.2.0, and it dilutes a 14-value pool by 7%. A real feature; logged under [Under consideration](#under-consideration) with that cost written down rather than declined on merit. |
+| `accessories`: anything | The season gate exists since 1.5.0, so a seasonal value is no longer blocked — but the field carries the eyewear `weights` map, so any addition must reprice it to hold eyewear at 25% (`ConceptShareTests`). |
+| `outfit_style`: western, grunge | **Overlap (1.5.0 maintainer call).** Western is `casual` plus `cowboy boots` and the `vintage retro` western-yoke shirt; grunge is `edgy alternative` / `streetwear` and the `1990s Grunge` archetype. `utility workwear` shipped instead, because the location gate left workshops and docks with no plausible style. |
 
 ### Archetypes — declined
 
 | Candidate | Why |
 |---|---|
+| Saree (half of the 1.5.0 "Saree + Sherwani" pair) | **Already ships.** `Bollywood Heroine` carries a chiffon sari, a silk sari with its pallu and a lehenga. Only the sherwani is a real gap; a sherwani-led look would need its own case. |
 | Techwear / Gorpcore | **Cyberpunk Netrunner already is a techwear look** — its costume is literally "a {dark_color} techwear jacket with {color} LED trim, utility straps, and a sleek visor". Stripping the sci-fi trim to leave shell-jacket-and-cargo-trousers is not a second silhouette, it is the same one with less to draw. |
 | A dark/gothic counterpart to Kawaii Street Fashion | Declined on two counts. The pastel silhouette is already `Kawaii Street Fashion` (ruffled blouse, tiered skirt, platform Mary-Janes) and the dark one is already `1990s Goth`, so the candidate sits between two shipped entries rather than beside them. The maintainer also rejected the subculture's usual name outright. **Do not re-propose it under a synonym.** |
 
@@ -375,9 +312,15 @@ Open. No decision has been made either way.
 |---|---|---|
 | 2 | **Costume text that asserts a body trait against an unpinned random field.** A costume reading "on a hulking frame" can render beside "a very slim build" in the same sentence, because `physique` applies only in Full-character mode while `costume` renders in both. | Measured at 0.90.0, **33 entries** (`Colossus`, `Gollum`, `Jabba the Hutt`, `Space Marine`, `Brook`, …). Not swept, for two reasons. First, the `signature` / `physique` split is *deliberate* — the schema says physique is Full-mode-only, so a randomly-built person wearing the costume is the intended behaviour, and most of the 33 are mascot suits where the suit supplies the bulk regardless of the wearer. Second, a naive regex reported **171** and was wrong: "tiny" on `Trinity` and `Neo` is their *sunglasses*, "enormous" on `Edna Mode` is her *lashes*. Requiring the adjective to modify a body noun cut it to 33. **If this is ever taken up, measure it again from scratch — do not trust the 171.** The four entries fixed at 0.90.0 (`Dexter Jettster`, `Figrin D'an`, `Ithorian`, plus the new Fallout/GoT entries) pin the trait in `signature`, which applies in both modes; that is the pattern to follow. |
 | 3 | **`_POCKETLESS_GARMENT_RE` is an allowlist of garment nouns, so a pocketless costume it does not name still draws a pockets/collar gesture.** Observed at 0.96.0 on `Kratos`: "a leather harness and bracers over a bare chest" plus "posing with hands in pockets". | **Not a regression** — the regex is deliberately conservative (its own comment: "never a suit/shirt/dress, which may have pockets"), and it catches the enumerated swimwear/leotard/gown/toga set by design. Deliberately left alone. Widening it (e.g. on `bare chest`, `harness`, `bare torso`) would move `pose` on an unknown number of shipped entries, and `--check` **cannot see it** — `entry_hash` covers the entry dict, not the prose, the same blind spot the 0.90.0 mask rewrite hit. If taken up: measure the affected entry list first, then re-render all of them in the same commit. |
-| 1 | **Re-examining the softest shipped entries** if the "iconic *and* specific outfit" bar is ever tightened. | `Chizuru Mizuhara` is first in line (canonical look is ordinary modern dress), then `Hitagi Senjougahara` (a school uniform, carried by the lavender hair and the specific Naoetsu High cut). Both shipped on an explicit maintainer decision over the shortlist's own reservation — recorded so the bar is not misread as having dropped. |
 | 5 | **Birdie the Early Bird** (McDonald's, from the 1.1.0 Mayor McCheese survey) — legible mascot silhouette (giant yellow bird, bonnet) but judged a weak icon next to the roster's existing bird mascots. | No decision made either way. Revisit with a stronger case (e.g. a distinguishing prop or silhouette detail the existing bird mascots lack) rather than re-proposing the same description. |
 | 6 | **`legwear` has no `outfit_style` gate on its FEMALE pool**, so `fishnet tights` can land on `business formal`. 1.2.0 added `LEGWEAR_BY_STYLE` but deliberately scoped it to the three new MALE values only. | The cost is why it stopped there: gating the female pool shifts `legwear` prose across the shipped roster, and `--check` **cannot see it** — `entry_hash` covers the entry dict, not the resolved prose (the same blind spot as rows 2 and 3). If taken up: measure the affected entry list first, then re-render all of them in the same commit. |
+| 7 | **Floor poses in public or formal places (1.5.0 sweep: 0.8%).** "kneeling gracefully" at a busy crosswalk, "crouching low" in an airplane aisle. | Needs the `seated` pose family split into floor / chair sub-families (weights proportional to variant count) so a location can drop the floor half whole. Seed drift for every pose draw, for 0.8%; measure before paying it. |
+| 8 | **A sad face under a `triumphant` mood (1.5.0 sweep: 0.6%).** | `triumphant` sits in the `bold` mood family beside four values that suit a sad face, so culling it is a partial family cull. Left after the whole-family face/mood gate took the rest (5.4% -> 0.6%). |
+| 9 | **Portrait-technique lights outdoors.** Observed at 1.5.0: "an outdoor basketball court, under butterfly beauty lighting". `butterfly`, `Rembrandt` and `split` lighting are studio setups. | Not measured yet. Check whether they belong in `INDOOR_ONLY_LIGHTING` before gating. |
+| 10 | **Some archetype `outfit_style` proxies disagree with the location gate** (e.g. `Opera Singer` evening formal at an outdoor amphitheater). | Harmless in Full lock level (both locked, the rule only logs); in Essentials the location is steered to a fitting venue. Only worth touching if a real render looks wrong. |
+| 11 | **`age` tops out at 70.** An everyday population has older people too. | A bias decision, not a gap: 60/65/70 are 3 of 19 values (~16%, near the world share of 60+). Adding 75/80 flat would push that to ~24%; a weighted add would hold it. Decide the target share first. |
+
+**Closed at 1.5.0 — the softest shipped entries (was row 1).** Both were re-verified against canon and turned out *wrong*, not merely soft: `Hitagi Senjougahara`'s Naoetsu uniform is a pink shirt, purple tie and purple skirt with black stockings (the entry had a generic white blouse and navy skirt), and `Chizuru Mizuhara`'s rental-date look is a pink blouse with a white bib collar and red ribbon over a white pleated skirt (the entry had a generic knit and tartan). Both were corrected; Hitagi gained her stapler and Chizuru her real-name campus disguise as an alternate. Lesson: review a "soft" entry by re-sourcing it, not by judging the text.
 
 **Closed at 1.2.0 — the `composition` x `location` gate (was row 4).** `composition`
 is now gated against the PLACE as well as the camera: both sky values assert open sky

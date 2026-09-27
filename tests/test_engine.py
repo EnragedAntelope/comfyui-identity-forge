@@ -3579,8 +3579,9 @@ class HairStyleFamilyTests(unittest.TestCase):
     #:           every older value kept exactly 3150/3500 = 9/10 of its probability.
     #:   0.83.0: barbered_crop, a further 70 on 3500, so 3500/3570 = 0.9804 on top.
     #: Compounded: 0.9 x 0.9804 = 3150/3570.
-    _ADDED_FAMILIES = ("barbered_short", "barbered_shag", "barbered_crop")
-    _DILUTION = 3150 / 3570
+    #:   1.5.0: barbered_shag 140 -> 280 (`wolf cut`) and `hime` 70, on 7140.
+    _ADDED_FAMILIES = ("barbered_short", "barbered_shag", "barbered_crop", "hime")
+    _DILUTION = 6300 / 7350
 
     #: Added families priced at the field's ordinary "one everyday cut" rate, which is
     #: what justifies their weights (see the next test). Expressed as a share of the
@@ -3594,7 +3595,8 @@ class HairStyleFamilyTests(unittest.TestCase):
     #: rarer than an average value -- which is wanted, since a crew cut and a high-top
     #: fade are specific looks and keeping them rare stops the base node reading as
     #: barbered. Declared here so a weights audit cannot mistake it for a mistake.
-    _DELIBERATELY_RARE_FAMILIES = ("barbered_crop",)
+    #: 1.5.0: `hime` joins at half the everyday rate (factor 2), for the same reason.
+    _DELIBERATELY_RARE_FAMILIES = {"barbered_crop": 3.0, "hime": 2.0}
 
     def test_split_preserves_every_pre_split_family_share(self):
         """Every PRE-EXISTING family keeps its share, up to one uniform dilution.
@@ -3669,11 +3671,11 @@ class HairStyleFamilyTests(unittest.TestCase):
         read the reason."""
         current = self._current()
         reference = current["mullet"]
-        for name in self._DELIBERATELY_RARE_FAMILIES:
+        for name, factor in self._DELIBERATELY_RARE_FAMILIES.items():
             for value in HAIR_STYLE_FAMILIES[name]["variants"]:
                 self.assertLess(current[value], reference,
                                 f"{value} is no longer deliberately rare")
-                self.assertAlmostEqual(reference / current[value], 3.0, places=6,
+                self.assertAlmostEqual(reference / current[value], factor, places=6,
                                        msg=f"{value} rarity factor drifted")
 
     def test_the_barbered_short_constraint_list_matches_its_family(self):
@@ -5733,25 +5735,25 @@ class RandomPoolTests(unittest.TestCase):
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
-        # 1.4.0 (2023 -> 2052) to the new
+        # 1.4.0 (2023 -> 2052) and at 1.5.0 (2052 -> 2057) to the new
         # ground truth, and is expected to need refreshing every time the roster
         # grows.
         expected = {
-            (_RANDOM_ANY, 0): "Salaak",
-            (_RANDOM_ANY, 1): "Fell Beast",
-            (_RANDOM_ANY, 2): "Brigitte",
-            (_RANDOM_ANY, 3): "Lady Hellbender",
-            (_RANDOM_ANY, 4): "Kyo Kusanagi",
-            (_RANDOM_FEMALE, 0): "Squirrel Girl",
-            (_RANDOM_FEMALE, 1): "Carmen Sandiego",
-            (_RANDOM_FEMALE, 2): "Yuffie Kisaragi",
-            (_RANDOM_FEMALE, 3): "Erza Scarlet",
-            (_RANDOM_FEMALE, 4): "Erina Nakiri",
-            (_RANDOM_MALE, 0): "Samwise Gamgee",
-            (_RANDOM_MALE, 1): "Elroy Jetson",
-            (_RANDOM_MALE, 2): "Brook",
-            (_RANDOM_MALE, 3): "K-2SO",
-            (_RANDOM_MALE, 4): "Juggernaut",
+            (_RANDOM_ANY, 0): 'Saitama',
+            (_RANDOM_ANY, 1): 'Felicia',
+            (_RANDOM_ANY, 2): 'Bridget',
+            (_RANDOM_ANY, 3): 'Lady (Devil May Cry)',
+            (_RANDOM_ANY, 4): 'Kyle Broflovski',
+            (_RANDOM_FEMALE, 0): 'Spinel',
+            (_RANDOM_FEMALE, 1): 'Captain Phasma',
+            (_RANDOM_FEMALE, 2): 'Yoko Littner',
+            (_RANDOM_FEMALE, 3): 'Eris',
+            (_RANDOM_FEMALE, 4): 'Eowyn',
+            (_RANDOM_MALE, 0): 'Samurai Jack',
+            (_RANDOM_MALE, 1): 'Elmer Fudd',
+            (_RANDOM_MALE, 2): 'Broly',
+            (_RANDOM_MALE, 3): "K'",
+            (_RANDOM_MALE, 4): 'Judge Dredd',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
@@ -8062,6 +8064,58 @@ class MaleAccessoryTrimTests(unittest.TestCase):
         self.assertTrue(seen, "a Feminine wardrobe should still reach the trimmed values")
 
 
+class MaleAnatomyTrimTests(unittest.TestCase):
+    """Feminine-coded body words get masculine trims (1.5.0).
+
+    ``body_type`` / ``hips`` / ``waist`` / ``height`` / ``nose`` share one list across
+    genders and had no trim, so ~30% of default men drew a curvy/hourglass/voluptuous
+    build. Anatomy, not wardrobe: the trim holds under every wardrobe.
+    """
+
+    TRIMS = {
+        "body_type": ("softly curved", "curvy", "full figured", "voluptuous", "hourglass",
+                      "petite and slim", "petite and curvy"),
+        "hips": ("full", "very full", "rounded"),
+        "waist": ("very narrow",),
+        "height": ("very petite", "petite", "statuesque"),
+        "nose": ("petite",),
+    }
+
+    def _resolved(self, seed, gender="Male", wardrobe="Match gender"):
+        doc = json.loads(generate_character(
+            seed, gender, {}, hair_color_scope="Natural only", wardrobe=wardrobe,
+            accessory_density="Balanced", location_setting="Any")[1])
+        return {k: v for group in doc.values() if isinstance(group, dict)
+                for k, v in group.items()}
+
+    def test_the_trims_name_real_values_of_flat_in_loop_fields(self):
+        from data.constraints import _MALE_EXCLUDED_VALUES
+        from nodes.identity_forge import _DEFERRED_FIELDS
+        for field, values in self.TRIMS.items():
+            self.assertEqual(set(_MALE_EXCLUDED_VALUES[field]), set(values))
+            self.assertTrue(set(values) <= set(FIELD_DEFINITIONS[field]["male_options"]))
+            self.assertNotIn(field, FIELD_FAMILIES)
+            self.assertNotIn(field, _DEFERRED_FIELDS)
+            self.assertFalse(FIELD_DEFINITIONS[field].get("weights"))
+
+    def test_no_male_draws_a_trimmed_value_under_any_wardrobe(self):
+        for wardrobe in ("Match gender", "Feminine"):
+            for seed in range(300):
+                got = self._resolved(seed, wardrobe=wardrobe)
+                for field, values in self.TRIMS.items():
+                    self.assertNotIn(got.get(field), values, f"{wardrobe} seed {seed}")
+
+    def test_women_keep_the_full_pool(self):
+        seen = set()
+        for seed in range(600):
+            seen.add(self._resolved(seed, gender="Female").get("body_type"))
+        self.assertTrue(set(self.TRIMS["body_type"]) <= seen)
+
+    def test_a_locked_value_still_wins_on_a_man(self):
+        got = json.loads(generate_character(1, "Male", {"body_type": "hourglass"})[1])
+        self.assertEqual(got["Body"]["body_type"], "hourglass")
+
+
 class MaleBagTrimTests(unittest.TestCase):
     """``bag`` gets a masculine trim, and three men's carriers (0.97.0).
 
@@ -8242,6 +8296,296 @@ class HiddenFieldTests(unittest.TestCase):
         widgets = set(_json.loads(source[start:end]))
         self.assertEqual(_HIDDEN_FIELDS & widgets, set(),
                          "an engine-generated field grew a widget")
+
+
+# ===========================================================================
+# 1.5.0 -- place, season, face/mood and outerwear coherence
+# ===========================================================================
+
+def _resolved_1_5(seed, gender="Any", locked=None, **kw):
+    prose, js = generate_character(seed, gender, locked or {}, **kw)
+    doc = json.loads(js)
+    flat = {k: v for group in doc.values() if isinstance(group, dict)
+            for k, v in group.items()}
+    flat["_gender"] = doc["_meta"]["gender"]
+    return prose, flat
+
+
+class OutfitStyleByLocationTests(unittest.TestCase):
+    """``outfit_style`` answers to ``location`` (1.5.0): the place stands."""
+
+    def test_every_built_in_place_allows_something_and_every_style_is_worn_somewhere(self):
+        from data.constraints import _LOCATION_FAMILY, outfit_styles_allowed_at
+        styles = set(FIELD_DEFINITIONS["outfit_style"]["female_options"])
+        seen = set()
+        for loc in _LOCATION_FAMILY:
+            allowed = outfit_styles_allowed_at(loc)
+            self.assertTrue(allowed, loc)
+            self.assertTrue(allowed <= styles, loc)
+            seen |= allowed
+        self.assertEqual(seen, styles, "a style no place allows can never be drawn")
+
+    def test_the_tables_name_only_real_places(self):
+        from data.constraints import (_LOCATION_FAMILY, OUTFIT_STYLE_VENUES,
+                                      OUTFIT_STYLE_EXTRAS, OUTFIT_STYLE_REMOVALS)
+        for table in (OUTFIT_STYLE_VENUES, OUTFIT_STYLE_EXTRAS, OUTFIT_STYLE_REMOVALS):
+            self.assertEqual(set(table) - set(_LOCATION_FAMILY), set())
+
+    def test_a_user_added_style_is_never_banned(self):
+        # 1.5.0 blast radius: the ban list must come from the SHIPPED styles, or a
+        # user_options.json style lands in every location's ban list (drew 0/3000).
+        from data.constraints import FOOTWEAR_BY_STYLE
+        shipped = set(FOOTWEAR_BY_STYLE)
+        for rule in CONSTRAINT_RULES:
+            if rule["field"] == "location" and rule.get("excludes_field") == "outfit_style":
+                self.assertTrue(set(rule["excludes_values"]) <= shipped, rule["value"])
+
+    def test_an_unmapped_custom_place_is_never_narrowed(self):
+        from data.constraints import outfit_styles_allowed_at
+        self.assertIsNone(outfit_styles_allowed_at("my custom treehouse"))
+
+    def test_outfit_style_is_flat_so_the_cull_is_bias_clean(self):
+        self.assertNotIn("outfit_style", FIELD_FAMILIES)
+        self.assertFalse(FIELD_DEFINITIONS["outfit_style"].get("weights"))
+
+    def test_no_random_render_wears_a_style_its_place_rules_out(self):
+        from data.constraints import outfit_styles_allowed_at
+        for seed in range(500):
+            _, d = _resolved_1_5(seed)
+            allowed = outfit_styles_allowed_at(d.get("location"))
+            if allowed is not None and "outfit_style" in d:
+                self.assertIn(d["outfit_style"], allowed, f"seed {seed}")
+
+    def test_a_locked_style_moves_the_random_place_instead(self):
+        from data.constraints import outfit_styles_allowed_at
+        for seed in range(60):
+            _, d = _resolved_1_5(seed, locked={"outfit_style": "evening formal"})
+            self.assertEqual(d["outfit_style"], "evening formal")
+            self.assertIn("evening formal", outfit_styles_allowed_at(d["location"]),
+                          f"seed {seed}: {d['location']}")
+
+
+class SeasonGateTests(unittest.TestCase):
+    """``season`` is an outdoor fact that the wardrobe answers to (1.5.0)."""
+
+    def test_the_season_is_dropped_indoors_and_voiced_outdoors(self):
+        from data.fields import OUTDOOR_LOCATIONS
+        outdoors_voiced = 0
+        for seed in range(400):
+            prose, d = _resolved_1_5(seed)
+            if d.get("location") in OUTDOOR_LOCATIONS:
+                self.assertIn("season", d, f"seed {seed}")
+                outdoors_voiced += 1
+            else:
+                self.assertNotIn("season", d, f"seed {seed}: {d.get('location')}")
+                self.assertNotRegex(prose, r"during (spring|summer|autumn|winter)")
+        self.assertGreater(outdoors_voiced, 50)
+
+    def test_a_locked_season_moves_a_random_place_outdoors(self):
+        from data.fields import OUTDOOR_LOCATIONS
+        for seed in range(80):
+            _, d = _resolved_1_5(seed, locked={"season": "winter"})
+            self.assertIn(d["location"], OUTDOOR_LOCATIONS, f"seed {seed}")
+            self.assertEqual(d["season"], "winter")
+
+    def test_seasonal_places_pin_their_season(self):
+        from data.constraints import SEASONS_BY_LOCATION
+        for loc, allowed in SEASONS_BY_LOCATION.items():
+            for seed in range(25):
+                _, d = _resolved_1_5(seed, locked={"location": loc})
+                self.assertIn(d["season"], allowed, f"{loc} seed {seed}")
+
+    def test_the_wardrobe_answers_to_the_season(self):
+        from data.constraints import SEASON_EXCLUSIONS
+        for season, by_field in SEASON_EXCLUSIONS.items():
+            for seed in range(150):
+                _, d = _resolved_1_5(seed, locked={"season": season})
+                for field, banned in by_field.items():
+                    self.assertNotIn(d.get(field), banned, f"{season} {field} seed {seed}")
+
+    def test_winter_light_only_falls_in_winter(self):
+        for seed in range(300):
+            _, d = _resolved_1_5(seed, location_setting="Outdoor")
+            if d.get("lighting") in ("hazy overcast winter light", "snow-reflected daylight"):
+                self.assertEqual(d.get("season"), "winter", f"seed {seed}")
+
+    def test_the_outdoor_season_stays_roughly_uniform(self):
+        # Pinning the season to the two winter lights (the first draft) skewed it to
+        # 29% winter; the season must stay the trigger. Loose band: sampling noise.
+        from collections import Counter
+        c = Counter()
+        for seed in range(1600):
+            _, d = _resolved_1_5(seed, location_setting="Outdoor")
+            c[d.get("season")] += 1
+        n = sum(c.values())
+        for season in ("spring", "summer", "autumn", "winter"):
+            self.assertLess(abs(c[season] / n - 0.25), 0.045, dict(c))
+
+
+class SeasonGarmentTests(unittest.TestCase):
+    """The generated garment is season-filtered (1.5.0). Pins the classification."""
+
+    def test_every_style_keeps_a_garment_in_every_season_per_wardrobe(self):
+        from nodes.identity_forge import _garment_fits_season
+        for style, buckets in OUTFIT_DESCRIPTIONS.items():
+            for bucket in ("female", "male"):
+                pool = buckets.get("unisex", []) + buckets.get(bucket, [])
+                for season in ("winter", "summer"):
+                    if style == "resort vacation" and season == "winter":
+                        continue  # the style itself is excluded in winter
+                    self.assertTrue([g for g in pool if _garment_fits_season(g, season)],
+                                    f"{style}/{bucket} has nothing for {season}")
+
+    def test_the_filter_reads_warm_and_cold_the_way_a_person_would(self):
+        from nodes.identity_forge import _garment_fits_season as fits
+        self.assertFalse(fits("relaxed linen button-up with cotton shorts", "winter"))
+        self.assertFalse(fits("fitted ribbed tank with mom jeans", "winter"))
+        self.assertTrue(fits("cropped moto jacket over a ribbed tank with skinny jeans", "winter"))
+        self.assertFalse(fits("cropped puffer with wide-leg jeans", "summer"))
+        self.assertTrue(fits("cropped puffer with wide-leg jeans", "winter"))
+        self.assertTrue(fits("relaxed linen button-up with cotton shorts", "spring"))
+        self.assertTrue(fits("anything at all", None))
+
+    def test_no_outdoor_winter_render_wears_shorts_or_swimwear(self):
+        from data.fields import WARM_ONLY_GARMENT_RE
+        for seed in range(250):
+            _, d = _resolved_1_5(seed, locked={"season": "winter"})
+            self.assertIsNone(WARM_ONLY_GARMENT_RE.search(d.get("outfit_description", "")),
+                              f"seed {seed}")
+
+
+class ExpressionMoodTests(unittest.TestCase):
+    """The face and the mood agree (1.5.0), by whole mood families."""
+
+    def test_the_culls_are_whole_mood_families(self):
+        heavy = set(FIELD_FAMILIES["mood"]["heavy"]["variants"])
+        positive = set(FIELD_FAMILIES["mood"]["positive"]["variants"])
+        for rule in CONSTRAINT_RULES:
+            if rule["field"] == "expression" and rule.get("excludes_field") == "mood":
+                self.assertIn(set(rule["excludes_values"]), (heavy, positive))
+
+    def test_a_warm_face_never_sits_in_a_heavy_mood(self):
+        warm = set(FIELD_FAMILIES["expression"]["warm"]["variants"])
+        heavy = set(FIELD_FAMILIES["mood"]["heavy"]["variants"])
+        for seed in range(600):
+            _, d = _resolved_1_5(seed)
+            if d.get("expression") in warm:
+                self.assertNotIn(d.get("mood"), heavy, f"seed {seed}")
+
+
+class PaletteShareTests(unittest.TestCase):
+    """Black and white each weigh as ONE palette (1.5.0), not two."""
+
+    def test_black_and_white_are_not_double_counted(self):
+        f = FIELD_DEFINITIONS["clothing_color"]
+        w = f.get("weights", {})
+        total = sum(w.get(v, 1) for v in f["female_options"])
+        black = w.get("black monochrome", 1) + w.get("all black", 1)
+        white = w.get("white and cream", 1) + w.get("all white", 1)
+        self.assertAlmostEqual(black, 1.0)
+        self.assertAlmostEqual(white, 1.0)
+        self.assertLess((black + white) / total, 0.16)
+
+
+class OuterwearTests(unittest.TestCase):
+    """The ``outerwear`` field (1.5.0): weather wear, drawn last, never over a layer."""
+
+    def test_it_is_deferred_appended_last_and_ruleless(self):
+        self.assertIn("outerwear", _DEFERRED_FIELDS)
+        self.assertEqual(list(FIELD_DEFINITIONS)[-1], "outerwear")
+        for rule in CONSTRAINT_RULES:
+            self.assertNotEqual(rule.get("excludes_field"), "outerwear",
+                                "a rule on a deferred field is inert")
+
+    def test_every_coat_has_a_season_and_a_style_that_wears_it(self):
+        from data.constraints import OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS
+        coats = set(FIELD_DEFINITIONS["outerwear"]["female_options"]) - {"no outerwear"}
+        self.assertEqual(set(OUTERWEAR_SEASONS), coats)
+        self.assertEqual(set().union(*OUTERWEAR_BY_STYLE.values()), coats)
+        self.assertEqual(set(OUTERWEAR_BY_STYLE),
+                         set(FIELD_DEFINITIONS["outfit_style"]["female_options"]))
+        for seasons in OUTERWEAR_SEASONS.values():
+            self.assertNotIn("summer", seasons)
+
+    def test_never_indoors_never_in_summer_never_over_an_outer_layer(self):
+        from data.fields import OUTDOOR_LOCATIONS, OUTER_LAYER_RE
+        worn = 0
+        for seed in range(1500):
+            prose, d = _resolved_1_5(seed)
+            coat = d.get("outerwear", "no outerwear")
+            if coat == "no outerwear":
+                continue
+            worn += 1
+            self.assertIn(d["location"], OUTDOOR_LOCATIONS, f"seed {seed}")
+            self.assertNotEqual(d.get("season"), "summer", f"seed {seed}")
+            self.assertIn(f"a {coat} over ", prose, f"seed {seed}")
+            self.assertNotIn(d.get("footwear"), ("bare feet", "sandals", "slides",
+                                                  "espadrilles", "slippers"))
+            garment = d["outfit_description"].replace(f"a {coat} over ", "", 1)
+            self.assertIsNone(OUTER_LAYER_RE.search(garment), f"seed {seed}: {garment}")
+        self.assertGreater(worn, 50)
+
+    def test_the_style_and_season_tables_hold(self):
+        from data.constraints import OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS
+        for seed in range(400):
+            _, d = _resolved_1_5(seed, locked={"season": "winter"})
+            coat = d.get("outerwear", "no outerwear")
+            if coat != "no outerwear":
+                self.assertIn(coat, OUTERWEAR_BY_STYLE[d["outfit_style"]], f"seed {seed}")
+                self.assertIn("winter", OUTERWEAR_SEASONS[coat])
+
+    def test_men_never_draw_the_female_pool_coats(self):
+        for seed in range(400):
+            _, d = _resolved_1_5(seed, gender="Male", locked={"season": "winter"})
+            self.assertNotIn(d.get("outerwear"), ("wrap coat", "faux fur coat"))
+
+    def test_a_costume_never_takes_outerwear(self):
+        for seed in range(60):
+            _, d = _resolved_1_5(seed, locked={"outfit_description": "a knight's plate armour",
+                                               "season": "winter"})
+            self.assertNotIn("outerwear", d)
+
+    def test_an_ineligible_character_draws_nothing_extra(self):
+        # Indoors the field returns without touching the RNG, so everything drawn
+        # after it (the pose repair) matches a render with the field locked absent.
+        for seed in range(150):
+            a, da = _resolved_1_5(seed, location_setting="Indoor")
+            b, db = _resolved_1_5(seed, locked={"outerwear": "no outerwear"},
+                                  location_setting="Indoor")
+            self.assertEqual(a, b, f"seed {seed}")
+
+    def test_a_lock_is_voiced(self):
+        prose, d = _resolved_1_5(3, locked={"outerwear": "trench coat"},
+                                 location_setting="Indoor")
+        self.assertEqual(d["outerwear"], "trench coat")
+        self.assertIn("a trench coat over ", prose)
+
+    def test_a_lock_is_voiced_on_a_costume_too(self):
+        prose, d = _resolved_1_5(3, locked={"outerwear": "parka",
+                                            "outfit_description": "a plain grey jumpsuit"})
+        self.assertEqual(d["outerwear"], "parka")
+        self.assertIn("a parka over a plain grey jumpsuit", prose)
+
+    def test_a_recalled_save_does_not_double_its_coat(self):
+        from nodes.identity_forge import _parse_archetype_json
+        for seed in range(200):
+            _, js = generate_character(seed, "Any", {"season": "winter"},
+                                       location_setting="Outdoor")
+            doc = json.loads(js)
+            coat = doc.get("Clothing", {}).get("outerwear", "no outerwear")
+            if coat == "no outerwear":
+                continue
+            flat = _parse_archetype_json(js)
+            again, _ = generate_character(seed, flat.get("gender", "Any"),
+                                          resolve_locked_fields({}, flat))
+            self.assertEqual(again.count(f"a {coat} over "), 1, f"seed {seed}")
+            return
+        self.fail("no seed drew a coat")
+
+    def test_a_locked_season_indoors_still_draws_no_coat(self):
+        for seed in range(80):
+            _, d = _resolved_1_5(seed, locked={"season": "winter"}, location_setting="Indoor")
+            self.assertEqual(d.get("outerwear", "no outerwear"), "no outerwear", f"seed {seed}")
 
 
 if __name__ == "__main__":
