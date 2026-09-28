@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-09-03T00:11:31.386515",
-  "version": "1.3.0",
+  "generated": "2026-09-27T22:43:31.187402",
+  "version": "1.5.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -122,10 +122,12 @@
     "1.0.1",
     "1.1.0",
     "1.2.0",
-    "1.3.0"
+    "1.3.0",
+    "1.4.0",
+    "1.5.0"
   ],
-  "total_entries": 259,
-  "entries_with_images": 259,
+  "total_entries": 261,
+  "entries_with_images": 261,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -264,6 +266,14 @@
       "group": "Mammals",
       "added": "0.90.0",
       "image": "images/beaver.jpeg"
+    },
+    {
+      "name": "bighorn ram",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mammals",
+      "added": "1.5.0",
+      "image": "images/bighorn ram.jpeg"
     },
     {
       "name": "biomechanical alien",
@@ -1496,6 +1506,14 @@
       "group": "Birds",
       "added": "0.14.0",
       "image": "images/owl.jpeg"
+    },
+    {
+      "name": "owlbear",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "added": "1.5.0",
+      "image": "images/owlbear.jpeg"
     },
     {
       "name": "panda",
