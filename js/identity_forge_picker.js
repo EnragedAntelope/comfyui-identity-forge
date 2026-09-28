@@ -357,7 +357,11 @@ class IdentityForgePicker {
     }
     requestAnimationFrame(() => {
       try {
-        if (this.searchInput) this.searchInput.focus();
+        // Selected, so a restored query is visible yet replaced by the first keystroke.
+        if (this.searchInput) {
+          this.searchInput.focus();
+          this.searchInput.select();
+        }
       } catch (_) { /* ignore */ }
     });
     // The dialog appears immediately; the fetch happens inside a frame that
@@ -426,18 +430,13 @@ class IdentityForgePicker {
       clearTimeout(this._searchTimer);
       this._searchTimer = null;
     }
-    // Reset filtering state to the clean default view (1.1.0 fix round: this
-    // used to reset only the DOM -- a fresh <input> always starts empty, but
-    // `this.query`/`this.facet` survived close() untouched, so reopening
-    // showed an empty search box next to a grid still narrowed by whatever
-    // was typed or picked last time. Not just cosmetic: `query` and `facet`
-    // are read by visibleEntries() on every render, so the mismatch was
-    // between what the box *showed* and what the grid actually *used*.
-    // `showPreviews` is deliberately excluded -- that is a persisted user
-    // preference (localStorage-backed), not per-open scratch state.
-    this.query = "";
-    this.activeTab = this.config.kind;
-    this.facet = FACET_ALL;
+    // The search, tab and facet deliberately SURVIVE close() (1.5.0): search for
+    // "princess", pick one, reopen, and the same filtered view is waiting. The
+    // state lives on this per-node picker instance and nowhere else, so a page
+    // reload or a reloaded workflow (new node objects, new pickers) always starts
+    // unfiltered -- nothing is written to storage. build() writes the state back
+    // into the rebuilt controls, which is what keeps the 1.1.0 fix intact: the box
+    // must never read empty while the grid is still narrowed by an old query.
     this.focusIndex = 0;
     try {
       if (this.previousFocus && this.previousFocus.focus) this.previousFocus.focus();
@@ -473,6 +472,7 @@ class IdentityForgePicker {
         this.renderGrid();
       }, 80);
     });
+    search.value = this.query; // restore the surviving query (see close())
     this.searchInput = search;
 
     const count = document.createElement("span");

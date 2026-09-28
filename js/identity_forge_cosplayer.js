@@ -1191,6 +1191,10 @@ const COSPLAYER_FRANCHISES = {
     "Hornet",
     "The Knight (Hollow Knight)"
   ],
+  "Honkai: Star Rail": [
+    "Acheron",
+    "Kafka (Honkai: Star Rail)"
+  ],
   "Horizon": [
     "Aloy"
   ],
@@ -1893,7 +1897,8 @@ const COSPLAYER_FRANCHISES = {
     "Shanks",
     "Shirahoshi",
     "Trafalgar Law",
-    "Usopp"
+    "Usopp",
+    "Yamato (One Piece)"
   ],
   "One Punch Man": [
     "Captain Mizuki",
@@ -2568,6 +2573,9 @@ const COSPLAYER_FRANCHISES = {
     "Paul Phoenix",
     "Zafina"
   ],
+  "Terrifier": [
+    "Art the Clown"
+  ],
   "That Time I Got Reincarnated as a Slime": [
     "Milim Nava"
   ],
@@ -2927,6 +2935,9 @@ const COSPLAYER_FRANCHISES = {
   "Vampirella": [
     "Vampirella"
   ],
+  "Violet Evergarden": [
+    "Violet Evergarden"
+  ],
   "Vocaloid": [
     "Hatsune Miku",
     "Kagamine Rin",
@@ -3161,24 +3172,27 @@ const WIDGETS_ADDED_BY_RELEASE = [
  * values end up correct, so there is nothing for the user to act on.
  */
 function padLegacyCosplayerValues(node, values) {
-  const total = (node.widgets || []).length;
+  const widgets = node.widgets || [];
+  const total = widgets.length;
   if (!Array.isArray(values) || values.length >= total) return values;
-  const padded = values.slice();
+  // Missing set grown newest-first, then spliced in ONE ascending pass -- the same
+  // 1.5.0 fix as padLegacyWidgetValues in identity_forge.js. Release-by-release
+  // padding only worked here because random_pool happens to sit before
+  // franchise_filter; a future widget after both would have landed a slot late.
+  const missing = [];
   for (const added of WIDGETS_ADDED_BY_RELEASE) {
-    if (padded.length + added.length > total) continue;
-    const slots = added
-      .map((name) => (node.widgets || []).findIndex((w) => w.name === name))
-      .filter((i) => i > -1)
-      .sort((a, b) => a - b);
-    if (slots.length !== added.length) continue;
-    // Ascending: each splice shifts what follows, so low-to-high keeps later
-    // indices correct as we go.
-    for (const slot of slots) {
-      padded.splice(slot, 0, node.widgets[slot]?.value ?? ANY);
+    missing.push(...added);
+    if (values.length + missing.length > total) break;
+    if (values.length + missing.length < total) continue;
+    const slots = missing.map((name) => widgets.findIndex((w) => w.name === name));
+    if (slots.includes(-1)) break;
+    const padded = values.slice();
+    for (const slot of slots.sort((a, b) => a - b)) {
+      padded.splice(slot, 0, widgets[slot]?.value ?? ANY);
     }
-    if (padded.length === total) break;
+    return padded;
   }
-  return padded.length === total ? padded : values;
+  return values;
 }
 
 /**

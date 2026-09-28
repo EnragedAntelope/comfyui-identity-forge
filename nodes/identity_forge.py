@@ -44,8 +44,16 @@ try:
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
+        WARM_ONLY_GARMENT_RE, BARE_TOP_RE, LAYER_WORD_RE, COLD_ONLY_GARMENT_RE,
+        OUTER_LAYER_RE, LIGHT_LAYER_RE, MASCULINE_FAMILY_WEIGHTS, PALETTE_HUES,
+        PALETTE_HUES_MASCULINE,
+        FABRIC_WORD_RE, PATTERN_ADJECTIVES,
     )
-    from ..data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    from ..data.constraints import (
+        CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR,
+        OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS, FOOTWEAR_BY_STYLE, _LOCATION_FAMILY,
+        _BATHING_PLACES,
+    )
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -55,8 +63,16 @@ except ImportError:  # pragma: no cover — standalone/test context
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
+        WARM_ONLY_GARMENT_RE, BARE_TOP_RE, LAYER_WORD_RE, COLD_ONLY_GARMENT_RE,
+        OUTER_LAYER_RE, LIGHT_LAYER_RE, MASCULINE_FAMILY_WEIGHTS, PALETTE_HUES,
+        PALETTE_HUES_MASCULINE,
+        FABRIC_WORD_RE, PATTERN_ADJECTIVES,
     )
-    from data.constraints import CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR
+    from data.constraints import (
+        CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR,
+        OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS, FOOTWEAR_BY_STYLE, _LOCATION_FAMILY,
+        _BATHING_PLACES,
+    )
 
 # ---------------------------------------------------------------------------
 # ComfyUI V3 API import — guarded so the engine helpers remain importable
@@ -108,7 +124,12 @@ _PRESET_HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_i
 #: after the last pre-existing one, so an identical seed yields an identical
 #: character plus the new clauses. Verified, not assumed: see the seed-stability
 #: check in tests/test_engine.py.
-_DEFERRED_FIELDS: frozenset[str] = frozenset({"tattoos", "legwear", "tattoo_placement"})
+#: Draw order for the deferred fields. `outerwear` (1.5.0) goes BEFORE
+#: `tattoo_placement`: a coat hides forearm/wrist/collarbone ink, so the placement has to
+#: see it. It draws nothing when no coat is possible, so a coat-less character keeps the
+#: placement it drew before. The set below is derived from this, so the two cannot drift.
+_DEFERRED_ORDER: tuple[str, ...] = ("tattoos", "legwear", "outerwear", "tattoo_placement")
+_DEFERRED_FIELDS: frozenset[str] = frozenset(_DEFERRED_ORDER)
 
 #: The one shot_type value that occupies a hand (holding the camera at arm's length),
 #: same as a held prop. Read by _performable_poses so a selfie never draws a
@@ -522,6 +543,7 @@ _FULL_COVER_RE = re.compile(
 #: jewellery out of this set.
 _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
     "bag", "watch_type", "hair_accessory", "accessories", "legwear",
+    "outerwear",  # 1.5.0: a costume is a finished look; it is never drawn for one
 })
 
 #: ``footwear`` values that need a whole replacement clause rather than the default
@@ -529,6 +551,33 @@ _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
 #: adverb, so it takes no preposition at all. Keyed on the pool value so the option list
 #: is untouched (removing a shipped combo value is a soft break).
 _FOOTWEAR_CLAUSES: dict[str, str] = {"bare feet": "barefoot"}
+
+#: 1.5.0 round 4: how a MASCULINE presentation voices its jewellery. "a cross necklace"
+#: rendered as a fine, glittering diamond-cut chain on a man; plain-metal wording and a
+#: single stud steer the model to what a man actually wears. The field values (and the
+#: JSON) are unchanged -- only the words differ, and a Feminine wardrobe keeps the plain
+#: value names.
+_MASCULINE_JEWELRY_CLAUSES: dict[str, str] = {
+    "cross necklace": "a small plain cross on a steel chain",
+    "subtle chain": "a plain steel chain",
+    "beaded necklace": "a wooden bead necklace",
+    "small silver studs": "a small silver stud in one ear",
+    "small gold studs": "a small gold stud in one ear",
+    "diamond studs": "a small diamond stud in one ear",
+    "chain bracelet": "a plain steel chain bracelet",
+    "cuff": "a plain metal cuff bracelet",
+    "beaded bracelet": "a wooden bead bracelet",
+    "statement ring": "a chunky silver ring",
+}
+
+#: Paired accessories voiced as a pair (1.5.0): "accessorized with leather gloves"
+#: rendered a single glove on one hand in maintainer testing.
+_ACCESSORY_CLAUSES: dict[str, str] = {
+    "leather gloves": "a pair of leather gloves",
+    "fingerless gloves": "a pair of fingerless gloves",
+    "long opera gloves": "a pair of long opera gloves",
+    "earmuffs": "a pair of earmuffs",
+}
 
 #: Garments with neither pockets nor a collar -- swimwear, a leotard / bodysuit, a
 #: gown, a toga. The three ``GARMENT_DEPENDENT_POSES`` ("hands in pockets", "touching
@@ -692,7 +741,7 @@ _COMPOSITIONS_TOO_WIDE_FOR_TINY: frozenset[str] = frozenset({
 #: Probability that a randomized skin tone is drawn from the ethnicity's
 #: plausible band rather than the full spectrum. < 1.0 keeps real-world
 #: diversity possible (and locking skin_tone bypasses the bias entirely).
-SKIN_TONE_INBAND_PROBABILITY: float = 0.8
+SKIN_TONE_INBAND_PROBABILITY: float = 0.9  # 1.5.0 round 4: was 0.8
 
 #: The believable human skin tones. A resolved ``skin_tone`` *outside* this set is a
 #: non-human colour: a body-paint colour anchor (She-Hulk green, Mystique blue) or a
@@ -748,13 +797,34 @@ _EXTRA_ABSENCE: dict[str, tuple[str, float]] = {
     "accessories": ("no accessories", 0.55),
     "hair_accessory": ("no hair accessory", 0.55),
     "watch_type": ("none", 0.60),
-    "piercings": ("no piercings beyond ears", 0.60),
-    "other_jewelry": ("no other jewelry", 0.50),
+    # 1.5.0 round 2: 0.60 / 0.50 put a facial piercing on 37% and an anklet, body or
+    # waist chain on 42% of women -- a house style, not an everyday rate.
+    "piercings": ("no piercings beyond ears", 0.70),
+    "other_jewelry": ("no other jewelry", 0.75),
     "rings": ("none", 0.50),
     "bracelet": ("none", 0.50),
     "hair_highlights": ("none", 0.45),
     "necklace": ("no necklace", 0.40),
     "earrings": ("no earrings", 0.35),
+}
+
+#: Absence rates for a MASCULINE presentation (1.5.0, round 2). The table above was one
+#: set of odds for everyone, which at "Balanced" put earrings on 56% of default men,
+#: a necklace on 54%, an arm cuff on 25%, a facial piercing on 37%, highlights on 41%
+#: and a bandana or headband on 30% -- the "almost every man has something feminine"
+#: report. These are the realistic everyday rates for men. Keyed on PRESENTATION, not
+#: gender: a man with a Feminine/"Any" wardrobe keeps the table above (crossplay is a
+#: deliberate choice). Same RNG shape (one rng.random()), only the threshold moves.
+_EXTRA_ABSENCE_MASCULINE: dict[str, tuple[str, float]] = {
+    "earrings": ("no earrings", 0.8),
+    "necklace": ("no necklace", 0.8),  # 1.5.0 round 4: was 0.72
+    "other_jewelry": ("no other jewelry", 0.95),  # _maybe_absent caps at 0.95
+    "rings": ("none", 0.6),
+    "bracelet": ("none", 0.75),
+    "piercings": ("no piercings beyond ears", 0.9),
+    "hair_highlights": ("none", 0.88),
+    "hair_accessory": ("no hair accessory", 0.93),
+    "bag": ("no bag", 0.72),
 }
 
 #: Multiplier applied to each extra's base absence probability. ``None`` forces
@@ -765,14 +835,17 @@ _DENSITY_SCALE: dict[str, float | None] = {
 
 
 def _maybe_absent(
-    field_name: str, pool: list[str], density: str, rng: random.Random
+    field_name: str, pool: list[str], density: str, rng: random.Random,
+    # APPENDED (1.5.0): a Masculine presentation reads _EXTRA_ABSENCE_MASCULINE first.
+    presentation: str | None = None,
 ) -> str | None:
     """Return the field's "absent" value if accessory density says to drop it.
 
     Returns ``None`` to mean "randomize normally". Only applies to the
     :data:`_EXTRA_ABSENCE` fields.
     """
-    info = _EXTRA_ABSENCE.get(field_name)
+    info = (_EXTRA_ABSENCE_MASCULINE.get(field_name) if presentation == "Masculine"
+            else None) or _EXTRA_ABSENCE.get(field_name)
     if info is None:
         return None
     absent_value, base = info
@@ -923,7 +996,7 @@ def _prepend_descriptor(phrase: str, descriptor: str) -> str:
 #: the naive last-word test gets both backwards.
 _ITEM_TAIL_RE = re.compile(
     r"\s+(?:on|in|over|at|with|as|under|across|tied|worn|pushed|cinching|"
-    r"bearing|falling|framing)\b"
+    r"bearing|falling|framing|tucked)\b"
 )
 
 #: A free-text ``eyes`` override (a cosplayer's non-standard eye description) may
@@ -1102,7 +1175,122 @@ def _bias_skin_tone(pool: list[str], ethnicity: str | None, rng: random.Random) 
     return in_band or pool
 
 
-def _pick_family_weighted(field_name: str, pool: list[str], rng: random.Random) -> str:
+#: Probability, per ethnicity band, that NATURAL hair and eye colour are drawn from the
+#: band's dominant colouring (1.5.0 round 2). A soft bias like the skin-tone one above:
+#: the rest of the time the full pool stays open, because real people vary. Before
+#: this, blonde/red hair and light eyes were as likely on a Sudanese or Tibetan
+#: character as on a Swede (57% of everyone had blue, grey or green eyes), and a blonde
+#: head pulls a T2I model toward rendering a white person -- quietly eroding the
+#: diversity the ethnicity roll exists to give.
+_HAIR_INBAND_PROBABILITY: dict[str, float] = {
+    "olive": 0.8, "tan": 0.9, "brown": 0.95, "dark": 0.95,
+    "east_asian": 0.95, "pacific": 0.95}  # 1.5.0 round 4 bands
+_EYE_INBAND_PROBABILITY: dict[str, float] = {
+    "olive": 0.7, "tan": 0.9, "brown": 0.93, "dark": 0.93,
+    "east_asian": 0.95, "pacific": 0.93}
+#: 1.5.0 round 4: coily and kinky-coily hair is an African-descent trait, and the flat
+#: texture draw gave it to 13% of Czech, Japanese and Hungarian characters alike. Outside
+#: the "dark" band it stays open only 8% of the time (mixed heritage), like the colour lean.
+_COILY_TEXTURES: frozenset[str] = frozenset(["coily", "kinky coily"])
+_COILY_OUT_OF_BAND_KEEP: float = 0.03  # 1.5.0 round 5: was 0.08
+_DARK_EYES: frozenset[str] = frozenset([
+    "hazel", "warm hazel", "light brown", "medium brown", "dark brown", "nearly black",
+    "amber", "golden brown", "honey", "dark hazel"])
+_LIGHT_HAIR_FAMILIES: tuple[str, ...] = ("blonde", "red")
+
+
+#: Share of NATURAL hair that is grey/white at each age (1.5.0 round 2). The family
+#: table gave `gray_white` a flat 20% at every age -- grey 18-year-olds, and 70-year-olds
+#: who were mostly blonde. One draw decides grey-or-not by age, at the pool, so no
+#: constraint has to re-pick hair colour afterwards (a re-pick would ignore the
+#: ethnicity lean below). Under 35 is 0, as the grey -> age rule in constraints.py states.
+_GREY_BY_AGE: dict[int, float] = {
+    35: 0.05, 38: 0.08, 40: 0.1, 43: 0.15, 45: 0.2, 48: 0.28, 50: 0.35, 55: 0.5,
+    60: 0.65, 65: 0.78, 70: 0.88}
+
+
+_GREY_HAIR: frozenset[str] = frozenset(FIELD_FAMILIES["hair_color"]["gray_white"]["variants"])
+_LIGHT_HAIR: frozenset[str] = frozenset(
+    v for fam in _LIGHT_HAIR_FAMILIES for v in FIELD_FAMILIES["hair_color"][fam]["variants"])
+#: The greys that ARE age. White and silver are also dye and fiction, so a young person
+#: keeps them under Full spectrum (and under a lock); these three never land under 35.
+_AGE_GREY: frozenset[str] = frozenset(["salt and pepper", "gray-streaked dark hair", "charcoal gray"])
+
+
+_DARK_HAIR_BANDS: frozenset[str] = frozenset(["east_asian", "brown", "dark", "pacific"])
+_BLACK_HAIR: frozenset[str] = frozenset(FIELD_FAMILIES["hair_color"]["black"]["variants"])
+_DARK_BROWN_HAIR: frozenset[str] = frozenset(["dark brown", "medium brown", "chestnut"])
+_BLACK_HAIR_SHARE: float = 0.6
+
+
+def _bias_hair_color(pool: list[str], resolved: dict[str, str], rng: random.Random) -> list[str]:
+    """Age decides grey-or-not, then natural colour leans toward the ethnicity (whole
+    families both times, so the surviving families stay proportional)."""
+    age = resolved.get("age") or ""
+    if resolved.get("hair_color_scope") != "Natural only":
+        # Full spectrum: dye is fair game at any age, but an age-grey is not a dye.
+        if age.isdigit() and int(age) < 35:
+            pool = [c for c in pool if c not in _AGE_GREY] or pool
+        return pool
+    grey = _GREY_HAIR
+    if age.isdigit():
+        if rng.random() < _GREY_BY_AGE.get(int(age), 0.0):
+            return [c for c in pool if c in grey] or pool
+        pool = [c for c in pool if c not in grey] or pool
+    band = ETHNICITY_REGION.get(resolved.get("ethnicity") or "")
+    p = _HAIR_INBAND_PROBABILITY.get(band or "")
+    if not p or rng.random() >= p:
+        return pool
+    pool = [c for c in pool if c not in _LIGHT_HAIR] or pool
+    # 1.5.0 round 4: in these bands natural hair is black or dark brown -- "ash brown" on
+    # a Korean man and "light chestnut" on a Pakistani woman read as dye. The family
+    # weights alone would make it two-thirds brunette, so black is decided first.
+    if band in _DARK_HAIR_BANDS:
+        if rng.random() < _BLACK_HAIR_SHARE:
+            return [c for c in pool if c in _BLACK_HAIR] or pool
+        return [c for c in pool if c in _DARK_BROWN_HAIR] or pool
+    return pool
+
+
+def _bias_hair_texture(pool: list[str], ethnicity: str | None, rng: random.Random) -> list[str]:
+    """Keep coily textures to the band where they are the norm (flat field: uniform)."""
+    band = ETHNICITY_REGION.get(ethnicity or "")
+    if not band or band == "dark" or rng.random() < _COILY_OUT_OF_BAND_KEEP:
+        return pool
+    return [t for t in pool if t not in _COILY_TEXTURES] or pool
+
+
+#: 1.5.0 round 5: Afro-textured STYLES lean to the band too. The texture gate allows them
+#: on "curly" hair, which every band draws, so a 70-year-old Welsh man drew two-strand
+#: twists. Whole families (`texture`, `braid_short`), so the other families stay
+#: proportional; open 5% of the time outside the dark band.
+_AFRO_STYLES: frozenset[str] = frozenset(
+    FIELD_FAMILIES["hair_style"]["texture"]["variants"]
+    + FIELD_FAMILIES["hair_style"]["braid_short"]["variants"])
+_AFRO_STYLE_OUT_OF_BAND_KEEP: float = 0.05
+
+
+def _bias_hair_style(pool: list[str], ethnicity: str | None, rng: random.Random) -> list[str]:
+    """Keep Afro-textured styles to the band where they are the norm."""
+    band = ETHNICITY_REGION.get(ethnicity or "")
+    if not band or band == "dark" or rng.random() < _AFRO_STYLE_OUT_OF_BAND_KEEP:
+        return pool
+    return [v for v in pool if v not in _AFRO_STYLES] or pool
+
+
+def _bias_eye_color(pool: list[str], ethnicity: str | None, rng: random.Random) -> list[str]:
+    """Lean eye colour toward the ethnicity's dominant (brown/hazel) range."""
+    p = _EYE_INBAND_PROBABILITY.get(ETHNICITY_REGION.get(ethnicity or "") or "")
+    if not p or rng.random() >= p:
+        return pool
+    return [c for c in pool if c in _DARK_EYES] or pool
+
+
+def _pick_family_weighted(
+    field_name: str, pool: list[str], rng: random.Random,
+    # APPENDED (1.5.0): a Masculine presentation reads MASCULINE_FAMILY_WEIGHTS.
+    presentation: str | None = None,
+) -> str:
     """Weighted two-tier pick for any field registered in :data:`FIELD_FAMILIES`:
     choose a family (weighted by its frozen original size), then a variant
     uniformly within it.
@@ -1119,11 +1307,17 @@ def _pick_family_weighted(field_name: str, pool: list[str], rng: random.Random) 
     field_families = FIELD_FAMILIES.get(field_name)
     if not field_families:
         return rng.choice(pool)
+    # A Masculine presentation re-weights whole families (never variants inside
+    # one), so the within-family split stays uniform. Before 1.5.0 men drew
+    # `hair_style` families at the women's odds, which is how a random man ended
+    # up in milkmaid braids or a chignon. A missing key keeps the base weight.
+    overrides = (MASCULINE_FAMILY_WEIGHTS.get(field_name, {})
+                 if presentation == "Masculine" else {})
     families = [
-        (fam["weight"], [v for v in fam["variants"] if v in pool])
-        for fam in field_families.values()
+        (overrides.get(name, fam["weight"]), [v for v in fam["variants"] if v in pool])
+        for name, fam in field_families.items()
     ]
-    families = [(weight, variants) for weight, variants in families if variants]
+    families = [(weight, variants) for weight, variants in families if weight > 0 and variants]
     # Pool values outside every family are user_options.json additions (shipped
     # options always partition exactly — validator-enforced). Give them an
     # implicit leftover family weighted by its size: each such value then draws
@@ -1141,7 +1335,9 @@ def _pick_family_weighted(field_name: str, pool: list[str], rng: random.Random) 
 
 
 def _weighted_choice(
-    field_def: dict, pool: list[str], gender: str, rng: random.Random
+    field_def: dict, pool: list[str], gender: str, rng: random.Random,
+    # APPENDED (1.5.0): `masculine_weights` apply to a Masculine presentation.
+    presentation: str | None = None,
 ) -> str:
     """Pick from ``pool`` honoring a field's draw-weight maps.
 
@@ -1158,15 +1354,19 @@ def _weighted_choice(
     """
     weights_map = field_def.get("weights")
     male_weights = field_def.get("male_weights") if gender == "Male" else None
-    if weights_map or male_weights:
-        combined = {**(weights_map or {}), **(male_weights or {})}
+    masculine = (field_def.get("masculine_weights") if presentation == "Masculine"
+                 else None)
+    if weights_map or male_weights or masculine:
+        combined = {**(weights_map or {}), **(male_weights or {}), **(masculine or {})}
         weights = [combined.get(value, 1) for value in pool]
         return rng.choices(pool, weights=weights)[0]
     return rng.choice(pool)
 
 
 def _repick(
-    field_name: str, field_def: dict, pool: list[str], gender: str, rng: random.Random
+    field_name: str, field_def: dict, pool: list[str], gender: str, rng: random.Random,
+    presentation: str | None = None,  # APPENDED (1.5.0)
+    resolved: dict[str, str] | None = None,  # APPENDED (1.5.0 round 5)
 ) -> str:
     """Draw a replacement value for ``field_name`` from an already-filtered ``pool``.
 
@@ -1178,9 +1378,41 @@ def _repick(
     instead of keeping each family's share. Both pickers intersect with ``pool``,
     so any exclusion the caller already applied still holds.
     """
+    # 1.5.0 round 5: the draw-time ethnicity/age leans applied to re-picks too. A buzz cut
+    # re-picked `hair_texture` off a wave, straight past the coily lean, and a Welsh man
+    # came back coily (the decide-at-the-draw trap, in the other direction).
+    if resolved is not None:
+        if field_name == "hair_texture":
+            pool = _bias_hair_texture(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_style":
+            pool = _bias_hair_style(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "skin_tone":
+            pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "eye_color":
+            pool = _bias_eye_color(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_color":
+            pool = _bias_hair_color(pool, resolved, rng)
     if field_name in FIELD_FAMILIES:
-        return _pick_family_weighted(field_name, pool, rng)
-    return _weighted_choice(field_def, pool, gender, rng)
+        return _pick_family_weighted(field_name, pool, rng, presentation)
+    return _weighted_choice(field_def, pool, gender, rng, presentation)
+
+
+_CUFFED_RE = re.compile(
+    r"\b(?:shirt|blouse|blazer|jacket|coat|suit|tuxedo|sweater|cardigan|sweatshirt|hoodie|"
+    r"henley|flannel|overshirt|long-sleeve|long sleeve|turtleneck|roll-neck|crewneck|jumper|"
+    r"thermal|shacket|trench|peacoat|parka|overcoat|topcoat|raincoat|anorak)\b",
+    re.IGNORECASE)
+_COLLARED_RE = re.compile(
+    r"\b(?:shirt|blouse|polo|blazer|jacket|coat|suit|tuxedo|turtleneck|roll-neck|collar\w*|"
+    r"trench|peacoat|shacket|overshirt|henley|lapel|overcoat|topcoat|raincoat)\b",
+    re.IGNORECASE)
+
+
+_POCKETED_RE = re.compile(
+    r"\b(?:trousers|jeans|pants|chinos|slacks|cargos|corduroys|shorts|joggers|jacket|coat|"
+    r"blazer|hoodie|overalls|coveralls|jumpsuit|suit|tuxedo|cardigan|denim|parka|trench|"
+    r"overcoat|topcoat|raincoat|anorak)\b",
+    re.IGNORECASE)
 
 
 def _performable_poses(
@@ -1261,6 +1493,14 @@ def _performable_poses(
         excluded |= GARMENT_DEPENDENT_POSES
     if (held and not _is_absent(held)) or resolved.get("shot_type") == _SELFIE_SHOT_TYPE:
         excluded |= HAND_OCCUPIED_POSES
+    # 1.5.0 round 4: "adjusting one cuff" in a poncho, "touching the collar" in a harness
+    # top. Only once a garment exists (inside the fill loop it does not yet).
+    if outfit and not _CUFFED_RE.search(outfit):
+        excluded.add("adjusting one cuff")
+    if outfit and not _COLLARED_RE.search(outfit):
+        excluded.add("touching the collar with one hand")
+    if outfit and not _POCKETED_RE.search(outfit):
+        excluded.add("posing with hands in pockets")
     if feral:
         excluded |= QUADRUPED_UNPERFORMABLE_POSES
     if not excluded:
@@ -1317,6 +1557,36 @@ _HIGH_NECK_RE = re.compile(
     re.IGNORECASE,
 )
 
+#: 1.5.0 round 4. A leg-covering bottom wins over a leg-baring noun in the same phrase:
+#: "a gauze tunic over flared linen trousers" matched `tunic` and drew knee-high socks.
+_LEG_COVER_RE = re.compile(
+    r"\b(?:trousers|jeans|pants|chinos|joggers|leggings|slacks|cargos|sweatpants|culottes|"
+    r"flares|overalls|coveralls|jumpsuit|boilersuit|dungarees|corduroys)\b"
+    # "a tee with loose denim": denim named as the bottom half.
+    r"|\bwith\s+(?:[\w-]+\s+){0,2}denim\b",
+    re.IGNORECASE,
+)
+#: Trousers that end above the ankle, so a sock over a low shoe is seen.
+_ANKLE_TROUSERS_RE = re.compile(
+    r"\b(?:cuffed|rolled-cuff|turned-up|ankle-length|cropped)\s+(?:[\w-]+\s+)?"
+    r"(?:trousers|jeans|denim|chinos|slacks)\b", re.IGNORECASE)
+_LOW_SHOES: frozenset[str] = frozenset(
+    ["loafers", "oxfords", "derbies", "sneakers", "high-top sneakers"])
+_VISIBLE_SOCKS: frozenset[str] = frozenset(
+    ["ribbed crew socks", "athletic crew socks", "dark dress socks", "slouchy ankle socks"])
+#: Shoes worn without socks.
+_SOCKLESS_SHOES: frozenset[str] = frozenset(
+    ["espadrilles", "boat shoes", "sandals", "slides", "mules", "slippers", "wedges"])
+#: A hem to the floor hides the leg entirely ("a strapless gown with opaque black tights").
+_FLOOR_LENGTH_RE = re.compile(r"\b(?:gown|ballgown|floor-length|maxi)\b", re.IGNORECASE)
+#: The garment already names its hosiery ("a tennis skirt and knee socks").
+_HOSIERY_RE = re.compile(r"\b(?:socks?|tights|stockings|leg warmers|hosiery)\b", re.IGNORECASE)
+#: Legwear that reads as a young look past 45.
+_YOUTHFUL_LEGWEAR: frozenset[str] = frozenset(
+    ["over-the-knee socks", "ribbed knee-high socks", "fishnet tights"])
+#: Hosiery nobody wears outdoors in summer (socks stay).
+_WARM_HOSIERY_RE = re.compile(r"\b(?:tights|stockings)\b", re.IGNORECASE)
+
 #: Legwear opaque enough to hide a thigh or calf tattoo underneath it.
 _OPAQUE_LEGWEAR_RE = re.compile(r"\b(?:opaque|patterned|ribbed|over-the-knee)\b",
                                 re.IGNORECASE)
@@ -1346,9 +1616,27 @@ def _wearable_legwear(pool: list[str], resolved: dict[str, str]) -> list[str]:
     that into ``"None"``.
     """
     outfit = resolved.get("outfit_description") or ""
-    if not _BARE_LEG_RE.search(outfit):
+    if _HOSIERY_RE.search(outfit) or _FLOOR_LENGTH_RE.search(outfit):
         return []
+    if not _BARE_LEG_RE.search(outfit) or _LEG_COVER_RE.search(outfit):
+        # 1.5.0 round 4: the one place a sock shows under trousers -- a cuffed or
+        # ankle-length hem over a low shoe. Socks only; tights stay hidden.
+        if (_ANKLE_TROUSERS_RE.search(outfit)
+                and resolved.get("footwear") in _LOW_SHOES):
+            return [v for v in pool if v in _VISIBLE_SOCKS or v == "no visible legwear"]
+        return []
+    if resolved.get("season") == "summer":
+        pool = [v for v in pool if not _WARM_HOSIERY_RE.search(v)]
+    age = resolved.get("age") or ""
+    if age.isdigit() and int(age) >= 45:
+        pool = [v for v in pool if v not in _YOUTHFUL_LEGWEAR]
     footwear = resolved.get("footwear") or ""
+    # 1.5.0: "with ribbed crew socks, barefoot" contradicts itself; bare feet wear
+    # nothing, so the whole pool goes (no partial cull).
+    if footwear == "bare feet":
+        return []
+    if footwear in _SOCKLESS_SHOES:  # 1.5.0 round 4: "crew socks, in espadrilles"
+        pool = [v for v in pool if "sock" not in v]
     if _TALL_BOOT_RE.search(footwear):
         pool = [v for v in pool if not _TALL_BOOT_RE.search(v) and "knee" not in v.lower()]
     return pool
@@ -1386,6 +1674,34 @@ def _style_appropriate_legwear(pool: list[str], resolved: dict[str, str]) -> lis
     return [v for v in pool if v not in banned]
 
 
+#: 1.5.0 round 4: sleeves short enough to show an upper arm, and tops that bare the back.
+#: A shoulder-blade tattoo under a suit made the model cut a hole in the jacket; an
+#: upper-arm one under a long sleeve tore one sleeve off.
+_SHORT_SLEEVE_RE = re.compile(
+    r"\b(?:tee|t-shirt|tank|camisole|cami|sleeveless|short-sleeve|short sleeve|short-sleeved|"
+    r"polo|strapless|halter\w*|one-shoulder|off-the-shoulder|crop top|bralette|tube top|"
+    r"swim\w*|bikini|sundress|slip dress|muscle|bandeau|bodysuit)\b",
+    re.IGNORECASE,
+)
+_BARE_BACK_RE = re.compile(
+    r"\b(?:backless|open-back|low-back|strapless|halter\w*|tank|racerback|camisole|cami|"
+    r"spaghetti|slip dress|bikini|swim\w*|bralette|one-shoulder|off-the-shoulder|tube top|"
+    r"bandeau|cutout)\b",
+    re.IGNORECASE,
+)
+_SLEEVES_UP_RE = re.compile(r"\bsleeves (?:pushed|rolled) up\b", re.IGNORECASE)
+_TURTLENECK_RE = re.compile(r"\b(?:turtleneck|roll-neck|mock neck|high-neck|polo neck)\b",
+                            re.IGNORECASE)
+_TAILORED_NECK_RE = re.compile(r"\b(?:suit|tuxedo|tailcoat|dinner jacket|shirt|blouse)\b",
+                               re.IGNORECASE)
+
+
+def _upper_arm_bare(outfit: str, coated: bool) -> bool:
+    """Short sleeves (or none), and nothing long-sleeved or a coat over them."""
+    return (not coated and bool(_SHORT_SLEEVE_RE.search(outfit))
+            and not _LONG_SLEEVE_RE.search(outfit))
+
+
 def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> list[str]:
     """Drop tattoo placements the character's clothing would cover.
 
@@ -1408,8 +1724,21 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
     outfit = resolved.get("outfit_description") or ""
     legwear = resolved.get("legwear") or ""
     excluded: set[str] = set()
-    if _LONG_SLEEVE_RE.search(outfit):
-        excluded |= {"on one forearm", "across the back of one hand", "on the inner wrist"}
+    # 1.5.0: a coat covers what long sleeves and a high neck cover. `outerwear` is
+    # resolved before this field (see _DEFERRED_ORDER), so its value is settled here.
+    coat = resolved.get("outerwear")
+    coated = bool(coat) and not _is_absent(coat)
+    if (coated or _LONG_SLEEVE_RE.search(outfit)) and not _SLEEVES_UP_RE.search(outfit):
+        excluded |= {"on one forearm", "on the inner wrist"}
+    # 1.5.0 round 4: a hand shows out of any sleeve -- only a glove covers it.
+    if _GLOVE_RE.search(outfit) or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES:
+        excluded.add("across the back of one hand")
+    if not _upper_arm_bare(outfit, coated):
+        excluded.add("on one upper arm")
+    if coated or not _BARE_BACK_RE.search(outfit) or _LONG_SLEEVE_RE.search(outfit):
+        excluded.add("across one shoulder blade")
+    if _TURTLENECK_RE.search(outfit) or re.search(r"\btie\b(?!-)", outfit):
+        excluded.add("on the side of the neck")
     # Three ways a leg tattoo ends up invisible: the garment covers the leg, the
     # garment shows leg but its hem still reaches past the thigh (a maxi skirt --
     # caught in a sample render), or opaque legwear covers what the hem does not.
@@ -1418,7 +1747,7 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
         bool(_OPAQUE_LEGWEAR_RE.search(legwear))
     if not leg_bare or leg_covered_by_legwear:
         excluded |= {"down one thigh", "on one calf"}
-    if _HIGH_NECK_RE.search(outfit):
+    if coated or _HIGH_NECK_RE.search(outfit) or _TAILORED_NECK_RE.search(outfit):
         excluded.add("across the collarbone")
     if not excluded:
         return pool
@@ -1426,7 +1755,11 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
 
 
 def _resolve_deferred_fields(
-    resolved: dict[str, str], gender: str, accessory_density: str, rng: random.Random
+    resolved: dict[str, str], gender: str, accessory_density: str, rng: random.Random,
+    # APPENDED (1.5.0): only an engine-generated garment can take outerwear.
+    generated_outfit: bool = False,
+    presentation: str | None = None,  # APPENDED (1.5.0)
+    locked: frozenset[str] | set[str] = frozenset(),  # APPENDED (1.5.0 round 4)
 ) -> None:
     """Draw :data:`_DEFERRED_FIELDS` now that ``outfit_description`` is final.
 
@@ -1439,22 +1772,171 @@ def _resolve_deferred_fields(
     shift any pre-existing field's random values: an identical seed produces an
     identical character, plus or minus the new clauses.
     """
-    for field_name in FIELD_DEFINITIONS:
-        if field_name not in _DEFERRED_FIELDS or field_name in resolved:
+    for field_name in _DEFERRED_ORDER:
+        if field_name in resolved:
             continue
         field_def = FIELD_DEFINITIONS[field_name]
         pool = _build_option_pool(field_name, field_def, gender, resolved)
+        if field_name == "outerwear":
+            resolved[field_name] = _eligible_outerwear(pool, resolved, generated_outfit, rng)
+            continue
         if field_name == "legwear":
             pool = _style_appropriate_legwear(_wearable_legwear(pool, resolved), resolved)
         elif field_name == "tattoo_placement":
             pool = _visible_tattoo_placements(pool, resolved)
-        forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
+            tattoo = resolved.get("tattoos")
+            if not pool and tattoo and not _is_absent(tattoo) and "tattoos" not in locked \
+                    and resolved.get("outfit_description"):
+                # 1.5.0 round 4: every placement is under clothing, so there is no ink
+                # to see -- a placeless tattoo lets the model cut a window for it.
+                resolved["tattoos"] = "no tattoos"
+        forced_absent = _maybe_absent(field_name, pool, accessory_density, rng,
+                                      presentation)
         if forced_absent is not None:
             resolved[field_name] = forced_absent
         elif pool:
-            resolved[field_name] = _weighted_choice(field_def, pool, gender, rng)
+            resolved[field_name] = _weighted_choice(field_def, pool, gender, rng,
+                                                    presentation)
         elif field_def["optional"]:
             resolved[field_name] = "None"
+
+
+_NO_OUTERWEAR = "no outerwear"
+#: Built-in places, so a known interior can veto a coat even when a LOCKED season kept
+#: the season voiced there. A user_options.json place is not in it and follows the season.
+_BUILTIN_LOCATIONS: frozenset[str] = frozenset(
+    v for fam in FIELD_FAMILIES["location"].values() for v in fam["variants"])
+#: Footwear that says the weather is warm: no coat goes over an outfit worn with these.
+_OPEN_FOOTWEAR: frozenset[str] = frozenset(
+    ["bare feet", "sandals", "espadrilles", "slides", "slippers",
+     "mules", "wedges", "boat shoes"])  # last three 1.5.0 round 4
+
+
+def _eligible_outerwear(
+    pool: list[str], resolved: dict[str, str], generated_outfit: bool, rng: random.Random
+) -> str:
+    """Draw ``outerwear`` for a finished outfit, or return the absent token (1.5.0).
+
+    Weather wear, so it needs weather: an outdoor season other than summer (the season
+    is "None" indoors), an ENGINE-generated garment (a supplied costume is a finished
+    look), and a garment with no outer layer of its own. A light layer -- a blazer, a
+    cardigan, a tailored jacket -- can take a coat over it, but only in winter.
+
+    Every ineligible case returns without touching ``rng``, so a seed whose character
+    cannot wear a coat draws exactly what it drew before this field existed. Winter
+    outdoors always gets a coat; spring and autumn get one half the time.
+    """
+    season = resolved.get("season")
+    garment = resolved.get("outfit_description") or ""
+    location = resolved.get("location") or ""
+    indoors = location in _BUILTIN_LOCATIONS and location not in OUTDOOR_LOCATIONS
+    if (not generated_outfit or indoors or _is_absent(season) or season == "summer"
+            or location in _BATHING_PLACES  # 1.5.0 round 5
+            or resolved.get("footwear") in _OPEN_FOOTWEAR
+            or OUTER_LAYER_RE.search(garment) or _LAYERED_RE.search(garment)
+            or (season != "winter" and LIGHT_LAYER_RE.search(garment))):
+        return _NO_OUTERWEAR
+    style = resolved.get("outfit_style") or ""
+    allowed = OUTERWEAR_BY_STYLE.get(style)  # a user-added style allows every coat
+
+    def _in_season(coat: str) -> bool:
+        seasons = OUTERWEAR_SEASONS.get(coat)
+        return True if seasons is None else season in seasons  # user-added coat: fail open
+
+    coats = [c for c in pool if c != _NO_OUTERWEAR
+             and (allowed is None or c in allowed) and _in_season(c)]
+    if not coats:
+        return _NO_OUTERWEAR
+    if season != "winter" and rng.random() < 0.5:
+        return _NO_OUTERWEAR
+    return rng.choice(coats)
+
+
+#: 1.5.0 round 4: extras that need something from the finished garment.
+_TROUSERS_RE = re.compile(
+    r"\b(?:trousers|jeans|pants|chinos|slacks|cargos|corduroys|flares|shorts)\b", re.IGNORECASE)
+_OVER_SUSPENDERS_RE = re.compile(
+    r"\b(?:suit|tuxedo|tux|blazer|jacket|coat|robe|cardigan|sweater|sweatshirt|hoodie|poncho|"
+    r"kaftan|caftan|overalls|coveralls|jumpsuit|dungarees|harness|gilet|vest|waistcoat|"
+    r"swim\w*|dress|gown|skirt|jumper|pullover|fleece|anorak|parka|tailcoat|knit|crewneck|"
+    r"quarter-zip|turtleneck|roll-neck)\b", re.IGNORECASE)
+_NO_BELT_RE = re.compile(
+    r"\b(?:suit|tuxedo|tailcoat|dinner jacket|robe|coveralls|overalls|jumpsuit|dungarees|"
+    r"boilersuit|hoodie|sweatshirt|poncho|kaftan|caftan|gown|ballgown|tunic|swim\w*|bikini|"
+    r"lounge|nightdress|harness|sarong|cover-up|track pants|joggers|sweatpants|leggings|"
+    r"fleece|quarter-zip)\b", re.IGNORECASE)
+_LAPEL_RE = re.compile(r"\b(?:suit|tuxedo|blazer|jacket|sport coat|coat|tailcoat)\b",
+                       re.IGNORECASE)
+_MIDRIFF_RE = re.compile(r"\b(?:crop top|cropped|bikini|bralette|midriff|bandeau|tube top)\b",
+                         re.IGNORECASE)
+_BARE_TORSO_RE = re.compile(
+    r"\b(?:bikini|swim\w*|bralette|backless|crop top|cropped|strapless|slip dress|camisole|"
+    r"cami|halter\w*|bandeau|tube top|worn open)\b", re.IGNORECASE)
+_BROOCH_RE = re.compile(
+    r"\b(?:blazer|jacket|coat|cardigan|dress|gown|suit|trench|peacoat|sweater|blouse|jumper|"
+    r"knit|twinset|waistcoat)\b", re.IGNORECASE)
+_TIE_RE = re.compile(r"\btie\b(?!-)", re.IGNORECASE)
+_GARMENT_BOUND_ACCESSORIES: frozenset[str] = frozenset(
+    ["silk pocket square", "lapel pin", "suspenders", "statement belt", "western belt",
+     "belt cinching waist", "long opera gloves"])
+_GARMENT_BOUND_JEWELRY: frozenset[str] = frozenset(["brooch", "waist chain", "body chain"])
+_ANKLE_SHOES: frozenset[str] = frozenset(
+    ["bare feet", "sandals", "slides", "espadrilles", "flats", "ballet flats", "heels",
+     "kitten heels", "wedges", "mules", "mary janes"])
+
+
+def _fit_extras_to_garment(resolved: dict[str, str], locked: set[str]) -> None:
+    """Drop worn extras the finished outfit cannot carry (1.5.0 round 4).
+
+    Suspenders over a double-breasted jacket or with swimwear, a statement belt on a
+    ballgown or a hoodie, a pocket square without a breast pocket, a waist chain over a
+    sweatshirt, an anklet under tights, a brooch on a sweatshirt, an arm cuff under a
+    long sleeve -- all flagged renders. The field is set absent (no re-pick, no RNG),
+    prose and JSON together; a lock always wins.
+    """
+    outfit = resolved.get("outfit_description") or ""
+    if not outfit:
+        # 1.5.0 round 5: outfit_style None voices no garment, so "accessorized with a silk
+        # pocket square" alone drew a shirtless man. Garment-bound extras go with it.
+        if (resolved.get("accessories") in _GARMENT_BOUND_ACCESSORIES
+                and "accessories" not in locked):
+            resolved["accessories"] = "no accessories"
+        if (resolved.get("other_jewelry") in _GARMENT_BOUND_JEWELRY
+                and "other_jewelry" not in locked):
+            resolved["other_jewelry"] = "no other jewelry"
+        return
+    coat = resolved.get("outerwear")
+    coated = bool(coat) and not _is_absent(coat)
+    accessory = resolved.get("accessories") or ""
+    drop_accessory = (
+        (accessory == "suspenders"
+         and (coated or not _TROUSERS_RE.search(outfit) or _OVER_SUSPENDERS_RE.search(outfit)))
+        or (accessory in ("statement belt", "western belt", "belt cinching waist")
+            and _NO_BELT_RE.search(outfit))
+        or (accessory == "western belt" and not _TROUSERS_RE.search(outfit))
+        or (accessory in ("lapel pin", "silk pocket square") and not _LAPEL_RE.search(outfit))
+        or (accessory == "long opera gloves" and not _DRESS_RE.search(outfit)))
+    # The explicit absent token, not a pop: the saved document then pins the absence,
+    # so a Turnaround / Vault replay does not re-roll a different extra into the gap.
+    if drop_accessory and "accessories" not in locked:
+        resolved["accessories"] = "no accessories"
+    if (_TIE_RE.search(outfit) and "necklace" not in locked
+            and not _is_absent(resolved.get("necklace"))):
+        resolved["necklace"] = "no necklace"  # "a pearl necklace" under a shirt and tie
+    jewel = resolved.get("other_jewelry") or ""
+    legwear = resolved.get("legwear")
+    drop_jewel = (
+        (jewel == "waist chain" and not _MIDRIFF_RE.search(outfit))
+        or (jewel == "body chain" and not _BARE_TORSO_RE.search(outfit))
+        or (jewel == "arm cuff" and not _upper_arm_bare(outfit, coated))
+        or (jewel == "brooch" and not _BROOCH_RE.search(outfit))
+        or (jewel == "anklet" and (resolved.get("footwear") not in _ANKLE_SHOES
+                                   or (legwear and not _is_absent(legwear))
+                                   or not _BARE_LEG_RE.search(outfit)
+                                   or _LEG_COVER_RE.search(outfit)
+                                   or _FLOOR_LENGTH_RE.search(outfit))))
+    if drop_jewel and "other_jewelry" not in locked:
+        resolved["other_jewelry"] = "no other jewelry"
 
 
 def _repair_pose(
@@ -1468,6 +1950,7 @@ def _repair_pose(
     rng: random.Random,
     # APPENDED, not inserted -- generate_character calls this positionally.
     feral: bool = False,
+    presentation: str | None = None,  # APPENDED (1.5.0 round 4)
 ) -> None:
     """Re-pick ``pose`` if the finished outfit made the drawn one unperformable.
 
@@ -1509,9 +1992,64 @@ def _repair_pose(
     )
     if scale_class:
         pool = _scale_coherent_pool("pose", pool, scale_class)
+    # 1.5.0 round 2: the re-pick must also respect the pose rules already in force
+    # (the floor-pose gate), or it hands a public place the pose the loop removed.
+    # 1.5.0 round 4: with the presentation, or the masculine pose trims (hand on hip)
+    # and the masculine family weights were skipped on every repair.
+    live = _live_exclusions("pose", resolved, presentation)
+    pool = [p for p in pool if p not in live]
     if current in pool or not pool:
         return  # still performable (or nothing better on offer) -- no RNG spent
-    resolved["pose"] = _repick("pose", field_def, pool, gender, rng)
+    resolved["pose"] = _repick("pose", field_def, pool, gender, rng, presentation)
+
+
+#: 1.5.0 round 3: how many adornment pieces one person wears at most, by presentation.
+#: Each field's own odds are realistic, but they are independent, so a man could still
+#: draw chains AND a thumb ring AND a wrap bracelet AND an earring ("pretty feminine for
+#: a guy with all the necklaces"). Dropped in this order, least everyday first. A lock
+#: is never dropped and never counts against a random piece's place in the order.
+_ADORNMENT_BUDGET: dict[str, int] = {"Masculine": 2, "Feminine": 4}
+_ADORNMENT_DROP_ORDER: tuple[tuple[str, str], ...] = (
+    ("other_jewelry", "no other jewelry"), ("piercings", "no piercings beyond ears"),
+    ("bracelet", "none"), ("rings", "none"), ("necklace", "no necklace"),
+    ("earrings", "no earrings"),
+)
+
+
+def _cap_adornments(resolved: dict[str, str], locked: set[str], presentation: str) -> None:
+    """Drop random adornment pieces beyond the presentation's budget. No RNG."""
+    budget = _ADORNMENT_BUDGET.get(presentation)
+    if budget is None:
+        return
+    worn = [f for f, absent in _ADORNMENT_DROP_ORDER
+            if resolved.get(f) not in (None, "None", absent)]
+    excess = len(worn) - budget
+    for field, absent in _ADORNMENT_DROP_ORDER:
+        if excess <= 0:
+            break
+        if field in worn and field not in locked:
+            resolved[field] = absent
+            excess -= 1
+
+
+def _live_exclusions(
+    field: str, resolved: dict[str, str], presentation: str | None = None
+) -> set[str]:
+    """Every value of ``field`` banned by an exclusion rule whose trigger currently holds.
+
+    Shared by `_apply_constraints` (the union it re-picks against) and the post-loop
+    repairs, which would otherwise re-open a value the loop closed. A presentation-gated
+    trim counts only for a Masculine presentation, exactly as in the loop.
+    """
+    banned: set[str] = set()
+    for rule in CONSTRAINT_RULES:
+        if rule["type"] != "exclusion" or rule.get("excludes_field") != field:
+            continue
+        if rule.get("presentation_gated") and presentation != "Masculine":
+            continue
+        if resolved.get(rule["field"]) == rule["value"]:
+            banned.update(rule["excludes_values"])
+    return banned
 
 
 def _scale_class(widget_tier: str, character_tier: str | None) -> str:
@@ -1634,6 +2172,7 @@ def _randomize_fields(
     scale_class: str = "",
     # APPENDED, not inserted -- generate_character calls this positionally.
     feral: bool = False,
+    presentation: str | None = None,  # APPENDED (1.5.0)
 ) -> dict[str, str]:
     """Fill every unlocked, non-control field from its option pool.
 
@@ -1671,21 +2210,32 @@ def _randomize_fields(
         pool = _build_option_pool(field_name, field_def, gender, resolved)
         if field_name == "skin_tone":
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_color":
+            pool = _bias_hair_color(pool, resolved, rng)
+        elif field_name == "eye_color":
+            pool = _bias_eye_color(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_texture":
+            pool = _bias_hair_texture(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_style":
+            pool = _bias_hair_style(pool, resolved.get("ethnicity"), rng)
         elif field_name == "pose":
             pool = _performable_poses(pool, resolved, covers_face, covers_body,
                                       covers_hair, feral)
         if scale_class:
             pool = _scale_coherent_pool(field_name, pool, scale_class)
-        forced_absent = _maybe_absent(field_name, pool, accessory_density, rng)
+        forced_absent = _maybe_absent(field_name, pool, accessory_density, rng,
+                                      presentation)
         if forced_absent is not None:
             resolved[field_name] = forced_absent
         elif field_name in FIELD_FAMILIES and pool:
             # Bias-safe weighted pick for grown fields (hair_style, expression,
             # pose, mood, lighting, location). _maybe_absent is RNG-neutral for
             # these (none are density-gated), so seeds stay stable for the field.
-            resolved[field_name] = _pick_family_weighted(field_name, pool, rng)
+            resolved[field_name] = _pick_family_weighted(field_name, pool, rng,
+                                                         presentation)
         elif pool:
-            resolved[field_name] = _weighted_choice(field_def, pool, gender, rng)
+            resolved[field_name] = _weighted_choice(field_def, pool, gender, rng,
+                                                    presentation)
         elif field_def["optional"]:
             resolved[field_name] = "None"
         else:  # non-optional field with an empty pool — fall back to raw list
@@ -1859,7 +2409,8 @@ def _apply_constraints(
                             scale_class,
                         ) if v not in conflicting]
                         if pool:
-                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng)
+                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng,
+                                                        presentation, resolved)
                             changed = True
                             continue
                     warn(target, f"'{rule['field']}={rule['value']}' conflicts with "
@@ -1886,24 +2437,15 @@ def _apply_constraints(
                 # more correct. The contrapositive branch above already builds its
                 # ``conflicting`` set the same way, so this only brings the forward
                 # direction in line with it.
-                forbidden = set(excluded)
-                for other in CONSTRAINT_RULES:
-                    if (other["type"] != "exclusion"
-                            or other.get("excludes_field") != target):
-                        continue
-                    if (other.get("presentation_gated")
-                            and presentation != "Masculine"):
-                        continue
-                    if resolved.get(other["field"]) != other["value"]:
-                        continue
-                    forbidden.update(other["excludes_values"])
+                forbidden = set(excluded) | _live_exclusions(target, resolved, presentation)
                 pool = [v for v in _scale_coherent_pool(
                     target,
                     _build_option_pool(target, field_def, gender, resolved),
                     scale_class,
                 ) if v not in forbidden]
                 if pool:
-                    resolved[target] = _repick(target, field_def, pool, gender, rng)
+                    resolved[target] = _repick(target, field_def, pool, gender, rng,
+                                               presentation, resolved)
                     changed = True
                 elif field_def["optional"]:
                     resolved[target] = "None"
@@ -1967,7 +2509,8 @@ def _apply_constraints(
                             scale_class,
                         ) if v not in conflicting]
                         if pool:
-                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng)
+                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng,
+                                                        presentation, resolved)
                             changed = True
                             continue
                     warn(target, f"'{rule['field']}={rule['value']}' wants "
@@ -2003,11 +2546,191 @@ def _resolve_outfit_description(
         pool += buckets.get("male", [])
     else:  # "Any" — mix every wardrobe
         pool += buckets.get("female", []) + buckets.get("male", [])
+    # 1.5.0: dress for the weather. The season is "None" indoors, so this only ever
+    # narrows an outdoor scene. Fail-open: a style with nothing left for the season
+    # (only reachable when the user locks both) keeps its whole pool.
+    pool = [g for g in pool if _garment_fits_season(g, resolved.get("season"))] or pool
+    pool = [g for g in pool if _garment_fits_place(g, resolved)] or pool
+    age = resolved.get("age") or ""
+    if age.isdigit() and int(age) >= 45:
+        pool = [g for g in pool if not _YOUTHFUL_GARMENT_RE.search(g)] or pool
+    # A LOCKED coat is already in `resolved` here; never draw a garment that brings
+    # its own outer layer, or the prose stacks a parka over a bomber (round 2). Round 4:
+    # nor one that is already two layers, nor a summer top under a winter-only coat.
+    coat = resolved.get("outerwear")
+    if coat and not _is_absent(coat):
+        pool = [g for g in pool if not OUTER_LAYER_RE.search(g)
+                and not _LAYERED_RE.search(g)] or pool
+        if "summer" not in OUTERWEAR_SEASONS.get(coat, frozenset(["summer"])):
+            pool = [g for g in pool if not _SUMMER_TOP_RE.search(g)
+                    and not WARM_ONLY_GARMENT_RE.search(g)] or pool
     return rng.choice(pool) if pool else ""
 
 
+#: 1.5.0 round 4 garment filters (engine corpus only).
+#: Robes and swimwear stay where people wear them ("a knitted robe" in a corner bodega,
+#: "a cotton robe worn open over swimwear" in a science museum atrium).
+_ROBE_RE = re.compile(r"\b(?:robe|nightdress|pyjamas?|pajamas?)\b", re.IGNORECASE)
+_SWIM_RE = re.compile(r"\b(?:swim\w*|bikini|monokini|bandeau swimsuit)\b", re.IGNORECASE)
+_WATERSIDE_PLACES: frozenset[str] = frozenset([
+    "wide sandy beach", "poolside cabana", "indoor swimming pool", "lakeside pier",
+    "tide pools at low tide", "waterfall plunge pool", "volcanic black sand beach",
+    "steaming hot spring pool", "the Copacabana promenade in Rio", "palm-lined promenade",
+    "sea cave mouth", "the Halong Bay karst waters"])
+_ROBE_PLACES: frozenset[str] = frozenset(
+    [loc for loc, fam in _LOCATION_FAMILY.items() if fam == "domestic"]
+    + ["grand hotel suite", "budget motel room", "university dormitory room", "hospital room",
+       "poolside cabana", "indoor swimming pool", "steaming hot spring pool"])
+#: A garment phrase that is already two layers ("a cardigan over a blouse").
+_LAYERED_RE = re.compile(r"\s(?:over|under)\s", re.IGNORECASE)
+#: A summer top under a winter coat ("a shearling coat over a camp-collar silk shirt").
+_SUMMER_TOP_RE = re.compile(r"\b(?:camp-collar|linen|short-sleeve|seersucker)\b", re.IGNORECASE)
+#: Young looks that read as costume from 45 on ("a pleated tennis skirt and knee socks" at 60).
+_YOUTHFUL_GARMENT_RE = re.compile(
+    r"\b(?:crop top|cropped|mini ?skirt|tennis skirt|knee socks|bralette|hot pants|"
+    r"baby tee|bike short|pinafore|corset|bustier|vinyl|harness)\b", re.IGNORECASE)
+
+
+def _garment_fits_place(garment: str, resolved: dict[str, str]) -> bool:
+    """False for a robe away from home or swimwear away from water (1.5.0 round 4).
+    A user-added place is not in the family table, so it fails open."""
+    location = resolved.get("location") or ""
+    if location not in _BUILTIN_LOCATIONS:
+        return True
+    if _SWIM_RE.search(garment) and location not in _WATERSIDE_PLACES:
+        return False
+    if _ROBE_RE.search(garment) and location not in _ROBE_PLACES:
+        return False
+    return True
+
+
+def _garment_fits_season(garment: str, season: str | None) -> bool:
+    """False for a warm-only garment in winter or a cold-only one in summer (1.5.0)."""
+    if season == "winter":
+        return not (WARM_ONLY_GARMENT_RE.search(garment)
+                    or (BARE_TOP_RE.search(garment) and not LAYER_WORD_RE.search(garment)))
+    if season == "summer":
+        return not COLD_ONLY_GARMENT_RE.search(garment)
+    return True
+
+
+#: 1.5.0 round 4 compose helpers.
+_LEAD_SPLIT_RE = re.compile(r"\s(?:over|with|under|and)\s|,", re.IGNORECASE)
+_DENIMABLE_RE = re.compile(
+    r"\b(?:jacket|shirt|overshirt|skirt|dress|shirtdress|vest|waistcoat|jumpsuit|overalls|"
+    r"shorts|trousers|pinafore|shacket)\b", re.IGNORECASE)
+#: Jackets that never come in denim ("a denim track jacket").
+_NOT_DENIM_RE = re.compile(
+    r"\b(?:track|training|puffer|fleece|windbreaker|anorak|parka|quilted|knit|down|coach|"
+    r"shell|rain)\b", re.IGNORECASE)
+#: A matching set wears a pattern top to bottom ("a striped lounge set").
+_SET_LEAD_RE = re.compile(
+    r"\b(?:set|tracksuit|co-ord|twinset|pyjamas?|pajamas?)\b", re.IGNORECASE)
+_PLAIN_GARMENT_RE = re.compile(
+    r"\b(?:plain|minimal detailing|solid|seersucker|tweed|brocade|jacquard|boucle|herringbone)\b",
+    re.IGNORECASE)
+#: Knitwear reads a stripe, an argyle or a knit-in geometric; "a gingham quarter-zip
+#: lambswool sweater" and "a floral open-weave sweater" do not.
+_KNIT_LEAD_RE = re.compile(
+    r"\b(?:sweater|knit|knitted|lambswool|merino|cashmere|cable-knit|crochet|jumper|"
+    r"cardigan|fleece|waffle|crewneck|roll-neck|turtleneck)\b", re.IGNORECASE)
+_KNIT_PATTERNS: frozenset[str] = frozenset(
+    ["solid", "subtle texture", "stripes", "argyle", "geometric"])
+_DRESS_RE = re.compile(
+    r"\b(?:dress(?! (?:shirt|shoes|socks|trousers|pants))|gown|ballgown|skirt|sundress|"
+    r"pinafore|shirtdress)\b", re.IGNORECASE)
+_MENSWEAR_SHOES: frozenset[str] = frozenset(
+    ["oxfords", "derbies", "work boots", "hiking boots", "boat shoes"])
+
+
+#: 1.5.0 round 4 (QA renders): one named hue on the lead garment spread to the WHOLE
+#: outfit -- an ivory jacket over an ivory sweater, a rust suit with a rust shirt and tie.
+#: The other garments now get their own colour: a TONAL palette uses its other hues
+#: ("a rust shirt with olive trousers"), an ACCENT palette a contrasting neutral ("an
+#: emerald shirt with stone trousers"). A matched suit or set keeps its own bottoms.
+_TONAL_PALETTES: frozenset[str] = frozenset([
+    "neutral tones", "earth tones", "grey tones", "navy and white", "blue and white",
+    "olive and khaki", "burgundy and grey", "camel and cream", "white and cream"])
+#: The two-colour palettes ARE their pair, so the second colour is simply the other one.
+#: The multi-hue tonal palettes must also contrast in LIGHTNESS -- "an oatmeal crewneck
+#: over a taupe shirt with beige corduroys" was as flat as one colour.
+_PAIR_PALETTES: frozenset[str] = frozenset([
+    "navy and white", "blue and white", "olive and khaki", "burgundy and grey",
+    "camel and cream", "white and cream"])
+_LIGHT_HUES: frozenset[str] = frozenset([
+    "white", "crisp white", "cream", "ivory", "beige", "oatmeal", "stone-grey", "light blue",
+    "powder-blue", "mint", "pale sage", "blush-pink", "lavender", "butter-yellow", "khaki",
+    "tan", "heather-grey", "camel", "taupe"])
+_DARK_CONTRAST: tuple[str, ...] = ("navy", "charcoal", "black", "dark olive", "chocolate-brown")
+_BLUE_HUES: frozenset[str] = frozenset(
+    ["navy", "light blue", "powder-blue", "cobalt-blue", "sapphire", "blue"])
+_DENIM_RE = re.compile(r"\b(?:denim|jeans|chambray)\b", re.IGNORECASE)
+_LIGHT_CONTRAST_TOPS: tuple[str, ...] = ("white", "cream", "light grey")
+_LIGHT_CONTRAST_BOTTOMS: tuple[str, ...] = ("stone", "khaki", "light grey", "navy", "charcoal",
+                                            "black")
+_SEGMENT_RE = re.compile(r"(\s(?:over|under|with)\s)")
+_SEGMENT_HEAD_RE = re.compile(r"\s(?:and)\s|,")
+_TOP_NOUN_RE = re.compile(
+    r"\b(?:shirt|tee|t-shirt|sweater|tank|top|blouse|hoodie|henley|polo|crewneck|turtleneck|"
+    r"roll-neck|camisole|cami|cardigan|jumper|sweatshirt|bodysuit|base layer|long sleeve|"
+    r"thermal|knit|vest|waistcoat|dress|shell|popover|overshirt)s?\b", re.IGNORECASE)
+_BOTTOM_NOUN_RE = re.compile(
+    r"\b(?:trousers|pants|chinos|shorts|skirt|joggers|leggings|cargos|corduroys|slacks|"
+    r"flares|culottes)\b", re.IGNORECASE)
+_MATCHED_LEAD_RE = re.compile(
+    r"\b(?:suit|tuxedo|set|tracksuit|co-ord|jumpsuit|overalls|coveralls|boilersuit|"
+    r"twinset|pyjamas?|pajamas?)\b", re.IGNORECASE)
+_NO_RECOLOUR_RE = re.compile(r"\b(?:denim|jeans|matching|camo|camouflage)\b", re.IGNORECASE)
+_LEADING_ARTICLE_SEG_RE = re.compile(r"^(?:a|an)\s+", re.IGNORECASE)
+
+
+def _colour_the_rest(base: str, palette: str, hue: str, hues: list[str],
+                     rng: random.Random) -> str:
+    """Give the garments after the lead one their own colour (1.5.0 round 4)."""
+    parts = _SEGMENT_RE.split(base)
+    # A set's "with a long sleeve and wide trousers" names its own matching pieces.
+    if len(parts) < 3 or _SET_LEAD_RE.search(parts[0]):
+        return base
+    matched = bool(_MATCHED_LEAD_RE.search(parts[0]))
+    used = {hue}
+    for i in range(2, len(parts), 2):
+        seg = parts[i]
+        head = _SEGMENT_HEAD_RE.split(seg, 1)[0]
+        is_top, is_bottom = bool(_TOP_NOUN_RE.search(head)), bool(_BOTTOM_NOUN_RE.search(head))
+        if not (is_top or is_bottom) or (is_bottom and not is_top and matched):
+            continue
+        if (COLOUR_WORD_RE.search(head) or PATTERN_WORD_RE.search(head)
+                or _NO_RECOLOUR_RE.search(head)):
+            continue
+        options = [h for h in hues if h not in used] if palette in _TONAL_PALETTES else []
+        if palette not in _PAIR_PALETTES:
+            options = [h for h in options if (h in _LIGHT_HUES) != (hue in _LIGHT_HUES)]
+        if not options:
+            pool = (_DARK_CONTRAST if hue in _LIGHT_HUES
+                    else _LIGHT_CONTRAST_TOPS if is_top else _LIGHT_CONTRAST_BOTTOMS)
+            options = [c for c in pool if c not in used
+                       and not (c in _BLUE_HUES and _DENIM_RE.search(base))]
+        if not options:
+            continue
+        colour = rng.choice(options)
+        used.add(colour)
+        article = _LEADING_ARTICLE_SEG_RE.match(seg)
+        parts[i] = (_an(f"{colour} {seg[article.end():]}") if article
+                    else f"{colour} {seg}")
+    return "".join(parts)
+
+
+def _insert_after_hue(phrase: str, adjective: str, hue: str) -> str:
+    """Place a pattern adjective after the palette hue, before the garment."""
+    if hue and phrase.startswith(hue + " "):
+        return f"{hue} {adjective} {phrase[len(hue) + 1:]}"
+    return f"{adjective} {phrase}"
+
+
 def _compose_outfit_clause(
-    garment: str, resolved: dict[str, str], locked_clean: set[str]
+    garment: str, resolved: dict[str, str], locked_clean: set[str],
+    rng: random.Random | None = None,  # APPENDED (1.5.0): picks a palette's hue
+    presentation: str | None = None,   # APPENDED (1.5.0): masculine hue subsets
 ) -> str:
     """Compose the generated outfit with its palette, pattern and footwear (0.83.0).
 
@@ -2048,26 +2771,66 @@ def _compose_outfit_clause(
     phrase = LEADING_ARTICLE_RE.sub("", garment).strip() or garment
 
     # --- palette ------------------------------------------------------------------
-    colour = _wanted("clothing_color", bool(COLOUR_WORD_RE.search(phrase)))
+    # 1.5.0 round 5: "a mixed-print waffle-knit thermal" / an ombre knit read as the
+    # "weird sweater" of round 2 -- a knit lead takes no multi-colour palette.
+    colour = _wanted("clothing_color", bool(COLOUR_WORD_RE.search(phrase)) or (
+        resolved.get("clothing_color") in ("mixed prints", "gradient ombre")
+        and bool(_KNIT_LEAD_RE.search(_LEAD_SPLIT_RE.split(garment, 1)[0]))))
+    colour_word = ""
     if colour:
-        adjective = PALETTE_ADJECTIVES.get(colour)
+        hues = ((PALETTE_HUES_MASCULINE.get(colour) if presentation == "Masculine" else None)
+                or PALETTE_HUES.get(colour))
+        # 1.5.0 round 4: no blue lead beside denim ("a navy blazer ... selvedge denim"
+        # rendered blue on blue on blue). Falls back to the whole list if nothing is left.
+        if hues and _DENIM_RE.search(phrase):
+            hues = [h for h in hues if h not in _BLUE_HUES] or hues
+        adjective = (rng.choice(hues) if hues and rng is not None
+                     else PALETTE_ADJECTIVES.get(colour))
         if adjective:
+            if hues and rng is not None:
+                phrase = _colour_the_rest(phrase, colour, adjective, hues, rng)
             phrase = f"{adjective} {phrase}"
+            colour_word = adjective
         else:                    # unmapped value: say nothing rather than guess
             resolved.pop("clothing_color", None)
 
-    phrase = _article_if_singular(phrase)
-
     # --- pattern ------------------------------------------------------------------
-    pattern = _wanted("clothing_pattern", bool(PATTERN_WORD_RE.search(phrase)))
+    # 1.5.0 round 4: voiced as an adjective on the LEAD garment, after the hue ("a navy
+    # striped linen shirt with chinos"); a tail landed on the last noun instead. The
+    # guard reads the lead garment only: "pleated cotton trousers in denim" was the round
+    # 3 case (a named fabric cannot also be denim), and a denim tee is not a garment.
+    lead = _LEAD_SPLIT_RE.split(garment, 1)[0]
+    pattern = _wanted("clothing_pattern", bool(PATTERN_WORD_RE.search(phrase))
+                      or bool(_PLAIN_GARMENT_RE.search(phrase))
+                      or bool(_SET_LEAD_RE.search(lead))
+                      or (bool(_KNIT_LEAD_RE.search(lead))
+                          and resolved.get("clothing_pattern") not in _KNIT_PATTERNS) or (
+        resolved.get("clothing_pattern") == "denim"
+        and (bool(FABRIC_WORD_RE.search(lead)) or not _DENIMABLE_RE.search(lead)
+             or bool(_NOT_DENIM_RE.search(lead)))))
+    tail = ""
     if pattern:
-        tail = PATTERN_TAILS.get(pattern)
-        if tail:
-            phrase += tail
-        elif tail is None:       # unmapped value
-            resolved.pop("clothing_pattern", None)
-        # A mapped-but-EMPTY tail ("solid") is deliberate silence and the field stays:
-        # "solid" is true of the garment, it just does not need saying.
+        adjective = PATTERN_ADJECTIVES.get(pattern)
+        if adjective:
+            phrase = _insert_after_hue(phrase, adjective, colour_word)
+        elif adjective is None:   # a user-added pattern: the old tail, else say nothing
+            tail = PATTERN_TAILS.get(pattern) or ""
+            if not tail:
+                resolved.pop("clothing_pattern", None)
+        # A mapped-but-EMPTY adjective ("solid") is deliberate silence and the field
+        # stays: "solid" is true of the garment, it just does not need saying.
+
+    phrase = _article_if_singular(phrase) + tail
+
+    # --- outerwear (1.5.0) ---------------------------------------------------------
+    # No guard: _eligible_outerwear already forced the absent token wherever a coat
+    # does not belong, and a lock still wins, as above.
+    # The coat LEADS: "a trench coat over a pastel sweatshirt with shorts ...". Trailing
+    # it after the garment's own "with <bottoms>" tail read as the shorts being under
+    # the coat, and stacked a second "under" onto "a dress under a fitted blazer".
+    coat = _wanted("outerwear", False)
+    if coat:
+        phrase = f"{_article_if_singular(coat)} over {phrase}"
 
     # --- legwear ------------------------------------------------------------------
     # Sits between the garment and the shoes because that is the order it is worn in,
@@ -2081,6 +2844,21 @@ def _compose_outfit_clause(
 
     # --- footwear -----------------------------------------------------------------
     shoes = _wanted("footwear", bool(SHOE_RE.search(phrase)))
+    # 1.5.0 round 4: "a one-shoulder chiffon gown ... in oxfords". The style's shoe list
+    # serves its men's and women's garments alike, so a dress re-picks away from the
+    # men's lace-ups, honouring every exclusion still live (season, place, style).
+    if (shoes in _MENSWEAR_SHOES and "footwear" not in locked_clean and rng is not None
+            and _DRESS_RE.search(garment) and not _LEG_COVER_RE.search(garment)):
+        banned = _live_exclusions("footwear", resolved, presentation) | _MENSWEAR_SHOES
+        style_shoes = FOOTWEAR_BY_STYLE.get(resolved.get("outfit_style") or "")
+        options = sorted(f for f in (style_shoes or FIELD_DEFINITIONS["footwear"]["female_options"])
+                         if f not in banned)
+        if options:
+            shoes = rng.choice(options)
+            resolved["footwear"] = shoes
+        else:
+            resolved.pop("footwear", None)
+            shoes = None
     if shoes:
         override = _FOOTWEAR_CLAUSES.get(shoes)
         phrase += f", {override}" if override else f", in {shoes}"
@@ -2138,6 +2916,7 @@ def _format_prose(
     resolved: dict[str, str], gender: str, cosplay_label: str | None = None,
     species: dict | None = None, hands_visible: bool = True,
     mask_text: str | None = None, anatomy_note: str | None = None,
+    presentation: str | None = None,  # APPENDED (1.5.0 round 4)
 ) -> str:
     """Build a natural-language description from resolved field values.
 
@@ -2397,7 +3176,9 @@ def _format_prose(
             # Singular pieces take an article ("a brooch", "a nose stud"); plural ones
             # ("pearl studs", "layered gold chains") stay bare, so the list agrees with
             # the watch below, which has always been articled.
-            jewelry.append(_article_if_singular(g(field)))
+            jewelry.append(
+                (_MASCULINE_JEWELRY_CLAUSES.get(g(field)) if presentation == "Masculine"
+                 else None) or _article_if_singular(g(field)))
     if g("watch_type"):
         watch = g("watch_type")
         jewelry.append(_an(watch, "" if "watch" in watch else "watch"))
@@ -2446,7 +3227,9 @@ def _format_prose(
     if g("bag"):
         clothing.append(f"carrying {_article_if_singular(g('bag'))}")
     if g("accessories"):
-        clothing.append(f"accessorized with {_article_if_singular(g('accessories'))}")
+        acc = g("accessories")
+        clothing.append(f"accessorized with "
+                        f"{_ACCESSORY_CLAUSES.get(acc) or _article_if_singular(acc)}")
     if clothing:
         sentences.append(", ".join(clothing))
 
@@ -3004,21 +3787,35 @@ def generate_character(
         _LOG.info("'%s=%s' is not valid for gender '%s'; re-randomizing "
                   "within the %s pool.", name, value, gender, gender)
 
-    resolved = _randomize_fields(
-        locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
-        covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
-        scale_class=scale_class, feral=is_feral,
-    )
-
     # Wardrobe presentation gates the masculine-default trims: a man reads Masculine
     # under "Match gender", but a Feminine/"Any" wardrobe keeps feminine-coded
     # jewellery/nails available so a deliberately femme male look still works.
+    # Computed BEFORE the fill since 1.5.0, because the fill itself now leans on it
+    # (masculine absence rates and hair family weights).
     presentation = _presentation_mode(gender, wardrobe)
+    resolved = _randomize_fields(
+        locked_clean, gender, hair_color_scope, accessory_density, location_setting, rng,
+        covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
+        scale_class=scale_class, feral=is_feral, presentation=presentation,
+    )
     warnings = _apply_constraints(
         resolved, gender, set(locked_clean), rng, presentation, scale_class
     )
     for message in warnings:
         _LOG.info("%s", message)
+    # 1.5.0 round 4: a LOCKED coat (or any rule) that moves an indoor scene outdoors after
+    # the indoor requirement blanked the season left it blank outdoors -- 72 of 100 locked
+    # winter coats voiced no season, so the garment was never dressed for the weather.
+    if ("season" not in locked_clean and _is_absent(resolved.get("season"))
+            and resolved.get("location") in OUTDOOR_LOCATIONS):
+        banned = _live_exclusions("season", resolved, presentation)
+        seasons = [v for v in FIELD_DEFINITIONS["season"]["female_options"] if v not in banned]
+        if seasons:
+            resolved["season"] = rng.choice(seasons)
+            for message in _apply_constraints(resolved, gender, set(locked_clean), rng,
+                                              presentation, scale_class):
+                _LOG.info("%s", message)
+    _cap_adornments(resolved, set(locked_clean), presentation)
 
     # A costume override (outfit_description supplied by an archetype/cosplayer)
     # is already a complete outfit, so the separately-randomized garment fields
@@ -3036,9 +3833,18 @@ def generate_character(
         # picking the garment and composing around it. Parking the raw garment in
         # `resolved` first is what lets the deferred draw see it.
         resolved["outfit_description"] = garment or ""
-        _resolve_deferred_fields(resolved, gender, accessory_density, rng)
+        if not garment:
+            # No garment (outfit_style set to None): the random palette, pattern and
+            # shoes would describe nothing, and voiced "earth tones houndstooth
+            # clothing, in flats". Only a field the user LOCKED is still voiced.
+            for field in ("clothing_color", "clothing_pattern", "footwear"):
+                if field not in locked_clean:
+                    resolved.pop(field, None)
+        _resolve_deferred_fields(resolved, gender, accessory_density, rng,
+                                 generated_outfit=bool(garment),
+                                 presentation=presentation, locked=set(locked_clean))
         resolved["outfit_description"] = (
-            _compose_outfit_clause(garment, resolved, set(locked_clean))
+            _compose_outfit_clause(garment, resolved, set(locked_clean), rng, presentation)
             if garment else garment
         )
     else:
@@ -3048,7 +3854,8 @@ def generate_character(
         # fields can gate on it directly. legwear is suppressed for costumes further
         # down (_COSTUME_SUPPRESSED_EXTRAS); tattoo_placement still resolves, because
         # ink under a costume is coherent.
-        _resolve_deferred_fields(resolved, gender, accessory_density, rng)
+        _resolve_deferred_fields(resolved, gender, accessory_density, rng,
+                                 presentation=presentation, locked=set(locked_clean))
 
     # The outfit is final at last, so the pose gate can finally see it -- inside the
     # randomize loop a *generated* costume does not exist yet. Free unless the drawn
@@ -3056,7 +3863,7 @@ def generate_character(
     # after this point, so no seed drifts except the ones that were already wrong.
     # See _repair_pose for why this is a repair rather than a deferral.
     _repair_pose(resolved, gender, set(locked_clean), covers_face, covers_body,
-                 covers_hair, scale_class, rng, is_feral)
+                 covers_hair, scale_class, rng, is_feral, presentation)
 
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or
     # ring would render on top of the glove (the reported bug). Force the finger
@@ -3105,6 +3912,16 @@ def generate_character(
         for field in _COSTUME_SUPPRESSED_EXTRAS:
             if field not in locked_clean:
                 resolved.pop(field, None)
+        # 1.5.0: a coat the user LOCKED onto a costume is voiced, so the JSON never
+        # carries a coat the prose does not show (and that hides tattoo placements).
+        coat = resolved.get("outerwear")
+        # A recalled 1.5.0 vault save already carries "a trench coat over ..." in its
+        # composed outfit text, so only voice a coat the text does not already name.
+        if "outerwear" in locked_clean and coat and not _is_absent(coat) \
+                and resolved.get("outfit_description") \
+                and coat.lower() not in resolved["outfit_description"].lower():
+            resolved["outfit_description"] = (
+                f"{_article_if_singular(coat)} over {resolved['outfit_description']}")
 
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or ring
     # would render on top of the glove (the reported bug). Two sources: the resolved
@@ -3118,6 +3935,7 @@ def generate_character(
     # Deliberately placed AFTER the costume-extras suppression above: a locked costume
     # drops the random `accessories` draw entirely, and suppressing nails for a glove that
     # was itself just dropped would be over-suppression from a value that never renders.
+    _fit_extras_to_garment(resolved, set(locked_clean))
     if ((_GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text))
             or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES):
         for field in ("nails", "rings"):
@@ -3254,7 +4072,7 @@ def generate_character(
     ) or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES
     prose = _format_prose(resolved, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text,
-                          anatomy_note=anatomy_note)
+                          anatomy_note=anatomy_note, presentation=presentation)
     # Fields a preset or a widget deliberately locked ABSENT. They are stripped from
     # the group output (``group_fields`` drops "None"), so without recording them the
     # document cannot round-trip through the vault -- a recalled She-Hulk grew a

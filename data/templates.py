@@ -4349,6 +4349,170 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             },
         },
     },
+
+    # === 1.5.0 archetypes (maintainer-approved) =============================
+    # Qipao and changshan are the same tradition's two sexes, so one variants entry
+    # (the Ao Dai / Hanbok pattern). The saree half of the requested "Saree +
+    # Sherwani" pair was NOT added: Bollywood Heroine already ships the sari.
+    "Chinese Qipao": {
+        "gender": "Female",
+        "ethnicity": "Chinese",
+        "skin_tone": ["fair", "light", "porcelain"],
+        "eye_color": "dark brown",
+        "piercings": "no piercings beyond ears",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "other_jewelry": "no other jewelry",
+        "rings": "none",
+        "bracelet": "none",
+        "expression": "serene",
+        "location": ["tea house with low wooden tables", "the Bund waterfront in Shanghai"],
+        "lighting": ["warm lantern light", "soft window light from the side"],
+        "shot_type": "full body shot",
+        "mood": "nostalgic",
+        "variants": {
+            "Female": {
+                "body_type": "slender",
+                "height": "average height",
+                "hair_color": "jet black",
+                "hair_length": "shoulder length",
+                "hair_texture": "silky and glossy",
+                "hair_style": "chignon",
+                "makeup_style": "soft glam",
+                "necklace": "no necklace",
+                "earrings": "pearl studs",
+                "nails": "red polish",
+                "bag": "no bag",
+                "outfit_description": [
+                    "a close-fitting {jewel_tone} silk brocade qipao with a high mandarin "
+                    "collar, an asymmetric diagonal front fastened with knotted frog "
+                    "buttons, cap sleeves, and a knee-length skirt with a side slit, worn "
+                    "with low heeled pumps",
+                    "an ankle-length {pastel} satin cheongsam embroidered with peonies, a "
+                    "piped mandarin collar and frog-button closure from collar to underarm, "
+                    "high side slits, and embroidered silk shoes",
+                ],
+            },
+            "Male": {
+                "body_type": "lean",
+                "height": "average height",
+                "facial_hair": "clean shaven",
+                "hair_color": "jet black",
+                "hair_length": "very short",
+                "hair_texture": "sleek straight",
+                "hair_style": "slicked back",
+                "makeup_style": "no makeup",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "bag": "no bag",
+                "outfit_description": [
+                    "an ankle-length {dark_color} silk changshan gown with a mandarin "
+                    "collar and a diagonal frog-button closure, worn over dark trousers "
+                    "with black cloth shoes",
+                    "a {jewel_tone} brocade Tang jacket with a stand collar and a row of "
+                    "knotted frog buttons down the front, loose black silk trousers, and "
+                    "black cloth shoes",
+                ],
+            },
+        },
+    },
+
+    # Neutral: jockeys and referees are any gender, so nothing gender-divergent is locked.
+    "Jockey": {
+        "body_type": "very slim",
+        "height": "short",
+        "fitness_level": "very fit",
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "expression": "determined",
+        "location": ["open meadow", "country dirt road"],
+        "lighting": ["golden hour sunlight", "overcast diffused daylight"],
+        "shot_type": "full body shot",
+        "mood": "intense",
+        "outfit_description": [
+            "racing silks: a glossy satin jersey in {team_color} and white quartered "
+            "blocks with a matching silk cover over a black skull-cap helmet, goggles "
+            "pushed up on the helmet, spotless white breeches, and black knee-high "
+            "riding boots, with a short riding crop tucked under one arm",
+            "racing silks: a satin jersey in {team_color} with bold contrasting chevrons "
+            "on the sleeves and a matching silk cap over the helmet, white breeches, a "
+            "safety vest showing under the jersey, and tall black riding boots",
+        ],
+    },
+    "Referee": {
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "expression": "stern",
+        "location": ["high school gymnasium", "outdoor basketball court with chain nets"],
+        "shot_type": "full body shot",
+        "mood": "commanding",
+        "outfit_description": [
+            "a black-and-white vertically striped referee shirt with a black collar, "
+            "black trousers, a silver whistle on a black lanyard, and black athletic shoes",
+            "a black short-sleeve referee jersey with a sponsor patch on the chest, black "
+            "shorts, black knee socks, a whistle on a lanyard, and a yellow card held up "
+            "in one raised hand",
+        ],
+    },
+
+    # Female-lean: the solo dress and ringlet wig ARE the look; the men's costume is
+    # the competition waistcoat and tie.
+    "Irish Step Dancer": {
+        "gender": "Female",
+        "ethnicity": "Irish",
+        "age": ["18", "19", "20", "22", "25"],
+        "fitness_level": "very fit",
+        "outfit_style": "cocktail semi-formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "bright smile",
+        "location": ["empty theater stage with the curtain up",
+                     "community theatre auditorium"],
+        "lighting": ["stage spotlight from above", "high key bright even lighting"],
+        "shot_type": "full body shot",
+        "mood": "exuberant",
+        "variants": {
+            "Female": {
+                "body_type": "slender",
+                "hair_length": "long",
+                "hair_texture": "tightly curled",
+                "hair_style": "worn down",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "an Irish dance solo dress in {jewel_tone} velvet densely embroidered "
+                    "with Celtic knotwork and crystals, long sleeves, a stiff flared short "
+                    "skirt, a sparkling tiara headband over a bouncing ringlet wig, white "
+                    "poodle socks, and black laced ghillie shoes",
+                    "a {color} satin Irish dance solo dress with a high collar, a stiffened "
+                    "embroidered skirt panel and appliqued Celtic knots, a jeweled headband "
+                    "over tight ringlet curls, white poodle socks, and black buckled hard "
+                    "shoes",
+                ],
+            },
+            "Male": {
+                "body_type": "lean",
+                "facial_hair": "clean shaven",
+                "hair_length": "very short",
+                "hair_style": "natural and unstyled",
+                "necklace": "no necklace",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "an Irish dance costume of a {jewel_tone} waistcoat embroidered with "
+                    "Celtic knotwork over a crisp white long-sleeve shirt and a matching "
+                    "tie, black trousers, and black buckled hard shoes",
+                    "a black Irish dance performance shirt with a {jewel_tone} satin sash "
+                    "embroidered with Celtic knots across the chest, black trousers, and "
+                    "black laced hard shoes",
+                ],
+            },
+        },
+    },
 }
 
 

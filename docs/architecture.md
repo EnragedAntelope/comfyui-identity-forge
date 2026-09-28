@@ -565,6 +565,15 @@ list; the working principles at the top of this file also apply):
   1.4.0 took four from Genshin Impact, two from Zenless Zone Zero and three from Wuthering
   Waves, and declined the rest because the differentiator was hair colour and elemental trim.
   A new franchise stays under `_FRANCHISE_SCOPE_MINIMUM` unless a scope option is wanted.
+- **Approved is not shipped (1.5.0).** A maintainer-approved shortlist still passes through
+  research and, for creatures, a render test against the nearest incumbents. M3GAN was
+  approved and then declined (a child-sized doll: the adults-only bar), the saree was a
+  duplicate of `Bollywood Heroine`, and `arachne` rendered as a man in a suit beside a spider
+  twice. Report each decline with its reason; do not ship to honour the approval.
+- **Review a "soft" entry by re-sourcing it (1.5.0).** The two entries flagged as the roster's
+  softest were not soft, they were *wrong*: generic outfits standing in for specific canon
+  (`Hitagi Senjougahara`'s pink-and-purple Naoetsu uniform, `Chizuru Mizuhara`'s bib-collar
+  blouse). Judging the text alone would have left both.
 
 Rules learned from curation passes, kept here rather than in the backlog file so they
 outlive any one candidate list.
@@ -3463,3 +3472,328 @@ mask length. Neither bug lived in this pack's business logic; both were closed b
 platform behaviour (gating the trigger on `node.flags.ghost`, and padding one inert trailing
 `widgets_values` element to dodge the length collision) rather than by touching the platform
 itself.
+
+## 1.5.0 — the place, the weather and the face decide what is plausible
+
+Measured first, over 3,000–6,000 default renders on 1.4.0: `outfit_style` had no rule tying it
+to `location` (evening gowns in an emergency room, loungewear in a machine shop), `season` had
+**no rule at all** (~8% of renders wore sandals, shorts or a sun hat "during winter", or a beanie
+in summer), `expression` and `mood` contradicted each other in 5.4%, and 30% of default men drew
+a feminine-coded `body_type`. `docs/worklog/` holds the sweep; the tests named below pin each fix.
+
+### `outfit_style` answers to the place (1.5.0)
+
+`location` is the trigger, so the place stands and the style adapts — the lighting and
+composition doctrine. Data lives in `data/constraints.py`: a per-family allowlist
+(`OUTFIT_STYLES_BY_LOCATION_FAMILY`), `OUTFIT_STYLE_VENUES` for places narrower than their family
+(gyms, shop floors, beaches), then `OUTFIT_STYLE_EXTRAS` / `OUTFIT_STYLE_REMOVALS`;
+`outfit_styles_allowed_at()` resolves one place. A location the family map does not know (a
+`user_options.json` addition) returns `None` and gets no rule, so custom places are never
+narrowed. `outfit_style` is flat, so every re-pick is uniform over the survivors. The realized
+style mix moves the way the base node's brief says it should — streetwear/casual ~12% each,
+evening formal ~1%, loungewear and resort ~2% — which is realism, not bias: lock a style and the
+random location re-rolls to somewhere it is worn. `utility workwear` joined as the 15th style
+because workshops, docks, farms and building sites had nothing plausible to draw.
+**Archetypes:** some archetype style/location pairs disagree with the table, because an
+archetype's `outfit_style` is a proxy that steers accessories under a supplied costume. In Full
+lock level both are locked, so the rule only logs; in Essentials the location is free and is
+steered to a venue that fits. Pinned by `OutfitStyleByLocationTests`.
+
+### The season is an outdoor fact (1.5.0)
+
+Three layers, in rule order. **(1)** every built-in indoor or studio location *requires*
+`season = "None"`, so indoors the season is dropped from prose and JSON at zero RNG cost, and
+every season rule below is outdoors-only for free; a locked season moves a random location
+outdoors (the requirement branch's contrapositive). `validate_data.py` now accepts `"None"` as a
+requirement value — it is every widget's omit token. **(2)** `SEASONS_BY_LOCATION` pins seven
+seasonal places (cherry blossom = spring, snowy pine forest = winter, …). **(3)** the season gates
+what is worn (`SEASON_EXCLUSIONS` → footwear, accessories, bag, `outfit_style`), and
+`_garment_fits_season` drops warm-only garment phrases in winter and cold-only ones in summer
+(regexes beside `COLOUR_WORD_RE` in `data/fields.py`, read only against the engine's own corpus).
+
+Two traps. **Direction matters for bias:** the first draft let the two winter lights pin the
+season, which skewed outdoor seasons to 29% winter / 21.5% summer, because 2 of the 17
+`daylight` variants dragged the season. Flipped so the season is the trigger (a winter light
+drawn out of season is re-picked alone — the mixture property), the seasons measure uniform.
+**Never trigger a rule on `season = "None"`:** with a locked scarf, the exclusion's
+contrapositive re-rolls a season the indoor requirement pins straight back, and the two repairs
+ping-pong to the iteration cap. Indoor-only exclusions are keyed on each indoor *location*
+instead, whose contrapositive moves the place. Pinned by `SeasonGateTests`, `SeasonGarmentTests`.
+
+### `outerwear`: weather wear, drawn last (1.5.0)
+
+A deferred field appended at the end of `FIELD_DEFINITIONS` (the `legwear` template:
+`_DEFERRED_FIELDS`, `_COSTUME_SUPPRESSED_EXTRAS`, a pool filter instead of a rule). The coat
+LEADS the clause ("a trench coat over a pastel sweatshirt with shorts ..."): trailing it read
+as the shorts being under the coat. `_eligible_outerwear` returns `no outerwear` **without
+touching the RNG** unless the garment is engine-generated, the place is not a built-in
+interior (a *locked* season survives indoors, so the season alone is not enough), the season
+is voiced and not summer, the footwear is not open (bare feet, sandals, slides), and the
+garment has no outer layer of its own (`OUTER_LAYER_RE`); a light layer (`LIGHT_LAYER_RE`:
+blazer, cardigan, tailored jacket) takes a coat only in winter. A character who cannot wear
+a coat draws what it drew before the field existed; `outerwear` resolves before
+`tattoo_placement` (`_DEFERRED_ORDER`) so a coat hides sleeve-covered ink. A coat the user
+LOCKS onto a supplied costume is voiced too (never JSON-only), unless a recalled vault
+save's text already names it. A `user_options.json` coat with no season row fails open.
+`OUTERWEAR_BY_STYLE` (allowlist, validated both ways like `FOOTWEAR_BY_STYLE`) and
+`OUTERWEAR_SEASONS` (heavy = winter, mid = the cold half, light = spring/autumn) narrow the pool;
+winter outdoors always gets one, spring/autumn half the time. Measured over 4,000: 0 indoors,
+0 in summer, 83% winter outdoors, 31% spring/autumn, 9.4% overall. Why a field rather than coats
+in the garment corpus: 37% of corpus phrases already carry a layer, and a field adds the lock
+and the outfit × coat variety that fixed pairings cannot. Vault recall of an older character is
+unaffected — its saved `outfit_description` is the composed clause, which takes the costume
+path. Pinned by `OuterwearTests`.
+
+**The legacy `widgets_values` repair had a latent multi-release bug.** Both
+`padLegacyWidgetValues` and `padLegacyCosplayerValues` padded one release at a time, so a
+workflow two releases old got a newer widget one slot late whenever it sits *after* an older
+one — never exercised while the main node's table had one release. `outerwear` (slot 79) sits
+after `legwear` (78) and `tattoos` (25), so 1.5.0 would have hit it. Both now grow the missing set
+newest-first and splice it in one ascending pass; the jsdom suite pins a 1.4.0 and a 0.89.0
+array.
+
+### The face and the mood agree (1.5.0)
+
+A warm face drops the whole `heavy` mood family; a sad face (`melancholic`, `solemn`,
+`wistful`, `brooding`, `weary`) drops the whole `positive` family — whole families only, so the
+survivors stay proportional. 5.4% → 0.6%; the rest is a sad face with `triumphant`, which is a
+partial cull of `bold` and was left. Pinned by `ExpressionMoodTests`.
+
+### The male anatomy trim, and palette double-counting (1.5.0)
+
+The body half of the 1.4.0 "men with female body parts" report: `body_type`, `hips`, `waist`,
+`height` and `nose` share one list across genders and had no trim — 30% of default men drew a
+curvy/hourglass/voluptuous build and "petite" was in 35% of male prose. Added to
+`_MALE_EXCLUDED_VALUES` as anatomy (not presentation-gated); all five fields are flat.
+`clothing_color` carried black twice and white twice, so 36% of generated outfits were black or
+white; each pair now weighs as one value, six everyday palettes joined, and `PaletteShareTests`
+pins the pair weights.
+
+### The picker keeps its filter for the session (1.5.0)
+
+Search, tab and facet now survive close/reopen on the per-node picker instance and are written
+back into the rebuilt controls (the search text pre-selected, so typing replaces it). That keeps
+the 1.1.0 invariant — the box never reads empty over a narrowed grid — while matching Stylebook's
+"remembers my filter" behaviour. Nothing is persisted, so a reload or a new workflow starts clean.
+
+### Round 2: what the maintainer's test renders found (1.5.0)
+
+A 49-image test batch, read against its PNG metadata (so locks were known, not guessed).
+
+**Men read feminine through RANDOM draws, not locks.** Three causes, all fixed on the
+wardrobe PRESENTATION (a man with a Feminine/"Any" wardrobe keeps the full odds — that is
+the crossplay switch):
+
+- **One absence table for everyone.** `_EXTRA_ABSENCE` forces the absent value with a base
+  probability, and the rest is uniform over the pool, so the realized rate is
+  `(1 - base) * (n - 1) / n`. For men that put earrings on 56%, a necklace on 54%, an arm cuff
+  on 25%, a facial piercing on 37%, highlights on 41%, a bandana or headband on 30%.
+  `_EXTRA_ABSENCE_MASCULINE` (engine) holds everyday men's rates; `_maybe_absent` reads it for
+  a Masculine presentation. Same RNG shape, only the threshold moves.
+- **Men drew hair families at the women's odds** (`braid_long` alone was a fifth of the
+  mass, and all fifteen lengths were flat). `MASCULINE_FAMILY_WEIGHTS` (fields.py) re-weights
+  whole families for a Masculine presentation in `_pick_family_weighted`, and `hair_length`
+  gained `masculine_weights` (a new draw-weight map beside `weights` / `male_weights`, read
+  by `_weighted_choice`). Measured: long hair 50% -> 11%.
+- **Trims were missing.** Presentation-gated `_MASCULINE_EXCLUDED_VALUES` (feminine braids,
+  chignon, blowout, bangs, "short pixie") beside the structural hair trims, and the wardrobe
+  trims grew (saddlebags, small crossbodies, mini backpacks, flats, platform boots, delicate
+  and jewelled pendants, a medusa piercing). Seven "unisex" outfit phrases were dresses,
+  camisoles or leggings and moved to the female bucket (a man was rendered in a tiered dress).
+  `presentation` is threaded through `_randomize_fields`, `_repick` and the deferred draw;
+  `generate_character` computes it before the fill.
+
+**Patterns and palettes.** Every pattern weighed 8/15 of `solid`, so 80% of outfits were
+patterned and camouflage/tie-dye/animal print were ~5% each. Plain now carries ~70%, and
+`PATTERN_BY_STYLE` (allowlist, validated both ways) keeps each pattern to the styles that wear
+it; `PALETTE_DENIED_BY_STYLE` keeps ombre / mixed prints / bold primaries off tailored dress.
+The new palettes are two-tone ("blue and white", "burgundy and grey", "camel and cream"): a
+single-hue palette read as one colour head to toe.
+
+**A locked coat now adapts the random scene.** Rules triggered by `outerwear` only ever fire
+on a lock (a random coat is drawn after the loop), which is exactly when they are needed: the
+place goes outdoors (every interior is a whole location family), the season, shoes and style
+follow the coat, and `_resolve_outfit_description` drops garments with their own outer layer.
+
+**Scene gates.** `fire and flame warm flicker` rendered literal flames (a lavender field, an
+airplane cabin): split into its own `artificial_fire` family at the family's own rate and
+gated as a fixture (`FIRE_LOCATIONS`). The `studio_shape` family is excluded outdoors (whole
+family). `seated` split into `seated` / `seated_floor` (proportional) so public and formal
+places drop the floor poses whole, and `_repair_pose` now honours live exclusions
+(`_live_exclusions`) instead of re-opening them. Also: grey hair needs age 35+ (whole
+`gray_white` family), a comb over needs short hair, a hat requires no hair accessory, sun
+hats stay outdoors, barefoot means no legwear, a watch excludes the watch-like bracelets, a
+high-top fade needs coily hair, paired accessories are voiced as "a pair of", and
+`outfit_style: None` no longer voices a random "earth tones houndstooth clothing, in flats".
+Pinned by `MasculinePresentationTests`, `PatternByStyleTests`, `LockedCoatAdaptsTests`,
+`RoundTwoSceneGateTests`.
+
+**Natural colouring follows ethnicity and age (round 2, found in the QA renders).** Eye
+colour was flat (57% of everyone drew blue, grey or green eyes) and natural hair ignored
+ethnicity, so blonde Sudanese and Tibetan men and blue-eyed Somali men were common -- and a
+blonde head pulls a T2I model toward rendering a white person, quietly eroding the
+diversity the ethnicity roll exists to give. `_bias_hair_color` / `_bias_eye_color` add the
+same soft, per-band lean the skin tone already had (`_HAIR_INBAND_PROBABILITY`,
+`_EYE_INBAND_PROBABILITY`): light hair is now ~2-4% outside the fair and olive bands, light
+eyes ~5%, and the fair band keeps its blondes. Grey hair was 20% at every age; it is now
+drawn by age at the pool (`_GREY_BY_AGE`: 0 under 35, ~78% at 65+). **Decide it at the draw,
+not with a rule:** the first version excluded grey under 35 with a constraint, and every
+re-pick it forced ignored the ethnicity lean (light hair stayed ~10%); a locked grey still
+ages a random person up through a grey -> `age` rule. Also: streetwear and casual caps stay
+out of formal rooms, dense freckles stay off deep skin, and the three places named for their
+sunlight are never lit by night. Pinned by `EthnicAndAgeColouringTests`.
+
+**Round 3: the maintainer's review of the QA renders.** Three causes behind "still strange
+for straight men", each measured before the fix:
+
+- **Palette families rendered as colour-blocking.** A family adjective ("bold
+  primary-colored", "pastel", "jewel-toned", "navy-and-white") made the model paint several
+  colours across one garment: rainbow knits, a patchwork safari jacket. `PALETTE_HUES` now
+  resolves a family to ONE named hue per render, voiced on the lead garment
+  (`_compose_outfit_clause`, which gained `rng` and `presentation`); a Masculine presentation
+  draws from `PALETTE_HUES_MASCULINE` (no blush pink, lavender or butter yellow), and the loud
+  palettes carry `masculine_weights`. Whole-look palettes (all black, all white) keep their
+  adjective. The JSON still records the family.
+- **Independent odds still stacked.** Each adornment's rate was realistic, but they are
+  independent, so one man could draw chains, a thumb ring, a wrap bracelet and an earring.
+  `_cap_adornments` (after the constraint loop, no RNG) holds a Masculine presentation to 2
+  pieces and a Feminine one to 4, dropping the least everyday first and never a lock.
+- **Menswear that renders feminine.** "Cropped" puffers and harringtons rendered
+  belly-out on men (rewritten or moved to the female bucket); leather totes rendered as purses
+  (trimmed; two backpacks joined the bag pool); "layered gold chains", "posing with a hand on
+  one hip" and "kneeling gracefully" are masculine-trimmed, with `MASCULINE_FAMILY_WEIGHTS`
+  keeping each pose family's survivors at their old rate; the `playful` expression family is
+  halved for men. `clothing_pattern` also carries `masculine_weights` (floral, paisley, polka
+  dot, animal, tie-dye, abstract made rare): a floral knit with flares read as costume on a man.
+  The `longline knit vest` phrase became a plain sweater vest -- it rendered as a dress over jeans.
+
+Also: bare feet and slippers only where shoes come off (home, water, soft ground, the
+barefoot studios); `denim` yields to a garment that names its own fabric
+(`FABRIC_WORD_RE`); pocket squares need a tailored style and evening clutches an evening
+style; formal suits lose fingerless gloves and casual hats. Review fixes in the same pass:
+the grey -> age rule covers only the three age-greys (white and silver are also dye and
+fiction -- the first version aged every white-haired anime character past 35), Full spectrum
+drops only the age-greys under 35, `_live_exclusions` is now the one union helper both the
+constraint loop and `_repair_pose` use, and the Welder / Glassblower archetypes' locked fire
+light is legal at their workshops. Pinned by `RoundThreeQaTests`.
+
+**Round 4: the maintainer's 47 flagged renders.** Every one reproduced byte-for-byte from
+the branch, so the fixes are by cause, not by image. Measured after: a coherence sweep of
+~10k characters (defaults, Male, Female, each style and five locked coats) finds 0
+violations of any class below, and a final-state check -- no unlocked field holds a value a
+live rule excludes -- finds 0 stuck values in 6,600.
+
+- **Extras that the finished garment cannot carry** (`_fit_extras_to_garment`, after the
+  outfit is composed, no RNG). Suspenders need trousers with nothing over them (they
+  rendered over a double-breasted jacket and with swimwear); belts stay off suits, gowns,
+  robes, hoodies and track pants; lapel pins and pocket squares need lapels; opera gloves
+  need a dress; a waist chain needs a bare midriff, a body chain a bare torso, an arm cuff a
+  bare upper arm, an anklet a bare ankle over an open shoe, a brooch a jacket, cardigan or
+  dress. It writes the field's ABSENT token rather than popping it, so a Turnaround or
+  Vault replay pins the absence instead of re-rolling a different extra into the gap.
+- **Tattoos where the clothes leave skin.** A covered placement did not hide the ink -- the
+  model cut a window in the suit or tore off a sleeve. The upper arm needs short sleeves,
+  the shoulder blade a bare back, the neck no turtleneck; the back of a hand always shows
+  (only a glove covers it). A random tattoo with no visible placement is dropped.
+- **Legwear.** Trousers win over a tunic or dress in the same phrase; a floor-length hem or
+  a garment that already names its hosiery takes none; no tights outdoors in summer; the
+  youthful values stop at 45; no socks with espadrilles, boat shoes or sandals. Men's socks
+  also show where they really do: under a cuffed or ankle-length hem over a low shoe.
+  `LEGWEAR_BY_STYLE` now covers the women's values (fishnets on an evening gown).
+- **One wrist, one thing.** A watch excludes every bracelet (they stacked on one wrist);
+  opera gloves exclude both.
+- **Extras belong to a style and a place.** `EXTRAS_DENIED_BY_STYLE` (bag, accessories, hair
+  accessory, necklace, bracelet, watch, rings, earrings, piercings) plus body jewellery by
+  style: a bucket hat with a sequined cocktail top, a flower crown with a gown, a briefcase
+  with coveralls. By place: no bag at home, no gloves, beanie, bucket hat or sunglasses
+  indoors (a studio sweep keeps them), no dress shoes on rough ground, candle and lamp
+  light outdoors only at a patio. `warm candlelight` split out of `artificial_open` as its
+  own family (88, share-preserving) with a fixture allowlist, `CANDLE_LOCATIONS` -- it lit
+  a trampoline park. Men's earrings are studs; a thumb ring, statement belt, canvas tote,
+  ankle boots (rendered heeled) and a zigzag part are masculine trims. A masculine
+  presentation also VOICES its jewellery plainly (`_MASCULINE_JEWELRY_CLAUSES`: "a small
+  plain cross on a steel chain", "a small gold stud in one ear") because "a cross necklace"
+  rendered as a glittering diamond-cut chain; the values and JSON are unchanged. Men's
+  necklace absence rose 0.72 -> 0.8. From the QA renders: a braided ponytail, a thin
+  headband and a silk neck scarf read feminine on men (trimmed); a tie rules out a
+  necklace and a neck tattoo; pigtails and space buns stop at 45 and leave business and
+  evening dress; mod and gothic makeup stop at 55; a pixie takes no half-up.
+- **Hair.** Gathered styles need length (ear length and a bob: no ponytail, bun, updo, long
+  braid or pigtails; jaw length: no updo, long braid or pigtails; a pixie: no bun).
+  Afro-textured styles (`texture`, `braid_short`) need textured hair; a buzz shows no wave;
+  a high-top fade needs tight coils; the parting follows the style; no highlights on grey
+  hair or a buzz; hair accessories need hair to hold; no windswept hair indoors. To keep
+  every cull whole-family, `bantu knots` moved `knots` -> `texture` (210 / 630) and `box
+  braids` moved `braid_long` -> `braid_short` (1350 / 540), both share-preserving, and
+  `barbered_short`'s base weight fell 560 -> 280 (women drew it twice as often once short
+  lengths stopped drawing buns; men read `MASCULINE_FAMILY_WEIGHTS`).
+- **Ethnicity lean.** Coily textures stay open 8% of the time outside the `dark` band (the
+  flat draw gave them to 13% of Czech, Japanese and Hungarian characters). In the darker
+  bands natural hair is black 60% of the time, else dark or medium brown or chestnut. The
+  skin band `tan` lost `east_asian` and `pacific` (a Japanese man in caramel skin was in
+  band), Sudanese moved to `dark`, and the in-band probability rose 0.8 -> 0.9.
+- **One body.** The build word binds waist, hips, neck, shoulders, chest, fitness and height
+  ("a plus size build ... a very fit physique ... a narrow waist").
+- **Makeup.** Each look binds its details (pin-up liner and red lip, gothic dark lip, soft
+  glam without falsies, natural without glitter or heavy contour); stage looks leave
+  workwear, loungewear, sportswear and business dress, religious sites and workshops; club
+  and editorial looks stop at 55.
+- **Frame and pose.** Close-ups drop full-body poses; a selfie drops strides and power
+  poses; a back view requires a head turn; an overhead shot drops the horizon compositions;
+  the cuff, collar and pocket gestures need a garment that has one.
+- **Face and mood.** A whole-family matrix per expression family. `bold` split into
+  `bold_bright` (self-assured, triumphant) and `bold_fierce` (weights x5, shares exact), so
+  a smile can still be self-assured. Every mood lands between 3% and 6%.
+- **One colour flooded the outfit** (found in the round-4 QA renders themselves: ivory on
+  ivory, a rust suit with a rust shirt and tie). Round 3's single hue binds to the lead
+  garment and the model spreads it everywhere, so `_colour_the_rest` now colours each later
+  garment: a tonal palette with its other hues at a contrasting lightness, a two-colour
+  palette with its pair, an accent palette with a contrasting neutral. A set stays one
+  colour and takes no pattern (a striped lounge set striped top to bottom); a suit keeps its
+  trousers but its shirt contrasts. The four all-one-colour palettes weigh 0.3.
+- **Colour and pattern.** The pattern is an ADJECTIVE on the lead garment
+  (`PATTERN_ADJECTIVES`): a tail landed on the last noun, so "chinos in stripes". Knitwear
+  takes only solid, texture, stripes, argyle or geometric; self-patterned fabrics
+  (seersucker, tweed) take none; `white and cream` is voiced as one hue (it rendered a
+  two-colour block); "midnight" and similar count as colour words; business formal loses
+  jewel tones and edgy loses pastels.
+- **Garments.** Robes and swimwear only at home or by water; a coat never goes over a
+  two-layer garment or a summer top; youthful phrases stop at 45; a dress re-picks away
+  from men's lace-ups. Phrase fixes: "broomstick skirt" drew a broom, several men's
+  phrases had no bottoms, "high-waisted wide trousers" read as a skirt, longline hoodies
+  read as dresses.
+- **Age and skin.** No laugh lines under 30 or "porcelain smooth" from 50; dense freckles on
+  fair skin only; scars and a neck birthmark weigh 0.3 (they rendered as wounds).
+- **Two engine bugs.** A locked coat that moved an indoor scene outdoors left the season
+  blank (72 of 100 locked winter coats) -- it is now redrawn and the rules re-run.
+  `_repair_pose` passed no presentation, so the masculine pose trims and family weights
+  were skipped on every repair.
+
+**Round 5: the maintainer's test of the round-4 branch** (14 flags, "overall much better"):
+- A constraint re-pick bypassed the ethnicity lean -- a buzz cut re-picks `hair_texture` off
+  a wave, and a Welsh man came back coily. `_repick` now applies the same skin, eye, hair
+  colour and texture leans as the draw (Welsh men coily: 0.5%); out-of-band coily 0.08 -> 0.03.
+  The Afro-textured STYLES (`texture`, `braid_short` families) lean the same way, since the
+  texture gate allows them on "curly" hair every band draws (two-strand twists on a
+  70-year-old Welsh man): open 5% of the time outside the dark band, at the draw and on
+  re-picks, whole families.
+- outfit_style None voiced "accessorized with a silk pocket square" and nothing else, so the
+  model drew a bare chest: garment-bound extras go when there is no garment.
+- No sunglasses under night light; no coat (random or locked) at a pool or hot spring; an
+  ombre palette takes no print and a knit lead takes no mixed-print or ombre palette;
+  all-one-colour palettes leave business dress and workwear and weigh less (all white 0.15,
+  men 0.1); a corset top is a bare top for the season filter and, with vinyl and harness
+  pieces, a young look past 45; cornrows, locs and twists need tighter curls than a loose
+  curl; an undercut and a mullet stop at 55; chiffon and lace dresses are "lined" (one
+  rendered see-through); a men's boho knit-and-flares phrase became straight-leg corduroys.
+- The two "unisex" phrases that carry a tie (a pressed suit with a slim tie, a satin-lapel
+  dinner suit with a bow tie) moved to the men's buckets: a Feminine wardrobe drew a woman
+  in a suit and tie. A suit and tie stays reachable for women under a Masculine or Any
+  wardrobe.
+- **Decided (maintainer, round 5): `outfit_style` None stays silent.** It voices no
+  clothing at all -- it exists for users who write their own clothing prompt -- so with
+  nothing else in the prompt the model may render a person undressed (a bathroom selfie
+  did). Only garment-bound extras are dropped with it.
+
+Pinned by `RoundFourQaTests`. The sweeps behind the numbers are `docs/worklog/sweep_r4.py`,
+`dist_r4.py` and `invariant_r4.py` (gitignored, local).

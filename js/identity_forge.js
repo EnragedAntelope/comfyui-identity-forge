@@ -92,7 +92,8 @@ const FIELD_TO_GROUP = {
   "composition": "Setting & Shot",
   "tattoos": "Body",
   "legwear": "Clothing",
-  "tattoo_placement": "Body"
+  "tattoo_placement": "Body",
+  "outerwear": "Clothing"
 };
 const GENDER_POOLS = {
   "bust": {
@@ -254,6 +255,8 @@ const GENDER_POOLS = {
       "high-top fade",
       "side-swept bangs",
       "wispy bangs",
+      "wolf cut",
+      "hime cut",
       "None"
     ],
     "Male": [
@@ -317,6 +320,7 @@ const GENDER_POOLS = {
       "high-top fade",
       "side-swept bangs",
       "wispy bangs",
+      "wolf cut",
       "None"
     ],
     "Any": [
@@ -378,6 +382,8 @@ const GENDER_POOLS = {
       "high-top fade",
       "side-swept bangs",
       "wispy bangs",
+      "wolf cut",
+      "hime cut",
       "comb over",
       "mullet",
       "None"
@@ -540,6 +546,66 @@ const GENDER_POOLS = {
       "ribbed crew socks",
       "athletic crew socks",
       "dark dress socks",
+      "None"
+    ]
+  },
+  "outerwear": {
+    "Female": [
+      "Random",
+      "trench coat",
+      "wool overcoat",
+      "peacoat",
+      "parka",
+      "puffer coat",
+      "shearling coat",
+      "duffle coat",
+      "wrap coat",
+      "faux fur coat",
+      "leather jacket",
+      "denim jacket",
+      "bomber jacket",
+      "quilted jacket",
+      "waxed field jacket",
+      "rain jacket",
+      "windbreaker",
+      "None"
+    ],
+    "Male": [
+      "Random",
+      "trench coat",
+      "wool overcoat",
+      "peacoat",
+      "parka",
+      "puffer coat",
+      "shearling coat",
+      "duffle coat",
+      "leather jacket",
+      "denim jacket",
+      "bomber jacket",
+      "quilted jacket",
+      "waxed field jacket",
+      "rain jacket",
+      "windbreaker",
+      "None"
+    ],
+    "Any": [
+      "Random",
+      "trench coat",
+      "wool overcoat",
+      "peacoat",
+      "parka",
+      "puffer coat",
+      "shearling coat",
+      "duffle coat",
+      "wrap coat",
+      "faux fur coat",
+      "leather jacket",
+      "denim jacket",
+      "bomber jacket",
+      "quilted jacket",
+      "waxed field jacket",
+      "rain jacket",
+      "windbreaker",
       "None"
     ]
   }
@@ -717,6 +783,7 @@ function applyGender(node, gender) {
  * and false when READING, and every existing Cosplayer node had to be recreated.
  */
 const FIELDS_ADDED_BY_RELEASE = [
+  ["outerwear"], // 1.5.0
   ["tattoos", "tattoo_placement", "legwear"], // 0.90.0
 ];
 
@@ -735,25 +802,29 @@ const FIELDS_ADDED_BY_RELEASE = [
  * fires on every load of an older workflow is an irritant.
  */
 function padLegacyWidgetValues(node, values) {
-  const total = (node.widgets || []).length;
+  const widgets = node.widgets || [];
+  const total = widgets.length;
   if (!Array.isArray(values) || values.length >= total) return values;
 
-  let padded = values.slice();
+  // A workflow N releases old is missing exactly the newest N releases' fields, so
+  // grow the missing set newest-first until it accounts for the shortfall, then
+  // splice ALL of them in one ascending pass. Padding release by release (the
+  // pre-1.5.0 loop) put a newer field that sits AFTER an older one in the wrong
+  // slot: the older release's later splices shifted it right.
+  const missing = [];
   for (const added of FIELDS_ADDED_BY_RELEASE) {
-    if (padded.length + added.length > total) continue;
-    const slots = added
-      .map((name) => (node.widgets || []).findIndex((w) => w.name === name))
-      .filter((i) => i > -1)
-      .sort((a, b) => a - b);
-    if (slots.length !== added.length) continue;
-    // Ascending order matters: each splice shifts everything after it, so inserting
-    // low-to-high keeps the later indices correct as we go.
-    for (const slot of slots) {
-      padded.splice(slot, 0, node.widgets[slot]?.value ?? "Random");
+    missing.push(...added);
+    if (values.length + missing.length > total) break;
+    if (values.length + missing.length < total) continue;
+    const slots = missing.map((name) => widgets.findIndex((w) => w.name === name));
+    if (slots.includes(-1)) break;
+    const padded = values.slice();
+    for (const slot of slots.sort((a, b) => a - b)) {
+      padded.splice(slot, 0, widgets[slot]?.value ?? "Random");
     }
-    if (padded.length === total) break;
+    return padded;
   }
-  return padded.length === total ? padded : values;
+  return values;
 }
 
 app.registerExtension({

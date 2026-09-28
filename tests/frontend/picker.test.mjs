@@ -719,41 +719,70 @@ test("switching tabs preserves the current search query rather than discarding i
   }
 });
 
-// --- bug 6 (minor): closing and reopening must show a consistent default ----
-// state -- previously the search <input> reset to empty on rebuild but the
-// `query`/`facet` state it reads from did not, so the box read empty while
-// the grid stayed narrowed to whatever was typed or picked last time.
+// --- 1.5.0: the filter survives close/reopen within a session ----------------
+// Bug 6 (1.1.0) was the box reading empty while the grid stayed narrowed. The fix
+// then was to reset everything on close; 1.5.0 keeps the filter instead (Stylebook
+// parity) and restores it INTO the controls, so box, facet, tab and grid still agree.
 
-test("closing and reopening the picker resets both the search box and the grid together", async () => {
+function newCosplayerPicker() {
+  return new __testing.IdentityForgePicker({
+    kind: "cosplayer",
+    targetWidgetName: "character",
+    title: "test",
+    node: makeFakeNode("IdentityForgeCosplayer"),
+  });
+}
+
+test("closing and reopening keeps the search, facet and tab, and the controls show them", async () => {
   resetDom();
   __testing.__resetForTests();
   const stub = installFetchStub(rosterOkHandler);
   try {
-    const node = makeFakeNode("IdentityForgeCosplayer");
-    const picker = new __testing.IdentityForgePicker({
-      kind: "cosplayer",
-      targetWidgetName: "character",
-      title: "test",
-      node,
-    });
+    const picker = newCosplayerPicker();
     picker.open();
     await flush();
-    picker.query = "tatt";
+    picker.query = "princess";
+    picker.facet = "Masked";
+    picker.activeTab = "__all__"; // TAB_ALL
     picker.renderGrid();
-    assert.ok(picker.visible.length < REAL_ROSTER.length, "sanity: the query narrowed the grid");
-    picker.facet = "Giant characters";
+    const narrowed = picker.visible.map((e) => e.name);
 
     picker.close();
     picker.open();
     await flush();
 
-    assert.equal(picker.searchInput.value, "", "the reopened search box must be empty");
-    assert.equal(picker.query, "", "the query state must be reset, not just the input's displayed value");
-    assert.equal(picker.facet, "All characters", "the facet must reset to its default too");
-    assert.ok(
-      picker.visible.every((e) => e.kind === "cosplayer") && picker.visible.length > 1,
-      "the grid must show the default unfiltered view for this node's kind, not the stale filtered set",
-    );
+    assert.equal(picker.searchInput.value, "princess", "the reopened box must show the kept query");
+    assert.equal(picker.query, "princess");
+    assert.equal(picker.facetSelect.value, "Masked", "the facet control must show the kept facet");
+    assert.equal(picker.activeTab, "__all__");
+    assert.deepEqual(picker.visible.map((e) => e.name), narrowed,
+      "the grid must be the same filtered view the controls describe");
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("a fresh picker (reloaded workflow or page) always starts unfiltered", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const first = newCosplayerPicker();
+    first.open();
+    await flush();
+    first.query = "princess";
+    first.renderGrid();
+    first.close();
+
+    const picker = newCosplayerPicker();
+    picker.open();
+    await flush();
+    assert.equal(picker.searchInput.value, "");
+    assert.equal(picker.query, "");
+    assert.equal(picker.facet, "All characters");
+    assert.ok(picker.visible.every((e) => e.kind === "cosplayer") && picker.visible.length > 1,
+      "a new picker shows the default view for its node's kind");
     picker.close();
   } finally {
     stub.restore();

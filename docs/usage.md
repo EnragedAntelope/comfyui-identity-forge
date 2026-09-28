@@ -137,8 +137,8 @@ to check that your custom field values are valid options.
 | Hair | colour, length, texture, style, part, highlights, facial hair, accessory |
 | Makeup | style, eyeshadow, eyeliner, lashes, lips, blush, brows, contour, highlight, finish |
 | Jewelry & Nails | earrings, necklace, rings, bracelet, watch, other jewellery, piercings, nails |
-| Clothing | outfit style (which picks a garment set), footwear, colour palette, pattern, bag, accessories — the palette, pattern and shoes are composed onto the garment, so locking any of them changes the outfit |
-| Setting & Shot | expression, pose, location (indoor/outdoor), lighting, season, framing, composition, mood |
+| Clothing | outfit style (which picks a garment set, narrowed to what fits the location), footwear, colour palette, pattern, legwear, outerwear (outdoors in cold seasons only), bag, accessories — the palette, pattern, legwear, coat and shoes are composed onto the garment, so locking any of them changes the outfit |
+| Setting & Shot | expression, pose, location (indoor/outdoor), lighting, season (outdoors only), framing, composition, mood |
 
 ## Example
 

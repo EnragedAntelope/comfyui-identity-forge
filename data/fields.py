@@ -170,6 +170,10 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # as a tautology when both landed in one output.
         "female_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'small scar through eyebrow', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
         "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'small scar through eyebrow', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
+        # 1.5.0 round 4: the model draws a "small scar" as a slash across the cheek and a
+        # neck birthmark as a raw wound (four of 47 flagged renders), so they stay rare.
+        "weights": {"small scar on chin": 0.3, "small scar through eyebrow": 0.3,
+                    "birthmark on neck": 0.3},
         "optional": True
     }),
     ("freckles_density", {
@@ -200,6 +204,14 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # accessory) and voices "his head is bald" (facial hair may remain).
         "female_options": ['buzzed very short', 'very short', 'short pixie', 'ear length', 'chin length bob', 'jaw length', 'shoulder length', 'slightly past shoulders', 'mid back', 'lower back', 'long', 'very long', 'waist length', 'hip length'],
         "male_options": ['bald', 'buzzed very short', 'very short', 'short pixie', 'ear length', 'chin length bob', 'jaw length', 'shoulder length', 'slightly past shoulders', 'mid back', 'lower back', 'long', 'very long', 'waist length', 'hip length'],
+        # 1.5.0 round 2: men drew all fifteen lengths flat, so half of random men
+        # had shoulder-length-or-longer hair (then braids, buns and blowouts to go
+        # with it). Leans a MASCULINE presentation short; every length stays reachable.
+        "masculine_weights": {
+            "bald": 1.2, "buzzed very short": 3, "very short": 4, "ear length": 2.5,
+            "jaw length": 1, "shoulder length": 0.6, "slightly past shoulders": 0.3,
+            "mid back": 0.12, "lower back": 0.08, "long": 0.25, "very long": 0.12,
+        },
         "optional": False
     }),
     ("hair_texture", {
@@ -227,9 +239,9 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # render the term as the masculine 80s cut, which reads as a costume
         # gag on a random female character (archetypes can still curate it).
         "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade',
-                            'side-swept bangs', 'wispy bangs'],
+                            'side-swept bangs', 'wispy bangs', 'wolf cut', 'hime cut'],
         "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade',
-                            'side-swept bangs', 'wispy bangs'],
+                            'side-swept bangs', 'wispy bangs', 'wolf cut'],
         "optional": False
     }),
     ("hair_color_scope", {
@@ -372,8 +384,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("outfit_style", {
         "group": 'Clothing',
-        "female_options": ['casual', 'smart casual', 'business casual', 'business formal', 'evening formal', 'cocktail semi-formal', 'streetwear', 'bohemian', 'athletic', 'resort vacation', 'edgy alternative', 'preppy', 'vintage retro', 'loungewear'],
-        "male_options": ['casual', 'smart casual', 'business casual', 'business formal', 'evening formal', 'cocktail semi-formal', 'streetwear', 'bohemian', 'athletic', 'resort vacation', 'edgy alternative', 'preppy', 'vintage retro', 'loungewear'],
+        "female_options": ['casual', 'smart casual', 'business casual', 'business formal', 'evening formal', 'cocktail semi-formal', 'streetwear', 'bohemian', 'athletic', 'resort vacation', 'edgy alternative', 'preppy', 'vintage retro', 'loungewear', 'utility workwear'],
+        "male_options": ['casual', 'smart casual', 'business casual', 'business formal', 'evening formal', 'cocktail semi-formal', 'streetwear', 'bohemian', 'athletic', 'resort vacation', 'edgy alternative', 'preppy', 'vintage retro', 'loungewear', 'utility workwear'],
         "optional": False
     }),
     ("outfit_description", {
@@ -384,8 +396,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("bag", {
         "group": 'Clothing',
-        "female_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent', 'leather briefcase in black', 'canvas messenger bag', 'canvas duffel bag'],
-        "male_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent', 'leather briefcase in black', 'canvas messenger bag', 'canvas duffel bag'],
+        "female_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent', 'leather briefcase in black', 'canvas messenger bag', 'canvas duffel bag', 'canvas backpack', 'leather backpack in brown'],
+        "male_options": ['no bag', 'small black leather crossbody', 'tan leather crossbody', 'structured top handle bag in black', 'structured top handle bag in cream', 'structured top handle bag in tan', 'envelope clutch in black', 'envelope clutch in gold', 'envelope clutch in nude', 'woven rattan bag', 'canvas tote', 'leather tote in black', 'leather tote in tan', 'leather tote in cognac', 'small quilted chain bag', 'saddlebag in brown', 'saddlebag in black', 'saddlebag in cognac', 'belt bag in black', 'belt bag in tan', 'beaded evening clutch', 'velvet evening bag', 'mini backpack in black', 'mini backpack in tan', 'straw beach tote', 'printed silk scarf tied as bag accent', 'leather briefcase in black', 'canvas messenger bag', 'canvas duffel bag', 'canvas backpack', 'leather backpack in brown'],
         "optional": False
     }),
     ("accessories", {
@@ -398,8 +410,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # watch_type, over-representing it). Pocket square / statement belt keep variety.
         # No necklace here: the necklace field owns necklaces, so a "long pendant
         # necklace" accessory would double up. Hats/glasses/belts/scarf only.
-        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses', 'round wire-rim eyeglasses', 'cat-eye eyeglasses', 'browline eyeglasses'],
-        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses', 'round wire-rim eyeglasses', 'cat-eye eyeglasses', 'browline eyeglasses'],
+        "female_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses', 'round wire-rim eyeglasses', 'cat-eye eyeglasses', 'browline eyeglasses', 'knit winter scarf', 'earmuffs', 'headphones worn around the neck'],
+        "male_options": ['no accessories', 'classic black sunglasses', 'cat eye sunglasses', 'round sunglasses', 'aviator sunglasses', 'wide brim sun hat', 'baseball cap', 'beret', 'silk neck scarf', 'belt cinching waist', 'western belt', 'silk pocket square', 'statement belt', 'reading glasses pushed up on head', 'woven hat', 'leather gloves', 'long opera gloves', 'fingerless gloves', 'suspenders', 'flat cap', 'bucket hat', 'wool beanie', 'lapel pin', 'clear-framed glasses', 'round wire-rim eyeglasses', 'cat-eye eyeglasses', 'browline eyeglasses', 'knit winter scarf', 'earmuffs', 'headphones worn around the neck'],
         # 0.90.0 added three everyday eyeglass frames, closing a gap the archetype
         # conventions had been working around ("everyday eyeglasses aren't an
         # accessories option -- put them in costume prose instead"). Straight
@@ -410,17 +422,20 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # commoner. These weights hold all nine eyewear values at a combined
         # 6/24 = 25%: 18 non-eyewear at 1.0 plus 9 eyewear at 2/3 = 6.0. Variety
         # triples; the odds of a character wearing glasses do not move.
-        "weights": {'classic black sunglasses': 2/3, 'cat eye sunglasses': 2/3,
-                    'round sunglasses': 2/3, 'aviator sunglasses': 2/3,
-                    'reading glasses pushed up on head': 2/3,
-                    'clear-framed glasses': 2/3, 'round wire-rim eyeglasses': 2/3,
-                    'cat-eye eyeglasses': 2/3, 'browline eyeglasses': 2/3},
+        # 1.5.0: three non-eyewear values joined (the two winter pieces, gated by
+        # season in constraints.py, and headphones), so eyewear reprices 2/3 -> 7/9:
+        # 21 non-eyewear at 1.0 + 9 x 7/9 = 7.0 keeps it at exactly 25%.
+        "weights": {'classic black sunglasses': 7/9, 'cat eye sunglasses': 7/9,
+                    'round sunglasses': 7/9, 'aviator sunglasses': 7/9,
+                    'reading glasses pushed up on head': 7/9,
+                    'clear-framed glasses': 7/9, 'round wire-rim eyeglasses': 7/9,
+                    'cat-eye eyeglasses': 7/9, 'browline eyeglasses': 7/9},
         "optional": False
     }),
     ("expression", {
         "group": 'Setting & Shot',
-        "female_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed'],
-        "male_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed'],
+        "female_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed', 'hopeful', 'weary', 'nervous smile', 'mildly annoyed'],
+        "male_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed', 'hopeful', 'weary', 'nervous smile', 'mildly annoyed'],
         "optional": False
     }),
     ("location", {
@@ -518,14 +533,27 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("footwear", {
         "group": 'Clothing',
-        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots', 'platform boots', 'hiking boots', 'clogs'],
-        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots', 'platform boots', 'hiking boots', 'clogs'],
+        "female_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots', 'platform boots', 'hiking boots', 'clogs', 'boat shoes', 'work boots', 'slides'],
+        "male_options": ['sneakers', 'loafers', 'boots', 'heels', 'flats', 'sandals', 'oxfords', 'slippers', 'bare feet', 'ankle boots', 'wedges', 'mules', 'chelsea boots', 'combat boots', 'knee-high boots', 'ballet flats', 'high-top sneakers', 'espadrilles', 'derbies', 'kitten heels', 'mary janes', 'cowboy boots', 'platform boots', 'hiking boots', 'clogs', 'boat shoes', 'work boots', 'slides'],
         "optional": False
     }),
     ("clothing_color", {
         "group": 'Clothing',
-        "female_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'gradient ombre', 'all black', 'all white', 'mixed prints'],
-        "male_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'gradient ombre', 'all black', 'all white', 'mixed prints'],
+        "female_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'gradient ombre', 'all black', 'all white', 'mixed prints', 'navy and white', 'blue and white', 'olive and khaki', 'burgundy and grey', 'camel and cream', 'grey tones'],
+        "male_options": ['neutral tones', 'black monochrome', 'white and cream', 'earth tones', 'pastels', 'bold primary colors', 'jewel tones', 'gradient ombre', 'all black', 'all white', 'mixed prints', 'navy and white', 'blue and white', 'olive and khaki', 'burgundy and grey', 'camel and cream', 'grey tones'],
+        # 1.5.0: black and white each had TWO values ("black monochrome" + "all black",
+        # "white and cream" + "all white"), so 36% of generated outfits were black or
+        # white. Each pair now shares one value's weight, the two non-everyday
+        # palettes are halved, and six everyday palettes joined.
+        # 1.5.0 round 4: the four all-light / all-dark palettes 0.5 -> 0.3 (head-to-toe
+        # black or white read as a uniform in QA renders).
+        "weights": {'black monochrome': 0.3, 'all black': 0.3, 'white and cream': 0.2,
+                    'all white': 0.15, 'gradient ombre': 0.5, 'mixed prints': 0.5},
+        # 1.5.0 round 3: the loud palettes read as costume on a masculine everyday look.
+        "masculine_weights": {"pastels": 0.5, "bold primary colors": 0.6,
+                              "gradient ombre": 0.2, "mixed prints": 0.2,
+                              # 1.5.0 round 5: head-to-toe white on men (2 of 14 flags)
+                              "all white": 0.1, "white and cream": 0.1},
         "optional": False
     }),
     ("clothing_pattern", {
@@ -545,11 +573,21 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # and the reason the weight is written as a fraction of the count rather
         # than a decimal: the next pattern reprices to 8/16 and the arithmetic
         # stays visible.
-        "weights": {'stripes': 8/15, 'plaid': 8/15, 'floral': 8/15,
-                    'animal print': 8/15, 'geometric': 8/15, 'abstract': 8/15,
-                    'camouflage': 8/15, 'denim': 8/15, 'polka dot': 8/15,
-                    'houndstooth': 8/15, 'paisley': 8/15, 'pinstripe': 8/15,
-                    'gingham': 8/15, 'tie-dye': 8/15, 'argyle': 8/15},
+        # 1.5.0 round 2: every pattern weighed 8/15 of `solid`, so 80% of generated
+        # outfits were patterned and camouflage / tie-dye / animal print each landed on
+        # ~5%. Real everyday clothing is mostly plain: `solid` + `subtle texture` now
+        # carry ~60%, the classic prints (stripes, plaid, floral, denim) come next, and
+        # the loud ones are rare. PATTERN_BY_STYLE (constraints.py) then keeps each
+        # pattern to the styles that wear it -- no tie-dye suits.
+        "weights": {"solid": 10, "subtle texture": 3, "stripes": 1.5, "plaid": 1,
+                    "denim": 1, "floral": 1, "gingham": 0.5, "geometric": 0.5,
+                    "pinstripe": 0.4, "houndstooth": 0.4, "polka dot": 0.4,
+                    "abstract": 0.3, "paisley": 0.3, "argyle": 0.3,
+                    "animal print": 0.3, "camouflage": 0.3, "tie-dye": 0.25},
+        # 1.5.0 round 3: a floral knit or a paisley shirt read as costume on an everyday
+        # man in QA renders. Rare for a masculine presentation, never removed.
+        "masculine_weights": {"floral": 0.2, "paisley": 0.1, "polka dot": 0.1,
+                              "animal print": 0.05, "tie-dye": 0.1, "abstract": 0.15},
         "optional": False
     }),
     ("season", {
@@ -579,8 +617,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # weight, zero bias impact) to "standing with arms relaxed at the sides",
         # "touching the collar with one hand" and "holding both hands loosely
         # clasped". `PoseGrammarTests` pins the rule for new values.
-        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera'],
-        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera'],
+        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step'],
+        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step'],
         "optional": True
     }),
     ("held_item", {
@@ -770,6 +808,20 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
                           'down one thigh', 'on one calf'],
         "optional": True
     }),
+    # 1.5.0, APPENDED LAST -- saved workflows store widgets_values positionally (see
+    # identity_forge.js FIELDS_ADDED_BY_RELEASE). A DEFERRED field: it gates on the
+    # finished outfit, the (outdoor-only) season and the outfit_style, so it is drawn
+    # after the constraint loop by `_eligible_outerwear`. Summer, indoors, a supplied
+    # costume, open footwear, or an outfit with its own outer layer all force "no
+    # outerwear" WITHOUT drawing, so a character who cannot wear a coat draws what it
+    # drew before (seeds that do get a coat drift after it, as designed). `wrap coat`
+    # and `faux fur coat` are female-pool only, the `legwear` precedent.
+    ("outerwear", {
+        "group": 'Clothing',
+        "female_options": ['no outerwear', 'trench coat', 'wool overcoat', 'peacoat', 'parka', 'puffer coat', 'shearling coat', 'duffle coat', 'wrap coat', 'faux fur coat', 'leather jacket', 'denim jacket', 'bomber jacket', 'quilted jacket', 'waxed field jacket', 'rain jacket', 'windbreaker'],
+        "male_options": ['no outerwear', 'trench coat', 'wool overcoat', 'peacoat', 'parka', 'puffer coat', 'shearling coat', 'duffle coat', 'leather jacket', 'denim jacket', 'bomber jacket', 'quilted jacket', 'waxed field jacket', 'rain jacket', 'windbreaker'],
+        "optional": True
+    }),
 ])
 
 #: Per-field help, shown as the tooltip on that field's dropdown (0.78.0).
@@ -859,14 +911,37 @@ FIELD_HELP: dict[str, str] = {
     "lighting": "Quality and source of the light. Automatically kept coherent with whether the location is indoors or out. Set to 'None' if a downstream rendering pack owns this axis.",
     "shot_type": "The camera only - distance, height, angle and lens. Never scene content.",
     "composition": "Where the subject sits within the frame - layout, not camera position. Kept coherent with shot_type.",
-    "season": "Time of year, which colours the setting and wardrobe.",
+    "season": "Time of year, outdoors only (dropped indoors; locking it moves the location outside). What is worn follows it, and seasonal places keep their own season.",
     "mood": "Overall emotional tone of the image. Set to 'None' if a downstream rendering pack owns this axis.",
     "pose": "What the body is doing. A pose needing something the subject lacks is dropped: hair or pockets to reach for, a free hand when a prop is held, a seat at giant scale. A lock wins.",
     "tattoos": "Body ink - style and how much of it. Deliberately uncommon at random, and scaled by the accessory density control. Where it sits is tattoo_placement.",
     "legwear": "Tights, stockings or socks. Only rendered when the outfit actually shows leg, so it never appears under trousers. Feminine wardrobe only.",
     "tattoo_placement": "Where the tattoo sits. Placements the clothing would hide are dropped automatically - no forearm ink under long sleeves, no thigh ink under a skirt-less outfit or opaque tights.",
+    "outerwear": "A coat or jacket over the outfit: outdoors only, never in summer, heavy coats only in winter, never over an outfit with its own outer layer.",
 }
 
+
+#: Family weights for a MASCULINE presentation (1.5.0 round 2), read by
+#: `nodes.identity_forge._pick_family_weighted` in place of each family's base weight.
+#: Whole families only, so the within-family split stays uniform; a missing family
+#: keeps its base weight and 0 removes it. Men had been drawing `hair_style` families
+#: at the women's odds -- braid_long alone was a fifth of the family mass.
+MASCULINE_FAMILY_WEIGHTS: dict[str, dict[str, int]] = {
+    "hair_style": {
+        "half-up": 0, "ponytail": 90, "bun_small": 150, "bun_gathered": 0,
+        "braid_long": 110, "knots": 0, "pigtails": 0, "bangs": 140,
+        # 1.5.0 round 4: bantu knots moved from `knots` (was 60) into `texture`.
+        "texture": 480,
+        "barbered_short": 1680, "barbered_crop": 420, "hime": 0,
+    },
+    # 1.5.0 round 3: the `playful` family (sultry, flirtatious, coy, bashful, ...) at its
+    # base weight made "sultry" a common face on random men; halved, not removed.
+    "expression": {"playful": 3},
+    # 1.5.0 round 3: two poses are trimmed for a masculine presentation (constraints.py
+    # _MASCULINE_EXCLUDED_VALUES); these keep the survivors of each family at their
+    # old per-variant rate instead of inheriting the trimmed pose's share.
+    "pose": {"gesture": 9, "seated_floor": 40},
+}
 
 #: Hair styles grouped into families for weighted random selection. The flat
 #: ``hair_style`` option list above still drives the widget (every variant is
@@ -948,11 +1023,17 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("ponytail", {"weight": 420, "variants": ['high ponytail', 'low ponytail', 'side ponytail', 'braided ponytail', 'bubble ponytail']}),
     ("bun_small", {"weight": 750, "variants": ['messy bun', 'sleek bun', 'top knot', 'chignon', 'ballerina bun']}),
     ("bun_gathered", {"weight": 300, "variants": ['updo', 'French twist']}),
-    ("braid_long", {"weight": 1485, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'milkmaid braids', 'rope braid', 'braided bun']}),
-    ("braid_short", {"weight": 405, "variants": ['cornrows', 'locs', 'two-strand twists']}),
-    ("knots", {"weight": 420, "variants": ['space buns', 'bantu knots']}),
+    # 1.5.0 round 4: box braids moved braid_long -> braid_short with their per-variant
+    # weight (1485/11 = 135), so short box braids stay reachable at ear and jaw length
+    # (common on men) while the long braids are culled there as a whole family.
+    ("braid_long", {"weight": 1350, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'milkmaid braids', 'rope braid', 'braided bun']}),
+    ("braid_short", {"weight": 540, "variants": ['cornrows', 'locs', 'two-strand twists', 'box braids']}),
+    # 1.5.0 round 4: bantu knots moved to `texture` (weights re-split 210 / 630, the
+    # total unchanged) so the texture gate below can drop the Afro-textured styles as
+    # WHOLE families -- as a partial cull it handed the knots family to space buns.
+    ("knots", {"weight": 210, "variants": ['space buns']}),
     ("pigtails", {"weight": 210, "variants": ['pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails']}),
-    ("texture", {"weight": 420, "variants": ['afro', 'twist-out', 'hair puff']}),
+    ("texture", {"weight": 630, "variants": ['afro', 'twist-out', 'hair puff', 'bantu knots']}),
     # 0.90.0 adds 'side-swept bangs' and 'wispy bangs'. Pure Mode A into a
     # PRE-EXISTING family (not a split, and bangs carry no hair_length restriction),
     # so the frozen weight is simply subdivided and the field-level distribution does
@@ -990,8 +1071,14 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # groups must be excludable independently. As one family, culling four of five
     # variants would hand the whole family weight to the survivor -- the exact trap
     # documented for `loose` at 0.78.0. As two families each is dropped WHOLE.
-    ("barbered_short", {"weight": 560, "variants": ['fade', 'undercut', 'pompadour', 'quiff']}),
-    ("barbered_shag", {"weight": 140, "variants": ['shag']}),
+    # 1.5.0 round 4: 560 -> 280. Once ear/chin/jaw lengths stopped drawing buns and
+    # braids, this family took their share and doubled on women (5.6% -> 9.6%). Men draw
+    # it from MASCULINE_FAMILY_WEIGHTS (1680), so only the feminine share moves.
+    ("barbered_short", {"weight": 280, "variants": ['fade', 'undercut', 'pompadour', 'quiff']}),
+    # 1.5.0: `wolf cut` joins `shag` -- the same layered mid-length cut family with the
+    # same length gate, so the pair is still culled as a whole. Repriced 140 -> 280 so
+    # each keeps the field's everyday per-variant rate (the `mullet` precedent).
+    ("barbered_shag", {"weight": 280, "variants": ['shag', 'wolf cut']}),
 
     # 0.83.0: the ONE hair_style change that is not free. `crew cut` / `textured crop` /
     # `high-top fade` cannot join `barbered_short` (fade/undercut/pompadour/quiff)
@@ -1011,6 +1098,12 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # keeping them rare stops the base node reading as barbered. **This is the first
     # family priced below the per-variant rate; do not "fix" it in a weights audit.**
     ("barbered_crop", {"weight": 140, "variants": ['crew cut', 'textured crop', 'high-top fade']}),
+    # 1.5.0, parked since 0.90.0 on arithmetic. Its own family because it needs long
+    # straight-hanging length (blunt bangs + cheek-length sidelocks over long hair): as a
+    # single-variant family every length cull is a whole-family drop. Priced at 70 --
+    # HALF the everyday rate, the `barbered_crop` reasoning: a distinctive J-fashion
+    # cut, kept rare so the base node does not read as themed. Female pool only.
+    ("hime", {"weight": 70, "variants": ['hime cut']}),
 ])
 
 #: hair_color families (0.41): shade neighbourhoods, weights = current family
@@ -1041,24 +1134,31 @@ HAIR_COLOR_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 #: pick exactly and only the within-family split changes as variants are added.
 #: The union of every field's family variants must equal that field's option list
 #: exactly (enforced for all FIELD_FAMILIES entries by tests/validate_data.py).
+#: 1.5.0: `hopeful` (warm), `weary` (pensive), `nervous smile` + `mildly annoyed`
+#: (reactive) join existing families, so no family share moves.
 EXPRESSION_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("warm", {"weight": 6, "variants": ['subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'candid mid-laugh', 'gentle smile', 'beaming', 'delighted']}),
+    ("warm", {"weight": 6, "variants": ['subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'candid mid-laugh', 'gentle smile', 'beaming', 'delighted', 'hopeful']}),
     ("calm", {"weight": 3, "variants": ['neutral', 'relaxed', 'serene', 'calm and composed', 'at ease', 'quietly content']}),
     ("intense", {"weight": 5, "variants": ['serious', 'confident', 'intense gaze', 'determined', 'stern', 'steely', 'focused', 'brooding', 'defiant']}),
     ("playful", {"weight": 5, "variants": ['playful', 'sultry', 'smirking', 'flirtatious', 'slightly bashful', 'mischievous', 'coy', 'quiet amusement', 'sly']}),
-    ("pensive", {"weight": 3, "variants": ['pensive and thoughtful', 'contemplative', 'wistful', 'melancholic', 'lost in thought', 'daydreaming', 'solemn']}),
-    ("reactive", {"weight": 2, "variants": ['surprised', 'curious', 'intrigued', 'skeptical', 'unimpressed']}),
+    ("pensive", {"weight": 3, "variants": ['pensive and thoughtful', 'contemplative', 'wistful', 'melancholic', 'lost in thought', 'daydreaming', 'solemn', 'weary']}),
+    ("reactive", {"weight": 2, "variants": ['surprised', 'curious', 'intrigued', 'skeptical', 'unimpressed', 'nervous smile', 'mildly annoyed']}),
 ])
 
 MOOD_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # 0.36 renames (mood vocabulary must stay disjoint from expression's — the
     # two randomize independently): playful->carefree, melancholic->sorrowful,
     # confident->self-assured, serene->tranquil, brooding->grim.
-    ("positive", {"weight": 2, "variants": ['cheerful', 'carefree', 'joyful', 'lighthearted', 'radiant', 'exuberant']}),
-    ("heavy", {"weight": 2, "variants": ['sorrowful', 'tense', 'somber', 'grim', 'restless', 'foreboding']}),
-    ("calm", {"weight": 2, "variants": ['dreamy', 'tranquil', 'peaceful', 'nostalgic', 'hushed']}),
-    ("bold", {"weight": 2, "variants": ['self-assured', 'intense', 'fierce', 'triumphant', 'commanding']}),
-    ("enigmatic", {"weight": 1, "variants": ['mysterious', 'enigmatic', 'moody', 'uncanny']}),
+    # 1.5.0 round 4: `bold` split into `bold_bright` (a smile can be self-assured or
+    # triumphant) and `bold_fierce` (it cannot be fierce or commanding), so the
+    # expression gate culls whole families. Every weight x5 keeps the shares exact:
+    # bold 2/9 = bold_bright 4/45 + bold_fierce 6/45.
+    ("positive", {"weight": 10, "variants": ['cheerful', 'carefree', 'joyful', 'lighthearted', 'radiant', 'exuberant']}),
+    ("heavy", {"weight": 10, "variants": ['sorrowful', 'tense', 'somber', 'grim', 'restless', 'foreboding']}),
+    ("calm", {"weight": 10, "variants": ['dreamy', 'tranquil', 'peaceful', 'nostalgic', 'hushed']}),
+    ("bold_bright", {"weight": 4, "variants": ['self-assured', 'triumphant']}),
+    ("bold_fierce", {"weight": 6, "variants": ['intense', 'fierce', 'commanding']}),
+    ("enigmatic", {"weight": 5, "variants": ['mysterious', 'enigmatic', 'moody', 'uncanny']}),
 ])
 
 #: 0.66.0 split the former single `gesture` family (weight 4, 6 variants) into three,
@@ -1105,13 +1205,18 @@ POSE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # signature prop can drop them as a whole family. A new both-hands standing pose
     # MUST go here, not in `standing`.
     ("standing_hands_bound", {"weight": 20, "variants": ['standing with arms crossed', 'standing with hands clasped behind the back']}),
-    ("seated", {"weight": 80, "variants": ['sitting relaxed', 'sitting upright', 'reclining', 'kneeling gracefully', 'crouching low', 'sitting cross-legged', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other']}),
+    # 1.5.0 round 2: split proportionally (10 per variant, unchanged) so a public or
+    # formal place can drop the FLOOR half whole -- "kneeling gracefully" at a busy
+    # crosswalk, "crouching low" in an airplane aisle, "reclining" at a bus station.
+    ("seated", {"weight": 30, "variants": ['sitting relaxed', 'sitting upright', 'sitting with one leg crossed over the other']}),
+    ("seated_floor", {"weight": 50, "variants": ['reclining', 'kneeling gracefully', 'crouching low', 'sitting cross-legged', 'sitting on the floor with knees drawn up']}),
     # The one seated pose that needs FURNITURE rather than the ground. Split out so the
     # giant scale — which forces the scene outdoors — can drop it as a whole family.
     # Everything else in `seated` works on the ground and stays available at any scale.
     ("seated_perch", {"weight": 10, "variants": ['perched on the edge of a seat']}),
     ("leaning", {"weight": 18, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
-    ("motion", {"weight": 18, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward', 'striding forward with purpose']}),
+    ("motion", {"weight": 18, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward', 'striding forward with purpose',
+                           'walking toward the camera', 'pausing mid-step']}),  # 1.5.0
     # Gestures that need only a body and leave ONE hand free: safe for anyone, including
     # a full shell, and compatible with a held prop.
     ("gesture", {"weight": 18, "variants": ['posing with a hand on one hip', 'resting chin on one hand']}),
@@ -1263,7 +1368,15 @@ LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("window_general", {"weight": 440, "variants": ['soft window light from the side', 'backlit silhouette against bright window', 'light through venetian blinds casting stripes', 'warm sunlight streaming through a window', 'diffused skylight from above']}),
     ("window_stained", {"weight": 88, "variants": ['light through stained glass casting colors']}),
     # Portable / open flame -- reads fine on a patio, at a campfire, on a terrace.
-    ("artificial_open", {"weight": 440, "variants": ['warm candlelight', 'warm incandescent lamp glow', 'warm string lights bokeh background', 'fire and flame warm flicker', 'warm lantern light']}),
+    ("artificial_open", {"weight": 264, "variants": ['warm incandescent lamp glow', 'warm string lights bokeh background', 'warm lantern light']}),
+    # 1.5.0 round 4: split out the same way (88 per variant, no share moves) because
+    # "warm candlelight" landed in a trampoline park and on a boulevard; it is now a
+    # fixture with its own allowlist (CANDLE_LOCATIONS).
+    ("artificial_candle", {"weight": 88, "variants": ['warm candlelight']}),
+    # 1.5.0 round 2: split out (88 per variant, the family's own rate, so no share moves)
+    # because "fire and flame" rendered literal flames anywhere -- a lavender field, an
+    # airplane cabin. As its own family it can be gated as a fixture, wholly.
+    ("artificial_fire", {"weight": 88, "variants": ['fire and flame warm flicker']}),
     # A ceiling fixture asserts a built interior: indoor-only, and now drops whole.
     ("artificial_ceiling", {"weight": 176, "variants": ['cool LED overhead lighting', 'harsh fluorescent lighting']}),
     # Fixture-specific: indoors AND only where that fixture plausibly exists.
@@ -1386,6 +1499,38 @@ FIELD_FAMILIES: OrderedDict[str, OrderedDict[str, dict]] = OrderedDict([
 # these flat pools; making them RENDER consumes no extra RNG and moves no
 # distribution. Only the outfit string itself drifts per seed, because the pool grew.
 
+#: 1.5.0 round 3: a palette FAMILY resolves to one named hue per render, voiced on the
+#: lead garment ("a cobalt-blue baseball jersey ..."). The family adjective ("bold
+#: primary-colored", "pastel", "jewel-toned", "navy-and-white") made the model paint
+#: several colours across one garment -- rainbow knits and patchwork jackets in the
+#: maintainer's QA renders. Palettes that ARE the whole look (all black, all white,
+#: black monochrome, white and cream) and the two deliberate oddities (ombre, mixed
+#: prints) keep their PALETTE_ADJECTIVES form. No colour word here may collide with
+#: COLOUR_WORD_RE's job: these are voiced, never matched.
+PALETTE_HUES: dict[str, list[str]] = {
+    'neutral tones': ['beige', 'stone-grey', 'taupe', 'oatmeal', 'charcoal'],
+    'earth tones': ['olive', 'rust', 'tan', 'chocolate-brown', 'terracotta'],
+    'pastels': ['powder-blue', 'blush-pink', 'mint', 'lavender', 'butter-yellow'],
+    'bold primary colors': ['cherry-red', 'cobalt-blue', 'sunflower-yellow'],
+    'jewel tones': ['emerald', 'sapphire', 'ruby', 'amethyst', 'deep teal'],
+    'navy and white': ['navy', 'crisp white'],
+    'blue and white': ['light blue', 'white'],
+    'olive and khaki': ['olive', 'khaki'],
+    'burgundy and grey': ['burgundy', 'heather-grey'],
+    'camel and cream': ['camel', 'cream'],
+    # 1.5.0 round 4: "a white-and-cream linen sport coat" rendered a two-colour block.
+    'white and cream': ['white', 'cream', 'ivory'],
+    'grey tones': ['heather-grey', 'slate-grey', 'charcoal'],
+}
+
+#: The hues a MASCULINE presentation draws where they differ (1.5.0 round 3): blush
+#: pink, lavender and butter yellow read as a costume choice on an everyday man.
+PALETTE_HUES_MASCULINE: dict[str, list[str]] = {
+    'pastels': ['powder-blue', 'mint', 'pale sage'],
+    'bold primary colors': ['cherry-red', 'cobalt-blue'],
+    'jewel tones': ['emerald', 'sapphire', 'deep teal', 'ruby'],
+}
+
 #: ``clothing_color`` value -> the adjective form used in front of a garment phrase.
 #: Every option must have an entry (validated) — a missing key would silently drop the
 #: palette from the prose, which is the exact class of bug this phase exists to kill.
@@ -1401,6 +1546,14 @@ PALETTE_ADJECTIVES: dict[str, str] = {
     'all black': 'all-black',
     'all white': 'all-white',
     'mixed prints': 'mixed-print',
+    # 1.5.0. Two-tone on purpose: a single-hue palette ("burgundy-toned") read as one
+    # colour head to toe, which a real outfit almost never is.
+    'navy and white': 'navy-and-white',
+    'blue and white': 'blue-and-white',
+    'olive and khaki': 'olive-and-khaki',
+    'burgundy and grey': 'burgundy-and-grey',
+    'camel and cream': 'camel-and-cream',
+    'grey tones': 'grey-toned',
 }
 
 #: ``clothing_pattern`` value -> the phrase appended after a garment phrase (already
@@ -1414,6 +1567,19 @@ PALETTE_ADJECTIVES: dict[str, str] = {
 #: "with ..." clause ("satin slip gown with delicate straps"), and a "with" tail stacked
 #: onto that reads "...with delicate straps with a floral print". Caught in preview, and
 #: it is the same class of prose wart as the 0.82.0 doubled location article.
+#: 1.5.0 round 4: the pattern is voiced as an ADJECTIVE on the lead garment ("a navy
+#: striped linen shirt with chinos"), not as a tail. A tail lands on the LAST noun, so
+#: "a sport coat over a tee with chinos in stripes" drew striped chinos and "a polo with
+#: linen shorts in polka dots" polka-dot shorts. PATTERN_TAILS stays for user strings.
+PATTERN_ADJECTIVES: dict[str, str] = {
+    'solid': '', 'subtle texture': 'subtly textured', 'stripes': 'striped',
+    'plaid': 'plaid', 'floral': 'floral-print', 'animal print': 'animal-print',
+    'geometric': 'geometric-print', 'abstract': 'abstract-print',
+    'camouflage': 'camo-print', 'denim': 'denim', 'polka dot': 'polka-dot',
+    'houndstooth': 'houndstooth', 'paisley': 'paisley', 'pinstripe': 'pinstriped',
+    'gingham': 'gingham', 'tie-dye': 'tie-dye', 'argyle': 'argyle',
+}
+
 PATTERN_TAILS: dict[str, str] = {
     'solid': '',
     'subtle texture': ' in a subtle texture',
@@ -1460,6 +1626,10 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'cotton poplin shirtdress with a woven belt',
             'brushed-cotton flannel over a fitted long sleeve with jeans',
             'boxy crewneck sweatshirt with cargo trousers',
+            'jersey t-shirt dress with a knotted hem',  # 1.5.0
+            'utility jumpsuit with rolled sleeves',  # 1.5.0
+            'denim midi skirt with a tucked cotton tee',  # 1.5.0
+            'knee-length linen sundress with thin straps',  # 1.5.0 round 2
         ],
         'male': [
             'brushed flannel shirt with straight-leg jeans',
@@ -1474,6 +1644,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'short-sleeve camp-collar shirt with relaxed jeans',
             'hooded sweatshirt under a quilted vest with jeans',
             'jersey polo with cuffed twill trousers',
+            'chambray shirt with slim chinos',  # 1.5.0
+            'knitted cardigan over a crewneck tee with straight jeans',  # 1.5.0
         ],
         'unisex': [
             'fitted cotton tee with jeans under a denim jacket',
@@ -1498,10 +1670,13 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'sleeveless shift dress with a cropped cardigan',
             'tucked satin camisole with high-waisted twill trousers',
             'longline waistcoat over a poplin shirt with slim trousers',
+            'cashmere crewneck with wide-leg wool trousers',  # 1.5.0
+            'knit polo with a satin midi skirt',  # 1.5.0
         ],
         'male': [
             'unstructured cotton blazer over a merino polo with slim trousers',
             'oxford shirt with rolled sleeves and chinos',
+            'knitted polo with ankle-length tailored trousers',  # 1.5.0 round 4
             'fine-gauge crewneck over a collared shirt with wool trousers',
             'knitted polo with pleated trousers',
             'linen sport coat over a tee with tailored chinos',
@@ -1509,11 +1684,13 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'merino quarter-zip with flat-front chinos',
             'camp-collar silk shirt with tailored trousers',
             'cotton-cashmere cardigan over an oxford with wool trousers',
-            'soft-shouldered blazer with dark selvedge denim',
+            'soft-shouldered blazer over a crew-neck tee with dark selvedge denim',
+            'suede bomber over a fine-knit crewneck with tailored trousers',  # 1.5.0
+            'grandad-collar linen shirt with pleated chinos',  # 1.5.0
         ],
         'unisex': [
             'lightweight knit over a collared shirt with tapered trousers',
-            'unlined linen jacket with drawstring tailored trousers',
+            'unlined linen jacket over a fine-knit tee with drawstring tailored trousers',
             'fine merino crewneck with pleated wide-leg trousers',
             'cotton twill blazer over a jersey tee with chinos',
         ],
@@ -1530,6 +1707,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'knitted twinset with a bias midi skirt',
             'collarless jacket over a camisole with slim ankle trousers',
             'pleated culottes with a tucked silk shirt',
+            'tailored jumpsuit with a belted waist',  # 1.5.0
+            'fine-knit midi dress under a fitted blazer',  # 1.5.0
         ],
         'male': [
             'dress shirt with cuffed sleeves and pressed chinos',
@@ -1542,9 +1721,10 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'sweater vest over a poplin shirt with tapered trousers',
             'unlined wool jacket over a jersey polo with straight trousers',
             'linen-blend shirt with tailored trousers and a leather belt',
+            'chore-style blazer over a knitted tee with wool trousers',  # 1.5.0
         ],
         'unisex': [
-            'ponte blazer with matching tailored trousers',
+            'ponte blazer over a fine-knit crewneck with matching tailored trousers',
             'fine-knit crewneck with a collared shirt and wool trousers',
             'unstructured jacket over a jersey top with pressed chinos',
             'tailored waistcoat over a poplin shirt with straight trousers',
@@ -1564,6 +1744,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'long-line blazer with pressed wide trousers and a camisole',
         ],
         'male': [
+            'sharply pressed suit with a poplin shirt and a slim tie',  # 1.5.0 round 5: moved from unisex -- a tie put women in menswear
             'notch-lapel suit with a spread-collar shirt and a silk tie',
             'peak-lapel double-breasted suit with a poplin shirt and a tie',
             'three-piece wool suit with a waistcoat and a knitted tie',
@@ -1578,7 +1759,6 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         'unisex': [
             'tailored suit with a crisp shirt and minimal detailing',
             'structured two-piece suit with a fine-knit shell',
-            'sharply pressed suit with a poplin shirt and a slim tie',
             'long-line tailored coat over a two-piece suit',
         ],
     },
@@ -1590,29 +1770,33 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'off-shoulder mermaid gown with long satin gloves',
             'sequined evening gown with a satin wrap',
             'draped satin column gown with a draped neck',
-            'one-shoulder chiffon gown with a slit skirt',
+            'lined one-shoulder chiffon gown with a slit skirt',
             'beaded silk gown with a high halter neck',
             'tulle ballgown with an embroidered bodice',
-            'high-neck lace gown with a sweeping train',
+            'lined high-neck lace gown with a sweeping train',
             'silk-faille gown with an asymmetric neckline',
             'liquid-satin slip gown with a bias-cut skirt',
+            'long-sleeved velvet column gown with a high neck and an open back',  # 1.5.0 round 2
+            'strapless satin gown with a sweetheart neckline and a full skirt',  # 1.5.0 round 2
+            'cap-sleeve crepe sheath gown with a keyhole back',  # 1.5.0 round 2
+            'long-sleeved sequined gown with a plunging back',  # 1.5.0 round 2
         ],
         'male': [
+            'high-shine satin-lapel dinner suit with a bow tie',  # 1.5.0 round 5: moved from unisex -- a tie put women in menswear
             'classic tuxedo with a crisp shirt and a silk bow tie',
             'dinner jacket with tuxedo trousers and a bow tie',
             'velvet dinner jacket with tuxedo trousers and a bow tie',
             'double-breasted tuxedo with a shawl-lapel jacket',
             'peak-lapel tuxedo with a pleated-front shirt and a bow tie',
             'midnight wool dinner suit with a cummerbund and a bow tie',
-            'shawl-collar dinner jacket with a marcella shirt',
-            'tailcoat with a wing-collar shirt and a white bow tie',
+            'shawl-collar dinner jacket with a marcella shirt and matching trousers',
+            'tailcoat with a wing-collar shirt, a white bow tie and matching trousers',
             'silk-lapel tuxedo with a fly-front shirt and a bow tie',
             'brocade dinner jacket with tuxedo trousers',
         ],
         'unisex': [
             'sharply tailored dinner suit with a satin lapel',
             'floor-length tailored cape over evening tailoring',
-            'high-shine satin tailoring with a bow tie',
             'velvet tuxedo jacket with pressed evening trousers',
         ],
     },
@@ -1623,13 +1807,15 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'sequined top with high-waisted tailored trousers',
             'fit-and-flare crepe cocktail dress',
             'bodice-seamed satin midi dress',
-            'pleated chiffon midi dress with a tie waist',
+            'lined pleated chiffon midi dress with a tie waist',
             'beaded shell top with a bias satin skirt',
             'tuxedo-style mini dress with sharp shoulders',
             'asymmetric-hem jacquard cocktail dress',
             'corseted midi dress in duchess satin',
             'off-shoulder ruched jersey dress',
             'feather-trimmed crepe cocktail dress',
+            'fitted blazer with a silk camisole and leather trousers',  # moved from unisex (1.5.0): men drew it
+            'sharply cut jumpsuit in fluid crepe',  # moved from unisex (1.5.0): men drew it
         ],
         'male': [
             'tailored suit with a fine-knit shirt and no tie',
@@ -1638,16 +1824,14 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'textured wool jacket with a silk shirt and pressed trousers',
             'shawl-collar knit jacket with tailored trousers',
             'velvet blazer over a fine merino crewneck with wool trousers',
-            'unstructured silk-blend jacket with a camp-collar shirt',
+            'unstructured silk-blend jacket with a camp-collar shirt and slim trousers',
             'slim suit with a knitted polo and a pocket square',
-            'cropped tuxedo jacket with slim tailored trousers',
+            'short mess-style tuxedo jacket with slim tailored trousers',
             'jacquard blazer with a poplin shirt and wool trousers',
         ],
         'unisex': [
-            'fitted blazer with a silk camisole and leather trousers',
-            'satin tailoring with a soft-collar shirt',
-            'textured cocktail jacket with pressed trousers',
-            'sharply cut jumpsuit in fluid crepe',
+            'satin-lapel suit with a soft-collar shirt',
+            'textured cocktail jacket over a satin shirt with pressed trousers',
         ],
     },
     'streetwear': {
@@ -1658,30 +1842,34 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'cropped bomber over a bralette with cargo trousers',
             'windbreaker with a pleated tennis skirt',
             'boxy varsity jacket over a ribbed tank with wide jeans',
-            'cropped puffer vest over a longline hoodie with joggers',
+            'cropped puffer vest over a hoodie with joggers',
             'oversized flannel over a crop top with parachute trousers',
-            'track jacket with a matching pleated skort',
+            'track jacket over a fitted tee with a matching pleated skort',
             'longline anorak over a fitted bodysuit with baggy denim',
+            'oversized hoodie with a cargo mini skirt',  # 1.5.0
+            'cropped zip-up hoodie with baggy carpenter jeans',  # 1.5.0
+            'cropped puffer with wide-leg jeans',  # moved from unisex (1.5.0): belly-out on men
         ],
         'male': [
             'oversized hoodie with cargo trousers',
             'bomber jacket over a plain tee with ripped jeans',
             'boxy tee with wide-leg jeans',
-            'baseball jersey over a turtleneck with loose jeans',
-            'quilted vest over a longline hoodie with stacked denim',
+            'baseball jersey over a long-sleeve tee with loose jeans',
+            'quilted vest over a hoodie with stacked denim',
             'techwear shell jacket with tapered cargo trousers',
-            'oversized coach jacket with nylon track pants',
+            'oversized coach jacket over a heavyweight tee with nylon track pants',
             'half-zip fleece with wide corduroy trousers',
-            'longline tee under a cropped puffer with joggers',
+            'oversized tee under a boxy puffer jacket with joggers',
             'hooded flannel overshirt with baggy carpenter jeans',
+            'boxy denim jacket over a hoodie with wide cargo trousers',  # 1.5.0
+            'oversized long-sleeve tee with parachute cargo pants',  # 1.5.0
         ],
         'unisex': [
             'oversized sweatshirt with nylon track pants',
-            'boxy anorak over a longline tee with cargo trousers',
-            'cropped puffer with wide-leg jeans',
+            'boxy anorak over an oversized tee with cargo trousers',
             'zip-through hoodie under a canvas chore coat with joggers',
-            'relaxed coach jacket with parachute trousers',
-            'longline knit vest over a tee with loose denim',
+            'relaxed coach jacket over a boxy tee with parachute trousers',
+            'knit sweater vest over a tee with loose denim',  # 1.5.0: 'longline' rendered as a dress over jeans
         ],
     },
     'bohemian': {
@@ -1690,7 +1878,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'flowing maxi dress with bell sleeves',
             'crochet top with high-waisted wide-leg trousers and a woven belt',
             'smocked prairie dress with a tiered hem',
-            'embroidered peasant blouse with a broomstick skirt',
+            'embroidered peasant blouse with a crinkled tiered maxi skirt',
             'gauzy tiered maxi skirt with a knotted linen blouse',
             'quilted patchwork waistcoat over a gauze dress',
             'fringed suede jacket over a slip dress',
@@ -1698,31 +1886,33 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'layered gauze tunic over flared linen trousers',
             'hand-loomed shawl over a smocked midi dress',
             'crinkled cotton kaftan with a corded belt',
+            'crochet vest over a gauze blouse with flared jeans',  # 1.5.0
+            'kimono cardigan over a slip top',  # moved from unisex (1.5.0): men drew it
+            'patchwork layers over a gauze shift',  # moved from unisex (1.5.0): men drew it
+            'layered gauze scarves over a tiered cotton dress',  # moved from unisex (1.5.0): men drew it
         ],
         'male': [
             'open linen shirt with loose drawstring trousers',
             'embroidered tunic with wide linen trousers',
-            'crochet-panel overshirt with cropped linen trousers',
+            'crochet-panel overshirt with relaxed linen trousers',
             'gauze grandad-collar shirt with relaxed trousers',
             'fringed suede jacket over a henley with flared jeans',
-            'hand-loomed poncho over a linen shirt',
-            'corduroy flares with a knitted open-weave sweater',
+            'hand-loomed baja hoodie over a linen shirt with drawstring linen trousers',
+            'chunky hand-knit sweater with straight-leg corduroys',  # 1.5.0 round 5: flares read as costume
             'kaftan-cut cotton shirt with drawstring trousers',
+            'embroidered denim overshirt with loose linen trousers',  # 1.5.0
         ],
         'unisex': [
-            'kimono cardigan over a slip top',
-            'patchwork layers over a gauze shift',
-            'crinkled linen duster over wide drawstring trousers',
-            'open-weave knit poncho over a gauze tunic',
-            'embroidered waistcoat over a loose linen shirt',
-            'layered gauze scarves over a tiered cotton dress',
+            'crinkled linen duster over a gauze tank with wide drawstring trousers',
+            'open-weave knit cardigan over a gauze henley with wide linen trousers',
+            'embroidered waistcoat over a loose linen shirt with wide linen trousers',
         ],
     },
     'athletic': {
         'female': [
             'fitted crop top with high-rise leggings',
             'racerback sports bra with running shorts',
-            'zip-up training jacket with full-length leggings',
+            'zip-up training jacket over a fitted training tank with full-length leggings',
             'seamless athletic bodysuit',
             'pleated tennis dress with a built-in short',
             'cropped windbreaker with cycling shorts',
@@ -1730,6 +1920,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'longline sports bra with flared yoga trousers',
             'quarter-zip base layer with thermal running tights',
             'loose training tee over a bike short',
+            'mesh-panel tee with fitted training leggings',  # moved from unisex (1.5.0): men drew it
         ],
         'male': [
             'compression shirt with training shorts',
@@ -1748,8 +1939,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'full tracksuit in brushed technical jersey',
             'hooded shell over a base layer with training tights',
             'sleeveless training top with woven joggers',
-            'packable running gilet over a long-sleeve base layer',
-            'mesh-panel tee with fitted training leggings',
+            'packable running gilet over a long-sleeve base layer with running shorts',
         ],
     },
     'resort vacation': {
@@ -1764,6 +1954,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'wrap-front linen playsuit',
             'broderie-anglaise cover-up over a bikini',
             'silk-blend camisole with flowing palazzo trousers',
+            'linen tie-front top with a flowing midi skirt',  # 1.5.0
+            'ankle-length tiered maxi sundress with a tie back',  # 1.5.0 round 2
         ],
         'male': [
             'tropical camp-collar shirt with relaxed trousers',
@@ -1774,6 +1966,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'knitted polo with pleated linen shorts',
             'seersucker shirt with cotton chino shorts',
             'terry-cloth polo with tailored swim shorts',
+            'crochet-knit shirt with drawstring linen trousers',  # 1.5.0
         ],
         'unisex': [
             'loose linen set with a camp-collar shirt and shorts',
@@ -1795,23 +1988,25 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'asymmetric-hem mesh dress over a bodysuit',
             'shredded oversized knit with cropped leggings',
             'vinyl trench over a ribbed bodysuit',
-            'deconstructed tailored jacket with laddered tights and shorts',
+            'deconstructed tailored jacket over a mesh top with laddered tights and shorts',
+            'oversized band tee over a slip skirt with ripped tights',  # 1.5.0
+            'asymmetric deconstructed jacket over a mesh top with laddered leggings',  # moved from unisex (1.5.0): men drew it
         ],
         'male': [
-            'distressed denim jacket with studded patches and jeans',
+            'distressed denim jacket with studded patches over a band tee with slim cargo trousers',
             'moto jacket over a ripped tee with skinny jeans',
-            'buckled leather jacket over a mesh long sleeve',
+            'buckled leather jacket over a mesh long sleeve with slim ripped jeans',
             'deconstructed knit with tapered cargo trousers',
-            'vinyl-panel bomber with slim leather trousers',
+            'vinyl-panel bomber over a fitted tee with slim leather trousers',
             'shredded oversized tee with buckled utility trousers',
             'long leather coat over a ribbed tank with slim jeans',
             'harness-strapped overshirt with distressed denim',
+            'layered long-sleeve under a ripped band tee with skinny jeans',  # 1.5.0
         ],
         'unisex': [
             'denim vest with frayed shorts and a studded belt',
             'layered mesh over a distressed knit with leather trousers',
-            'buckled utility harness over a shredded tee',
-            'asymmetric deconstructed jacket with laddered leggings',
+            'buckled utility harness over a shredded tee with slim cargo trousers',
         ],
     },
     'preppy': {
@@ -1821,11 +2016,12 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'sleeveless polo dress with a knitted trim',
             'quilted jacket over a rugby shirt with slim chinos',
             'lambswool vest over a poplin shirt with a pleated skirt',
-            'blazer with a pleated tennis skirt and knee socks',
+            'blazer over a crisp shirt with a pleated tennis skirt and knee socks',
             'shetland crewneck with straight chinos and a webbing belt',
             'poplin shirtdress with a rope belt',
             'knitted polo with a box-pleated midi skirt',
             'cricket-trim cardigan over a shell top with tailored trousers',
+            'cable-knit cardigan over a boatneck tee with cuffed chinos',  # 1.5.0
         ],
         'male': [
             'cable-knit sweater over an oxford shirt with chinos',
@@ -1841,8 +2037,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         ],
         'unisex': [
             'lambswool crewneck over a collared shirt with chinos',
-            'quilted field jacket over a cable-knit sweater',
-            'harrington jacket with pressed cotton trousers',
+            'quilted field jacket over a cable-knit sweater with chinos',
+            'harrington jacket over a polo shirt with pressed cotton trousers',
             'knitted vest over an oxford shirt with tailored shorts',
         ],
     },
@@ -1858,24 +2054,30 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'corduroy pinafore over a ribbed roll-neck',
             'empire-waist crepe dress with lantern sleeves',
             'gabardine pencil skirt with a tucked short-sleeve knit',
+            'boatneck top with cropped capri trousers and a short cardigan',  # 1.5.0
+            'peasant blouse with high-waisted flared jeans',  # 1.5.0
+            'sleeveless mod shift dress with a high round neckline',  # 1.5.0
+            'puff-sleeve smocked mini sundress',  # 1.5.0 round 2
         ],
         'male': [
             'rolled-cuff jeans with a jersey tee and a leather jacket',
             'bowling shirt with pleated gabardine trousers',
-            'knitted polo with high-waisted wide trousers',
+            'knitted polo with high-waisted pleated trousers',
             'corduroy blazer over a roll-neck with flared trousers',
             'double-pleated trousers with braces and a poplin shirt',
-            'boxy gabardine jacket with cuffed wool trousers',
+            'boxy gabardine jacket over a camp-collar shirt with cuffed wool trousers',
             'cardigan over a ribbed tank with high-waisted denim',
-            'safari-cut jacket with pleated cotton trousers',
+            'safari-cut jacket over a knit polo with pleated cotton trousers',
             'waffle henley with wide-cut workwear denim',
-            'shawl-collar cardigan with tapered wool trousers',
+            'shawl-collar cardigan over an oxford shirt with tapered wool trousers',
+            'western yoke shirt with bootcut jeans',  # 1.5.0
+            'short-sleeve knit shirt with pleated slacks',  # 1.5.0
         ],
         'unisex': [
-            'boxy gabardine jacket with pleated trousers',
-            'knitted roll-neck with high-waisted wide trousers',
-            'corduroy blazer with cuffed straight denim',
-            'cropped harrington with rolled-cuff workwear jeans',
+            'boxy gabardine jacket over a knitted tee with pleated trousers',
+            'knitted roll-neck with high-waisted pleated trousers',
+            'corduroy blazer over a fine turtleneck with cuffed straight denim',
+            'harrington jacket over a henley with rolled-cuff workwear jeans',
         ],
     },
     'loungewear': {
@@ -1889,6 +2091,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'modal pyjama set with a piped collar',
             'fleece-lined hoodie with brushed jersey joggers',
             'linen-blend lounge shirt with matching drawstring trousers',
+            'satin pyjama set with a button-up top and trousers',  # 1.5.0
         ],
         'male': [
             'cotton robe over lounge trousers',
@@ -1899,6 +2102,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'modal lounge tee with matching wide trousers',
             'shawl-collar knitted robe over a jersey lounge set',
             'linen-blend lounge shirt with drawstring shorts',
+            'waffle robe over a jersey tee and joggers',  # 1.5.0
         ],
         'unisex': [
             'waffle-knit lounge set with a crewneck and joggers',
@@ -1907,6 +2111,42 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'oversized knitted robe over a jersey lounge set',
             'fleece-back sweatshirt with drawstring lounge shorts',
             'ribbed lounge set with a long sleeve and wide trousers',
+        ],
+    },
+    # 1.5.0. Trade and hands-on dress -- the style the location gate needed, because
+    # workshops, docks, farms and building sites had nothing plausible to draw. Outer
+    # layers here (chore coat, work jacket) are real workwear layers, not weather wear.
+    'utility workwear': {
+        'female': [
+            'canvas chore coat over a henley with carpenter trousers',
+            'twill coveralls with the sleeves rolled to the elbow',
+            'heavyweight work shirt with double-knee work trousers',
+            'bib overalls over a thermal long sleeve',
+            'quilted work vest over a flannel shirt with straight-leg work jeans',
+            'fitted utility shirt with ripstop cargo trousers',
+            'duck-canvas work jacket over a ribbed tank with work jeans',
+            'short-sleeve boilersuit with rolled cuffs',
+            'cotton drill work shirt tucked into high-waisted carpenter pants',
+            'waxed canvas apron over a chambray shirt and work trousers',
+        ],
+        'male': [
+            'canvas chore coat over a thermal henley with double-knee work trousers',
+            'heavyweight pocket tee with carpenter jeans',
+            'twill work shirt with rugged cargo work trousers',
+            'insulated work vest over a flannel shirt with work jeans',
+            'duck-canvas bib overalls over a long-sleeve tee',
+            'zip-front coveralls with the sleeves pushed up',
+            'chambray work shirt with ripstop utility trousers',
+            'waxed-cotton work jacket over a hoodie with work jeans',
+            'waffle-knit thermal under a canvas work vest with carpenter trousers',
+            'button-up work shirt with reinforced-knee trousers',
+        ],
+        'unisex': [
+            'canvas boilersuit with rolled cuffs',
+            'chambray shirt under a canvas shop apron with work trousers',
+            'hooded work sweatshirt with double-knee canvas trousers',
+            'ripstop utility shirt with cargo work trousers',
+            'mechanic-style work shirt with sturdy twill trousers',
         ],
     },
 }
@@ -1921,6 +2161,10 @@ SKIN_TONE_BANDS: dict[str, list[str]] = {
     "fair": ['porcelain', 'very pale', 'pale', 'fair', 'light', 'light medium', 'medium'],
     "olive": ['fair', 'light', 'light medium', 'medium', 'medium olive', 'olive', 'warm tan', 'tan'],
     "tan": ['light', 'light medium', 'medium', 'medium olive', 'olive', 'warm tan', 'tan', 'golden tan', 'bronze', 'caramel'],
+    # 1.5.0 round 4: split out of "tan", which put a Japanese man in caramel skin and a
+    # Samoan woman in light skin IN band.
+    "east_asian": ['porcelain', 'fair', 'light', 'light medium', 'medium', 'warm tan', 'golden tan'],
+    "pacific": ['warm tan', 'tan', 'golden tan', 'bronze', 'caramel', 'brown', 'warm brown'],
     "brown": ['medium olive', 'olive', 'warm tan', 'tan', 'golden tan', 'bronze', 'caramel', 'brown', 'warm brown', 'dark brown'],
     "dark": ['caramel', 'brown', 'warm brown', 'dark brown', 'deep', 'ebony', 'deep ebony'],
 }
@@ -1970,18 +2214,18 @@ ETHNICITY_REGION: dict[str, str] = {
     "Bangladeshi": "brown", "Berber": "brown", "Egyptian": "brown",
     "Indian": "brown", "Moroccan": "brown", "Nepali": "brown",
     "Pakistani": "brown", "Saudi": "brown", "Sri Lankan": "brown",
-    "Sudanese": "brown", "Yemeni": "brown",
+    "Sudanese": "dark", "Yemeni": "brown",
     # East & SE Asian / Pacific / Latin American / Indigenous
     "Argentinian": "tan", "Bolivian": "tan", "Brazilian": "tan",
     "Burmese": "tan", "Cambodian": "tan", "Chilean": "tan",
-    "Chinese": "tan", "Colombian": "tan", "Cuban": "tan",
+    "Chinese": "east_asian", "Colombian": "tan", "Cuban": "tan",
     "Dominican": "tan", "Filipino": "tan", "Guatemalan": "tan",
-    "Hawaiian": "tan", "Indonesian": "tan", "Inuit": "tan",
-    "Japanese": "tan", "Korean": "tan", "Laotian": "tan",
-    "Malaysian": "tan", "Maori": "tan", "Mexican": "tan",
+    "Hawaiian": "pacific", "Indonesian": "tan", "Inuit": "tan",
+    "Japanese": "east_asian", "Korean": "east_asian", "Laotian": "tan",
+    "Malaysian": "tan", "Maori": "pacific", "Mexican": "tan",
     "Mongolian": "tan", "Native American": "tan", "Peruvian": "tan",
-    "Puerto Rican": "tan", "Samoan": "tan", "Singaporean": "tan",
-    "Taiwanese": "tan", "Thai": "tan", "Tibetan": "tan",
+    "Puerto Rican": "tan", "Samoan": "pacific", "Singaporean": "east_asian",
+    "Taiwanese": "east_asian", "Thai": "tan", "Tibetan": "tan",
     "Venezuelan": "tan", "Vietnamese": "tan",
     # Sub-Saharan African and diaspora
     "Aboriginal Australian": "dark", "Congolese": "dark", "Ethiopian": "dark",
@@ -2095,8 +2339,9 @@ OUTDOOR_ONLY_LIGHTING: frozenset[str] = frozenset([
 #: the location is outdoors. Exactly four whole families -- ``window_general``,
 #: ``window_stained``, ``artificial_ceiling``, ``artificial_hearth`` and
 #: ``artificial_screen`` -- so the drop stays proportional. The five
-#: ``artificial_open`` values (candle, lamp, string lights, open flame, lantern)
-#: read fine on a patio or at a campfire and stay available outdoors.
+#: ``artificial_open`` values (candle, lamp, string lights, lantern) read fine on a
+#: patio and stay available outdoors. The open flame was split out at 1.5.0 into its
+#: own ``artificial_fire`` family, gated as a fixture by FIRE_LOCATIONS.
 INDOOR_ONLY_LIGHTING: frozenset[str] = frozenset([
     'soft window light from the side', 'backlit silhouette against bright window',
     'light through venetian blinds casting stripes',
@@ -2242,6 +2487,32 @@ NEON_STREET_LOCATIONS: frozenset[str] = frozenset(
     if loc in OUTDOOR_LOCATIONS
 )
 
+#: 1.5.0 round 2: where an open flame is actually there to light the scene -- a
+#: hearth, a forge or furnace, a kitchen or grill, torches, a bonfire or fire pit.
+FIRE_LOCATIONS: frozenset[str] = HEARTH_LOCATIONS | frozenset([
+    "blacksmith forge with an anvil", "glassblowing studio with a furnace",
+    "commercial kitchen", "barbecue joint with paper-lined trays", "castle courtyard",
+    "wide sandy beach", "quiet suburban backyard", "rolling desert dune", "forest trail",
+    # Welding arcs and furnaces: the Welder and Glassblower archetypes lock both.
+    "factory floor", "home garage workshop",
+])
+
+#: 1.5.0 round 4: where candles are actually lit -- homes, restaurants and bars that
+#: set a table by candlelight, places of worship, a hotel room, a dressing room, a patio.
+_NO_CANDLE_HOMES = frozenset(["home garage workshop", "laundry room with stacked machines",
+                              "children's playroom with toy bins", "mudroom entryway",
+                              "suburban basement"])
+CANDLE_LOCATIONS: frozenset[str] = frozenset(
+    [v for v in LOCATION_FAMILIES["domestic"]["variants"] if v not in _NO_CANDLE_HOMES] + [
+        "elegant hotel dining room", "cozy corner coffee shop", "fine dining restaurant interior",
+        "wood-paneled pub", "dimly lit cocktail lounge", "wine bar with exposed brick",
+        "speakeasy-style basement bar", "gastropub with an open kitchen",
+        "tea house with low wooden tables", "French bistro with mirrored walls",
+        "grand cathedral interior", "small chapel interior", "synagogue interior",
+        "Buddhist temple hall", "Shinto shrine interior", "grand hotel suite",
+        "backstage dressing room", "rooftop cocktail bar", "quiet suburban backyard",
+        "poolside cabana"])
+
 #: {fixture lighting value -> the locations that have that fixture}. Consumed by
 #: data/constraints.py, which turns it into one exclusion rule per location listing
 #: whichever fixtures that location lacks.
@@ -2252,8 +2523,11 @@ NEON_STREET_LOCATIONS: frozenset[str] = frozenset(
 #: target. Widening the loop is what lets ``studio_stage`` be allowlisted at
 #: ``outdoor amphitheater`` while still being excluded from a forest trail, using the ONE
 #: mechanism that already existed instead of a second one.
+
 FIXTURE_LIGHTING: "OrderedDict[str, frozenset[str]]" = OrderedDict([
     ('flickering firelight from a hearth', HEARTH_LOCATIONS),
+    ('fire and flame warm flicker', FIRE_LOCATIONS),  # 1.5.0 round 2
+    ('warm candlelight', CANDLE_LOCATIONS),  # 1.5.0 round 4
     ('flickering television glow in a dark room', SCREEN_GLOW_LOCATIONS),
     ('light through stained glass casting colors', STAINED_GLASS_LOCATIONS),
     ('stage spotlight from above', STAGE_LOCATIONS),
@@ -2391,7 +2665,9 @@ COLOUR_WORD_RE = re.compile(
     r"yellow|orange|brown|tan|beige|khaki|olive|grey|gray|charcoal|silver|gold|golden|"
     r"burgundy|maroon|crimson|scarlet|emerald|sage|teal|turquoise|mustard|rust|camel|"
     r"blush|champagne|ruby|amber|copper|bronze|indigo|magenta|coral|peach|mint|"
-    r"monochrome|pastel|neon|metallic|two-tone|color-blocked|colour-blocked)\b",
+    r"monochrome|pastel|neon|metallic|two-tone|color-blocked|colour-blocked|"
+    # 1.5.0 round 4: "a cherry-red midnight wool dinner suit".
+    r"midnight|wine|oxblood|cognac|slate|taupe)\b",
     re.IGNORECASE,
 )
 #: Pattern / fabric-pattern words that mean the garment phrase already states its own.
@@ -2400,6 +2676,58 @@ PATTERN_WORD_RE = re.compile(
     r"floral|paisley|polka[- ]dot(?:ted|s)?|animal print|leopard|zebra|snakeskin|"
     r"camo(?:uflage)?|geometric|abstract|argyle|herringbone|tie-dye|denim|graphic|"
     r"patterned|printed|sequined|sequin)\b",
+    re.IGNORECASE,
+)
+#: Season fit of a generated garment phrase (1.5.0). Read ONLY for the engine's own
+#: OUTFIT_DESCRIPTIONS corpus, never for a roster costume (the regex-over-prose trap):
+#: `nodes.identity_forge._resolve_outfit_description` drops warm-only phrases in winter
+#: and cold-only ones in summer. The season is "None" indoors, so it filters outdoors
+#: only. `SeasonGarmentTests` pins which corpus phrases each one catches.
+WARM_ONLY_GARMENT_RE = re.compile(
+    r"\b(?:shorts|skort|swim\w*|bikini|sarong|bandeau|sun ?dress|playsuit|romper)\b",
+    re.IGNORECASE,
+)
+#: A bare top is warm-only too, unless something is layered with it.
+BARE_TOP_RE = re.compile(
+    r"\b(?:tank|camisole|cami|crop top|cropped top|halter\w*|sleeveless|slip dress|"
+    r"corset top|bustier|"  # 1.5.0 round 5: a corset top in a snowy canyon
+    r"slip top|bralette|tube top|strapless)\b",
+    re.IGNORECASE,
+)
+LAYER_WORD_RE = re.compile(
+    r"\b(?:jacket|coat|blazer|cardigan|parka|trench|bomber|windbreaker|anorak|puffer|"
+    r"fleece|hoodie|sweater|sweatshirt|shacket|overshirt|shirt|poncho|shawl|robe|kimono|"
+    r"duster|jumper|pullover|knit)\b",
+    re.IGNORECASE,
+)
+COLD_ONLY_GARMENT_RE = re.compile(
+    r"\b(?:puffer|parka|overcoat|peacoat|pea coat|shearling|duffle|down-filled|"
+    r"insulated|thermal|fleece|cable-knit|chunky[- ]knit|roll-neck|turtleneck|"
+    r"wool coat)\b",
+    re.IGNORECASE,
+)
+#: 1.5.0 `outerwear` eligibility, read by `nodes.identity_forge._eligible_outerwear`
+#: against the ENGINE'S OWN garment phrase only. An OUTER layer (a coat, or a jacket
+#: named as outerwear) means the outfit already answers the weather: no outerwear. A
+#: LIGHT layer (blazer, cardigan, vest, tailored jacket) can take a coat over it, but
+#: only in winter. `OuterwearTests` pins which corpus phrases each one catches.
+OUTER_LAYER_RE = re.compile(
+    r"\b(?:coat|parka|anorak|puffer|bomber|windbreaker|trench|duster|harrington|"
+    r"poncho|cape|robe|gilet)\b"
+    r"|\b(?:moto|leather|denim|varsity|track|coach|field|shell|training|work|suede|"
+    r"quilted|chore|trucker|utility)(?:-style)?\s+jacket\b",
+    re.IGNORECASE,
+)
+LIGHT_LAYER_RE = re.compile(
+    r"\b(?:blazer|cardigan|vest|waistcoat|overshirt|shacket|kimono|shawl|jacket|fleece)\b",
+    re.IGNORECASE,
+)
+#: 1.5.0 round 3: a garment that already names its fabric cannot also be "in denim".
+FABRIC_WORD_RE = re.compile(
+    r"\b(?:cotton|wool|linen|silk|satin|velvet|corduroy|leather|knit|knitted|jersey|"
+    r"fleece|tweed|gabardine|canvas|twill|chiffon|crepe|cashmere|merino|lambswool|suede|"
+    r"poplin|flannel|seersucker|lace|tulle|mesh|nylon|waxed|terry|gauze|vinyl|crochet|"
+    r"cable-knit|brocade|jacquard|sequined|chambray)\b",
     re.IGNORECASE,
 )
 #: Leading article stripped from a garment phrase before the palette adjective is
