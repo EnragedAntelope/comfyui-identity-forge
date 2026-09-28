@@ -1666,6 +1666,8 @@ for _hat in ("wide brim sun hat", "baseball cap", "beret", "woven hat", "flat ca
 _OPEN_FOOTWEAR: list[str] = ["bare feet", "sandals", "espadrilles", "slides", "slippers",
                               "mules", "wedges", "boat shoes"]  # last three 1.5.0 round 4
 _INTERIORS: list[str] = [_loc for _loc in _LOCATION_FAMILY if _loc not in OUTDOOR_LOCATIONS]
+_BATHING_PLACES: tuple[str, ...] = ("steaming hot spring pool", "waterfall plunge pool",
+                                    "poolside cabana")
 for _coat, _seasons in OUTERWEAR_SEASONS.items():
     # A seasonal place whose season the coat can never share (a parka in the autumn
     # park) would leave `season` with no legal value at all, so it goes too. Only on a
@@ -1674,7 +1676,9 @@ for _coat, _seasons in OUTERWEAR_SEASONS.items():
                    if not (_allowed & _seasons)]
     _rules = [
         ("season", sorted(set(_SEASONS) - _seasons), "is not worn then"),
-        ("location", list(_INTERIORS) + _off_season, "is not worn there"),
+        # 1.5.0 round 5: a wool overcoat and oxfords at a steaming hot spring pool.
+        ("location", list(_INTERIORS) + _off_season + list(_BATHING_PLACES),
+         "is not worn there"),
         ("footwear", list(_OPEN_FOOTWEAR), "does not go with open shoes"),
         ("outfit_style", sorted(_s for _s, _c in OUTERWEAR_BY_STYLE.items()
                                 if _coat not in _c), "is not worn with that style"),
@@ -1716,13 +1720,17 @@ for _watch in ("minimal analog", "chronograph", "smart watch", "vintage leather"
 # is FLAT with a `weights` map, so these small denials re-pick proportionally.
 PALETTE_DENIED_BY_STYLE: dict[str, list[str]] = {
     "smart casual": ["gradient ombre", "mixed prints"],
-    "business casual": ["gradient ombre", "mixed prints"],
+    "business casual": ["gradient ombre", "mixed prints", "all white", "white and cream",
+                        "all black", "black monochrome"],  # last four 1.5.0 round 5
     "business formal": ["gradient ombre", "mixed prints", "bold primary colors", "pastels",
-                        "jewel tones"],  # 1.5.0 round 4: "a ruby two-piece suit"
+                        "jewel tones",  # 1.5.0 round 4: "a ruby two-piece suit"
+                        # 1.5.0 round 5: an all-white suit, shirt and tie read as costume
+                        "all white", "white and cream", "all black", "black monochrome"],
     "evening formal": ["gradient ombre", "mixed prints"],
     "cocktail semi-formal": ["mixed prints"],
     "preppy": ["gradient ombre", "mixed prints"],
-    "utility workwear": ["gradient ombre", "mixed prints", "bold primary colors", "pastels"],
+    "utility workwear": ["gradient ombre", "mixed prints", "bold primary colors", "pastels",
+                         "all white", "white and cream"],  # last two 1.5.0 round 5
     "edgy alternative": ["pastels"],  # 1.5.0 round 4: "a mint utility harness"
 }
 for _style, _denied in PALETTE_DENIED_BY_STYLE.items():
@@ -2480,3 +2488,40 @@ for _style in ("business formal", "business casual", "evening formal", "cocktail
         "type": "exclusion", "field": "outfit_style", "value": _style,
         "excludes_field": "hair_style", "excludes_values": list(_PLAYFUL_HAIR),
         "reason": f"a playful hairstyle reads as costume with {_style} dress"})
+
+
+# --- round 5 (the maintainer's test of the round-4 branch) -----------------------------
+# An ombre palette already states the colouring; "an ombre-gradient plaid top" is two
+# claims at once (same shape as the mixed-prints rule above).
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "clothing_color", "value": "gradient ombre",
+    "excludes_field": "clothing_pattern",
+    "excludes_values": sorted(set(_ALL_PATTERNS) - {"solid", "subtle texture"}),
+    "reason": "an ombre palette already states the colouring; a print contradicts it"})
+# Sunglasses at night ("classic black sunglasses ... under moonlight").
+_NIGHT_LIGHTS = ["blue hour twilight", "pre-dawn darkness with ambient glow",
+                 "moonlight with cool blue tones", "fog-diffused streetlamp glow",
+                 "reflection off wet pavement", "neon sign glow in multiple colors",
+                 "single neon light from one side", "purple and teal neon wash",
+                 "club strobe lighting", "colored gel lighting", "warm candlelight",
+                 "warm string lights bokeh background", "warm lantern light",
+                 "golden bokeh lights in background", "fire and flame warm flicker",
+                 "flickering firelight from a hearth", "flickering television glow in a dark room"]
+for _light in _NIGHT_LIGHTS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "lighting", "value": _light,
+        "excludes_field": "accessories", "excludes_values": list(_SUNGLASSES),
+        "reason": f"nobody wears sunglasses under {_light}"})
+# Cornrows, locs and twists on loose curls read as the same miss as on waves.
+for _texture in ("loosely curled", "softly curled"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_texture", "value": _texture,
+        "excludes_field": "hair_style", "excludes_values": list(_AFRO_BRAIDS),
+        "reason": f"{_texture} hair does not hold cornrows, locs or twists"})
+# An undercut reads young from 55 ("an undercut" on a 70-year-old).
+for _age in _AGE_VALUES:
+    if int(_age) >= 55:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "age", "value": _age,
+            "excludes_field": "hair_style", "excludes_values": ["undercut", "mullet"],
+            "reason": f"an undercut or a mullet reads young at {_age}"})

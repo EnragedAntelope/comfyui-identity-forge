@@ -8543,9 +8543,10 @@ class PaletteShareTests(unittest.TestCase):
         black = w.get("black monochrome", 1) + w.get("all black", 1)
         white = w.get("white and cream", 1) + w.get("all white", 1)
         # 1.5.0 round 4: each pair shares LESS than one value's weight now (0.3 + 0.3):
-        # head-to-toe black or white read as a uniform in the QA renders.
+        # head-to-toe black or white read as a uniform in the QA renders. Round 5: white
+        # lower still (0.2 + 0.15) -- two of 14 flagged renders were all-white outfits.
         self.assertAlmostEqual(black, 0.6)
-        self.assertAlmostEqual(white, 0.6)
+        self.assertAlmostEqual(white, 0.35)
         self.assertLess((black + white) / total, 0.10)
 
 
@@ -9064,6 +9065,56 @@ class RoundFourQaTests(unittest.TestCase):
         prose, _ = generate_character(5, "Male", {"necklace": "cross necklace"},
                                       wardrobe="Feminine")
         self.assertIn("a cross necklace", prose)
+
+
+    # --- round 5 (the maintainer's test of the round-4 branch) ------------------------
+
+    def test_no_garment_means_no_garment_bound_extras(self):
+        # outfit_style None + "accessorized with a silk pocket square" drew a shirtless man.
+        from nodes.identity_forge import _GARMENT_BOUND_ACCESSORIES, _GARMENT_BOUND_JEWELRY
+        for seed, d in self._sample(300, locked={"outfit_style": "None"}):
+            self.assertNotIn(d.get("accessories"), _GARMENT_BOUND_ACCESSORIES, f"seed {seed}")
+            self.assertNotIn(d.get("other_jewelry"), _GARMENT_BOUND_JEWELRY, f"seed {seed}")
+
+    def test_no_sunglasses_at_night(self):
+        night = {"moonlight with cool blue tones", "blue hour twilight",
+                 "pre-dawn darkness with ambient glow", "fog-diffused streetlamp glow"}
+        for seed, d in self._sample(800):
+            if d.get("lighting") in night:
+                self.assertNotIn("sunglasses", d.get("accessories", ""), f"seed {seed}")
+
+    def test_no_coat_at_a_pool(self):
+        from data.constraints import _BATHING_PLACES
+        for locked in ({}, {"outerwear": "wool overcoat"}):
+            for seed, d in self._sample(400, locked=locked):
+                if not _is_absent(d.get("outerwear")):
+                    self.assertNotIn(d.get("location"), _BATHING_PLACES, f"seed {seed}")
+
+    def test_undercut_and_mullet_stop_at_55(self):
+        for seed, d in self._sample(300, gender="Male", locked={"age": "70"}):
+            self.assertNotIn(d.get("hair_style"), {"undercut", "mullet"}, f"seed {seed}")
+
+    def test_a_constraint_repick_keeps_the_texture_lean(self):
+        # A buzz cut re-picks texture off a wave; the re-pick used to ignore ethnicity.
+        coily = sum(_resolved_1_5(s, gender="Male", locked={
+            "ethnicity": "Welsh", "hair_length": "buzzed very short"})[1].get("hair_texture")
+            in ("coily", "kinky coily") for s in range(500))
+        self.assertLess(coily, 20)
+
+    def test_afro_textured_styles_lean_to_their_band(self):
+        afro = set(FIELD_FAMILIES["hair_style"]["texture"]["variants"]) | set(
+            FIELD_FAMILIES["hair_style"]["braid_short"]["variants"])
+        welsh = sum(_resolved_1_5(s, locked={"ethnicity": "Welsh", "hair_texture": "curly"})[1]
+                    .get("hair_style") in afro for s in range(400))
+        ghanaian = sum(_resolved_1_5(s, locked={"ethnicity": "Ghanaian", "hair_texture": "curly"})
+                       [1].get("hair_style") in afro for s in range(400))
+        self.assertLess(welsh, 12)
+        self.assertGreater(ghanaian, 4 * max(welsh, 1))
+
+    def test_ombre_and_knitwear_take_no_print(self):
+        for seed, d in self._sample(200, locked={"clothing_color": "gradient ombre"}):
+            self.assertIn(d.get("clothing_pattern"), (None, "solid", "subtle texture"),
+                          f"seed {seed}")
 
 
 if __name__ == "__main__":

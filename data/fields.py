@@ -547,11 +547,13 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # palettes are halved, and six everyday palettes joined.
         # 1.5.0 round 4: the four all-light / all-dark palettes 0.5 -> 0.3 (head-to-toe
         # black or white read as a uniform in QA renders).
-        "weights": {'black monochrome': 0.3, 'all black': 0.3, 'white and cream': 0.3,
-                    'all white': 0.3, 'gradient ombre': 0.5, 'mixed prints': 0.5},
+        "weights": {'black monochrome': 0.3, 'all black': 0.3, 'white and cream': 0.2,
+                    'all white': 0.15, 'gradient ombre': 0.5, 'mixed prints': 0.5},
         # 1.5.0 round 3: the loud palettes read as costume on a masculine everyday look.
         "masculine_weights": {"pastels": 0.5, "bold primary colors": 0.6,
-                              "gradient ombre": 0.2, "mixed prints": 0.2},
+                              "gradient ombre": 0.2, "mixed prints": 0.2,
+                              # 1.5.0 round 5: head-to-toe white on men (2 of 14 flags)
+                              "all white": 0.1, "white and cream": 0.1},
         "optional": False
     }),
     ("clothing_pattern", {
@@ -1742,6 +1744,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'long-line blazer with pressed wide trousers and a camisole',
         ],
         'male': [
+            'sharply pressed suit with a poplin shirt and a slim tie',  # 1.5.0 round 5: moved from unisex -- a tie put women in menswear
             'notch-lapel suit with a spread-collar shirt and a silk tie',
             'peak-lapel double-breasted suit with a poplin shirt and a tie',
             'three-piece wool suit with a waistcoat and a knitted tie',
@@ -1756,7 +1759,6 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         'unisex': [
             'tailored suit with a crisp shirt and minimal detailing',
             'structured two-piece suit with a fine-knit shell',
-            'sharply pressed suit with a poplin shirt and a slim tie',
             'long-line tailored coat over a two-piece suit',
         ],
     },
@@ -1768,10 +1770,10 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'off-shoulder mermaid gown with long satin gloves',
             'sequined evening gown with a satin wrap',
             'draped satin column gown with a draped neck',
-            'one-shoulder chiffon gown with a slit skirt',
+            'lined one-shoulder chiffon gown with a slit skirt',
             'beaded silk gown with a high halter neck',
             'tulle ballgown with an embroidered bodice',
-            'high-neck lace gown with a sweeping train',
+            'lined high-neck lace gown with a sweeping train',
             'silk-faille gown with an asymmetric neckline',
             'liquid-satin slip gown with a bias-cut skirt',
             'long-sleeved velvet column gown with a high neck and an open back',  # 1.5.0 round 2
@@ -1780,6 +1782,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'long-sleeved sequined gown with a plunging back',  # 1.5.0 round 2
         ],
         'male': [
+            'high-shine satin-lapel dinner suit with a bow tie',  # 1.5.0 round 5: moved from unisex -- a tie put women in menswear
             'classic tuxedo with a crisp shirt and a silk bow tie',
             'dinner jacket with tuxedo trousers and a bow tie',
             'velvet dinner jacket with tuxedo trousers and a bow tie',
@@ -1794,7 +1797,6 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         'unisex': [
             'sharply tailored dinner suit with a satin lapel',
             'floor-length tailored cape over evening tailoring',
-            'high-shine satin-lapel dinner suit with a bow tie',
             'velvet tuxedo jacket with pressed evening trousers',
         ],
     },
@@ -1805,7 +1807,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'sequined top with high-waisted tailored trousers',
             'fit-and-flare crepe cocktail dress',
             'bodice-seamed satin midi dress',
-            'pleated chiffon midi dress with a tie waist',
+            'lined pleated chiffon midi dress with a tie waist',
             'beaded shell top with a bias satin skirt',
             'tuxedo-style mini dress with sharp shoulders',
             'asymmetric-hem jacquard cocktail dress',
@@ -1896,7 +1898,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'gauze grandad-collar shirt with relaxed trousers',
             'fringed suede jacket over a henley with flared jeans',
             'hand-loomed baja hoodie over a linen shirt with drawstring linen trousers',
-            'knitted open-weave sweater with corduroy flares',
+            'chunky hand-knit sweater with straight-leg corduroys',  # 1.5.0 round 5: flares read as costume
             'kaftan-cut cotton shirt with drawstring trousers',
             'embroidered denim overshirt with loose linen trousers',  # 1.5.0
         ],
@@ -2688,6 +2690,7 @@ WARM_ONLY_GARMENT_RE = re.compile(
 #: A bare top is warm-only too, unless something is layered with it.
 BARE_TOP_RE = re.compile(
     r"\b(?:tank|camisole|cami|crop top|cropped top|halter\w*|sleeveless|slip dress|"
+    r"corset top|bustier|"  # 1.5.0 round 5: a corset top in a snowy canyon
     r"slip top|bralette|tube top|strapless)\b",
     re.IGNORECASE,
 )

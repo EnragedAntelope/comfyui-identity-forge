@@ -3769,5 +3769,31 @@ live rule excludes -- finds 0 stuck values in 6,600.
   `_repair_pose` passed no presentation, so the masculine pose trims and family weights
   were skipped on every repair.
 
+**Round 5: the maintainer's test of the round-4 branch** (14 flags, "overall much better"):
+- A constraint re-pick bypassed the ethnicity lean -- a buzz cut re-picks `hair_texture` off
+  a wave, and a Welsh man came back coily. `_repick` now applies the same skin, eye, hair
+  colour and texture leans as the draw (Welsh men coily: 0.5%); out-of-band coily 0.08 -> 0.03.
+  The Afro-textured STYLES (`texture`, `braid_short` families) lean the same way, since the
+  texture gate allows them on "curly" hair every band draws (two-strand twists on a
+  70-year-old Welsh man): open 5% of the time outside the dark band, at the draw and on
+  re-picks, whole families.
+- outfit_style None voiced "accessorized with a silk pocket square" and nothing else, so the
+  model drew a bare chest: garment-bound extras go when there is no garment.
+- No sunglasses under night light; no coat (random or locked) at a pool or hot spring; an
+  ombre palette takes no print and a knit lead takes no mixed-print or ombre palette;
+  all-one-colour palettes leave business dress and workwear and weigh less (all white 0.15,
+  men 0.1); a corset top is a bare top for the season filter and, with vinyl and harness
+  pieces, a young look past 45; cornrows, locs and twists need tighter curls than a loose
+  curl; an undercut and a mullet stop at 55; chiffon and lace dresses are "lined" (one
+  rendered see-through); a men's boho knit-and-flares phrase became straight-leg corduroys.
+- The two "unisex" phrases that carry a tie (a pressed suit with a slim tie, a satin-lapel
+  dinner suit with a bow tie) moved to the men's buckets: a Feminine wardrobe drew a woman
+  in a suit and tie. A suit and tie stays reachable for women under a Masculine or Any
+  wardrobe.
+- **Decided (maintainer, round 5): `outfit_style` None stays silent.** It voices no
+  clothing at all -- it exists for users who write their own clothing prompt -- so with
+  nothing else in the prompt the model may render a person undressed (a bathroom selfie
+  did). Only garment-bound extras are dropped with it.
+
 Pinned by `RoundFourQaTests`. The sweeps behind the numbers are `docs/worklog/sweep_r4.py`,
 `dist_r4.py` and `invariant_r4.py` (gitignored, local).

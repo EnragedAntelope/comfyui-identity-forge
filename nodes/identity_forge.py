@@ -52,6 +52,7 @@ try:
     from ..data.constraints import (
         CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR,
         OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS, FOOTWEAR_BY_STYLE, _LOCATION_FAMILY,
+        _BATHING_PLACES,
     )
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
@@ -70,6 +71,7 @@ except ImportError:  # pragma: no cover — standalone/test context
     from data.constraints import (
         CONSTRAINT_RULES, LEGWEAR_BY_STYLE, _GATED_LEGWEAR,
         OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS, FOOTWEAR_BY_STYLE, _LOCATION_FAMILY,
+        _BATHING_PLACES,
     )
 
 # ---------------------------------------------------------------------------
@@ -1190,7 +1192,7 @@ _EYE_INBAND_PROBABILITY: dict[str, float] = {
 #: texture draw gave it to 13% of Czech, Japanese and Hungarian characters alike. Outside
 #: the "dark" band it stays open only 8% of the time (mixed heritage), like the colour lean.
 _COILY_TEXTURES: frozenset[str] = frozenset(["coily", "kinky coily"])
-_COILY_OUT_OF_BAND_KEEP: float = 0.08
+_COILY_OUT_OF_BAND_KEEP: float = 0.03  # 1.5.0 round 5: was 0.08
 _DARK_EYES: frozenset[str] = frozenset([
     "hazel", "warm hazel", "light brown", "medium brown", "dark brown", "nearly black",
     "amber", "golden brown", "honey", "dark hazel"])
@@ -1256,6 +1258,24 @@ def _bias_hair_texture(pool: list[str], ethnicity: str | None, rng: random.Rando
     if not band or band == "dark" or rng.random() < _COILY_OUT_OF_BAND_KEEP:
         return pool
     return [t for t in pool if t not in _COILY_TEXTURES] or pool
+
+
+#: 1.5.0 round 5: Afro-textured STYLES lean to the band too. The texture gate allows them
+#: on "curly" hair, which every band draws, so a 70-year-old Welsh man drew two-strand
+#: twists. Whole families (`texture`, `braid_short`), so the other families stay
+#: proportional; open 5% of the time outside the dark band.
+_AFRO_STYLES: frozenset[str] = frozenset(
+    FIELD_FAMILIES["hair_style"]["texture"]["variants"]
+    + FIELD_FAMILIES["hair_style"]["braid_short"]["variants"])
+_AFRO_STYLE_OUT_OF_BAND_KEEP: float = 0.05
+
+
+def _bias_hair_style(pool: list[str], ethnicity: str | None, rng: random.Random) -> list[str]:
+    """Keep Afro-textured styles to the band where they are the norm."""
+    band = ETHNICITY_REGION.get(ethnicity or "")
+    if not band or band == "dark" or rng.random() < _AFRO_STYLE_OUT_OF_BAND_KEEP:
+        return pool
+    return [v for v in pool if v not in _AFRO_STYLES] or pool
 
 
 def _bias_eye_color(pool: list[str], ethnicity: str | None, rng: random.Random) -> list[str]:
@@ -1346,6 +1366,7 @@ def _weighted_choice(
 def _repick(
     field_name: str, field_def: dict, pool: list[str], gender: str, rng: random.Random,
     presentation: str | None = None,  # APPENDED (1.5.0)
+    resolved: dict[str, str] | None = None,  # APPENDED (1.5.0 round 5)
 ) -> str:
     """Draw a replacement value for ``field_name`` from an already-filtered ``pool``.
 
@@ -1357,6 +1378,20 @@ def _repick(
     instead of keeping each family's share. Both pickers intersect with ``pool``,
     so any exclusion the caller already applied still holds.
     """
+    # 1.5.0 round 5: the draw-time ethnicity/age leans applied to re-picks too. A buzz cut
+    # re-picked `hair_texture` off a wave, straight past the coily lean, and a Welsh man
+    # came back coily (the decide-at-the-draw trap, in the other direction).
+    if resolved is not None:
+        if field_name == "hair_texture":
+            pool = _bias_hair_texture(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_style":
+            pool = _bias_hair_style(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "skin_tone":
+            pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "eye_color":
+            pool = _bias_eye_color(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_color":
+            pool = _bias_hair_color(pool, resolved, rng)
     if field_name in FIELD_FAMILIES:
         return _pick_family_weighted(field_name, pool, rng, presentation)
     return _weighted_choice(field_def, pool, gender, rng, presentation)
@@ -1796,6 +1831,7 @@ def _eligible_outerwear(
     location = resolved.get("location") or ""
     indoors = location in _BUILTIN_LOCATIONS and location not in OUTDOOR_LOCATIONS
     if (not generated_outfit or indoors or _is_absent(season) or season == "summer"
+            or location in _BATHING_PLACES  # 1.5.0 round 5
             or resolved.get("footwear") in _OPEN_FOOTWEAR
             or OUTER_LAYER_RE.search(garment) or _LAYERED_RE.search(garment)
             or (season != "winter" and LIGHT_LAYER_RE.search(garment))):
@@ -1840,6 +1876,10 @@ _BROOCH_RE = re.compile(
     r"\b(?:blazer|jacket|coat|cardigan|dress|gown|suit|trench|peacoat|sweater|blouse|jumper|"
     r"knit|twinset|waistcoat)\b", re.IGNORECASE)
 _TIE_RE = re.compile(r"\btie\b(?!-)", re.IGNORECASE)
+_GARMENT_BOUND_ACCESSORIES: frozenset[str] = frozenset(
+    ["silk pocket square", "lapel pin", "suspenders", "statement belt", "western belt",
+     "belt cinching waist", "long opera gloves"])
+_GARMENT_BOUND_JEWELRY: frozenset[str] = frozenset(["brooch", "waist chain", "body chain"])
 _ANKLE_SHOES: frozenset[str] = frozenset(
     ["bare feet", "sandals", "slides", "espadrilles", "flats", "ballet flats", "heels",
      "kitten heels", "wedges", "mules", "mary janes"])
@@ -1856,6 +1896,14 @@ def _fit_extras_to_garment(resolved: dict[str, str], locked: set[str]) -> None:
     """
     outfit = resolved.get("outfit_description") or ""
     if not outfit:
+        # 1.5.0 round 5: outfit_style None voices no garment, so "accessorized with a silk
+        # pocket square" alone drew a shirtless man. Garment-bound extras go with it.
+        if (resolved.get("accessories") in _GARMENT_BOUND_ACCESSORIES
+                and "accessories" not in locked):
+            resolved["accessories"] = "no accessories"
+        if (resolved.get("other_jewelry") in _GARMENT_BOUND_JEWELRY
+                and "other_jewelry" not in locked):
+            resolved["other_jewelry"] = "no other jewelry"
         return
     coat = resolved.get("outerwear")
     coated = bool(coat) and not _is_absent(coat)
@@ -2168,6 +2216,8 @@ def _randomize_fields(
             pool = _bias_eye_color(pool, resolved.get("ethnicity"), rng)
         elif field_name == "hair_texture":
             pool = _bias_hair_texture(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "hair_style":
+            pool = _bias_hair_style(pool, resolved.get("ethnicity"), rng)
         elif field_name == "pose":
             pool = _performable_poses(pool, resolved, covers_face, covers_body,
                                       covers_hair, feral)
@@ -2359,7 +2409,8 @@ def _apply_constraints(
                             scale_class,
                         ) if v not in conflicting]
                         if pool:
-                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng, presentation)
+                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng,
+                                                        presentation, resolved)
                             changed = True
                             continue
                     warn(target, f"'{rule['field']}={rule['value']}' conflicts with "
@@ -2393,7 +2444,8 @@ def _apply_constraints(
                     scale_class,
                 ) if v not in forbidden]
                 if pool:
-                    resolved[target] = _repick(target, field_def, pool, gender, rng, presentation)
+                    resolved[target] = _repick(target, field_def, pool, gender, rng,
+                                               presentation, resolved)
                     changed = True
                 elif field_def["optional"]:
                     resolved[target] = "None"
@@ -2457,7 +2509,8 @@ def _apply_constraints(
                             scale_class,
                         ) if v not in conflicting]
                         if pool:
-                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng, presentation)
+                            resolved[trigger] = _repick(trigger, trig_def, pool, gender, rng,
+                                                        presentation, resolved)
                             changed = True
                             continue
                     warn(target, f"'{rule['field']}={rule['value']}' wants "
@@ -2535,7 +2588,7 @@ _SUMMER_TOP_RE = re.compile(r"\b(?:camp-collar|linen|short-sleeve|seersucker)\b"
 #: Young looks that read as costume from 45 on ("a pleated tennis skirt and knee socks" at 60).
 _YOUTHFUL_GARMENT_RE = re.compile(
     r"\b(?:crop top|cropped|mini ?skirt|tennis skirt|knee socks|bralette|hot pants|"
-    r"baby tee|bike short|pinafore)\b", re.IGNORECASE)
+    r"baby tee|bike short|pinafore|corset|bustier|vinyl|harness)\b", re.IGNORECASE)
 
 
 def _garment_fits_place(garment: str, resolved: dict[str, str]) -> bool:
@@ -2718,7 +2771,11 @@ def _compose_outfit_clause(
     phrase = LEADING_ARTICLE_RE.sub("", garment).strip() or garment
 
     # --- palette ------------------------------------------------------------------
-    colour = _wanted("clothing_color", bool(COLOUR_WORD_RE.search(phrase)))
+    # 1.5.0 round 5: "a mixed-print waffle-knit thermal" / an ombre knit read as the
+    # "weird sweater" of round 2 -- a knit lead takes no multi-colour palette.
+    colour = _wanted("clothing_color", bool(COLOUR_WORD_RE.search(phrase)) or (
+        resolved.get("clothing_color") in ("mixed prints", "gradient ombre")
+        and bool(_KNIT_LEAD_RE.search(_LEAD_SPLIT_RE.split(garment, 1)[0]))))
     colour_word = ""
     if colour:
         hues = ((PALETTE_HUES_MASCULINE.get(colour) if presentation == "Masculine" else None)
