@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-09-15T22:11:58.727604",
-  "version": "1.4.0",
+  "generated": "2026-09-27T22:43:19.002006",
+  "version": "1.5.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -123,10 +123,11 @@
     "1.1.0",
     "1.2.0",
     "1.3.0",
-    "1.4.0"
+    "1.4.0",
+    "1.5.0"
   ],
-  "total_entries": 2052,
-  "entries_with_images": 2052,
+  "total_entries": 2057,
+  "entries_with_images": 2057,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -225,6 +226,14 @@
       "group": "Marvel",
       "added": "0.22.0",
       "image": "images/Abomination.jpeg"
+    },
+    {
+      "name": "Acheron",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Honkai: Star Rail",
+      "added": "1.5.0",
+      "image": "images/Acheron.jpeg"
     },
     {
       "name": "Ada Wong",
@@ -889,6 +898,14 @@
       "group": "Studio Ghibli",
       "added": "0.63.0",
       "image": "images/Arrietty Clock.jpeg"
+    },
+    {
+      "name": "Art the Clown",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Terrifier",
+      "added": "1.5.0",
+      "image": "images/Art the Clown.jpeg"
     },
     {
       "name": "Artanis",
@@ -7161,6 +7178,14 @@
       "group": "Genshin Impact",
       "added": "0.77.0",
       "image": "images/Kaedehara Kazuha.jpeg"
+    },
+    {
+      "name": "Kafka (Honkai: Star Rail)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Honkai: Star Rail",
+      "added": "1.5.0",
+      "image": "images/Kafka (Honkai Star Rail).jpeg"
     },
     {
       "name": "Kagamine Rin",
@@ -15651,6 +15676,14 @@
       "image": "images/Violet.jpeg"
     },
     {
+      "name": "Violet Evergarden",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Violet Evergarden",
+      "added": "1.5.0",
+      "image": "images/Violet Evergarden.jpeg"
+    },
+    {
       "name": "Viper",
       "has_image": true,
       "gender": "Female",
@@ -16097,6 +16130,14 @@
       "group": "Hell's Paradise",
       "added": "0.73.0",
       "image": "images/Yamada Asaemon Sagiri.jpeg"
+    },
+    {
+      "name": "Yamato (One Piece)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "One Piece",
+      "added": "1.5.0",
+      "image": "images/Yamato (One Piece).jpeg"
     },
     {
       "name": "Yami Yugi",
