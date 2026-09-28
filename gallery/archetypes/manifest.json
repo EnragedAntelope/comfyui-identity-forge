@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-09-02T09:23:26.860085",
-  "version": "1.2.0",
+  "generated": "2026-09-27T22:43:26.163184",
+  "version": "1.5.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -121,10 +121,13 @@
     "1.0.0",
     "1.0.1",
     "1.1.0",
-    "1.2.0"
+    "1.2.0",
+    "1.3.0",
+    "1.4.0",
+    "1.5.0"
   ],
-  "total_entries": 255,
-  "entries_with_images": 255,
+  "total_entries": 259,
+  "entries_with_images": 259,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -623,6 +626,14 @@
       "group": "casual",
       "added": "1.2.0",
       "image": "images/Chimney Sweep.jpeg"
+    },
+    {
+      "name": "Chinese Qipao",
+      "has_image": true,
+      "gender": "Female",
+      "group": "vintage retro",
+      "added": "1.5.0",
+      "image": "images/Chinese Qipao.jpeg"
     },
     {
       "name": "Circus Clown",
@@ -1129,6 +1140,14 @@
       "image": "images/Indie Sleaze.jpeg"
     },
     {
+      "name": "Irish Step Dancer",
+      "has_image": true,
+      "gender": "Female",
+      "group": "cocktail semi-formal",
+      "added": "1.5.0",
+      "image": "images/Irish Step Dancer.jpeg"
+    },
+    {
       "name": "Italian Nonna",
       "has_image": true,
       "gender": "Female",
@@ -1143,6 +1162,14 @@
       "group": "business casual",
       "added": "0.29.0",
       "image": "images/Jeweler.jpeg"
+    },
+    {
+      "name": "Jockey",
+      "has_image": true,
+      "gender": "any",
+      "group": "athletic",
+      "added": "1.5.0",
+      "image": "images/Jockey.jpeg"
     },
     {
       "name": "Judge",
@@ -1575,6 +1602,14 @@
       "group": "streetwear",
       "added": "0.67.0",
       "image": "images/Rapper.jpeg"
+    },
+    {
+      "name": "Referee",
+      "has_image": true,
+      "gender": "any",
+      "group": "athletic",
+      "added": "1.5.0",
+      "image": "images/Referee.jpeg"
     },
     {
       "name": "Regency Aristocrat",
