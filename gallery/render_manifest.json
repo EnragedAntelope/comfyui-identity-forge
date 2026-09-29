@@ -2,8 +2,9 @@
   "entries": {
     "archetypes": {
       "1940s Factory Worker": {
-        "hash": "194a0cb4fb4c00cb",
-        "rendered": "2026-09-28"
+        "hash": "49ed953155e152fa",
+        "rendered": "2026-09-28",
+        "seed": 243541836958920223
       },
       "1940s Swing Dancer": {
         "hash": "0be3a6291a403a05",
@@ -98,7 +99,7 @@
         "rendered": "2026-08-10"
       },
       "Angelic Being": {
-        "hash": "4e276a0751701504",
+        "hash": "345e1dda125becee",
         "rendered": "2026-09-28"
       },
       "Arcane Wizard": {
@@ -234,7 +235,7 @@
         "rendered": "2026-09-28"
       },
       "Celestial Cleric": {
-        "hash": "dd8060ce8449e64f",
+        "hash": "20ca9ca24ee359d8",
         "rendered": "2026-09-28"
       },
       "Cheerleader": {
@@ -283,7 +284,7 @@
         "rendered": "2026-09-28"
       },
       "Country Star": {
-        "hash": "52dce82ffa2a1519",
+        "hash": "93eb289cef8d401e",
         "rendered": "2026-09-28"
       },
       "Court Jester": {
@@ -295,8 +296,8 @@
         "rendered": "2026-09-28"
       },
       "Cyberpunk Netrunner": {
-        "hash": "5c42cc505257f027",
-        "rendered": "pre-existing"
+        "hash": "c33c3a94c73e109b",
+        "rendered": "2026-09-28"
       },
       "Cyclist": {
         "hash": "2cff19fb3c2dcc6c",
@@ -347,8 +348,8 @@
         "rendered": "2026-09-28"
       },
       "ER Nurse": {
-        "hash": "4eee6db2af134d72",
-        "rendered": "pre-existing"
+        "hash": "f935038c68c80169",
+        "rendered": "2026-09-28"
       },
       "Egyptian Pharaoh": {
         "hash": "eec701fe568d0d89",
@@ -375,7 +376,7 @@
         "rendered": "2026-09-28"
       },
       "Farmer": {
-        "hash": "913dc97b74d81c9a",
+        "hash": "a796e39898e07b57",
         "rendered": "2026-09-28"
       },
       "Fencer": {
@@ -576,8 +577,9 @@
         "rendered": "2026-08-09"
       },
       "Mardi Gras Reveler": {
-        "hash": "b76f3d79ec28f202",
-        "rendered": "pre-existing"
+        "hash": "f08c88264067c3e6",
+        "rendered": "2026-09-28",
+        "seed": 881188921209618821
       },
       "Mariachi Charro": {
         "hash": "6b88d8fcba305f2c",
@@ -592,7 +594,7 @@
         "rendered": "pre-existing"
       },
       "Masquerade Guest": {
-        "hash": "bc56cc53c341cd90",
+        "hash": "0c4b63befe51a652",
         "rendered": "2026-09-28"
       },
       "Matador": {
@@ -697,7 +699,7 @@
         "rendered": "pre-existing"
       },
       "Plague Doctor": {
-        "hash": "31eaf01a67b7ccec",
+        "hash": "e3684bbc53b8cef0",
         "rendered": "2026-09-28"
       },
       "Plumber": {
@@ -858,8 +860,8 @@
         "rendered": "pre-existing"
       },
       "Stonemason": {
-        "hash": "8011160a6b101744",
-        "rendered": "pre-existing"
+        "hash": "bfb523b06b9c04c9",
+        "rendered": "2026-09-28"
       },
       "Storm Chaser": {
         "hash": "9ef70bc37c7a91af",
@@ -870,9 +872,8 @@
         "rendered": "2026-09-28"
       },
       "Sumo Wrestler": {
-        "hash": "23d8cee86dcf2cf4",
-        "rendered": "2026-09-28",
-        "seed": 267622214440769908
+        "hash": "61e4990efb8193a1",
+        "rendered": "2026-09-28"
       },
       "Superhero": {
         "hash": "4055bf331a8c704c",
@@ -887,7 +888,7 @@
         "rendered": "2026-09-28"
       },
       "Surgeon": {
-        "hash": "23aed0ab48323837",
+        "hash": "2dbb129c3d2dabe0",
         "rendered": "2026-09-28"
       },
       "Swashbuckling Pirate": {
@@ -10409,7 +10410,7 @@
       }
     }
   },
-  "generated": "2026-09-28T20:20:54",
+  "generated": "2026-09-28T23:38:15",
   "render": {
     "cfg": 1,
     "height": 2432,

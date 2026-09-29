@@ -13,7 +13,7 @@ import re
 import unittest
 
 from data.fields import FIELD_DEFINITIONS
-from nodes.identity_forge import IdentityForge, _is_absent
+from nodes.identity_forge import IdentityForge, _OBJECT_TOKEN_CLAUSES, _is_absent
 from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
 from nodes.identity_forge_turnaround import (
     _FACE_ONLY_FIELDS, _FACE_OUT_OF_FRAME, _FRAMINGS, _KEEP_POSE, _NEUTRAL_POSES,
@@ -263,6 +263,7 @@ class FaceOutOfFrameTests(unittest.TestCase):
             # drop -- the engine's own _is_absent is the authority on which.
             if not value or value in ("None", "Random") or _is_absent(value):
                 continue
+            value = _OBJECT_TOKEN_CLAUSES.get((name, value), value)  # voiced words
             with self.subTest(field=name):
                 self.assertIn(value, front, f"{name} should be voiced on the front view")
                 self.assertNotIn(value, back, f"{name} is still voiced on the back view")
