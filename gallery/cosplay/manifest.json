@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-09-27T22:43:19.002006",
-  "version": "1.5.0",
+  "generated": "2026-09-28T20:35:12.516286",
+  "version": "1.5.1",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -124,12 +124,30 @@
     "1.2.0",
     "1.3.0",
     "1.4.0",
-    "1.5.0"
+    "1.5.0",
+    "1.5.1"
   ],
-  "total_entries": 2057,
+  "total_entries": 2073,
   "entries_with_images": 2057,
-  "entries_missing_images": 0,
-  "missing": [],
+  "entries_missing_images": 16,
+  "missing": [
+    "Ajak",
+    "Arishem",
+    "Druig",
+    "Gilgamesh (Marvel)",
+    "Gorgon",
+    "Ikaris",
+    "Karnak",
+    "Kro",
+    "Lockjaw",
+    "Makkari",
+    "Maximus",
+    "Sprite",
+    "Starfox",
+    "Thena",
+    "Triton",
+    "Zuras"
+  ],
   "entries": [
     {
       "name": "2-1B Droid",
@@ -338,6 +356,13 @@
       "group": "Overlord",
       "added": "0.77.0",
       "image": "images/Ainz Ooal Gown.jpeg"
+    },
+    {
+      "name": "Ajak",
+      "has_image": false,
+      "gender": "Female",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Akaginu",
@@ -858,6 +883,13 @@
       "group": "The Little Mermaid",
       "added": "0.6.0",
       "image": "images/Ariel.jpeg"
+    },
+    {
+      "name": "Arishem",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Arisia Rrab",
@@ -3940,6 +3972,13 @@
       "image": "images/Drogon.jpeg"
     },
     {
+      "name": "Druig",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Duff Killigan",
       "has_image": true,
       "gender": "Male",
@@ -5180,6 +5219,13 @@
       "image": "images/Gilgamesh.jpeg"
     },
     {
+      "name": "Gilgamesh (Marvel)",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Gimli",
       "has_image": true,
       "gender": "Male",
@@ -5362,6 +5408,13 @@
       "group": "Mickey Mouse & Friends",
       "added": "0.19.0",
       "image": "images/Goofy.jpeg"
+    },
+    {
+      "name": "Gorgon",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Gorilla Grodd",
@@ -6186,6 +6239,13 @@
       "group": "Bleach",
       "added": "0.16.0",
       "image": "images/Ichigo Kurosaki.jpeg"
+    },
+    {
+      "name": "Ikaris",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Ilia",
@@ -7348,6 +7408,13 @@
       "image": "images/Karlach.jpeg"
     },
     {
+      "name": "Karnak",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Kassandra",
       "has_image": true,
       "gender": "Female",
@@ -7794,6 +7861,13 @@
       "group": "Frozen",
       "added": "0.77.0",
       "image": "images/Kristoff.jpeg"
+    },
+    {
+      "name": "Kro",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Krusty the Clown",
@@ -8476,6 +8550,13 @@
       "image": "images/Lobot.jpeg"
     },
     {
+      "name": "Lockjaw",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Loid Forger",
       "has_image": true,
       "gender": "Male",
@@ -8980,6 +9061,13 @@
       "image": "images/Makise Kurisu.jpeg"
     },
     {
+      "name": "Makkari",
+      "has_image": false,
+      "gender": "Female",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Mako Mankanshoku",
       "has_image": true,
       "gender": "Female",
@@ -9290,6 +9378,13 @@
       "group": "DC",
       "added": "0.18.0",
       "image": "images/Maxima.jpeg"
+    },
+    {
+      "name": "Maximus",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "May",
@@ -14020,6 +14115,13 @@
       "image": "images/SpongeBob SquarePants.jpeg"
     },
     {
+      "name": "Sprite",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Spy (Team Fortress 2)",
       "has_image": true,
       "gender": "Male",
@@ -14098,6 +14200,13 @@
       "group": "DC (Teen Titans)",
       "added": "0.6.0",
       "image": "images/Starfire.jpeg"
+    },
+    {
+      "name": "Starfox",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Stargirl",
@@ -14956,6 +15065,13 @@
       "image": "images/The Wolf Man.jpeg"
     },
     {
+      "name": "Thena",
+      "has_image": false,
+      "gender": "Female",
+      "group": "Marvel",
+      "added": "1.5.1"
+    },
+    {
       "name": "Thor",
       "has_image": true,
       "gender": "Male",
@@ -15266,6 +15382,13 @@
       "group": "The Witcher",
       "added": "0.6.0",
       "image": "images/Triss Merigold.jpeg"
+    },
+    {
+      "name": "Triton",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Tsunade",
@@ -16578,6 +16701,13 @@
       "group": "Avatar: The Last Airbender",
       "added": "0.16.0",
       "image": "images/Zuko.jpeg"
+    },
+    {
+      "name": "Zuras",
+      "has_image": false,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.5.1"
     },
     {
       "name": "Zyra",
