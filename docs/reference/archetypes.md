@@ -6,55 +6,55 @@
 **259 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
-- **1940s Swing Dancer** [Male]
+- **1940s Swing Dancer** [Any]
 - **1950s Diner Waitress** [Female] -- vintage retro
-- **1950s Greaser** [Male] -- vintage retro
+- **1950s Greaser** [Any] -- vintage retro
 - **1950s Homemaker** [Female] -- vintage retro
-- **1950s Sock Hop** [Female] -- vintage retro
-- **1950s Soda Jerk** [Male] -- vintage retro
+- **1950s Sock Hop** [Any] -- vintage retro
+- **1950s Soda Jerk** [Any] -- vintage retro
 - **1950s Suburban Dad** [Male] -- smart casual
 - **1960s Hippie** -- bohemian
-- **1960s Mod** [Female] -- vintage retro
+- **1960s Mod** [Any] -- vintage retro
 - **1970s Boho It-Girl** [Female] -- bohemian
 - **1970s Leisure Lounge** [Male] -- vintage retro
 - **1970s Used Car Salesman** [Male] -- vintage retro
-- **1980s Action Star** [Male] -- casual
-- **1980s Aerobics** [Female]
+- **1980s Action Star** [Any] -- casual
+- **1980s Aerobics** [Any]
 - **1980s New Wave** -- edgy alternative
 - **1980s Pop Icon** [Female] -- edgy alternative
 - **1980s Preppy** -- preppy
 - **1990s Goth** -- edgy alternative
-- **1990s Grunge** [Male] -- edgy alternative
+- **1990s Grunge** [Any] -- edgy alternative
 - **Alchemist** -- vintage retro
 - **Alpine Skier** -- athletic
 - **Ancient Roman Patrician** [Male] -- evening formal
 - **Andean Cholita** [Female] -- vintage retro
-- **Angelic Being** [Female] -- evening formal
-- **Arcane Wizard** [Male] -- bohemian
-- **Archaeologist** [Female] -- casual
+- **Angelic Being** [Any] -- evening formal
+- **Arcane Wizard** [Any] -- bohemian
+- **Archaeologist** [Any] -- casual
 - **Arctic Explorer** -- athletic
-- **Artificer** [Male] -- vintage retro
+- **Artificer** [Any] -- vintage retro
 - **Artist** -- bohemian
-- **Aso-Ebi with Gele** [Female] -- evening formal
+- **Aso-Ebi with Gele** [Any] -- evening formal
 - **Astronaut** -- athletic
 - **Astronomer** -- smart casual
-- **Athlete** [Female] -- athletic
+- **Athlete** [Any] -- athletic
 - **B-Boy / B-Girl**
 - **Babushka** [Female] -- vintage retro
-- **Backyard Country Casual** [Female]
+- **Backyard Country Casual** [Any]
 - **Baker** -- casual
 - **Ballerina** [Female] -- athletic
 - **Barista** -- casual
 - **Bartender** -- smart casual
-- **Battle Bard** [Female]
+- **Battle Bard** [Any]
 - **Beauty Pageant Contestant** [Female] -- evening formal
 - **Beekeeper** -- casual
 - **Belly Dancer** [Female] -- edgy alternative
-- **Berserker Barbarian** [Male] -- edgy alternative
+- **Berserker Barbarian** [Any] -- edgy alternative
 - **Biker** -- edgy alternative
 - **Bollywood Heroine** [Female] -- evening formal
-- **Bosozoku** [Male] -- edgy alternative
-- **Boxer** [Male] -- athletic
+- **Bosozoku** [Any] -- edgy alternative
+- **Boxer** [Any] -- athletic
 - **Bridal Portrait** [Female] -- evening formal
 - **Buddhist Monk** -- casual
 - **Butcher** -- casual
@@ -63,61 +63,61 @@
 - **Calligrapher** -- smart casual
 - **Carpenter** -- casual
 - **Cartographer** -- vintage retro
-- **Celestial Cleric** [Female] -- evening formal
-- **Cheerleader** [Female] -- athletic
-- **Chef** [Male] -- casual
+- **Celestial Cleric** [Any] -- evening formal
+- **Cheerleader** [Any] -- athletic
+- **Chef** [Any] -- casual
 - **Chimney Sweep** [Any] -- casual
-- **Chinese Qipao** [Female] -- vintage retro
+- **Chinese Qipao** [Any] -- vintage retro
 - **Circus Clown** [Any]
 - **Classic Hollywood Leading Man** [Male] -- evening formal
 - **Classic Hollywood Starlet** [Female] -- evening formal
 - **Coal Miner** -- casual
-- **Construction Worker** [Male] -- casual
-- **Corporate Executive** [Female] -- business formal
-- **Cottagecore** [Female]
+- **Construction Worker** [Any] -- casual
+- **Corporate Executive** [Any] -- business formal
+- **Cottagecore** [Any]
 - **Country Star**
 - **Court Jester** -- edgy alternative
-- **Cybergoth** [Female] -- edgy alternative
+- **Cybergoth** [Any] -- edgy alternative
 - **Cyberpunk Netrunner** -- streetwear
-- **Cyclist** [Male] -- athletic
+- **Cyclist** [Any] -- athletic
 - **DJ** -- streetwear
 - **Dark Academia**
 - **Dark Sorceress** [Female] -- evening formal
 - **Deep Sea Diver** -- athletic
 - **Desert Nomad** -- bohemian
 - **Disco Diva** [Female] -- vintage retro
-- **Doctor** [Male] -- business casual
-- **Drag Performer** [Female] -- evening formal
+- **Doctor** [Any] -- business casual
+- **Drag Performer** [Any] -- evening formal
 - **Dwarven Blacksmith** [Male] -- edgy alternative
-- **Día de los Muertos** [Female]
+- **Día de los Muertos** [Any]
 - **E-Girl / E-Boy**
 - **ER Nurse** -- loungewear
 - **Egyptian Pharaoh** -- evening formal
-- **Electrician** [Male] -- casual
+- **Electrician** [Any] -- casual
 - **Elven Ranger** -- bohemian
 - **Emo** -- edgy alternative
 - **Fairy Princess** [Female] -- evening formal
 - **Falconer** -- smart casual
-- **Farmer** [Male] -- casual
+- **Farmer** [Any] -- casual
 - **Fencer** -- athletic
 - **Fighter Pilot** -- athletic
 - **Figure Skater** [Any]
 - **Filipiniana Terno** [Any] -- evening formal
-- **Firefighter** [Male] -- athletic
-- **Flamenco Dancer** [Female]
-- **Flight Attendant** [Female] -- business casual
+- **Firefighter** [Any] -- athletic
+- **Flamenco Dancer** [Any]
+- **Flight Attendant** [Any] -- business casual
 - **Florist** -- casual
 - **Forest Druid** -- bohemian
-- **Fortune Teller** [Female]
+- **Fortune Teller** [Any]
 - **French Maid** [Female] -- smart casual
-- **Game-Day Fan** [Female]
+- **Game-Day Fan** [Any]
 - **Gaucho** [Male] -- vintage retro
 - **Geisha** [Female] -- evening formal
-- **Genie** [Female]
+- **Genie** [Any]
 - **Gibson Girl** [Female] -- vintage retro
-- **Gladiator** [Male] -- athletic
+- **Gladiator** [Any] -- athletic
 - **Glassblower** -- casual
-- **Gondolier** [Male] -- smart casual
+- **Gondolier** [Any] -- smart casual
 - **Gothic Doll** [Female] -- edgy alternative
 - **Graduate** -- smart casual
 - **Greek Goddess** [Female] -- evening formal
@@ -126,112 +126,112 @@
 - **Hair Metal Rocker** [Any]
 - **Halfling Rogue** -- casual
 - **Hazmat Technician** -- athletic
-- **Highland Scot** [Male]
+- **Highland Scot** [Any]
 - **Hockey Goalie** -- athletic
-- **Holy Paladin** [Male] -- business formal
-- **Human Knight** [Male] -- business formal
+- **Holy Paladin** [Any] -- business formal
+- **Human Knight** [Any] -- business formal
 - **Indie Sleaze** -- edgy alternative
-- **Irish Step Dancer** [Female] -- cocktail semi-formal
+- **Irish Step Dancer** [Any] -- cocktail semi-formal
 - **Italian Nonna** [Female] -- vintage retro
 - **Jeweler** -- business casual
 - **Jockey** -- athletic
 - **Judge** -- business formal
 - **K-Pop Idol**
 - **Kabuki Actor** -- evening formal
-- **Kawaii Street Fashion** [Female]
+- **Kawaii Street Fashion** [Any]
 - **Kendo Practitioner** -- athletic
-- **Korean Hanbok** [Female] -- vintage retro
-- **Librarian** [Female] -- smart casual
-- **Lifeguard** [Male] -- athletic
-- **Luchador** [Male] -- athletic
-- **Lumberjack** [Male]
-- **Maasai** [Male] -- bohemian
-- **Mad Scientist** [Male]
+- **Korean Hanbok** [Any] -- vintage retro
+- **Librarian** [Any] -- smart casual
+- **Lifeguard** [Any] -- athletic
+- **Luchador** [Any] -- athletic
+- **Lumberjack** [Any]
+- **Maasai** [Any] -- bohemian
+- **Mad Scientist** [Any]
 - **Marching Band Drum Major** -- evening formal
 - **Mardi Gras Reveler** [Any]
-- **Mariachi Charro** [Male]
-- **Marine Biologist** [Female] -- casual
+- **Mariachi Charro** [Any]
+- **Marine Biologist** [Any] -- casual
 - **Martial Artist** -- athletic
-- **Masquerade Guest** [Female]
-- **Matador** [Male] -- evening formal
+- **Masquerade Guest** [Any]
+- **Matador** [Any] -- evening formal
 - **McBling Socialite** [Female] -- streetwear
-- **Mechanic** [Male] -- edgy alternative
+- **Mechanic** [Any] -- edgy alternative
 - **Medieval Peasant** -- casual
 - **Metrosexual** [Male] -- smart casual
 - **Mime** -- edgy alternative
-- **Mongolian Deel** [Male] -- vintage retro
+- **Mongolian Deel** [Any] -- vintage retro
 - **Musician** -- streetwear
 - **Musketeer** -- vintage retro
 - **Navy Sailor** -- smart casual
 - **Necromancer** -- edgy alternative
 - **News Anchor** -- business formal
-- **Noir Detective** [Male]
+- **Noir Detective** [Any]
 - **Nun** [Female] -- business formal
 - **Oktoberfest** [Any]
 - **Opera Singer** [Any]
 - **Orchestra Conductor** -- evening formal
 - **Outback Bushman** [Male] -- casual
 - **Paramedic** -- athletic
-- **Parisian Chic** [Female]
+- **Parisian Chic** [Any]
 - **Park Ranger** -- casual
-- **Personal Trainer** [Female] -- athletic
+- **Personal Trainer** [Any] -- athletic
 - **Photographer** -- smart casual
-- **Pilot** [Male] -- business formal
+- **Pilot** [Any] -- business formal
 - **Pin-up Model** [Female] -- vintage retro
-- **Plague Doctor** [Male] -- edgy alternative
+- **Plague Doctor** [Any] -- edgy alternative
 - **Plumber** -- casual
-- **Police Officer** [Male] -- business casual
-- **Pop Star** [Female] -- cocktail semi-formal
+- **Police Officer** [Any] -- business casual
+- **Pop Star** [Any] -- cocktail semi-formal
 - **Potter** -- casual
-- **Prehistoric Hunter** [Male] -- edgy alternative
-- **Pro Wrestler** [Male] -- athletic
+- **Prehistoric Hunter** [Any] -- edgy alternative
+- **Pro Wrestler** [Any] -- athletic
 - **Punk Rocker** -- edgy alternative
-- **Race Car Driver** [Male] -- athletic
+- **Race Car Driver** [Any] -- athletic
 - **Rancher** -- vintage retro
 - **Rapper** -- streetwear
 - **Referee** -- athletic
-- **Regency Aristocrat** [Female]
+- **Regency Aristocrat** [Any]
 - **Renaissance Noble** -- evening formal
 - **Retail Cashier** -- smart casual
 - **Ringmaster** -- evening formal
 - **Rio Carnival Dancer** [Female] -- edgy alternative
 - **Roaring Flapper** [Female] -- vintage retro
 - **Roaring Twenties Gent** [Male] -- vintage retro
-- **Rock Climber** [Female] -- athletic
+- **Rock Climber** [Any] -- athletic
 - **Roman Centurion** [Male] -- athletic
 - **Rude Boy** [Male] -- vintage retro
 - **Safari Guide** -- casual
-- **Sami Gakti** [Female] -- vintage retro
-- **Samurai** [Male] -- edgy alternative
+- **Sami Gakti** [Any] -- vintage retro
+- **Samurai** [Any] -- edgy alternative
 - **Sapeur** [Male] -- evening formal
 - **Scandi Minimalist**
-- **Scientist** [Female] -- business casual
-- **Sea Captain** [Male] -- vintage retro
-- **Shadow Monk** [Male] -- loungewear
+- **Scientist** [Any] -- business casual
+- **Sea Captain** [Any] -- vintage retro
+- **Shadow Monk** [Any] -- loungewear
 - **Skateboarder** -- streetwear
 - **Snow Queen** [Female] -- evening formal
-- **Software Developer** -- loungewear
-- **Soldier** [Male] -- athletic
+- **Software Developer** -- casual
+- **Soldier** [Any] -- athletic
 - **Sommelier** -- business formal
 - **Sorcerer** [Male] -- evening formal
-- **Space Knight** [Male] -- bohemian
-- **Stage Magician** [Male]
+- **Space Knight** [Any] -- bohemian
+- **Stage Magician** [Any]
 - **Stealth Ninja** -- edgy alternative
 - **Steampunk Inventor** -- vintage retro
 - **Stonemason** -- casual
 - **Storm Chaser** -- casual
 - **Streamer** -- streetwear
-- **Sumo Wrestler** [Male] -- athletic
+- **Sumo Wrestler** [Any] -- athletic
 - **Superhero** -- athletic
 - **Supervillain** -- evening formal
-- **Surfer** [Male] -- resort vacation
+- **Surfer** [Any] -- resort vacation
 - **Surgeon** -- business casual
-- **Swashbuckling Pirate** [Male] -- edgy alternative
-- **Swim Instructor** [Female] -- athletic
+- **Swashbuckling Pirate** [Any] -- edgy alternative
+- **Swim Instructor** [Any] -- athletic
 - **Tailor** -- smart casual
 - **Tattoo Artist** -- edgy alternative
 - **Tavern Wench** [Female] -- casual
-- **Teacher** [Female] -- smart casual
+- **Teacher** [Any] -- smart casual
 - **Teddy Boy** [Male] -- vintage retro
 - **Tennis Player** -- athletic
 - **Toymaker** -- vintage retro
@@ -242,25 +242,25 @@
 - **Tribal Shaman** -- bohemian
 - **Trucker** -- casual
 - **Tuareg** [Male] -- bohemian
-- **Ukrainian Vyshyvanka** [Female] -- vintage retro
+- **Ukrainian Vyshyvanka** [Any] -- vintage retro
 - **Valkyrie** [Female] -- edgy alternative
 - **Vampire Noble** [Male] -- evening formal
 - **Veterinarian** -- business casual
 - **Victorian Dandy** [Male] -- evening formal
 - **Victorian Lady** [Female] -- evening formal
-- **Vietnamese Ao Dai** [Female] -- vintage retro
+- **Vietnamese Ao Dai** [Any] -- vintage retro
 - **Viking Shieldmaiden** [Female] -- edgy alternative
-- **Visual Kei** [Female] -- edgy alternative
+- **Visual Kei** [Any] -- edgy alternative
 - **Volcanologist** -- athletic
-- **Warlock** [Female] -- edgy alternative
+- **Warlock** [Any] -- edgy alternative
 - **Wasteland Survivor** -- edgy alternative
 - **Watchmaker** -- business casual
 - **Welder** -- casual
-- **Werewolf Hunter** [Male] -- edgy alternative
+- **Werewolf Hunter** [Any] -- edgy alternative
 - **Whirling Dervish** [Male] -- evening formal
-- **Wild West Gunslinger** [Male] -- vintage retro
+- **Wild West Gunslinger** [Any] -- vintage retro
 - **Winemaker** -- casual
-- **Witch Hunter** [Male] -- edgy alternative
-- **Y2K Mall Casual** [Female]
-- **Yeoman Warder** [Male] -- evening formal
-- **Yoga Instructor** [Female] -- athletic
+- **Witch Hunter** [Any] -- edgy alternative
+- **Y2K Mall Casual** [Any]
+- **Yeoman Warder** [Any] -- evening formal
+- **Yoga Instructor** [Any] -- athletic

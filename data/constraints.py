@@ -1075,7 +1075,11 @@ CONSTRAINT_RULES.append({
     "excludes_field": "composition", "excludes_values": ["centered symmetry"],
     "reason": "the shot type already states the subject is off-center"})
 
-_WIDE_ENVIRONMENT_SHOTS = ['full body shot with environment visible',
+# 1.5.1: plain full-body and wide shots joined -- "wide shot ... composed with a tight crop
+# and little headroom" rendered waist-up (the Sommelier and Sumo gallery samples).
+_WIDE_ENVIRONMENT_SHOTS = ['full body shot', 'full body shot with environment visible',
+                           'wide shot with subject at center',
+                           'wide shot with subject off-center',
                            'extreme wide establishing shot']
 for _shot in _WIDE_ENVIRONMENT_SHOTS:
     CONSTRAINT_RULES.append({
@@ -1083,7 +1087,7 @@ for _shot in _WIDE_ENVIRONMENT_SHOTS:
         "excludes_field": "composition",
         "excludes_values": ["a tight crop and little headroom",
                              "the subject filling most of the frame"],
-        "reason": "a wide establishing shot cannot also be a tight crop"})
+        "reason": "a full-body or wide shot cannot also be a tight crop"})
 
 # A selfie is framed like the other tight shots -- little to no environment in view --
 # so it shares the tight-shot exclusion above rather than a hand-rolled duplicate list.
@@ -1424,10 +1428,15 @@ SEASON_EXCLUSIONS: dict[str, dict[str, list[str]]] = {
     },
     "winter": {
         "footwear": ["sandals", "espadrilles", "bare feet", "slides", "boat shoes",
-                     "mules", "wedges"],  # 1.5.0 round 4
+                     "mules", "wedges",  # 1.5.0 round 4
+                     # 1.5.1: ballet flats in the snow (render #00523)
+                     "flats", "ballet flats", "slippers"],
         "accessories": ["wide brim sun hat", "woven hat"],
         "bag": ["straw beach tote", "woven rattan bag"],
-        "outfit_style": ["resort vacation"],
+        # 1.5.1: loungewear takes no outerwear (OUTERWEAR_BY_STYLE), so outdoors in winter
+        # it was a sweatshirt in the snow (render #00523). A locked loungewear moves the
+        # season instead.
+        "outfit_style": ["resort vacation", "loungewear"],
     },
     "summer": {
         "accessories": ["wool beanie", "leather gloves", "knit winter scarf", "earmuffs",
@@ -1592,7 +1601,11 @@ for _style, _allowed in PATTERN_BY_STYLE.items():
 # was legal at every outdoor place: "a city fountain plaza, under Rembrandt lighting",
 # "tide pools, under a harsh angled spotlight". Whole-family exclusion outdoors, so the
 # surviving families keep their proportions. Indoors a portrait setup stays legal.
-_STUDIO_SHAPE_LIGHTS: list[str] = list(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+# 1.5.1: the `venue_rig` family (club strobes, coloured gels) joins it -- "a
+# graffiti-covered skate park, under colored gel lighting" (#00598). Neon SIGNAGE stays
+# legal on the neon streets; a club's rig does not hang over one. Still whole families.
+_STUDIO_SHAPE_LIGHTS: list[str] = (list(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+                                   + list(FIELD_FAMILIES["lighting"]["venue_rig"]["variants"]))
 for _loc in sorted(OUTDOOR_LOCATIONS):
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "location", "value": _loc,
@@ -1767,6 +1780,54 @@ for _loc in ("sunny city park", "sunlit vineyard", "sunlit sunroom"):
         "excludes_values": ["blue hour twilight", "pre-dawn darkness with ambient glow",
                             "moonlight with cool blue tones", "fog-diffused streetlamp glow"],
         "reason": f"'{_loc}' is named for its sunlight"})
+
+
+# --- a light named for a place only falls there (1.5.1) --------------------------------
+# "a city fountain plaza, under harsh desert sun" and "a tree-lined boulevard, under harsh
+# desert sun" rendered a desert (maintainer renders #00525, #00593); a forest canopy over a
+# rooftop garden reads the same way. Each light is allowed at the places that have its
+# source, and the place stays the trigger. A small partial cull of `daylight` at the other
+# outdoor places (one or two of its variants), the size of the sunny-place rule above.
+_ARID_PLACES = frozenset([
+    "rolling desert dune", "cracked salt flats", "red rock desert arch",
+    "slot canyon with striated walls", "high desert with joshua trees",
+    "the red desert plain below Uluru", "the Grand Canyon south rim", "a Zion canyon riverbank",
+    "golden savanna with acacia trees", "the Jemaa el-Fnaa square in Marrakech",
+    "the Giza pyramids plateau", "the Petra Treasury facade",
+])
+_CANOPY_PLACES = frozenset([
+    "forest trail", "redwood grove with towering trunks", "moss-draped rainforest trail",
+    "bamboo forest path", "snowy pine forest", "autumn park with falling leaves",
+    "cherry blossom grove", "botanical garden path", "sunny city park", "tree-lined boulevard",
+    "apple orchard rows", "mangrove boardwalk",
+])
+_NO_SNOW_PLACES = _ARID_PLACES | frozenset([
+    "palm-lined promenade", "mangrove boardwalk", "the Copacabana promenade in Rio",
+    "the Halong Bay karst waters", "terraced rice paddies", "poolside cabana",
+    "steaming hot spring pool", "the Iguazu Falls lookout",
+    "the Angkor Wat causeway", "the Taj Mahal reflecting pool", "the Victoria Falls gorge rim",
+])
+_PLACE_LIGHTS: dict[str, frozenset[str]] = {
+    "harsh desert sun": _ARID_PLACES,
+    "dappled sunlight through forest canopy": _CANOPY_PLACES,
+    "snow-reflected daylight": OUTDOOR_LOCATIONS - _NO_SNOW_PLACES,
+}
+for _loc in sorted(OUTDOOR_LOCATIONS):
+    _denied = sorted(_l for _l, _places in _PLACE_LIGHTS.items() if _loc not in _places)
+    if _denied:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "lighting", "excludes_values": _denied,
+            "reason": f"'{_loc}' has no source for that light"})
+# Rain needs a clouded sky: "a rainy street with umbrellas, under moonlight" (#00585).
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "location", "value": "rainy street with umbrellas",
+    "excludes_field": "lighting",
+    "excludes_values": ["moonlight with cool blue tones", "harsh overhead midday sun",
+                        "golden hour sunlight", "late afternoon warm sunlight",
+                        "direct sunlight from behind camera", "rim lighting from setting sun",
+                        "sun rays through broken cloud cover"],
+    "reason": "rain falls from a clouded sky"})
 
 
 # --- bare feet and slippers stay where people take their shoes off --------------------
@@ -2193,8 +2254,10 @@ for _grey in FIELD_FAMILIES["hair_color"]["gray_white"]["variants"]:
 _HAIR_ACCESSORIES = [a for g in ("female_options", "male_options")
                      for a in FIELD_DEFINITIONS["hair_accessory"][g] if a != "no hair accessory"]
 for _length, _keep in (
-        ("buzzed very short", ["bandana tied over hair"]),
-        ("very short", ["bandana tied over hair", "small hair clip", "decorative hair pins",
+        # 1.5.1: the bandana left both keep lists -- "a bandana tied over his hair" on a
+        # buzz or a crew cut rendered knotted round the neck both times (#00576, #00593).
+        ("buzzed very short", []),
+        ("very short", ["small hair clip", "decorative hair pins",
                         "silk headband", "knotted headband"]),
         ("short pixie", [a for a in _HAIR_ACCESSORIES
                          if a not in ("scrunchie", "claw clip", "oversized hair bow",
@@ -2204,12 +2267,58 @@ for _length, _keep in (
         "excludes_field": "hair_accessory",
         "excludes_values": sorted({a for a in _HAIR_ACCESSORIES if a not in _keep}),
         "reason": f"{_length} hair has nothing for that accessory to hold"})
+# 1.5.1: a pompadour, quiff or fade is short at the back and sides; at shoulder length
+# the model drew long loose hair and called it a pompadour (#00517). Declined: "wet look"
+# on a buzz and "worn down" on very short hair -- each culls part of a hair_style family
+# (HairStyleFamilyTests); both flagged cases were archetype LOCKS, fixed in the data.
+for _length in ("shoulder length", "slightly past shoulders"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "hair_length", "value": _length,
+        # the whole `barbered_short` family, as the longer lengths already do
+        "excludes_field": "hair_style",
+        "excludes_values": list(FIELD_FAMILIES["hair_style"]["barbered_short"]["variants"]),
+        "reason": f"{_length} hair cannot be cut short at the back and sides"})
 # Wind does not blow indoors ("long windswept hair" in a home office).
 for _loc in _INDOOR_LOCATIONS:
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "location", "value": _loc,
         "excludes_field": "hair_style", "excludes_values": ["windswept"],
         "reason": f"'{_loc}' is indoors: no wind"})
+
+# --- nobody stands in the back seat of a taxi (1.5.1) -----------------------------------
+# "standing with arms relaxed at the sides, set in the back seat of a taxi" (#00553).
+# Whole POSE_FAMILIES only, so the surviving families keep their proportions.
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "location", "value": "the back seat of a taxi",
+    "excludes_field": "pose",
+    "excludes_values": [p for fam in ("standing", "standing_hands_bound", "motion")
+                        for p in FIELD_FAMILIES["pose"][fam]["variants"]],
+    "reason": "the back seat of a taxi is sat in"})
+
+
+# --- a petite build is not tall (1.5.1) -------------------------------------------------
+# "A statuesque 55-year-old woman with a petite and slim build" (#00574) and "a very
+# petite woman ... with very broad shoulders" (#00688). body_type/height/shoulder_width
+# are all flat, so each cull re-picks uniformly; the earlier field stands.
+for _body in ("petite and slim", "petite and curvy"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "body_type", "value": _body,
+        "excludes_field": "height", "excludes_values": ["tall", "statuesque", "very tall"],
+        "reason": f"a {_body} build is not tall"})
+for _height in ("very petite", "petite"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "height", "value": _height,
+        "excludes_field": "shoulder_width", "excludes_values": ["very broad"],
+        "reason": f"a {_height} frame does not carry very broad shoulders"})
+# A shredded knit and ripped denim on a 70-year-old (#00650); edgy alternative reads as a
+# young register from 60. outfit_style is flat, so the re-pick is uniform.
+for _age in FIELD_DEFINITIONS["age"]["female_options"]:
+    if int(_age) >= 60:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "age", "value": _age,
+            "excludes_field": "outfit_style", "excludes_values": ["edgy alternative"],
+            "reason": f"edgy alternative reads young at {_age}"})
+
 
 # --- one body --------------------------------------------------------------------------
 # "a plus size build ... a very fit physique ... a narrow waist", "a slim build ... very
@@ -2525,3 +2634,49 @@ for _age in _AGE_VALUES:
             "type": "exclusion", "field": "age", "value": _age,
             "excludes_field": "hair_style", "excludes_values": ["undercut", "mullet"],
             "reason": f"an undercut or a mullet reads young at {_age}"})
+
+
+# --- Lock-vs-lock clash check (1.5.1) -----------------------------------------
+# When BOTH sides of a rule are locked the engine can only warn and keep both, so
+# a preset that locks a forbidden pair always renders it: the maintainer's Farmer
+# stood in an indoor market stall under golden-hour sun, the Astronomer drew
+# moonlight inside a planetarium dome. The archetype node uses this to pick list
+# alternatives that agree with each other, and validate_data.py uses it to reject
+# a preset whose FIXED values clash. Absence mirrors the engine's _is_absent: a
+# requirement is met when target and required value are both "nothing".
+_ABSENT_EXACT = frozenset({"None", "Random", "none", "natural bare",
+                           "bare natural lips", "bare nails", "clean shaven"})
+
+
+def _absent(value):
+    return not value or value in _ABSENT_EXACT or value.startswith("no ")
+
+
+_RULES_BY_TRIGGER: dict = {}
+for _r in CONSTRAINT_RULES:
+    # A presentation-gated rule depends on the wardrobe control at run time (a man in
+    # a Feminine wardrobe keeps the value), so it cannot rule a preset's pairing.
+    if not _r.get("presentation_gated"):
+        _RULES_BY_TRIGGER.setdefault((_r["field"], _r["value"]), []).append(_r)
+
+
+def _violates(rule, target_value):
+    if rule["type"] == "exclusion":
+        return target_value in rule["excludes_values"]
+    required = rule["requires_value"]
+    return target_value != required and not (_absent(target_value) and _absent(required))
+
+
+def lock_clash(field, value, context):
+    """True when ``field=value`` breaks a rule against any value in ``context``
+    (a {field: value} dict of other locks), in either direction."""
+    for rule in _RULES_BY_TRIGGER.get((field, value), ()):
+        target = rule.get("excludes_field") or rule.get("requires_field")
+        if target in context and _violates(rule, context[target]):
+            return True
+    for other, other_value in context.items():
+        for rule in _RULES_BY_TRIGGER.get((other, other_value), ()):
+            if (rule.get("excludes_field") or rule.get("requires_field")) == field \
+                    and _violates(rule, value):
+                return True
+    return False

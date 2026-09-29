@@ -774,7 +774,7 @@ Conventions (keep the data coherent):
   entirely-encased character there is no visible skin or face left to attach it to, so mentioning
   it (e.g. "a 45-year-old Kazakh man") only risks nudging the render toward a stray human trait.
   Iron Giant, Ultraman, and Salacious Crumb are the characters that surfaced this. Both fields
-  share `_CONCEALED_SHELL_SKIN_FIELDS` in `nodes/identity_forge.py`; an explicit user lock on
+  share `_ENCASED_HIDDEN_FIELDS` in `nodes/identity_forge.py` (widened at 1.5.1 to the whole randomized body -- age, build, proportions -- see "1.5.1"); an explicit user lock on
   either is respected, same as every other suppression here.
   **`_FULL_COVER_RE` only knows hard shells** — it has no idea about fur, feathers, scales, flame
   or bark, so an *animal* body needs the explicit `covers_body: True` or it gets a randomized tote
@@ -1497,7 +1497,7 @@ inserted verbatim:
 Six of the nine `height` values are bare adjectives (`very petite`, `petite`, `short`, `tall`,
 `statuesque`, `very tall`); the other three are already noun phrases (`average height`,
 `slightly below/above average height`) and read correctly. It was most visible on a fully
-encased character, where `_CONCEALED_SHELL_SKIN_FIELDS` drops `skin_tone` and the list falls to
+encased character, where `_ENCASED_HIDDEN_FIELDS` drops `skin_tone` and the list falls to
 two items, leaving a naked "and short".
 
 **It sat open from 0.84.0 to 0.97.0 because the obvious fix was priced wrong.** The assumed
@@ -3797,3 +3797,154 @@ live rule excludes -- finds 0 stuck values in 6,600.
 
 Pinned by `RoundFourQaTests`. The sweeps behind the numbers are `docs/worklog/sweep_r4.py`,
 `dist_r4.py` and `invariant_r4.py` (gitignored, local).
+
+## 1.5.1 — the maintainer's 33 flagged renders (idforge-927-concern)
+
+Every flagged prompt was reproduced exactly (33/33) by executing the PNG's whole node chain
+(Creature -> Cosplayer -> Archetype -> IdentityForge) against the working tree, and the
+wording fixes were A/B-rendered on the maintainer's own Krea2 graph at the original seeds.
+
+### A preset may not lock a pair the engine forbids
+
+Both sides locked means `_apply_constraints` can only warn and keep both, so the clash renders
+every time: the Farmer in an indoor market stall under golden-hour sun, the Astronomer with a
+moon painted inside a planetarium. A scan found 97 archetypes locking such a pair (place vs
+light, expression vs mood, hair length vs style, male-pool hair on a Male variant, sunglasses
+indoors). Two mechanisms:
+
+- **Fixed values** are data bugs, fixed in `data/templates.py`.
+- **Independent list picks** (a location list beside a lighting list) now agree:
+  `_resolve_list_values` picks each list among the alternatives that `lock_clash()`
+  (`data/constraints.py`) accepts against everything already settled, base look first, then
+  each variant with its gender. Still one draw per list. Presentation-gated rules are skipped
+  (they depend on the wardrobe control at run time).
+
+`tests/validate_data.py` gates it (`_archetype_lock_clashes`), mirroring the resolver and
+walking every list branch. `outfit_style` is skipped under a costume: it is not voiced there.
+A new constraint rule can make an existing preset clash -- run the validator after adding one.
+
+### Encased means no human body
+
+A masked, fully shelled character (`covers_face` and a full shell) voiced the wearer's age,
+build and proportions ("a short 38-year-old Korean man with a slender build ... a slightly
+defined chest"), and the model drew a man inside Chopper and a bare torso inside Megatron.
+`_ENCASED_HIDDEN_FIELDS` (was `_CONCEALED_SHELL_SKIN_FIELDS`) now drops every randomized body
+field; an entry's own `physique`, its `scale_prose` and widget locks still speak. The shell
+regex wants `robot`/`droid`, so "robotic body" and "astromech body" never matched: Megatron,
+Chopper, Ultron, Bumblebee and Genji gained `covers_body`. An adjectival scale phrase is now
+an appositive ("a man, colossal and over thirty feet tall, with a stocky build").
+
+### Skin tone and ethnicity lean both ways
+
+The out-of-band skin draw reopened the whole spectrum (a Kenyan in porcelain, an Icelandic
+woman in warm brown); it now stays within two steps of the band (`_NEAR_BAND`). And a locked
+skin tone left ethnicity flat, so a locked "pale" came back Sudanese or Ethiopian about one
+time in six; `_bias_ethnicity` leans the ethnicity draw toward the tone with the same odds.
+Measured over 3,000 seeds per case: 0% of draws beyond the near band, locked or not.
+
+### Words the model misreads
+
+Any `tie` token drew a necktie: "tie-front top", "tie-dye", even "tie-dyed". Render-tested
+replacements: "front-knot", "sash waist", "lace-up back", and the `tie-dye` pattern voiced as
+"psychedelic spiral-dyed" (the option value is unchanged, so saved workflows keep working).
+"Behind one ear" never rendered there (a temple patch, the neck, a ponytail), so it is no
+longer drawn at random. A "rescue can" became a canteen clipped to a swimsuit: the Lifeguard
+carries "a red torpedo rescue buoy slung from a strap over one shoulder".
+
+### Garments that leave a person bare, and gendered costumes
+
+A male-only costume under a Female lock rendered a topless woman (Lifeguard). Lifeguard,
+Surfer, Boxer, Pro Wrestler, Sumo Wrestler and Berserker Barbarian now carry per-gender
+variants; so do Renaissance Noble, News Anchor, Court Jester, Celestial Cleric, Angelic Being,
+Pop Star, 1960s Mod, 1950s Sock Hop, Cheerleader, Flight Attendant, Corporate Executive,
+Trial Lawyer and Orchestra Conductor (makeup, a doublet or a necktie on the other gender).
+Watchmaker and Sommelier lost their ties. In the generated wardrobe: a denim vest now has a
+tee under it, the harness pieces became jackets, mesh tops name the opaque layer beneath, and
+the fishnet-top phrase became a slip dress over a band tee.
+
+### Scene gates
+
+- Place-named lights: "harsh desert sun" only at arid places, "dappled sunlight through
+  forest canopy" only under trees, "snow-reflected daylight" never in desert or tropical
+  places, and no clear-sky light on the rainy street. The `venue_rig` family (club strobes,
+  gels) joins the outdoor studio-rig exclusion (whole families).
+- Winter outdoors takes no flats, ballet flats or slippers, and no loungewear (it never
+  takes a coat). Nobody stands in the back seat of a taxi.
+- Hair: no barbered short cut (pompadour, quiff, fade, undercut) at shoulder length; no bandana on a buzz or crew cut (it rendered round the neck).
+- `outfit_style` None (maintainer, 1.5.1): it says nothing about clothing at all -- and
+  nothing that implies there is none. A bag, a cap or glasses with no garment beside them
+  read "wearing nothing but" and drew bare chests, so bag, accessories and legwear go absent
+  too (a lock is still voiced), and a tattoo only lands on a hand, wrist or neck.
+- Build: a petite build is not tall; a very petite frame has no very broad shoulders;
+  edgy alternative stops at 60. Bleached brows need a Full-spectrum hair scope. Flannel,
+  seersucker and gingham count as patterned fabrics.
+
+### Variety (from the maintainer's wildcard folder)
+
+Seven landmarks inside the existing landmark families (family weights unchanged): Giza,
+Petra, the Taj Mahal, Angkor Wat, the Great Wall, Machu Picchu and Victoria Falls -- the
+landmark set leaned European and North American, with little from Africa and nothing from the
+Middle East. Garments the wardrobe never produced: cargo shorts, a pearl-snap western shirt,
+a raglan baseball tee, a denim skirt, a sweater dress, a peplum top, a mock-neck knit, tweed
+with corduroy, a camp-collar shirt with Bermuda shorts, a guayabera, a leather mini skirt, a
+basketball jersey.
+
+Pinned by `tests/test_revision_151.py`. Local tools (gitignored): `docs/worklog/repro_graph.py`
+(reproduce a flagged PNG), `render_test.py` (A/B wording on the maintainer's graph),
+`clash_report.py`, `edit_arch.py`.
+
+### Gender-neutral roles coin-flip (1.5.1, maintainer-approved)
+
+A soft `gender` lean decides the gender whenever the widget is "Any", so a leaning
+archetype rendered ONE gender every time under Random -- every Firefighter a man, every
+Teacher a woman. Roles whose name is gender-neutral and whose look has an authentic
+other-gender version now set `gender: "Any"`: the old lean's look moved verbatim into its
+variant (beard, makeup, hair, feminine-coded build), the other variant was authored, and a
+proof script confirmed each lean look resolves byte-identically to before. Unisex costumes
+stay on the base (`_COSTUMES` plus a costume-less variants block). Leans remain only where
+the concept itself is gendered (Leading Man, Gent, Dandy, Teddy Boy, Rude Boy, Suburban
+Dad, Flapper, Geisha, Nun, Tuareg's men's veil and similar). One-sided variant blocks
+gained their other half: a men's agbada look for Aso-Ebi with Gele, a women's gondolier.
+
+### Roster (1.5.1)
+
+The Inhuman Royal Family and the Eternals from maintainer-supplied descriptions: Gorgon
+(hooves via `anatomy_note`), Karnak (enlarged cranium under a hood), Triton (scaled body,
+face visible), Maximus, Lockjaw (`body_plan: "feral"`, a five-foot-tall bulldog), Ikaris,
+Thena, Makkari, Sprite, Druig, Ajak, `Gilgamesh (Marvel)` (bare `Gilgamesh` is Fate's),
+Zuras, Starfox, Kro and Arishem (colossal). Black Bolt rewritten (cowl, glide-wings, no
+hair), Crystal onto the black-and-yellow classic, Medusa gained the classic masked look
+as an alternate. Declined: Ahura (a black-and-silver bodysuit with white hair reads as a
+generic look beside Black Bolt).
+
+### Samples, ages and gallery pins (1.5.1)
+
+- An archetype's `age` lock now survives Essentials (`_is_essential`): authors lock age
+  only where the look implies a life stage, and dropping it drew a 70-year-old cheerleader.
+  Cheerleader, 1950s Sock Hop and E-Girl / E-Boy gained young-adult ages.
+- Essentials also keeps the Body group for the archetypes in `BODY_IS_THE_LOOK`
+  (`data/templates.py`): Sumo Wrestler, Dwarven Blacksmith, Halfling Rogue. Their
+  costumes state the build ("on an enormous, heavyweight frame"), so a randomized body
+  contradicted the sentence -- the female sumo sample led with "a softly curved build,
+  narrow shoulders". An opt-in list, not a costume regex: most "tall" in costume text is a
+  hat or boots.
+- A costume that holds something takes no both-hands pose. `_performable_poses` already
+  dropped `HAND_OCCUPIED_POSES` for a Cosplayer `held_item`; `_HAND_PROP_RE` now reads the
+  same thing in `outfit_description` ("a clipboard in one hand", "a helmet under one arm",
+  ", holding a diploma"). "Stretching both arms overhead" with a clipboard drew the clipboard
+  floating beside her. It matches held forms only -- "trousers held up by braces", "a belt
+  carrying a sword" and "a clip holding the hair" occupy no hand. A prop that should stay
+  put whatever the pose is anchored instead (the yoga mat is on a carry strap now).
+- `full body shot` and both `wide shot` values joined the tight-composition exclusion that
+  already covered `full body shot with environment visible`: "wide shot ... composed with a
+  tight crop and little headroom" rendered waist-up (Sommelier, Sumo). `composition` is
+  flat, so the partial cull is bias-safe.
+- Sumo: "mawashi belt" in a dojo rendered a knotted karate belt; "sumo mawashi, the wide
+  wrestling loincloth" drew the wrap. Seven body wordings were A/B'd on the female sample's
+  seed ("obese", a weight, the lead build phrase, a sumo-stable location); none drew a much
+  heavier woman and several drew a slimmer one, so the size ceiling is the model's.
+- Gallery samples use front-facing body framings only (`_GALLERY_SHOTS`), a coin-flip
+  entry's sample can be pinned to one gender (`_GALLERY_GENDER`, Cheerleader female), and
+  an entry whose defining feature needs one pose can pin it (`_GALLERY_POSE`, Black Bolt's
+  arms raised so the underarm wings spread). All live in `scripts/render_gallery.py`;
+  none changes what the node emits.

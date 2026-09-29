@@ -351,7 +351,7 @@ _BODY_PAINT_RE = re.compile(
 #: token to the ethnicity, rendering an ordinary human face above a coloured body.
 #: That is the Lobo report ("a hispanic guy wearing Lobo's clothes but not his
 #: face") and it reproduces at every seed. Same argument, same verdict as 0.65.0,
-#: which added ``ethnicity`` to ``_CONCEALED_SHELL_SKIN_FIELDS`` for fully-encased
+#: which added ``ethnicity`` to ``_ENCASED_HIDDEN_FIELDS`` for fully-encased
 #: characters: when no natural skin is visible there is nothing for an ethnicity to
 #: attach to, so naming one only fights the colour the costume just established.
 #:
