@@ -994,7 +994,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "Female": {
                 "hair_length": ["long", "mid back"], "hair_style": "updo", "makeup_style": "bold glam",
                 "outfit_style": "evening formal",
-                "outfit_description": "an opulent {jewel_tone} {fabric} ball gown with {accent} and an ornate feathered mask",
+                "outfit_description": "an opulent {jewel_tone} {fabric} ball gown with {accent}, and an ornate feathered half-mask worn over the eyes",  # 1.5.2: an unplaced mask landed on the bodice (#01176)
                 "expression": "flirtatious",
                 "location": "grand hotel suite", "lighting": "warm candlelight",
                 "shot_type": "medium close-up from chest up", "mood": "mysterious",
@@ -1002,7 +1002,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "Male": {
                 "hair_style": "slicked back", "facial_hair": "clean shaven",
                 "outfit_style": "evening formal",
-                "outfit_description": "a {dark_color} velvet tailcoat with a {jewel_tone} brocade waistcoat, white gloves, and an ornate {metal} filigree half-mask",
+                "outfit_description": "a {dark_color} velvet tailcoat with a {jewel_tone} brocade waistcoat, white gloves, and an ornate {metal} filigree half-mask worn over the eyes",
                 "expression": "smirking",
                 "location": "grand hotel suite", "lighting": "warm candlelight",
                 "shot_type": "medium close-up from chest up", "mood": "mysterious",
@@ -3287,8 +3287,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "makeup_style": "editorial makeup", "eye_makeup": "glittery",
                 "outfit_style": "cocktail semi-formal", "accessories": "no accessories",
                 "outfit_description": [
-                    "a purple-and-gold sequined masquerade dress with a green feathered eye mask, strands of shiny carnival beads, and satin gloves",
-                    "a glittering green-and-purple flapper-style fringe dress with gold carnival beads, a jeweled feather headpiece, and an ornate hand-held mask",
+                    "a purple-and-gold sequined masquerade dress with a green feathered mask worn over the eyes, strands of shiny carnival beads, and satin gloves",
+                    "a glittering green-and-purple flapper-style fringe dress with gold carnival beads, a jeweled feather headpiece, and an ornate glittering mask worn over the eyes",
                 ],
                 "expression": ["beaming", "candid mid-laugh"],
                 "location": ["neon-lit city street", "cobblestone old-town street", "open-air street food market"],
@@ -3299,7 +3299,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "Male": {
                 "outfit_style": "cocktail semi-formal", "accessories": "no accessories",
                 "outfit_description": [
-                    "a purple velvet blazer over a gold brocade waistcoat with a green pocket square, strands of carnival beads, and a feathered domino mask",
+                    "a purple velvet blazer over a gold brocade waistcoat with a green pocket square, strands of carnival beads, and a feathered domino mask worn over the eyes",
                     "a gold sequined jacket over a black shirt with purple-and-green carnival beads and a ribbon-trimmed top hat",
                 ],
                 "expression": ["beaming", "candid mid-laugh"],
@@ -3548,7 +3548,9 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "makeup_style": "soft glam", "lips_makeup": "nude lipstick",
                 "outfit_style": "vintage retro", "accessories": "no accessories",
                 "outfit_description": [
-                    "a fringed {color} suede jacket over a denim shirt tied at the waist, high-waisted jeans, a tooled leather belt, and embroidered cowboy boots",
+                    # 1.5.2: named boots in a waist-up frame hung from the belt (#01079);
+                    # "on her feet" and "tucked into" did too. Only dropping them fixed it.
+                    "a fringed {color} suede jacket over a denim shirt tied at the waist, high-waisted jeans, and a tooled leather belt",
                     "a {pastel} floral sundress with a fringed shawl, a concho belt, and worn cowboy boots, holding an acoustic guitar",
                 ],
                 "expression": ["bright smile", "warm smile"],
@@ -3772,8 +3774,10 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         # 1.5.1: the bare-torso mawashi rendered a topless woman under a Female lock.
         # Women's (amateur) sumo wears the mawashi over a leotard. "Mawashi belt" in a
         # dojo rendered a knotted karate belt; "sumo mawashi, the wide wrestling
-        # loincloth" drew the real wrap (render A/B on the gallery seed). Body words
-        # beyond these moved nothing on a woman ("obese", a weight, the lead phrase).
+        # loincloth" drew the real wrap (render A/B on the gallery seed).
+        # 1.5.2: "on a very large, heavy sumo wrestler's body" names a SECOND person -- every
+        # Female render drew a big man standing behind her, and he took the size words. The
+        # body is now described without a possessive noun, in Big Bertha's wording.
         "variants": {
             "Male": {
                 "facial_hair": "clean shaven",
@@ -3781,17 +3785,18 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 # from inventing a shirt under it.
                 "outfit_description": "a broad {jewel_tone} silk sumo mawashi, the wide wrestling "
                                       "loincloth, wound many times around the hips and between the "
-                                      "legs, worn on an otherwise bare, very large, heavy sumo "
-                                      "wrestler's body with a big round belly and thick arms and "
-                                      "legs, with bare feet",
+                                      "legs, worn on an otherwise bare, enormously large, powerfully "
+                                      "heavyset body of immense girth with a big round belly and "
+                                      "thick arms and legs, with bare feet",
             },
             "Female": {
                 "makeup_style": "no makeup",
                 "outfit_description": "a thick white canvas sumo mawashi, the wide wrestling loincloth, "
                                       "wrapped around the hips and between the legs over a dark navy "
-                                      "sleeveless leotard, on a very large, heavy sumo wrestler's "
-                                      "body with a big round belly and thick arms and legs, with the "
-                                      "hair tied back in a knot and bare feet",
+                                      "sleeveless leotard, worn on an enormously large, powerfully "
+                                      "heavyset body of immense girth with a big round belly and "
+                                      "thick, heavy arms and legs, with the hair tied up in a knot "
+                                      "and bare feet",
             },
         },
     },
@@ -5029,7 +5034,7 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a layered {pastel} petal-hem fairy dress of {sheer_fabric} with iridescent gossamer wings and a {flower} crown"],
     "Vampire Noble": "an aristocratic {dark_color} {fabric} frock coat with a high collar and a {gem} cravat pin",
     "Werewolf Hunter": "a weathered {earth_tone} long coat over leather armor with {metal} buckles and a fur collar",
-    "Celestial Cleric": "flowing white and {metal} ceremonial robes with {gem} inlays and a radiant sash",
+    "Celestial Cleric": "a single flowing white ceremonial robe trimmed in {metal}, with {gem} inlays and a radiant sash",
     "Holy Paladin": "polished {metal} plate armor over a white tabard with a heavy {color} hanging cloak",
     "Forest Druid": "layered {earth_tone} robes with a {fur} mantle, a carved wooden staff, and {flower} adornments",
     "Shadow Monk": ["simple wrapped {dark_color} linen robes tied with a wide cloth belt, cloth hand wraps, and a long wooden bo staff held upright",
@@ -5060,8 +5065,11 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a {color} drop-waist sequined flapper dress with a jeweled headband and a feather boa"],
     "Wild West Gunslinger": "a fringed {earth_tone} western shirt with a leather duster, denim, chaps, and a worn cowboy hat",
     "Steampunk Inventor": "a {earth_tone} brocade waistcoat with brass goggles, a {metal} pocket watch, and a leather tool belt",
-    "Cyberpunk Netrunner": ["a {dark_color} techwear jacket with {color} LED trim, utility straps, and a sleek visor",
-     "a {dark_color} techwear longcoat with {color} circuit-line trim, utility straps, and a sleek visor"],
+    # 1.5.2: "utility straps" rendered as suspenders over the coat (#01082). Without them the
+    # jacket was the only garment named, and the gallery sample came back bare under it --
+    # name the top and trousers.
+    "Cyberpunk Netrunner": ["a {dark_color} techwear jacket with {color} LED trim over a black high-neck top and slim black cargo trousers, with a sleek visor",
+     "a {dark_color} techwear longcoat with {color} circuit-line trim over a black turtleneck and slim black trousers, with a sleek visor"],
     "Space Knight": "layered {earth_tone} robes under a hooded cloak with a {metal} utility belt",
     "Gladiator": "a {metal} segmented breastplate over a leather skirt with arm guards and a {color} cape",
     "Viking Shieldmaiden": "a {color} wool tunic with a {fur} cloak, {metal} brooches, and leather bracers",
@@ -5073,7 +5081,7 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Ballerina": "a {pastel} tulle tutu with a fitted satin bodice, ribbon laces, and pointe shoes",
     "Bridal Portrait": "an ivory {fabric} wedding gown with {accent}, a lace veil, and a {flower} bouquet",
     "Astronaut": "a white EVA spacesuit with a {metal} chestplate, mission patches, and a reflective-visor helmet",
-    "Angelic Being": "flowing white and {metal} robes with soft feathered wings and a glowing {gem} halo",
+    "Angelic Being": "a single flowing white robe trimmed in {metal}, with soft feathered wings and a glowing {gem} halo",
     "Nun": "a traditional black-and-white habit with a {fabric} veil and a simple wooden cross",
     "Valkyrie": "{metal} winged-helm armor over a {color} tunic with a {fur} cloak and a round shield",
     "Gothic Doll": "a {dark_color} ruffled gothic doll dress with lace trim, a bonnet, and a {color} bow",
@@ -5087,9 +5095,9 @@ _COSTUMES: dict[str, str | list[str]] = {
     "ER Nurse": ["{scrub_color} medical scrubs with a lanyard ID badge and a stethoscope around the neck",
      "{scrub_color} scrubs under an unbuttoned white lab coat with a stethoscope around the neck, an ID badge clipped at the chest, and a penlight in the breast pocket",
      "a patterned {scrub_color} scrub top over plain scrub trousers with a lanyard ID badge, trauma shears in a pocket, and comfortable clogs",
-     "{scrub_color} scrubs under a disposable yellow isolation gown with a surgical mask pulled down under the chin, a face shield pushed up, and a stethoscope around the neck",
+     "{scrub_color} scrubs under a disposable yellow isolation gown with a stethoscope around the neck",  # 1.5.2: a pulled-down mask and pushed-up shield hung off the back of the head (#01099)
      "a crisp vintage white nurse's uniform with a starched white cap, a red-lined navy wool cape over the shoulders, and polished white shoes"],
-    "Surgeon": ["{scrub_color} surgical scrubs with a cap, a hanging mask, and gloved hands",
+    "Surgeon": ["{scrub_color} surgical scrubs with a surgical cap and gloved hands",  # 1.5.2: an unworn mask hangs off the head (ER Nurse #01099)
      "{scrub_color} surgical scrubs with a surgical cap, a mask hanging loose around the neck, and a lanyard ID"],
     "Judge": ["flowing black judicial robes with a high collar over a {color} blouse",
      "flowing black judicial robes with a crisp white jabot collar and a {metal} lapel pin"],
@@ -5108,9 +5116,11 @@ _COSTUMES: dict[str, str | list[str]] = {
     # Kept tight on purpose: the beaked mask, the robe and the wide hat ARE the
     # archetype, so the alternates vary material, mask weathering and the cane rather
     # than reinventing the silhouette.
-    "Plague Doctor": ["a black waxed-leather robe and wide-brimmed hat with a long pale beaked bird mask and gloves",
-     "a heavy waxed-canvas plague doctor's robe with a long pale beaked mask, smoked-glass eye lenses, a wide-brimmed hat, and a slim wooden cane",
-     "a floor-length {dark_color} oilcloth plague doctor's coat with a weathered leather beaked mask, dark round eye lenses, heavy gauntlets, and a broad flat hat"],
+    # 1.5.2: an unplaced beaked mask hung on the cane (#01210), and "worn over the face" still
+    # left it beside the head (the face prose wins). Pushed up on the head, it reads.
+    "Plague Doctor": ["a black waxed-leather robe buttoned to the throat over a high-collared shirt, leather gloves, a wide-brimmed hat, and a long pale beaked bird mask pushed up onto the top of the head",
+     "a heavy waxed-canvas plague doctor's robe buttoned to the throat over a high-collared shirt, a wide-brimmed hat, and a long pale beaked mask with smoked-glass eye lenses pushed up onto the top of the head",
+     "a floor-length {dark_color} oilcloth plague doctor's coat buttoned to the throat over a high-collared shirt, heavy gauntlets, a broad flat hat, and a weathered leather beaked mask with dark round eye lenses pushed up onto the top of the head"],
     "Soldier": ["camouflage combat fatigues with a tactical vest, dog tags, and laced boots",
      "camouflage combat fatigues with a plate carrier, a cloth-covered helmet, dog tags, knee pads, and laced boots",
      "a {earth_tone} field uniform with the sleeves rolled tight, a boonie hat, dog tags, and dust-caked boots",
@@ -5173,7 +5183,7 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Chef": "a double-breasted white chef's jacket with {color} piping, a bistro apron, houndstooth trousers, and a tall white toque",
     "Pilot": "a {dark_color} airline captain's uniform with four gold cuff stripes, wing insignia over the pocket, a tie, and a peaked cap",
     "Scientist": "a white lab coat with pens in the breast pocket over {menswear_color} smart clothing, with safety glasses, a laminated ID badge, and a clipboard of data in one hand",
-    "Farmer": "a {color} plaid work shirt under denim bib overalls with leather work gloves tucked in a pocket and a straw hat",
+    "Farmer": "a {color} plaid work shirt under denim bib overalls and a straw hat",
     "Mechanic": "grease-smudged {dark_color} mechanic coveralls with an embroidered name patch, a shop rag hanging from the pocket, and heavy boots",
     "Tattoo Artist": "a fitted black tee showing full-sleeve tattoos, a {dark_color} half-apron, black nitrile gloves, and ripped jeans",
     "Bartender": "a rolled-sleeve white shirt under a {dark_color} waistcoat with a bar towel over the shoulder and a cocktail shaker in hand",
@@ -5211,7 +5221,7 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Tailor": ["a fitted {menswear_color} waistcoat over a crisp shirt with a measuring tape draped around the neck and a pincushion at the wrist",
      "shirt sleeves held by sleeve garters under a pinned {dark_color} waistcoat, with tailor's chalk in hand and a measuring tape around the neck"],
     "Stonemason": ["a dusty leather work apron over a rough {earth_tone} shirt with heavy gloves and a mallet and chisel at the belt",
-     "a canvas work jacket over a dust-caked shirt with heavy gloves tucked in the belt and a chisel and wooden mallet in hand"],
+     "a canvas work jacket over a dust-caked shirt with a leather tool belt, and a chisel and wooden mallet in hand"],
     "Winemaker": ["a {earth_tone} quilted vest over a checked shirt with dark trousers, leather boots, and a stemmed tasting glass in hand",
      "a linen shirt with rolled sleeves under a wine-stained {dark_color} cellar apron, dark trousers, and a bunch of grapes held up to the light"],
     # 0.96.0: the second alternate used to be a tagelmust look, which the new Tuareg
@@ -5252,7 +5262,7 @@ _COSTUMES: dict[str, str | list[str]] = {
     # bandana here would tie two scarves on one head.
     "1940s Factory Worker": ["a blue denim button-up work shirt with the sleeves rolled to the elbow and knotted at the waist, over high-waisted work trousers",
      "a set of oil-streaked {earth_tone} factory coveralls with the sleeves pushed up past the elbow and a worn leather tool belt",
-     "a khaki wartime munitions overall buttoned to the throat with heavy gloves tucked in a hip pocket and sturdy lace-up shoes",
+     "a khaki wartime munitions overall buttoned to the throat and cinched with a canvas belt, with sturdy lace-up shoes",
      "a {color} plaid work shirt tucked into wide-legged denim dungarees with rolled cuffs and scuffed leather boots"],
     "1970s Boho It-Girl": ["a tan suede fringe vest over a wide-collar floral blouse, high-waisted flared denim jeans, and tall platform sandals",
      "a floaty {jewel_tone} paisley maxi dress with bell sleeves, a wide tooled-leather belt, and stacked pendant necklaces",

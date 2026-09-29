@@ -717,8 +717,8 @@ _MASCULINE_EXCLUDED_VALUES: dict[str, list[str]] = {
     "hair_part": ["zigzag part"],  # 1.5.0 round 4
     # 1.5.0 round 4: hoops and an ear cuff read as women's earrings on men (studs stay);
     # a thumb ring and a statement belt read feminine; a canvas tote reads as a purse;
-    # "ankle boots" on a man rendered a heeled boot.
-    "earrings": ["small gold hoops", "silver hoops", "ear cuff"],
+    # "ankle boots" on a man rendered a heeled boot. 1.5.2: diamond studs read feminine too.
+    "earrings": ["small gold hoops", "silver hoops", "ear cuff", "diamond studs"],
     "rings": ["thumb ring"],
     "accessories": ["statement belt", "silk neck scarf"],
     # 1.5.0 round 4 QA: a thin headband rendered as a women's hairband on a man.

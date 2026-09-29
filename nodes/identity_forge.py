@@ -566,6 +566,16 @@ _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
 #: is untouched (removing a shipped combo value is a soft break).
 _FOOTWEAR_CLAUSES: dict[str, str] = {"bare feet": "barefoot"}
 
+#: 1.5.2: values whose words draw an OBJECT (maintainer renders): "money piece
+#: highlights" drew a fan of banknotes, "feathered brows" drew feathers along the
+#: neckline, "birthmark on neck" beside a collarbone tattoo drew a red paint splash.
+#: Same fix as ``tie-dye``: the value (and JSON) stays, only the words change.
+_OBJECT_TOKEN_CLAUSES: dict[tuple[str, str], str] = {
+    ("hair_highlights", "money piece"): "bold bright highlights on the two front strands",
+    ("eyebrow_makeup", "feathered"): "softly brushed-up brows",
+    ("skin_details", "birthmark on neck"): "a small light-brown birthmark on the side of the neck",
+}
+
 #: 1.5.0 round 4: how a MASCULINE presentation voices its jewellery. "a cross necklace"
 #: rendered as a fine, glittering diamond-cut chain on a man; plain-metal wording and a
 #: single stud steer the model to what a man actually wears. The field values (and the
@@ -575,8 +585,9 @@ _MASCULINE_JEWELRY_CLAUSES: dict[str, str] = {
     "cross necklace": "a small plain cross on a steel chain",
     "subtle chain": "a plain steel chain",
     "beaded necklace": "a wooden bead necklace",
-    "small silver studs": "a small silver stud in one ear",
-    "small gold studs": "a small gold stud in one ear",
+    # 1.5.2: "a small silver stud" still rendered a dangling charm; "plain" keeps it a stud.
+    "small silver studs": "a small plain silver stud in one ear",
+    "small gold studs": "a small plain gold stud in one ear",
     "diamond studs": "a small diamond stud in one ear",
     "chain bracelet": "a plain steel chain bracelet",
     "cuff": "a plain metal cuff bracelet",
@@ -830,12 +841,12 @@ _EXTRA_ABSENCE: dict[str, tuple[str, float]] = {
 #: gender: a man with a Feminine/"Any" wardrobe keeps the table above (crossplay is a
 #: deliberate choice). Same RNG shape (one rng.random()), only the threshold moves.
 _EXTRA_ABSENCE_MASCULINE: dict[str, tuple[str, float]] = {
-    "earrings": ("no earrings", 0.8),
+    "earrings": ("no earrings", 0.9),  # 1.5.2: was 0.8 (15.5% of men)
     "necklace": ("no necklace", 0.8),  # 1.5.0 round 4: was 0.72
     "other_jewelry": ("no other jewelry", 0.95),  # _maybe_absent caps at 0.95
     "rings": ("none", 0.6),
     "bracelet": ("none", 0.75),
-    "piercings": ("no piercings beyond ears", 0.9),
+    "piercings": ("no piercings beyond ears", 0.95),  # 1.5.2: was 0.9
     "hair_highlights": ("none", 0.88),
     "hair_accessory": ("no hair accessory", 0.93),
     "bag": ("no bag", 0.72),
@@ -1959,6 +1970,15 @@ _NO_BELT_RE = re.compile(
     r"fleece|quarter-zip)\b", re.IGNORECASE)
 _LAPEL_RE = re.compile(r"\b(?:suit|tuxedo|blazer|jacket|sport coat|coat|tailcoat)\b",
                        re.IGNORECASE)
+#: 1.5.2: a pocket square needs a TAILORED jacket's breast pocket. `_LAPEL_RE`'s bare
+#: "coat"/"jacket" let one onto a wrap coat over a velvet dress (rendered as a silk scarf
+#: in the hand) and onto harrington and collarless jackets.
+_POCKET_SQUARE_RE = re.compile(
+    r"\b(?:suit|tuxedo|blazer|sport coat|tailcoat|dinner jacket|\w+-lapel)\b", re.IGNORECASE)
+#: 1.5.2: opera gloves are evening wear -- on a smocked mini sundress in a taxi one glove
+#: rendered. A dress qualifies under an evening/cocktail style; otherwise only a gown.
+_GOWN_RE = re.compile(r"\b(?:gown|ballgown)\b", re.IGNORECASE)
+_EVENING_STYLES: frozenset[str] = frozenset(["evening formal", "cocktail semi-formal"])
 _MIDRIFF_RE = re.compile(r"\b(?:crop top|cropped|bikini|bralette|midriff|bandeau|tube top)\b",
                          re.IGNORECASE)
 _BARE_TORSO_RE = re.compile(
@@ -1968,6 +1988,7 @@ _BROOCH_RE = re.compile(
     r"\b(?:blazer|jacket|coat|cardigan|dress|gown|suit|trench|peacoat|sweater|blouse|jumper|"
     r"knit|twinset|waistcoat)\b", re.IGNORECASE)
 _TIE_RE = re.compile(r"\btie\b(?!-)", re.IGNORECASE)
+_GOGGLES_RE = re.compile(r"\bgoggles\b", re.IGNORECASE)
 _GARMENT_BOUND_ACCESSORIES: frozenset[str] = frozenset(
     ["silk pocket square", "lapel pin", "suspenders", "statement belt", "western belt",
      "belt cinching waist", "long opera gloves"])
@@ -2006,15 +2027,21 @@ def _fit_extras_to_garment(resolved: dict[str, str], locked: set[str]) -> None:
         or (accessory in ("statement belt", "western belt", "belt cinching waist")
             and _NO_BELT_RE.search(outfit))
         or (accessory == "western belt" and not _TROUSERS_RE.search(outfit))
-        or (accessory in ("lapel pin", "silk pocket square") and not _LAPEL_RE.search(outfit))
-        or (accessory == "long opera gloves" and not _DRESS_RE.search(outfit)))
+        or (accessory == "lapel pin" and not _LAPEL_RE.search(outfit))
+        or (accessory == "silk pocket square" and not _POCKET_SQUARE_RE.search(outfit))
+        or (accessory == "long opera gloves"
+            and not (_GOWN_RE.search(outfit)
+                     or (resolved.get("outfit_style") in _EVENING_STYLES
+                         and _DRESS_RE.search(outfit)))))
     # The explicit absent token, not a pop: the saved document then pins the absence,
     # so a Turnaround / Vault replay does not re-roll a different extra into the gap.
     if drop_accessory and "accessories" not in locked:
         resolved["accessories"] = "no accessories"
-    if (_TIE_RE.search(outfit) and "necklace" not in locked
+    # "a pearl necklace" under a shirt and tie; 1.5.2: goggles on the forehead plus a
+    # statement necklace drew a second pair of goggles hanging at the neck (#01166).
+    if ((_TIE_RE.search(outfit) or _GOGGLES_RE.search(outfit)) and "necklace" not in locked
             and not _is_absent(resolved.get("necklace"))):
-        resolved["necklace"] = "no necklace"  # "a pearl necklace" under a shirt and tie
+        resolved["necklace"] = "no necklace"
     jewel = resolved.get("other_jewelry") or ""
     legwear = resolved.get("legwear")
     drop_jewel = (
@@ -3201,7 +3228,8 @@ def _format_prose(
     if g("complexion"):
         skin.append(_an(g("complexion"), "complexion"))
     if g("skin_details"):
-        skin.append(g("skin_details"))
+        skin.append(_OBJECT_TOKEN_CLAUSES.get(("skin_details", g("skin_details")))
+                    or g("skin_details"))
     if g("freckles_density") and "freckle" not in g("skin_details"):
         skin.append(f"{g('freckles_density')} freckles")
     if skin:
@@ -3242,7 +3270,8 @@ def _format_prose(
         hair_extra.append(_an(part, "" if "part" in part else "part"))
     if g("hair_highlights") and not is_bald:
         hl = g("hair_highlights")
-        hair_extra.append(hl if "highlight" in hl else f"{hl} highlights")
+        hair_extra.append(_OBJECT_TOKEN_CLAUSES.get(("hair_highlights", hl))
+                          or (hl if "highlight" in hl else f"{hl} highlights"))
     if g("facial_hair"):
         fh = g("facial_hair")
         hair_extra.append(_FACIAL_HAIR_PHRASING.get(fh, _an(fh)))
@@ -3274,7 +3303,8 @@ def _format_prose(
         ):
             val = g(field)
             if val:
-                makeup.append(val if stem in val else f"{val} {noun}")
+                makeup.append(_OBJECT_TOKEN_CLAUSES.get((field, val))
+                              or (val if stem in val else f"{val} {noun}"))
         sentences.append(f"{subj} {wears} " + _join(makeup))
 
     # --- Jewellery & nails ---------------------------------------------

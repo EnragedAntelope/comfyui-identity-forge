@@ -3948,3 +3948,95 @@ generic look beside Black Bolt).
   an entry whose defining feature needs one pose can pin it (`_GALLERY_POSE`, Black Bolt's
   arms raised so the underarm wings spread). All live in `scripts/render_gallery.py`;
   none changes what the node emits.
+
+## 1.5.2 — idforge-928-concern
+
+Every flagged prompt was replayed from its PNG's node chain against the working tree, and each
+wording fix was A/B-rendered on the maintainer's Krea2 graph at the original KSampler seed.
+
+### A possessive person in a costume is a second person
+
+The Female sumo costume ended "on a very large, heavy sumo wrestler's body". Every render drew
+a big man standing behind the woman, and he took the size words. That is why the 1.5.1 note
+above called body size a model ceiling: the seven wordings tried there all kept the
+possessive. Worded like Big Bertha ("worn on an enormously large, powerfully heavyset body of
+immense girth"), the same three seeds drew one heavy woman and no second figure. On the
+gallery pipeline (raw checkpoint + turbo LoRA, "professional photograph" prefix) the same
+words still drew a lean body for both genders, so the size ceiling there is real. Rule: a
+costume describes the body without naming who it belongs to ("a wrestler's", "a dancer's").
+
+### Words that draw objects
+
+The `tie-dye` class again, fixed the same way: the value (and JSON) stays, only the words
+change, via `_OBJECT_TOKEN_CLAUSES` in `nodes/identity_forge.py`. "money piece highlights"
+drew a fan of banknotes, "feathered brows" drew feathers along the neckline and in the hair
+(it was voiced for 17% of default women), and "birthmark on neck" beside a collarbone tattoo
+drew a red paint splash. A Modifier on exactly those fields ("eyebrow_makeup: bold") turns the
+value into "bold feathered" before the prose is built, so the table misses it and the old
+words come back. That is a known gap, left open because it needs a hand-written modifier on
+one of three values.
+
+Costume wording found by the same review:
+- **An unworn item has nowhere to go.** "Heavy gloves tucked in a hip pocket" drew one glove
+  hanging out of it (1940s Factory Worker; Farmer and Stonemason had the same phrase). "A
+  surgical mask pulled down under the chin, a face shield pushed up" hung both off the back
+  of the head (ER Nurse). The mask alone still dangled from one ear, so both are gone.
+  "Goggles pushed up on the forehead" says where they sit and has not been reported.
+- **Named boots in a waist-up frame hang from the belt.** Country Star's "a tooled leather
+  belt, and embroidered cowboy boots" drew a boot at the hip when the model cropped at the
+  thigh. "On her feet" and "tucked into" did the same, and only dropping the boots fixed it.
+  "belt, and boots" appears in dozens of costumes, but this is the only report so far.
+- **"White and {metal} robes" is two robes.** The Angelic Being rendered half white, half
+  brass-brown. "A single flowing white robe trimmed in {metal}" keeps the metal as trim.
+- **A mask needs a place too.** "a ball gown with gold thread and an ornate feathered mask"
+  put the mask on the bodice, and the male "filigree half-mask" floated at the chest in the
+  gallery sample. "worn over the eyes" put the male mask on the face. The feathered masks
+  land on the forehead or the side of the head, which still reads as worn. The Surgeon's
+  "a hanging mask" was dropped, for the ER Nurse reason. A full-face mask is different: the
+  Plague Doctor's beaked mask hung on the cane, and "worn over the face" still left it
+  beside the head, because the randomized face prose wins. "Pushed up onto the top of the
+  head", with the cane gone and a shirt named under the robe, rendered on the hat.
+- **Goggles plus a necklace draw two pairs of goggles.** A Mad Scientist with goggles on
+  the forehead and a statement necklace grew a second pair at the neck. Without the
+  necklace, one pair rendered. "A single pair ... resting on the forehead" moved the only
+  pair to the neck. `_fit_extras_to_garment` now drops an unlocked necklace under goggles,
+  the same way it already does under a tie.
+- **Name every garment, or the model supplies skin.** "Utility straps" on the Cyberpunk
+  Netrunner rendered as suspenders. With them removed, the jacket was the only garment
+  named, and the gallery sample came back bare under the open jacket. It was never
+  published. The costume now names the top and trousers. This is the 1.5.1
+  missing-top rule again, and it applies to any edit that removes a clause from a costume.
+- **A vague garment gets invented.** "A floor-length tailored cape over evening tailoring"
+  named no garment under the cape, and the render filled it with a grey dress of the cape's
+  colour. The phrase now says "a slim black evening suit".
+
+### Garment-bound extras, tightened
+
+`_fit_extras_to_garment` now checks two extras against a stricter garment test:
+- **Pocket square:** needs `_POCKET_SQUARE_RE` (suit, tuxedo, blazer, sport coat, tailcoat,
+  dinner jacket, any `*-lapel`). `_LAPEL_RE`'s bare "coat"/"jacket" let one onto a wrap coat
+  over a velvet dress (it rendered as a silk scarf in the hand) and onto harrington and
+  collarless jackets. The lapel pin keeps `_LAPEL_RE`.
+- **Opera gloves:** a dress qualifies only under an evening or cocktail style. Otherwise the
+  garment must be a gown. `_DRESS_RE` matched "a smocked mini sundress" (vintage retro, in a
+  taxi) and only one glove rendered.
+
+Both drops write the absent token and use no RNG, so no other field shifts. A diff of 800
+default Female seeds, old against new, changed only where a fix applied.
+
+### Men's earrings
+
+Default men wore earrings 15.5% of the time, a third of them diamond studs, which read as
+feminine, and ear-cartilage piercings 4.7%. `diamond studs` joined the masculine earring trim,
+which is presentation-gated: a Feminine wardrobe still reaches it, measured 25 in 600. The
+`_EXTRA_ABSENCE_MASCULINE` odds went from 0.8 to 0.9 for earrings and from 0.9 to 0.95 for
+piercings, and the voiced studs say "plain". Measured after: 6.9% studs, 2.2% ear piercings.
+A locked diamond stud on a male preset is kept (50/50). The odds change shifts men's seeds
+from the earring draw onward.
+
+### Not a bug: a Random archetype replaces the picked cosplayer
+
+The "Arishem renders as someone random" report reproduced exactly from the PNG: the Archetype
+node downstream of the Cosplayer was set to `Random`, rolled "Judge", and the downstream
+preset's costume wins by design (`merge_preset_documents`). Recreating the nodes changed
+nothing. The renders came right when that Archetype node went back to `None`.

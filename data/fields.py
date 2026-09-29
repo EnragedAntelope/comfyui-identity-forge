@@ -1804,7 +1804,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         ],
         'unisex': [
             'sharply tailored dinner suit with a satin lapel',
-            'floor-length tailored cape over evening tailoring',
+            'floor-length tailored cape over a slim black evening suit',  # 1.5.2: "evening tailoring" named no garment; the render invented a grey dress
             'velvet tuxedo jacket with pressed evening trousers',
         ],
     },
