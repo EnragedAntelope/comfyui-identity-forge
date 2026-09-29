@@ -146,10 +146,40 @@ def _gallery_shot(seed: int) -> str | None:
             # as no framing at all (worse, "None" is a concrete widget value
             # that silently overrides an archetype/cosplayer's own shot_type
             # lock, since a non-Random widget value always wins over a preset).
+            # 1.5.1 (maintainer): a sample shows the front and at least most of the
+            # body with the face -- Arishem came back as a face close-up. Only the
+            # body framings rotate in; an angle-only value ("low angle looking up")
+            # leaves the distance to the model, which often picks a close-up.
             pool = [s for s in spec.options
-                    if s not in _BACK_FACING_SHOTS and s not in ("Random", "None")]
+                    if s in _GALLERY_SHOTS and s not in _BACK_FACING_SHOTS]
+            if not pool:
+                raise RenderError("no gallery shot_type left in the schema options")
             return random.Random(seed ^ 0x5A17C105).choice(pool)
     return None
+
+
+#: Which gender a coin-flip entry's SAMPLE shows, where the maintainer picked one
+#: (1.5.1: "use female cheerleader for gallery"). Samples only -- the node still
+#: coin-flips. Changing a row needs a manual `--entry` re-render: render settings are
+#: not in the manifest hash.
+_GALLERY_GENDER: dict[str, dict[str, str]] = {
+    "archetypes": {"Cheerleader": "Female", "Irish Step Dancer": "Female"},
+}
+
+#: Gallery-only pose pins, same terms as _GALLERY_GENDER: a sample whose defining
+#: feature only shows in one pose (Black Bolt's underarm wings spread only with the arms
+#: raised; at his sides they rendered as a cape).
+_GALLERY_POSE: dict[str, dict[str, str]] = {
+    "cosplay": {"Black Bolt": "stretching both arms overhead"},
+}
+
+#: Front-facing framings that show most of the body and the face (1.5.1).
+_GALLERY_SHOTS = frozenset({
+    "cowboy shot from mid-thigh up",
+    "full body shot",
+    "full body shot with environment visible",
+    "wide shot with subject at center",
+})
 
 
 class RenderError(RuntimeError):
@@ -502,6 +532,10 @@ def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
     shot = _gallery_shot(seed)
     if shot:
         forge_kwargs["shot_type"] = shot
+    if name in _GALLERY_GENDER.get(kind, {}):
+        forge_kwargs["gender"] = _GALLERY_GENDER[kind][name]
+    if name in _GALLERY_POSE.get(kind, {}):
+        forge_kwargs["pose"] = _GALLERY_POSE[kind][name]
     forged = IdentityForge.execute(**forge_kwargs)
     prose = _unwrap(forged)[0]
     if not isinstance(prose, str) or not prose.strip():

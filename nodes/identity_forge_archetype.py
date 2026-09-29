@@ -35,15 +35,19 @@ from typing import Any
 # Dual import: package-relative inside ComfyUI, absolute when run standalone.
 try:
     from ..data.templates import (
-        ARCHETYPES, get_archetype_names, get_archetype_preset, fill_costume,
+        ARCHETYPES, BODY_IS_THE_LOOK, get_archetype_names, get_archetype_preset,
+        fill_costume,
     )
     from ..data.fields import FIELD_DEFINITIONS
+    from ..data.constraints import lock_clash
     from .identity_forge import group_fields, merge_preset_documents
 except ImportError:  # pragma: no cover — standalone/test context
     from data.templates import (
-        ARCHETYPES, get_archetype_names, get_archetype_preset, fill_costume,
+        ARCHETYPES, BODY_IS_THE_LOOK, get_archetype_names, get_archetype_preset,
+        fill_costume,
     )
     from data.fields import FIELD_DEFINITIONS
+    from data.constraints import lock_clash
     from nodes.identity_forge import group_fields, merge_preset_documents
 
 try:
@@ -69,7 +73,10 @@ _ESSENTIAL_GROUPS: frozenset[str] = frozenset({
 
 
 def _is_essential(field: str) -> bool:
-    if field == "gender":
+    # 1.5.1: an `age` lock is part of the look too. Authors lock it only where the look
+    # implies a life stage (K-Pop Idol young, Babushka old), and dropping it drew a
+    # 70-year-old cheerleader in the gallery.
+    if field in ("gender", "age"):
         return True
     return FIELD_DEFINITIONS.get(field, {}).get("group") in _ESSENTIAL_GROUPS
 
@@ -88,7 +95,10 @@ def _fill_look_costume(look: "dict[str, Any]", rng: "random.Random") -> None:
         look["outfit_description"] = fill_costume(outfit, rng)
 
 
-def _resolve_list_values(look: "dict[str, Any]", rng: "random.Random") -> None:
+def _resolve_list_values(
+    look: "dict[str, Any]", rng: "random.Random",
+    context: "dict[str, str] | None" = None,
+) -> None:
     """Seed-pick every remaining list value in ``look``, in place.
 
     An archetype field may hold a list of curated alternatives (e.g. three
@@ -97,11 +107,23 @@ def _resolve_list_values(look: "dict[str, Any]", rng: "random.Random") -> None:
     look so the draw count is identical across lock levels (Essentials/Full
     parity for a given seed). Empty lists are dropped (defensive: built-ins are
     validator-checked, user_options.json entries are not).
+
+    1.5.1: a pick only draws the alternatives that agree with the look's other
+    locks (``lock_clash`` over CONSTRAINT_RULES). Lists used to pick independently,
+    so the Astronomer paired its planetarium with its moonlight one time in four --
+    and with both sides locked the engine can only warn and keep the clash. Still
+    one draw per list; ``context`` carries the base look into a variant's picks.
     """
+    settled = {k: v for k, v in (context or {}).items() if isinstance(v, str)}
+    settled.update({k: v for k, v in look.items()
+                    if isinstance(v, str) and k in FIELD_DEFINITIONS})
     for field, value in list(look.items()):
         if isinstance(value, list):
             if value:
-                look[field] = rng.choice(value)
+                fits = [v for v in value if not lock_clash(field, v, settled)] or value
+                look[field] = rng.choice(fits)
+                if field in FIELD_DEFINITIONS:
+                    settled[field] = look[field]
             else:
                 del look[field]
 
@@ -152,13 +174,20 @@ def build_archetype_json(archetype: str, seed: int = 0, lock_level: str = _ESSEN
     _resolve_list_values(preset, rng)
     for variant_gender in ("Female", "Male"):
         if variant_gender in resolved_variants:
-            _resolve_list_values(resolved_variants[variant_gender], rng)
+            _resolve_list_values(resolved_variants[variant_gender], rng,
+                                 {**preset, "gender": variant_gender})
 
     filtered_variants: "dict[str, dict[str, Any]]" = resolved_variants
     if lock_level == _ESSENTIALS:
-        preset = {f: v for f, v in preset.items() if _is_essential(f)}
+        body_kept = archetype in BODY_IS_THE_LOOK
+
+        def keep(f: str) -> bool:
+            return _is_essential(f) or (
+                body_kept and FIELD_DEFINITIONS.get(f, {}).get("group") == "Body")
+
+        preset = {f: v for f, v in preset.items() if keep(f)}
         filtered_variants = {
-            variant_gender: {f: v for f, v in look.items() if _is_essential(f)}
+            variant_gender: {f: v for f, v in look.items() if keep(f)}
             for variant_gender, look in resolved_variants.items()
         }
 

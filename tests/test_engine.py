@@ -30,6 +30,7 @@ from nodes.identity_forge import (
     generate_character,
     merge_preset_documents,
     resolve_locked_fields,
+    _BAG_VOICE,
     _pick_family_weighted,
     _performable_poses,
     _BARE_LEG_RE,
@@ -133,11 +134,13 @@ class GenderTests(unittest.TestCase):
             self.assertNotIn("beard", prose)
 
     def test_female_override_drops_male_archetype_beard(self):
-        # Regression: a male archetype (Werewolf Hunter) locks facial_hair="short
-        # beard"; forcing gender=Female downstream must NOT keep the beard. The
+        # Regression: a male archetype (Roaring Twenties Gent; Werewolf Hunter was the
+        # original, but at 1.5.1 its beard moved into a Male variant when the role began
+        # to coin-flip) locks facial_hair="short beard"; forcing gender=Female
+        # downstream must NOT keep the beard. The
         # gender gate has to hold for locked/injected values, not just randomized
         # ones (the JS widget and the randomizer enforce it, the engine must too).
-        flat = _parse_archetype_json(build_archetype_json("Werewolf Hunter", 0, "Essentials"))
+        flat = _parse_archetype_json(build_archetype_json("Roaring Twenties Gent", 0, "Essentials"))
         self.assertEqual(flat.get("facial_hair"), "short beard")  # archetype carries it
         locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
         for seed in range(30):
@@ -1818,7 +1821,9 @@ class CompositionTests(unittest.TestCase):
         'extreme close-up on face', 'close-up portrait', 'medium close-up from chest up',
     })
     _WIDE_ENVIRONMENT_SHOTS = frozenset({
-        'full body shot with environment visible', 'extreme wide establishing shot',
+        'full body shot', 'full body shot with environment visible',
+        'wide shot with subject at center', 'wide shot with subject off-center',
+        'extreme wide establishing shot',
     })
 
     def test_every_composition_value_completes_composed_with(self):
@@ -2427,8 +2432,10 @@ class ArchetypeNeonLocationTests(unittest.TestCase):
     #:   from one side' with a work_industrial location (warehouse interior,
     #:   parking garage, factory floor) -- outside every brief-named category
     #:   (food_drink / leisure_fitness / urban_outdoor / urban_landmark).
-    #: * Streamer / co-working space / neon sign glow in multiple colors --
-    #:   work_industrial, same reasoning.
+    #: * (Streamer / co-working space / neon sign glow left at 1.5.1: the preset now
+    #:   stands in a recording studio.) Every pair still listed here is a LIST
+    #:   alternative the archetype node no longer draws together -- 1.5.1's
+    #:   ``lock_clash`` filter picks each list among the values that agree.
     _PRE_EXISTING_EXCEPTIONS = frozenset({
         ("Teddy Boy", "wood-paneled pub", "fog-diffused streetlamp glow"),
         ("Grim Reaper", "misty moor", "fog-diffused streetlamp glow"),
@@ -2436,7 +2443,6 @@ class ArchetypeNeonLocationTests(unittest.TestCase):
         ("1980s Action Star", "parking garage", "single neon light from one side"),
         ("Hazmat Technician", "warehouse interior", "single neon light from one side"),
         ("Hazmat Technician", "factory floor", "single neon light from one side"),
-        ("Streamer", "co-working space", "neon sign glow in multiple colors"),
     })
 
     def test_no_shipped_archetype_locks_a_rejected_neon_pair(self):
@@ -4239,7 +4245,8 @@ class SuppressionLockSurvivalTests(unittest.TestCase):
                 # ethnicity words is a false-positive trap -- "French braid" and
                 # "Roman nose" are hair/face values, not demographics.
                 noun = "man" if gender == "Male" else "woman"
-                self.assertRegex(prose, rf"a \d+-year-old {noun} with",
+                # 1.5.1: a scale phrase sits between them as an appositive.
+                self.assertRegex(prose, rf"a \d+-year-old {noun}(?:, [^,]+,)? with",
                                  f"{name} seed {seed}: lead clause carries an ethnicity")
 
     def test_unpainted_cosplayer_keeps_ethnicity(self):
@@ -5768,25 +5775,25 @@ class RandomPoolTests(unittest.TestCase):
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
-        # 1.4.0 (2023 -> 2052) and at 1.5.0 (2052 -> 2057) to the new
+        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) to the new
         # ground truth, and is expected to need refreshing every time the roster
         # grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Saitama',
-            (_RANDOM_ANY, 1): 'Felicia',
-            (_RANDOM_ANY, 2): 'Bridget',
-            (_RANDOM_ANY, 3): 'Lady (Devil May Cry)',
-            (_RANDOM_ANY, 4): 'Kyle Broflovski',
-            (_RANDOM_FEMALE, 0): 'Spinel',
-            (_RANDOM_FEMALE, 1): 'Captain Phasma',
-            (_RANDOM_FEMALE, 2): 'Yoko Littner',
-            (_RANDOM_FEMALE, 3): 'Eris',
-            (_RANDOM_FEMALE, 4): 'Eowyn',
-            (_RANDOM_MALE, 0): 'Samurai Jack',
-            (_RANDOM_MALE, 1): 'Elmer Fudd',
-            (_RANDOM_MALE, 2): 'Broly',
-            (_RANDOM_MALE, 3): "K'",
-            (_RANDOM_MALE, 4): 'Judge Dredd',
+            (_RANDOM_ANY, 0): 'Saeko Busujima',
+            (_RANDOM_ANY, 1): 'Fatality',
+            (_RANDOM_ANY, 2): 'Briar',
+            (_RANDOM_ANY, 3): 'Kyle Broflovski',
+            (_RANDOM_ANY, 4): 'Krusty the Clown',
+            (_RANDOM_FEMALE, 0): 'Spider-Woman',
+            (_RANDOM_FEMALE, 1): 'Captain Mizuki',
+            (_RANDOM_FEMALE, 2): 'Yamato (One Piece)',
+            (_RANDOM_FEMALE, 3): 'Erina Nakiri',
+            (_RANDOM_FEMALE, 4): 'Enchantress (Suicide Squad)',
+            (_RANDOM_MALE, 0): 'Ryu',
+            (_RANDOM_MALE, 1): 'Electro',
+            (_RANDOM_MALE, 2): 'Brock',
+            (_RANDOM_MALE, 3): 'Jotaro Kujo',
+            (_RANDOM_MALE, 4): 'Jon Snow',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
@@ -6813,8 +6820,9 @@ class TattooAndLegwearTests(unittest.TestCase):
     #: left this set -- under a suit or a sweater they made the model cut a window in
     #: the clothes -- and the back of the hand joined it (only a glove covers a hand).
     #: The neck survives unless a turtleneck covers it. When everything IS covered, the
-    #: tattoo itself is dropped rather than voiced with no place.
-    _ALWAYS_AVAILABLE = {"behind one ear", "across the back of one hand"}
+    #: tattoo itself is dropped rather than voiced with no place. 1.5.1: "behind one ear"
+    #: left it -- it is never drawn at random (it rendered on the temple, neck or hair).
+    _ALWAYS_AVAILABLE = {"across the back of one hand"}
 
     def _flat(self, payload: str) -> dict:
         out: dict = {}
@@ -6897,7 +6905,7 @@ class TattooAndLegwearTests(unittest.TestCase):
         self.assertEqual(offenders, [], f"legwear contradictions: {offenders[:5]}")
 
     def test_the_placement_pool_can_never_empty_while_a_tattoo_exists(self):
-        """Four placements are unreachable by every cull, by construction.
+        """The back of the hand is unreachable by every cull but a glove, by construction.
 
         Without this the gates could combine -- long sleeves plus trousers plus a
         turtleneck -- to cull the pool to nothing, and a tattoo would be described
@@ -8314,7 +8322,8 @@ class NewFieldValueTests(unittest.TestCase):
             prose = generate_character(
                 seed, "Female", {}, hair_color_scope="Any",
                 accessory_density="Maximal")[0]
-            seen |= {v for v in wanted if v in prose}
+            # 1.5.1: a bag may be voiced differently from its value (_BAG_VOICE).
+            seen |= {v for v in wanted if v in prose or _BAG_VOICE.get(v, v) in prose}
             if seen == wanted:
                 break
         self.assertEqual(wanted - seen, set(), "unreachable new values")

@@ -434,7 +434,21 @@ _BALD_SCALP_FIELDS: tuple[str, ...] = (
 #: Salacious Crumb, 2-1B, ...) mentioning it only risks biasing the render toward a
 #: visible human trait with nothing left to attach it to. An explicit user lock on
 #: either field is respected, same as every other suppression in this module.
-_CONCEALED_SHELL_SKIN_FIELDS: frozenset[str] = frozenset({"skin_tone", "ethnicity"})
+#:
+#: 1.5.1 widened it to the WHOLE randomized human body (renamed from
+#: ``_CONCEALED_SHELL_SKIN_FIELDS``). The maintainer's Megatron render was a bare
+#: bronze human torso inside robot plating and Chopper came back as a man sitting in
+#: an astromech: the prose opened "a short 38-year-old Korean man with a slender
+#: build ... slightly narrow shoulders, a slightly defined chest ...", and a T2I model
+#: draws every body it is told about. Even a correctly shelled R2-D2 read "a muscular
+#: physique with very broad shoulders, a muscular chest". Under a full shell the
+#: wearer's age, build and proportions are invisible, so only AUTHORED values speak:
+#: an entry's canon ``physique`` (Full character), its ``scale_prose`` and any widget
+#: lock arrive in ``locked_clean`` and survive, exactly like the skin/ethnicity case.
+_ENCASED_HIDDEN_FIELDS: frozenset[str] = frozenset({
+    "skin_tone", "ethnicity", "age", "body_type", "height", "bust", "waist", "hips",
+    "shoulder_width", "neck_length", "posture", "fitness_level",
+})
 
 #: Control fields: read from their toggle, never randomized, never described.
 _CONTROL_FIELDS: frozenset[str] = frozenset(
@@ -1169,10 +1183,55 @@ def _bias_skin_tone(pool: list[str], ethnicity: str | None, rng: random.Random) 
     remains possible. Returns ``pool`` unchanged when the ethnicity is unmapped.
     """
     band = ETHNICITY_REGION.get(ethnicity or "")
-    if not band or rng.random() >= SKIN_TONE_INBAND_PROBABILITY:
+    if not band:
         return pool
+    if rng.random() >= SKIN_TONE_INBAND_PROBABILITY:
+        # 1.5.1: the out-of-band draw stays NEAR the band. It used to reopen the whole
+        # spectrum, which is how a Kenyan drew porcelain and an Icelandic woman warm
+        # brown (maintainer renders #00537, #00653) -- mixed heritage shifts a shade,
+        # it does not cross the range.
+        return [tone for tone in pool if tone in _NEAR_BAND[band]] or pool
     in_band = [tone for tone in pool if tone in set(SKIN_TONE_BANDS.get(band, ()))]
     return in_band or pool
+
+
+#: Skin tones in light-to-dark order, and each band widened by two steps either side --
+#: the range an out-of-band draw may land in (see _bias_skin_tone).
+_TONE_ORDER: list[str] = list(FIELD_DEFINITIONS["skin_tone"]["female_options"])
+_NEAR_STEPS: int = 2
+
+
+def _near(tones: "list[str]") -> frozenset[str]:
+    idx = [_TONE_ORDER.index(t) for t in tones if t in _TONE_ORDER]
+    lo, hi = max(0, min(idx) - _NEAR_STEPS), min(len(_TONE_ORDER), max(idx) + _NEAR_STEPS + 1)
+    return frozenset(_TONE_ORDER[lo:hi])
+
+
+_NEAR_BAND: dict[str, frozenset[str]] = {b: _near(t) for b, t in SKIN_TONE_BANDS.items()}
+
+
+def _natural_brows(pool: list[str], resolved: dict[str, str]) -> list[str]:
+    """1.5.1: bleached brows are a dye look, so "Natural only" hair leaves them out
+    (renders #00800, #00809). A control, not a rule: a rule keyed on a control field
+    would let a locked brow try to re-roll the control."""
+    if resolved.get("hair_color_scope") == "Natural only":
+        return [v for v in pool if v != "bleached"] or pool
+    return pool
+
+
+def _bias_ethnicity(pool: list[str], skin_tone: str | None, rng: random.Random) -> list[str]:
+    """1.5.1: the reverse lean. A LOCKED skin tone (drawn before nothing -- ethnicity is
+    the first body field) used to leave ethnicity flat-uniform, so a locked "pale" came
+    back Sudanese and Ethiopian (renders #00780, #00790, #00816). Same odds as the
+    forward lean: in band, else near band. A free-text tone (body paint) is unmapped
+    and leaves the pool alone."""
+    if not skin_tone or skin_tone not in _TONE_ORDER:
+        return pool
+    bands = SKIN_TONE_BANDS if rng.random() < SKIN_TONE_INBAND_PROBABILITY else _NEAR_BAND
+    # An unmapped ethnicity has no band to contradict, so it always stays.
+    fits = [e for e in pool if e not in ETHNICITY_REGION
+            or skin_tone in bands.get(ETHNICITY_REGION[e], ())]
+    return fits or pool
 
 
 #: Probability, per ethnicity band, that NATURAL hair and eye colour are drawn from the
@@ -1388,6 +1447,10 @@ def _repick(
             pool = _bias_hair_style(pool, resolved.get("ethnicity"), rng)
         elif field_name == "skin_tone":
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
+        elif field_name == "ethnicity":
+            pool = _bias_ethnicity(pool, resolved.get("skin_tone"), rng)
+        elif field_name == "eyebrows":
+            pool = _natural_brows(pool, resolved)
         elif field_name == "eye_color":
             pool = _bias_eye_color(pool, resolved.get("ethnicity"), rng)
         elif field_name == "hair_color":
@@ -1412,6 +1475,15 @@ _POCKETED_RE = re.compile(
     r"\b(?:trousers|jeans|pants|chinos|slacks|cargos|corduroys|shorts|joggers|jacket|coat|"
     r"blazer|hoodie|overalls|coveralls|jumpsuit|suit|tuxedo|cardigan|denim|parka|trench|"
     r"overcoat|topcoat|raincoat|anorak)\b",
+    re.IGNORECASE)
+# 1.5.1: a costume that HOLDS something ("a clipboard in one hand", "a rolled mat under one
+# arm") occupies a hand exactly like a Cosplayer ``held_item`` does -- "stretching both arms
+# overhead" left the clipboard floating. Held/carried forms only: "trousers held up by
+# braces", "a belt carrying a sword" and "a clip holding the hair" are not in a hand.
+_HAND_PROP_RE = re.compile(
+    r"\b(?:in (?:one|each|both) hands?|in hand|under (?:one|the) arm|"
+    r"held (?:in|at|under|over|across the shoulders|up(?! (?:by|with)))|"
+    r"(?<=, )(?:holding|carrying|swirling|presenting|raising))\b",
     re.IGNORECASE)
 
 
@@ -1491,7 +1563,8 @@ def _performable_poses(
         excluded |= HAIR_DEPENDENT_POSES
     if garmentless:
         excluded |= GARMENT_DEPENDENT_POSES
-    if (held and not _is_absent(held)) or resolved.get("shot_type") == _SELFIE_SHOT_TYPE:
+    if ((held and not _is_absent(held)) or resolved.get("shot_type") == _SELFIE_SHOT_TYPE
+            or _HAND_PROP_RE.search(outfit)):
         excluded |= HAND_OCCUPIED_POSES
     # 1.5.0 round 4: "adjusting one cuff" in a poncho, "touching the collar" in a harness
     # top. Only once a garment exists (inside the fill loop it does not yet).
@@ -1702,6 +1775,15 @@ def _upper_arm_bare(outfit: str, coated: bool) -> bool:
             and not _LONG_SLEEVE_RE.search(outfit))
 
 
+#: How a bag value is voiced when its name alone draws the wrong shape (1.5.1).
+_BAG_VOICE: dict[str, str] = {
+    "leather briefcase in black": "hard-sided black leather briefcase",
+}
+
+_ALWAYS_SHOWN_PLACEMENTS: frozenset[str] = frozenset(
+    ["across the back of one hand", "on the inner wrist", "on the side of the neck"])
+
+
 def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> list[str]:
     """Drop tattoo placements the character's clothing would cover.
 
@@ -1714,14 +1796,19 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
     entirely. ``tattoos`` is drawn earlier (it is appended above ``legwear`` and
     ``tattoo_placement`` in ``FIELD_DEFINITIONS``), so its value is already settled.
 
-    Neck, behind-ear, upper-arm and shoulder-blade placements are never dropped, so
-    the pool cannot empty while a tattoo exists. Flat field, no family weight, so
-    culling re-picks uniformly among the survivors.
+    Every placement can be culled; when none survives, the caller drops the tattoo
+    itself rather than let the model cut a window for it. Flat field, no family weight,
+    so culling re-picks uniformly among the survivors.
     """
     tattoo = resolved.get("tattoos")
     if not tattoo or _is_absent(tattoo):
         return []
     outfit = resolved.get("outfit_description") or ""
+    if not outfit:
+        # 1.5.1: outfit_style None voices no clothing, so a thigh, collarbone or shoulder
+        # placement would ask the model to bare that skin. Only what ordinary clothes
+        # leave showing.
+        return [p for p in pool if p in _ALWAYS_SHOWN_PLACEMENTS]
     legwear = resolved.get("legwear") or ""
     excluded: set[str] = set()
     # 1.5.0: a coat covers what long sleeves and a high neck cover. `outerwear` is
@@ -1749,6 +1836,11 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
         excluded |= {"down one thigh", "on one calf"}
     if coated or _HIGH_NECK_RE.search(outfit) or _TAILORED_NECK_RE.search(outfit):
         excluded.add("across the collarbone")
+    # 1.5.1: never drawn at random. Four of the maintainer's renders put it somewhere
+    # else -- a patch across the temple (#00553), down the neck (#00613, #00809), painted
+    # onto a ponytail (#00688) -- whatever the style's size. A lock still gets it: this
+    # filter only shapes the random pool.
+    excluded.add("behind one ear")
     if not excluded:
         return pool
     return [p for p in pool if p not in excluded]
@@ -2208,7 +2300,11 @@ def _randomize_fields(
             continue
 
         pool = _build_option_pool(field_name, field_def, gender, resolved)
-        if field_name == "skin_tone":
+        if field_name == "ethnicity":
+            pool = _bias_ethnicity(pool, resolved.get("skin_tone"), rng)
+        elif field_name == "eyebrows":
+            pool = _natural_brows(pool, resolved)
+        elif field_name == "skin_tone":
             pool = _bias_skin_tone(pool, resolved.get("ethnicity"), rng)
         elif field_name == "hair_color":
             pool = _bias_hair_color(pool, resolved, rng)
@@ -2967,10 +3063,19 @@ def _format_prose(
     # and entry_hash covers the entry dict rather than the prose, so no gallery
     # image is invalidated by this.
     lead = f"{_a(lead_tail).capitalize()} {lead_tail}"
+    # An adjectival scale phrase ("colossal and over thirty feet tall") cannot sit in the
+    # "with" list: it read "a man with a stocky build and colossal and over thirty feet
+    # tall", or "a man with colossal ..." once an encased giant kept only its scale
+    # (1.5.1). It is an appositive instead. Every stock non-prenominal height is a noun
+    # phrase ending in "height", so this only ever touches a scale override.
+    scale_phrase = g("height") if (g("height") and not prenominal_height
+                                   and not g("height").endswith("height")) else ""
+    if scale_phrase:
+        lead = f"{lead}, {scale_phrase}"
     core = []
     if g("body_type"):
         core.append(_an(g("body_type"), "build"))
-    if g("height") and not prenominal_height:
+    if g("height") and not prenominal_height and not scale_phrase:
         core.append(g("height"))
     if g("skin_tone"):
         # Normally "{tone} skin" ("bronze skin"). A body-paint colour anchor may be a
@@ -2978,7 +3083,10 @@ def _format_prose(
         # scaled-skin", "golden cheetah-fur") — don't double the noun in that case.
         tone = g("skin_tone")
         core.append(tone if re.search(r"\b(?:skin|fur|scales?|hide)$", tone) else f"{tone} skin")
-    sentences.append(lead + (" with " + _join(core) if core else ""))
+    if scale_phrase and core:
+        sentences.append(f"{lead}, with {_join(core)}")
+    else:
+        sentences.append(lead + (" with " + _join(core) if core else ""))
 
     # --- Creature anatomy ----------------------------------------------
     # Lead forms put the creature features right after the subject; the Subtle
@@ -3225,7 +3333,11 @@ def _format_prose(
         if g("footwear"):
             clothing.append(f"in {g('footwear')}")
     if g("bag"):
-        clothing.append(f"carrying {_article_if_singular(g('bag'))}")
+        # 1.5.1: "a leather briefcase in black" rendered as a small top-handle purse on a
+        # man (#00547); the shape word is what carries it. Voice only -- the option value
+        # is unchanged, so saved workflows keep working.
+        bag = _BAG_VOICE.get(g("bag"), g("bag"))
+        clothing.append(f"carrying {_article_if_singular(bag)}")
     if g("accessories"):
         acc = g("accessories")
         clothing.append(f"accessorized with "
@@ -3843,6 +3955,16 @@ def generate_character(
         _resolve_deferred_fields(resolved, gender, accessory_density, rng,
                                  generated_outfit=bool(garment),
                                  presentation=presentation, locked=set(locked_clean))
+        if not garment:
+            # 1.5.1 (maintainer): None says nothing about clothing at all. A carried bag, a
+            # cap or glasses with no garment beside them read as "wearing nothing but"
+            # ("Carrying a leather backpack, accessorized with a flat cap" drew a bare
+            # chest, #00525/#00542). Absent tokens, not pops, so a vault replay keeps them
+            # dropped. A lock is still voiced.
+            for field, absent in (("bag", "no bag"), ("accessories", "no accessories"),
+                                  ("legwear", "no visible legwear")):
+                if field in resolved and field not in locked_clean:
+                    resolved[field] = absent
         resolved["outfit_description"] = (
             _compose_outfit_clause(garment, resolved, set(locked_clean), rng, presentation)
             if garment else garment
@@ -3983,8 +4105,9 @@ def generate_character(
     # here. ethnicity (Demographics) joins it: with no visible skin or face left,
     # mentioning it only risks nudging the render toward a human trait that has
     # nothing to attach to. An explicit user lock on either field is respected.
+    # 1.5.1: the randomized build/age/proportions go too -- see _ENCASED_HIDDEN_FIELDS.
     if covers_face and full_shell:
-        for field in _CONCEALED_SHELL_SKIN_FIELDS:
+        for field in _ENCASED_HIDDEN_FIELDS:
             if field not in locked_clean:
                 resolved.pop(field, None)
 

@@ -4789,6 +4789,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Overwatch",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,
         "costume": "a sleek green-and-silver cyborg ninja body with exposed servos and "
                    "a katana on the back",
         "prop_costume": "a sleek green-and-silver cyborg ninja body with exposed servos",
@@ -6431,6 +6432,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,
         "costume": "a towering chrome-and-silver robotic body of articulated plating",
         "mask": "a polished silver robotic face with glowing red eyes and a grim metal mouth",
         "size_scale": "giant",
@@ -6743,6 +6745,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Transformers",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,
         "costume": "a towering grey-and-silver robotic body of tank-like plating with an "
                    "arm cannon",
         "mask": "a silver robotic face with a black helmet crest and glowing red eyes",
@@ -6754,6 +6757,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Transformers",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,
         "costume": "a sleek yellow-and-black robotic body of car-formed plating",
         "mask": "a yellow-and-black robotic face with blue optic eyes and antennae",
         "physique": {"body_type": "athletic", "height": "tall"},
@@ -7330,10 +7334,14 @@ COSPLAYERS: dict[str, dict] = {
     "Crystal": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "a form-fitting green-and-white costume with cape elements and Inhuman "
-                   "design accents",
-        "signature": {"hair_color": "auburn", "hair_length": "slightly past shoulders",
-                      "hair_texture": "loosely wavy", "eye_color": "green"},
+        # 1.5.1 rewrite: the classic black-and-yellow costume (maintainer-supplied, the
+        # colours corroborated); the black hair band rests on the supplied description.
+        "costume": "a form-fitting mustard-gold catsuit with sharp black geometric panels "
+                   "over the shoulders, framing the upper chest and running down the outer "
+                   "sides of the torso and legs, and a thick black band dyed around the lower "
+                   "length of the hair",
+        "signature": {"hair_color": "strawberry blonde", "hair_length": "long",
+                      "hair_texture": "sleek straight", "eye_color": "green"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
     },
     "Krystalin": {
@@ -9188,10 +9196,20 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a squat dented orange-and-white cylindrical astromech body standing on "
-                   "two mismatched mechanical legs with a small third retractable foot",
-        "mask": "a rounded astromech dome head with a single glowing photoreceptor and a "
-                "pair of bent antennae",
+        "covers_body": True,
+        # 1.5.1 rewrite (maintainer: "the head does not look right at all"), built from the
+        # maintainer's reference photo of the physical droid and corroborated by
+        # StarWars.com (orange and yellow, 1.04 m, beat-up) and builder references
+        # (periscope, radar eye, caster "third leg"). The HEAD is the orange part -- a
+        # truncated cone, not an R2 dome; the body is off-white.
+        "costume": "a squat, weathered off-white cylindrical astromech body with dark blue "
+                   "vent panels, small yellow patches and exposed mechanical tool arms in "
+                   "open recesses, on two heavy dark grey legs with a single caster wheel "
+                   "under the middle of the body",
+        "mask": "a flat-topped orange droid head shaped like a truncated cone, wider at the "
+                "base, banded with a yellow stripe and a yellow panel, with three mismatched "
+                "round photoreceptor lenses in a row across the front and a thin antenna "
+                "rising from a small disc on top",
         "physique": {"body_type": "stocky", "height": "short"},
     },
     "Battle Droid": {
@@ -11109,17 +11127,122 @@ COSPLAYERS: dict[str, dict] = {
                    "body's own length and moves like living tendrils",
         "signature": {"hair_color": "deep red", "hair_length": "hip length",
                       "hair_texture": "thick and voluminous", "eye_color": "bright green"},
+        # 1.5.1: the classic masked look (maintainer-supplied). A domino mask leaves the
+        # face visible, so it rides as an alternate costume (the Big Bertha pattern).
+        "costumes": [
+            "a form-fitting metallic violet full-body suit with a high collar, an angular "
+            "gold crown-like emblem across the upper chest, a sleek purple domino mask, and "
+            "an immense mane of prehensile deep-red hair that flows several times the body's "
+            "own length and moves like living tendrils",
+        ],
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair"},
     },
     "Black Bolt": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "a black full-body suit marked with a silver tuning-fork emblem spreading from "
-                   "the chest, black gloves and boots, and a slim antenna device mounted at the "
-                   "center of the forehead",
-        "signature": {"hair_color": "jet black", "hair_length": "short pixie",
-                      "hair_texture": "sleek straight", "eye_color": "steel blue"},
+        # 1.5.1: the classic Kirby cowl hides the hair (a second supplied description
+        # with hair combed back is the TV look; the cowl is what reads as Black Bolt).
+        # The first render grinned and drew the fork as horns atop the cowl: stern face,
+        # fork at the brow, webbing wrist to ankle.
+        "covers_hair": True,
+        # Wording is load-bearing: "semi-transparent ... from the wrists down to the ankles"
+        # rendered a sheer cape; "under each arm ... to the side of the torso" renders the
+        # underarm glide-wings (the first render got them right).
+        "costume": "a skin-tight midnight-black full-body suit with matching black gloves and "
+                   "boots, a stylized silver lightning-bolt insignia across the chest and "
+                   "shoulders, ribbed black webbed glider wings joined under each arm from "
+                   "the wrist to the side of the torso, and a black cowl enclosing the head "
+                   "that leaves only the eyes, mouth and jaw bare, with a silver two-pronged "
+                   "tuning-fork antenna rising from the forehead of the cowl",
+        "signature": {"eye_color": "bright blue", "expression": "stern"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    # --- Inhuman Royal Family (1.5.1, maintainer-supplied descriptions) -----------------
+    "Gorgon": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # 1.5.1: "a gladiator-style belted tunic" rendered as a strappy skirted dress and a
+        # crossed-leg pose hid the hooves; a battle vest over trunks, a massive build and a
+        # planted stance show what the character is.
+        "anatomy_note": "powerful furry bull-like legs below the knees that end in large "
+                        "cloven hooves instead of feet",
+        "costume": "a gold-and-black sleeveless belted battle vest over black trunks, leaving "
+                   "the furry lower legs and cloven hooves bare",
+        "signature": {"hair_color": "medium brown", "hair_length": "shoulder length",
+                      "hair_texture": "thick and voluminous", "hair_style": "tousled bedhead",
+                      "facial_hair": "full beard", "shoulder_width": "very broad",
+                      "fitness_level": "muscular", "pose": "standing with feet planted wide"},
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Karnak": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_hair": True,
+        "anatomy_note": "an enlarged, bulbous domed cranium with an over-pronounced brow "
+                        "ridge above an ordinary-sized face",
+        "costume": "a loose dark-green hooded tunic and robe cinched at the waist with a white "
+                   "sash belt, the deep hood draped over the oversized head, with the hands and "
+                   "feet tightly wrapped in white martial-arts bindings that leave the fingers "
+                   "and toes bare",
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Triton": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # Scales are not skin, so covers_body; the face shows, so no covers_face -- the
+        # skin-native marker restates the green on the face (the Glacius lead-with-the-body
+        # rule).
+        "covers_body": True,
+        "bald": True,
+        "costume": "uniform, all-over bright green aquatic scales covering the whole body, a "
+                   "rigid dorsal crest fin running from the top of the bald head down the "
+                   "length of the spine, webbed fingers and toes, and minimalist black swim "
+                   "trunks with a small high-tech breathing harness strapped around the chest",
+        "eyes": "large, wide, pupilless yellow",
+        "signature": {"eyebrows": "barely there"},
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Maximus": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # 1.5.1: the classic Kirby look (maintainer-supplied); the purple tunic was not it.
+        "costume": "a form-fitting bodysuit in bright lime-green and deep black segments with "
+                   "segmented padding along the limbs, a massive rigid black collar flaring out "
+                   "wide beyond the shoulders like stiff wings, and a circular black crest with "
+                   "an abstract red glyph at the center of the chest",
+        "costumes": [
+            "a form-fitting bodysuit in bright lime-green and deep black segments with "
+            "segmented padding along the limbs, a massive rigid black collar flaring out wide "
+            "beyond the shoulders like stiff wings, a circular black crest with an abstract "
+            "red glyph at the center of the chest, and a tall ornate metallic crown",
+        ],
+        "signature": {"hair_color": "jet black", "hair_length": "ear length",
+                      "hair_texture": "thick and voluminous", "hair_style": "tousled bedhead",
+                      "eye_color": "bright blue", "facial_hair": "clean shaven",
+                      "expression": "smirking"},
+        "physique": {"body_type": "lean", "height": "slightly above average height",
+                     "skin_tone": "fair"},
+    },
+    "Lockjaw": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "giant bulldog-like alien canine",
+        "creature_class": "Mammals",
+        "mask": "a heavily wrinkled bulldog face with heavy jowls and floppy ears, and a "
+                "metallic silver two-pronged tuning-fork antenna rising from the center of "
+                "the forehead",
+        "costume": "a short sandy-brown coat over a massive, broad-chested, stocky body",
+        "anatomy": {
+            "eyes": "small dark eyes",
+            "legs_feet": "four thick, short legs with broad heavy paws",
+            "tail": "a short stubby tail",
+        },
+        "size_scale": "giant",
+        "scale_prose": "enormous, about five feet tall at the shoulder",
+        "physique": {"body_type": "stocky"},
     },
     "Riptide": {
         "franchise": "Youngblood",
@@ -13462,11 +13585,13 @@ COSPLAYERS: dict[str, dict] = {
     "Kaguya Yamai": {
         "franchise": "Date A Live",
         "gender": "Female",
-        # Yuzuru's twin; the purple-strapped astral dress (chains on the right side).
-        "costume": "a dark, form-fitting bodysuit crossed by purple straps that bind the arms "
-                   "and legs, a short half-skirt draped low around the hips, and loose chains "
-                   "trailing from the right wrist and right ankle",
-        "signature": {"hair_color": "orange", "hair_length": "very long", "hair_style": "high ponytail",
+        # Yuzuru's twin; the purple restraint-suit astral dress (Elohim Tzabaoth), broken
+        # shackles on the RIGHT side (Yuzuru's are on the left). 1.5.1: her tell from the
+        # twin is the braid tied up around the back of the head, not a ponytail.
+        "costume": "a purple-and-black restraint-style bodysuit bound by buckled purple belts "
+                   "across the arms, chest and thighs, a short half-skirt draped low around the "
+                   "hips, and broken chain shackles trailing from the right wrist and right ankle",
+        "signature": {"hair_color": "orange", "hair_length": "very long", "hair_style": "braided bun",
                       "eye_color": "ice blue"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
     },
@@ -14265,6 +14390,135 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "long",
                       "hair_texture": "loosely wavy", "eye_color": "dark brown"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "light medium"},
+    },
+    # --- Eternals, Deviants and Celestials (1.5.1, maintainer-supplied descriptions) ----
+    # The Eternals below wear their 2021 film designs as supplied; each has its own colour
+    # and silhouette, so they read apart despite the shared gold-line language. Sersi above
+    # keeps her comic tunic dress. Glowing eyes are the powers-on look the supplied text
+    # names as each character's visual signature.
+    "Ikaris": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a deep dark-blue skin-tight tunic suit etched with striking gold geometric "
+                   "lines and circles looping across the chest and torso, with integrated "
+                   "segmented shoulder guards and matching bracers",
+        "eyes": "glowing bright cosmic gold",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+    },
+    "Thena": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "sleek, elegant platinum-white and ivory armor etched with delicate cosmic "
+                   "patterns, with form-fitting pauldrons and gauntlets",
+        "prop": "a translucent golden spear of cosmic energy glowing as it materializes",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "waist length",
+                      "hair_texture": "sleek straight"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "pale"},
+    },
+    "Makkari": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a streamlined dark crimson and silver-grey speedster tunic with a stylized "
+                   "geometric chevron on the front, matching gauntlets and dark boots, trailed "
+                   "by a reddish blur of speed",
+        "signature": {"hair_color": "jet black", "hair_length": "long", "hair_style": "cornrows"},
+        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "dark brown"},
+    },
+    "Sprite": {
+        "franchise": "Marvel",
+        # 1.5.1: Kirby's trickster-elf Sprite (a boy in the comics) is the base; the
+        # 2021 film's teal tunic stays as an alternate.
+        "gender": "Male",
+        "costume": "a skin-tight bright green short-sleeved bodysuit with jagged "
+                   "chevron-patterned trim, contrasting bright orange trunks with a wide "
+                   "matching orange belt, pointed boots, and a high, flared, pointed "
+                   "Elizabethan-style collar framing the neck",
+        "costumes": [
+            "a dark teal and emerald-green tunic patterned with concentric silver and gold "
+            "geometric circular lines sweeping across the chest and legs",
+        ],
+        "signature": {"hair_color": "copper", "hair_length": "very short",
+                      "hair_style": "natural and unstyled", "expression": "mischievous"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair"},
+    },
+    "Druig": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a long asymmetric robe-like tunic in solid black and deep crimson, in "
+                   "flowing fabric layers with subtle geometric ribbing",
+        "eyes": "glowing brilliant cosmic gold",
+        "signature": {"hair_color": "dark brown", "hair_length": "ear length",
+                      "hair_style": "tousled bedhead"},
+        "physique": {"body_type": "slender", "height": "average height", "skin_tone": "pale"},
+    },
+    "Ajak": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a majestic royal blue and teal robe-tunic with thick gold trim along the "
+                   "collar and torso, and a tall structural semicircular blue-and-gold headpiece "
+                   "framing the back of the head like a crown",
+        "signature": {"hair_color": "dark brown", "hair_length": "long", "hair_texture": "wavy"},
+        "physique": {"body_type": "average", "height": "average height", "skin_tone": "olive"},
+    },
+    "Gilgamesh (Marvel)": {
+        # The Eternal; bare "Gilgamesh" is Fate's King of Heroes.
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "heavy dark forest-green and bronze-gold plate armor, thicker and more "
+                   "rugged than a sleek suit, with glowing translucent golden energy gauntlets "
+                   "of cosmic light over the hands and forearms",
+        "signature": {"hair_color": "near black", "hair_length": "very short"},
+        "physique": {"body_type": "stocky", "height": "tall", "skin_tone": "light medium"},
+    },
+    "Zuras": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # The dome helmet encloses the scalp; the beard is in the prose because covers_hair
+        # drops the whole Hair group (the Papa Smurf rule).
+        "covers_hair": True,
+        "costume": "a dark red, purple and gold tunic under bulky tech-like cosmic armor "
+                   "plating with heavy shoulder pads, a high-tech dome helmet enclosing the "
+                   "head, and a long flowing white beard",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Starfox": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "costume": "a clean glossy white and deep red armored suit with a golden emblem and "
+                   "gold trim on the chestplate and high-collared pauldrons, with short "
+                   "reddish-brown hair swept up into points at the temples above a pronounced "
+                   "widow's peak",
+        "signature": {"hair_color": "auburn", "hair_length": "very short"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Kro": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # 1.5.1: Kirby's Warlord Kro (maintainer-supplied), a humanoid Deviant; the film's
+        # tendril monster was not the look. Pink skin leads the costume (non-human skin
+        # must be the subject); "bald" clears the scalp and keeps the goatee lock.
+        "anatomy_note": "prominent pointed elf-like ears",
+        "costume": "smooth, flawless pale salmon-pink skin on a bald head and a tall, muscular "
+                   "body, in a skin-tight short-sleeved burgundy military jumpsuit with a high "
+                   "collar, an intricate metallic gold harness of thick straps crossing the "
+                   "chest with a matching gold utility belt, heavy gold gauntlets, and "
+                   "thigh-high combat boots",
+        "eyes": "cruel, glowing red",
+        "signature": {"facial_hair": "goatee"},
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
+    "Arishem": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a massive faceless armored head with six deeply recessed glowing white "
+                "circular eyes set in two vertical rows of three",
+        "costume": "a gargantuan monolithic body of dark matte-red armor plating",
+        "size_scale": "giant",
+        "scale_prose": "colossal and thousands of feet tall",
+        "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Namora": {
         "franchise": "Marvel",

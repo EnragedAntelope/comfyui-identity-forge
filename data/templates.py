@@ -34,7 +34,7 @@ COSTUME_SLOTS: dict[str, list[str]] = {
     "fur": ["wolf fur", "bear pelt", "fox fur", "shaggy hide", "white fox fur"],
     "flower": ["rose", "lily", "orchid", "peony", "daisy", "wildflower", "lotus"],
     "accent": ["gold thread", "silver filigree", "intricate embroidery",
-               "glinting studs", "delicate beading", "runic etching"],
+               "pearl trim", "delicate beading", "lace applique"],
     # Constrained pools that keep a signature look intact while still varying by seed:
     # 80s neon activewear, sports-team colourways, denim washes, and everyday
     # menswear shades (flannel, argyle, dress shirts — no jewel/metallic outliers).
@@ -119,9 +119,9 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "skin_tone": "porcelain",
         "complexion": "clear",
         "outfit_style": "bohemian",
-        "accessories": "woven hat",
+        "accessories": "no accessories",
         "expression": "serene",
-        "location": "sunlit sunroom",
+        "location": "forest trail",
         "lighting": "dappled sunlight through forest canopy",
         "shot_type": "medium shot from waist up",
         "mood": "dreamy",
@@ -134,13 +134,13 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "fitness_level": "very fit",
         "facial_hair": "full beard",
         "hair_color": ["copper", "auburn", "bright red"],
-        "hair_length": "ear length",
+        "hair_length": "shoulder length",
         "hair_texture": "thick and voluminous",
         "hair_style": "messy bun",
         "skin_tone": "fair",
         "complexion": "ruddy",
         "outfit_style": "edgy alternative",
-        "accessories": "western belt",
+        "accessories": "no accessories",
         "expression": "confident",
         "location": "factory floor",
         "lighting": "warm incandescent lamp glow",
@@ -148,24 +148,27 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "self-assured",
     },
     "Human Knight": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "English",
         "body_type": "athletic",
         "height": "tall",
         "fitness_level": "very fit",
         "hair_color": ["dark blonde", "dirty blonde", "golden blonde"],
-        "hair_length": "shoulder length",
-        "hair_texture": "wavy",
-        "hair_style": "worn down",
-        "facial_hair": "stubble",
-        "skin_tone": "light",
+                "hair_texture": "wavy",
+                        "skin_tone": "light",
         "outfit_style": "business formal",
         "accessories": "no accessories",
         "expression": "serious",
         "location": "grand cathedral interior",
-        "lighting": "harsh overhead midday sun",
+        "lighting": "light through stained glass casting colors",
         "shot_type": "full body shot",
         "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "stubble", "hair_style": "worn down", "hair_length": "shoulder length"},
+            "Female": {"hair_length": "long", "hair_style": "French braid"},
+        },
     },
     "Dark Sorceress": {
         "gender": "Female",
@@ -186,8 +189,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "evening formal",
         "accessories": "no accessories",
         "expression": "intense gaze",
-        "location": "grand cathedral interior",
-        "lighting": "low key moody single light source",
+        "location": "crumbling stone ruin",
+        "lighting": "moonlight with cool blue tones",
         "shot_type": "close-up portrait",
         "mood": "mysterious",
     },
@@ -198,7 +201,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "eye_color": ["hazel", "warm hazel", "dark hazel"],
         "eye_shape": "round",
         "hair_color": ["auburn", "copper", "deep red"],
-        "hair_length": "chin length bob",
+        "hair_length": "shoulder length",
         "hair_texture": "loosely wavy",
         "hair_style": "messy bun",
         "skin_tone": "light medium",
@@ -206,8 +209,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "casual",
         "accessories": "no accessories",
         "expression": "playful",
-        "location": "dusty second-hand thrift store",
-        "lighting": "soft window light from the side",
+        "location": "cobblestone old-town street",
+        "lighting": "late afternoon warm sunlight",
         "shot_type": "three-quarter angle facing left",
         "mood": "carefree",
     },
@@ -230,7 +233,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "evening formal",
         "hair_accessory": "silk headband",
         "expression": "warm smile",
-        "location": "sunlit sunroom",
+        "location": "flower field in bloom",
         "lighting": "soft morning light",
         "shot_type": "medium close-up from chest up",
         "mood": "dreamy",
@@ -258,28 +261,32 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "mysterious",
     },
     "Werewolf Hunter": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Polish",
         "body_type": "athletic",
         "height": "slightly above average height",
         "fitness_level": "very fit",
-        "facial_hair": "short beard",
-        "hair_color": ["dark brown", "medium brown", "near black"],
-        "hair_length": "ear length",
-        "hair_texture": "slightly wavy",
-        "hair_style": "worn down",
-        "skin_tone": "light",
+                "hair_color": ["dark brown", "medium brown", "near black"],
+                "hair_texture": "slightly wavy",
+                "skin_tone": "light",
         "complexion": "ruddy",
         "outfit_style": "edgy alternative",
         "accessories": "no accessories",
         "expression": "serious",
-        "location": "parking garage",
+        "location": "misty moor",
         "lighting": "moonlight with cool blue tones",
         "shot_type": "medium shot from waist up",
         "mood": "tense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "short beard", "hair_style": "worn down", "hair_length": "ear length"},
+            "Female": {"hair_length": "long", "hair_style": "braided ponytail"},
+        },
     },
     "Celestial Cleric": {
-        "gender": "Female",
+        # 1.5.1: the robes (_COSTUMES) are unisex; the makeup, pearls and updo are hers.
+        "gender": "Any",
         "ethnicity": "Greek",
         "body_type": "average",
         "height": "average height",
@@ -288,11 +295,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": ["silver", "platinum white", "white"],
         "hair_length": "long",
         "hair_texture": "softly curled",
-        "hair_style": "updo",
         "skin_tone": "light",
-        "skin_finish": "dewy skin",
-        "makeup_style": "soft glam",
-        "necklace": "pearl necklace",
         "outfit_style": "evening formal",
         "accessories": "no accessories",
         "expression": "serene",
@@ -300,29 +303,37 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "light through stained glass casting colors",
         "shot_type": "medium shot from waist up",
         "mood": "tranquil",
+        "variants": {
+            "Female": {"hair_style": "updo", "skin_finish": "dewy skin", "makeup_style": "soft glam",
+                       "necklace": "pearl necklace"},
+            "Male": {"hair_style": "worn down", "makeup_style": "no makeup", "necklace": "no necklace"},
+        },
     },
     # Modern / jobs
     "Corporate Executive": {
-        "gender": "Female",
+        # 1.5.1: a Male lock drew a sleek bun, makeup, a top-handle bag and a gold chain.
+        "gender": "Any",
         "ethnicity": "English",
         "body_type": "average",
         "height": "average height",
         "hair_color": ["dark brown", "medium brown", "near black"],
-        "hair_length": "shoulder length",
         "hair_texture": "sleek straight",
-        "hair_style": "sleek bun",
         "eye_color": ["dark brown", "nearly black", "medium brown"],
         "skin_tone": "light medium",
-        "makeup_style": "soft everyday glam",
         "outfit_style": "business formal",
-        "bag": "structured top handle bag in black",
-        "necklace": "delicate gold chain",
         "accessories": "no accessories",
         "expression": "confident",
         "location": "corner executive office",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
         "mood": "self-assured",
+        "variants": {
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun",
+                       "makeup_style": "soft everyday glam",
+                       "bag": "structured top handle bag in black", "necklace": "delicate gold chain"},
+            "Male": {"hair_length": "very short", "hair_style": "slicked back", "makeup_style": "no makeup",
+                     "bag": "leather briefcase in black", "necklace": "no necklace"},
+        },
     },
     "Graduate": {
         "age": "22",
@@ -353,53 +364,58 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "cheerful",
     },
     "Doctor": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Indian",
         "body_type": "average",
         "height": "average height",
         "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short",
-        "hair_texture": "sleek straight",
-        "hair_style": "worn down",
-        "skin_tone": "medium",
+                "hair_texture": "sleek straight",
+                "skin_tone": "medium",
         "outfit_style": "business casual",
         "accessories": "no accessories",
-        "expression": "serious",
+        "expression": "calm and composed",
         "location": "doctor's examination room",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
         "mood": "tranquil",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Firefighter": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Italian",
         "body_type": "athletic",
         "height": "tall",
         "fitness_level": "very fit",
         "hair_color": ["warm brown", "chestnut", "medium brown"],
-        "hair_length": "very short",
-        "hair_texture": "thick and voluminous",
-        "hair_style": "natural and unstyled",
-        "skin_tone": "tan",
+                "hair_texture": "thick and voluminous",
+                "skin_tone": "tan",
         "complexion": "ruddy",
         "outfit_style": "athletic",
         "accessories": "no accessories",
         "expression": "confident",
         "location": "warehouse interior",
-        "lighting": "harsh overhead midday sun",
+        "lighting": "low key moody single light source",
         "shot_type": "full body shot",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Teacher": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "English",
-        "body_type": "softly curved",
-        "height": "average height",
+                "height": "average height",
         "hair_color": ["auburn", "copper", "deep red"],
-        "hair_length": "shoulder length",
-        "hair_texture": "wavy",
-        "hair_style": "low ponytail",
-        "skin_tone": "fair",
+                "hair_texture": "wavy",
+                "skin_tone": "fair",
         "outfit_style": "smart casual",
         "accessories": "reading glasses pushed up on head",
         "expression": "warm smile",
@@ -407,18 +423,22 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up",
         "mood": "cheerful",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "low ponytail", "hair_length": "shoulder length", "body_type": "softly curved"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled", "body_type": "average"},
+        },
     },
     "Police Officer": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Nigerian",
         "body_type": "athletic",
         "height": "slightly above average height",
         "fitness_level": "very fit",
         "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short",
-        "hair_texture": "tightly curled",
-        "hair_style": "natural and unstyled",
-        "skin_tone": "dark brown",
+                "hair_texture": "tightly curled",
+                "skin_tone": "dark brown",
         "outfit_style": "business casual",
         "accessories": "no accessories",
         "expression": "serious",
@@ -426,18 +446,21 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
         "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun"},
+        },
     },
     "Chef": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "French",
         "body_type": "stocky",
         "height": "average height",
-        "facial_hair": "short beard",
-        "hair_color": ["warm brown", "chestnut", "medium brown"],
-        "hair_length": "very short",
-        "hair_texture": "slightly wavy",
-        "hair_style": "worn down",
-        "skin_tone": "light medium",
+                "hair_color": ["warm brown", "chestnut", "medium brown"],
+                "hair_texture": "slightly wavy",
+                "skin_tone": "light medium",
         "complexion": "ruddy",
         "outfit_style": "casual",
         "accessories": "no accessories",
@@ -446,43 +469,57 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "warm incandescent lamp glow",
         "shot_type": "medium shot from waist up",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "short beard", "hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun"},
+        },
     },
     "Librarian": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "English",
         "body_type": "slender",
         "height": "average height",
         "hair_color": ["salt and pepper", "gray-streaked dark hair", "silver"],
-        "hair_length": "chin length bob",
-        "hair_texture": "slightly wavy",
-        "hair_style": "low ponytail",
-        "skin_tone": "fair",
+                "hair_texture": "slightly wavy",
+                "skin_tone": "fair",
         "outfit_style": "smart casual",
-        "accessories": "reading glasses pushed up on head",
+        "accessories": "no accessories",
         "expression": "pensive and thoughtful",
         "location": "public library with tall bookshelves",
         "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up",
         "mood": "tranquil",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "low ponytail", "hair_length": "shoulder length"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Athlete": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Kenyan",
         "body_type": "athletic",
         "height": "tall",
         "fitness_level": "very fit",
         "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short",
-        "hair_texture": "coily",
-        "hair_style": "high ponytail",
-        "skin_tone": "dark brown",
+                "hair_texture": "coily",
+                "skin_tone": "dark brown",
         "outfit_style": "athletic",
         "accessories": "no accessories",
         "expression": "confident",
         "location": "local gym weight room",
-        "lighting": "harsh overhead midday sun",
+        "lighting": "cool LED overhead lighting",
         "shot_type": "full body shot",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "high ponytail", "hair_length": "shoulder length"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Musician": {
         "ethnicity": "Korean",
@@ -520,73 +557,81 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "dreamy",
     },
     "Pilot": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "German",
         "body_type": "fit",
         "height": "tall",
         "hair_color": ["dark blonde", "dirty blonde", "golden blonde"],
-        "hair_length": "very short",
-        "hair_texture": "sleek straight",
-        "hair_style": "worn down",
-        "skin_tone": "light",
+                "hair_texture": "sleek straight",
+                "skin_tone": "light",
         "outfit_style": "business formal",
-        "accessories": "aviator sunglasses",
+        "accessories": "no accessories",
         "expression": "confident",
         "location": "airport departure gate",
-        "lighting": "soft morning light",
+        "lighting": "warm sunlight streaming through a window",
         "shot_type": "medium shot from waist up",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun"},
+        },
     },
     "Scientist": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Chinese",
         "body_type": "slender",
         "height": "average height",
         "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "shoulder length",
-        "hair_texture": "sleek straight",
-        "hair_style": "low ponytail",
-        "skin_tone": "light medium",
+                "hair_texture": "sleek straight",
+                "skin_tone": "light medium",
         "outfit_style": "business casual",
-        "accessories": "reading glasses pushed up on head",
+        "accessories": "no accessories",
         "expression": "pensive and thoughtful",
         "location": "university lecture hall",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up",
         "mood": "tranquil",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "low ponytail", "hair_length": "shoulder length"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Farmer": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "English",
         "body_type": "stocky",
         "height": "average height",
-        "facial_hair": "stubble",
-        "hair_color": ["light chestnut", "chestnut", "warm brown"],
-        "hair_length": "very short",
-        "hair_texture": "slightly wavy",
-        "hair_style": "worn down",
-        "skin_tone": "tan",
+                "hair_color": ["light chestnut", "chestnut", "warm brown"],
+                "hair_texture": "slightly wavy",
+                "skin_tone": "tan",
         "complexion": "ruddy",
         "outfit_style": "casual",
-        "accessories": "baseball cap",
+        "accessories": "no accessories",
         "expression": "warm smile",
-        "location": "farmers market indoor stall",
+        "location": "rolling wheat field",
         "lighting": "golden hour sunlight",
         "shot_type": "medium shot from waist up",
         "mood": "cheerful",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "stubble", "hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "loose braids"},
+        },
     },
     "Mechanic": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Mexican",
         "body_type": "athletic",
         "height": "average height",
         "fitness_level": "very fit",
-        "facial_hair": "five o'clock shadow",
-        "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short",
-        "hair_texture": "thick and voluminous",
-        "hair_style": "natural and unstyled",
-        "skin_tone": "medium olive",
+                "hair_color": ["jet black", "raven black", "near black"],
+                "hair_texture": "thick and voluminous",
+                "skin_tone": "medium olive",
         "complexion": "ruddy",
         "outfit_style": "edgy alternative",
         "accessories": "no accessories",
@@ -595,20 +640,32 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "harsh fluorescent lighting",
         "shot_type": "medium shot from waist up",
         "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "five o'clock shadow", "hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
 
     # --- Tabletop / fantasy classes (costume via outfit_description) -------
     "Holy Paladin": {
-        "gender": "Male", "ethnicity": "German", "body_type": "athletic", "height": "tall",
+        "gender": "Any", "ethnicity": "German", "body_type": "athletic", "height": "tall",
         "fitness_level": "very fit",
-        "hair_color": ["golden blonde", "strawberry blonde", "dark blonde"], "hair_length": "short pixie", "hair_texture": "wavy",
-        "hair_style": "slicked back", "facial_hair": "short beard", "skin_tone": "light",
+        "hair_color": ["golden blonde", "strawberry blonde", "dark blonde"], "hair_texture": "wavy",
+        "skin_tone": "light",
         "outfit_style": "business formal",
         "outfit_description": "polished silver plate armor over a white tabard with a heavy hanging cloak",
         "bag": "no bag", "accessories": "no accessories",
         "expression": "determined", "location": "grand cathedral interior",
         "lighting": "light through stained glass casting colors",
         "shot_type": "full body shot", "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "short beard", "hair_style": "slicked back", "hair_length": "very short"},
+            "Female": {"hair_length": "long", "hair_style": "crown braid"},
+        },
     },
     "Forest Druid": {
         "ethnicity": "Irish", "body_type": "lean", "height": "average height",
@@ -617,33 +674,48 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "bohemian",
         "outfit_description": "layered leaf-green and bark-brown robes with a fur mantle and a carved wooden staff",
         "bag": "no bag", "accessories": "woven hat",
-        "expression": "serene", "location": "sunlit sunroom",
+        "expression": "serene", "location": "moss-draped rainforest trail",
         "lighting": "dappled sunlight through forest canopy",
         "shot_type": "medium shot from waist up", "mood": "dreamy",
     },
     "Shadow Monk": {
-        "gender": "Male", "ethnicity": "Tibetan", "body_type": "lean", "height": "average height",
+        "gender": "Any", "ethnicity": "Tibetan", "body_type": "lean", "height": "average height",
         "fitness_level": "athletic",
-        "hair_color": ["jet black", "raven black", "near black"], "hair_length": "buzzed very short", "hair_texture": "sleek straight",
-        "hair_style": "natural and unstyled", "skin_tone": "light medium",
+        "hair_color": ["jet black", "raven black", "near black"], "hair_texture": "sleek straight",
+        "skin_tone": "light medium",
         "outfit_style": "loungewear",
         "outfit_description": "simple wrapped grey linen robes tied with a wide cloth belt and cloth hand wraps",
         "bag": "no bag", "accessories": "no accessories",
-        "expression": "serene", "location": "small chapel interior",
+        "expression": "serene", "location": "martial arts dojo",
         "lighting": "soft window light from the side",
         "shot_type": "full body shot", "mood": "tranquil",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "buzzed very short"},
+            "Female": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Berserker Barbarian": {
-        "gender": "Male", "ethnicity": "Norwegian", "body_type": "athletic", "height": "very tall",
+        # 1.5.1: the bare-chested harness rendered a topless woman under a Female lock.
+        "gender": "Any", "ethnicity": "Norwegian", "body_type": "athletic", "height": "very tall",
         "fitness_level": "muscular",
-        "facial_hair": "full beard", "hair_color": ["auburn", "copper", "deep red"], "hair_length": "shoulder length",
+        "hair_color": ["auburn", "copper", "deep red"], "hair_length": "shoulder length",
         "hair_texture": "thick and voluminous", "hair_style": "loose braids", "skin_tone": "fair",
         "complexion": "ruddy", "outfit_style": "edgy alternative",
-        "outfit_description": "fur-trimmed leather harness over a bare muscular chest with iron bracers and a wide belt",
         "bag": "no bag", "accessories": "no accessories",
         "expression": "stern", "location": "rustic log cabin interior",
         "lighting": "fire and flame warm flicker",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
+        "variants": {
+            "Male": {
+                "facial_hair": "full beard",
+                "outfit_description": "{fur} hides and a leather harness with {metal} bracers over a bare muscular chest",
+            },
+            "Female": {
+                "outfit_description": "a {fur} mantle over a laced leather jerkin, a leather harness with {metal} bracers, and a wide belt",
+            },
+        },
     },
     "Necromancer": {
         "ethnicity": "Russian", "body_type": "slender", "height": "tall",
@@ -658,19 +730,24 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "close-up portrait", "mood": "mysterious",
     },
     "Arcane Wizard": {
-        "gender": "Male", "ethnicity": "English", "body_type": "slim", "height": "tall",
-        "facial_hair": "full beard", "hair_color": ["white", "silver", "salt and pepper"], "hair_length": "long",
-        "hair_texture": "fine and wispy", "hair_style": "worn down", "skin_tone": "fair",
+        "gender": "Any", "ethnicity": "English", "body_type": "slim", "height": "tall",
+        "hair_color": ["white", "silver", "salt and pepper"],         "hair_texture": "fine and wispy", "skin_tone": "fair",
         "outfit_style": "bohemian",
         "outfit_description": "star-embroidered deep blue robes with wide sleeves and a tall wide-brimmed pointed hat",
         "bag": "no bag", "accessories": "no accessories",
         "expression": "contemplative", "location": "cozy home library",
         "lighting": "warm candlelight",
         "shot_type": "medium shot from waist up", "mood": "mysterious",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "full beard", "hair_style": "worn down", "hair_length": "long"},
+            "Female": {"hair_length": "long", "hair_style": "worn down"},
+        },
     },
     "Battle Bard": {
         # Soft Female preference; costume lives in the variants (not _COSTUMES).
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "Welsh", "body_type": "curvy", "height": "average height",
@@ -707,15 +784,20 @@ ARCHETYPES: dict[str, dict[str, str]] = {
 
     # --- Costume / themed -------------------------------------------------
     "Swashbuckling Pirate": {
-        "gender": "Male", "ethnicity": "Spanish", "body_type": "athletic", "height": "tall",
-        "facial_hair": "short beard", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "shoulder length",
-        "hair_texture": "wavy", "hair_style": "worn down", "skin_tone": "warm tan",
+        "gender": "Any", "ethnicity": "Spanish", "body_type": "athletic", "height": "tall",
+        "hair_color": ["dark brown", "medium brown", "near black"],         "hair_texture": "wavy", "skin_tone": "warm tan",
         "complexion": "ruddy", "outfit_style": "edgy alternative",
         "outfit_description": "weathered brown leather coat over a loose linen shirt, a wide red sash, and a tricorn hat",
         "bag": "no bag", "accessories": "no accessories",
         "expression": "smirking", "location": "dimly lit cocktail lounge",
         "lighting": "warm candlelight",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "carefree",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "short beard", "hair_style": "worn down", "hair_length": "shoulder length"},
+            "Female": {"hair_length": "long", "hair_style": "worn down"},
+        },
     },
     "Stealth Ninja": {
         "ethnicity": "Japanese", "body_type": "lean", "height": "average height",
@@ -725,7 +807,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "edgy alternative",
         "outfit_description": "matte black shinobi garb with a face wrap, hood, and split-toe tabi boots",
         "bag": "no bag", "accessories": "no accessories",
-        "expression": "intense gaze", "location": "dark moody Victorian parlor",
+        "expression": "intense gaze", "location": "bamboo forest path",
         "lighting": "moonlight with cool blue tones",
         "shot_type": "full body shot", "mood": "tense",
     },
@@ -741,16 +823,27 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "full body shot", "mood": "carefree",
     },
     "Cheerleader": {
-        "gender": "Female", "ethnicity": "English", "body_type": "athletic", "height": "average height",
-        "fitness_level": "very fit", "hair_color": ["golden blonde", "strawberry blonde", "dark blonde"], "hair_length": "mid back",
-        "hair_texture": "loosely curled", "hair_style": "high ponytail",
-        "skin_tone": "light", "makeup_style": "soft everyday glam",
-        "outfit_style": "athletic",
-        "outfit_description": "pleated cheer uniform in red and white with a fitted shell top and pom-poms",
+        # 1.5.1: a young look -- the age lock keeps it young in Essentials too.
+        "age": ["18", "20", "22", "25"],
+        # 1.5.1: a Male lock drew the pleated skirt and makeup -- per-gender squad uniforms.
+        "gender": "Any", "ethnicity": "English", "body_type": "athletic", "height": "average height",
+        "fitness_level": "very fit", "hair_color": ["golden blonde", "strawberry blonde", "dark blonde"],
+        "skin_tone": "light", "outfit_style": "athletic",
         "bag": "no bag", "accessories": "no accessories",
         "expression": "bright smile", "location": "high school gymnasium",
         "lighting": "high key bright even lighting",
         "shot_type": "full body shot", "mood": "cheerful",
+        "variants": {
+            "Female": {
+                "hair_length": "mid back", "hair_texture": "loosely curled", "hair_style": "high ponytail",
+                "makeup_style": "soft everyday glam",
+                "outfit_description": "a sleeveless {team_color} cheer shell top with a bold white chevron stripe and a white varsity letter on the chest, a matching pleated {team_color} skirt with white kick pleats, white cheer sneakers, and a pair of fluffy {team_color}-and-white pom-poms held in both hands",
+            },
+            "Male": {
+                "hair_length": "very short", "makeup_style": "no makeup",
+                "outfit_description": "a fitted {team_color}-and-white cheer uniform top lettered across the chest, white athletic trousers, and white sneakers",
+            },
+        },
     },
     "Roaring Flapper": {
         "gender": "Female", "ethnicity": "Italian", "body_type": "slim", "height": "average height",
@@ -765,20 +858,25 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "carefree",
     },
     "Wild West Gunslinger": {
-        "gender": "Male", "ethnicity": "Mexican", "body_type": "lean", "height": "tall",
-        "facial_hair": "stubble", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "ear length",
-        "hair_texture": "wavy", "hair_style": "worn down", "skin_tone": "tan",
+        "gender": "Any", "ethnicity": "Mexican", "body_type": "lean", "height": "tall",
+        "hair_color": ["dark brown", "medium brown", "near black"],         "hair_texture": "wavy", "skin_tone": "tan",
         "complexion": "ruddy", "outfit_style": "vintage retro",
         "outfit_description": "fringed western shirt with a leather duster, denim, chaps, and a worn cowboy hat",
         "bag": "no bag", "accessories": "western belt",
-        "expression": "stern", "location": "wood-paneled pub",
+        "expression": "stern", "location": "country dirt road",
         "lighting": "harsh overhead midday sun",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "tense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "stubble", "hair_style": "worn down", "hair_length": "ear length"},
+            "Female": {"hair_length": "long", "hair_style": "low ponytail"},
+        },
     },
     "Noir Detective": {
         # Soft Male preference; costume lives in the variants (not _COSTUMES) so
         # the Female pick gets a period skirt suit instead of the loosened tie.
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "ethnicity": "Irish", "body_type": "average", "height": "tall",
@@ -828,15 +926,26 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         },
     },
     "Flight Attendant": {
-        "gender": "Female", "ethnicity": "Korean", "body_type": "slim", "height": "tall",
-        "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "shoulder length", "hair_texture": "sleek straight",
-        "hair_style": "sleek bun", "skin_tone": "light medium", "makeup_style": "soft everyday glam",
-        "lips_makeup": "classic red", "outfit_style": "business casual",
-        "outfit_description": "a tailored {dark_color} airline uniform with a silk neck scarf and a pillbox cap",
-        "bag": "no bag", "accessories": "silk neck scarf",
+        # 1.5.1: per-gender cabin crew; the silk scarf was both costume prose and an
+        # accessories lock (a lock beats the worn-item guard, so it rendered twice).
+        "gender": "Any", "ethnicity": "Korean", "body_type": "slim", "height": "tall",
+        "hair_color": ["dark brown", "medium brown", "near black"], "hair_texture": "sleek straight",
+        "skin_tone": "light medium", "outfit_style": "business casual",
+        "bag": "no bag", "accessories": "no accessories",
         "expression": "warm smile", "location": "airport departure gate",
-        "lighting": "soft morning light",
+        "lighting": "warm sunlight streaming through a window",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
+        "variants": {
+            "Female": {
+                "hair_length": "shoulder length", "hair_style": "sleek bun",
+                "makeup_style": "soft everyday glam", "lips_makeup": "classic red",
+                "outfit_description": "a tailored {dark_color} airline uniform with a silk neck scarf and a pillbox cap",
+            },
+            "Male": {
+                "hair_length": "very short", "hair_style": "slicked back", "makeup_style": "no makeup",
+                "outfit_description": "a tailored {dark_color} airline uniform jacket over a white shirt with a slim tie and a wing badge",
+            },
+        },
     },
     "Tattoo Artist": {
         "ethnicity": "German", "body_type": "athletic", "height": "average height",
@@ -854,7 +963,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "accessories": "no accessories",
         # Soft Male preference; costume lives in the variants (not _COSTUMES) so
         # each gender gets its own coherent stage look.
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "facial_hair": "short beard", "hair_color": ["jet black", "raven black", "near black"],
@@ -862,7 +971,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "outfit_style": "business formal",
                 "outfit_description": "a sharp {dark_color} tailcoat with a {color} satin waistcoat, white gloves, and a top hat",
                 "expression": "smirking",
-                "location": "concert hall backstage", "lighting": "stage spotlight from above",
+                "location": "empty theater stage with the curtain up", "lighting": "stage spotlight from above",
                 "shot_type": "medium shot from waist up", "mood": "mysterious",
             },
             "Female": {
@@ -872,7 +981,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "outfit_style": "business formal",
                 "outfit_description": "a fitted {dark_color} tailcoat with a {color} satin waistcoat, white gloves, and a top hat",
                 "expression": "smirking",
-                "location": "concert hall backstage", "lighting": "stage spotlight from above",
+                "location": "empty theater stage with the curtain up", "lighting": "stage spotlight from above",
                 "shot_type": "medium shot from waist up", "mood": "mysterious",
             },
         },
@@ -880,7 +989,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Masquerade Guest": {
         "accessories": "no accessories",
         # Soft Female preference; costume lives in the variants (not _COSTUMES).
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "hair_length": ["long", "mid back"], "hair_style": "updo", "makeup_style": "bold glam",
@@ -916,17 +1025,27 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Space Knight": {
         "accessories": "no accessories",
-        "gender": "Male", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short",
-        "outfit_style": "bohemian", "expression": "serene",
+        "gender": "Any", "hair_color": ["dark brown", "medium brown", "near black"],         "outfit_style": "bohemian", "expression": "serene",
         "location": "grand cathedral interior", "lighting": "backlit silhouette against bright window",
-        "shot_type": "full body shot", "mood": "mysterious",
+        "shot_type": "full body shot", "mood": "hushed",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_length": "very short"},
+            "Female": {"hair_length": "long", "hair_style": "braided ponytail"},
+        },
     },
     "Gladiator": {
         "accessories": "no accessories",
-        "gender": "Male", "body_type": "athletic", "fitness_level": "muscular", "hair_color": ["dark brown", "medium brown", "near black"], "hair_style": "natural and unstyled",
-        "outfit_style": "athletic", "expression": "determined",
+        "gender": "Any", "body_type": "athletic", "fitness_level": "muscular", "hair_color": ["dark brown", "medium brown", "near black"],         "outfit_style": "athletic", "expression": "determined",
         "location": "museum gallery with white walls", "lighting": "dramatic chiaroscuro side lighting",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled"},
+            "Female": {"hair_length": "long", "hair_style": "braided ponytail"},
+        },
     },
     "Viking Shieldmaiden": {
         "accessories": "no accessories",
@@ -960,11 +1079,16 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Samurai": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Japanese", "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "shoulder length", "hair_style": "top knot", "facial_hair": "goatee",
+        "gender": "Any", "ethnicity": "Japanese", "hair_color": ["jet black", "raven black", "near black"],
         "outfit_style": "edgy alternative", "expression": "stern",
         "location": "photography studio with backdrop", "lighting": "soft studio three-point lighting",
         "shot_type": "full body shot", "mood": "tense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "goatee", "hair_style": "top knot", "hair_length": "shoulder length"},
+            "Female": {"hair_length": "long", "hair_style": "low ponytail"},
+        },
     },
     "Cabaret Witch": {
         "accessories": "no accessories",
@@ -977,7 +1101,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Fortune Teller": {
         "accessories": "no accessories",
         # Soft Female preference; costume lives in the variants (not _COSTUMES).
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "Romani", "hair_color": ["dark brown", "medium brown", "near black"],
@@ -1016,18 +1140,45 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Renaissance Noble": {
         "accessories": "no accessories",
-        "hair_length": ["long", "mid back"], "hair_style": "half up half down", "makeup_style": "soft glam",
+        # 1.5.1: a doublet is menswear and soft glam put makeup on men (render #00656):
+        # each gender gets its own noble dress, and only the woman's look is made up.
         "outfit_style": "evening formal", "expression": "confident",
         "location": "museum gallery with white walls", "lighting": "soft window light from the side",
-        "shot_type": "close-up portrait", "mood": "tranquil",
+        "shot_type": "close-up portrait", "mood": "self-assured",
+        "variants": {
+            "Male": {
+                "hair_length": "shoulder length", "hair_style": "worn down", "makeup_style": "no makeup",
+                "outfit_description": "a richly embroidered {jewel_tone} {fabric} doublet with slashed puffed sleeves and {accent}, a starched white lace ruff collar, a velvet half-cape over one shoulder, a heavy gold chain of office, and a feathered velvet cap",
+            },
+            "Female": {
+                "hair_length": ["long", "mid back"], "hair_style": "half up half down", "makeup_style": "soft glam",
+                "outfit_description": "a richly embroidered {jewel_tone} {fabric} gown with a square neckline, slashed puffed sleeves, and {accent}, a jeweled girdle belt at the waist, and a pearl-trimmed French hood headdress",
+            },
+        },
     },
     "Pop Star": {
-        "gender": "Female", "hair_color": ["platinum blonde", "white blonde", "light blonde"],
-        "hair_length": ["long", "very long"], "hair_style": "high ponytail",
-        "makeup_style": "full glam", "outfit_style": "cocktail semi-formal",
+        # 1.5.1: a Male lock drew a sequined mini dress and full glam -- per-gender stage looks.
+        "gender": "Any", "hair_color": ["platinum blonde", "white blonde", "light blonde"],
+        "outfit_style": "cocktail semi-formal",
         "expression": "bright smile", "location": "recording studio",
         "lighting": "warm string lights bokeh background",
         "shot_type": "medium close-up from chest up", "mood": "cheerful",
+        "variants": {
+            "Female": {
+                "hair_length": ["long", "very long"], "hair_style": "high ponytail", "makeup_style": "full glam",
+                "outfit_description": [
+                    "a glittering {color} stage outfit with {accent}, fishnet layers, and statement boots",
+                    "a glittering {color} sequined mini dress with {accent}, sheer sleeves, and knee-high statement boots",
+                ],
+            },
+            "Male": {
+                "hair_length": "very short", "hair_style": "textured crop", "makeup_style": "no makeup",
+                "outfit_description": [
+                    "a glittering {color} sequined stage jacket over a black mesh tee with slim black trousers and statement boots",
+                    "a {color} satin bomber jacket crusted with rhinestones over a white tee, slim trousers, and chunky sneakers",
+                ],
+            },
+        },
     },
     "Ballerina": {
         "accessories": "no accessories",
@@ -1055,12 +1206,16 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Angelic Being": {
         "accessories": "no accessories",
-        "gender": "Female", "hair_color": ["platinum blonde", "white blonde", "light blonde"], "hair_length": "long",
-        "hair_texture": "loosely curled", "hair_style": "half up half down",
-        "makeup_style": "soft glam", "outfit_style": "evening formal",
+        # 1.5.1: robes, wings and halo (_COSTUMES) are unisex; the makeup is hers.
+        "gender": "Any", "hair_color": ["platinum blonde", "white blonde", "light blonde"], "hair_length": "long",
+        "hair_texture": "loosely curled", "outfit_style": "evening formal",
         "expression": "serene", "location": "grand cathedral interior",
         "lighting": "light through stained glass casting colors",
         "shot_type": "medium close-up from chest up", "mood": "dreamy",
+        "variants": {
+            "Female": {"hair_style": "half up half down", "makeup_style": "soft glam"},
+            "Male": {"hair_style": "worn down", "makeup_style": "no makeup"},
+        },
     },
     "Nun": {
         "accessories": "no accessories",
@@ -1102,7 +1257,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "accessories": "no accessories",
         "hair_length": ["shoulder length", "long"], "hair_style": ["sleek bun", "low ponytail"],
         "outfit_style": "business casual",
-        "expression": ["determined", "calm and composed"], "location": ["hospital room", "emergency room"],
+        "expression": "focused", "location": ["hospital room", "emergency room"],
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium close-up from chest up", "mood": "intense",
     },
@@ -1112,7 +1267,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "business formal",
         "expression": "stern", "location": "courtroom",
         "lighting": "soft window light from the side",
-        "shot_type": "medium shot from waist up", "mood": "tranquil",
+        "shot_type": "medium shot from waist up", "mood": "commanding",
     },
     "Bartender": {
         "hair_style": "slicked back", "outfit_style": "smart casual",
@@ -1121,16 +1276,37 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "News Anchor": {
-        "hair_style": "freshly blown out", "makeup_style": "full glam",
+        # 1.5.1: full glam put lipstick and lashes on male anchors; the suit stays unisex
+        # (_COSTUMES), only the grooming splits.
         "outfit_style": "business formal", "expression": "confident",
-        "location": "photography studio with backdrop", "lighting": "soft studio three-point lighting",
+        "location": "newsroom with desks and monitors", "lighting": "soft studio three-point lighting",
         "shot_type": "medium close-up from chest up", "mood": "self-assured",
+        "variants": {
+            "Male": {"hair_style": "slicked back", "makeup_style": "no makeup"},
+            "Female": {"hair_style": "freshly blown out", "makeup_style": "full glam"},
+        },
     },
     "Orchestra Conductor": {
+        # 1.5.1: white tie and tails rendered on women; conductors who are women wear a
+        # black concert jacket instead.
         "hair_style": ["windswept", "slicked back"], "outfit_style": "evening formal",
-        "expression": ["intense gaze", "focused"], "location": "concert hall backstage",
+        "expression": ["intense gaze", "focused"], "location": "empty theater stage with the curtain up",
         "lighting": "dramatic single overhead spotlight",
         "shot_type": "medium shot from waist up", "mood": "intense",
+        "variants": {
+            "Male": {
+                "outfit_description": [
+                    "a black tailcoat and white tie, a raised baton, and an open score on the conductor's podium stand",
+                    "an ivory dinner jacket with a black bow tie, a raised baton mid-gesture, and an open score on a music stand",
+                ],
+            },
+            "Female": {
+                "outfit_description": [
+                    "a tailored black mandarin-collar concert jacket over black trousers, a raised baton, and an open score on the conductor's podium stand",
+                    "a long black silk concert tunic over wide black trousers, a raised baton mid-gesture, and an open score on a music stand",
+                ],
+            },
+        },
     },
     "Veterinarian": {
         "hair_length": ["shoulder length", "long"], "hair_style": "low ponytail",
@@ -1155,22 +1331,32 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # --- More tabletop / fantasy classes (costume via _COSTUMES) -----------
     "Warlock": {
         "accessories": "no accessories",
-        "gender": "Female", "ethnicity": "Romanian", "body_type": "slender", "height": "tall",
-        "eye_color": "violet-gray", "hair_color": ["deep purple", "purple", "raven black"], "hair_length": "very long",
-        "hair_texture": "wavy", "hair_style": "worn down", "skin_tone": "porcelain",
-        "makeup_style": "gothic dark makeup", "lips_makeup": "plum", "outfit_style": "edgy alternative",
+        "gender": "Any", "ethnicity": "Romanian", "body_type": "slender", "height": "tall",
+        "eye_color": "violet-gray", "hair_color": ["deep purple", "purple", "raven black"],         "hair_texture": "wavy", "skin_tone": "porcelain",
+        "outfit_style": "edgy alternative",
         "expression": "intense gaze", "location": "dark moody Victorian parlor",
         "lighting": "low key moody single light source", "shot_type": "close-up portrait",
         "mood": "mysterious",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"makeup_style": "gothic dark makeup", "lips_makeup": "plum", "hair_style": "worn down", "hair_length": "very long"},
+            "Male": {"hair_length": "shoulder length", "hair_style": "worn down", "makeup_style": "no makeup"},
+        },
     },
     "Artificer": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "German", "body_type": "average", "height": "average height",
-        "hair_color": ["copper", "auburn", "bright red"], "hair_length": "very short", "hair_style": "natural and unstyled",
-        "facial_hair": "short beard", "skin_tone": "fair", "outfit_style": "vintage retro",
+        "gender": "Any", "ethnicity": "German", "body_type": "average", "height": "average height",
+        "hair_color": ["copper", "auburn", "bright red"], "skin_tone": "fair", "outfit_style": "vintage retro",
         "expression": "determined", "location": "home garage workshop",
         "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "short beard", "hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Sorcerer": {
         "accessories": "no accessories",
@@ -1184,76 +1370,122 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Alchemist": {
         "accessories": "no accessories",
         "ethnicity": "Dutch", "body_type": "slim", "height": "average height",
-        "hair_color": ["ash brown", "medium brown", "dark blonde"], "hair_length": "ear length", "hair_style": "messy bun",
+        "hair_color": ["ash brown", "medium brown", "dark blonde"], "hair_length": "shoulder length", "hair_style": "messy bun",
         "skin_tone": "fair", "outfit_style": "vintage retro", "expression": "contemplative",
         "location": "cozy home library", "lighting": "warm candlelight",
         "shot_type": "medium shot from waist up", "mood": "mysterious",
     },
     "Witch Hunter": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Polish", "body_type": "athletic", "height": "tall",
-        "facial_hair": "stubble", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short",
-        "hair_style": "slicked back", "skin_tone": "light", "outfit_style": "edgy alternative",
+        "gender": "Any", "ethnicity": "Polish", "body_type": "athletic", "height": "tall",
+        "hair_color": ["dark brown", "medium brown", "near black"],         "skin_tone": "light", "outfit_style": "edgy alternative",
         "expression": "stern", "location": "misty moor", "lighting": "moonlight with cool blue tones",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "tense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "stubble", "hair_style": "slicked back", "hair_length": "very short"},
+            "Female": {"hair_length": "long", "hair_style": "low ponytail"},
+        },
     },
     "Plague Doctor": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Austrian", "body_type": "lean", "height": "tall",
-        "hair_color": ["charcoal gray", "salt and pepper", "jet black"], "hair_length": "very short", "skin_tone": "pale",
+        "gender": "Any", "ethnicity": "Austrian", "body_type": "lean", "height": "tall",
+        "hair_color": ["charcoal gray", "salt and pepper", "jet black"], "skin_tone": "pale",
         "outfit_style": "edgy alternative", "expression": "serious",
         "location": "crumbling stone ruin", "lighting": "fog-diffused streetlamp glow",
         "shot_type": "full body shot", "mood": "mysterious",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
 
     # --- More professions --------------------------------------------------
     "Soldier": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "English", "body_type": "athletic", "height": "tall",
-        "fitness_level": "very fit", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "buzzed very short",
-        "hair_style": "natural and unstyled", "skin_tone": "tan", "outfit_style": "athletic",
+        "gender": "Any", "ethnicity": "English", "body_type": "athletic", "height": "tall",
+        "fitness_level": "very fit", "hair_color": ["dark brown", "medium brown", "near black"],         "skin_tone": "tan", "outfit_style": "athletic",
         "expression": "determined", "location": "warehouse interior",
-        "lighting": "harsh overhead midday sun", "shot_type": "medium shot from waist up",
+        "lighting": "harsh fluorescent lighting", "shot_type": "medium shot from waist up",
         "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "buzzed very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun"},
+        },
     },
     "Construction Worker": {
-        "gender": "Male", "ethnicity": "Mexican", "body_type": "stocky", "height": "average height",
-        "fitness_level": "very fit", "facial_hair": "stubble", "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short", "skin_tone": "medium olive", "outfit_style": "casual",
-        "expression": "confident", "location": "factory floor",
+        "gender": "Any", "ethnicity": "Mexican", "body_type": "stocky", "height": "average height",
+        "fitness_level": "very fit", "hair_color": ["jet black", "raven black", "near black"],
+        "skin_tone": "medium olive", "outfit_style": "casual",
+        "expression": "confident", "location": "construction site with scaffolding",
         "lighting": "harsh overhead midday sun", "shot_type": "medium shot from waist up",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "stubble", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Electrician": {
-        "gender": "Male", "ethnicity": "Irish", "body_type": "average", "height": "average height",
-        "hair_color": ["warm brown", "chestnut", "medium brown"], "hair_length": "very short", "skin_tone": "fair",
-        "outfit_style": "casual", "accessories": "no accessories", "expression": "serious",
+        "gender": "Any", "ethnicity": "Irish", "body_type": "average", "height": "average height",
+        "hair_color": ["warm brown", "chestnut", "medium brown"], "skin_tone": "fair",
+        "outfit_style": "casual", "accessories": "no accessories", "expression": "calm and composed",
         "location": "home garage workshop", "lighting": "harsh fluorescent lighting",
         "shot_type": "medium shot from waist up", "mood": "tranquil",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Photographer": {
         "ethnicity": "Japanese", "body_type": "slim", "height": "average height",
-        "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "ear length", "hair_style": "messy bun",
+        "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "shoulder length", "hair_style": "messy bun",
         "skin_tone": "light medium", "outfit_style": "smart casual",
         "accessories": "no accessories", "expression": "pensive and thoughtful",
         "location": "art gallery opening night", "lighting": "soft studio three-point lighting",
         "shot_type": "medium close-up from chest up", "mood": "dreamy",
     },
     "Personal Trainer": {
-        "gender": "Female", "ethnicity": "Brazilian", "body_type": "athletic", "height": "tall",
+        "gender": "Any", "ethnicity": "Brazilian", "body_type": "athletic", "height": "tall",
         "fitness_level": "very fit", "hair_color": ["dark brown", "medium brown", "near black"],
-        "hair_length": "long", "hair_style": "high ponytail", "skin_tone": "warm tan",
+        "skin_tone": "warm tan",
         "outfit_style": "athletic", "expression": "confident", "location": "local gym weight room",
         "lighting": "high key bright even lighting", "shot_type": "full body shot",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "high ponytail", "hair_length": "long"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Lifeguard": {
-        "gender": "Male", "ethnicity": "English", "body_type": "athletic",
+        # 1.5.1: the only costume was board shorts, so a Female lock rendered a topless
+        # woman (maintainer render #00769). Each gender now has its own lifeguard look.
+        "gender": "Any", "ethnicity": "English", "body_type": "athletic",
         "height": "tall", "fitness_level": "very fit",
-        "hair_color": ["dark blonde", "dirty blonde", "golden blonde"], "hair_length": "very short", "skin_tone": "golden tan",
+        "hair_color": ["dark blonde", "dirty blonde", "golden blonde"], "skin_tone": "golden tan",
         "outfit_style": "athletic", "expression": "confident", "location": "wide sandy beach",
         "lighting": "golden hour sunlight", "shot_type": "cowboy shot from mid-thigh up",
-        "mood": "cheerful",
+        "mood": "self-assured",
+        "variants": {
+            "Male": {
+                "hair_length": "very short",
+                "outfit_description": "red lifeguard board shorts, a whistle on a cord around the neck, and a red torpedo rescue buoy slung from a strap over one shoulder",
+            },
+            "Female": {
+                "hair_length": "long", "hair_style": "high ponytail",
+                "outfit_description": "a red one-piece lifeguard swimsuit, a whistle on a cord around the neck, and a red torpedo rescue buoy slung from a strap over one shoulder",
+            },
+        },
     },
     "Park Ranger": {
         "ethnicity": "Native American", "body_type": "fit", "height": "average height",
@@ -1263,32 +1495,43 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Marine Biologist": {
-        "gender": "Female", "ethnicity": "Filipino",
+        "gender": "Any", "ethnicity": "Filipino",
         "body_type": "athletic", "height": "average height", "hair_color": ["near black", "jet black", "dark brown"],
-        "hair_length": "shoulder length", "hair_style": "low ponytail", "skin_tone": "warm tan",
-        "outfit_style": "casual", "expression": "curious", "location": "rocky coastal cliff",
+        "skin_tone": "warm tan",
+        "outfit_style": "casual", "expression": "curious", "location": "tide pools at low tide",
         "lighting": "overcast diffused daylight", "shot_type": "medium shot from waist up",
-        "mood": "tranquil",
+        "mood": "cheerful",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "low ponytail", "hair_length": "shoulder length"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Archaeologist": {
-        "gender": "Female", "ethnicity": "English", "body_type": "fit", "height": "average height",
-        "hair_color": ["warm brown", "chestnut", "medium brown"], "hair_length": "long", "hair_style": "low ponytail",
-        "skin_tone": "tan", "outfit_style": "casual", "accessories": "wide brim sun hat",
+        "gender": "Any", "ethnicity": "English", "body_type": "fit", "height": "average height",
+        "hair_color": ["warm brown", "chestnut", "medium brown"], "skin_tone": "tan", "outfit_style": "casual", "accessories": "wide brim sun hat",
         "expression": "determined", "location": "crumbling stone ruin",
         "lighting": "golden hour sunlight", "shot_type": "cowboy shot from mid-thigh up",
         "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "low ponytail", "hair_length": "long"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled"},
+        },
     },
     "Software Developer": {
         "ethnicity": "Indian", "body_type": "slim", "height": "average height",
         "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short", "skin_tone": "medium",
-        "outfit_style": "loungewear", "accessories": "no accessories",
+        "outfit_style": "casual", "accessories": "no accessories",
         "expression": "pensive and thoughtful", "location": "co-working space",
         "lighting": "cool LED overhead lighting", "shot_type": "medium shot from waist up",
         "mood": "tranquil",
     },
     "Lumberjack": {
         # Soft Male preference; costume lives in the variants (not _COSTUMES).
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "ethnicity": "Norwegian", "body_type": "stocky",
@@ -1316,12 +1559,26 @@ ARCHETYPES: dict[str, dict[str, str]] = {
 
     # --- Hobbies -----------------------------------------------------------
     "Surfer": {
-        "gender": "Male", "ethnicity": "Hawaiian", "body_type": "athletic", "height": "tall",
-        "fitness_level": "very fit", "hair_color": ["dirty blonde", "dark blonde", "light blonde"], "hair_length": "ear length",
+        # 1.5.1: a wetsuit peeled to the waist leaves a woman topless -- per-gender looks.
+        "gender": "Any", "ethnicity": "Hawaiian", "body_type": "athletic", "height": "tall",
+        "fitness_level": "very fit", "hair_color": ["dirty blonde", "dark blonde", "light blonde"],
         "hair_texture": "beachy waves", "hair_style": "windswept", "skin_tone": "golden tan",
         "outfit_style": "resort vacation", "expression": "warm smile",
         "location": "wide sandy beach", "lighting": "golden hour sunlight",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "cheerful",
+        "variants": {
+            "Male": {
+                "hair_length": "ear length",
+                "outfit_description": "a black wetsuit peeled to the waist over {team_color} board shorts",
+            },
+            "Female": {
+                "hair_length": "long",
+                "outfit_description": [
+                    "a {team_color} long-sleeve rash guard over bikini bottoms",
+                    "a black full-length wetsuit zipped up to the collarbone",
+                ],
+            },
+        },
     },
     "Skateboarder": {
         "ethnicity": "Filipino", "body_type": "lean", "height": "average height",
@@ -1331,39 +1588,66 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "full body shot", "mood": "carefree",
     },
     "Rock Climber": {
-        "gender": "Female", "ethnicity": "Korean", "body_type": "athletic", "height": "average height",
+        "gender": "Any", "ethnicity": "Korean", "body_type": "athletic", "height": "average height",
         "fitness_level": "athletic", "hair_color": ["near black", "jet black", "dark brown"],
-        "hair_length": "long", "hair_style": "French braid", "skin_tone": "light medium",
-        "outfit_style": "athletic", "expression": "determined", "location": "mountain overlook",
+        "skin_tone": "light medium",
+        "outfit_style": "athletic", "expression": "determined", "location": ["mountain overlook", "climbing gym with colorful holds"],
         "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "French braid", "hair_length": "long"},
+            "Male": {"hair_length": "ear length", "hair_style": "natural and unstyled"},
+        },
     },
     "Cyclist": {
-        "gender": "Male", "ethnicity": "Colombian", "body_type": "lean", "height": "average height",
-        "fitness_level": "very fit", "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short",
-        "skin_tone": "tan", "outfit_style": "athletic", "expression": "determined",
+        "gender": "Any", "ethnicity": "Colombian", "body_type": "lean", "height": "average height",
+        "fitness_level": "very fit", "hair_color": ["dark brown", "medium brown", "near black"],         "skin_tone": "tan", "outfit_style": "athletic", "expression": "determined",
         "location": "country dirt road", "lighting": "golden hour sunlight",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Boxer": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Cuban", "body_type": "athletic", "height": "tall",
+        # 1.5.1: trunks alone left a woman topless -- per-gender fight kit.
+        "gender": "Any", "ethnicity": "Cuban", "body_type": "athletic", "height": "tall",
         "fitness_level": "muscular", "hair_color": ["jet black", "raven black", "near black"],
-        "hair_length": "very short", "skin_tone": "warm brown", "outfit_style": "athletic",
+        "skin_tone": "warm brown", "outfit_style": "athletic",
         "expression": "intense gaze", "location": "local gym weight room",
         "lighting": "dramatic chiaroscuro side lighting", "shot_type": "cowboy shot from mid-thigh up",
         "mood": "intense",
+        "variants": {
+            "Male": {
+                "hair_length": "very short",
+                "outfit_description": "satin {color} boxing trunks with a championship belt, taped wrists, and laced boxing boots",
+            },
+            "Female": {
+                "hair_length": "long", "hair_style": "dutch braids",
+                "outfit_description": "a fitted {color} boxing tank top with matching satin boxing trunks, taped wrists, and laced boxing boots",
+            },
+        },
     },
     "Yoga Instructor": {
-        "gender": "Female", "ethnicity": "Indian", "body_type": "toned", "height": "average height",
-        "fitness_level": "athletic", "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "very long",
-        "hair_style": "messy bun", "skin_tone": "medium", "outfit_style": "athletic",
+        "gender": "Any", "ethnicity": "Indian", "body_type": "toned", "height": "average height",
+        "fitness_level": "athletic", "hair_color": ["near black", "jet black", "dark brown"],         "skin_tone": "medium", "outfit_style": "athletic",
         "expression": "serene", "location": "yoga studio with wood floors",
-        "lighting": "soft morning light", "shot_type": "full body shot", "mood": "tranquil",
+        "lighting": "warm sunlight streaming through a window", "shot_type": "full body shot", "mood": "tranquil",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "messy bun", "hair_length": "very long"},
+            "Male": {"hair_length": "shoulder length", "hair_style": "top knot"},
+        },
     },
     "DJ": {
         "ethnicity": "Nigerian", "body_type": "average", "height": "average height",
         "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short", "hair_style": "natural and unstyled",
-        "skin_tone": "dark brown", "outfit_style": "streetwear", "expression": "confident",
+        "skin_tone": "dark brown", "outfit_style": "streetwear", "expression": "beaming",
         "location": "neon-lit nightclub", "lighting": "club strobe lighting",
         "shot_type": "medium close-up from chest up", "mood": "cheerful",
     },
@@ -1388,13 +1672,13 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Mad Scientist": {
         "accessories": "no accessories",
         # Soft Male preference; costume lives in the variants (not _COSTUMES).
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "ethnicity": "German", "body_type": "slim", "height": "tall",
                 "hair_color": ["white", "silver", "salt and pepper"], "hair_length": "ear length", "hair_texture": "fine and wispy",
-                "hair_style": "windswept", "skin_tone": "pale", "outfit_style": "business casual",
-                "outfit_description": "a stained white lab coat over a waistcoat with rubber gloves and cracked goggles",
+                "hair_style": "tousled bedhead", "skin_tone": "pale", "outfit_style": "business casual",
+                "outfit_description": "a stained white lab coat over a waistcoat with rubber gloves and cracked goggles pushed up on the forehead, holding up a bubbling flask of glowing green liquid",
                 "expression": "surprised", "location": "university chemistry laboratory",
                 "lighting": "harsh fluorescent lighting", "shot_type": "medium shot from waist up",
                 "mood": "tense",
@@ -1402,8 +1686,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "Female": {
                 "ethnicity": "German", "body_type": "slim", "height": "average height",
                 "hair_color": ["white", "silver", "salt and pepper"], "hair_length": "shoulder length", "hair_texture": "fine and wispy",
-                "hair_style": "messy bun", "skin_tone": "pale", "outfit_style": "business casual",
-                "outfit_description": "a stained white lab coat over a high-collared blouse with rubber gloves and cracked goggles",
+                "hair_style": "tousled bedhead", "skin_tone": "pale", "outfit_style": "business casual",
+                "outfit_description": "a stained white lab coat over a high-collared blouse with rubber gloves and cracked goggles pushed up on the forehead, holding up a bubbling flask of glowing green liquid",
                 "expression": "surprised", "location": "university chemistry laboratory",
                 "lighting": "harsh fluorescent lighting", "shot_type": "medium shot from waist up",
                 "mood": "tense",
@@ -1412,9 +1696,14 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Court Jester": {
         "accessories": "no accessories",
-        "outfit_style": "edgy alternative", "makeup_style": "club makeup", "expression": "playful",
+        # 1.5.1: club makeup landed on male jesters; the motley stays unisex (_COSTUMES).
+        "outfit_style": "edgy alternative", "expression": "playful",
         "location": "castle courtyard", "lighting": "warm string lights bokeh background",
         "shot_type": "full body shot", "mood": "carefree",
+        "variants": {
+            "Male": {"makeup_style": "no makeup"},
+            "Female": {"makeup_style": "club makeup"},
+        },
     },
     "Egyptian Pharaoh": {
         "accessories": "no accessories",
@@ -1430,7 +1719,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": ["jet black", "raven black", "near black"], "hair_length": ["long", "very long"],
         "hair_style": "updo", "skin_tone": "porcelain",
         "lips_makeup": "classic red", "outfit_style": "evening formal", "expression": "serene",
-        "location": "cherry blossom grove", "lighting": "soft window light from the side",
+        "location": "cherry blossom grove", "lighting": "soft overcast golden light",
         "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Greek Goddess": {
@@ -1464,18 +1753,23 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "gender": "Female", "ethnicity": "Icelandic", "body_type": "slender", "height": "tall",
         "eye_color": ["ice blue", "pale blue", "bright blue"], "hair_color": ["platinum white", "white blonde", "silver"], "hair_length": "waist length",
         "hair_style": "crown braid", "skin_tone": "porcelain", "makeup_style": "soft glam",
-        "outfit_style": "evening formal", "expression": "serene", "location": "snowy pine forest",
+        "outfit_style": "evening formal", "expression": "steely", "location": "snowy pine forest",
         "lighting": "moonlight with cool blue tones", "shot_type": "full body shot",
         "mood": "mysterious",
     },
     "Sea Captain": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Scottish", "body_type": "stocky", "height": "tall",
-        "facial_hair": ["full beard", "short beard", "mutton chops"], "hair_color": ["salt and pepper", "gray-streaked dark hair", "silver"], "hair_length": "very short",
-        "skin_tone": "warm tan", "complexion": "ruddy", "outfit_style": "vintage retro",
+        "gender": "Any", "ethnicity": "Scottish", "body_type": "stocky", "height": "tall",
+        "hair_color": ["salt and pepper", "gray-streaked dark hair", "silver"],         "skin_tone": "warm tan", "complexion": "ruddy", "outfit_style": "vintage retro",
         "expression": "confident", "location": "working harbor dock",
         "lighting": "soft morning light", "shot_type": "medium shot from waist up",
-        "mood": "tranquil",
+        "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": ["full beard", "short beard", "mutton chops"], "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Wasteland Survivor": {
         "accessories": "no accessories",
@@ -1489,44 +1783,76 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # --- Sports / performers (costume via _COSTUMES) -----------------------
     "Pro Wrestler": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Samoan", "body_type": "athletic", "height": "tall",
+        # 1.5.1: trunks alone left a woman topless; the mullet is male-pool only.
+        "gender": "Any", "ethnicity": "Samoan", "body_type": "athletic", "height": "tall",
         "fitness_level": "muscular",
         "hair_color": ["jet black", "raven black", "near black"], "hair_length": "shoulder length", "hair_texture": "wavy",
-        "hair_style": ["worn down", "mullet", "slicked back"], "skin_tone": "warm tan", "outfit_style": "athletic",
+        "skin_tone": "warm tan", "outfit_style": "athletic",
         "expression": "intense gaze", "location": "high school gymnasium",
         "lighting": "dramatic single overhead spotlight", "shot_type": "cowboy shot from mid-thigh up",
         "mood": "intense",
+        "variants": {
+            "Male": {
+                "hair_style": ["worn down", "mullet", "slicked back"],
+                "outfit_description": [
+                    "{color} wrestling trunks with lace-up boots, kneepads, taped wrists, and a championship belt",
+                    "a {color} wrestling singlet with a spray-stenciled logo, knee-high lace-up boots, elbow pads, and taped wrists",
+                ],
+            },
+            "Female": {
+                "hair_style": ["worn down", "high ponytail", "slicked back"],
+                "outfit_description": [
+                    "a {color} ring-gear crop top with matching wrestling trunks, knee-high lace-up boots, kneepads, and taped wrists",
+                    "a {color} wrestling singlet with a spray-stenciled logo, knee-high lace-up boots, elbow pads, and taped wrists",
+                ],
+            },
+        },
     },
     "Luchador": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Mexican", "body_type": "athletic", "height": "average height",
+        "gender": "Any", "ethnicity": "Mexican", "body_type": "athletic", "height": "average height",
         "fitness_level": "very fit",
-        "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short", "hair_style": "natural and unstyled",
-        "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
+        "hair_color": ["jet black", "raven black", "near black"], "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
         "location": "high school gymnasium", "lighting": "dramatic single overhead spotlight",
         "shot_type": "full body shot", "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "long", "hair_style": "high ponytail"},
+        },
     },
     "Swim Instructor": {
-        "gender": "Female", "ethnicity": "Hawaiian", "body_type": "athletic", "height": "average height",
+        "gender": "Any", "ethnicity": "Hawaiian", "body_type": "athletic", "height": "average height",
         "fitness_level": "very fit",
-        "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "long", "hair_style": "high ponytail",
-        "skin_tone": "golden tan", "outfit_style": "athletic", "expression": "warm smile",
+        "hair_color": ["dark brown", "medium brown", "near black"], "skin_tone": "golden tan", "outfit_style": "athletic", "expression": "warm smile",
         "location": "indoor swimming pool", "lighting": "high key bright even lighting",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Female look
+        # is the old lean, unchanged.
+        "variants": {
+            "Female": {"hair_style": "high ponytail", "hair_length": "long", "outfit_description": "a {color} one-piece training swimsuit with a whistle on a cord around the neck and a poolside towel over one shoulder"},
+            "Male": {"hair_length": "very short", "hair_style": "natural and unstyled", "outfit_description": "{color} swim jammers with a whistle on a cord around the neck and a poolside towel over one shoulder"},
+        },
     },
     "Race Car Driver": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Brazilian", "body_type": "fit", "height": "average height",
-        "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short", "hair_style": "natural and unstyled",
-        "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
+        "gender": "Any", "ethnicity": "Brazilian", "body_type": "fit", "height": "average height",
+        "hair_color": ["dark brown", "medium brown", "near black"], "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
         "location": "parking garage", "lighting": "harsh fluorescent lighting",
         "shot_type": "medium shot from waist up", "mood": "self-assured",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "natural and unstyled", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "low ponytail"},
+        },
     },
     "Flamenco Dancer": {
         "accessories": "no accessories",
         # Soft Female preference; costume lives in the variants (not _COSTUMES)
         # so the Male pick gets an authentic bailaor look, not the dress.
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "Spanish", "body_type": "curvy", "height": "average height",
@@ -1535,7 +1861,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "lips_makeup": "classic red", "outfit_style": "evening formal",
                 "outfit_description": "a ruffled {jewel_tone} flamenco dress with a fringed shawl and a flower tucked in the hair",
                 "expression": "intense gaze",
-                "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
+                "location": "empty theater stage with the curtain up", "lighting": "dramatic single overhead spotlight",
                 "shot_type": "full body shot", "mood": "intense",
             },
             "Male": {
@@ -1545,29 +1871,44 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "hair_style": "slicked back", "skin_tone": "olive", "outfit_style": "evening formal",
                 "outfit_description": "high-waisted black flamenco trousers with a short fitted {dark_color} bolero jacket over a white ruffled shirt, a wide {jewel_tone} waist sash, and heeled flamenco boots",
                 "expression": "intense gaze",
-                "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
+                "location": "empty theater stage with the curtain up", "lighting": "dramatic single overhead spotlight",
                 "shot_type": "full body shot", "mood": "intense",
             },
         },
     },
     "Drag Performer": {
         "accessories": "no accessories",
-        "gender": "Female", "body_type": "curvy", "height": "tall",
-        "hair_color": ["platinum blonde", "white blonde", "light blonde"], "hair_length": "very long", "hair_texture": "loosely curled",
-        "hair_style": "freshly blown out", "makeup_style": "bold glam",
-        "eye_makeup": "colorful bold eyeshadow", "eyeliner": "dramatic winged",
-        "lashes": "dramatic falsies", "lips_makeup": "classic red",
-        "outfit_style": "evening formal", "expression": "confident",
+        # 1.5.1 (maintainer): drag is the point -- a drag queen (a man in drag) or a drag
+        # king (a woman in drag). The woman-in-a-gown sample read as no drag at all.
+        "gender": "Any", "height": "tall",
+        "outfit_style": "evening formal", "expression": "playful",
         "location": "neon-lit nightclub", "lighting": "club strobe lighting",
         "shot_type": "full body shot", "mood": "cheerful",
+        "variants": {
+            "Male": {
+                "body_type": "slim",
+                "hair_color": ["platinum blonde", "white blonde", "light blonde"],
+                "hair_length": "very long", "hair_texture": "loosely curled",
+                "hair_style": "freshly blown out", "facial_hair": "clean shaven",
+                "makeup_style": "bold glam", "eye_makeup": "colorful bold eyeshadow",
+                "eyeliner": "dramatic winged", "lashes": "dramatic falsies",
+                "lips_makeup": "classic red",
+                "outfit_description": "a drag queen's dazzling {jewel_tone} sequined gown with dramatic feathers, a towering voluminous wig, exaggerated sharply contoured stage makeup, statement jewelry, and towering heels",
+            },
+            "Female": {
+                "hair_length": "very short", "hair_style": "slicked back",
+                "makeup_style": "no makeup",
+                "outfit_description": "a drag king's sharp {dark_color} three-piece suit with wide lapels and a loosened silk tie, a drawn-on pencil mustache and sideburns, slicked-back hair, and polished oxfords",
+            },
+        },
     },
     "Ringmaster": {
         "accessories": "no accessories",
         "ethnicity": "English", "body_type": "average", "height": "tall",
         "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short", "hair_style": "slicked back",
         "outfit_style": "evening formal", "expression": "confident",
-        "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
-        "shot_type": "full body shot", "mood": "carefree",
+        "location": "empty theater stage with the curtain up", "lighting": "dramatic single overhead spotlight",
+        "shot_type": "full body shot", "mood": "commanding",
     },
 
     # --- Time periods / eras (fixed-look presets; costume via _COSTUMES) ---
@@ -1586,53 +1927,93 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "1950s Greaser": {
-        "gender": "Male", "ethnicity": "English", "body_type": "athletic", "height": "average height",
-        "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short", "hair_texture": "thick and voluminous",
-        "hair_style": "slicked back", "skin_tone": "light",
+        "gender": "Any", "ethnicity": "English", "body_type": "athletic", "height": "average height",
+        "hair_color": ["jet black", "raven black", "near black"], "hair_texture": "thick and voluminous",
+        "skin_tone": "light",
         "outfit_style": "vintage retro", "earrings": "no earrings", "necklace": "no necklace",
         "expression": "smirking",
         "location": "small-town family diner", "lighting": "warm incandescent lamp glow",
         "shot_type": "medium shot from waist up", "mood": "carefree",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "slicked back", "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "high ponytail"},
+        },
     },
     "1960s Mod": {
-        "gender": "Female", "ethnicity": "English", "age": ["18", "20", "22", "25"],
+        # 1.5.1: per-gender mod looks. The three inline dresses had been dead code under a
+        # _COSTUMES override since they were written; they are the woman's look now.
+        "gender": "Any", "ethnicity": "English", "age": ["18", "20", "22", "25"],
         "body_type": "slim", "height": "average height",
-        "hair_color": ["jet black", "raven black", "near black"], "hair_length": "chin length bob", "hair_texture": "sleek straight",
-        "hair_style": "blunt bangs", "skin_tone": "fair", "makeup_style": "mod 1960s eye makeup",
-        "eyeliner": "dramatic winged", "lashes": "dramatic falsies", "outfit_style": "vintage retro",
+        "hair_color": ["jet black", "raven black", "near black"], "hair_texture": "sleek straight",
+        "skin_tone": "fair", "outfit_style": "vintage retro",
         "accessories": "no accessories",
-        "outfit_description": [
-            "a {color} A-line minidress with a contrasting white collar and cuffs, sheer tights, and white knee-high go-go boots",
-            "a color-block shift minidress in bold geometric panels, white tights, and patent leather Mary Jane heels",
-            "a geometric-print miniskirt suit with a boxy cropped jacket and low white ankle boots",
-        ],
         "expression": "playful", "location": "luxury retail boutique",
         "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "carefree",
+        "variants": {
+            "Female": {
+                "hair_length": "chin length bob", "hair_style": "blunt bangs",
+                "makeup_style": "mod 1960s eye makeup", "eyeliner": "dramatic winged", "lashes": "dramatic falsies",
+                "outfit_description": [
+                    "a {color} A-line minidress with a contrasting white collar and cuffs, sheer tights, and white knee-high go-go boots",
+                    "a color-block shift minidress in bold geometric panels, white tights, and patent leather Mary Jane heels",
+                    "a geometric-print miniskirt suit with a boxy cropped jacket and low white ankle boots",
+                ],
+            },
+            "Male": {
+                # 1.5.1: the plain parka rendered as any man in a parka; the roundel,
+                # the skinny tie and the mop-top are what read as mod.
+                "hair_length": "ear length", "hair_style": "blunt bangs", "makeup_style": "no makeup",
+                "outfit_description": [
+                    "a slim-cut 1960s mod {menswear_color} three-button mohair suit with narrow lapels, a skinny black tie, a white button-down shirt, and polished Chelsea boots",
+                    "a 1960s mod {menswear_color} double-breasted blazer with brass buttons over a black roll-neck sweater, narrow hipster trousers, and pointed Chelsea boots",
+                ],
+            },
+        },
     },
     "1980s Pop Icon": {
         "gender": "Female", "ethnicity": "Puerto Rican", "body_type": "slim", "height": "average height",
         "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "long", "hair_texture": "thick and voluminous",
         "hair_style": "freshly blown out", "skin_tone": "light medium",
         "makeup_style": "club makeup", "eye_makeup": "colorful bold eyeshadow",
-        "outfit_style": "edgy alternative", "expression": "confident",
+        "outfit_style": "edgy alternative", "expression": "playful",
         "location": "neon-lit nightclub", "lighting": "neon sign glow in multiple colors",
         "shot_type": "medium shot from waist up", "mood": "carefree",
     },
     "1990s Grunge": {
-        "gender": "Male", "ethnicity": "English", "body_type": "lean", "height": "tall",
-        "facial_hair": "stubble", "hair_color": ["dark blonde", "dirty blonde", "golden blonde"], "hair_length": "shoulder length",
-        "hair_texture": "slightly wavy", "hair_style": "natural and unstyled", "skin_tone": "fair",
-        "outfit_style": "edgy alternative", "expression": "relaxed",
-        "location": "indie record store", "lighting": "overcast diffused daylight",
+        "gender": "Any", "ethnicity": "English", "body_type": "lean", "height": "tall",
+        "hair_color": ["dark blonde", "dirty blonde", "golden blonde"],         "hair_texture": "slightly wavy", "skin_tone": "fair",
+        "outfit_style": "edgy alternative", "expression": "brooding",
+        "location": "indie record store", "lighting": "harsh fluorescent lighting",
         "shot_type": "medium shot from waist up", "mood": "sorrowful",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "stubble", "hair_style": "natural and unstyled", "hair_length": "shoulder length"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "natural and unstyled"},
+        },
     },
     "1950s Sock Hop": {
-        "gender": "Female", "ethnicity": "English", "body_type": "slim", "height": "average height",
-        "hair_color": ["chestnut", "light chestnut", "warm brown"], "hair_length": "shoulder length", "hair_texture": "loosely curled",
-        "hair_style": "high ponytail", "skin_tone": "fair", "makeup_style": "vintage 1950s pin-up makeup",
-        "lips_makeup": "classic red", "outfit_style": "vintage retro", "expression": "bright smile",
+        # 1.5.1: a young look -- the age lock keeps it young in Essentials too.
+        "age": ["18", "20", "22", "25"],
+        # 1.5.1: a Male lock drew a poodle skirt and pin-up makeup -- per-gender looks.
+        "gender": "Any", "ethnicity": "English", "body_type": "slim", "height": "average height",
+        "hair_color": ["chestnut", "light chestnut", "warm brown"],
+        "skin_tone": "fair", "outfit_style": "vintage retro", "expression": "bright smile",
         "location": "small-town family diner", "lighting": "warm incandescent lamp glow",
         "shot_type": "full body shot", "mood": "cheerful",
+        "variants": {
+            "Female": {
+                "hair_length": "shoulder length", "hair_texture": "loosely curled", "hair_style": "high ponytail",
+                "makeup_style": "vintage 1950s pin-up makeup", "lips_makeup": "classic red",
+                "outfit_description": "a felt poodle skirt in {color}, a tucked-in white blouse, a neck scarf, bobby socks, and saddle shoes",
+            },
+            "Male": {
+                "hair_length": "very short", "hair_style": "slicked back", "makeup_style": "no makeup",
+                "outfit_description": "a {team_color} letterman sweater over a white button-down shirt, cuffed jeans, white socks, and saddle shoes",
+            },
+        },
     },
     "1950s Diner Waitress": {
         "gender": "Female", "ethnicity": "English", "body_type": "slim", "height": "average height",
@@ -1653,10 +2034,10 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "warm incandescent lamp glow", "shot_type": "full body shot", "mood": "cheerful",
     },
     "1950s Soda Jerk": {
-        "gender": "Male", "ethnicity": "English", "body_type": "slim", "height": "average height",
-        "facial_hair": "clean shaven", "hair_color": ["medium brown", "chestnut", "dark blonde"],
-        "hair_length": "very short", "hair_texture": "sleek straight",
-        "hair_style": ["slicked back", "natural and unstyled"], "skin_tone": "fair",
+        "gender": "Any", "ethnicity": "English", "body_type": "slim", "height": "average height",
+        "hair_color": ["medium brown", "chestnut", "dark blonde"],
+        "hair_texture": "sleek straight",
+        "skin_tone": "fair",
         "bag": "no bag", "outfit_style": "vintage retro", "accessories": "no accessories",
         "outfit_description": [
             "a crisp white soda-jerk uniform shirt with a red bow tie, a white paper garrison cap, a white half-apron, and pressed white trousers",
@@ -1665,6 +2046,12 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         ],
         "expression": "bright smile", "location": "small-town family diner",
         "lighting": "warm incandescent lamp glow", "shot_type": "full body shot", "mood": "cheerful",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "clean shaven", "hair_style": ["slicked back", "natural and unstyled"], "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "high ponytail"},
+        },
     },
     "1960s Hippie": {
         "body_type": "slim", "height": "average height", "hair_color": ["warm brown", "chestnut", "medium brown"],
@@ -1691,11 +2078,26 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "1980s New Wave": {
         "body_type": "slim", "height": "average height", "hair_color": ["platinum blonde", "white blonde", "light blonde"],
-        "hair_length": "short pixie", "hair_texture": "sleek straight", "hair_style": "slicked back",
+        "hair_texture": "sleek straight", "hair_style": "slicked back",
         "skin_tone": "pale", "eyeliner": "dramatic winged", "outfit_style": "edgy alternative",
         "expression": "confident", "location": "neon-lit nightclub",
         "lighting": "neon sign glow in multiple colors", "shot_type": "medium shot from waist up",
-        "mood": "carefree",
+        "mood": "self-assured",
+        # 1.5.1 (maintainer): the skinny tie read odd on a woman; her look is the
+        # power-shouldered blazer instead.
+        "variants": {
+            "Male": {
+                "hair_length": "very short",
+                "outfit_description": "a {jewel_tone} blazer with pushed-up sleeves over a graphic tee, a skinny leather tie, slim trousers, and pointed boots",
+            },
+            "Female": {
+                "hair_length": "short pixie",
+                "outfit_description": [
+                    "an oversized {jewel_tone} blazer with sharply padded shoulders and pushed-up sleeves over a graphic tee, slim trousers, and pointed boots",
+                    "a boxy {jewel_tone} cropped jacket with padded shoulders over a black mesh-panel top, a high-waisted pencil skirt, and pointed ankle boots",
+                ],
+            },
+        },
     },
     "Victorian Lady": {
         "accessories": "no accessories",
@@ -1704,7 +2106,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_style": "updo", "skin_tone": "porcelain", "makeup_style": "soft natural makeup",
         "outfit_style": "evening formal", "expression": "serene",
         "location": "dark moody Victorian parlor", "lighting": "warm candlelight",
-        "shot_type": "full body shot", "mood": "mysterious",
+        "shot_type": "full body shot", "mood": "nostalgic",
     },
     "Ancient Roman Patrician": {
         "accessories": "no accessories",
@@ -1712,17 +2114,22 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short", "hair_texture": "loosely curled",
         "hair_style": "natural and unstyled", "skin_tone": "olive", "outfit_style": "evening formal",
         "expression": "stern", "location": "outdoor amphitheater",
-        "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "tranquil",
+        "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "commanding",
     },
     "Prehistoric Hunter": {
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Mongolian", "body_type": "athletic", "height": "average height",
-        "fitness_level": "very fit", "facial_hair": "full beard",
-        "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "shoulder length", "hair_texture": "coily",
-        "hair_style": "loose braids", "skin_tone": "warm tan", "complexion": "ruddy",
+        "gender": "Any", "ethnicity": "Mongolian", "body_type": "athletic", "height": "average height",
+        "fitness_level": "very fit",         "hair_color": ["dark brown", "medium brown", "near black"], "hair_texture": "coily",
+        "skin_tone": "warm tan", "complexion": "ruddy",
         "outfit_style": "edgy alternative", "expression": "stern",
         "location": "forest trail", "lighting": "fire and flame warm flicker",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "full beard", "hair_style": "loose braids", "hair_length": "shoulder length"},
+            "Female": {"hair_length": "long", "hair_style": "loose braids"},
+        },
     },
 
     # Everyday / sports (v0.28.0) -- gender-neutral unless strongly coded
@@ -1744,7 +2151,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Baker": {
         "ethnicity": "French", "body_type": "average", "height": "average height",
-        "hair_color": ["warm brown", "chestnut", "medium brown"], "hair_length": "very short", "hair_style": "worn down",
+        "hair_color": ["warm brown", "chestnut", "medium brown"], "hair_length": "very short", "hair_style": "natural and unstyled",
         "skin_tone": "light medium", "outfit_style": "casual", "accessories": "no accessories",
         "expression": "warm smile", "location": "farmhouse kitchen with open shelving",
         "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up",
@@ -1778,7 +2185,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "hair_color": ["jet black", "raven black", "near black"], "hair_length": "very short", "skin_tone": "tan",
         "complexion": "ruddy", "outfit_style": "vintage retro", "accessories": "no accessories",
         "expression": "confident", "location": "country dirt road", "lighting": "golden hour sunlight",
-        "shot_type": "cowboy shot from mid-thigh up", "mood": "tranquil",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "self-assured",
     },
     "Navy Sailor": {
         "ethnicity": "Scottish", "body_type": "fit", "height": "average height",
@@ -1799,7 +2206,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "ethnicity": "Indian", "body_type": "slim", "height": "average height",
         "hair_color": ["platinum blonde", "white blonde", "light blonde"], "hair_length": "shoulder length", "hair_style": "worn down",
         "skin_tone": "medium", "outfit_style": "streetwear", "accessories": "no accessories",
-        "expression": "playful", "location": "co-working space",
+        "expression": "playful", "location": "recording studio",
         "lighting": "neon sign glow in multiple colors", "shot_type": "medium close-up from chest up",
         "mood": "carefree",
     },
@@ -1834,33 +2241,33 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Falconer": {
         "accessories": "no accessories",
-        "outfit_style": "smart casual", "expression": ["calm and composed", "focused"],
+        "outfit_style": "smart casual", "expression": "calm and composed",
         "location": ["misty moor", "open meadow"], "lighting": "overcast diffused daylight",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "tranquil",
     },
     "Cartographer": {
         "accessories": "no accessories",
         "outfit_style": "vintage retro", "expression": ["contemplative", "curious"],
-        "location": ["cozy home library", "cluttered antique shop"], "lighting": "warm candlelight",
+        "location": ["cozy home library", "cluttered antique shop"], "lighting": "warm incandescent lamp glow",
         "shot_type": "medium shot from waist up", "mood": "mysterious",
     },
     "Paramedic": {
-        "outfit_style": "athletic", "expression": ["determined", "calm and composed"],
-        "location": ["emergency room", "busy city crosswalk"], "lighting": "cool LED overhead lighting",
+        "outfit_style": "athletic", "expression": "focused",
+        "location": ["emergency room", "busy city crosswalk"], "lighting": "overcast diffused daylight",
         "shot_type": "medium shot from waist up", "mood": "tense",
     },
     "Train Conductor": {
         "outfit_style": "business casual", "expression": "warm smile",
-        "location": "train station waiting area", "lighting": "soft morning light",
+        "location": "train station waiting area", "lighting": "warm sunlight streaming through a window",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
     "Jeweler": {
-        "outfit_style": "business casual", "expression": "focused",
+        "outfit_style": "business casual", "expression": "contemplative",
         "location": "luxury retail boutique", "lighting": "soft studio three-point lighting",
         "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Watchmaker": {
-        "outfit_style": "business casual", "expression": "focused",
+        "outfit_style": "business casual", "expression": "contemplative",
         "location": "cluttered antique shop", "lighting": "warm incandescent lamp glow",
         "shot_type": "close-up portrait", "mood": "tranquil",
     },
@@ -1875,7 +2282,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Calligrapher": {
-        "outfit_style": "smart casual", "expression": ["lost in thought", "focused"],
+        "outfit_style": "smart casual", "expression": "contemplative",
         "location": ["cozy home library", "artist's painting studio"],
         "lighting": "soft window light from the side",
         "shot_type": "close-up portrait", "mood": "peaceful",
@@ -1895,7 +2302,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "ethnicity": "Moroccan", "outfit_style": "bohemian",
         "expression": ["serene", "calm and composed"],
         "location": ["rolling desert dune", "cracked salt flats"], "lighting": "harsh desert sun",
-        "shot_type": "cowboy shot from mid-thigh up", "mood": "mysterious",
+        "shot_type": "cowboy shot from mid-thigh up", "mood": "hushed",
     },
     "Tribal Shaman": {
         "accessories": "no accessories",
@@ -1906,13 +2313,13 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Trapeze Artist": {
         "accessories": "no accessories",
         "body_type": "athletic", "outfit_style": "athletic", "expression": "bright smile",
-        "location": "outdoor amphitheater", "lighting": "dramatic single overhead spotlight",
+        "location": "empty theater stage with the curtain up", "lighting": "dramatic single overhead spotlight",
         "shot_type": "full body shot", "mood": ["carefree", "triumphant"],
     },
     "Deep Sea Diver": {
         "accessories": "no accessories",
         "outfit_style": "athletic", "expression": "determined",
-        "location": ["aquarium tunnel", "harbor with moored boats"], "lighting": "cool LED overhead lighting",
+        "location": ["aquarium tunnel", "harbor with moored boats"], "lighting": "overcast diffused daylight",
         "shot_type": "medium shot from waist up", "mood": "mysterious",
     },
     "Arctic Explorer": {
@@ -1924,7 +2331,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "casual", "expression": ["confident", "warm smile"],
         "location": "golden savanna with acacia trees",
         "lighting": ["harsh overhead midday sun", "golden hour sunlight"],
-        "shot_type": "medium shot from waist up", "mood": "cheerful",
+        "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Toymaker": {
         "outfit_style": "vintage retro", "expression": "gentle smile",
@@ -1961,7 +2368,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "gender": "Female", "ethnicity": "English", "body_type": "fit", "height": "average height",
         "fitness_level": "moderately fit", "hair_color": ["chestnut", "light chestnut", "warm brown"], "hair_length": "shoulder length",
         "hair_texture": "loosely curled", "hair_style": "updo", "hair_accessory": "thin scarf tied in hair",
-        "skin_tone": "fair", "makeup_style": "vintage 1950s pin-up makeup", "lips_makeup": "classic red",
+        "skin_tone": "fair", "makeup_style": "soft natural makeup", "lips_makeup": "classic red",
         "outfit_style": "vintage retro", "accessories": "no accessories",
         "outfit_description": "a blue denim button-up work shirt with the sleeves rolled to the elbow and knotted at the waist, over high-waisted work trousers",
         "expression": "determined", "location": "factory floor", "lighting": "harsh fluorescent lighting",
@@ -1970,7 +2377,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "1940s Swing Dancer": {
         # Soft Male preference: the original male look; the gender widget picks
         # the variant, so Female gets a period swing dress instead of the tie.
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "ethnicity": "Italian", "body_type": "lean", "height": "average height",
@@ -1979,7 +2386,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "outfit_style": "vintage retro", "accessories": "no accessories",
                 "earrings": "no earrings", "necklace": "no necklace",
                 "outfit_description": "a crisp white dress shirt with the sleeves rolled up, suspenders over high-waisted pleated trousers, a loosened tie, and two-tone leather shoes",
-                "expression": "confident", "location": "speakeasy-style basement bar",
+                "expression": "beaming", "location": "speakeasy-style basement bar",
                 "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up", "mood": "lighthearted",
             },
             "Female": {
@@ -2000,7 +2407,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Game-Day Fan": {
         # Soft Female preference: gender "Any" resolves to the female look; the main
         # node's gender widget overrides it to the male look. See variants.
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "Nigerian", "body_type": "fit", "height": "average height",
@@ -2024,7 +2431,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         },
     },
     "Kawaii Street Fashion": {
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "Japanese", "body_type": "petite and slim", "height": "petite",
@@ -2034,7 +2441,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "lashes": "wispy false lashes", "outfit_style": "streetwear", "accessories": "no accessories",
                 "outfit_description": "a {pastel} ruffled blouse under a pleated tulle skirt, layered with a cropped cardigan, striped thigh-high socks, and chunky platform Mary-Jane shoes",
                 "expression": "playful", "location": "pedestrian shopping street",
-                "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "cheerful",
+                "lighting": "overcast diffused daylight", "shot_type": "full body shot", "mood": "cheerful",
             },
             "Male": {
                 "ethnicity": "Japanese", "body_type": "slim", "height": "slightly below average height",
@@ -2043,7 +2450,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "outfit_style": "streetwear", "accessories": "no accessories",
                 "outfit_description": "an oversized {pastel} graphic hoodie over a collared shirt, cuffed cropped trousers, striped socks, chunky platform sneakers, and layered enamel-pin accessories",
                 "expression": "playful", "location": "pedestrian shopping street",
-                "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "cheerful",
+                "lighting": "overcast diffused daylight", "shot_type": "full body shot", "mood": "cheerful",
             },
         },
     },
@@ -2051,7 +2458,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "gender": "Female", "ethnicity": "English", "body_type": "hourglass", "height": "tall",
         "hair_color": ["platinum blonde", "white blonde", "light blonde"], "hair_length": "shoulder length", "hair_texture": "loosely curled",
         "hair_style": "worn down", "skin_tone": "porcelain", "complexion": "clear",
-        "makeup_style": "vintage 1950s pin-up makeup", "eye_makeup": "smoky gray", "eyeliner": "dramatic winged",
+        "makeup_style": "vintage 1950s pin-up makeup", "eye_makeup": "warm earth tones", "eyeliner": "dramatic winged",
         "lashes": "dramatic falsies", "lips_makeup": "classic red", "earrings": "chandelier earrings",
         "bag": "beaded evening clutch", "outfit_style": "evening formal", "accessories": "no accessories",
         "outfit_description": "a floor-length bias-cut {jewel_tone} satin gown with a plunging back and elbow-length silk gloves",
@@ -2069,7 +2476,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "dramatic chiaroscuro side lighting", "shot_type": "medium shot from waist up", "mood": "self-assured",
     },
     "Backyard Country Casual": {
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "English", "body_type": "curvy", "height": "average height",
@@ -2120,7 +2527,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "warm incandescent lamp glow", "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
     "1980s Aerobics": {
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "English", "body_type": "toned", "height": "average height",
@@ -2136,10 +2543,10 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "ethnicity": "English", "body_type": "athletic", "height": "tall",
                 "fitness_level": "muscular", "facial_hair": "mustache", "hair_color": ["dark brown", "medium brown", "near black"],
                 "hair_length": "very short", "hair_texture": "thick and voluminous", "hair_style": "natural and unstyled",
-                "hair_accessory": "thin headband", "skin_tone": "light", "outfit_style": "athletic",
+                "hair_accessory": "no hair accessory", "skin_tone": "light", "outfit_style": "athletic",
                 "accessories": "no accessories",
                 "outfit_description": "a tight sleeveless tank top, {neon}-striped spandex shorts over footless tights, slouchy legwarmers, and white high-top sneakers",
-                "expression": "confident", "location": "local gym weight room",
+                "expression": "bright smile", "location": "local gym weight room",
                 "lighting": "high key bright even lighting", "shot_type": "medium shot from waist up", "mood": "carefree",
             },
         },
@@ -2160,7 +2567,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "height": "average height",
         "eye_color": ["dark brown", "nearly black"],
         "hair_color": ["jet black", "dark brown"],
-        "hair_length": "ear length",
+        "hair_length": "very short",
         "hair_texture": "pin straight",
         "hair_style": "textured crop",
         "skin_tone": "light",
@@ -2201,7 +2608,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "eye_makeup": "glittery", "lips_makeup": "high shine gloss", "nails": "french manicure",
         "bag": "small quilted chain bag", "outfit_style": "streetwear", "accessories": "no accessories",
         "outfit_description": "a {pastel} velour tracksuit with a bedazzled logo, a cropped camisole, and oversized rhinestone sunglasses pushed up on the head",
-        "expression": "confident", "location": "luxury retail boutique",
+        "expression": "playful", "location": "luxury retail boutique",
         "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "carefree",
     },
     "Metrosexual": {
@@ -2224,7 +2631,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "medium shot from waist up", "mood": "moody",
     },
     "Y2K Mall Casual": {
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "English", "body_type": "slim", "height": "average height",
@@ -2243,7 +2650,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "skin_tone": "light", "necklace": "no necklace", "outfit_style": "streetwear",
                 "accessories": "no accessories",
                 "outfit_description": "an oversized graphic tee under an open flannel shirt, baggy low-slung {denim_wash} jeans, a puka-shell necklace, and chunky skate sneakers",
-                "expression": "confident", "location": "movie theater lobby", "lighting": "cool LED overhead lighting",
+                "expression": "relaxed", "location": "movie theater lobby", "lighting": "cool LED overhead lighting",
                 "shot_type": "medium shot from waist up", "mood": "lighthearted",
             },
         },
@@ -2292,11 +2699,11 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "a heavily embroidered {jewel_tone} silk lehenga with a mirrored bodice and a sheer gold-trimmed dupatta draped over one shoulder",
             "a {color} silk sari with {accent} along the pallu, worn over a fitted short-sleeve blouse with a jeweled waist sash",
         ],
-        "expression": "confident", "location": "flower field in bloom",
+        "expression": "bright smile", "location": "flower field in bloom",
         "lighting": "rim lighting from setting sun", "shot_type": "full body shot", "mood": "radiant",
     },
     "Highland Scot": {
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "ethnicity": "Scottish", "body_type": "athletic", "height": "tall",
@@ -2327,7 +2734,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         },
     },
     "Mariachi Charro": {
-        "gender": "Male",
+        "gender": "Any",
         "variants": {
             "Male": {
                 "ethnicity": "Mexican", "body_type": "fit", "height": "average height",
@@ -2378,7 +2785,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "a wide-brimmed brown felt bush hat, a khaki cotton drill work shirt with the sleeves rolled up, rugged canvas work shorts, thick socks, and elastic-sided leather work boots",
             "an oilskin drover coat over a khaki work shirt, moleskin trousers, a wide-brimmed felt hat with a braided band, and dusty elastic-sided boots",
         ],
-        "expression": "relaxed", "location": "country dirt road",
+        "expression": "relaxed", "location": "the red desert plain below Uluru",
         "lighting": "harsh desert sun", "shot_type": "cowboy shot from mid-thigh up", "mood": "carefree",
     },
     "K-Pop Idol": {
@@ -2409,7 +2816,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                     "a boxy cropped jacket over a sheer black shirt, pleated wide-leg trousers with a chain detail, and platform combat boots",
                 ],
                 "expression": "confident", "location": "dance studio with mirrors",
-                "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "radiant",
+                "lighting": "high key bright even lighting", "shot_type": "full body shot", "mood": "self-assured",
             },
         },
     },
@@ -2444,16 +2851,21 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         },
     },
     "Bosozoku": {
-        "gender": "Male", "ethnicity": "Japanese", "body_type": "lean", "height": "average height",
-        "facial_hair": "clean shaven", "hair_color": ["jet black", "near black", "raven black"],
-        "hair_length": "ear length", "hair_texture": "thick and voluminous", "hair_style": "slicked back",
-        "skin_tone": "light", "outfit_style": "edgy alternative", "accessories": "no accessories",
+        "gender": "Any", "ethnicity": "Japanese", "body_type": "lean", "height": "average height",
+        "hair_color": ["jet black", "near black", "raven black"],
+        "hair_texture": "thick and voluminous",         "skin_tone": "light", "outfit_style": "edgy alternative", "accessories": "no accessories",
         "outfit_description": [
             "a long white tokko-fuku overcoat embroidered with bold kanji slogans, worn open over a wrapped cloth midsection, baggy trousers tucked into tall black combat boots, and a rolled headband",
             "an embroidered {dark_color} biker jumpsuit with a high collar and painted gang insignia across the back, hand wrappings, and steel-toed boots",
         ],
         "expression": "intense gaze", "location": "neon-lit city street",
         "lighting": "fog-diffused streetlamp glow", "shot_type": "full body shot", "mood": "fierce",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": "clean shaven", "hair_style": "slicked back", "hair_length": "ear length"},
+            "Female": {"hair_length": "long", "hair_style": "high ponytail"},
+        },
     },
     # 0.81.0: the biker gap. `Bosozoku` is the Japanese variant, `1950s Greaser` is
     # era-coded and `Punk Rocker` is music-coded -- none of them is the plain
@@ -2477,7 +2889,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "mood": "self-assured",
     },
     "Parisian Chic": {
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "French", "body_type": "slim", "height": "average height",
@@ -2519,7 +2931,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                     "a longline {dark_color} quilted coat over a high-neck knit dress, ribbed tights, and chunky leather boots",
                 ],
                 "expression": "serene", "location": "minimalist Scandinavian living room",
-                "lighting": "hazy overcast winter light", "shot_type": "full body shot", "mood": "peaceful",
+                "lighting": "soft window light from the side", "shot_type": "full body shot", "mood": "peaceful",
             },
             "Male": {
                 "ethnicity": ["Danish", "Swedish", "Norwegian"], "body_type": "lean", "height": "tall",
@@ -2531,7 +2943,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                     "an oversized {dark_color} knit cardigan over a fine merino tee, relaxed pleated trousers, and clean white sneakers",
                 ],
                 "expression": "serene", "location": "minimalist Scandinavian living room",
-                "lighting": "hazy overcast winter light", "shot_type": "full body shot", "mood": "peaceful",
+                "lighting": "soft window light from the side", "shot_type": "full body shot", "mood": "peaceful",
             },
         },
     },
@@ -2575,7 +2987,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "a velvet-trimmed tailcoat over a patterned silk cravat, a boutonniere at the lapel, a gold watch chain draped across the waistcoat, and polished oxford shoes",
         ],
         "expression": "quiet amusement", "location": "dark moody Victorian parlor",
-        "lighting": "warm candlelight", "shot_type": "cowboy shot from mid-thigh up", "mood": "self-assured",
+        "lighting": "warm candlelight", "shot_type": "cowboy shot from mid-thigh up", "mood": "mysterious",
     },
     "Rio Carnival Dancer": {
         "gender": "Female", "ethnicity": "Brazilian", "age": ["20", "22", "25", "28"],
@@ -2614,7 +3026,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Día de los Muertos": {
         # Soft Female preference: La Catrina is the iconic image; the Male
         # variant is her counterpart El Catrín (dapper calavera gentleman).
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "Mexican", "body_type": ["slender", "curvy", "hourglass"],
@@ -2699,7 +3111,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 ],
                 "expression": ["smirking", "intense gaze"],
                 "location": ["concert hall backstage", "recording studio", "neon-lit city street"],
-                "lighting": ["stage spotlight from above", "club strobe lighting"],
+                "lighting": ["club strobe lighting", "purple and teal neon wash"],
                 "shot_type": ["full body shot", "cowboy shot from mid-thigh up"],
                 "mood": ["fierce", "carefree"],
             },
@@ -2716,31 +3128,41 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 ],
                 "expression": ["smirking", "intense gaze"],
                 "location": ["concert hall backstage", "recording studio", "neon-lit city street"],
-                "lighting": ["stage spotlight from above", "club strobe lighting"],
+                "lighting": ["club strobe lighting", "purple and teal neon wash"],
                 "shot_type": ["full body shot", "cowboy shot from mid-thigh up"],
                 "mood": ["fierce", "carefree"],
             },
         },
     },
     "1980s Action Star": {
-        # Male-leaning by design (the mullet-and-muscles VHS hero); a forced
-        # Female subject keeps the wardrobe but the engine re-randomizes the
-        # male-only hair/facial-hair locks within the female pools.
-        "gender": "Male", "body_type": "athletic", "fitness_level": "muscular",
+        # 1.5.1: coin-flips. His look is the mullet-and-muscles VHS hero; hers is the
+        # 80s heroine (the maintainer found a shared wardrobe read generic on her):
+        # the Sarah Connor tank-and-holster, the Ripley flight suit, the leather jacket.
+        "gender": "Any", "body_type": "athletic", "fitness_level": "muscular",
         "hair_color": ["dark brown", "jet black", "dirty blonde"],
-        "hair_length": ["shoulder length", "slightly past shoulders"],
-        "hair_style": "mullet", "facial_hair": ["clean shaven", "stubble", "mustache"],
         "outfit_style": "casual", "accessories": ["aviator sunglasses", "no accessories"],
-        "outfit_description": [
-            "a tight white tank top with {denim_wash} jeans, a wide leather belt with a heavy buckle, dog tags, and scuffed combat boots",
-            "a battered brown leather jacket over a black tee, cargo pants with a utility belt, fingerless gloves, and rugged boots",
-            "a sleeveless olive field shirt with a red bandana headband, camo cargo pants, dog tags, and combat boots",
-        ],
         "expression": ["steely", "smirking", "intense gaze"],
         "location": ["urban alley with graffiti", "warehouse interior", "parking garage"],
         "lighting": ["dramatic chiaroscuro side lighting", "single neon light from one side", "golden hour sunlight"],
         "shot_type": ["cowboy shot from mid-thigh up", "low angle looking up"],
         "mood": ["intense", "triumphant"],
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": ["clean shaven", "stubble", "mustache"], "hair_style": "mullet", "hair_length": ["shoulder length", "slightly past shoulders"],
+                     "outfit_description": [
+                         "a tight white tank top with {denim_wash} jeans, a wide leather belt with a heavy buckle, dog tags, and scuffed combat boots",
+                         "a battered brown leather jacket over a black tee, cargo pants with a utility belt, fingerless gloves, and rugged boots",
+                         "a sleeveless olive field shirt with a red bandana headband, camo cargo pants, dog tags, and combat boots",
+                     ]},
+            "Female": {"hair_length": "long", "hair_texture": "thick and voluminous",
+                       "hair_style": ["windswept", "freshly blown out"],
+                       "outfit_description": [
+                           "a 1980s action-movie heroine's sweat-streaked black tank top with olive tactical cargo trousers, a leather shoulder holster, a bandolier of shotgun shells across the chest, fingerless gloves, and scuffed combat boots",
+                           "a 1980s sci-fi action heroine's olive flight suit unzipped and tied at the waist over a white tank top, a canvas webbing harness and utility belt, and combat boots",
+                           "a 1980s action-movie heroine's battered black leather jacket with pushed-up sleeves over a white tank top, high-waisted acid-wash jeans with a heavy-buckle belt, fingerless gloves, a red bandana headband, and combat boots",
+                       ]},
+        },
     },
     "Mime": {
         "outfit_style": "edgy alternative", "accessories": "no accessories",
@@ -2765,14 +3187,14 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                     "a dramatic {jewel_tone} velvet opera gown with a sweeping train, long satin opera gloves, and glittering chandelier earrings",
                     "a corseted {dark_color} taffeta gown with an off-the-shoulder neckline and a dramatic brocade overskirt",
                 ],
-                "expression": ["intense gaze", "serene"],
+                "expression": "confident",
                 "location": ["outdoor amphitheater", "backstage dressing room"],
                 "lighting": ["dramatic single overhead spotlight", "stage spotlight from above"],
                 "shot_type": ["medium shot from waist up", "full body shot"],
                 "mood": ["triumphant", "intense"],
             },
             "Male": {
-                "body_type": ["stocky", "full figured", "average"], "age": ["38", "40", "45", "50"],
+                "body_type": "stocky", "age": ["38", "40", "45", "50"],
                 "facial_hair": ["clean shaven", "short beard", "full beard"],
                 "hair_length": "very short", "outfit_style": "evening formal",
                 "accessories": "no accessories",
@@ -2780,7 +3202,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                     "a crisp white-tie ensemble with a black tailcoat, a white piqué waistcoat and bow tie, and patent leather shoes",
                     "a {dark_color} velvet tuxedo jacket with satin lapels over a wing-collar shirt, with a white silk scarf draped around the neck",
                 ],
-                "expression": ["intense gaze", "serene"],
+                "expression": "confident",
                 "location": ["outdoor amphitheater", "backstage dressing room"],
                 "lighting": ["dramatic single overhead spotlight", "stage spotlight from above"],
                 "shot_type": ["medium shot from waist up", "full body shot"],
@@ -2934,10 +3356,21 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Trial Lawyer": {
         "accessories": "no accessories", "bag": "no bag",
-        "hair_style": ["slicked back", "sleek bun", "low ponytail"], "outfit_style": "business formal",
+        # 1.5.1: the one suit-and-tie costume put women in a tie -- per-gender court dress.
+        "outfit_style": "business formal",
         "expression": ["confident", "determined"], "location": "courtroom",
         "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "self-assured",
+        "variants": {
+            "Male": {
+                "hair_style": "slicked back",
+                "outfit_description": "a tailored {dark_color} suit over a crisp white shirt with a {color} tie, a leather portfolio tucked under one arm, and polished oxford shoes",
+            },
+            "Female": {
+                "hair_style": ["sleek bun", "low ponytail"],
+                "outfit_description": "a tailored {dark_color} skirt suit over a silk blouse, a leather portfolio tucked under one arm, and polished pumps",
+            },
+        },
     },
     "Coal Miner": {
         "accessories": "no accessories", "bag": "no bag", "outfit_style": "casual", "complexion": "ruddy",
@@ -2978,7 +3411,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Alpine Skier": {
         "accessories": "no accessories", "bag": "no bag", "outfit_style": "athletic",
-        "expression": ["bright smile", "confident"],
+        "expression": "bright smile",
         "location": ["snowy pine forest", "mountain overlook"],
         "lighting": "snow-reflected daylight",
         "shot_type": "full body shot with environment visible", "mood": "carefree",
@@ -2994,7 +3427,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # lock inside a Female variant is safe — it is gender-scoped, so it never
     # reaches a male render (unlike a base lock, which would; see ER Nurse).
     "Genie": {
-        "accessories": "no accessories", "bag": "no bag", "gender": "Female",
+        "accessories": "no accessories", "bag": "no bag", "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": ["Egyptian", "Lebanese", "Iranian"], "body_type": "curvy",
@@ -3016,7 +3449,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         },
     },
     "Cottagecore": {
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "body_type": ["softly curved", "average"], "hair_length": ["long", "very long"],
@@ -3032,7 +3465,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "lighting": "golden hour sunlight", "shot_type": "full body shot with environment visible", "mood": "dreamy",
             },
             "Male": {
-                "body_type": ["lean", "average"], "facial_hair": "stubble", "hair_length": ["ear length", "short pixie"],
+                "body_type": ["lean", "average"], "facial_hair": "stubble", "hair_length": "very short",
                 "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
                 "outfit_style": "bohemian", "accessories": "no accessories", "bag": "no bag",
                 "outfit_description": [
@@ -3062,7 +3495,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             },
             "Male": {
                 "facial_hair": ["stubble", "clean shaven"], "hair_color": ["dark brown", "near black", "chestnut"],
-                "hair_length": ["ear length", "short pixie"], "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
+                "hair_length": "very short", "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
                 "outfit_style": "preppy", "accessories": "no accessories", "bag": "no bag",
                 "outfit_description": [
                     "a {dark_color} tweed blazer with elbow patches over a knit vest and tie, tailored trousers, and leather oxford shoes, a stack of old books under one arm",
@@ -3075,6 +3508,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         },
     },
     "E-Girl / E-Boy": {
+        # 1.5.1: a young look -- the age lock keeps it young in Essentials too.
+        "age": ["18", "20", "22", "25"],
         "bag": "no bag",
         "variants": {
             "Female": {
@@ -3091,7 +3526,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "lighting": "purple and teal neon wash", "shot_type": "medium close-up from chest up", "mood": "moody",
             },
             "Male": {
-                "hair_color": ["black with colored tips", "electric blue", "magenta"], "hair_length": ["ear length", "chin length bob"],
+                "hair_color": ["black with colored tips", "electric blue", "magenta"], "hair_length": "ear length",
                 "hair_texture": "sleek straight", "hair_style": ["curtain bangs", "worn down"], "piercings": "labret stud",
                 "outfit_style": "edgy alternative", "accessories": "no accessories",
                 "outfit_description": [
@@ -3122,7 +3557,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             },
             "Male": {
                 "facial_hair": ["short beard", "stubble"], "hair_color": ["medium brown", "dark brown", "light chestnut"],
-                "hair_length": ["short pixie", "ear length"], "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
+                "hair_length": "very short", "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
                 "outfit_style": "vintage retro", "accessories": "no accessories",
                 "outfit_description": [
                     "a pearl-snap {color} western shirt with embroidered yokes, bootcut jeans, a tooled leather belt with a big buckle, a felt cowboy hat, and worn boots",
@@ -3136,7 +3571,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
     "Regency Aristocrat": {
         "bag": "no bag",
-        "gender": "Female",
+        "gender": "Any",
         "variants": {
             "Female": {
                 "ethnicity": "English", "body_type": ["slim", "hourglass"], "hair_color": ["light chestnut", "chestnut", "warm brown"],
@@ -3191,7 +3626,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "evening formal",
         "accessories": "no accessories",
         "location": ["empty theater stage with the curtain up", "concert hall backstage"],
-        "lighting": ["stage spotlight from above", "warm candlelight"],
+        "lighting": ["stage spotlight from above", "warm incandescent lamp glow"],
         "shot_type": ["medium shot from waist up", "medium close-up from chest up"],
         "mood": "commanding",
     },
@@ -3209,8 +3644,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "athletic",
         "accessories": "no accessories",
         "bag": "no bag",
-        "location": ["rocky coastal cliff", "red rock desert arch"],
-        "lighting": ["harsh desert sun", "fire and flame warm flicker"],
+        "location": ["geothermal geyser basin", "volcanic black sand beach"],
+        "lighting": ["dramatic stormy sky light", "harsh overhead midday sun"],
         "shot_type": "full body shot",
         "mood": "intense",
     },
@@ -3221,7 +3656,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "makeup_style": "no makeup",
         "hair_length": ["very short", "ear length"],
         "hair_style": "natural and unstyled",
-        "expression": ["focused", "calm and composed"],
+        "expression": "focused",
         "outfit_style": "athletic",
         "accessories": "no accessories",
         "bag": "no bag",
@@ -3247,11 +3682,9 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         # Ceremonial state dress. The ruff and Tudor bonnet put it nowhere near
         # Royal Guard or Palace Guard.
         "ethnicity": "English",
-        "gender": "Male",
-        "facial_hair": ["full beard", "short beard", "mutton chops"],
-        "hair_color": ["salt and pepper", "silver", "gray-streaked dark hair"],
-        "hair_length": "very short",
-        "expression": ["stern", "confident"],
+        "gender": "Any",
+                "hair_color": ["salt and pepper", "silver", "gray-streaked dark hair"],
+                "expression": ["stern", "confident"],
         "posture": "upright",
         "outfit_style": "evening formal",
         "accessories": "no accessories",
@@ -3260,12 +3693,18 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": ["overcast diffused daylight", "soft morning light"],
         "shot_type": "full body shot",
         "mood": "commanding",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"facial_hair": ["full beard", "short beard", "mutton chops"], "hair_length": "very short"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun"},
+        },
     },
     "Trawler Deckhand": {
         # Working maritime, as against Sea Captain (braided coat), Navy Sailor
         # (dress uniform) and Deep Sea Diver (helmet). Oilskins and waders.
         "complexion": "ruddy",
-        "expression": ["determined", "at ease"],
+        "expression": "weary",
         "outfit_style": "athletic",
         "accessories": "no accessories",
         "bag": "no bag",
@@ -3282,15 +3721,13 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # field cannot randomize a handbag onto someone working.
     # ======================================================================
     "Matador": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Spanish",
         "body_type": "lean",
         "height": "average height",
         "fitness_level": "very fit",
         "hair_color": ["jet black", "near black", "dark brown"],
-        "hair_length": "very short",
-        "hair_style": "slicked back",
-        "skin_tone": "olive",
+                        "skin_tone": "olive",
         "outfit_style": "evening formal",
         "outfit_description": "a traje de luces of a short {jewel_tone} bolero jacket stiff with "
                               "gold bullion embroidery and heavy shoulder fringe, a matching "
@@ -3303,26 +3740,28 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "harsh overhead midday sun",
         "shot_type": "full body shot",
         "mood": "commanding",
+        # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
+        # is the old lean, unchanged.
+        "variants": {
+            "Male": {"hair_style": "slicked back", "hair_length": "very short"},
+            "Female": {"hair_length": "long", "hair_style": "sleek bun"},
+        },
     },
     "Sumo Wrestler": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Japanese",
         "body_type": "plus size",
         "height": "tall",
         "waist": "full",
+        "shoulder_width": "very broad",
+        "hips": "wide",
+        "neck_length": "thick",
         "fitness_level": "lightly active",
         "hair_color": ["jet black", "raven black"],
         "hair_length": "shoulder length",
         "hair_style": "top knot",
-        "facial_hair": "clean shaven",
         "skin_tone": "light medium",
         "outfit_style": "athletic",
-        # The mawashi is the entire garment; naming the bare torso keeps the model
-        # from inventing a shirt under it.
-        "outfit_description": "a broad {jewel_tone} silk mawashi belt wound many times around the "
-                              "waist and between the legs, worn on an otherwise bare, "
-                              "immense, heavy-bellied and thickly-built frame, with bare "
-                              "feet",
         "accessories": "no accessories",
         "bag": "no bag",
         "expression": "focused",
@@ -3330,6 +3769,31 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "lighting": "diffused skylight from above",
         "shot_type": "full body shot",
         "mood": "commanding",
+        # 1.5.1: the bare-torso mawashi rendered a topless woman under a Female lock.
+        # Women's (amateur) sumo wears the mawashi over a leotard. "Mawashi belt" in a
+        # dojo rendered a knotted karate belt; "sumo mawashi, the wide wrestling
+        # loincloth" drew the real wrap (render A/B on the gallery seed). Body words
+        # beyond these moved nothing on a woman ("obese", a weight, the lead phrase).
+        "variants": {
+            "Male": {
+                "facial_hair": "clean shaven",
+                # The mawashi is the entire garment; naming the bare torso keeps the model
+                # from inventing a shirt under it.
+                "outfit_description": "a broad {jewel_tone} silk sumo mawashi, the wide wrestling "
+                                      "loincloth, wound many times around the hips and between the "
+                                      "legs, worn on an otherwise bare, very large, heavy sumo "
+                                      "wrestler's body with a big round belly and thick arms and "
+                                      "legs, with bare feet",
+            },
+            "Female": {
+                "makeup_style": "no makeup",
+                "outfit_description": "a thick white canvas sumo mawashi, the wide wrestling loincloth, "
+                                      "wrapped around the hips and between the legs over a dark navy "
+                                      "sleeveless leotard, on a very large, heavy sumo wrestler's "
+                                      "body with a big round belly and thick arms and legs, with the "
+                                      "hair tied back in a knot and bare feet",
+            },
+        },
     },
     "Hockey Goalie": {
         "body_type": "athletic",
@@ -3505,7 +3969,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "face, a flowing {earth_tone} gandoura over an indigo underrobe, a "
             "tooled leather belt pouch, and flat leather sandals",
         ],
-        "expression": "calm and composed",
+        "expression": "intense gaze",
         "location": ["rolling desert dune", "cracked salt flats"],
         "lighting": "harsh desert sun",
         "shot_type": ["full body shot", "medium shot from waist up"],
@@ -3513,7 +3977,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
 
     "Maasai": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Kenyan",
         "skin_tone": ["dark brown", "deep", "ebony"],
         "eye_color": "dark brown",
@@ -3523,7 +3987,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "no bag",
         "other_jewelry": "no other jewelry",
         "rings": "none",
-        "expression": "calm and composed",
+        "expression": "confident",
         "location": "golden savanna with acacia trees",
         "lighting": "golden hour sunlight",
         "shot_type": "full body shot",
@@ -3585,7 +4049,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # Sapmi spans rather than left to roll the whole 92-value list. Named for the
     # garment (gakti) the way Andean Cholita is named for the wearer.
     "Sami Gakti": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": ["Norwegian", "Finnish", "Swedish"],
         "skin_tone": ["fair", "light", "porcelain"],
         "outfit_style": "vintage retro",
@@ -3649,7 +4113,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
 
     "Ukrainian Vyshyvanka": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Ukrainian",
         "age": ["20", "22", "25", "28"],
         "skin_tone": ["fair", "light"],
@@ -3719,7 +4183,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
 
     "Mongolian Deel": {
-        "gender": "Male",
+        "gender": "Any",
         "ethnicity": "Mongolian",
         "skin_tone": ["warm tan", "tan", "golden tan"],
         "eye_color": "dark brown",
@@ -3729,7 +4193,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "bag": "no bag",
         "other_jewelry": "no other jewelry",
         "rings": "none",
-        "expression": "calm and composed",
+        "expression": "confident",
         "location": ["open meadow", "rolling desert dune"],
         "lighting": ["golden hour sunlight", "overcast diffused daylight"],
         "shot_type": "full body shot",
@@ -3786,7 +4250,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
 
     "Korean Hanbok": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Korean",
         "skin_tone": ["fair", "light", "porcelain"],
         "eye_color": "dark brown",
@@ -3856,7 +4320,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
 
     "Vietnamese Ao Dai": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Vietnamese",
         "skin_tone": ["light", "light medium", "fair"],
         "eye_color": "dark brown",
@@ -3926,7 +4390,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # Emo / Punk Rocker / 1990s Goth / 1960s Mod / 1950s Greaser / Hair Metal owns.
 
     "Visual Kei": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Japanese",
         "age": ["20", "22", "25", "28"],
         "outfit_style": "edgy alternative",
@@ -3950,7 +4414,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "hair_color": ["jet black", "platinum white", "deep red"],
                 "hair_length": "shoulder length",
                 "hair_texture": "thick and voluminous",
-                "hair_style": "windswept",
+                "hair_style": "tousled bedhead",
                 "makeup_style": "no makeup",
                 "nails": "black polish",
                 "necklace": "no necklace",
@@ -3978,7 +4442,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "hair_color": ["jet black", "platinum white", "deep red"],
                 "hair_length": "shoulder length",
                 "hair_texture": "thick and voluminous",
-                "hair_style": "windswept",
+                "hair_style": "tousled bedhead",
                 "makeup_style": "editorial makeup",
                 "eyeliner": "dramatic winged",
                 "eye_makeup": "smoky black",
@@ -4003,7 +4467,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     },
 
     "Cybergoth": {
-        "gender": "Female",
+        "gender": "Any",
         "age": ["18", "20", "22", "25"],
         "outfit_style": "edgy alternative",
         "skin_tone": ["porcelain", "very pale", "pale"],
@@ -4049,7 +4513,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "height": "tall",
                 "facial_hair": "clean shaven",
                 "hair_color": ["jet black", "electric blue", "lime green"],
-                "hair_length": "short pixie",
+                "hair_length": "very short",
                 "hair_texture": "sleek straight",
                 "hair_style": "slicked back",
                 "makeup_style": "no makeup",
@@ -4244,7 +4708,9 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         # West Africa was entirely absent -- Sapeur is Congolese and is a suit.
         # The sculptural fan-folded gele is the silhouette; distinct from Maasai
         # (beaded disc collar) and Tuareg (indigo tagelmust).
-        "gender": "Female",
+        # 1.5.1: coin-flips (maintainer); men's aso-ebi is the agbada with a fila cap,
+        # and coral/beaded necklaces are worn by both.
+        "gender": "Any",
         "ethnicity": "Nigerian",
         "skin_tone": ["brown", "dark brown", "deep"],
         "eye_color": "dark brown",
@@ -4252,9 +4718,6 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "outfit_style": "evening formal",
         "accessories": "no accessories",
         "bag": "no bag",
-        "makeup_style": "bold glam",
-        "nails": "long nails",
-        "earrings": "chandelier earrings",
         "necklace": "beaded necklace",
         "expression": ["confident", "beaming"],
         "location": ["rooftop terrace overlooking the skyline", "castle courtyard"],
@@ -4262,8 +4725,21 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "full body shot",
         "mood": "exuberant",
         "variants": {
+            "Male": {
+                "hair_length": "very short", "makeup_style": "no makeup",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "a flowing {jewel_tone} agbada robe with wide embroidered sleeves over "
+                    "a matching buba tunic and sokoto trousers, and a fila cap in the "
+                    "same cloth",
+                    "a {color} aso-oke agbada draped over a matching tunic and trousers, "
+                    "finished with {accent} and a tall folded fila cap",
+                ],
+            },
             "Female": {
                 "hair_style": "updo",
+                "makeup_style": "bold glam", "nails": "long nails",
+                "earrings": "chandelier earrings",
                 "outfit_description": [
                     "a towering sculptural gele head-tie in stiff {jewel_tone} "
                     "aso-oke cloth, fanned into crisp radiating pleats and flaring "
@@ -4280,7 +4756,9 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Gondolier": {
         # Legible at silhouette scale and no incumbent; balances the two
         # cultural-dress adds with an occupational one.
-        "gender": "Male",
+        # 1.5.1: coin-flips (maintainer) -- Venice licenses women gondoliers too, in the
+        # same striped uniform.
+        "gender": "Any",
         "ethnicity": "Italian",
         "skin_tone": ["light medium", "medium olive", "olive"],
         "outfit_style": "smart casual",
@@ -4296,6 +4774,18 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             "Male": {
                 "hair_length": "very short",
                 "facial_hair": ["clean shaven", "stubble"],
+                "outfit_description": [
+                    "a horizontally striped navy-and-white jersey with a boat neck, "
+                    "black tailored trousers, a wide {color} sash knotted at the "
+                    "waist, and a flat straw boater hat with a long ribbon trailing "
+                    "from the band",
+                    "a red-and-white striped long-sleeved jersey, dark slim "
+                    "trousers, a {color} silk sash tied at the hip, and a straw "
+                    "boater tilted back with its ribbon hanging loose",
+                ],
+            },
+            "Female": {
+                "hair_length": "long", "hair_style": "low ponytail",
                 "outfit_description": [
                     "a horizontally striped navy-and-white jersey with a boat neck, "
                     "black tailored trousers, a wide {color} sash knotted at the "
@@ -4355,7 +4845,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # (the Ao Dai / Hanbok pattern). The saree half of the requested "Saree +
     # Sherwani" pair was NOT added: Bollywood Heroine already ships the sari.
     "Chinese Qipao": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Chinese",
         "skin_tone": ["fair", "light", "porcelain"],
         "eye_color": "dark brown",
@@ -4463,7 +4953,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     # Female-lean: the solo dress and ringlet wig ARE the look; the men's costume is
     # the competition waistcoat and tie.
     "Irish Step Dancer": {
-        "gender": "Female",
+        "gender": "Any",
         "ethnicity": "Irish",
         "age": ["18", "19", "20", "22", "25"],
         "fitness_level": "very fit",
@@ -4516,16 +5006,25 @@ ARCHETYPES: dict[str, dict[str, str]] = {
 }
 
 
+#: 1.5.1: archetypes whose costume STATES the build ("on an enormous, heavyweight frame",
+#: "on a small halfling frame"). Essentials normally drops the Body group so the person
+#: underneath randomizes, which drew a "softly curved, narrow-shouldered" sumo wrestler
+#: under that sentence. For these the body is the look, so Essentials keeps it.
+BODY_IS_THE_LOOK: frozenset[str] = frozenset({
+    "Sumo Wrestler", "Dwarven Blacksmith", "Halfling Rogue",
+})
+
+
 #: Slotted costume strings, kept in one place and merged into ARCHETYPES below.
 #: They give the iconic archetypes a recognisable, *varying* outfit (filled via
 #: :func:`fill_costume`) instead of a generic randomized one. This also upgrades
 #: the round-2 fixed costumes with randomized colour/fabric/metal slots.
 _COSTUMES: dict[str, str | list[str]] = {
-    "Elven Ranger": "a hooded {earth_tone} leather jerkin over a {fabric} tunic with a flowing cloak clasped in {metal}",
-    "Dwarven Blacksmith": "a soot-stained leather apron over a {color} tunic with {metal} buckles and heavy gloves",
+    "Elven Ranger": "a hooded {earth_tone} leather jerkin over a {fabric} tunic with a flowing cloak clasped in {metal}, long pointed elven ears, and a longbow and a quiver of arrows across the back",
+    "Dwarven Blacksmith": "a soot-stained leather apron over a {color} tunic with {metal} buckles and heavy gloves, a heavy forging hammer in one hand, on a stout, broad dwarven frame barely four and a half feet tall",
     "Human Knight": "polished {metal} plate armor over a {color} tabard with a chainmail collar",
     "Dark Sorceress": "flowing {dark_color} robes of {fabric} with a {metal} circlet and {gem} accents",
-    "Halfling Rogue": "a patched {earth_tone} traveling cloak over a {fabric} vest with a worn leather belt",
+    "Halfling Rogue": "a patched {earth_tone} traveling cloak over a {fabric} vest with a worn leather belt and a small dagger, barefoot, on a small halfling frame barely three and a half feet tall",
     "Fairy Princess": ["a {pastel} fairy gown of shimmering {sheer_fabric} with iridescent gossamer wings and a {flower} crown",
      "a layered {pastel} petal-hem fairy dress of {sheer_fabric} with iridescent gossamer wings and a {flower} crown"],
     "Vampire Noble": "an aristocratic {dark_color} {fabric} frock coat with a high collar and a {gem} cravat pin",
@@ -4533,8 +5032,8 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Celestial Cleric": "flowing white and {metal} ceremonial robes with {gem} inlays and a radiant sash",
     "Holy Paladin": "polished {metal} plate armor over a white tabard with a heavy {color} hanging cloak",
     "Forest Druid": "layered {earth_tone} robes with a {fur} mantle, a carved wooden staff, and {flower} adornments",
-    "Shadow Monk": "simple wrapped {dark_color} linen robes tied with a wide cloth belt and cloth hand wraps",
-    "Berserker Barbarian": "{fur} hides and a leather harness with {metal} bracers over a bare muscular chest",
+    "Shadow Monk": ["simple wrapped {dark_color} linen robes tied with a wide cloth belt, cloth hand wraps, and a long wooden bo staff held upright",
+     "a sleeveless {dark_color} martial-arts gi tied with a black sash, taped hands and forearms, and a wooden bo staff held across the shoulders"],
     "Necromancer": "tattered {dark_color} robes with bone clasps, {accent}, and a deep hooded cowl",
     "Arcane Wizard": "{jewel_tone} robes embroidered with silver stars and a tall wide-brimmed pointed hat",
     "Swashbuckling Pirate": ["a weathered {earth_tone} leather coat over a loose linen shirt, a {color} sash, and a tricorn hat",
@@ -4557,7 +5056,6 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a {pastel} 1950s-style maid dress with a full petticoat skirt, a scalloped white apron, a ruffled cap, and seamed stockings",
      "a {pastel} maid cafe dress with a wide flared skirt, a white frilled apron tied in a large bow at the back, a matching frilled headband, and knee-high white socks",
      "a black gothic maid dress with layered lace trim, a {jewel_tone} corset waist, a white pinafore apron, a lace headpiece, and striped stockings"],
-    "Cheerleader": "a pleated cheer uniform in {color} and white with a fitted shell top and pom-poms",
     "Roaring Flapper": ["a {color} beaded fringe flapper dress with a feathered headband and long satin gloves",
      "a {color} drop-waist sequined flapper dress with a jeweled headband and a feather boa"],
     "Wild West Gunslinger": "a fringed {earth_tone} western shirt with a leather duster, denim, chaps, and a worn cowboy hat",
@@ -4572,9 +5070,6 @@ _COSTUMES: dict[str, str | list[str]] = {
     "Disco Diva": ["a shimmering {color} sequined jumpsuit with a plunging neckline and platform heels",
      "a shimmering {color} halter disco dress with a flowing hem and platform heels"],
     "Punk Rocker": "a studded {dark_color} leather jacket over a torn band tee with tartan and combat boots",
-    "Renaissance Noble": "a richly embroidered {jewel_tone} {fabric} doublet with slashed sleeves and {accent}",
-    "Pop Star": ["a glittering {color} stage outfit with {accent}, fishnet layers, and statement boots",
-     "a glittering {color} sequined mini dress with {accent}, sheer sleeves, and knee-high statement boots"],
     "Ballerina": "a {pastel} tulle tutu with a fitted satin bodice, ribbon laces, and pointe shoes",
     "Bridal Portrait": "an ivory {fabric} wedding gown with {accent}, a lace veil, and a {flower} bouquet",
     "Astronaut": "a white EVA spacesuit with a {metal} chestplate, mission patches, and a reflective-visor helmet",
@@ -4598,20 +5093,18 @@ _COSTUMES: dict[str, str | list[str]] = {
      "{scrub_color} surgical scrubs with a surgical cap, a mask hanging loose around the neck, and a lanyard ID"],
     "Judge": ["flowing black judicial robes with a high collar over a {color} blouse",
      "flowing black judicial robes with a crisp white jabot collar and a {metal} lapel pin"],
-    "News Anchor": "a tailored {color} suit with a pocket square and a subtle lapel mic",
-    "Orchestra Conductor": ["a black tailcoat and white tie with a raised baton",
-     "an ivory dinner jacket with a black bow tie and a raised baton"],
+    "News Anchor": "a tailored {color} suit with a pocket square and a small lapel microphone, holding a neat stack of script pages",
     "Veterinarian": ["{scrub_color} scrubs under a white coat with a stethoscope and a name badge",
      "a {color} clinic polo with an embroidered paw logo, khakis, and a stethoscope around the neck"],
-    "Sommelier": ["a crisp black vest over a white shirt with a tasting cup on a chain",
-     "a long {dark_color} bistro apron over a crisp shirt and tie with a tasting cup on a chain"],
+    "Sommelier": ["a crisp black vest over a white shirt with a small gold grape-cluster pin on the vest, swirling a glass of red wine held up to the light",
+     "a long {dark_color} bistro apron over a crisp white shirt buttoned to the collar with a small gold grape-cluster pin at the collar, presenting a bottle of wine in both hands"],
     "Glassblower": ["a heavy leather apron and tinted safety goggles over a soot-streaked {color} shirt",
      "rolled-sleeve {earth_tone} work clothes with a heavy canvas apron, tinted goggles pushed up, and a glowing blowpipe held mid-turn"],
     "Warlock": "flowing {dark_color} {fabric} robes with eldritch {gem} talismans, {accent}, and a deep hooded cowl",
     "Artificer": "a {earth_tone} leather work apron over a tunic with brass-and-copper mechanical gauntlets and goggles",
     "Sorcerer": "{jewel_tone} arcane robes with {metal} sigils, a high collar, and a flowing cape",
     "Alchemist": "a stained {earth_tone} long coat lined with glass vials, a leather satchel, and brass goggles",
-    "Witch Hunter": "a {dark_color} long coat with a wide-brimmed hat, {metal} buckles, and a leather bandolier",
+    "Witch Hunter": "a {dark_color} long coat with a wide-brimmed hat, {metal} buckles, a leather bandolier of silver stakes and vials, and a loaded crossbow in hand",
     # Kept tight on purpose: the beaked mask, the robe and the wide hat ARE the
     # archetype, so the alternates vary material, mask weathering and the cane rather
     # than reinventing the silhouette.
@@ -4623,10 +5116,7 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a {earth_tone} field uniform with the sleeves rolled tight, a boonie hat, dog tags, and dust-caked boots",
      "a formal service dress uniform with brass buttons, ribbon bars over the breast pocket, white gloves, and a peaked cap"],
     "Construction Worker": "a hi-vis {color} safety vest over a work shirt, a tool belt, and a hard hat",
-    "Lifeguard": "{color} lifeguard board shorts with a whistle on a lanyard and a rescue can",
     "Park Ranger": "an {earth_tone} ranger uniform with a brimmed campaign hat, a badge, and a utility belt",
-    "Surfer": "a {color} wetsuit peeled to the waist over board shorts",
-    "Boxer": "satin {color} boxing trunks with a championship belt, taped wrists, and laced boxing boots",
     "Superhero": ["a sleek {color} superhero bodysuit with a bold chest emblem, a flowing cape, and gloves and boots",
      "a {color} and {dark_color} armored superhero suit with a sculpted chest emblem, a utility belt, and a short tactical cape"],
     "Supervillain": ["a dramatic {dark_color} costume with {metal} armor accents, a high collar, and a long cape",
@@ -4644,23 +5134,16 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a chunky cream fisherman's sweater under a navy peacoat with a weathered captain's cap and a wooden pipe held in one hand"],
     "Wasteland Survivor": ["patched {earth_tone} scavenger leathers with mismatched armor plates, goggles, and a tattered scarf",
      "a dust-caked {earth_tone} duster over layered rags with a gas mask slung at the neck, fingerless gloves, and improvised shin guards"],
-    "Pro Wrestler": ["{color} wrestling trunks with lace-up boots, kneepads, taped wrists, and a championship belt",
-     "a {color} wrestling singlet with a spray-stenciled logo, knee-high lace-up boots, elbow pads, and taped wrists"],
     "Luchador": "a {color} lucha libre singlet with contrasting trim, lace-up boots, and a brightly colored lucha mask held at the side",
-    "Swim Instructor": "a {color} one-piece training swimsuit with a whistle on a lanyard and a poolside towel over one shoulder",
     "Race Car Driver": "a {color} fire-resistant racing suit with sponsor patches and a helmet held under one arm",
-    "Drag Performer": "a dazzling {jewel_tone} sequined gown with dramatic feathers, statement jewelry, and towering heels",
     "Ringmaster": "a {color} tailcoat with gold braid and epaulettes, a white shirt, jodhpurs, tall boots, and a top hat",
     "Roaring Twenties Gent": "a {dark_color} pinstripe three-piece suit with a silk tie, a pocket square, two-tone spectator shoes, and a felt fedora",
     "1950s Greaser": "a white tee under a {dark_color} leather jacket with cuffed jeans and leather boots",
-    "1960s Mod": "a {color} geometric mod mini shift dress with go-go boots and oversized round earrings",
     "1980s Pop Icon": "a {jewel_tone} off-the-shoulder top with neon leg warmers, acid-wash denim, fingerless lace gloves, and chunky plastic jewelry",
     "1990s Grunge": "an oversized {color} flannel shirt over a faded band tee with ripped jeans and worn combat boots",
-    "1950s Sock Hop": "a felt poodle skirt in {color}, a tucked-in white blouse, a neck scarf, bobby socks, and saddle shoes",
-    "1960s Hippie": "a tie-dye {color} shirt, flared bell-bottom jeans, a fringed suede vest, round wire sunglasses, and a flower headband",
+    "1960s Hippie": "a {color} psychedelic spiral-dyed shirt, flared bell-bottom jeans, a fringed suede vest, round wire sunglasses, and a flower headband",
     "1990s Goth": "layered black {fabric} clothing with torn fishnet sleeves, a studded leather choker, silver rings, and heavy buckled boots",
     "1980s Preppy": "a pastel polo shirt with a {color} sweater tied over the shoulders, pleated chinos, and leather boat shoes",
-    "1980s New Wave": "a {jewel_tone} blazer with pushed-up sleeves over a graphic tee, a skinny leather tie, slim trousers, and pointed boots",
     "Victorian Lady": "a high-collared {jewel_tone} bustle gown of {fabric} with lace trim, puffed sleeves, buttoned boots, and a cameo brooch",
     "Ancient Roman Patrician": "a draped white toga over a tunic with a {color} border, leather sandals, and a {metal} laurel wreath",
     "Prehistoric Hunter": "rugged {fur} hide garments with bone-and-tooth jewelry, leather wraps, and a stone-tipped spear",
@@ -4689,13 +5172,14 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a motorcycle officer's uniform with breeches, tall polished boots, white gloves, a duty belt, and a white open-face helmet"],
     "Chef": "a double-breasted white chef's jacket with {color} piping, a bistro apron, houndstooth trousers, and a tall white toque",
     "Pilot": "a {dark_color} airline captain's uniform with four gold cuff stripes, wing insignia over the pocket, a tie, and a peaked cap",
-    "Scientist": "a white lab coat with pens in the breast pocket over {menswear_color} smart clothing, with safety glasses and a laminated ID badge",
+    "Scientist": "a white lab coat with pens in the breast pocket over {menswear_color} smart clothing, with safety glasses, a laminated ID badge, and a clipboard of data in one hand",
     "Farmer": "a {color} plaid work shirt under denim bib overalls with leather work gloves tucked in a pocket and a straw hat",
     "Mechanic": "grease-smudged {dark_color} mechanic coveralls with an embroidered name patch, a shop rag hanging from the pocket, and heavy boots",
     "Tattoo Artist": "a fitted black tee showing full-sleeve tattoos, a {dark_color} half-apron, black nitrile gloves, and ripped jeans",
     "Bartender": "a rolled-sleeve white shirt under a {dark_color} waistcoat with a bar towel over the shoulder and a cocktail shaker in hand",
     "Electrician": "a {color} work shirt under a hi-vis vest with a tool belt hung with pliers and wire strippers, work jeans, and safety glasses",
-    "Marine Biologist": "a {color} field jacket over quick-dry khakis with a dive watch, rubber deck boots, and a specimen kit slung at the hip",
+    "Marine Biologist": ["a sleeveless {color} research wetsuit with a dive mask pushed up on the forehead, a waterproof clipboard in one hand, and a mesh specimen net clipped at the hip",
+     "a quick-dry {earth_tone} field shirt with rolled sleeves over a swimsuit top, a dive mask hanging at the neck, and a glass specimen jar with a small starfish held in one hand"],
     # The hat lives in this archetype's `accessories` lock ("wide brim sun hat"), so no
     # alternate here may mention one: the base costume used to say "a brimmed explorer
     # hat" and rendered the archaeologist wearing two (fixed 0.66.0). Same double-
@@ -4718,10 +5202,10 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a hi-vis green-and-yellow paramedic jacket over a navy uniform with a trauma bag slung across the chest and blue nitrile gloves"],
     "Train Conductor": ["a {dark_color} conductor's uniform with brass buttons, a waistcoat crossed by a pocket-watch chain, and a peaked conductor's cap",
      "a navy railway waistcoat over a crisp white shirt with a brass pocket watch in hand and a peaked cap with gold braid piping"],
-    "Jeweler": ["a {dark_color} waistcoat over a crisp shirt with a jeweler's loupe on a neck chain and a soft polishing cloth in hand",
-     "a crisp shirt with rolled sleeves under a bench apron, a jeweler's loupe held to one eye, and a ring clamp in hand"],
-    "Watchmaker": ["a {earth_tone} work apron over a shirt and tie with a magnifying loupe strapped over one eye and fine tweezers in hand",
-     "a {menswear_color} cardigan over a shirt and tie with a magnifying loupe strapped over one eye and a tiny screwdriver in hand"],
+    "Jeweler": ["a {dark_color} waistcoat over a crisp shirt, a jeweler's headband magnifier with the lens flipped down over one eye, and a velvet tray of sparkling loose gemstones in hand",
+     "a crisp shirt with rolled sleeves under a leather bench apron, a jeweler's loupe held to one eye, and a gleaming diamond ring held up in fine tweezers"],
+    "Watchmaker": ["a {earth_tone} work apron over a crisp collared shirt buttoned to the neck, with a magnifying loupe strapped over one eye and fine tweezers in hand",
+     "a {menswear_color} cardigan over a crisp collared shirt with a magnifying loupe strapped over one eye and a tiny screwdriver in hand"],
     "Potter": ["a clay-smudged canvas apron over a rolled-sleeve {color} linen shirt with clay-dusted forearms",
      "a clay-spattered denim apron over a plain tee with sleeves pushed past the elbows and wet clay up both forearms"],
     "Tailor": ["a fitted {menswear_color} waistcoat over a crisp shirt with a measuring tape draped around the neck and a pincushion at the wrist",
@@ -4785,7 +5269,6 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a metallic {color} disco bodysuit under a cropped denim jacket with opaque tights and beat-up ankle boots"],
     # --- 0.67.0 additions (lean unisex archetypes) ---
     "Butler": "a formal black tailcoat over a white wing-collar shirt with a {dark_color} waistcoat, a black bow tie, pressed trousers, and white cotton gloves",
-    "Trial Lawyer": "a tailored {dark_color} suit over a crisp white shirt with a {color} tie, a leather portfolio tucked under one arm, and polished oxford shoes",
     "Coal Miner": "grimy {earth_tone} coveralls streaked with coal dust, a battered hard hat with a headlamp, heavy canvas gloves, and steel-toe boots, the face smudged with soot",
     "Butcher": "a heavy white butcher's apron streaked from the day's work over a rolled-sleeve shirt, a {color} neckerchief, and a straw boater hat",
     "Musketeer": "a {color} tabard bearing a white cross over a leather doublet, a plumed wide-brimmed cavalier hat, a baldric across the chest, tall cuffed boots, and a rapier sheathed at the hip",
@@ -4806,6 +5289,18 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a dark blue and red undress Tudor tunic with gold trim and a crowned cypher, a white ruff, matching breeches and stockings, and a flat black Tudor bonnet"],
     "Trawler Deckhand": ["bright orange oilskin bib waders over a heavy knitted sweater, an oilskin jacket with the hood down, a wide-brimmed sou'wester hat, and thick rubber gloves",
      "yellow oilskin bib-and-brace waders over a {menswear_color} flannel shirt, a scuffed oilskin smock, a sou'wester tied under the chin, and heavy rubber deck boots"],
+    "DJ": ["a {color} bomber jacket over a graphic tee and slim black jeans, with large over-ear DJ headphones, one cup pressed to one ear",
+     "an oversized {neon} hoodie over a band tee, chunky studio headphones slung around the neck, and a glowing festival wristband"],
+    "Librarian": ["a {earth_tone} cardigan over a collared shirt with tailored trousers, reading glasses hanging from a beaded chain, and a stack of hardback books held against the chest",
+     "a {menswear_color} tweed jacket over a knit vest and collared shirt, reading glasses on a beaded chain, and an open hardback book in one hand"],
+    "Personal Trainer": ["a fitted {team_color} performance tee and training joggers, a coach's stopwatch on a cord around the neck, cross-training sneakers, and a clipboard in one hand",
+     "a fitted {team_color} training tank and athletic shorts, a whistle on a cord around the neck, cross-training sneakers, and a kettlebell held at one side"],
+    "Photographer": ["a {earth_tone} utility vest over a black tee with dark jeans, a professional camera with a long zoom lens raised in both hands, and a second camera on a strap across the body",
+     "a black field jacket with rolled sleeves over a grey tee, a professional camera with a large lens hanging on a wide strap at the chest, and a light meter on a cord"],
+    "Rock Climber": ["a fitted {team_color} climbing tank top and stretchy climbing pants, a padded climbing harness with carabiners and quickdraws clipped at the hips, a chalk bag at the back of the waist, and snug climbing shoes",
+     "a {earth_tone} climbing tee and rolled-cuff climbing pants, a harness racked with quickdraws, a coiled rope over one shoulder, chalk-dusted hands, and snug climbing shoes"],
+    "Yoga Instructor": ["a fitted {pastel} tank top and stretchy yoga pants, barefoot, with a rolled yoga mat on a carry strap over one shoulder",
+     "a loose {earth_tone} linen tank over fitted yoga pants, barefoot, with a cork yoga block in one hand and a rolled mat on a carry strap over the shoulder"],
 }
 for _name, _costume in _COSTUMES.items():
     if _name in ARCHETYPES:

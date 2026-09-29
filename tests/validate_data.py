@@ -26,7 +26,7 @@ from data.fields import (
     LEADING_ARTICLE_RE,
     ETHNICITY_REGION, STUDIO_BACKDROPS,
 )
-from data.constraints import CONSTRAINT_RULES
+from data.constraints import CONSTRAINT_RULES, lock_clash
 from data.templates import ARCHETYPES, COSTUME_SLOTS
 from data.cosplayers import COSPLAYERS
 from data.creatures import CREATURES, CREATURE_CLASSES, CREATURE_SLOTS
@@ -929,8 +929,67 @@ def validate() -> list[str]:
     return errors
 
 
+def _archetype_lock_clashes() -> list[str]:
+    """1.5.1: no archetype may lock a pair the engine's own rules forbid.
+
+    Both sides locked means the engine can only warn and keep both, so the clash
+    renders every time (the Farmer's indoor stall under golden-hour sun). Mirrors
+    ``_resolve_list_values`` in the archetype node: the look's fixed values are
+    settled first and must agree with each other; then each list is picked in
+    order among the alternatives that agree with everything settled, and must
+    offer at least one (the node falls back to the whole list, clash and all).
+    Every reachable branch is walked, for the base look and for base + each
+    variant. ``outfit_style`` is skipped under a costume: it is not voiced there,
+    and a period costume legitimately sits outside the style a place would draw.
+    """
+    errors: list[str] = []
+
+    def fields_of(look, costume):
+        return {k: v for k, v in look.items()
+                if k in FIELD_DEFINITIONS and k not in _FREEFORM_FIELDS
+                and not (costume and k == "outfit_style")}
+
+    def settle(label, look, settled):
+        """All complete settlements of ``look`` on top of ``settled``, or an error."""
+        settled = dict(settled)
+        fixed = {k: v for k, v in look.items() if not isinstance(v, list)}
+        settled.update(fixed)
+        for k, v in fixed.items():
+            if lock_clash(k, v, {o: ov for o, ov in settled.items() if o != k}):
+                return None, f"{label}: {k}={v!r} clashes with another fixed lock"
+        branches = [settled]
+        for k, alts in ((k, v) for k, v in look.items() if isinstance(v, list)):
+            nxt = []
+            for br in branches:
+                fits = [v for v in alts if not lock_clash(k, v, br)]
+                if not fits:
+                    return None, f"{label}: no {k} alternative in {alts} agrees with {br}"
+                nxt += [{**br, k: v} for v in fits]
+            branches = nxt[:512]  # ponytail: cap the walk; archetype lists are tiny
+        return branches, None
+
+    for name, raw in ARCHETYPES.items():
+        variants = raw.get("variants") or {}
+        costume = "outfit_description" in raw or bool(variants) and all(
+            "outfit_description" in lk for lk in variants.values())
+        base = fields_of({k: v for k, v in raw.items() if k != "gender"}, costume)
+        bases, err = settle(name, base, {})
+        if err:
+            errors.append(f"ARCHETYPES lock clash -- {err}")
+            continue
+        for g, look in variants.items():
+            vc = costume or "outfit_description" in look
+            for br in bases:
+                _, err = settle(f"{name} [{g}]", fields_of(look, vc), {**br, "gender": g})
+                if err:
+                    errors.append(f"ARCHETYPES lock clash -- {err}")
+                    break
+    return errors
+
+
 def main() -> int:
     errors = validate()
+    errors += _archetype_lock_clashes()
     if errors:
         print("VALIDATION FAILED")
         for e in errors:

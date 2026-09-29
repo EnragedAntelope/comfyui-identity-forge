@@ -132,6 +132,18 @@ class GalleryShotPoolTests(unittest.TestCase):
             self.assertNotEqual(shot, "Random", f"seed {seed} picked the control value")
             self.assertNotIn(shot, render_gallery._BACK_FACING_SHOTS,
                               f"seed {seed} picked a back-facing shot")
+            # 1.5.1: a sample shows most of the body and the face, front-on.
+            self.assertIn(shot, render_gallery._GALLERY_SHOTS, f"seed {seed}: {shot}")
+
+    def test_pose_pins_name_real_poses_and_entries(self) -> None:
+        from data.cosplayers import COSPLAYERS
+        from data.fields import POSE_FAMILIES
+        poses = {v for fam in POSE_FAMILIES.values() for v in fam["variants"]}
+        for kind, pins in render_gallery._GALLERY_POSE.items():
+            self.assertEqual(kind, "cosplay")
+            for name, pose in pins.items():
+                self.assertIn(name, COSPLAYERS)
+                self.assertIn(pose, poses, name)
 
 
 class RuntimeLoggingTests(unittest.TestCase):
