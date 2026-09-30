@@ -398,7 +398,7 @@ def _is_body_paint(entry: dict, costume: str) -> bool:
 #: "an even, smooth coat of <vivid green> body paint".
 _BODY_PAINT_COLOR_RE = re.compile(
     r"\b(?:coat of|smooth, flawless|uniform, all-over)\s+(.+?)\s+"
-    r"(?:body\s+paint|skin|fur|scales?|hide|carapace|exoskeleton|plating|paint|coat)\b",
+    r"(body\s+paint|skin|fur|scales?|hide|carapace|exoskeleton|plating|paint|coat)\b",
     re.IGNORECASE,
 )
 
@@ -415,7 +415,13 @@ def _body_paint_skin_color(entry: dict, costume: str) -> str | None:
     if explicit:
         return str(explicit)
     match = _BODY_PAINT_COLOR_RE.search(costume)
-    return match.group(1).strip() if match else None
+    if not match:
+        return None
+    colour, material = match.group(1).strip(), match.group(2).lower()
+    # 1.5.4: keep a furred/scaled/hided material in the anchor. "blue" voiced "blue skin"
+    # in the lead and on the face, and "a coat of blue fur" then rendered as a fur jacket
+    # over blue skin (Beast). The engine's material-noun guard stops a doubled noun.
+    return f"{colour} {material}" if re.fullmatch(r"fur|scales?|hide", material) else colour
 
 
 #: A bald character states it in the costume by convention ("a bald head", "a
@@ -435,6 +441,21 @@ _BALD_SUPPRESS: dict[str, str] = {
     "hair_highlights": "None",
     "hair_accessory": "None",
 }
+
+#: 1.5.3: random jewellery / nail polish a cosplay can carry that its costume never
+#: names (Chewbacca's signet ring, Kitana's bead bracelet, a stud on a 1940s detective).
+#: Applied with ``override=False`` so an entry's own ``signature`` pin survives, and only
+#: by look level: Full character is the canon character, so nothing random is added;
+#: Costume only keeps jewellery (a person wearing the costume) unless the head is masked.
+_JEWELRY_SUPPRESS: dict[str, str] = {
+    "earrings": "None", "necklace": "None", "other_jewelry": "None",
+    "rings": "None", "bracelet": "None", "piercings": "None",
+}
+_NAILS_SUPPRESS: dict[str, str] = {"nails": "None"}
+
+#: 1.5.3: a costume that says "a bare muscular chest" / "muscular arms" asserts the body,
+#: so the random ``fitness_level`` ("lightly active") must not contradict it (Shao Kahn).
+_MUSCLE_RE = re.compile(r"\bmuscul(?:ar|ed)\b", re.IGNORECASE)
 
 #: "clean-shaven" / "clean shaven" in the costume locks ``facial_hair`` absent so a
 #: random beard does not sprout on a face the costume explicitly calls bare.
@@ -847,6 +868,12 @@ def build_cosplayer_json(
             _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
     if not feral and _CLEAN_SHAVEN_RE.search(costume):
         _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
+    if not feral and _MUSCLE_RE.search(costume):
+        _apply_suppress(document, {"fitness_level": "muscular"}, override=False)
+    if not feral and (look_level == _FULL or (covers and not unmask)):
+        _apply_suppress(document, _JEWELRY_SUPPRESS, override=False)
+        if look_level == _FULL:
+            _apply_suppress(document, _NAILS_SUPPRESS, override=False)
     # Size-scale: replace the human height with the entry's authored scale_prose so
     # the scale reads in the lead sentence (strongest T2I position) instead of a
     # contradictory "very tall"/"petite". override=True beats any physique.height

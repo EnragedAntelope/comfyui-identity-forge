@@ -483,6 +483,23 @@ _ABSENCE_EXACT: frozenset[str] = frozenset({
 _GLOVE_RE = re.compile(r"\b(?:glove|gauntlet|mitten)s?\b", re.IGNORECASE)
 _FINGERLESS_RE = re.compile(r"fingerless", re.IGNORECASE)
 
+#: 1.5.3: a mask/veil/scarf worn over the mouth or nose hides the lips, smile, nose and
+#: any beard, but a costume-text mask is not ``covers_face`` so those fields were still
+#: voiced ("petite and defined lips ... a soft smile ... glossy lip colour") and the
+#: model drew the mouth it was told about, dragging Kitana's mask down under the chin.
+#: A pulled-down mask ("face mask pulled down around the neck") and an upper-face half
+#: mask do not match: neither covers the mouth.
+_LOWER_FACE_COVER_RE = re.compile(
+    r"\b(?:mask|veil|scarf|bandana|respirator|rebreather|muzzle|cloth|gaiter|balaclava)\b"
+    r"[^,;]{0,40}?\b(?:covering|over|across|up over)\s+(?:the\s+|her\s+|his\s+)?"
+    r"(?:mouth|nose|lower\s+(?:half\s+of\s+the\s+)?face)",
+    re.IGNORECASE,
+)
+_LOWER_FACE_HIDDEN_FIELDS: tuple[str, ...] = (
+    "lips", "smile_type", "nose", "lips_makeup", "facial_hair", "expression",
+    "jawline", "chin",  # 1.5.4: a jaw the mask hides is drawn as an exposed one
+)
+
 #: An outfit that already includes headwear (a top hat, a helmet, a hood) can't
 #: also wear a randomized hat from the ``accessories`` field — "a top hat …
 #: accessorized with wide brim sun hat" stacks two hats (the reported quirk).
@@ -574,7 +591,31 @@ _OBJECT_TOKEN_CLAUSES: dict[tuple[str, str], str] = {
     ("hair_highlights", "money piece"): "bold bright highlights on the two front strands",
     ("eyebrow_makeup", "feathered"): "softly brushed-up brows",
     ("skin_details", "birthmark on neck"): "a small light-brown birthmark on the side of the neck",
+    # 1.5.3: values with no noun of their own. "a delicate gemstone" drew a loose stone or
+    # a necklace pendant (no ring), and "a prominent brow ridge forehead" read as two nouns.
+    ("rings", "delicate gemstone"): "a delicate gemstone ring",
+    ("rings", "simple band"): "a simple band ring",
+    ("rings", "stacked thin bands"): "stacked thin band rings",
+    ("bracelet", "cuff"): "a cuff bracelet",
+    ("forehead", "prominent brow ridge"): "a prominent brow ridge",
 }
+
+#: 1.5.3: "an elegant neck" is a feminine-coded phrase; a masculine presentation gets the
+#: plain length word. Voice only -- the pool value (and JSON) is unchanged.
+_MASCULINE_NECK_CLAUSES: dict[str, str] = {"elegant": "a long neck"}
+
+#: 1.5.3: hair-style families whose hair is GATHERED. Voiced "hair is <length colour>, high
+#: ponytail" the style reads as a second, separate hairdo (a render drew a girl with loose
+#: hair beside one with a bun); "worn in ..." says it is the same hair.
+_GATHERED_HAIR_STYLES: frozenset[str] = frozenset(
+    v for fam in ("half-up", "ponytail", "bun_small", "bun_gathered", "knots", "pigtails")
+    for v in FIELD_FAMILIES["hair_style"][fam]["variants"])
+
+
+def _hair_style_voice(style: str) -> str:
+    if style not in _GATHERED_HAIR_STYLES:
+        return style
+    return f"worn {style}" if style == "half up half down" else f"worn in {_article_if_singular(style)}"
 
 #: 1.5.0 round 4: how a MASCULINE presentation voices its jewellery. "a cross necklace"
 #: rendered as a fine, glittering diamond-cut chain on a man; plain-metal wording and a
@@ -841,7 +882,7 @@ _EXTRA_ABSENCE: dict[str, tuple[str, float]] = {
 #: gender: a man with a Feminine/"Any" wardrobe keeps the table above (crossplay is a
 #: deliberate choice). Same RNG shape (one rng.random()), only the threshold moves.
 _EXTRA_ABSENCE_MASCULINE: dict[str, tuple[str, float]] = {
-    "earrings": ("no earrings", 0.9),  # 1.5.2: was 0.8 (15.5% of men)
+    "earrings": ("no earrings", 0.95),  # 1.5.3: was 0.9 (10% of men); 1.5.2: was 0.8
     "necklace": ("no necklace", 0.8),  # 1.5.0 round 4: was 0.72
     "other_jewelry": ("no other jewelry", 0.95),  # _maybe_absent caps at 0.95
     "rings": ("none", 0.6),
@@ -3101,7 +3142,11 @@ def _format_prose(
         lead = f"{lead}, {scale_phrase}"
     core = []
     if g("body_type"):
-        core.append(_an(g("body_type"), "build"))
+        body_type = g("body_type")
+        # 1.5.3: "A petite ... woman with a petite and slim build" said petite twice.
+        if prenominal_height and body_type.startswith(f"{prenominal_height} and "):
+            body_type = body_type[len(prenominal_height) + 5:]
+        core.append(_an(body_type, "build"))
     if g("height") and not prenominal_height and not scale_phrase:
         core.append(g("height"))
     if g("skin_tone"):
@@ -3138,7 +3183,9 @@ def _format_prose(
     if g("hips"):
         body_detail.append(f"{g('hips')} hips")
     if g("neck_length"):
-        body_detail.append(_an(g("neck_length"), "neck"))
+        body_detail.append(
+            (_MASCULINE_NECK_CLAUSES.get(g("neck_length")) if presentation == "Masculine"
+             else None) or _an(g("neck_length"), "neck"))
     if g("posture"):
         body_detail.append(f"{g('posture')} posture")
     if physique:
@@ -3152,7 +3199,8 @@ def _format_prose(
     # --- Face structure -------------------------------------------------
     face_struct = []
     if g("forehead"):
-        face_struct.append(_an(g("forehead"), "forehead"))
+        face_struct.append(_OBJECT_TOKEN_CLAUSES.get(("forehead", g("forehead")))
+                           or _an(g("forehead"), "forehead"))
     if g("cheekbones"):
         face_struct.append(f"{g('cheekbones')} cheekbones")
     if g("jawline"):
@@ -3260,10 +3308,10 @@ def _format_prose(
     if hair_desc:
         s = f"{poss} hair is {hair_desc}"
         if g("hair_style"):
-            s += f", {g('hair_style')}"
+            s += f", {_hair_style_voice(g('hair_style'))}"
         sentences.append(s)
     elif g("hair_style") and not is_bald:
-        sentences.append(f"{poss} hair is {g('hair_style')}")
+        sentences.append(f"{poss} hair is {_hair_style_voice(g('hair_style'))}")
     hair_extra = []
     if g("hair_part") and not is_bald:
         part = g("hair_part")
@@ -3316,7 +3364,8 @@ def _format_prose(
             # the watch below, which has always been articled.
             jewelry.append(
                 (_MASCULINE_JEWELRY_CLAUSES.get(g(field)) if presentation == "Masculine"
-                 else None) or _article_if_singular(g(field)))
+                 else None) or _OBJECT_TOKEN_CLAUSES.get((field, g(field)))
+                or _article_if_singular(g(field)))
     if g("watch_type"):
         watch = g("watch_type")
         jewelry.append(_an(watch, "" if "watch" in watch else "watch"))
@@ -4092,6 +4141,14 @@ def generate_character(
             or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES):
         for field in ("nails", "rings"):
             if field not in locked_clean:
+                resolved.pop(field, None)
+
+    # 1.5.3: a lower-face mask hides the mouth (see _LOWER_FACE_COVER_RE). Value-
+    # independent, so a plain pop replays identically. Only a WIDGET lock survives, the
+    # same rule as the covers_face block below: the mask hides the face.
+    if _LOWER_FACE_COVER_RE.search(outfit_text):
+        for field in _LOWER_FACE_HIDDEN_FIELDS:
+            if field not in widget_locked:
                 resolved.pop(field, None)
 
     # A species `hands` slot REPLACES the human hand, so the human `nails` field is
