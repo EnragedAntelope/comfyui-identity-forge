@@ -4040,3 +4040,141 @@ The "Arishem renders as someone random" report reproduced exactly from the PNG: 
 node downstream of the Cosplayer was set to `Random`, rolled "Judge", and the downstream
 preset's costume wins by design (`merge_preset_documents`). Recreating the nodes changed
 nothing. The renders came right when that Archetype node went back to `None`.
+
+## 1.5.3 — idforge-929-concern
+
+Six renders were read against their prompts; every flagged symptom traced to the prose.
+
+### A costume-text mask hides the mouth
+
+Kitana's mask ("a blue face mask covering the mouth and nose") lives in the costume, so the
+entry is not `covers_face` and the prose still voiced "petite and defined lips ... a soft
+smile ... glossy lip colour". The model drew that mouth and pulled the mask under the chin.
+`_LOWER_FACE_COVER_RE` (identity_forge.py) matches a mask/veil/scarf/muzzle worn over the
+mouth, nose or lower face and pops `lips`, `smile_type`, `nose`, `lips_makeup`,
+`facial_hair` and `expression` (a widget lock survives, the `covers_face` rule). A pulled-down
+mask and an upper-face half mask do not match. The pop is value-independent, so replays agree.
+
+### Cosplay jewellery follows the look level
+
+Four of five renders carried jewellery the costume never names (Chewbacca's signet ring,
+Shao Kahn's ring, Kitana's bracelet, a stud on a 1940s detective). `_JEWELRY_SUPPRESS` in the
+Cosplayer builder locks it absent with `override=False`, so an entry's own signature pin
+survives: **Full character** drops all random jewellery and nails (it is the canon
+character); **Costume only** keeps it (a person wearing the costume) unless the head is
+masked and not unmasked. A widget on the Identity Forge node always wins. Men's random
+earrings went from 10% to 5% (`_EXTRA_ABSENCE_MASCULINE`).
+
+### Furred shells and stated muscle
+
+Chewbacca had no `covers_body` and "all-over long shaggy brown fur" matches neither the shell
+nor the body-paint marker, so he drew a human body and a ring. Wicket, Chief Chirpa and Wampa
+had the same gap. All four now carry `covers_body`; Chewbacca and Wicket-class entries with an
+all-over fur coat should use the canonical "an even, all-over coat of ..." wording and a
+`skin` key when the colour anchor would otherwise voice "brown skin". A costume that says
+"muscular" now pins `fitness_level: muscular` (`_MUSCLE_RE`, `override=False`; 42 entries)
+so Shao Kahn's bare muscular chest no longer sits beside "a lightly active physique". His
+skull helmet now says its faceplate covers the face; Daredevil's suit names sleeves, gloves,
+bracers, belt, knee pads and boots, and his cowl leaves the jaw bare.
+
+### Words without a noun
+
+Voice-only fixes; option values are unchanged. `_OBJECT_TOKEN_CLAUSES` gained "a delicate
+gemstone ring" (the bare value drew a loose stone), "a simple band ring", "stacked thin band
+rings", "a cuff bracelet" and "a prominent brow ridge" (was "brow ridge forehead"). A
+masculine presentation voices "elegant" neck as "a long neck". "A petite ... woman with a
+petite and slim build" says petite once. Gathered hair (`_GATHERED_HAIR_STYLES`: half-up,
+ponytail, buns, space buns, pigtails) reads "hair is <length colour>, worn in a ballerina
+bun" so the style is not a second hairdo.
+
+### Not fixed
+
+The two-women render (#01432) is unproven: the prompt had one woman, the hair phrase and
+selfie framing are the suspects, and the hair wording above is the only change made for it.
+Ethnicity over 300 seeds per gender (`docs/worklog/ethnicity_929.py`) is flat across 88
+values, the top at 3.3%, so the six European faces were chance.
+
+## 1.5.4 — idforge-929-concern, second batch
+
+A second batch of renders against the 1.5.3 code; each flagged symptom was traced to the prose and the
+fix A/B-rendered at the maintainer's seeds before it went into data.
+
+### A lower-face mask hides the jaw too
+
+`_LOWER_FACE_HIDDEN_FIELDS` gained `jawline` and `chin`. Under Sub-Zero's, Ibuki's and Kaneki's
+masks the prose still said "a sharp and defined jawline, a pointed chin", and the model drew a
+bare jaw and slid the mask down. Poses ("lifting the chin") and makeup ("jawline contour") are
+other fields and stay.
+
+### Masks lead the costume and say where they sit
+
+Sub-Zero, Kakashi, Ibuki, Kaneki, Nezuko, Rage and the Titania mask alternate put the mask FIRST
+in the costume with a worn position ("pulled up over the nose and mouth", "worn over the eyes").
+Trailing list items landed on the neck, chest or crown. Sub-Zero is now the canon rigid metallic
+guard with ice-crystal vents, frost mist and icy forearms (a plain "cloth mask" drew a surgical
+mask). Silk's makeshift alternate is opaque webbing over a grey base layer (it drew sheer web
+over bare skin) and its mask now matches `_LOWER_FACE_COVER_RE`. Shao Kahn's helmet says
+"bone-white skull mask covering the whole face"; Daredevil's cowl has "blank dark-red eye
+panels sewn flush into the leather" ("lenses" drew red safety glasses).
+
+### The colour anchor keeps a fur, scale or hide material
+
+`_body_paint_skin_color` captured the colour and dropped the material, so Beast voiced "blue
+skin" in the lead and on the face while the costume said "a coat of blue fur": the model drew a
+fur JACKET over blue skin. The anchor now returns "blue fur" for fur, scales and hide (an
+explicit `skin` key still wins), and Beast's costume says "uniform, all-over thick blue fur"
+(no garment word, same body-paint marker). Many roster entries voiced "<colour> skin" over fur,
+hide, scales or plating before this; their prose (and `skin_tone` in the JSON) now names the
+material.
+
+### Ewoks: name the species, describe the face
+
+"a small round face ... large dark eyes ... soft fur" drew a teddy bear. Chief Chirpa's and
+Wicket's masks now say "the flat, wrinkled face of an elderly Ewok" (Chirpa), a flat face with a
+short snout, small glossy all-black eyes with no visible whites and a mouth hidden in coarse
+grizzled fur. Chirpa keeps the pinkish-brown snout from the maintainer's reference photos.
+Wicket's wording is from memory of the film, not a reference image.
+
+### Colossus, Zangief, the Namors
+
+Colossus rendered a human face on steel plates through three A/B rounds; an early face
+sentence (`anatomy_note`) did not move it because the voiced jaw, nose, lips and brows still
+described a man. He is now `covers_face` with a steel head as the mask (hair sculpted in steel).
+Zangief's "a red mohawk" lost to the random hair sentence; "bald" in his costume drops the
+scalp-hair fields (`_BALD_RE`), leaving the mohawk as the only hair. The canon ankle wings on
+Namor, Namora and Namorita are KEPT (the pack is model-agnostic, so a Krea2 turbo limit does not
+remove canon): they now say "a small white feathered wing sprouting from the outer side of each
+bare ankle", but Krea2 turbo still draws them on the back or shoulders because the ankles sit
+below almost every framing.
+
+### Daredevil's collar, Nezuko's muzzle
+
+"A high protective collar" drew a neck brace; "a plain mock-neck collar of the same red
+leather" drew a roll collar. Nezuko's "muzzle clenched across the mouth" vanished in full-body
+framing; "a bamboo muzzle tube gripped between the teeth across the mouth, a red cord running
+from both ends around the back of the head" renders in the maintainer's graph. The gallery
+pipeline (no prompt enhancer) still draws a stock cosplay photo without the muzzle, so her tile
+shows none: a gallery-pipeline limit, not a prose one. Costume text avoids pronouns (crossplay).
+
+### Beast's head, Daredevil's DD, ankle wings again
+
+Beast rendered an ordinary man's face inside blue fur: the random face, jaw and hair were still
+voiced. He is now `covers_face` with a `mask` that names "Hank McCoy, the X-Men's Beast" and
+describes the comics face (mostly human shape, broad flat nose, heavy brow ridge, wide jaw, fine
+blue fur, yellow eyes, canines resting over the lower lip, high swept-back ears, wild dark mane);
+the costume adds the long arms and oversized clawed hands and feet. A first feline-muzzle mask
+drew a werewolf; naming the character and the human-ape face shape did not. Daredevil's
+"double-D emblem" drew one D; "a raised red 'DD' monogram ... two capital Ds interlocked, the
+vertical spine of the second D passing through the open center of the first" draws the nested
+pair. The ankle wings (Namor, Namora, Namorita) moved into `anatomy_note` ("feathered ankles: a
+small white feather fan on each ankle bone, sticking out sideways just above the foot like the
+winged heels of Hermes, each fan the size of a hand") with "bare feet" in the costume. That
+drew feathers at the ankles and none on the back on four seeds. Wordings that said "wings" drew
+back wings as well, and mentioning the back ("the shoulders and back are plain") drew them
+there: never name the place you do not want.
+
+### Not changed
+
+Kakashi's forehead protector "pulled down over the left eye" still does not show (the random
+hair covers it); random hair, beards, ages and Costume-only jewellery are the person under the
+costume, by design. Zangief's scars read as a rash in one seed.

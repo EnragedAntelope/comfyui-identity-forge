@@ -1947,9 +1947,10 @@ COSPLAYERS: dict[str, dict] = {
                    "black, red fingers, a snug red hood over the head, and a red webbed "
                    "scarf drawn up over the nose to mask the lower face",
         "costumes": [
-            "a makeshift costume spun from raw pale spider-silk, wound in tight "
-            "overlapping bands around the torso, arms and legs, with the webbing wrapped "
-            "over the head as a hood and drawn across the lower face",
+            "a mask of pale spider-silk webbing wrapped over the nose and mouth, a hood of "
+            "the same webbing over the head, and a makeshift costume of raw pale spider-silk "
+            "wound in dense overlapping bands around the torso, arms and legs over a plain "
+            "opaque pale-grey stretch bodysuit",
         ],
         "signature": {"eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height",
@@ -2560,9 +2561,15 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
-        "costume": "deep red textured leather armor from neck to toe with a double-D "
-                   "emblem on the chest",
-        "mask": "a small mask with two short devil horns",
+        "costume": "a deep red textured leather suit from neck to toe with long sleeves, "
+                   "a plain mock-neck collar of the same red leather, red gloves with padded "
+                   "forearm bracers, a thick belt, knee pads, heavy red boots, and a raised red "
+                   "'DD' monogram on the center of the chest: two capital Ds interlocked, the "
+                   "straight vertical spine of the second D passing through the open center of "
+                   "the first D",
+        "mask": "a crimson leather cowl covering the whole head and the top half of the face, "
+                "with blank dark-red eye panels sewn flush into the leather, leaving the "
+                "nose, mouth and jaw bare, with two short devil horns on the forehead",
         "physique": {"body_type": "lean", "height": "average height"},
         "prop": "a red billy club with a short cable paid out from its handle",
     },
@@ -3047,8 +3054,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a single bandolier strap of silver ammo across the chest, with "
-                   "all-over long shaggy brown fur over the body",
+        "covers_body": True,
+        "skin": "long shaggy brown fur",  # else the colour anchor voices "brown skin"
+        "costume": "a single bandolier strap of silver ammo across the chest, over an "
+                   "even, all-over coat of long shaggy brown fur",
         "mask": "a long-muzzled Wookiee face covered in shaggy brown fur",
         "physique": {"body_type": "athletic", "height": "very tall"},
         "prop": "a bowcaster - a heavy crossbow-shaped blaster with a thick curved limb and a "
@@ -3253,9 +3262,13 @@ COSPLAYERS: dict[str, dict] = {
     "Zangief": {
         "franchise": "Street Fighter",
         "gender": "Male",
-        "costume": "red wrestling briefs, red boots, brown hand wraps, a red mohawk, and a "
-                   "bare muscular scarred chest with thick chest hair",
-        "signature": {"hair_color": "bright red", "eye_color": "bright blue"},
+        # 1.5.4: "a red mohawk" lost to the random hair sentence ("buzzed very short curly
+        # red, textured crop"). "bald" in the costume drops the scalp-hair fields (_BALD_RE),
+        # so the mohawk is the only hair on the head; the colour lives in the costume.
+        "costume": "red wrestling briefs, red boots, brown hand wraps, a tall bright red "
+                   "mohawk strip standing up along the centre of an otherwise bald, shaved "
+                   "head, and a bare muscular scarred chest with thick chest hair",
+        "signature": {"eye_color": "bright blue"},
         "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "fair"},
     },
 
@@ -3274,8 +3287,12 @@ COSPLAYERS: dict[str, dict] = {
     "Sub-Zero": {
         "franchise": "Mortal Kombat",
         "gender": "Male",
-        "costume": "a blue and black ninja uniform with a mask over the lower face and a "
-                   "frosted chest emblem, with frost forming at the hands",
+        "costume": "a rigid blue metallic mask covering the nose, mouth and jaw, with angular "
+                   "ice-crystal vents on the sides and front and a faint white mist seeping "
+                   "through them, a black ninja uniform under deep royal blue vestments with "
+                   "a frosted chest emblem, blue shoulder guards and forearm guards etched "
+                   "with frost patterns, and jagged translucent ice encrusting the hands and "
+                   "forearms",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "ice blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -3329,7 +3346,8 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "ornate armor with huge spiked shoulder pauldrons over a bare muscular "
                    "chest",
-        "mask": "a horned skull-faced helmet",
+        "mask": "a bone-white skull mask covering the whole face, set beneath a dark spiked "
+                "helmet with two long curved horns",
         "physique": {"body_type": "athletic", "height": "very tall"},
         "prop": "an enormous ornate war hammer with a broad flanged head",
     },
@@ -3400,8 +3418,9 @@ COSPLAYERS: dict[str, dict] = {
     "Kakashi Hatake": {
         "franchise": "Naruto",
         "gender": "Male",
-        "costume": "a green flak vest over dark blues, a dark cloth mask over the lower "
-                   "face, and a slanted forehead protector covering one eye",
+        "costume": "a dark cloth mask pulled up over the nose and mouth, a slanted forehead "
+                   "protector pulled down over the left eye, and a green flak vest over dark "
+                   "blues",
         "signature": {"hair_color": "silver", "hair_length": "very short",
                       "hair_style": "windswept", "eye_color": "dark gray"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
@@ -3767,8 +3786,13 @@ COSPLAYERS: dict[str, dict] = {
     "Nezuko Kamado": {
         "franchise": "Demon Slayer",
         "gender": "Female",
-        "costume": "a pink asanoha-patterned kimono under a brown haori with a pink obi, "
-                   "and a bamboo muzzle held across the mouth by a red cord",
+        # 1.5.4: "clenched across the mouth" vanished in the full-body gallery framing; a tube
+        # gripped between the teeth with cord ends running to the back of the head rendered.
+        # No pronouns (crossplay); must still match _LOWER_FACE_COVER_RE (muzzle ... across
+        # the mouth within 40 characters) so the mouth fields are dropped.
+        "costume": "a short bamboo muzzle tube gripped between the teeth across the mouth, a "
+                   "red cord running from both ends of the tube around the back of the head, a "
+                   "pink asanoha-patterned kimono under a brown haori, and a pink obi",
         "signature": {"hair_color": "black with colored tips", "hair_length": "hip length",
                       "hair_texture": "wavy"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},
@@ -5279,9 +5303,10 @@ COSPLAYERS: dict[str, dict] = {
                    "over smooth, flawless orange-toned skin, with a strong jaw and bold features "
                    "on a powerfully muscular frame - towering and gigantic with overwhelming scale and proportion",
         "costumes": [
-            "a purple sleeveless wrestling bodysuit with jagged spiked shoulder pieces and a "
-            "purple mask with hair flowing out the top, on a powerfully muscular frame - "
-            "towering and gigantic with overwhelming scale",
+            "a purple mask worn over the eyes and upper face with the long hair flowing free "
+            "above it, a purple sleeveless wrestling bodysuit with jagged spiked shoulder "
+            "pieces, on a powerfully muscular frame - towering and gigantic with overwhelming "
+            "scale",
             "a high-cut purple leotard with white trim, white gloves and thigh-high white boots, "
             "on a powerfully muscular frame - towering and gigantic with overwhelming scale",
         ],
@@ -6115,10 +6140,22 @@ COSPLAYERS: dict[str, dict] = {
     "Beast (X-Men)": {
         "franchise": "Marvel",
         "gender": "Male",
+        "covers_face": True,
         "covers_body": True,
-        "costume": "torn shorts over an even, all-over coat of blue fur on a hulking "
-                   "muscular frame, with pointed ears, fangs, and clawed hands",
-        "eyes": "amber",
+        # 1.5.4: "a coat of blue fur" rendered as a fur JACKET over blue skin. "uniform,
+        # all-over ... fur" keeps the body-paint marker without the garment word.
+        "skin": "blue fur",
+        "costume": "torn dark shorts over uniform, all-over thick blue fur on a hulking "
+                   "muscular frame with disproportionately long arms reaching past the "
+                   "knees, and oversized clawed hands and feet",
+        # 1.5.4: with the random face voiced the model drew an ordinary man's face inside
+        # the fur (four renders). covers_face drops the random face and the mask carries
+        # the head, as for Colossus. Unmask still reveals a random person.
+        "mask": "the face of Hank McCoy, the X-Men's Beast: a mostly human face shape with a "
+                "broad flattened nose, a heavy brow ridge and a wide prominent jaw, covered in "
+                "fine short blue fur, bright yellow eyes, two long canine fangs resting over "
+                "the lower lip, slightly pointed ears swept back and set high, and a thick "
+                "swept-back mane of dark blue hair in wild tufts",
         "signature": {},
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
@@ -6141,10 +6178,17 @@ COSPLAYERS: dict[str, dict] = {
     "Colossus": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "red-and-yellow trunks over smooth, flawless polished chrome steel skin on a "
-                   "huge muscular frame",
-        "eyes": "steel-grey",
-        "signature": {"hair_color": "jet black", "hair_length": "very short"},
+        "costume": "red-and-yellow trunks over smooth, flawless polished chrome-steel skin that "
+                   "covers the whole body, neck and hands like a living metal statue, on a huge "
+                   "muscular frame",
+        # 1.5.4: the face rendered as bare human skin over steel plates in three A/B rounds
+        # and an early face sentence (anatomy_note) did not move it: the voiced jawline, nose,
+        # lips and brows kept describing a man. covers_face drops those, and the mask
+        # carries the whole head (hair is sculpted steel, as in the comics).
+        "covers_face": True,
+        "mask": "a head and face of seamless mirror-bright polished chrome steel, with a strong "
+                "square jaw, a straight nose, steel lips and brow ridges, steel-grey eyes, and "
+                "short swept-back hair sculpted in the same steel",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Kitty Pryde": {
@@ -8194,8 +8238,16 @@ COSPLAYERS: dict[str, dict] = {
     "Namor": {
         "franchise": "Marvel",
         "gender": "Male",
-        "costume": "green scaled swim trunks, pointed ears, and tiny feathered wings at "
-                   "the ankles, on a bare muscular chest",
+        # 1.5.4: canon ankle wings KEPT on purpose (the pack is model-agnostic). Krea2 turbo
+        # draws them on the back or shoulders because the ankles sit below almost every
+        # framing; other models may place them correctly. Reworded to give a worn position.
+        # The wings are body anatomy, so they are voiced in the early body sentence (before the
+        # clothing), which is the position that carries a body fact in the render.
+        "anatomy_note": "feathered ankles: a small white feather fan on each ankle bone, sticking "
+                        "out sideways just above the foot like the winged heels of Hermes, each fan "
+                        "the size of a hand",
+        "costume": "green scaled swim trunks, pointed ears, and bare feet, on a bare "
+                   "muscular chest",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "hair_style": "slicked back", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -8579,6 +8631,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
+        "covers_body": True,
         "costume": "a hulking body covered in shaggy off-white fur, with long clawed arms",
         "mask": "a fanged white-furred beast face with curved horns and small dark eyes",
         "size_scale": "giant",
@@ -8589,8 +8642,16 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "all-over soft brown fur with a pointed orange hood and a slung satchel",
-        "mask": "a small round furry face with dark eyes peering out from under the hood",
+        "covers_body": True,
+        "skin": "shaggy brown fur",
+        "costume": "a pointed orange-brown leather hood and a leather satchel slung across the "
+                   "chest, over an even, all-over coat of shaggy brown fur on a squat, "
+                   "child-sized body",
+        # 1.5.4: same fix as Chief Chirpa -- name the species and its flat face; "a small
+        # round furry face with dark eyes" reads as a teddy bear.
+        "mask": "the flat face of an Ewok covered in tan-and-brown fur, with a short dark snout, "
+                "large glossy all-black eyes with no visible whites, a thin mouth hidden in the "
+                "fur, and round furry ears, framed by the pointed hood",
         "physique": {"body_type": "slim", "height": "very petite"},
         "prop": "a short wooden spear with a bound stone tip",
     },
@@ -8598,10 +8659,21 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "all-over grizzled grey fur with a horned headdress and a beaded pouch",
-        "mask": "a grey furry muzzled face with dark eyes under a horned headdress",
-        "physique": {"body_type": "slim", "height": "short"},
-        "prop": "a tall gnarled wooden staff topped with bone ornaments",
+        "covers_body": True,
+        "skin": "short coarse grizzled grey-white fur",  # else the colour anchor voices "skin"
+        "costume": "a brown leather hooded poncho draped over the shoulders and hung with "
+                   "small curved claws, a geode pendant on the chest, and a thin leather "
+                   "belt, over an even, all-over coat of short coarse grizzled grey-white fur "
+                   "on a squat, child-sized body",
+        # 1.5.4: "a small round face ... large dark eyes" drew a teddy bear. Naming the
+        # species and its flat wrinkled face with small glossy black eyes drew an Ewok.
+        "mask": "the flat, wrinkled face of an elderly Ewok covered in coarse grizzled "
+                "grey-white fur, with a short flat pinkish-brown snout, small glossy all-black "
+                "eyes with no visible whites under a heavy furrowed brow, a thin mouth hidden "
+                "in the fur, and round furry ears, under a wreath of dark feathers and leaves",
+        "physique": {"body_type": "stocky", "height": "very petite"},
+        "prop": "a slender wooden walking staff, roughly shoulder height, topped with a "
+                "large knobbed pale bone",
     },
     "Bib Fortuna": {
         "franchise": "Star Wars",
@@ -13341,9 +13413,13 @@ COSPLAYERS: dict[str, dict] = {
     "Namorita": {
         "franchise": "Marvel",
         "gender": "Female",
-        # Atlantean; blonde, green scaled swimsuit, pointed ears and small ankle wings.
-        "costume": "a green scaled one-piece swimsuit cut high on the hips, small feathered "
-                   "wings at each ankle, pointed elf-like ears, and a slim gold arm band",
+        # Atlantean; blonde, green scaled swimsuit, pointed ears and small ankle wings (kept
+        # in 1.5.4 although Krea2 turbo draws them on the back; see Namor).
+        "anatomy_note": "feathered ankles: a small white feather fan on each ankle bone, sticking "
+                        "out sideways just above the foot like the winged heels of Hermes, each fan "
+                        "the size of a hand",
+        "costume": "a green scaled one-piece swimsuit cut high on the hips, pointed "
+                   "elf-like ears, bare feet, and a slim gold arm band",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "hair_texture": "loosely wavy", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -14524,8 +14600,12 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Female",
         # Atlantean, Namorita's cousin.
-        "costume": "a green scaled one-piece cut high on the hips, small feathered wings at each "
-                   "ankle, pointed elf-like ears, and a gold belt",
+        # Ankle wings kept in 1.5.4 although Krea2 turbo draws them on the back (see Namor).
+        "anatomy_note": "feathered ankles: a small white feather fan on each ankle bone, sticking "
+                        "out sideways just above the foot like the winged heels of Hermes, each fan "
+                        "the size of a hand",
+        "costume": "a green scaled one-piece cut high on the hips, pointed elf-like ears, "
+                   "bare feet, and a gold belt",
         "signature": {"hair_color": "near black", "hair_length": "very long",
                       "hair_texture": "loosely wavy", "eye_color": "blue-gray"},
         "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "fair"},
@@ -14581,9 +14661,9 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         # New Warrior with an adult, powerhouse frame; face-visible striped mask.
-        "costume": "a sleeveless dark bodysuit with 'RAGE' emblazoned across the chest, a yellow-"
-                   "striped eye-mask, heavy gauntlets, and thick boots, over a hugely muscular "
-                   "frame",
+        "costume": "a yellow-striped mask worn over the eyes, a sleeveless dark bodysuit with "
+                   "'RAGE' emblazoned across the chest, heavy gauntlets, and thick boots, "
+                   "over a hugely muscular frame",
         "signature": {"hair_color": "jet black", "hair_length": "buzzed very short",
                       "facial_hair": "clean shaven", "eye_color": "dark brown"},
         "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "dark brown"},
@@ -17121,9 +17201,9 @@ COSPLAYERS: dict[str, dict] = {
     "Ken Kaneki": {
         "franchise": "Tokyo Ghoul",
         "gender": "Male",
-        "costume": "a black leather battle suit with a high collar and buckled "
-                   "straps, and a black leather half-mask over the lower face with "
-                   "a zippered mouth opening set with bared metal teeth",
+        "costume": "a black leather half-mask strapped over the nose and mouth with a "
+                   "zippered opening set with bared metal teeth, and a black leather battle "
+                   "suit with a high collar and buckled straps",
         "eyes": "the right eye black-sclera with a glowing red iris",
         "signature": {"hair_color": "platinum white", "hair_length": "very short",
                       "hair_style": "tousled bedhead", "facial_hair": "clean shaven"},
@@ -25206,11 +25286,11 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         # Street Fighter III kunoichi. The mask covers only the lower face, so it stays
         # in the costume with no covers_face (the domino-mask rule).
-        "costume": "a traditional ninja dogi - a sleeveless black top, baggy black trousers "
-                   "slit at the sides, and dark arm guards - a black cloth mask over the lower "
-                   "half of the face, cloth bandages wrapped around the shins, ankles and "
-                   "insteps in place of shoes, and three angular bangs over a topknot ponytail "
-                   "falling to mid-thigh",
+        "costume": "a black cloth mask pulled up over the nose and mouth, a traditional ninja "
+                   "dogi of a sleeveless black top, baggy black trousers slit at the sides "
+                   "and dark arm guards, cloth bandages wrapped around the shins, ankles and "
+                   "insteps in place of shoes, and three angular bangs over a topknot "
+                   "ponytail falling to mid-thigh",
         "signature": {"hair_color": "jet black", "hair_length": "hip length",
                       "hair_style": "high ponytail", "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "average height"},
