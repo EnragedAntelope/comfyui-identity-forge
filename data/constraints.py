@@ -190,6 +190,18 @@ CONSTRAINT_RULES: list[dict] = [
      "excludes_values": ['worn down', 'slicked back', 'windswept',
                          'freshly blown out', 'tousled bedhead'],
      "reason": "a buzz cut has no length to wear down, style, or blow out"},
+    # 1.5.5: declined at 1.5.1 because excluding "wet look" alone would have partially
+    # culled the then-9-variant loose_natural family, dumping its weight onto "natural
+    # and unstyled" (the exact class of bug this file warns against everywhere else).
+    # fields.py 1.5.5 split loose_natural into loose_wet (just "wet look") + loose_natural
+    # (just "natural and unstyled"), so this now drops a WHOLE family and every other
+    # family -- including "natural and unstyled" itself -- keeps its own frozen share. A
+    # 5,000-seed sweep had "wet look" on 34% of buzzed women / 20% of buzzed men once
+    # loose_styled was already excluded above; see AuditBiasTests.
+    {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
+     "excludes_field": "hair_style",
+     "excludes_values": list(FIELD_FAMILIES["hair_style"]["loose_wet"]["variants"]),
+     "reason": "a buzz cut shows bare scalp, not a wet-look sheen over styled hair"},
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style", "excludes_values": ["mullet"],
      "reason": "a buzz cut has no back length for a mullet"},
@@ -1504,10 +1516,17 @@ _HEAVY_COATS = frozenset(["wool overcoat", "parka", "puffer coat", "shearling co
 _MID_COATS = frozenset(["trench coat", "peacoat", "wrap coat", "leather jacket",
                         "quilted jacket", "waxed field jacket"])
 _LIGHT_COATS = frozenset(["denim jacket", "bomber jacket", "rain jacket", "windbreaker"])
+#: 1.5.5: sorted() before fromkeys() -- a plain frozenset iterates in Python's
+#: per-process hash order, which only matters here because `OUTERWEAR_SEASONS`
+#: is itself iterated below to APPEND to CONSTRAINT_RULES (rule order would
+#: otherwise vary run to run). Harmless today (only one `outerwear` value is
+#: ever active, and it is never re-picked mid-loop), but latent: a future rule
+#: that re-picks a deferred field through this list would see a different
+#: legal set depending on process hash seed.
 OUTERWEAR_SEASONS: dict[str, frozenset[str]] = {
-    **dict.fromkeys(_HEAVY_COATS, frozenset(["winter"])),
-    **dict.fromkeys(_MID_COATS, frozenset(["autumn", "winter", "spring"])),
-    **dict.fromkeys(_LIGHT_COATS, frozenset(["autumn", "spring"])),
+    **dict.fromkeys(sorted(_HEAVY_COATS), frozenset(["winter"])),
+    **dict.fromkeys(sorted(_MID_COATS), frozenset(["autumn", "winter", "spring"])),
+    **dict.fromkeys(sorted(_LIGHT_COATS), frozenset(["autumn", "spring"])),
 }
 
 #: What each outfit_style plausibly throws on over the top. Allowlist, fail-safe like
@@ -1887,7 +1906,7 @@ for _style in FIELD_DEFINITIONS["outfit_style"]["female_options"]:
 
 # =====================================================================================
 # 1.5.0 round 4 -- the maintainer's 47 flagged renders. Every block below answers a
-# class of contradiction seen there; docs/architecture.md "Round 4" has the list.
+# class of contradiction seen there; docs/history.md "Round 4" has the list.
 # =====================================================================================
 
 # --- extras belong to a style ---------------------------------------------------------
@@ -2268,9 +2287,12 @@ for _length, _keep in (
         "excludes_values": sorted({a for a in _HAIR_ACCESSORIES if a not in _keep}),
         "reason": f"{_length} hair has nothing for that accessory to hold"})
 # 1.5.1: a pompadour, quiff or fade is short at the back and sides; at shoulder length
-# the model drew long loose hair and called it a pompadour (#00517). Declined: "wet look"
-# on a buzz and "worn down" on very short hair -- each culls part of a hair_style family
-# (HairStyleFamilyTests); both flagged cases were archetype LOCKS, fixed in the data.
+# the model drew long loose hair and called it a pompadour (#00517). Declined at the time:
+# "wet look" on a buzz and "worn down" on very short hair -- each would have culled part
+# of a hair_style family (HairStyleFamilyTests); both flagged cases were archetype LOCKS,
+# fixed in the data instead. "wet look" on a buzz shipped at 1.5.5 once the 9-variant
+# family was split so the exclusion could drop a whole unit (see the buzz-cut rules
+# above). "worn down" on very short hair is still declined -- it remains a partial cull.
 for _length in ("shoulder length", "slightly past shoulders"):
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "hair_length", "value": _length,

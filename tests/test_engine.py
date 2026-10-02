@@ -2647,6 +2647,23 @@ class UserPresetExtensionTests(unittest.TestCase):
         self.assertNotIn("No Costume", store)
         self.assertEqual(store["Bad Gender"]["gender"], "Female")
 
+    def test_covers_face_requires_the_literal_true(self):
+        # 1.5.5: was bool(entry.get("covers_face", False)), so the STRING "false"
+        # coerced to True and hid the face on a character that asked not to.
+        from data.user_options import apply_user_cosplayers
+        store = {}
+        f = self._write({"cosplayers": {
+            "String False": {"costume": "a plain robe", "covers_face": "false"},
+            "String True": {"costume": "a plain robe", "covers_face": "true"},
+            "Actually True": {"costume": "a plain robe", "covers_face": True},
+            "Omitted": {"costume": "a plain robe"},
+        }})
+        apply_user_cosplayers(store, path=f)
+        self.assertFalse(store["String False"]["covers_face"])
+        self.assertFalse(store["String True"]["covers_face"], "a truthy STRING is not True")
+        self.assertTrue(store["Actually True"]["covers_face"])
+        self.assertFalse(store["Omitted"]["covers_face"])
+
     def test_cosplayer_male_entry_populates_random_male_scope(self):
         from data.user_options import apply_user_cosplayers
         store = {}
@@ -3575,7 +3592,7 @@ class HairStyleFamilyTests(unittest.TestCase):
 
     #: Which pre-split family each post-split family carves out of.
     _DERIVED_FROM = {
-        "loose_styled": "loose", "loose_natural": "loose",
+        "loose_styled": "loose", "loose_natural": "loose", "loose_wet": "loose",
         "loose_combover": "loose", "loose_mullet": "loose",
         "braid_long": "braid", "braid_short": "braid",
         "bun_small": "bun", "bun_gathered": "bun",
@@ -7373,6 +7390,66 @@ class ExtraAbsenceFloorTests(unittest.TestCase):
                 f"{field}: realized absence {rate:.2f} is below its {base:.2f} floor")
 
 
+class AuditBiasTests(unittest.TestCase):
+    """1.5.5: four over-draws a maintainer-reported sweep measured and fixed.
+
+    Each value here had the SAME flat weight as its peers despite being far more
+    visually distinctive or far more often clothing-survivable, so it rendered as
+    common as an everyday trait. Fixed with ``weights`` maps (vitiligo, eye colour,
+    tattoo placement) or a family split + whole-family exclusion (wet look on a
+    buzz cut -- see :class:`HairStyleFamilyTests`). Measured on a 5,000-seed sweep
+    per gender; these pin the fix with a smaller, CI-sized sample.
+    """
+
+    def test_vitiligo_is_rare_not_everyday(self):
+        n = 1200
+        hits = sum(
+            _flat_document(generate_character(seed, gender, {})[1]).get("skin_details")
+            == "vitiligo patches"
+            for gender in ("Female", "Male")
+            for seed in range(n))
+        rate = hits / (2 * n)
+        self.assertLess(rate, 0.025, f"vitiligo patches at {rate:.1%}, still too common")
+
+    def test_golden_eye_colours_no_longer_match_brown_and_hazel_combined(self):
+        n = 1200
+        golden = {"amber", "honey", "golden brown"}
+        hits = sum(
+            _flat_document(generate_character(seed, gender, {})[1]).get("eye_color")
+            in golden
+            for gender in ("Female", "Male")
+            for seed in range(n))
+        rate = hits / (2 * n)
+        self.assertLess(rate, 0.16, f"amber/honey/golden brown at {rate:.1%} combined")
+
+    def test_a_buzz_cut_never_draws_wet_look(self):
+        n = 300
+        for gender in ("Female", "Male"):
+            for seed in range(n):
+                flat = _flat_document(generate_character(
+                    seed, gender, {"hair_length": "buzzed very short"})[1])
+                self.assertNotEqual(flat.get("hair_style"), "wet look",
+                                    f"{gender} seed {seed}: wet look on a buzz cut")
+
+    def test_tattoo_placement_no_longer_concentrates_on_hand_and_neck(self):
+        n = 2000
+        hand_or_neck = {"across the back of one hand", "on the side of the neck"}
+        voiced = 0
+        hits = 0
+        for gender in ("Female", "Male"):
+            for seed in range(n):
+                flat = _flat_document(generate_character(seed, gender, {})[1])
+                placement = flat.get("tattoo_placement")
+                if not placement or _is_absent(placement):
+                    continue
+                voiced += 1
+                hits += placement in hand_or_neck
+        self.assertGreater(voiced, 100, "too few tattooed samples to assert on")
+        rate = hits / voiced
+        self.assertLess(rate, 0.40,
+                        f"hand+neck placements at {rate:.1%} of tattooed characters")
+
+
 class ShellTattooTests(unittest.TestCase):
     """Ink needs skin. A full hard shell / mascot suit has none (0.95.0).
 
@@ -9124,6 +9201,36 @@ class RoundFourQaTests(unittest.TestCase):
         for seed, d in self._sample(200, locked={"clothing_color": "gradient ombre"}):
             self.assertIn(d.get("clothing_pattern"), (None, "solid", "subtle texture"),
                           f"seed {seed}")
+
+
+class ComfyApiStubPurgeTests(unittest.TestCase):
+    """1.5.5: a broken `comfy_api` already in sys.modules must not poison the stub.
+
+    The bug (see tests/__init__.py and docs/history.md -> the 1.1.0 CI
+    investigation): a real-but-partial `comfy_api` reachable on sys.path from
+    outside this repo lands in sys.modules on the failed `import
+    comfy_api.latest.io`, and Python then resolves every later
+    `comfy_api.latest.io` from that cached partial package instead of the stub
+    inserted right after -- _COMFY_AVAILABLE stays False for the rest of the
+    process and every node class fails to define. Needs a subprocess: this
+    session's own process already ran tests/__init__.py clean, so poisoning
+    sys.modules here would prove nothing about a fresh one.
+    """
+
+    def test_a_poisoned_sys_modules_entry_does_not_block_the_stub(self):
+        import subprocess
+        script = (
+            "import sys, types\n"
+            "sys.modules['comfy_api'] = types.ModuleType('comfy_api')\n"  # no __path__
+            "import tests\n"  # tests/__init__.py's purge-then-stub logic
+            "from nodes.identity_forge import IdentityForge\n"
+            "print('OK')\n"
+        )
+        result = subprocess.run(
+            [sys.executable, "-c", script], cwd=str(ROOT),
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, f"stderr:\n{result.stderr}")
+        self.assertIn("OK", result.stdout)
 
 
 if __name__ == "__main__":

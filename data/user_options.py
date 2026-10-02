@@ -355,7 +355,10 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
         record: dict[str, Any] = {
             "franchise": franchise if isinstance(franchise, str) else "",
             "gender": gender if gender in ("Female", "Male") else "Female",
-            "covers_face": bool(entry.get("covers_face", False)),
+            # 1.5.5: was bool(...), so "covers_face": "false" (a string) coerced
+            # to True -- the same mistake the covers_body/covers_hair/bald/
+            # body_paint flags below already avoid with `is True`.
+            "covers_face": entry.get("covers_face") is True,
             "costume": costume,
             "signature": _clean_field_map(entry.get("signature")),
             "physique": _clean_field_map(entry.get("physique")),

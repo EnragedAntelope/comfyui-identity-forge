@@ -1849,8 +1849,10 @@ def _visible_tattoo_placements(pool: list[str], resolved: dict[str, str]) -> lis
     ``tattoo_placement`` in ``FIELD_DEFINITIONS``), so its value is already settled.
 
     Every placement can be culled; when none survives, the caller drops the tattoo
-    itself rather than let the model cut a window for it. Flat field, no family weight,
-    so culling re-picks uniformly among the survivors.
+    itself rather than let the model cut a window for it. No family weight (see
+    :data:`FIELD_FAMILIES`), so culling re-picks over whatever draw-weights the field
+    carries (1.5.5: hand/neck trimmed, see ``tattoo_placement`` in fields.py) instead
+    of concentrating a frozen family weight.
     """
     tattoo = resolved.get("tattoos")
     if not tattoo or _is_absent(tattoo):

@@ -179,9 +179,15 @@ function openManager(node) {
     selected.clear();
     const characters = await fetchCharacters();
     applyCharacterList(node, characters);
-    if (!characters.length) {
+    // 1.5.5: fetchCharacters() returns null on a failed/unreachable request
+    // (applyCharacterList already handles that for the node's combo widget,
+    // above). `characters.length` on null threw uncaught here, leaving the
+    // modal empty with no message instead of reporting the failure.
+    if (!characters || !characters.length) {
       const empty = document.createElement("div");
-      empty.textContent = "No saved characters yet.";
+      empty.textContent = characters
+        ? "No saved characters yet."
+        : "Vault unavailable — press Refresh.";
       empty.style.opacity = "0.7";
       grid.append(empty);
       return;

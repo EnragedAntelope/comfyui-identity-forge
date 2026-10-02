@@ -21,14 +21,21 @@ is fine.
 This pack is pure Python with **no third-party dependencies** and runs fully
 offline:
 
-- no network calls, no telemetry, no API keys or credentials of any kind;
+- no telemetry, no API keys or credentials of any kind;
 - no `eval`, `exec` or `pickle` of user-supplied data;
 - `user_options.json` and the character vault are parsed as plain JSON.
+
+**One opt-in exception:** the in-node roster picker's gallery thumbnails (off by
+default) fetch images from this project's own GitHub Pages site when a user turns
+them on. No other network call exists anywhere in the pack.
 
 The realistic surface is therefore small: JSON parsing of local files the user
 controls, the file paths the vault reads and writes, and the handful of
 read/management HTTP routes the vault nodes register on the ComfyUI server
-(which is only as exposed as the ComfyUI instance hosting it).
+(which is only as exposed as the ComfyUI instance hosting it — including to
+browser-based cross-origin requests if that instance is run with
+`--enable-cors-header`, which answers the preflight the vault's delete/rename
+routes otherwise rely on failing).
 
 ## Out of scope
 

@@ -103,6 +103,13 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "group": 'Face',
         "female_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
         "male_options": ['pale blue', 'ice blue', 'bright blue', 'deep blue', 'blue-gray', 'gray', 'dark gray', 'green', 'bright green', 'emerald', 'hazel', 'warm hazel', 'light brown', 'medium brown', 'dark brown', 'nearly black', 'amber', 'golden brown', 'violet-gray', 'gray-green', 'honey', 'dark hazel', 'steel blue'],
+        # 1.5.5: amber/honey/golden brown are a visibly distinct "warm gold" look and a
+        # 5,000-seed sweep put the three at ~24% combined (flat weight 1 each, same as
+        # every other value) -- as common as dark+medium brown together. Trimmed so the
+        # ordinary brown/hazel range leads; see AuditBiasTests. Applies through
+        # _bias_eye_color's dark-eyed narrowing too, since _weighted_choice/_repick weigh
+        # whatever pool they are handed.
+        "weights": {"amber": 0.3, "honey": 0.5, "golden brown": 0.6},
         "optional": False
     }),
     # eye_shape is the single comprehensive eye-structure field: it encodes shape,
@@ -172,8 +179,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['no notable marks', 'porcelain smooth', 'lightly textured', 'mole above lip', 'beauty mark on cheek', 'birthmark on neck', 'small scar on chin', 'small scar through eyebrow', 'laugh lines', 'vitiligo patches', 'faint acne scarring', 'prominent beauty mark'],
         # 1.5.0 round 4: the model draws a "small scar" as a slash across the cheek and a
         # neck birthmark as a raw wound (four of 47 flagged renders), so they stay rare.
+        # 1.5.5: vitiligo patches is the loudest mark in this pool -- a 5,000-seed sweep
+        # measured it at ~4.2% of ALL characters (flat weight 1, same as "mole above lip"),
+        # a visibly distinctive trait rendering as common as an everyday mark. Trimmed to
+        # the same rarity band as the scars; see AuditBiasTests.
         "weights": {"small scar on chin": 0.3, "small scar through eyebrow": 0.3,
-                    "birthmark on neck": 0.3},
+                    "birthmark on neck": 0.3, "vitiligo patches": 0.3},
         "optional": True
     }),
     ("freckles_density", {
@@ -794,8 +805,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # sleeves, thigh/calf drop unless the leg is bare AND legwear is absent or
         # sheer, collarbone drops on a high neckline. Neck, behind-ear, upper-arm and
         # shoulder-blade survive every outfit, so the pool can never empty.
-        # Flat field, no FIELD_FAMILIES entry: a partial cull re-picks uniformly
-        # among the survivors instead of concentrating a frozen family weight.
+        # No FIELD_FAMILIES entry: a partial cull re-picks over the weighted
+        # survivors instead of concentrating a frozen family weight.
         "female_options": ['on one forearm', 'across the back of one hand',
                             'on the inner wrist', 'on the side of the neck',
                             'behind one ear', 'across the collarbone',
@@ -806,6 +817,10 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
                           'behind one ear', 'across the collarbone',
                           'on one upper arm', 'across one shoulder blade',
                           'down one thigh', 'on one calf'],
+        # 1.5.5: these two survive almost every outfit (see the gate above), so a flat
+        # draw put them on ~60% of tattooed characters combined. Trimmed to ~35%; see
+        # AuditBiasTests.
+        "weights": {"across the back of one hand": 0.25, "on the side of the neck": 0.25},
         "optional": True
     }),
     # 1.5.0, APPENDED LAST -- saved workflows store widgets_values positionally (see
@@ -969,6 +984,8 @@ MASCULINE_FAMILY_WEIGHTS: dict[str, dict[str, int]] = {
 #:
 #:   * ``loose_styled``   -- needs length to style; impossible on a buzz cut only.
 #:   * ``loose_natural``  -- possible at every length; never excluded.
+#:   * ``loose_wet``      -- split from ``loose_natural`` at 1.5.5 (below); possible
+#:                           at every length, never excluded on its own.
 #:   * ``loose_combover`` -- excluded on a buzz cut (no length on top).
 #:   * ``loose_mullet``   -- excluded on a buzz cut AND on very short (no back
 #:                           length). Different boundary from comb over, hence its
@@ -1016,7 +1033,14 @@ MASCULINE_FAMILY_WEIGHTS: dict[str, dict[str, int]] = {
 #: a sub-1pp correction. Do not "fix" this without re-measuring first.
 HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("loose_styled", {"weight": 700, "variants": ['worn down', 'slicked back', 'windswept', 'freshly blown out', 'tousled bedhead']}),
-    ("loose_natural", {"weight": 280, "variants": ['wet look', 'natural and unstyled']}),
+    # 1.5.5: split out of the old 2-variant loose_natural family (weight 280) so a buzz
+    # cut can drop "wet look" alone -- a 5,000-seed sweep measured it at 34% of buzzed
+    # women / 20% of buzzed men once the other loose_natural styles were culled by the
+    # buzz-cut rules (HairStyleFamilyTests._DERIVED_FROM covers both halves). Each
+    # singleton keeps the pre-split per-variant rate exactly: 280/2 = 140 either way, so
+    # this is a pure split with no rescale and no change to any OTHER family's share.
+    ("loose_wet", {"weight": 140, "variants": ['wet look']}),
+    ("loose_natural", {"weight": 140, "variants": ['natural and unstyled']}),
     ("loose_combover", {"weight": 140, "variants": ['comb over']}),
     ("loose_mullet", {"weight": 140, "variants": ['mullet']}),
     ("half-up", {"weight": 210, "variants": ['half up half down']}),

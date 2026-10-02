@@ -25,8 +25,8 @@ from nodes.identity_forge_vault_save import (
     sanitize_name, save_character,
 )
 from nodes.identity_forge_vault_load import (
-    delete_characters, list_character_names, list_characters, load_character,
-    rename_character,
+    _character_fingerprint, _NO_FINGERPRINT, delete_characters,
+    list_character_names, list_characters, load_character, rename_character,
 )
 
 #: A resolved document like IdentityForge emits — cosplay label in _meta.
@@ -43,6 +43,11 @@ RICH_JSON = json.dumps({
     "Hair": {"hair_color": "auburn"},
 }, indent=2)
 
+#: A non-blank placeholder for tests that don't care about content, only that a
+#: save succeeds. 1.5.5: save_character refuses a literal "{}" (blank), so these
+#: fixtures need SOMETHING in the document.
+BLANK_OK_JSON = '{"Body": {}}'
+
 
 class _FakeImage:
     """Minimal stand-in for a PIL image (copy/thumbnail/save)."""
@@ -57,6 +62,13 @@ class _FakeImage:
         Path(path).write_bytes(b"\x89PNG\r\n")
 
 
+class _FailingImage(_FakeImage):
+    """Fails partway through a save, to test the overwrite-failure path."""
+
+    def save(self, path):
+        raise OSError("disk full (simulated)")
+
+
 class SanitizeTests(unittest.TestCase):
     def test_strips_illegal_and_separators(self):
         self.assertEqual(sanitize_name("a/b:c*?"), "a b c")
@@ -68,6 +80,21 @@ class SanitizeTests(unittest.TestCase):
         self.assertEqual(sanitize_name(".."), "")
         self.assertEqual(sanitize_name("///"), "")
         self.assertEqual(sanitize_name(""), "")
+
+    def test_windows_reserved_device_names_are_suffixed(self):
+        # 1.5.5: a folder named exactly one of these targets a special Windows
+        # device file, not an ordinary folder -- confirmed on a Windows dev box.
+        # Reserved regardless of case or any extension that follows.
+        self.assertEqual(sanitize_name("NUL"), "NUL_")
+        self.assertEqual(sanitize_name("nul"), "nul_")
+        self.assertEqual(sanitize_name("CON"), "CON_")
+        self.assertEqual(sanitize_name("com1"), "com1_")
+        self.assertEqual(sanitize_name("lpt9"), "lpt9_")
+        self.assertEqual(sanitize_name("NUL.txt"), "NUL.txt_")
+        # Not reserved: a prefix/suffix match, or a non-reserved device number.
+        self.assertEqual(sanitize_name("NULL"), "NULL")
+        self.assertEqual(sanitize_name("COM10"), "COM10")
+        self.assertEqual(sanitize_name("My CON Report"), "My CON Report")
 
 
 class DescribeTests(unittest.TestCase):
@@ -96,7 +123,7 @@ class AutoNameTests(unittest.TestCase):
 
     def test_sequential_fallback_counts_up(self):
         self.assertEqual(auto_name(self.root, "{}"), "Character 1")
-        save_character(self.root, "Character 1", "{}")
+        save_character(self.root, "Character 1", BLANK_OK_JSON)
         self.assertEqual(auto_name(self.root, "{}"), "Character 2")
 
 
@@ -160,15 +187,44 @@ class RoundTripTests(unittest.TestCase):
         loaded, _ = load_character(self.root, "X")
         self.assertEqual(loaded, SAMPLE_JSON)
 
+    def test_blank_character_json_is_refused(self):
+        with self.assertRaises(ValueError):
+            save_character(self.root, "X", "{}")
+        with self.assertRaises(ValueError):
+            save_character(self.root, "X", "")
+        with self.assertRaises(ValueError):
+            save_character(self.root, "X", "  {}  ")
+        self.assertEqual(list_character_names(self.root), [])
+
+    def test_a_failed_overwrite_leaves_the_old_save_intact(self):
+        # 1.5.5: overwriting used to rmtree the old entry BEFORE writing the new
+        # one, so a write failure partway through silently lost the old save.
+        # Uses its own private vault_root (a subdir of self.root) so the staging
+        # dir -- built as a SIBLING of vault_root -- stays inside the test's own
+        # temp dir rather than the shared OS temp dir.
+        vault_parent = self.root
+        root = vault_parent / "characters"
+        root.mkdir()
+        save_character(root, "X", SAMPLE_JSON)
+        with self.assertRaises(OSError):
+            save_character(root, "X", RICH_JSON, on_existing=_OVERWRITE,
+                           thumbnail=_FailingImage())
+        self.assertEqual(list_character_names(root), ["X"])
+        loaded, _ = load_character(root, "X")
+        self.assertEqual(loaded, SAMPLE_JSON, "the old save should survive the failure")
+        # No leftover staging dir (sibling of root) or backup dir (inside root).
+        self.assertEqual([p.name for p in vault_parent.iterdir()], ["characters"])
+        self.assertEqual([p.name for p in root.iterdir()], ["X"])
+
     def test_on_existing_keep_both_suffixes(self):
-        save_character(self.root, "X", "{}")
-        second = save_character(self.root, "X", "{}", on_existing=_KEEP_BOTH)
+        save_character(self.root, "X", BLANK_OK_JSON)
+        second = save_character(self.root, "X", BLANK_OK_JSON, on_existing=_KEEP_BOTH)
         self.assertEqual(second, "X-2")
         self.assertEqual(sorted(list_character_names(self.root)), ["X", "X-2"])
 
     def test_on_existing_skip(self):
         save_character(self.root, "X", json.dumps({"keep": True}))
-        result = save_character(self.root, "X", "{}", on_existing=_SKIP)
+        result = save_character(self.root, "X", BLANK_OK_JSON, on_existing=_SKIP)
         self.assertEqual(result, "X")
         loaded, _ = load_character(self.root, "X")
         self.assertEqual(json.loads(loaded), {"keep": True})
@@ -178,9 +234,9 @@ class RoundTripTests(unittest.TestCase):
         self.assertEqual(load_character(self.root, "../escape"), ("{}", ""))
 
     def test_delete(self):
-        save_character(self.root, "A", "{}")
-        save_character(self.root, "B", "{}")
-        save_character(self.root, "C", "{}")
+        save_character(self.root, "A", BLANK_OK_JSON)
+        save_character(self.root, "B", BLANK_OK_JSON)
+        save_character(self.root, "C", BLANK_OK_JSON)
         survivors = delete_characters(self.root, ["A", "C", "missing"])
         self.assertEqual(survivors, ["B"])
 
@@ -193,8 +249,8 @@ class RoundTripTests(unittest.TestCase):
         self.assertEqual(meta["display_name"], "New Name")
 
     def test_rename_collision_and_missing(self):
-        save_character(self.root, "A", "{}")
-        save_character(self.root, "B", "{}")
+        save_character(self.root, "A", BLANK_OK_JSON)
+        save_character(self.root, "B", BLANK_OK_JSON)
         with self.assertRaises(ValueError):
             rename_character(self.root, "A", "B")
         with self.assertRaises(ValueError):
@@ -284,6 +340,85 @@ class VaultRecallControlDeferralTests(unittest.TestCase):
         recalled = json.loads(out.args[1])
         self.assertEqual(recalled["_meta"]["wardrobe"], "Match gender")
         self.assertEqual(recalled["_meta"]["hair_color_scope"], "Natural only")
+
+
+class MalformedEntryTests(unittest.TestCase):
+    """1.5.5: a hand-edited or racily-written entry must degrade, never crash."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_non_dict_meta_json_does_not_crash_listing(self):
+        save_character(self.root, "X", SAMPLE_JSON)
+        (self.root / "X" / "meta.json").write_text("null", encoding="utf-8")
+        info = list_characters(self.root)  # used to raise AttributeError
+        self.assertEqual(info[0]["name"], "X")
+        self.assertEqual(info[0]["source_label"], "2B (NieR: Automata)",
+                         "should fall back to character.json's own _meta")
+
+    def test_non_dict_top_level_meta_in_character_json(self):
+        # _source_label: the top-level document IS a dict, but its "_meta"
+        # VALUE is not. The `.get("_meta", {})` lookup is inside the try either
+        # way; this exercises the branch that used to be outside it.
+        from nodes.identity_forge_vault_save import _source_label
+        self.assertEqual(_source_label(json.dumps({"_meta": "oops"})), "")
+
+    def test_unreadable_character_json_is_a_noop_not_a_crash(self):
+        save_character(self.root, "X", SAMPLE_JSON)
+        (self.root / "X" / "character.json").write_bytes(b"\xff\xfe\x00\xff")
+        self.assertEqual(load_character(self.root, "X"), ("{}", ""))
+
+    def test_delete_only_removes_a_real_entry(self):
+        # A directory that sanitizes to a requested name but holds no
+        # character.json (never a real save) must survive a delete call.
+        decoy = self.root / "decoy"
+        decoy.mkdir()
+        (decoy / "not_a_character.txt").write_text("x", encoding="utf-8")
+        save_character(self.root, "real", SAMPLE_JSON)
+        survivors = delete_characters(self.root, ["decoy", "real"])
+        self.assertEqual(survivors, [])  # "real" deleted as asked
+        self.assertTrue(decoy.is_dir(), "the non-entry directory must survive")
+
+
+class FingerprintTests(unittest.TestCase):
+    """1.5.5: Vault Load's cache key must track the FILE, not just the widget."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_no_selection_or_missing_entry_is_the_stable_sentinel(self):
+        self.assertEqual(_character_fingerprint(self.root, "(no characters saved)"),
+                         _NO_FINGERPRINT)
+        self.assertEqual(_character_fingerprint(self.root, "ghost"), _NO_FINGERPRINT)
+
+    def test_unchanged_file_gives_the_same_fingerprint(self):
+        save_character(self.root, "X", SAMPLE_JSON)
+        self.assertEqual(_character_fingerprint(self.root, "X"),
+                         _character_fingerprint(self.root, "X"))
+
+    def test_an_overwrite_changes_the_fingerprint(self):
+        save_character(self.root, "X", SAMPLE_JSON)
+        before = _character_fingerprint(self.root, "X")
+        save_character(self.root, "X", RICH_JSON, on_existing=_OVERWRITE)
+        after = _character_fingerprint(self.root, "X")
+        self.assertNotEqual(before, after,
+                            "an overwritten entry must invalidate the node's cache")
+
+    def test_a_delete_changes_the_fingerprint(self):
+        save_character(self.root, "X", SAMPLE_JSON)
+        before = _character_fingerprint(self.root, "X")
+        delete_characters(self.root, ["X"])
+        after = _character_fingerprint(self.root, "X")
+        self.assertNotEqual(before, after)
+        self.assertEqual(after, _NO_FINGERPRINT)
 
 
 if __name__ == "__main__":
