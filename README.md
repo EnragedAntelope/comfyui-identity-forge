@@ -183,7 +183,7 @@ praying-mantis hybrid with a sloth's head* — the costume survives, the body be
 *rendering*: medium, lighting, colour grade, era, finish and mood. Identity Forge
 describes the *subject* — who or what is in the picture, and where the camera is:
 framing, shot type, composition, pose, expression and eye contact. Connect Identity
-Forge's `prose` output into Stylebook's `user_prompt` and chain Stylebook downstream.
+Forge's `prompt_text` output into Stylebook's `user_prompt` and chain Stylebook downstream.
 
 Stylebook owns lighting and mood, so set both to `None` here when pairing the two packs
 — otherwise you get two descriptions competing for the same axis. See Stylebook's
@@ -194,7 +194,10 @@ for a ready-to-run workflow.
 
 ## Must-know
 
-- **Seed** auto-randomizes each run; set it to *fixed* to reproduce a character. Not written to the JSON.
+- **Seed** auto-randomizes each run; set it to *fixed* to reproduce a character. Not written to the
+  JSON. A seed reproduces the same character only within one installed version — a release can
+  change pools, weights or rules, which shifts what a given seed draws. To keep a specific
+  character across updates, save it with **Vault Save** and recall it with **Vault Load**.
 - **Every field is `Random` (roll) / a value (lock) / `None` (omit).** Set scene fields
   (`location`, `lighting`, framing) to `None` for a character-only description to splice elsewhere.
 - **`accessory_density`** — drop it to `Minimal`/`None` for clean portraits without locking fields by hand.

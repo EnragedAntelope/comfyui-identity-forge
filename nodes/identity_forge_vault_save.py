@@ -33,6 +33,7 @@ import datetime as _dt
 import json
 import re
 import shutil
+import tempfile
 from collections import OrderedDict
 from pathlib import Path
 from typing import Any
@@ -69,28 +70,46 @@ _META_FILE = "meta.json"
 #: Characters never allowed in a folder name (filesystem-illegal + separators).
 _ILLEGAL = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 
+#: Windows device names, reserved regardless of any extension that follows them
+#: (``NUL``, ``NUL.txt`` and ``nul.png`` are all the NUL device). A vault entry
+#: named exactly one of these would target a special file instead of an ordinary
+#: folder -- confirmed on this pack's own dev machine.
+_WINDOWS_RESERVED_NAMES = frozenset(
+    {"CON", "PRN", "AUX", "NUL"}
+    | {f"COM{d}" for d in range(1, 10)}
+    | {f"LPT{d}" for d in range(1, 10)})
+
 
 def sanitize_name(raw: str) -> str:
     """Return ``raw`` reduced to a safe single-segment folder name, or ``""``.
 
     Strips filesystem-illegal characters and path separators, collapses runs of
-    whitespace, trims trailing dots/spaces (Windows-hostile), and caps the length.
-    Returns ``""`` when nothing usable remains, so callers can fall back.
+    whitespace, trims trailing dots/spaces (Windows-hostile), caps the length, and
+    suffixes a Windows-reserved device name so it is still a creatable, ordinary
+    folder. Returns ``""`` when nothing usable remains, so callers can fall back.
     """
     name = _ILLEGAL.sub(" ", str(raw or ""))
     name = re.sub(r"\s+", " ", name).strip().strip(".").strip()
     if name in {"", ".", ".."}:
         return ""
-    return name[:120].strip()
+    name = name[:120].strip()
+    if name.split(".", 1)[0].upper() in _WINDOWS_RESERVED_NAMES:
+        name += "_"
+    return name
 
 
 def _source_label(character_json: str) -> str:
     """Best-effort cosplay/archetype label from a resolved document's ``_meta``."""
     try:
         meta = json.loads(character_json).get("_meta", {})
+        # 1.5.5: a hand-edited or malformed document can hold a non-dict `_meta`
+        # (e.g. {"_meta": "oops"}) -- the lookup above is inside this try, but the
+        # attribute access below used to be outside it, so this crashed uncaught.
+        if not isinstance(meta, dict):
+            return ""
+        return str(meta.get("cosplay_of") or meta.get("archetype") or "")
     except (ValueError, TypeError, AttributeError):
         return ""
-    return str(meta.get("cosplay_of") or meta.get("archetype") or "")
 
 
 #: Gender → a friendly noun for descriptive auto-names.
@@ -207,7 +226,17 @@ def save_character(
     stored verbatim so recall round-trips cleanly. ``prompt_text`` is written only
     when non-empty. ``on_existing`` selects the collision policy: overwrite,
     keep-both (suffix), or skip.
+
+    Raises ``ValueError`` if ``character_json`` is blank (empty or literally
+    ``"{}"``) -- 1.5.5: this used to silently write ``"{}"`` over a perfectly good
+    existing save (``character_json or "{}"``), which is worse than refusing: a
+    disconnected or momentarily-empty upstream wire would wipe a saved character.
+    The node's ``execute()`` already wraps this call in a try/except that logs and
+    moves on, so the caller just needs to raise.
     """
+    if not character_json or character_json.strip() == "{}":
+        raise ValueError("Refusing to save a blank character (character_json is empty)")
+
     root = Path(vault_root)
     target = _entry_dir(root, name)
 
@@ -216,27 +245,48 @@ def save_character(
             return target.name
         if on_existing == _KEEP_BOTH:
             target = _unique_dir(root, name)
-        else:  # Overwrite — clear stale files (e.g. an old preview)
-            shutil.rmtree(target, ignore_errors=True)
-    target.mkdir(parents=True, exist_ok=True)
 
-    (target / _CHARACTER_FILE).write_text(character_json or "{}", encoding="utf-8")
-    if prompt_text:
-        (target / _PROMPT_FILE).write_text(prompt_text, encoding="utf-8")
+    # Build the new entry in a scratch dir OUTSIDE vault_root (never listed --
+    # list_characters only scans vault_root itself), then swap it in by rename.
+    # 1.5.5: overwriting used to rmtree the old entry before writing the new one,
+    # so a write failure partway through (disk full, a preview file locked by
+    # another process on Windows) silently dropped the old save and left a
+    # half-written new one. Renames on the same volume are as near atomic as the
+    # filesystem offers, so the old entry is only ever touched after every new
+    # file has been written successfully.
+    staging = Path(tempfile.mkdtemp(prefix=".identity_forge_vault_", dir=root.parent))
+    try:
+        (staging / _CHARACTER_FILE).write_text(character_json, encoding="utf-8")
+        if prompt_text:
+            (staging / _PROMPT_FILE).write_text(prompt_text, encoding="utf-8")
 
-    if thumbnail is not None:
-        thumb = thumbnail.copy()
-        thumb.thumbnail((_THUMBNAIL_MAX, _THUMBNAIL_MAX))
-        thumb.save(target / _PREVIEW_FILE)
+        if thumbnail is not None:
+            thumb = thumbnail.copy()
+            thumb.thumbnail((_THUMBNAIL_MAX, _THUMBNAIL_MAX))
+            thumb.save(staging / _PREVIEW_FILE)
 
-    meta = OrderedDict([
-        ("display_name", target.name),
-        ("created", _dt.datetime.now().isoformat(timespec="seconds")),
-        ("source_label", _source_label(character_json)),
-        ("schema_version", SCHEMA_VERSION),
-        ("pack_version", pack_version),
-    ])
-    (target / _META_FILE).write_text(json.dumps(meta, indent=2), encoding="utf-8")
+        meta = OrderedDict([
+            ("display_name", target.name),
+            ("created", _dt.datetime.now().isoformat(timespec="seconds")),
+            ("source_label", _source_label(character_json)),
+            ("schema_version", SCHEMA_VERSION),
+            ("pack_version", pack_version),
+        ])
+        (staging / _META_FILE).write_text(json.dumps(meta, indent=2), encoding="utf-8")
+
+        backup = target.with_name(f".{target.name}.bak-{staging.name}") if target.exists() else None
+        if backup is not None:
+            target.rename(backup)
+        try:
+            staging.rename(target)
+        except OSError:
+            if backup is not None:
+                backup.rename(target)  # best-effort restore of the old save
+            raise
+        if backup is not None:
+            shutil.rmtree(backup, ignore_errors=True)
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)  # no-op once renamed into target
     return target.name
 
 
@@ -319,14 +369,6 @@ if _COMFY_AVAILABLE:
             prompt_json = kwargs.get("prompt_json", "")
             root = _vault_root()
 
-            # A name you type wins and honours on_existing; otherwise auto-name and
-            # always keep-both so an automatic name can never clobber a prior save.
-            custom = sanitize_name(kwargs.get("name", ""))
-            if custom:
-                name, on_existing = custom, kwargs.get("on_existing", _OVERWRITE)
-            else:
-                name, on_existing = auto_name(root, prompt_json), _KEEP_BOTH
-
             thumbnail = None
             image = kwargs.get("image")
             if image is not None:
@@ -336,6 +378,17 @@ if _COMFY_AVAILABLE:
                     _LOG.warning("Could not build thumbnail: %s", exc)
 
             try:
+                # A name you type wins and honours on_existing; otherwise auto-name
+                # and always keep-both so an automatic name can never clobber a
+                # prior save. 1.5.5: auto_name() reads the character document, so
+                # it moved inside this try — a crafted/malformed prompt_json must
+                # skip the save, not crash the node.
+                custom = sanitize_name(kwargs.get("name", ""))
+                if custom:
+                    name, on_existing = custom, kwargs.get("on_existing", _OVERWRITE)
+                else:
+                    name, on_existing = auto_name(root, prompt_json), _KEEP_BOTH
+
                 saved_as = save_character(root, name, prompt_json,
                                           on_existing=on_existing, thumbnail=thumbnail)
                 _LOG.info("Saved character '%s'.", saved_as)

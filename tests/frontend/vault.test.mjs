@@ -164,6 +164,29 @@ test("a non-ok response is treated as unavailable, not as an empty vault", async
   assert.deepEqual(charW.options.values, ["(vault unavailable \u2014 press Refresh)"]);
 });
 
+/* --- The Manage Vault MODAL's own reload() must not crash either (1.5.5) --
+ * The two tests above cover the node's "character" combo widget, which is a
+ * SEPARATE code path (applyCharacterList) from the modal's grid. The modal's
+ * reload() used to do `characters.length` straight after fetchCharacters()
+ * could return null, throwing uncaught and leaving the grid empty with no
+ * message at all -- indistinguishable from "still loading" to a user. */
+test("opening Manage Vault with an unreachable API shows a message, not a crash", async () => {
+  resetDom();
+  __resetApi();
+  __setFetchApiHandler(async () => { throw new Error("connection refused"); });
+  const node = await createNode(ext, "IdentityForgeVaultLoad");
+  await flush();
+  const manageBtn = node.widgets.find((w) => w.name === "\u{1F5C2} Manage Vault\u2026");
+
+  manageBtn.callback();
+  await flush(); // must not throw inside reload()
+
+  const overlay = document.body.firstElementChild;
+  assert.ok(overlay, "expected an overlay to be appended to document.body");
+  assert.ok(overlay.textContent.includes("unavailable"),
+    `expected the grid to report the failure; got ${JSON.stringify(overlay.textContent)}`);
+});
+
 /* --- A failed delete must not look like a success (0.97.0) --------------- */
 test("a failed delete surfaces the error instead of silently reloading", async () => {
   resetDom();

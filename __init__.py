@@ -137,7 +137,14 @@ def _register_vault_routes() -> None:
         body, error = await _json_body(request)
         if error is not None:
             return error
-        names = body.get("names") or ([body["name"]] if body.get("name") else [])
+        names = body.get("names")
+        if names is None:
+            names = [body["name"]] if body.get("name") else []
+        elif not isinstance(names, list) or not all(isinstance(n, str) for n in names):
+            # 1.5.5: an unchecked `{"names": "abc"}` iterated as the three
+            # characters 'a', 'b', 'c' and deleted each as an entry name.
+            return web.json_response(
+                {"error": "'names' must be a list of strings"}, status=400)
         survivors = delete_characters(_vault_root(), names)
         return web.json_response({"characters": survivors})
 
@@ -149,6 +156,11 @@ def _register_vault_routes() -> None:
         try:
             new_name = rename_character(_vault_root(), body.get("from", ""), body.get("to", ""))
         except ValueError as exc:
+            return web.json_response({"error": str(exc)}, status=400)
+        except OSError as exc:
+            # 1.5.5: a locked file (Windows) or a destination created in the
+            # race window between the existence check and the rename raised
+            # uncaught here, giving a 500 where a ValueError gets a clear 400.
             return web.json_response({"error": str(exc)}, status=400)
         return web.json_response({"name": new_name})
 

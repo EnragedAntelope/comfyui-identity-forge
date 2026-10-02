@@ -71,6 +71,14 @@ jobs:
         # gallery/render_manifest.json against the data layer and never touches
         # ComfyUI, so it fits this dependency-free job unchanged.
         run: python scripts/render_gallery.py --check
+      - name: Check field marginals have not drifted
+        # Runs the engine (stdlib-only, no ComfyUI needed) over a committed
+        # seed count and compares every field value's share against
+        # tests/fixtures/marginals_baseline.json. Catches the class of bug a
+        # weights/pool change can introduce silently -- a value rendering far
+        # more (or less) often than intended -- which no other check in this
+        # job looks for. ~30s. See AGENTS.md's coherence checklist, item 6.
+        run: python scripts/sweep_marginals.py --check
 
   lint:
     name: Lint

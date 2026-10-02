@@ -87,7 +87,12 @@ def _entry_info(path: Path) -> dict[str, Any]:
         meta = json.loads((path / _META_FILE).read_text(encoding="utf-8"))
         source_label = str(meta.get("source_label", "") or "")
         created = str(meta.get("created", "") or "")
-    except (OSError, ValueError, TypeError):
+    except (OSError, ValueError, TypeError, AttributeError):
+        # 1.5.5: a hand-edited meta.json that isn't a JSON object (a string, a
+        # list, null) made meta.get(...) raise AttributeError, uncaught — this
+        # made the WHOLE /identity_forge/vault/characters route 500 for every
+        # entry, not just the malformed one. Falls through to the character.json
+        # fallback below, same as any other unreadable sidecar.
         pass
     if not source_label:
         try:
@@ -123,10 +128,18 @@ def load_character(vault_root: Path | str, name: str) -> tuple[str, str]:
         return "{}", ""
     if not _is_entry(entry):
         return "{}", ""
-    character_json = (entry / _CHARACTER_FILE).read_text(encoding="utf-8")
+    try:
+        character_json = (entry / _CHARACTER_FILE).read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        # 1.5.5: this read was unwrapped, so a permission error or a non-UTF-8
+        # character.json (both reachable: the sidecar can be hand-edited, or a
+        # disk/permission issue can arrive between the is_file() check above and
+        # this read) raised uncaught -- contradicting this function's own
+        # "unreadable entries yield ('{}', '')" promise above.
+        return "{}", ""
     try:
         prompt_text = (entry / _PROMPT_FILE).read_text(encoding="utf-8")
-    except OSError:
+    except (OSError, UnicodeDecodeError):
         prompt_text = ""
     return character_json, prompt_text
 
@@ -141,7 +154,10 @@ def delete_characters(vault_root: Path | str, names: list[str]) -> list[str]:
             entry = _entry_dir(root, name)
         except ValueError:
             continue
-        if entry.is_dir():
+        # 1.5.5: was `entry.is_dir()` -- deletes ANY directory that sanitizes to
+        # that name, not only a real vault entry. `_is_entry` requires a
+        # character.json, matching what list_character_names considers an entry.
+        if _is_entry(entry):
             shutil.rmtree(entry, ignore_errors=True)
     return list_character_names(root)
 
@@ -173,14 +189,46 @@ def rename_character(vault_root: Path | str, old: str, new: str) -> str:
     return dst.name
 
 
+#: Sentinel :func:`_character_fingerprint` returns for "no selection" or "the
+#: entry is gone/unreadable" -- any string works as long as it is stable, since
+#: the node's own ``character`` input already changing is what the DEFAULT
+#: cache key catches for those cases; this fingerprint only has to additionally
+#: catch a change to the FILE under an unchanged selection.
+_NO_FINGERPRINT = "none"
+
+
+def _character_fingerprint(vault_root: Path | str, name: str) -> Any:
+    """``(mtime_ns, size)`` of ``name``'s character.json, or a stable sentinel.
+
+    ComfyUI's default cache key is built from the literal input VALUES, so
+    recalling the same ``character`` name twice looks identical even after a
+    Vault Save Overwrite, or a rename/delete from the Manage Vault modal,
+    changed what is actually on disk -- the node would then serve a stale
+    cached ``character_json`` instead of re-reading the file. Folding the
+    selected entry's mtime + size into :meth:`fingerprint_inputs` makes a
+    changed (or now-missing) file force a cache miss; an unchanged file still
+    caches normally, unlike the NaN pattern the other preset nodes use (which
+    disables caching on every queue, not only on a real change).
+    """
+    try:
+        entry = _entry_dir(Path(vault_root), name)
+        stat = (entry / _CHARACTER_FILE).stat()
+        return (stat.st_mtime_ns, stat.st_size)
+    except (ValueError, OSError):
+        return _NO_FINGERPRINT
+
+
 if _COMFY_AVAILABLE:
 
-    def _vault_root() -> Path:
-        import folder_paths  # type: ignore[import-not-found]
-
-        root = Path(folder_paths.get_user_directory()) / "identity_forge" / "characters"
-        root.mkdir(parents=True, exist_ok=True)
-        return root
+    # 1.5.5: was a byte-for-byte duplicate of identity_forge_vault_save._vault_root.
+    # Only reachable when _COMFY_AVAILABLE is True here, which means vault_save's
+    # own _COMFY_AVAILABLE is True too (same `comfy_api.latest` check, same
+    # process), so this is safe where the top-of-file dual import is not: that one
+    # imports names that exist unconditionally in vault_save, this one does not.
+    try:
+        from .identity_forge_vault_save import _vault_root
+    except ImportError:  # pragma: no cover — standalone/test context
+        from nodes.identity_forge_vault_save import _vault_root
 
     class IdentityForgeVaultLoad(io.ComfyNode):  # type: ignore[misc, valid-type]
         """Recall a saved character and emit it as a chainable character_json."""
@@ -217,6 +265,13 @@ if _COMFY_AVAILABLE:
                 ],
                 outputs=[io.String.Output(display_name="character_json")],
             )
+
+        @classmethod
+        def fingerprint_inputs(cls, **kwargs: Any) -> Any:
+            # 1.5.5: see _character_fingerprint. Folds the SELECTED entry's
+            # mtime+size into the cache key so an Overwrite/rename/delete that
+            # left the `character` widget unchanged still invalidates the cache.
+            return _character_fingerprint(_vault_root(), kwargs.get("character", _NO_CHARACTERS))
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
