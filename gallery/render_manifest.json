@@ -203,8 +203,8 @@
         "rendered": "2026-09-28"
       },
       "Bridal Portrait": {
-        "hash": "46b9e45080c821d1",
-        "rendered": "pre-existing"
+        "hash": "d29ffdb692f493a7",
+        "rendered": "2026-10-10"
       },
       "Buddhist Monk": {
         "hash": "627af9b52d0ecd9e",
@@ -252,8 +252,8 @@
         "rendered": "2026-09-01"
       },
       "Chinese Qipao": {
-        "hash": "6f10fb9a183b6b20",
-        "rendered": "2026-09-28"
+        "hash": "cabbf11b9051e0e2",
+        "rendered": "2026-10-10"
       },
       "Circus Clown": {
         "hash": "2d9c788b884fb253",
@@ -335,6 +335,10 @@
         "hash": "65bda3a7d727f395",
         "rendered": "2026-09-28"
       },
+      "Dressage Rider": {
+        "hash": "03bc5e847b009d0a",
+        "rendered": "2026-10-10"
+      },
       "Dwarven Blacksmith": {
         "hash": "bb9dcc6a733f3e4d",
         "rendered": "2026-09-28"
@@ -366,6 +370,11 @@
       "Emo": {
         "hash": "b287409b8baae856",
         "rendered": "pre-existing"
+      },
+      "Evzone Guard": {
+        "hash": "7ac77b0cf7d3687c",
+        "rendered": "2026-10-10",
+        "seed": 472807112696549063
       },
       "Fairy Princess": {
         "hash": "d4f17c5b22fdcac0",
@@ -410,6 +419,10 @@
       "Florist": {
         "hash": "cf668f86f6111e47",
         "rendered": "pre-existing"
+      },
+      "Fly-Fishing Angler": {
+        "hash": "ee160b9170ff0825",
+        "rendered": "2026-10-10"
       },
       "Forest Druid": {
         "hash": "2758a2db27ad3451",
@@ -484,6 +497,11 @@
         "rendered": "2026-09-28",
         "seed": 388381618825641813
       },
+      "Hanfu": {
+        "hash": "c8114b63000e9fc5",
+        "rendered": "2026-10-10",
+        "seed": 224547903965578425
+      },
       "Hazmat Technician": {
         "hash": "3570429552b9009a",
         "rendered": "2026-09-28"
@@ -491,6 +509,10 @@
       "Highland Scot": {
         "hash": "7b77c09bf0be8652",
         "rendered": "2026-09-28"
+      },
+      "Highwayman": {
+        "hash": "2c5b22e655ce35d4",
+        "rendered": "2026-10-10"
       },
       "Hockey Goalie": {
         "hash": "aa6dae3d1c653324",
@@ -540,13 +562,23 @@
         "hash": "4ba6721fcf27c491",
         "rendered": "2026-09-28"
       },
+      "Kebaya": {
+        "hash": "4bb1b733cbd73ba1",
+        "rendered": "2026-10-10",
+        "seed": 167834477226695871
+      },
       "Kendo Practitioner": {
         "hash": "6223e21282464cf6",
         "rendered": "2026-09-28"
       },
       "Korean Hanbok": {
-        "hash": "4ef6d7a54c4d5340",
-        "rendered": "2026-09-28"
+        "hash": "b047c8a1749f670b",
+        "rendered": "2026-10-10"
+      },
+      "Lehenga & Sherwani": {
+        "hash": "43fe2a79bad889c4",
+        "rendered": "2026-10-10",
+        "seed": 538395609158250959
       },
       "Librarian": {
         "hash": "750ba4174ac44d56",
@@ -613,6 +645,10 @@
         "hash": "16fa43e6839266be",
         "rendered": "pre-existing"
       },
+      "Metalhead": {
+        "hash": "3a9e24624f28a363",
+        "rendered": "2026-10-10"
+      },
       "Metrosexual": {
         "hash": "3e7dc94d4ae59774",
         "rendered": "pre-existing"
@@ -624,6 +660,11 @@
       "Mongolian Deel": {
         "hash": "63b594659723b3a2",
         "rendered": "2026-09-28"
+      },
+      "Muay Thai Fighter": {
+        "hash": "aa11bc6572961c3d",
+        "rendered": "2026-10-10",
+        "seed": 765789940348582612
       },
       "Musician": {
         "hash": "93b8dae36fac0d2d",
@@ -730,6 +771,10 @@
         "hash": "4abdd594f9c04b15",
         "rendered": "pre-existing"
       },
+      "RCMP Mountie": {
+        "hash": "c67ebc49a685b332",
+        "rendered": "2026-10-10"
+      },
       "Race Car Driver": {
         "hash": "16c1616249aa7870",
         "rendered": "2026-09-28"
@@ -781,6 +826,10 @@
       "Roman Centurion": {
         "hash": "85aa31adf4c5dafd",
         "rendered": "pre-existing"
+      },
+      "Royal Guard": {
+        "hash": "aa73cfad23655276",
+        "rendered": "2026-10-10"
       },
       "Rude Boy": {
         "hash": "78fb64daf660b2a5",
@@ -980,8 +1029,8 @@
         "rendered": "2026-09-28"
       },
       "Vietnamese Ao Dai": {
-        "hash": "120f96c0f1d74708",
-        "rendered": "2026-09-28"
+        "hash": "8714c3ea890ff87b",
+        "rendered": "2026-10-10"
       },
       "Viking Shieldmaiden": {
         "hash": "9d4f3b429c6c08de",
@@ -1006,6 +1055,10 @@
       "Watchmaker": {
         "hash": "e99ddda61d7cb9b1",
         "rendered": "2026-09-28"
+      },
+      "Wedding Groom": {
+        "hash": "102cc1603fc98c56",
+        "rendered": "2026-10-10"
       },
       "Welder": {
         "hash": "3ff7e1b302bb1de4",
@@ -1042,6 +1095,11 @@
       "Yoga Instructor": {
         "hash": "c9df08939d8d649b",
         "rendered": "2026-09-28"
+      },
+      "Yukata": {
+        "hash": "d194127432e1c02b",
+        "rendered": "2026-10-10",
+        "seed": 654984263461680621
       }
     },
     "cosplay": {
@@ -10412,7 +10470,7 @@
       }
     }
   },
-  "generated": "2026-09-30T10:15:50",
+  "generated": "2026-10-10T08:05:19",
   "render": {
     "cfg": 1,
     "height": 2432,

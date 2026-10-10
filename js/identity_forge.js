@@ -257,6 +257,11 @@ const GENDER_POOLS = {
       "wispy bangs",
       "wolf cut",
       "hime cut",
+      "faux hawk",
+      "mohawk",
+      "Fulani braids",
+      "goddess braids",
+      "passion twists",
       "None"
     ],
     "Male": [
@@ -321,6 +326,11 @@ const GENDER_POOLS = {
       "side-swept bangs",
       "wispy bangs",
       "wolf cut",
+      "faux hawk",
+      "mohawk",
+      "Fulani braids",
+      "goddess braids",
+      "passion twists",
       "None"
     ],
     "Any": [
@@ -384,6 +394,11 @@ const GENDER_POOLS = {
       "wispy bangs",
       "wolf cut",
       "hime cut",
+      "faux hawk",
+      "mohawk",
+      "Fulani braids",
+      "goddess braids",
+      "passion twists",
       "comb over",
       "mullet",
       "None"

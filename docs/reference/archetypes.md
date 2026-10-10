@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**259 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**272 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Any]
@@ -88,6 +88,7 @@
 - **Disco Diva** [Female] -- vintage retro
 - **Doctor** [Any] -- business casual
 - **Drag Performer** [Any] -- evening formal
+- **Dressage Rider** [Any] -- preppy
 - **Dwarven Blacksmith** [Male] -- edgy alternative
 - **Día de los Muertos** [Any]
 - **E-Girl / E-Boy**
@@ -96,6 +97,7 @@
 - **Electrician** [Any] -- casual
 - **Elven Ranger** -- bohemian
 - **Emo** -- edgy alternative
+- **Evzone Guard** [Male] -- vintage retro
 - **Fairy Princess** [Female] -- evening formal
 - **Falconer** -- smart casual
 - **Farmer** [Any] -- casual
@@ -107,6 +109,7 @@
 - **Flamenco Dancer** [Any]
 - **Flight Attendant** [Any] -- business casual
 - **Florist** -- casual
+- **Fly-Fishing Angler** [Any] -- utility workwear
 - **Forest Druid** -- bohemian
 - **Fortune Teller** [Any]
 - **French Maid** [Female] -- smart casual
@@ -125,8 +128,10 @@
 - **Gymnast** -- athletic
 - **Hair Metal Rocker** [Any]
 - **Halfling Rogue** -- casual
+- **Hanfu** [Any] -- vintage retro
 - **Hazmat Technician** -- athletic
 - **Highland Scot** [Any]
+- **Highwayman** [Male] -- vintage retro
 - **Hockey Goalie** -- athletic
 - **Holy Paladin** [Any] -- business formal
 - **Human Knight** [Any] -- business formal
@@ -139,8 +144,10 @@
 - **K-Pop Idol**
 - **Kabuki Actor** -- evening formal
 - **Kawaii Street Fashion** [Any]
+- **Kebaya** [Female] -- vintage retro
 - **Kendo Practitioner** -- athletic
 - **Korean Hanbok** [Any] -- vintage retro
+- **Lehenga & Sherwani** [Any] -- evening formal
 - **Librarian** [Any] -- smart casual
 - **Lifeguard** [Any] -- athletic
 - **Luchador** [Any] -- athletic
@@ -157,9 +164,11 @@
 - **McBling Socialite** [Female] -- streetwear
 - **Mechanic** [Any] -- edgy alternative
 - **Medieval Peasant** -- casual
+- **Metalhead** [Any] -- edgy alternative
 - **Metrosexual** [Male] -- smart casual
 - **Mime** -- edgy alternative
 - **Mongolian Deel** [Any] -- vintage retro
+- **Muay Thai Fighter** [Any] -- athletic
 - **Musician** -- streetwear
 - **Musketeer** -- vintage retro
 - **Navy Sailor** -- smart casual
@@ -186,6 +195,7 @@
 - **Prehistoric Hunter** [Any] -- edgy alternative
 - **Pro Wrestler** [Any] -- athletic
 - **Punk Rocker** -- edgy alternative
+- **RCMP Mountie** [Any] -- business formal
 - **Race Car Driver** [Any] -- athletic
 - **Rancher** -- vintage retro
 - **Rapper** -- streetwear
@@ -199,6 +209,7 @@
 - **Roaring Twenties Gent** [Male] -- vintage retro
 - **Rock Climber** [Any] -- athletic
 - **Roman Centurion** [Male] -- athletic
+- **Royal Guard** [Any] -- business formal
 - **Rude Boy** [Male] -- vintage retro
 - **Safari Guide** -- casual
 - **Sami Gakti** [Any] -- vintage retro
@@ -255,6 +266,7 @@
 - **Warlock** [Any] -- edgy alternative
 - **Wasteland Survivor** -- edgy alternative
 - **Watchmaker** -- business casual
+- **Wedding Groom** [Male] -- evening formal
 - **Welder** -- casual
 - **Werewolf Hunter** [Any] -- edgy alternative
 - **Whirling Dervish** [Male] -- evening formal
@@ -264,3 +276,4 @@
 - **Y2K Mall Casual** [Any]
 - **Yeoman Warder** [Any] -- evening formal
 - **Yoga Instructor** [Any] -- athletic
+- **Yukata** [Any] -- vintage retro

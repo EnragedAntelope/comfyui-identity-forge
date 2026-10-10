@@ -2280,15 +2280,24 @@ class LightingBucketFamilyTests(unittest.TestCase):
             # which is exactly the 10:1 proportionality assertion.
             "studio_shape": "studio", "studio_stage": "studio",
         }
-        self.assertEqual(set(parents), set(LIGHTING_FAMILIES),
+        # 1.6.0: two NEW families take share at a priced per-variant weight (snowfall at
+        # the window/artificial 88, weather at 66 -- see fields.py), so every older
+        # share is diluted by exactly 5016 / 5302.
+        added = {"weather": 66, "snowfall": 88}
+        self.assertEqual(set(parents) | set(added), set(LIGHTING_FAMILIES),
                          "a family was added/renamed without updating this baseline")
+        dilution = 5016 / 5302
         old_total = sum(w for w, _ in before.values())
         new_total = sum(d["weight"] for d in LIGHTING_FAMILIES.values())
         for fam, d in LIGHTING_FAMILIES.items():
+            if fam in added:
+                self.assertEqual(d["weight"] / len(d["variants"]), added[fam],
+                                 f"{fam!r} moved off its priced per-variant rate")
+                continue
             pw, pn = before[parents[fam]]
             self.assertAlmostEqual(
                 d["weight"] / new_total / len(d["variants"]),
-                pw / old_total / pn, places=12,
+                pw / old_total / pn * dilution, places=12,
                 msg=f"family {fam!r} shifted its members' share off the 0.81.0 baseline")
 
 
@@ -2301,11 +2310,11 @@ class NeonSignageGateTests(unittest.TestCase):
     deliberately left ungated.
     """
 
-    def test_lighting_family_weights_sum_to_5016(self):
+    def test_lighting_family_weights_sum_to_5302(self):
         from data.fields import LIGHTING_FAMILIES
-        self.assertEqual(sum(d["weight"] for d in LIGHTING_FAMILIES.values()), 5016)
-        self.assertEqual(len(LIGHTING_FAMILIES), 15,
-                          "seeds drift for `lighting` -- 15 families since 1.5.0 round 4")
+        self.assertEqual(sum(d["weight"] for d in LIGHTING_FAMILIES.values()), 5302)
+        self.assertEqual(len(LIGHTING_FAMILIES), 17,
+                          "seeds drift for `lighting` -- 17 families since 1.6.0 (weather)")
 
     #: Ordinary indoor rooms and quiet rural/outdoor spots -- exactly the class
     #: of place the old, ungated `neon_venue` was illegally reaching (the
@@ -3130,14 +3139,30 @@ class PoseFamilyTests(unittest.TestCase):
         """
         base_total = sum(w for w, _ in self._BASELINE.values())
         cur_total = sum(fam["weight"] for fam in POSE_FAMILIES.values())
+        # 1.6.0: NEW families take share, so every 0.65.0 slice is diluted by the same
+        # factor -- which is what keeps the old families in proportion to each other.
+        added = sum(POSE_FAMILIES[f]["weight"] for f in self._ADDED_FAMILIES)
+        dilution = (cur_total - added) / cur_total
 
         for family, (weight, _count) in self._BASELINE.items():
-            expected = weight / base_total
+            expected = weight / base_total * dilution
             # The whole point of a split: the parts still sum to the parent's slice.
             actual = sum(POSE_FAMILIES[f]["weight"] for f in self._parts(family))
             self.assertAlmostEqual(
                 actual / cur_total, expected, places=12,
                 msg=f"family {family!r} share moved off the 0.65.0 baseline")
+
+    #: Families that are NEW rather than a split of a 0.65.0 one, with their priced
+    #: share of the whole field.
+    _ADDED_FAMILIES = {"gesture_social": 18 / 666}  # 1.6.0
+
+    def test_added_families_take_their_priced_share(self):
+        cur_total = sum(fam["weight"] for fam in POSE_FAMILIES.values())
+        covered = {f for parts in self._SUBFAMILIES.values() for f in parts} | set(self._BASELINE)
+        self.assertEqual(set(POSE_FAMILIES) - covered, set(self._ADDED_FAMILIES),
+                         "a pose family is neither a 0.65.0 split nor a priced addition")
+        for fam, share in self._ADDED_FAMILIES.items():
+            self.assertAlmostEqual(POSE_FAMILIES[fam]["weight"] / cur_total, share, places=12)
 
     def test_every_split_family_covers_its_parents_variants(self):
         # A split must partition the parent, never lose or gain a value. Catches a
@@ -3624,8 +3649,10 @@ class HairStyleFamilyTests(unittest.TestCase):
     #:   1.5.0: barbered_shag 140 -> 280 (`wolf cut`) and `hime` 70, on 7140.
     #:   1.5.0 round 4: barbered_short 560 -> 280 (women drew it at twice the rate once
     #:           short lengths stopped drawing buns; men use MASCULINE_FAMILY_WEIGHTS).
-    _ADDED_FAMILIES = ("barbered_short", "barbered_shag", "barbered_crop", "hime")
-    _DILUTION = 6300 / 7070
+    #:   1.6.0: `barbered_mohawk` 35, on 7105.
+    _ADDED_FAMILIES = ("barbered_short", "barbered_shag", "barbered_crop", "hime",
+                       "barbered_mohawk")
+    _DILUTION = 6300 / 7105
 
     #: Added families priced at the field's ordinary "one everyday cut" rate, which is
     #: what justifies their weights (see the next test). Expressed as a share of the
@@ -3642,7 +3669,10 @@ class HairStyleFamilyTests(unittest.TestCase):
     #: 1.5.0: `hime` joins at half the everyday rate (factor 2), for the same reason.
     #: 1.5.0 round 4: `barbered_short` at half the everyday rate for the base (feminine)
     #: draw; a masculine presentation reads its own weight.
-    _DELIBERATELY_RARE_FAMILIES = {"barbered_crop": 3.0, "hime": 2.0, "barbered_short": 2.0}
+    #: 1.6.0: `faux hawk` joined barbered_short in place (5 cuts on 280, factor 2.5);
+    #: `barbered_mohawk` is a statement cut at a quarter of the rate (factor 4).
+    _DELIBERATELY_RARE_FAMILIES = {"barbered_crop": 3.0, "hime": 2.0, "barbered_short": 2.5,
+                                   "barbered_mohawk": 4.0}
 
     def test_split_preserves_every_pre_split_family_share(self):
         """Every PRE-EXISTING family keeps its share, up to one uniform dilution.
@@ -3761,15 +3791,26 @@ class HairStyleFamilyTests(unittest.TestCase):
     def test_probabilities_sum_to_one(self):
         self.assertAlmostEqual(sum(self._current().values()), 1.0, places=12)
 
+    #: Sub-families grown in place AFTER their split (Mode A): the family's weight is
+    #: held, so its per-variant rate is deliberately below its siblings'. 1.6.0:
+    #: braid_short took three protective styles at 540, keeping the protective-style
+    #: share where it was for the hair textures that draw it.
+    _GROWN_IN_PLACE = {"braid_short": 540}
+
+    def test_grown_in_place_sub_families_kept_their_weight(self):
+        for name, weight in self._GROWN_IN_PLACE.items():
+            self.assertEqual(HAIR_STYLE_FAMILIES[name]["weight"], weight, name)
+
     def test_sub_family_weights_are_proportional_to_variant_count(self):
         # The invariant that makes the split safe, asserted directly rather than
         # only via the marginals: within a pre-split family, weight per variant is
         # constant across its sub-families.
         for origin in ("loose", "braid", "bun"):
-            subs = [fam for name, fam in HAIR_STYLE_FAMILIES.items()
-                    if self._DERIVED_FROM.get(name) == origin]
+            subs = {name: fam for name, fam in HAIR_STYLE_FAMILIES.items()
+                    if self._DERIVED_FROM.get(name) == origin}
             self.assertGreater(len(subs), 1, origin)
-            per_variant = {fam["weight"] / len(fam["variants"]) for fam in subs}
+            per_variant = {fam["weight"] / len(fam["variants"])
+                           for name, fam in subs.items() if name not in self._GROWN_IN_PLACE}
             self.assertEqual(len(per_variant), 1,
                              f"{origin} sub-families are not proportional: {per_variant}")
 
@@ -9201,6 +9242,110 @@ class RoundFourQaTests(unittest.TestCase):
         for seed, d in self._sample(200, locked={"clothing_color": "gradient ombre"}):
             self.assertIn(d.get("clothing_pattern"), (None, "solid", "subtle texture"),
                           f"seed {seed}")
+
+
+class ContentOneSixQaTests(unittest.TestCase):
+    """1.6.0 content (weather, troubled faces, social gestures, hawks, highlights),
+    pinned as zero-count clash checks over one shared sweep per gender."""
+
+    _N = 1500
+
+    @classmethod
+    def setUpClass(cls):
+        cls.female = [_resolved_1_5(s, gender="Female")[1] for s in range(cls._N)]
+        cls.male = [_resolved_1_5(s, gender="Male")[1] for s in range(cls._N)]
+        cls.both = cls.female + cls.male
+
+    _WEATHER = frozenset(FIELD_FAMILIES["lighting"]["weather"]["variants"])
+    _SNOW = "gently falling snow"
+    _TROUBLED = frozenset(FIELD_FAMILIES["expression"]["troubled"]["variants"])
+    _SOCIAL = frozenset(FIELD_FAMILIES["pose"]["gesture_social"]["variants"])
+
+    def test_weather_falls_only_outdoors_and_never_on_a_desert(self):
+        from data.fields import OUTDOOR_LOCATIONS
+        from data.constraints import _ARID_PLACES, _NO_SNOW_PLACES
+        seen = 0
+        for d in self.both:
+            light, loc = d.get("lighting"), d.get("location")
+            if light in self._WEATHER or light == self._SNOW:
+                seen += 1
+                self.assertIn(loc, OUTDOOR_LOCATIONS, light)
+                self.assertNotIn(loc, _NO_SNOW_PLACES if light == self._SNOW else _ARID_PLACES)
+                self.assertNotIn("sunglasses", d.get("accessories") or "", light)
+        self.assertGreater(seen, 20, "the weather families are not being drawn")
+
+    def test_snow_falls_only_in_winter(self):
+        for d in self.both:
+            if d.get("lighting") == self._SNOW:
+                self.assertEqual(d.get("season"), "winter")
+
+    def test_a_locked_snowfall_draws_winter_not_a_conflict(self):
+        for seed in range(150):
+            d = _resolved_1_5(seed, locked={"lighting": self._SNOW})[1]
+            self.assertEqual(d.get("season"), "winter", f"seed {seed}: {d.get('location')}")
+
+    def test_a_troubled_face_never_wears_a_bright_or_calm_mood(self):
+        denied = {m for f in ("positive", "calm", "bold_fierce", "bold_bright")
+                  for m in FIELD_FAMILIES["mood"][f]["variants"]}
+        for d in self.both:
+            if d.get("expression") in self._TROUBLED:
+                self.assertNotIn(d.get("mood"), denied, d.get("expression"))
+                self.assertEqual(d.get("smile_type"), "closed mouth", d.get("expression"))
+
+    def test_social_gestures_stay_off_sad_faces_heavy_moods_and_tight_shots(self):
+        from data.constraints import _SAD_EXPRESSIONS
+        gloomy = {m for f in ("heavy", "enigmatic") for m in FIELD_FAMILIES["mood"][f]["variants"]}
+        for d in self.both:
+            if d.get("pose") in self._SOCIAL:
+                self.assertNotIn(d.get("expression"), _SAD_EXPRESSIONS)
+                self.assertNotIn(d.get("mood"), gloomy)
+                self.assertNotEqual(d.get("shot_type"), "extreme close-up on face")
+        for seed in range(200):
+            d = _resolved_1_5(seed, locked={"mood": "sorrowful"})[1]
+            self.assertNotIn(d.get("pose"), self._SOCIAL, f"seed {seed}")
+
+    def test_a_face_lost_in_thought_does_not_meet_the_lens(self):
+        for expr in ("lost in thought", "daydreaming"):
+            for seed in range(150):
+                d = _resolved_1_5(seed, locked={"expression": expr})[1]
+                self.assertNotEqual(d.get("pose"), "looking directly into the camera",
+                                    f"{expr} @ seed {seed}")
+
+    def test_troubled_faces_are_not_gendered(self):
+        f = sum(d.get("expression") in self._TROUBLED for d in self.female)
+        m = sum(d.get("expression") in self._TROUBLED for d in self.male)
+        self.assertGreater(min(f, m), 30, (f, m))
+        self.assertLess(abs(f - m) / max(f, m), 0.35, (f, m))
+
+    def test_the_skunk_stripe_is_rare(self):
+        f = sum(d.get("hair_highlights") == "skunk stripe" for d in self.female)
+        m = sum(d.get("hair_highlights") == "skunk stripe" for d in self.male)
+        self.assertLessEqual(f / self._N, 0.025, f)
+        self.assertLessEqual(m / self._N, 0.01, m)
+
+    def test_a_mohawk_stays_off_formal_dress_and_older_faces(self):
+        formal = {"business formal", "business casual", "evening formal",
+                  "cocktail semi-formal", "preppy"}
+        for d in self.both:
+            if d.get("hair_style") == "mohawk":
+                self.assertNotIn(d.get("outfit_style"), formal)
+                self.assertLess(int(d.get("age")), 55)
+        for style in sorted(formal):
+            self.assertIn("mohawk", _live_exclusions_for("outfit_style", style, "hair_style"))
+
+    def test_loungewear_and_pyjamas_stay_where_people_sleep_or_rest(self):
+        from data.constraints import outfit_styles_allowed_at
+        for seed in range(300):
+            d = _resolved_1_5(seed, locked={"outfit_style": "loungewear"})[1]
+            self.assertIn("loungewear", outfit_styles_allowed_at(d.get("location")),
+                          f"seed {seed}: {d.get('location')}")
+
+
+def _live_exclusions_for(field, value, target):
+    """Every value of ``target`` a rule triggered by ``field == value`` excludes."""
+    return {v for r in CONSTRAINT_RULES
+            if r.get("type") == "exclusion" and r["field"] == field and r["value"] == value
+            and r["excludes_field"] == target for v in r["excludes_values"]}
 
 
 class ComfyApiStubPurgeTests(unittest.TestCase):
