@@ -202,9 +202,9 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # A "full_spectrum_hair_colors" twin shipped here until 0.91.1 and was read
         # by nothing -- the full spectrum IS the option pool. Do not re-add it.
         "group": 'Hair',
-        "female_options": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips'],
-        "male_options": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips'],
-        "optional": False, "natural_hair_colors": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair']
+        "female_options": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips', 'ash blonde', 'honey blonde', 'mahogany', 'burgundy'],
+        "male_options": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips', 'ash blonde', 'honey blonde', 'mahogany', 'burgundy'],
+        "optional": False, "natural_hair_colors": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'auburn', 'copper', 'bright red', 'deep red', 'light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown', 'near black', 'jet black', 'raven black', 'salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair', 'ash blonde', 'honey blonde', 'mahogany']
     }),
     ("hair_length", {
         "group": 'Hair',
@@ -249,10 +249,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # 'mullet' is male-only for the same pool-hygiene reason: T2I models
         # render the term as the masculine 80s cut, which reads as a costume
         # gag on a random female character (archetypes can still curate it).
-        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade',
-                            'side-swept bangs', 'wispy bangs', 'wolf cut', 'hime cut'],
-        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade',
-                            'side-swept bangs', 'wispy bangs', 'wolf cut'],
+        "female_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade', 'side-swept bangs', 'wispy bangs', 'wolf cut', 'hime cut', 'faux hawk', 'mohawk', 'Fulani braids', 'goddess braids', 'passion twists'],
+        "male_options": ['worn down', 'half up half down', 'high ponytail', 'low ponytail', 'side ponytail', 'messy bun', 'sleek bun', 'top knot', 'chignon', 'side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'box braids', 'cornrows', 'locs', 'space buns', 'pigtails', 'high pigtails', 'low pigtails', 'curled pigtails', 'braided pigtails', 'bantu knots', 'afro', 'twist-out', 'updo', 'French twist', 'slicked back', 'curtain bangs', 'blunt bangs', 'wet look', 'windswept', 'freshly blown out', 'natural and unstyled', 'tousled bedhead', 'ballerina bun', 'braided ponytail', 'comb over', 'mullet', 'fade', 'undercut', 'pompadour', 'quiff', 'shag', 'milkmaid braids', 'rope braid', 'braided bun', 'two-strand twists', 'bubble ponytail', 'micro bangs', 'hair puff', 'crew cut', 'textured crop', 'high-top fade', 'side-swept bangs', 'wispy bangs', 'wolf cut', 'faux hawk', 'mohawk', 'Fulani braids', 'goddess braids', 'passion twists'],
         "optional": False
     }),
     ("hair_color_scope", {
@@ -445,8 +443,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("expression", {
         "group": 'Setting & Shot',
-        "female_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed', 'hopeful', 'weary', 'nervous smile', 'mildly annoyed'],
-        "male_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed', 'hopeful', 'weary', 'nervous smile', 'mildly annoyed'],
+        "female_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed', 'hopeful', 'weary', 'nervous smile', 'mildly annoyed', 'wide-eyed with shock', 'startled', 'bewildered', 'flustered', 'winking', 'pouting', 'deadpan', 'teary-eyed', 'frowning', 'worried', 'anxious', 'heartbroken'],
+        "male_options": ['neutral', 'relaxed', 'subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'pensive and thoughtful', 'serious', 'confident', 'intense gaze', 'playful', 'sultry', 'serene', 'slightly bashful', 'candid mid-laugh', 'smirking', 'determined', 'surprised', 'contemplative', 'wistful', 'flirtatious', 'stern', 'curious', 'gentle smile', 'beaming', 'calm and composed', 'at ease', 'steely', 'focused', 'brooding', 'mischievous', 'coy', 'melancholic', 'lost in thought', 'intrigued', 'skeptical', 'quiet amusement', 'daydreaming', 'delighted', 'quietly content', 'defiant', 'sly', 'solemn', 'unimpressed', 'hopeful', 'weary', 'nervous smile', 'mildly annoyed', 'wide-eyed with shock', 'startled', 'bewildered', 'flustered', 'winking', 'pouting', 'deadpan', 'teary-eyed', 'frowning', 'worried', 'anxious', 'heartbroken'],
         "optional": False
     }),
     ("location", {
@@ -457,8 +455,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("lighting", {
         "group": 'Setting & Shot',
-        "female_options": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'soft window light from the side', 'backlit silhouette against bright window', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'warm candlelight', 'warm incandescent lamp glow', 'cool LED overhead lighting', 'harsh fluorescent lighting', 'warm string lights bokeh background', 'neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'stage spotlight from above', 'dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'moonlight with cool blue tones', 'fog-diffused streetlamp glow', 'fire and flame warm flicker', 'light through venetian blinds casting stripes', 'light through stained glass casting colors', 'reflection off wet pavement', 'golden bokeh lights in background', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight', 'warm sunlight streaming through a window', 'diffused skylight from above', 'warm lantern light', 'flickering firelight from a hearth', 'purple and teal neon wash', 'colored gel lighting', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting', 'flickering television glow in a dark room'],
-        "male_options": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'soft window light from the side', 'backlit silhouette against bright window', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'warm candlelight', 'warm incandescent lamp glow', 'cool LED overhead lighting', 'harsh fluorescent lighting', 'warm string lights bokeh background', 'neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'stage spotlight from above', 'dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'moonlight with cool blue tones', 'fog-diffused streetlamp glow', 'fire and flame warm flicker', 'light through venetian blinds casting stripes', 'light through stained glass casting colors', 'reflection off wet pavement', 'golden bokeh lights in background', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight', 'warm sunlight streaming through a window', 'diffused skylight from above', 'warm lantern light', 'flickering firelight from a hearth', 'purple and teal neon wash', 'colored gel lighting', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting', 'flickering television glow in a dark room'],
+        "female_options": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'soft window light from the side', 'backlit silhouette against bright window', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'warm candlelight', 'warm incandescent lamp glow', 'cool LED overhead lighting', 'harsh fluorescent lighting', 'warm string lights bokeh background', 'neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'stage spotlight from above', 'dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'moonlight with cool blue tones', 'fog-diffused streetlamp glow', 'fire and flame warm flicker', 'light through venetian blinds casting stripes', 'light through stained glass casting colors', 'reflection off wet pavement', 'golden bokeh lights in background', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight', 'warm sunlight streaming through a window', 'diffused skylight from above', 'warm lantern light', 'flickering firelight from a hearth', 'purple and teal neon wash', 'colored gel lighting', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting', 'flickering television glow in a dark room', 'light rain from a grey sky', 'a fine misty drizzle', 'a low drifting fog', 'gently falling snow'],
+        "male_options": ['golden hour sunlight', 'late afternoon warm sunlight', 'soft morning light', 'harsh overhead midday sun', 'overcast diffused daylight', 'hazy overcast winter light', 'blue hour twilight', 'pre-dawn darkness with ambient glow', 'dramatic stormy sky light', 'sun rays through broken cloud cover', 'dappled sunlight through forest canopy', 'soft window light from the side', 'backlit silhouette against bright window', 'direct sunlight from behind camera', 'rim lighting from setting sun', 'warm candlelight', 'warm incandescent lamp glow', 'cool LED overhead lighting', 'harsh fluorescent lighting', 'warm string lights bokeh background', 'neon sign glow in multiple colors', 'single neon light from one side', 'club strobe lighting', 'stage spotlight from above', 'dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'moonlight with cool blue tones', 'fog-diffused streetlamp glow', 'fire and flame warm flicker', 'light through venetian blinds casting stripes', 'light through stained glass casting colors', 'reflection off wet pavement', 'golden bokeh lights in background', 'soft overcast golden light', 'harsh desert sun', 'snow-reflected daylight', 'warm sunlight streaming through a window', 'diffused skylight from above', 'warm lantern light', 'flickering firelight from a hearth', 'purple and teal neon wash', 'colored gel lighting', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting', 'flickering television glow in a dark room', 'light rain from a grey sky', 'a fine misty drizzle', 'a low drifting fog', 'gently falling snow'],
         "optional": False
     }),
     ("shot_type", {
@@ -520,8 +518,11 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("hair_highlights", {
         "group": 'Hair',
-        "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights', 'split dye'],
-        "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights', 'split dye'],
+        "female_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights', 'split dye', 'babylights', 'grown-out roots', 'skunk stripe'],
+        "male_options": ['none', 'subtle balayage', 'chunky highlights', 'face framing', 'ombre', 'sombre', 'frosted tips', 'money piece', 'peekaboo highlights', 'split dye', 'babylights', 'grown-out roots', 'skunk stripe'],
+        # 1.6.0: the skunk stripe is a statement dye, trimmed to a third of an ordinary
+        # highlight (measured ~1.4% of women, ~0.1% of men after the `none` absence draw).
+        "weights": {'skunk stripe': 0.33},
         "optional": False
     }),
     ("rings", {
@@ -628,8 +629,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # weight, zero bias impact) to "standing with arms relaxed at the sides",
         # "touching the collar with one hand" and "holding both hands loosely
         # clasped". `PoseGrammarTests` pins the rule for new values.
-        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step'],
-        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step'],
+        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step', 'wrapping both arms around the body', 'sitting with elbows on knees', 'kneeling seiza-style', 'sitting on the ground with legs folded to one side', 'clasping both hands behind the head', 'flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart'],
+        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step', 'wrapping both arms around the body', 'sitting with elbows on knees', 'kneeling seiza-style', 'sitting on the ground with legs folded to one side', 'clasping both hands behind the head', 'flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart'],
         "optional": True
     }),
     ("held_item", {
@@ -955,7 +956,7 @@ MASCULINE_FAMILY_WEIGHTS: dict[str, dict[str, int]] = {
     # 1.5.0 round 3: two poses are trimmed for a masculine presentation (constraints.py
     # _MASCULINE_EXCLUDED_VALUES); these keep the survivors of each family at their
     # old per-variant rate instead of inheriting the trimmed pose's share.
-    "pose": {"gesture": 9, "seated_floor": 40},
+    "pose": {"gesture": 16, "seated_floor": 75},  # 1.6.0: x2 rescale, 5 of 7 floor poses at 15
 }
 
 #: Hair styles grouped into families for weighted random selection. The flat
@@ -1051,7 +1052,10 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # weight (1485/11 = 135), so short box braids stay reachable at ear and jaw length
     # (common on men) while the long braids are culled there as a whole family.
     ("braid_long", {"weight": 1350, "variants": ['side braid', 'fishtail braid', 'French braid', 'dutch braids', 'crown braid', 'waterfall braid', 'loose braids', 'milkmaid braids', 'rope braid', 'braided bun']}),
-    ("braid_short", {"weight": 540, "variants": ['cornrows', 'locs', 'two-strand twists', 'box braids']}),
+    # 1.6.0: Fulani braids, goddess braids and passion twists join IN PLACE (Mode A,
+    # weight held at 540), so protective styles keep their total share and only the
+    # per-style odds shift; they inherit `_AFRO_BRAIDS` and the texture gates.
+    ("braid_short", {"weight": 540, "variants": ['cornrows', 'locs', 'two-strand twists', 'box braids', 'Fulani braids', 'goddess braids', 'passion twists']}),
     # 1.5.0 round 4: bantu knots moved to `texture` (weights re-split 210 / 630, the
     # total unchanged) so the texture gate below can drop the Afro-textured styles as
     # WHOLE families -- as a partial cull it handed the knots family to space buns.
@@ -1098,7 +1102,10 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # 1.5.0 round 4: 560 -> 280. Once ear/chin/jaw lengths stopped drawing buns and
     # braids, this family took their share and doubled on women (5.6% -> 9.6%). Men draw
     # it from MASCULINE_FAMILY_WEIGHTS (1680), so only the feminine share moves.
-    ("barbered_short", {"weight": 280, "variants": ['fade', 'undercut', 'pompadour', 'quiff']}),
+    # 1.6.0: `faux hawk` grows the family in place (Mode A): the same short-sides cut
+    # with the same length gate, so the family share is unchanged and each cut is 4/5
+    # of its old share.
+    ("barbered_short", {"weight": 280, "variants": ['fade', 'undercut', 'pompadour', 'quiff', 'faux hawk']}),
     # 1.5.0: `wolf cut` joins `shag` -- the same layered mid-length cut family with the
     # same length gate, so the pair is still culled as a whole. Repriced 140 -> 280 so
     # each keeps the field's everyday per-variant rate (the `mullet` precedent).
@@ -1128,6 +1135,11 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # HALF the everyday rate, the `barbered_crop` reasoning: a distinctive J-fashion
     # cut, kept rare so the base node does not read as themed. Female pool only.
     ("hime", {"weight": 70, "variants": ['hime cut']}),
+    # 1.6.0: a statement cut, its own family so the formal-dress and older-age gates
+    # drop it whole. Priced at a QUARTER of the everyday rate (35 vs 140): a mohawk is a
+    # deliberate look, and the base node must not read as punk. Same for every
+    # presentation (no MASCULINE_FAMILY_WEIGHTS entry).
+    ("barbered_mohawk", {"weight": 35, "variants": ['mohawk']}),
 ])
 
 #: hair_color families (0.41): shade neighbourhoods, weights = current family
@@ -1136,8 +1148,8 @@ HAIR_STYLE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 #: filters out, so the conversion is distribution-neutral under both scopes.
 #: New colours join their shade family and subdivide its share (no bias).
 HAIR_COLOR_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("blonde", {"weight": 7, "variants": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde']}),
-    ("red", {"weight": 4, "variants": ['auburn', 'copper', 'bright red', 'deep red']}),
+    ("blonde", {"weight": 7, "variants": ['platinum blonde', 'white blonde', 'golden blonde', 'dirty blonde', 'strawberry blonde', 'light blonde', 'dark blonde', 'ash blonde', 'honey blonde']}),
+    ("red", {"weight": 4, "variants": ['auburn', 'copper', 'bright red', 'deep red', 'mahogany']}),
     ("brunette", {"weight": 6, "variants": ['light chestnut', 'chestnut', 'warm brown', 'medium brown', 'ash brown', 'dark brown']}),
     ("black", {"weight": 3, "variants": ['near black', 'jet black', 'raven black']}),
     ("gray_white", {"weight": 5, "variants": ['salt and pepper', 'silver', 'white', 'charcoal gray', 'gray-streaked dark hair']}),
@@ -1145,7 +1157,7 @@ HAIR_COLOR_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # natural_hair_colors) so it lives with the vivids — this keeps every
     # family entirely inside or entirely outside the "Natural only" scope,
     # which is what makes the family pick exactly uniform under both scopes.
-    ("vivid", {"weight": 20, "variants": ['hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips']}),
+    ("vivid", {"weight": 20, "variants": ['hot pink', 'baby pink', 'magenta', 'lavender', 'purple', 'deep purple', 'electric blue', 'navy blue', 'teal', 'mint green', 'emerald green', 'lime green', 'orange', 'coral', 'yellow', 'platinum white', 'rose gold', 'iridescent', 'rainbow ombre', 'black with colored tips', 'burgundy']}),
 ])
 
 #: Weighted families for other large flat fields, following the HAIR_STYLE_FAMILIES
@@ -1164,9 +1176,15 @@ EXPRESSION_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     ("warm", {"weight": 6, "variants": ['subtle soft smile', 'warm smile', 'bright smile', 'wide toothy grin', 'laughing', 'candid mid-laugh', 'gentle smile', 'beaming', 'delighted', 'hopeful']}),
     ("calm", {"weight": 3, "variants": ['neutral', 'relaxed', 'serene', 'calm and composed', 'at ease', 'quietly content']}),
     ("intense", {"weight": 5, "variants": ['serious', 'confident', 'intense gaze', 'determined', 'stern', 'steely', 'focused', 'brooding', 'defiant']}),
-    ("playful", {"weight": 5, "variants": ['playful', 'sultry', 'smirking', 'flirtatious', 'slightly bashful', 'mischievous', 'coy', 'quiet amusement', 'sly']}),
+    ("playful", {"weight": 5, "variants": ['playful', 'sultry', 'smirking', 'flirtatious', 'slightly bashful', 'mischievous', 'coy', 'quiet amusement', 'sly',
+                                           'winking', 'pouting', 'deadpan']}),  # 1.6.0
     ("pensive", {"weight": 3, "variants": ['pensive and thoughtful', 'contemplative', 'wistful', 'melancholic', 'lost in thought', 'daydreaming', 'solemn', 'weary']}),
-    ("reactive", {"weight": 2, "variants": ['surprised', 'curious', 'intrigued', 'skeptical', 'unimpressed', 'nervous smile', 'mildly annoyed']}),
+    ("reactive", {"weight": 2, "variants": ['surprised', 'curious', 'intrigued', 'skeptical', 'unimpressed', 'nervous smile', 'mildly annoyed',
+                                            'wide-eyed with shock', 'startled', 'bewildered', 'flustered']}),  # 1.6.0
+    # 1.6.0: a NEW family, so it takes share (2 of 26, every older family x 24/26). The
+    # `heavy` mood is ~22% of renders but had three faces to wear it; these are its
+    # distressed half. Same weight for every presentation: distress is not gendered.
+    ("troubled", {"weight": 2, "variants": ['teary-eyed', 'frowning', 'worried', 'anxious', 'heartbroken']}),
 ])
 
 MOOD_FAMILIES: OrderedDict[str, dict] = OrderedDict([
@@ -1223,46 +1241,62 @@ MOOD_FAMILIES: OrderedDict[str, dict] = OrderedDict([
 #:   gesture  18/2 = gesture_two_hands    18/2 =  9   (was 12/4 x 3 =  9)
 #:   gesture_garment 18/2 = gesture_pockets 9/1 =  9  (was  9/3 x 3 =  9)
 #: Total 324 = 108 x 3.
+#:
+#: 1.6.0: five poses grow existing split families and every weight is scaled x2 (a no-op
+#: on relative shares) so each parent's slice divides evenly over its new size:
+#:   standing 126/7 = standing_hands_bound 54/3 = 18             (parent 180 = 90 x 2)
+#:   seated 60/4 = seated_floor 105/7 = seated_perch 15/1 = 15   (parent 180 = 90 x 2)
+#:   gesture 32/2 = gesture_two_hands 48/3 = gesture_garment 32/2
+#:     = gesture_pockets 16/1 = gesture_hair 16/1 = 16            (parent 144 = 72 x 2)
+#: `gesture_social` is a NEW family (18, below the gesture rate on purpose: a peace sign
+#: is a snapshot cue, not a portrait default). Total 666 = 648 + 18.
 POSE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
-    ("standing", {"weight": 70, "variants": ['standing naturally', 'in a relaxed contrapposto stance', 'in a confident power pose', 'standing with arms relaxed at the sides', 'standing with weight on one leg', 'standing tall with shoulders back', 'standing with feet planted wide']}),
+    ("standing", {"weight": 126, "variants": ['standing naturally', 'in a relaxed contrapposto stance', 'in a confident power pose', 'standing with arms relaxed at the sides', 'standing with weight on one leg', 'standing tall with shoulders back', 'standing with feet planted wide']}),
     # Standing poses that occupy BOTH hands/arms. Split out of `standing` so a held
     # signature prop can drop them as a whole family. A new both-hands standing pose
     # MUST go here, not in `standing`.
-    ("standing_hands_bound", {"weight": 20, "variants": ['standing with arms crossed', 'standing with hands clasped behind the back']}),
+    ("standing_hands_bound", {"weight": 54, "variants": ['standing with arms crossed', 'standing with hands clasped behind the back',
+                                                         'wrapping both arms around the body']}),  # 1.6.0
     # 1.5.0 round 2: split proportionally (10 per variant, unchanged) so a public or
     # formal place can drop the FLOOR half whole -- "kneeling gracefully" at a busy
     # crosswalk, "crouching low" in an airplane aisle, "reclining" at a bus station.
-    ("seated", {"weight": 30, "variants": ['sitting relaxed', 'sitting upright', 'sitting with one leg crossed over the other']}),
-    ("seated_floor", {"weight": 50, "variants": ['reclining', 'kneeling gracefully', 'crouching low', 'sitting cross-legged', 'sitting on the floor with knees drawn up']}),
+    ("seated", {"weight": 60, "variants": ['sitting relaxed', 'sitting upright', 'sitting with one leg crossed over the other',
+                                           'sitting with elbows on knees']}),  # 1.6.0
+    ("seated_floor", {"weight": 105, "variants": ['reclining', 'kneeling gracefully', 'crouching low', 'sitting cross-legged', 'sitting on the floor with knees drawn up',
+                                                  'kneeling seiza-style', 'sitting on the ground with legs folded to one side']}),  # 1.6.0
     # The one seated pose that needs FURNITURE rather than the ground. Split out so the
     # giant scale — which forces the scene outdoors — can drop it as a whole family.
     # Everything else in `seated` works on the ground and stays available at any scale.
-    ("seated_perch", {"weight": 10, "variants": ['perched on the edge of a seat']}),
-    ("leaning", {"weight": 18, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
-    ("motion", {"weight": 18, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward', 'striding forward with purpose',
+    ("seated_perch", {"weight": 15, "variants": ['perched on the edge of a seat']}),
+    ("leaning", {"weight": 36, "variants": ['leaning against a wall', 'leaning forward slightly', 'leaning back casually']}),
+    ("motion", {"weight": 36, "variants": ['walking mid-stride', 'turning toward the viewer mid-stride', 'stepping forward', 'striding forward with purpose',
                            'walking toward the camera', 'pausing mid-step']}),  # 1.5.0
     # Gestures that need only a body and leave ONE hand free: safe for anyone, including
     # a full shell, and compatible with a held prop.
-    ("gesture", {"weight": 18, "variants": ['posing with a hand on one hip', 'resting chin on one hand']}),
+    ("gesture", {"weight": 32, "variants": ['posing with a hand on one hip', 'resting chin on one hand']}),
     # Gestures that occupy BOTH hands/arms — see `standing_hands_bound`.
-    ("gesture_two_hands", {"weight": 18, "variants": ['holding both hands loosely clasped', 'stretching both arms overhead']}),
+    ("gesture_two_hands", {"weight": 48, "variants": ['holding both hands loosely clasped', 'stretching both arms overhead',
+                                                      'clasping both hands behind the head']}),  # 1.6.0
     # Gestures that reach for a GARMENT — a collar, a cuff. Nothing to grab on a
     # fur body, an armour shell or a droid chassis. A new garment-touching pose
     # MUST go here (or in `gesture_pockets`), not in `gesture`: the suppression set is
     # derived from these families, so a cuff-adjusting pose filed elsewhere would reach
     # for a sleeve a mascot suit does not have.
-    ("gesture_garment", {"weight": 18, "variants": ['touching the collar with one hand', 'adjusting one cuff']}),
+    ("gesture_garment", {"weight": 32, "variants": ['touching the collar with one hand', 'adjusting one cuff']}),
     # Garment-dependent AND both-hands: pockets need a garment to have pockets and both
     # hands to be free. Its own family so each rule can drop it independently.
-    ("gesture_pockets", {"weight": 9, "variants": ['posing with hands in pockets']}),
+    ("gesture_pockets", {"weight": 16, "variants": ['posing with hands in pockets']}),
     # Gestures that reach for SCALP HAIR. Nothing to touch under a helmet or on a
     # bald / masked / hooded head.
-    ("gesture_hair", {"weight": 9, "variants": ['running one hand through the hair']}),
+    ("gesture_hair", {"weight": 16, "variants": ['running one hand through the hair']}),
+    # 1.6.0: one-handed social gestures aimed at the viewer. Their own family so a heavy
+    # mood, a sad face or an extreme close-up drops them whole.
+    ("gesture_social", {"weight": 18, "variants": ['flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart']}),
     # 0.85.0: two eye-contact variants grown in place (family weight unchanged, only
     # the per-value share shifts) -- the documented bias-safe channel for adding to an
     # existing family. Closes the gap where the pack had no way to state eye contact
     # at all.
-    ("looking", {"weight": 36, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera']}),
+    ("looking", {"weight": 72, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera']}),
 ])
 
 #: Poses the engine drops when a character has no visible scalp hair (a full mask, a
@@ -1319,6 +1353,7 @@ QUADRUPED_UNPERFORMABLE_POSES: frozenset[str] = frozenset(
     + POSE_FAMILIES["gesture_pockets"]["variants"]
     + POSE_FAMILIES["gesture_hair"]["variants"]
     + POSE_FAMILIES["seated_perch"]["variants"]
+    + POSE_FAMILIES["gesture_social"]["variants"]  # 1.6.0: a hand to wave or point
 )
 
 #: 0.65.0: the `studio` family's former `'Dutch angle with hard shadows'` mixed a pure
@@ -1432,6 +1467,16 @@ LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # location with a reflector, so they are not fixture claims and need no allowlist.
     ("studio_shape", {"weight": 960, "variants": ['dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
     ("studio_stage", {"weight": 96, "variants": ['stage spotlight from above']}),
+    # 1.6.0: weather lives in lighting (the field that already owns hour, sky and
+    # light), composed with any outdoor place rather than baked into locations. Two NEW
+    # families, both outdoor-only so they drop whole indoors. Rain, drizzle and fog are
+    # culled at arid places; snow is its own family because it is also winter-only and
+    # kept off the no-snow places. `weather` is priced at 3/4 of the window/artificial
+    # rate (66 vs 88 per variant): at 88 it put rain or fog on ~12% of outdoor renders,
+    # at 66 it lands near 1 in 11. `snowfall` keeps 88; winter already thins it.
+    # Total 5016 -> 5302.
+    ("weather", {"weight": 198, "variants": ['light rain from a grey sky', 'a fine misty drizzle', 'a low drifting fog']}),
+    ("snowfall", {"weight": 88, "variants": ['gently falling snow']}),
 ])
 
 #: Location families. Each is entirely indoor, entirely outdoor, or entirely
@@ -1656,6 +1701,9 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'knee-length linen sundress with thin straps',  # 1.5.0 round 2
             'denim skirt with a tucked-in tee',  # 1.5.1 wildcard review
             'ribbed knit sweater dress',  # 1.5.1 wildcard review
+            'off-shoulder ribbed Bardot top with high-waisted jeans',  # 1.6.0
+            'square-neck ruffled blouse with a denim midi skirt',  # 1.6.0
+            'boned corset top with straight-leg jeans',  # 1.6.0
         ],
         'male': [
             'brushed flannel shirt with straight-leg jeans',
@@ -1701,6 +1749,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'longline waistcoat over a poplin shirt with slim trousers',
             'cashmere crewneck with wide-leg wool trousers',  # 1.5.0
             'knit polo with a satin midi skirt',  # 1.5.0
+            'puff-sleeve silk blouse with a pleated midi skirt',  # 1.6.0
+            'bow-neck chiffon blouse with tailored trousers',  # 1.6.0
         ],
         'male': [
             'unstructured cotton blazer over a merino polo with slim trousers',
@@ -1717,6 +1767,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'suede bomber over a fine-knit crewneck with tailored trousers',  # 1.5.0
             'grandad-collar linen shirt with pleated chinos',  # 1.5.0
             'tweed blazer over a fine-knit sweater with corduroy trousers',  # 1.5.1 wildcard review
+            'suede overshirt over a fine-gauge roll-neck with tailored trousers',  # 1.6.0
         ],
         'unisex': [
             'lightweight knit over a collared shirt with tapered trousers',
@@ -1792,6 +1843,9 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'tailored suit with a crisp shirt and minimal detailing',
             'structured two-piece suit with a fine-knit shell',
             'long-line tailored coat over a two-piece suit',
+            'single-breasted wool suit with a band-collar shirt',  # 1.6.0
+            'relaxed-shoulder wool suit with a fine-knit turtleneck',  # 1.6.0
+            'boxy double-breasted suit with a crisp poplin shirt',  # 1.6.0
         ],
     },
     'evening formal': {
@@ -1812,6 +1866,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'strapless satin gown with a sweetheart neckline and a full skirt',  # 1.5.0 round 2
             'cap-sleeve crepe sheath gown with a keyhole back',  # 1.5.0 round 2
             'long-sleeved sequined gown with a plunging back',  # 1.5.0 round 2
+            'puff-sleeve taffeta gown with a square neckline',  # 1.6.0
+            'ruffled tiered tulle gown with an off-shoulder neckline',  # 1.6.0
         ],
         'male': [
             'high-shine satin-lapel dinner suit with a bow tie',  # 1.5.0 round 5: moved from unisex -- a tie put women in menswear
@@ -1830,6 +1886,9 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'sharply tailored dinner suit with a satin lapel',
             'floor-length tailored cape over a slim black evening suit',  # 1.5.2: "evening tailoring" named no garment; the render invented a grey dress
             'velvet tuxedo jacket with pressed evening trousers',
+            'shawl-collar velvet tuxedo with satin-striped trousers',  # 1.6.0
+            'double-breasted silk-lapel dinner jacket over a soft-collar shirt with wide evening trousers',  # 1.6.0
+            'brocade evening jacket over a fine-knit roll-neck with tailored trousers',  # 1.6.0
         ],
     },
     'cocktail semi-formal': {
@@ -1848,6 +1907,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'feather-trimmed crepe cocktail dress',
             'fitted blazer with a silk camisole and leather trousers',  # moved from unisex (1.5.0): men drew it
             'sharply cut jumpsuit in fluid crepe',  # moved from unisex (1.5.0): men drew it
+            'cowl-neck satin slip dress',  # 1.6.0
+            'puff-sleeve satin mini dress with a square neckline',  # 1.6.0
         ],
         'male': [
             'tailored suit over a fine-knit shirt open at the collar',
@@ -1864,6 +1925,10 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         'unisex': [
             'satin-lapel suit with a soft-collar shirt',
             'textured cocktail jacket over a satin shirt with pressed trousers',
+            'velvet dinner jacket over a fine roll-neck with slim trousers',  # 1.6.0
+            'silk shirt buttoned to the collar under a short boxy tuxedo jacket with wide trousers',  # 1.6.0
+            'satin bomber jacket over a fine-knit tee with tailored trousers',  # 1.6.0
+            'collarless jacket over a fine merino crewneck with pressed trousers',  # 1.6.0
         ],
     },
     'streetwear': {
@@ -1903,6 +1968,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'relaxed coach jacket over a boxy tee with parachute trousers',
             'knit sweater vest over a tee with loose denim',  # 1.5.0: 'longline' rendered as a dress over jeans
             'oversized basketball jersey over a tee with baggy shorts',  # 1.5.1 wildcard review
+            'satin bomber over a hoodie with cinched-ankle cargo trousers',  # 1.6.0
         ],
     },
     'bohemian': {
@@ -1923,6 +1989,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'kimono cardigan over a slip top',  # moved from unisex (1.5.0): men drew it
             'patchwork layers over a gauze shift',  # moved from unisex (1.5.0): men drew it
             'layered gauze scarves over a tiered cotton dress',  # moved from unisex (1.5.0): men drew it
+            'fringed knit poncho over a fitted tee with flared jeans',  # 1.6.0
+            'off-shoulder peasant top with a tiered maxi skirt',  # 1.6.0
         ],
         'male': [
             'open linen shirt with loose drawstring trousers',
@@ -1934,11 +2002,16 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'chunky hand-knit sweater with straight-leg corduroys',  # 1.5.0 round 5: flares read as costume
             'kaftan-cut cotton shirt with drawstring trousers',
             'embroidered denim overshirt with loose linen trousers',  # 1.5.0
+            'fringed knit poncho over a henley with straight-leg jeans',  # 1.6.0
+            'beaded suede vest over a collarless gauze shirt with straight-leg jeans',  # 1.6.0
         ],
         'unisex': [
             'crinkled linen duster over a gauze tank with wide drawstring trousers',
             'open-weave knit cardigan over a gauze henley with wide linen trousers',
             'embroidered waistcoat over a loose linen shirt with wide linen trousers',
+            'loose crochet-knit shirt with wide linen trousers',  # 1.6.0
+            'hooded woven poncho over a gauze tee with wide drawstring trousers',  # 1.6.0
+            'suede waistcoat over a gauze shirt with relaxed corduroys',  # 1.6.0
         ],
     },
     'athletic': {
@@ -2041,11 +2114,17 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'long leather coat over a ribbed tank with slim jeans',
             'black flannel overshirt with distressed denim',
             'ripped band tee with black skinny jeans',  # 1.5.0
+            'quilted satin bomber over a band tee with ripped black jeans',  # 1.6.0
+            'oversized band hoodie under a studded leather vest with slim jeans',  # 1.6.0
+            'mesh-panel tee under an open flannel with ripped jeans',  # 1.6.0
         ],
         'unisex': [
             'denim vest over a band tee with frayed shorts and a studded belt',
             'fitted black turtleneck with leather trousers',
             'boxy utility jacket over a shredded tee with slim cargo trousers',
+            'oversized band hoodie with ripped black jeans',  # 1.6.0
+            'leather biker jacket over a mesh long sleeve with slim jeans',  # 1.6.0
+            'hoodie under a sleeveless denim jacket with ripped jeans',  # 1.6.0
         ],
     },
     'preppy': {
@@ -2131,6 +2210,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'fleece-lined hoodie with brushed jersey joggers',
             'linen-blend lounge shirt with matching drawstring trousers',
             'satin pyjama set with a button-up top and trousers',  # 1.5.0
+            'cotton shortie pyjama set with a camp collar',  # 1.6.0
+            'button-front cotton nightshirt',  # 1.6.0
         ],
         'male': [
             'cotton robe over lounge trousers',
@@ -2142,6 +2223,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'shawl-collar knitted robe over a jersey lounge set',
             'linen-blend lounge shirt with drawstring shorts',
             'waffle robe over a jersey tee and joggers',  # 1.5.0
+            'brushed flannel pyjama trousers with a fitted long-sleeve tee',  # 1.6.0
         ],
         'unisex': [
             'waffle-knit lounge set with a crewneck and joggers',
@@ -2150,6 +2232,8 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'oversized knitted robe over a jersey lounge set',
             'fleece-back sweatshirt with drawstring lounge shorts',
             'ribbed lounge set with a long sleeve and wide trousers',
+            'brushed flannel pyjama set with a notch collar',  # 1.6.0
+            'oversized sleep tee with soft jersey sleep shorts',  # 1.6.0
         ],
     },
     # 1.5.0. Trade and hands-on dress -- the style the location gate needed, because
@@ -2373,6 +2457,9 @@ OUTDOOR_ONLY_LIGHTING: frozenset[str] = frozenset([
     'moonlight with cool blue tones', 'soft overcast golden light',
     'harsh desert sun', 'snow-reflected daylight',
     'fog-diffused streetlamp glow', 'reflection off wet pavement',
+    # 1.6.0: the whole `weather` and `snowfall` families.
+    'light rain from a grey sky', 'a fine misty drizzle', 'a low drifting fog',
+    'gently falling snow',
 ])
 
 #: Lighting that asserts a built interior: a window or skylight you are looking

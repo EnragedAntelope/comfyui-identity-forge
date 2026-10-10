@@ -85,15 +85,17 @@ _LONG_HAIR_STYLES: list[str] = [
     # below, as a whole family, which is the same requirement satisfied a different way.
     "milkmaid braids", "rope braid", "braided bun", "two-strand twists",
     "bubble ponytail", "hair puff",
+    # 1.6.0: the three new `braid_short` styles, so a buzz still drops that family whole.
+    "Fulani braids", "goddess braids", "passion twists",
 ]
 
-#: The four short barbered cuts (0.81.0). This list is EXACTLY the
+#: The short barbered cuts (0.81.0; faux hawk 1.6.0). This list is EXACTLY the
 #: ``barbered_short`` family in fields.py, and the rules below rely on that: they
 #: exclude the whole family, so every other family keeps its share. If a fifth
 #: short cut is ever added to that family it must be added here too, or the
 #: exclusion becomes a partial cull and concentrates the family's frozen weight on
 #: whatever is left. ``HairStyleFamilyTests`` pins the two lists together.
-_BARBERED_SHORT_STYLES: list[str] = ["fade", "undercut", "pompadour", "quiff"]
+_BARBERED_SHORT_STYLES: list[str] = ["fade", "undercut", "pompadour", "quiff", "faux hawk"]
 
 #: The three short crops (0.83.0). EXACTLY the ``barbered_crop`` family in fields.py,
 #: for the same reason the list above mirrors ``barbered_short``: the rules exclude the
@@ -251,13 +253,14 @@ CONSTRAINT_RULES: list[dict] = [
     # have, and while "buzz fade" is a real barbershop order, the family cannot be
     # cut in half without handing its weight to the survivors. Losing a marginal
     # buzz-fade is the cheaper side of that trade.
+    # 1.6.0: the mohawk (its own `barbered_mohawk` family) shares the same length gate.
     {"type": "exclusion", "field": "hair_length", "value": "buzzed very short",
      "excludes_field": "hair_style",
-     "excludes_values": _BARBERED_SHORT_STYLES,
+     "excludes_values": [*_BARBERED_SHORT_STYLES, "mohawk"],
      "reason": "a buzz cut has no top length to fade into, sweep up, or undercut"},
     *[
         {"type": "exclusion", "field": "hair_length", "value": length,
-         "excludes_field": "hair_style", "excludes_values": _BARBERED_SHORT_STYLES,
+         "excludes_field": "hair_style", "excludes_values": [*_BARBERED_SHORT_STYLES, "mohawk"],
          "reason": f"{length} hair is far past the length these barbered cuts describe"}
         for length in _PAST_SHOULDER_LENGTHS
     ],
@@ -511,7 +514,12 @@ _CLOSED_EXPRESSIONS = ["neutral", "serious", "stern", "intense gaze",
                        # 0.82.0 additions
                        "defiant", "solemn", "unimpressed",
                        # 1.5.0 additions
-                       "weary", "mildly annoyed"]
+                       "weary", "mildly annoyed",
+                       # 1.6.0: the whole `troubled` family plus two playful faces.
+                       # winking, flustered, startled, bewildered and wide-eyed with
+                       # shock stay unbucketed (each works open or closed).
+                       "teary-eyed", "frowning", "worried", "anxious", "heartbroken",
+                       "pouting", "deadpan"]
 _SOFT_SMILE_EXPRESSIONS = ["subtle soft smile", "warm smile", "bright smile",
                            "gentle smile",
                            # 0.82.0: "quietly content" is a closed-lip smile;
@@ -539,7 +547,7 @@ for _expr in _OPEN_EXPRESSIONS:
 
 # Hairstyles with no visible parting force hair_part to "no part" (treated as absent
 # in prose), resolving the slicked-back/centre-part style conflict.
-_NO_PART_STYLES = ["slicked back", "wet look", "afro", "twist-out",
+_NO_PART_STYLES = ["slicked back", "wet look", "afro", "twist-out", "mohawk", "faux hawk",  # hawks 1.6.0
                    "bantu knots", "space buns"]
 for _style in _NO_PART_STYLES:
     CONSTRAINT_RULES.append({
@@ -738,7 +746,9 @@ _MASCULINE_EXCLUDED_VALUES: dict[str, list[str]] = {
     "bag": ["canvas tote"],
     "footwear": ["ankle boots"],
     # 1.5.0 round 3: read as a feminine pose on men in the QA renders.
-    "pose": ["posing with a hand on one hip", "kneeling gracefully"],
+    "pose": ["posing with a hand on one hip", "kneeling gracefully",
+             # 1.6.0: the side-fold sit (yokozuwari) is the feminine floor sit.
+             "sitting on the ground with legs folded to one side"],
 }
 for _field, _excluded in _MASCULINE_EXCLUDED_VALUES.items():
     CONSTRAINT_RULES.append({
@@ -1420,7 +1430,8 @@ SEASONS_BY_LOCATION: dict[str, frozenset[str]] = {
 #: over 4000 renders, because two of the 17 daylight variants dragged it to winter.
 #: This way round the season stays uniform and only a winter light drawn out of season
 #: is re-picked, which re-draws the rejected value alone (the 0.64.0 mixture property).
-_WINTER_LIGHTING: list[str] = ["hazy overcast winter light", "snow-reflected daylight"]
+_WINTER_LIGHTING: list[str] = ["hazy overcast winter light", "snow-reflected daylight",
+                               "gently falling snow"]  # 1.6.0
 
 for _loc, _allowed in SEASONS_BY_LOCATION.items():
     CONSTRAINT_RULES.append({
@@ -1490,14 +1501,15 @@ for _season, _by_field in SEASON_EXCLUSIONS.items():
 # family table by name so a regrouping cannot leave these pointing at dead strings.
 _MOOD_HEAVY: list[str] = list(FIELD_FAMILIES["mood"]["heavy"]["variants"])
 _MOOD_POSITIVE: list[str] = list(FIELD_FAMILIES["mood"]["positive"]["variants"])
-_SAD_EXPRESSIONS: list[str] = ["melancholic", "solemn", "wistful", "brooding", "weary"]
+_SAD_EXPRESSIONS: list[str] = ["melancholic", "solemn", "wistful", "brooding", "weary",
+                               *FIELD_FAMILIES["expression"]["troubled"]["variants"]]  # 1.6.0
 
 for _expr in FIELD_FAMILIES["expression"]["warm"]["variants"]:
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "expression", "value": _expr,
         "excludes_field": "mood", "excludes_values": list(_MOOD_HEAVY),
         "reason": f"a '{_expr}' face contradicts a heavy mood"})
-for _expr in _SAD_EXPRESSIONS:
+for _expr in _SAD_EXPRESSIONS + ["deadpan"]:  # deadpan 1.6.0: a blank face is not radiant
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "expression", "value": _expr,
         "excludes_field": "mood", "excludes_values": list(_MOOD_POSITIVE),
@@ -1826,10 +1838,16 @@ _NO_SNOW_PLACES = _ARID_PLACES | frozenset([
     "steaming hot spring pool", "the Iguazu Falls lookout",
     "the Angkor Wat causeway", "the Taj Mahal reflecting pool", "the Victoria Falls gorge rim",
 ])
+# 1.6.0: the `weather` and `snowfall` lighting families drop WHOLE where they cannot
+# fall (proportional), and also at the two outdoor places named for their sunshine.
+_SUN_NAMED_PLACES = frozenset(["sunny city park", "sunlit vineyard"])
+_WEATHER_PLACES = OUTDOOR_LOCATIONS - _ARID_PLACES - _SUN_NAMED_PLACES
 _PLACE_LIGHTS: dict[str, frozenset[str]] = {
     "harsh desert sun": _ARID_PLACES,
     "dappled sunlight through forest canopy": _CANOPY_PLACES,
     "snow-reflected daylight": OUTDOOR_LOCATIONS - _NO_SNOW_PLACES,
+    **{_w: _WEATHER_PLACES for _w in FIELD_FAMILIES["lighting"]["weather"]["variants"]},
+    "gently falling snow": OUTDOOR_LOCATIONS - _NO_SNOW_PLACES - _SUN_NAMED_PLACES,
 }
 for _loc in sorted(OUTDOOR_LOCATIONS):
     _denied = sorted(_l for _l, _places in _PLACE_LIGHTS.items() if _loc not in _places)
@@ -1845,7 +1863,8 @@ CONSTRAINT_RULES.append({
     "excludes_values": ["moonlight with cool blue tones", "harsh overhead midday sun",
                         "golden hour sunlight", "late afternoon warm sunlight",
                         "direct sunlight from behind camera", "rim lighting from setting sun",
-                        "sun rays through broken cloud cover"],
+                        "sun rays through broken cloud cover",
+                        "gently falling snow"],  # 1.6.0
     "reason": "rain falls from a clouded sky"})
 
 
@@ -2501,6 +2520,32 @@ for _shot in ("view from directly behind", "from behind and slightly below, look
         "excludes_field": "pose", "excludes_values": [p for p in _ALL_POSES if p not in _LOOK_BACK],
         "reason": "seen from behind, the face only shows if the head turns back"})
 
+# 1.6.0: the social gestures (peace sign, thumbs up, wave, finger heart) are a cheerful
+# address to the camera. A sad or troubled face and a heavy or enigmatic mood stand and
+# the pose absorbs it, as the whole `gesture_social` family; an extreme close-up has no
+# room for the hand.
+_SOCIAL_GESTURES = list(_POSE["gesture_social"]["variants"])
+for _expr in _SAD_EXPRESSIONS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "expression", "value": _expr,
+        "excludes_field": "pose", "excludes_values": _SOCIAL_GESTURES,
+        "reason": f"a '{_expr}' face does not flash a cheerful hand sign"})
+for _mood in [m for f in ("heavy", "enigmatic") for m in FIELD_FAMILIES["mood"][f]["variants"]]:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "mood", "value": _mood,
+        "excludes_field": "pose", "excludes_values": _SOCIAL_GESTURES,
+        "reason": f"a {_mood} mood does not flash a cheerful hand sign"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "shot_type", "value": "extreme close-up on face",
+    "excludes_field": "pose", "excludes_values": _SOCIAL_GESTURES,
+    "reason": "an extreme close-up has no room for a hand gesture"})
+# A face turned inward does not meet the lens.
+for _expr in ("lost in thought", "daydreaming"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "expression", "value": _expr,
+        "excludes_field": "pose", "excludes_values": ["looking directly into the camera"],
+        "reason": f"a '{_expr}' face is not looking into the lens"})
+
 # --- the face and the mood agree, family by family ------------------------------------------
 # Round 2 gated warm faces off heavy moods and sad faces off positive ones; the flagged
 # renders still paired "solemn" with "triumphant", "mischievous" with "sorrowful",
@@ -2512,6 +2557,7 @@ _MOODS_DENIED_BY_EXPRESSION: dict[str, list[str]] = {
     "playful": ["heavy"],
     "pensive": ["positive", "bold_fierce", "bold_bright"],
     "reactive": ["bold_fierce", "bold_bright", "calm"],
+    "troubled": ["positive", "calm", "bold_fierce", "bold_bright"],  # 1.6.0
 }
 for _efam, _mfams in _MOODS_DENIED_BY_EXPRESSION.items():
     _moods = [m for f in _mfams for m in FIELD_FAMILIES["mood"][f]["variants"]]
@@ -2619,6 +2665,14 @@ for _style in ("business formal", "business casual", "evening formal", "cocktail
         "type": "exclusion", "field": "outfit_style", "value": _style,
         "excludes_field": "hair_style", "excludes_values": list(_PLAYFUL_HAIR),
         "reason": f"a playful hairstyle reads as costume with {_style} dress"})
+# 1.6.0: a mohawk is a statement cut; with formal or preppy dress the outfit stands and
+# the hair absorbs it (whole `barbered_mohawk` family).
+for _style in ("business formal", "business casual", "evening formal", "cocktail semi-formal",
+               "preppy"):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "outfit_style", "value": _style,
+        "excludes_field": "hair_style", "excludes_values": ["mohawk"],
+        "reason": f"a mohawk reads as costume with {_style} dress"})
 
 
 # --- round 5 (the maintainer's test of the round-4 branch) -----------------------------
@@ -2637,7 +2691,10 @@ _NIGHT_LIGHTS = ["blue hour twilight", "pre-dawn darkness with ambient glow",
                  "club strobe lighting", "colored gel lighting", "warm candlelight",
                  "warm string lights bokeh background", "warm lantern light",
                  "golden bokeh lights in background", "fire and flame warm flicker",
-                 "flickering firelight from a hearth", "flickering television glow in a dark room"]
+                 "flickering firelight from a hearth", "flickering television glow in a dark room",
+                 # 1.6.0: not night, but just as sunless.
+                 *FIELD_FAMILIES["lighting"]["weather"]["variants"],
+                 *FIELD_FAMILIES["lighting"]["snowfall"]["variants"]]
 for _light in _NIGHT_LIGHTS:
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "lighting", "value": _light,
@@ -2649,13 +2706,14 @@ for _texture in ("loosely curled", "softly curled"):
         "type": "exclusion", "field": "hair_texture", "value": _texture,
         "excludes_field": "hair_style", "excludes_values": list(_AFRO_BRAIDS),
         "reason": f"{_texture} hair does not hold cornrows, locs or twists"})
-# An undercut reads young from 55 ("an undercut" on a 70-year-old).
+# An undercut reads young from 55 ("an undercut" on a 70-year-old). 1.6.0: the mohawk
+# too, as its whole single-variant family.
 for _age in _AGE_VALUES:
     if int(_age) >= 55:
         CONSTRAINT_RULES.append({
             "type": "exclusion", "field": "age", "value": _age,
-            "excludes_field": "hair_style", "excludes_values": ["undercut", "mullet"],
-            "reason": f"an undercut or a mullet reads young at {_age}"})
+            "excludes_field": "hair_style", "excludes_values": ["undercut", "mullet", "mohawk"],
+            "reason": f"an undercut, a mullet or a mohawk reads young at {_age}"})
 
 
 # --- Lock-vs-lock clash check (1.5.1) -----------------------------------------

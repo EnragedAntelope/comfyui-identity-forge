@@ -812,3 +812,72 @@ requests. `README.md`: the Stylebook pairing section said `prose`, the actual ou
 `prompt_text`; a note that a seed reproduces a character only within one installed version (a
 release can change pools/weights/rules), and that Vault Save/Load is how to keep a specific
 character across updates.
+
+## 1.6.0 — content only: field values, the outfit corpus and new archetypes
+
+A review mined third-party wildcard packs (DGirls, TheLook, a hairstyle list, an expression
+list, a nested natural-language pack) for gaps. Most of what they offer already ships: the
+locations include the landmarks, the hairstyle lists are mostly length x texture x colour (which
+the engine composes from separate fields), and much of the rest is glamour or NSFW. What was a
+real gap shipped; the engine and UX findings from the same review are the 1.7.0 backlog in
+`docs/suggested-additions.md`. Shares below are from 2,000 seeds per gender.
+
+**Bias rules applied to every addition.** New values carry the same weight for every
+presentation (no `male_weights` on emotions or gestures). New hair colours join existing
+families, so `_bias_hair_color` weights them by ethnicity automatically; `burgundy` is a dye and
+joined `vivid`, so it draws only under Full spectrum or a lock. New braids joined `braid_short`
+and inherit `_AFRO_BRAIDS` and the texture gates. New archetypes lock no `skin_tone`, and the
+skin locks on `Korean Hanbok`, `Chinese Qipao` and `Vietnamese Ao Dai` were removed: in Full
+preset they pinned the palest tones of the ethnicity's band (Ao Dai's `fair` sat outside it), and
+unlocked, `_bias_skin_tone` draws the band's whole range. Essentials (the default) already drops
+ethnicity and skin, so a cultural look goes on anyone there.
+
+**Weather is a `lighting` family, not a field or a location variant.** Lighting already owned
+hour, weather and light, and a separate field would need a widget, the JS legacy repair, and a
+rule against every sunny lighting value. Weather-in-location multiplies places x weather and
+dilutes each place. Two new families: `weather` (light rain, a fine drizzle, low fog) and
+`snowfall`. They are outdoor-only, rain and fog skip arid places and the two sun-named places,
+snow joins `_WINTER_LIGHTING` (so it forces winter, and a locked snow with a random season
+resolves to winter) and stays off `_NO_SNOW_PLACES`, and all four exclude sunglasses. `weather`
+is priced at three quarters of the window/artificial rate because the full rate put weather on
+about 12% of outdoor renders; it now lands on 9–11%, snow on well under 1%.
+
+**Expression.** A new `troubled` family (teary-eyed, frowning, worried, anxious, heartbroken):
+the heavy mood is about 22% of renders but had three faces to wear it. It denies the positive,
+calm and bold moods, its faces are closed-mouth, and it lands on about 7–8% of both genders.
+`playful` gained winking, pouting and deadpan; `reactive` gained wide-eyed with shock, startled,
+bewildered and flustered (both Mode A, family share unchanged). Two values were renamed before
+shipping because the prose templates read them badly: `deadpan stare` became `deadpan` ("Her
+expression is deadpan") and `hands clasped behind the head` became `clasping both hands behind
+the head` ("He is clasping ...").
+
+**Pose.** Weights rescaled x2 so the grown families divide evenly (no change to relative
+shares). New: `gesture_social` (peace sign, thumbs up, waving, finger heart), priced below the
+gesture rate and about 1.5% of renders, excluded by sad faces, heavy and enigmatic moods and an
+extreme close-up. "Lost in thought" and "daydreaming" no longer draw "looking directly into the
+camera" (the cheap part of the gaze idea; the field itself is deferred). Floor poses gained
+seiza and side-saddle; side-saddle is trimmed from masculine presentation.
+
+**Hair.** `faux hawk` grows `barbered_short` in place; `mohawk` is its own family at a quarter
+of the everyday rate (about 0.6%), so the formal-dress and age-55+ gates drop it whole.
+`hair_highlights` gained babylights, grown-out roots and a skunk stripe, and its first
+`weights` entry holds the stripe to about 1.4% of women and 0.1% of men.
+
+**Outfits.** The corpus gained entries filling the thinnest cells first (cocktail, evening,
+business-formal and bohemian unisex; edgy and bohemian menswear), plus the shapes the corpus
+had none of: ruffles, puff sleeves, Bardot and square necks, a cowl-neck slip, a corset top with
+jeans, a bow-neck blouse. Pyjamas are `loungewear`, which is already limited to homes, hotel
+suites, a hospital room and an airplane aisle; onesies and kigurumi were skipped as costume.
+
+**Archetypes.** Metalhead; Wedding Groom (with four alternate gowns for Bridal Portrait,
+append-only so existing seeds keep the original); Lehenga & Sherwani (the
+sherwani half of the 1.5.0 "Saree + Sherwani" request); RCMP Mountie; Royal Guard; Evzone Guard (male, like
+the real guard); Yukata (summer-locked, distinct from Geisha); Hanfu (distinct
+from the qipao); Kebaya; Muay Thai Fighter (age and a standing pose locked, since both
+survive Essentials); Dressage Rider; Fly-Fishing Angler; Highwayman. Metal slots were fixed to
+gold or silver where the garment is only ever made in those (zari thread, a topknot crown).
+Garment looks are named for the garment (Yukata, not Japanese Yukata): Essentials, the
+default, puts the look on anyone, and the picker still finds them by ethnicity. Shipped names
+keep their prefix, since nothing maps a renamed archetype for saved workflows.
+
+**Declined:** see `docs/suggested-additions.md` → "Field options — declined (1.6.0)".

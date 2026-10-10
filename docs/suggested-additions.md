@@ -27,6 +27,23 @@ that is what the Creature node is for.
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
+**Engine and UX, queued for 1.7.0** (found in the 1.6.0 review, kept out of a content-only
+release):
+
+| Item | Case |
+|---|---|
+| The shipped modifier example is broken | `nodes/identity_forge_modifier.py` ships an example a user would copy. Fix first. |
+| "Roll + lock all" ignores weights and constraints | `js/identity_forge.js` rolls each widget uniformly, so it can lock a pair the engine forbids. |
+| Tight shots still name shoes | Measured at about 14% of tight framings. |
+| Hair prose as a comma list | About 23% of renders read "mid back curly salt and pepper, worn down"; about 6% drop an article. |
+| `widget_locked` signature | Documented keyword-only, but the signature has no `*`. |
+| A negative and/or tags output, and a subject/scene split | Downstream graphs re-parse the prose today. |
+| An on-node readout of the resolved prompt | `onExecuted`, so the user sees what a seed drew without a Show Text node. |
+| Free-text `held_item` | Today only archetypes set it. |
+| A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Worth it alongside the expression sheet, not alone. |
+| An expression-sheet node | Re-run like Turnaround, releasing `smile_type` and `mood` per view. |
+| CI | Make publish depend on CI; add a Windows runner. |
+
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,
 abstract or mascot silhouette
@@ -294,11 +311,26 @@ nothing — the arithmetic is in [architecture.md](architecture.md).
 | `accessories`: anything | The season gate exists since 1.5.0, so a seasonal value is no longer blocked — but the field carries the eyewear `weights` map, so any addition must reprice it to hold eyewear at 25% (`ConceptShareTests`). |
 | `outfit_style`: western, grunge | **Overlap (1.5.0 maintainer call).** Western is `casual` plus `cowboy boots` and the `vintage retro` western-yoke shirt; grunge is `edgy alternative` / `streetwear` and the `1990s Grunge` archetype. `utility workwear` shipped instead, because the location gate left workshops and docks with no plausible style. |
 
+### Field options — declined (1.6.0)
+
+From the third-party wildcard packs mined at 1.6.0. What shipped is in docs/history.md → "1.6.0".
+
+| Candidate | Why |
+|---|---|
+| `expression`: ahegao, eyes rolled back, aroused, screaming, funny face, "resting face" | Sexual, grotesque or a joke rather than a face a believable person wears in a portrait. |
+| `hair_color`: blue-black | `raven black` already is the natural blue-black, and as a dye name it renders visibly blue. `burgundy` shipped instead, in `vivid`. |
+| `hair_style`: side-shaved | Its gates would duplicate the undercut's, and `undercut` already draws the silhouette. |
+| `hair_style`: finger waves, beehive, old-Hollywood waves | Date a random person to a period, the same bar that declined victory rolls. The period archetypes carry them deliberately. |
+| `hair_style`: curly bob, long shag | Already composed from `hair_length` x `hair_texture`. |
+| `outfit_description`: onesies, kigurumi | Costume, not loungewear. Pyjamas shipped under `loungewear` instead. |
+| A `weather` widget, or weather baked into location names | Weather shipped as a `lighting` family; history.md → "1.6.0" has the reasoning. |
+| Camera makes, film stock, colour grading, art style, skin-realism detail | Rendering style, not the person. They belong to `comfyui-stylebook`. |
+
 ### Archetypes — declined
 
 | Candidate | Why |
 |---|---|
-| Saree (half of the 1.5.0 "Saree + Sherwani" pair) | **Already ships.** `Bollywood Heroine` carries a chiffon sari, a silk sari with its pallu and a lehenga. Only the sherwani is a real gap; a sherwani-led look would need its own case. |
+| Saree (half of the 1.5.0 "Saree + Sherwani" pair) | **Already ships.** `Bollywood Heroine` carries a chiffon sari, a silk sari with its pallu and a lehenga. The sherwani was the real gap and ships in `Lehenga & Sherwani`. |
 | Techwear / Gorpcore | **Cyberpunk Netrunner already is a techwear look** — its costume is literally "a {dark_color} techwear jacket with {color} LED trim, utility straps, and a sleek visor". Stripping the sci-fi trim to leave shell-jacket-and-cargo-trousers is not a second silhouette, it is the same one with less to draw. |
 | A dark/gothic counterpart to Kawaii Street Fashion | Declined on two counts. The pastel silhouette is already `Kawaii Street Fashion` (ruffled blouse, tiered skirt, platform Mary-Janes) and the dark one is already `1990s Goth`, so the candidate sits between two shipped entries rather than beside them. The maintainer also rejected the subculture's usual name outright. **Do not re-propose it under a synonym.** |
 

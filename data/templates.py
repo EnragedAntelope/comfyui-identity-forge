@@ -4257,7 +4257,8 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Korean Hanbok": {
         "gender": "Any",
         "ethnicity": "Korean",
-        "skin_tone": ["fair", "light", "porcelain"],
+        # 1.6.0: no skin_tone lock. It pinned the three palest tones of the band in
+        # Full preset; unlocked, _bias_skin_tone draws the ethnicity's whole range.
         "eye_color": "dark brown",
         "piercings": "no piercings beyond ears",
         "outfit_style": "vintage retro",
@@ -4327,7 +4328,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Vietnamese Ao Dai": {
         "gender": "Any",
         "ethnicity": "Vietnamese",
-        "skin_tone": ["light", "light medium", "fair"],
+        # 1.6.0: no skin_tone lock (see Korean Hanbok); "fair" sat outside the band.
         "eye_color": "dark brown",
         "piercings": "no piercings beyond ears",
         "outfit_style": "vintage retro",
@@ -4852,7 +4853,7 @@ ARCHETYPES: dict[str, dict[str, str]] = {
     "Chinese Qipao": {
         "gender": "Any",
         "ethnicity": "Chinese",
-        "skin_tone": ["fair", "light", "porcelain"],
+        # 1.6.0: no skin_tone lock (see Korean Hanbok).
         "eye_color": "dark brown",
         "piercings": "no piercings beyond ears",
         "outfit_style": "vintage retro",
@@ -5008,6 +5009,379 @@ ARCHETYPES: dict[str, dict[str, str]] = {
             },
         },
     },
+
+    # === 1.6.0 archetypes ===================================================
+    # None locks skin_tone: in Full preset the ethnicity band draws the full range, and
+    # Essentials (the default) drops ethnicity too, so the look goes on anyone.
+    "Metalhead": {
+        "gender": "Any",
+        "hair_length": ["mid back", "long"],
+        "hair_style": "worn down",
+        "outfit_style": "edgy alternative",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "bracelet": "none",
+        "outfit_description": [
+            "a sleeveless denim battle vest covered in sewn-on band patches and metal "
+            "studs over a faded black band tee, black jeans, a bullet belt, and scuffed "
+            "black combat boots",
+            "a black leather biker jacket with a band back patch over a black band tee, "
+            "ripped black jeans, a studded leather wristband, and worn black high-top "
+            "sneakers",
+        ],
+        "expression": "defiant",
+        "location": ["concert hall backstage", "indie record store"],
+        "lighting": "low key moody single light source",
+        "shot_type": "medium shot from waist up",
+        "mood": "fierce",
+    },
+    # The groom to Bridal Portrait's bride; the name is gendered, so its own entry.
+    "Wedding Groom": {
+        "gender": "Male",
+        "hair_style": ["slicked back", "natural and unstyled"],
+        "makeup_style": "no makeup",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "outfit_description": [
+            "a black satin-lapel tuxedo with a crisp white wing-collar shirt, a black "
+            "silk bow tie, a {flower} boutonniere pinned to the lapel, and polished "
+            "black oxfords",
+            "a {menswear_color} three-piece wedding suit with a waistcoat, a crisp white "
+            "shirt and a silk tie, a {flower} boutonniere, and polished brown oxfords",
+            "a grey morning suit with a tailcoat, a dove-grey waistcoat, a crisp white "
+            "shirt with a silk cravat, a {flower} boutonniere, and polished black oxfords",
+        ],
+        "expression": "warm smile",
+        "location": "small chapel interior",
+        "lighting": "light through stained glass casting colors",
+        "shot_type": "medium shot from waist up",
+        "mood": "joyful",
+    },
+    # Lehenga and sherwani: one tradition's two sexes, so one variants entry. This is
+    # the sherwani half of the 1.5.0 "Saree + Sherwani" request; the sari stays with
+    # Bollywood Heroine.
+    "Lehenga & Sherwani": {
+        "gender": "Any",
+        "ethnicity": ["Indian", "Pakistani", "Bangladeshi"],
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "other_jewelry": "no other jewelry",
+        "bracelet": "none",
+        "rings": "none",
+        "expression": "gentle smile",
+        "location": ["hotel lobby with marble floors", "elegant hotel dining room"],
+        "lighting": ["warm string lights bokeh background", "golden bokeh lights in background"],
+        "shot_type": "full body shot",
+        "mood": "joyful",
+        "variants": {
+            "Female": {
+                "hair_color": ["jet black", "near black", "dark brown"],
+                "hair_length": ["long", "mid back"],
+                "hair_style": "chignon",
+                "hair_accessory": "no hair accessory",
+                "makeup_style": "full glam",
+                "piercings": "no piercings beyond ears",
+                "nails": "red polish",
+                "outfit_description": [
+                    "a {jewel_tone} silk bridal lehenga with a flared skirt heavily "
+                    "embroidered in gold zari thread, a fitted cropped choli, a sheer "
+                    "dupatta draped over the head, a kundan choker and jhumka earrings, a "
+                    "maang tikka at the hairline, stacked glass bangles, and hennaed hands",
+                    "a ruby red velvet bridal lehenga embroidered with gold zardozi, a "
+                    "matching choli, a net dupatta edged in gold, a layered gold necklace "
+                    "and chandelier earrings, a nath nose ring with a fine chain, and "
+                    "hennaed hands",
+                ],
+            },
+            "Male": {
+                "hair_length": "very short",
+                "makeup_style": "no makeup",
+                "outfit_description": [
+                    "an ivory {fabric} sherwani embroidered with gold thread, a matching "
+                    "safa turban with a jeweled brooch, a silk stole draped over one "
+                    "shoulder, slim churidar trousers, and embroidered mojari shoes",
+                    "a {jewel_tone} brocade sherwani with a mandarin collar and gold "
+                    "buttons, a pleated safa turban in a contrasting colour, a pearl mala "
+                    "necklace, fitted churidar trousers, and gold-embroidered juttis",
+                ],
+            },
+        },
+    },
+    "RCMP Mountie": {
+        "gender": "Any",
+        "outfit_style": "business formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "outfit_description": (
+            "a scarlet Red Serge tunic with a high collar and brass buttons, a brown Sam "
+            "Browne belt with a cross strap, dark blue riding breeches with a wide yellow "
+            "side stripe, tall polished brown leather riding boots, brown leather "
+            "gauntlets, and a brown felt campaign hat with a flat brim and a pinched "
+            "four-dent Montana peak crown"),
+        "expression": "confident",
+        "location": "alpine glacier lake",
+        "lighting": "soft morning light",
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+    },
+    "Royal Guard": {
+        "gender": "Any",
+        "outfit_style": "business formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "outfit_description": (
+            "a scarlet guardsman's tunic with a high collar, brass buttons and white "
+            "piping, a white leather belt with a brass buckle, dark navy trousers with a "
+            "red side stripe, polished black boots, white gloves, and a tall black "
+            "bearskin cap with a chin strap"),
+        "expression": "stern",
+        "location": "castle courtyard",
+        "lighting": "overcast diffused daylight",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+    },
+    # The Presidential Guard is all-male, so the entry is too.
+    "Evzone Guard": {
+        "gender": "Male",
+        "ethnicity": "Greek",
+        "hair_length": "very short",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "outfit_description": (
+            "a white pleated fustanella kilt over a wide-sleeved white shirt, an "
+            "embroidered dark blue fermeli waistcoat, a red farion cap with a long black "
+            "silk tassel, white wool stockings held with black tasseled garters, and red "
+            "leather tsarouchia clogs topped with large black pompoms"),
+        "expression": "stern",
+        "location": ["crumbling stone ruin", "cobblestone old-town street"],
+        "lighting": "harsh overhead midday sun",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+    },
+    # A summer-festival yukata, distinct from Geisha's formal silk kimono.
+    "Yukata": {
+        "gender": "Any",
+        "ethnicity": "Japanese",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "expression": "delighted",
+        "location": "open-air street food market",
+        "lighting": "warm lantern light",
+        "season": "summer",
+        "shot_type": "full body shot",
+        "mood": "lighthearted",
+        "variants": {
+            "Female": {
+                "hair_length": ["long", "mid back", "shoulder length"],
+                "hair_style": "updo",
+                "hair_accessory": "no hair accessory",
+                "earrings": "no earrings",
+                "makeup_style": "soft natural makeup",
+                "outfit_description": [
+                    "a light cotton yukata printed with {flower} blossoms on a {pastel} "
+                    "ground, a wide {jewel_tone} obi tied in a bow at the back, a kanzashi "
+                    "flower ornament in the hair, wooden geta sandals, and a paper uchiwa "
+                    "fan tucked into the obi",
+                    "an indigo cotton yukata printed with white morning glories, a "
+                    "{pastel} obi tied in a butterfly bow, a kanzashi ornament in the "
+                    "hair, wooden geta sandals, and a paper uchiwa fan tucked into the obi",
+                ],
+            },
+            "Male": {
+                "hair_length": "very short",
+                "makeup_style": "no makeup",
+                "earrings": "no earrings",
+                "outfit_description": [
+                    "a dark indigo cotton yukata with a fine stripe, a narrow kaku obi "
+                    "knotted at the hip, wooden geta sandals, and a paper uchiwa fan "
+                    "tucked into the obi",
+                    "a charcoal grey cotton yukata with a subtle check, a narrow "
+                    "{earth_tone} obi knotted at the hip, wooden geta sandals, and a "
+                    "paper uchiwa fan tucked into the obi",
+                ],
+            },
+        },
+    },
+    # Han-dynasty-style dress, distinct from the 1930s Shanghai qipao.
+    "Hanfu": {
+        "gender": "Any",
+        "ethnicity": "Chinese",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "hair_accessory": "no hair accessory",
+        "expression": "serene",
+        "location": "bamboo forest path",
+        "lighting": "dappled sunlight through forest canopy",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+        "variants": {
+            "Female": {
+                "hair_length": ["long", "mid back", "waist length"],
+                "hair_style": "updo",
+                "makeup_style": "soft natural makeup",
+                "outfit_description": [
+                    "a flowing {pastel} silk ruqun with a cross-collar wrap blouse, wide "
+                    "trailing sleeves, a high-waisted pleated skirt tied with a long sash, "
+                    "a sheer pibo shawl draped over the arms, a jade hairpin, and "
+                    "embroidered cloth shoes",
+                    "a layered {jewel_tone} and white hanfu with a cross-collar robe, "
+                    "wide embroidered sleeves, a long pleated skirt with a woven sash, a "
+                    "jade hairpin, and embroidered cloth shoes",
+                ],
+            },
+            "Male": {
+                "hair_length": "long",
+                "hair_style": "top knot",
+                "makeup_style": "no makeup",
+                "outfit_description": [
+                    "a flowing deep blue cross-collar {fabric} robe with wide sleeves, a "
+                    "wide sash at the waist, the hair gathered under a small gold "
+                    "topknot crown, and black cloth boots",
+                    "a long {earth_tone} cross-collar hanfu robe over a white inner robe, "
+                    "a woven belt with a jade pendant, the hair in a topknot under a "
+                    "small silver crown, and black cloth boots",
+                ],
+            },
+        },
+    },
+    # The kebaya is women's dress (the men's counterpart is a different garment).
+    "Kebaya": {
+        "gender": "Female",
+        "ethnicity": ["Indonesian", "Malaysian"],
+        "hair_length": ["long", "mid back"],
+        "hair_style": "chignon",
+        "makeup_style": "soft natural makeup",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "other_jewelry": "no other jewelry",
+        "outfit_description": [
+            "a fitted sheer {pastel} kebaya blouse with embroidered lace edges and a "
+            "brooch closure over a matching camisole, a wrapped batik sarong skirt in "
+            "brown and indigo, a selendang sash over one shoulder, and embroidered "
+            "slip-on sandals",
+            "a fitted {jewel_tone} velvet kebaya with gold embroidery along the hem and "
+            "a chain of three brooches down the front, a wrapped batik sarong skirt, and "
+            "embroidered slip-on sandals",
+        ],
+        "expression": "gentle smile",
+        "location": ["terraced rice paddies", "botanical garden path"],
+        "lighting": "soft morning light",
+        "shot_type": "full body shot",
+        "mood": "peaceful",
+    },
+    "Muay Thai Fighter": {
+        "gender": "Any",
+        "ethnicity": "Thai",
+        # Age and a standing pose survive Essentials; a working fighter is not 70 or seated.
+        "age": ["20", "22", "25", "28"],
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back"],
+        "body_type": "athletic",
+        "fitness_level": "very fit",
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "rings": "none",
+        "bracelet": "none",
+        "watch_type": "none",
+        "makeup_style": "no makeup",
+        "expression": "focused",
+        "location": "boxing gym with hanging heavy bags",
+        "lighting": "harsh fluorescent lighting",
+        "shot_type": "full body shot",
+        "mood": "fierce",
+        "variants": {
+            "Female": {
+                "hair_length": ["long", "mid back", "shoulder length"],
+                "hair_style": "braided ponytail",
+                "nails": "natural short nails",
+                "outfit_description": (
+                    "satin {jewel_tone} Muay Thai shorts with Thai lettering on the "
+                    "waistband, a fitted black sports top, a woven mongkol headband, "
+                    "prajioud armbands tied around both biceps, red hand wraps, and bare "
+                    "feet"),
+            },
+            "Male": {
+                "hair_length": "very short",
+                "outfit_description": (
+                    "satin {jewel_tone} Muay Thai shorts with Thai lettering on the "
+                    "waistband, bare-chested, a woven mongkol headband, prajioud armbands "
+                    "tied around both biceps, red hand wraps, and bare feet"),
+            },
+        },
+    },
+    "Dressage Rider": {
+        "gender": "Any",
+        "outfit_style": "preppy",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "outfit_description": (
+            "a fitted black wool shadbelly tailcoat with yellow waistcoat points, a "
+            "white silk stock collar fastened with a gold pin, white riding breeches, "
+            "tall polished black dress boots with spurs, white gloves, and a black "
+            "velvet riding helmet"),
+        "held_item": "a long dressage whip",
+        "expression": "calm and composed",
+        "location": ["open meadow", "castle courtyard"],
+        "lighting": "soft morning light",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+    },
+    "Fly-Fishing Angler": {
+        "gender": "Any",
+        "outfit_style": "utility workwear",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "outfit_description": (
+            "chest-high breathable waders with a wading belt over a {earth_tone} "
+            "quick-dry shirt with rolled sleeves, a many-pocketed fishing vest, a canvas "
+            "brimmed cap with sunglasses pushed up on it, and felt-soled wading boots"),
+        "held_item": "a fly rod",
+        "expression": "calm and composed",
+        "location": "a Zion canyon riverbank",
+        "lighting": "golden hour sunlight",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+    },
+    # The name is gendered (the Mardi Gras Reveler sets the domino-mask precedent).
+    "Highwayman": {
+        "gender": "Male",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "outfit_description": (
+            "a long {dark_color} wool greatcoat with deep cuffs over a {jewel_tone} brocade "
+            "waistcoat, a white linen shirt with a lace jabot, buff breeches, tall black "
+            "riding boots, a black tricorn hat, and a black domino mask over the eyes"),
+        "held_item": "a flintlock pistol",
+        "expression": "sly",
+        "location": "misty moor",
+        "lighting": ["moonlight with cool blue tones", "a low drifting fog"],
+        "shot_type": "full body shot",
+        "mood": "mysterious",
+    },
 }
 
 
@@ -5079,7 +5453,12 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a shimmering {color} halter disco dress with a flowing hem and platform heels"],
     "Punk Rocker": "a studded {dark_color} leather jacket over a torn band tee with tartan and combat boots",
     "Ballerina": "a {pastel} tulle tutu with a fitted satin bodice, ribbon laces, and pointe shoes",
-    "Bridal Portrait": "an ivory {fabric} wedding gown with {accent}, a lace veil, and a {flower} bouquet",
+    # 1.6.0: four alternate gowns after the original (append-only, so seeds keep it first).
+    "Bridal Portrait": ["an ivory {fabric} wedding gown with {accent}, a lace veil, and a {flower} bouquet",
+     "an ivory A-line lace wedding gown with a sweetheart neckline and a chapel train, a sheer cathedral veil, and a {flower} bouquet",
+     "a fitted ivory crepe mermaid wedding gown with long sleeves and a flared train, a fingertip veil, and a {flower} bouquet",
+     "a minimalist ivory satin column wedding gown with a halter neckline and an open back, a simple fingertip veil, and a small {flower} bouquet",
+     "an ivory tulle ball gown with a beaded bodice and a full skirt, a long lace-edged veil, and a {flower} bouquet"],
     "Astronaut": "a white EVA spacesuit with a {metal} chestplate, mission patches, and a reflective-visor helmet",
     "Angelic Being": "a single flowing white robe trimmed in {metal}, with soft feathered wings and a glowing {gem} halo",
     "Nun": "a traditional black-and-white habit with a {fabric} veil and a simple wooden cross",
