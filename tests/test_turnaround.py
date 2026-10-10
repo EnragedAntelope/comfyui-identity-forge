@@ -13,7 +13,9 @@ import re
 import unittest
 
 from data.fields import FIELD_DEFINITIONS
-from nodes.identity_forge import IdentityForge, _OBJECT_TOKEN_CLAUSES, _is_absent
+from nodes.identity_forge import (
+    IdentityForge, _FEET_OUT_OF_FRAME_SHOTS, _FOOTWEAR_CLAUSES, _OBJECT_TOKEN_CLAUSES, _is_absent,
+)
 from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
 from nodes.identity_forge_turnaround import (
     _FACE_ONLY_FIELDS, _FACE_OUT_OF_FRAME, _FRAMINGS, _KEEP_POSE, _NEUTRAL_POSES,
@@ -188,6 +190,12 @@ class TurnaroundStabilityTests(unittest.TestCase):
                 # be the front shot, so compare on the shot the document names.
                 rebuilt = replayed[0].replace(
                     "straight-on eye level", fields.get("shot_type", ""))
+                # 1.7.0: a tight original shot cropped the feet out of the prose; this
+                # view (framing "Unspecified") does not, so it may name the shoes.
+                shoes = fields.get("footwear", "")
+                if fields.get("shot_type", "").split(",")[0] in _FEET_OUT_OF_FRAME_SHOTS:
+                    clause = _FOOTWEAR_CLAUSES.get(shoes, f"in {shoes}")
+                    rebuilt = rebuilt.replace(f", {clause}", "", 1)
                 self.assertEqual(rebuilt, original, f"{steer} seed {seed}")
 
     def test_the_documents_gender_survives_into_every_view(self):

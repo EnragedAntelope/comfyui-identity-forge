@@ -70,6 +70,7 @@ _HELP_DEFAULT = (
     "# key = a FIELD (footwear, skin_tone, hair_color, earrings, eye_color, ...)\n"
     "#    or a GROUP (Body, Face, Hair, Makeup, Jewelry & Nails, Clothing, Setting & Shot)\n"
     "# Field names are the same labels shown on the Identity Forge node.\n"
+    "# A GROUP key decorates EVERY field in it; use a field key for one element.\n"
     "#\n"
     "# THE ONE RULE: the descriptor goes IN FRONT of the value, it does not\n"
     "# replace it. So keep it to a 1-3 word adjective that reads naturally there.\n"
@@ -91,9 +92,9 @@ _HELP_DEFAULT = (
     "# footwear: anti-gravity hover\n"
     "#\n"
     "# --- whimsy ----------------------------------------------------------\n"
-    "# Makeup: galaxy-glitter\n"
+    "# eye_makeup: galaxy-glitter\n"
     "# earrings: tiny caged\n"
-    "# Setting & Shot: storm-lit\n"
+    "# location: storm-lit\n"
 )
 
 
