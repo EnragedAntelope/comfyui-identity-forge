@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-10-10T09:44:02.698951",
+  "generated": "2026-10-10T09:44:23.694405",
   "version": "1.6.0",
   "releases": [
     "0.5.0",
@@ -129,23 +129,9 @@
     "1.6.0"
   ],
   "total_entries": 272,
-  "entries_with_images": 259,
-  "entries_missing_images": 13,
-  "missing": [
-    "Dressage Rider",
-    "Evzone Guard",
-    "Fly-Fishing Angler",
-    "Hanfu",
-    "Highwayman",
-    "Kebaya",
-    "Lehenga & Sherwani",
-    "Metalhead",
-    "Muay Thai Fighter",
-    "RCMP Mountie",
-    "Royal Guard",
-    "Wedding Groom",
-    "Yukata"
-  ],
+  "entries_with_images": 272,
+  "entries_missing_images": 0,
+  "missing": [],
   "entries": [
     {
       "name": "1940s Factory Worker",
@@ -813,10 +799,11 @@
     },
     {
       "name": "Dressage Rider",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "preppy",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Dressage Rider.jpeg"
     },
     {
       "name": "Dwarven Blacksmith",
@@ -884,10 +871,11 @@
     },
     {
       "name": "Evzone Guard",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
       "group": "vintage retro",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Evzone Guard.jpeg"
     },
     {
       "name": "Fairy Princess",
@@ -979,10 +967,11 @@
     },
     {
       "name": "Fly-Fishing Angler",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "utility workwear",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Fly-Fishing Angler.jpeg"
     },
     {
       "name": "Forest Druid",
@@ -1130,10 +1119,11 @@
     },
     {
       "name": "Hanfu",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "vintage retro",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Hanfu.jpeg"
     },
     {
       "name": "Hazmat Technician",
@@ -1153,10 +1143,11 @@
     },
     {
       "name": "Highwayman",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
       "group": "vintage retro",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Highwayman.jpeg"
     },
     {
       "name": "Hockey Goalie",
@@ -1256,10 +1247,11 @@
     },
     {
       "name": "Kebaya",
-      "has_image": false,
+      "has_image": true,
       "gender": "Female",
       "group": "vintage retro",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Kebaya.jpeg"
     },
     {
       "name": "Kendo Practitioner",
@@ -1279,10 +1271,11 @@
     },
     {
       "name": "Lehenga & Sherwani",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "evening formal",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Lehenga & Sherwani.jpeg"
     },
     {
       "name": "Librarian",
@@ -1414,10 +1407,11 @@
     },
     {
       "name": "Metalhead",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "edgy alternative",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Metalhead.jpeg"
     },
     {
       "name": "Metrosexual",
@@ -1445,10 +1439,11 @@
     },
     {
       "name": "Muay Thai Fighter",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "athletic",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Muay Thai Fighter.jpeg"
     },
     {
       "name": "Musician",
@@ -1660,10 +1655,11 @@
     },
     {
       "name": "RCMP Mountie",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "business formal",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/RCMP Mountie.jpeg"
     },
     {
       "name": "Race Car Driver",
@@ -1771,10 +1767,11 @@
     },
     {
       "name": "Royal Guard",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "business formal",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Royal Guard.jpeg"
     },
     {
       "name": "Rude Boy",
@@ -2226,10 +2223,11 @@
     },
     {
       "name": "Wedding Groom",
-      "has_image": false,
+      "has_image": true,
       "gender": "Male",
       "group": "evening formal",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Wedding Groom.jpeg"
     },
     {
       "name": "Welder",
@@ -2305,10 +2303,11 @@
     },
     {
       "name": "Yukata",
-      "has_image": false,
+      "has_image": true,
       "gender": "Any",
       "group": "vintage retro",
-      "added": "1.6.0"
+      "added": "1.6.0",
+      "image": "images/Yukata.jpeg"
     }
   ]
 }
