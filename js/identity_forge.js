@@ -1,4 +1,5 @@
 import { app } from "../../scripts/app.js";
+import { api } from "../../scripts/api.js";
 
 /*
  * IdentityForge frontend extension.
@@ -10,8 +11,8 @@ import { app } from "../../scripts/app.js";
  *
  * Features (all degrade gracefully; any failure is caught so the node still
  * works headless):
- *   - Master buttons: set every field to "Random", or lock every field to a
- *     concrete random value.
+ *   - Master buttons: set every field to "Random", or lock every field to the
+ *     values one engine run resolves (POST /identity_forge/roll).
  *   - Collapsible group sections so the many widgets stay manageable.
  *   - Gender pool-swapping: changing the gender toggle restricts the
  *     gender-divergent dropdowns and resets any now-invalid lock to "Random".
@@ -647,6 +648,34 @@ function lockToRandomValue(node, w) {
   setWidgetValue(node, w, pick);
 }
 
+// 1.7.0: lock every "Random" field to what ONE engine run resolves (POST /identity_forge/roll),
+// so the locks honour the weights and constraints. Picking each dropdown uniformly could lock
+// a pair the engine forbids. A field the run left absent locks to "None". Without the route
+// (an older server) it falls back to the uniform pick rather than doing nothing.
+async function rollAndLockAll(node, fields) {
+  const widgets = {};
+  for (const w of node.widgets || []) {
+    if (w.type !== "button" && w.name !== "seed" && w.value != null) widgets[w.name] = w.value;
+  }
+  let values = null;
+  try {
+    const resp = await api.fetchApi("/identity_forge/roll", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ widgets, seed: Math.floor(Math.random() * 2 ** 32) }),
+    });
+    if (resp.ok) values = (await resp.json()).values;
+  } catch (e) { /* fall through to the uniform pick */ }
+  if (!values) console.warn("[IdentityForge] /identity_forge/roll unavailable; rolling each field uniformly");
+  for (const w of fields) {
+    if (w.value !== "Random") continue;
+    if (!values) { lockToRandomValue(node, w); continue; }
+    const opts = (w.options && w.options.values) || [];
+    const v = Object.prototype.hasOwnProperty.call(values, w.name) ? values[w.name] : "None";
+    if (opts.includes(v)) setWidgetValue(node, w, v);
+  }
+}
+
 // --- collapse helpers (hide a widget without losing its type) -------------
 function hideWidget(w) {
   if (w.__hidden) return;
@@ -714,8 +743,8 @@ function setupIdentityForge(node) {
     resize(node);
   }, { serialize: false });
 
-  const lockAll = node.addWidget("button", "🔒 Roll + lock all fields", null, () => {
-    for (const w of fields) if (w.value === "Random") lockToRandomValue(node, w);
+  const lockAll = node.addWidget("button", "🔒 Roll + lock all fields", null, async () => {
+    await rollAndLockAll(node, fields);
     resize(node);
   }, { serialize: false });
 

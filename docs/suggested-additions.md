@@ -27,16 +27,13 @@ that is what the Creature node is for.
 real case shipped, and everything else was closed into [Decided against](#decided-against)
 rather than left to be re-surveyed. Add a row here only with a fresh, written case.
 
-**Engine and UX, queued for 1.7.0** (found in the 1.6.0 review, kept out of a content-only
-release):
+**Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, see
+`docs/history.md` → "1.7.0"):
 
 | Item | Case |
 |---|---|
-| The shipped modifier example is broken | `nodes/identity_forge_modifier.py` ships an example a user would copy. Fix first. |
-| "Roll + lock all" ignores weights and constraints | `js/identity_forge.js` rolls each widget uniformly, so it can lock a pair the engine forbids. |
-| Tight shots still name shoes | Measured at about 14% of tight framings. |
-| Hair prose as a comma list | About 23% of renders read "mid back curly salt and pepper, worn down"; about 6% drop an article. |
-| `widget_locked` signature | Documented keyword-only, but the signature has no `*`. |
+| Legwear in a tight shot | 1.7.0 drops the shoes when the framing crops the feet, but tights and stockings are still voiced in a close-up (about 1% of renders). |
+| Colour and pattern field modifiers on a generated outfit | A `footwear` or `legwear` modifier reaches the composed outfit since 1.7.0 because those values appear in it verbatim; `clothing_color` and `clothing_pattern` are rewritten when composed, so their field modifiers still miss. The `Clothing` group key reaches everything. |
 | A negative and/or tags output, and a subject/scene split | Downstream graphs re-parse the prose today. |
 | An on-node readout of the resolved prompt | `onExecuted`, so the user sees what a seed drew without a Show Text node. |
 | Free-text `held_item` | Today only archetypes set it. |

@@ -52,7 +52,7 @@ from nodes.identity_forge import (
     _a,
     _prepend_descriptor,
     _compose_outfit_clause,
-    _FOOTWEAR_CLAUSES,
+    _FOOTWEAR_CLAUSES, _FEET_OUT_OF_FRAME_SHOTS,
     _article_if_singular,
     _format_prose,
 )
@@ -80,7 +80,7 @@ from nodes.identity_forge_cosplayer import (
     _scope_is_mascot, _scope_is_feral,
     _RANDOM_ANY, _RANDOM_FEMALE, _RANDOM_MALE,
 )
-from nodes.identity_forge_modifier import build_modifier_json, _parse_modifier_text
+from nodes.identity_forge_modifier import _HELP_DEFAULT, build_modifier_json, _parse_modifier_text
 from data.templates import ARCHETYPES
 from data.cosplayers import COSPLAYERS, get_cosplayer_names, get_cosplayer_category
 from data.creatures import CREATURES
@@ -2890,8 +2890,164 @@ class BodyPaintPhrasingTests(unittest.TestCase):
         self.assertTrue(_BODY_PAINT_RE.search("an even, all-over coat of blue fur"))
 
 
+class HairProseTests(unittest.TestCase):
+    """1.7.0: the hair sentence reads as prose, not a tag list.
+
+    A noun style hung bare after the comma ("hair is long wavy brown, French braid") and a
+    noun length mid-run ("chin length bob sleek straight dark brown") both dropped their
+    article and read as a list.
+    """
+
+    @staticmethod
+    def _hair_sentence(prose: str) -> str:
+        m = re.search(r"(?:Her|His|Their) hair is ([^.]*)\.", prose)
+        return m.group(1) if m else ""
+
+    def test_no_noun_style_is_voiced_bare(self):
+        from nodes.identity_forge import _FAMILY_HAIR_STYLES, _PREDICATE_HAIR_STYLES
+        for style in sorted(_FAMILY_HAIR_STYLES - _PREDICATE_HAIR_STYLES):
+            for gender, seed in [(g, s) for g in ("Female", "Male") for s in range(2)]:
+                prose, js = generate_character(seed, gender, {"hair_style": style})
+                if json.loads(js).get("Hair", {}).get("hair_style") != style:
+                    continue  # a gendered style (comb over) is not drawn for the other gender
+                s = self._hair_sentence(prose)
+                self.assertIn(style, s, f"{style} @{seed}: not voiced -- {s!r}")
+                self.assertNotRegex(s, rf"(^|, ){re.escape(style)}$",
+                                    f"{style} @{seed}: voiced bare -- {s!r}")
+
+    def test_noun_length_takes_an_article_and_goes_last(self):
+        for length in ("short pixie", "chin length bob"):
+            for seed in range(5):
+                prose, _ = generate_character(seed, "Female", {"hair_length": length})
+                s = self._hair_sentence(prose)
+                self.assertRegex(s, rf"^an? [^,]*{length}\b", f"{length} @{seed}: {s!r}")
+
+    def test_noun_length_keeps_a_with_colour_after_the_noun(self):
+        prose, _ = generate_character(1, "Female", {"hair_length": "chin length bob",
+                                                    "hair_color": "black with colored tips"})
+        self.assertIn("chin length bob with colored tips", self._hair_sentence(prose))
+
+
+class RollAndLockTests(unittest.TestCase):
+    """1.7.0: "Roll + lock all" locks what one engine run resolved (``roll_field_values``).
+
+    It used to pick each dropdown uniformly in JS; a lock beats a guard, so those picks
+    were kept even when they clashed ("waist length" hair locked beside a quiff).
+    """
+
+    def test_locking_a_roll_reproduces_it(self):
+        from nodes.identity_forge import _CONTROL_FIELDS, _HIDDEN_FIELDS, roll_field_values
+        fields = [f for f in FIELD_DEFINITIONS
+                  if f not in _HIDDEN_FIELDS and f not in _CONTROL_FIELDS]
+        for gender, seed in [(g, s) for g in ("Female", "Male") for s in range(10)]:
+            rolled = roll_field_values({"gender": gender}, seed)
+            self.assertIn("age", rolled)
+            # As the frontend does: an absent field locks to None.
+            widgets = {"gender": gender, **{f: rolled.get(f, "None") for f in fields}}
+            again = roll_field_values(widgets, seed + 1)
+            for f in fields:
+                self.assertEqual(again.get(f, "None"), widgets[f], f"{gender} @{seed}: {f}")
+
+
+class FeetOutOfFrameTests(unittest.TestCase):
+    """1.7.0: a framing that crops the feet drops the footwear clause from the prose.
+
+    Before, every framing named the shoes -- "extreme close-up on face" included.
+    """
+
+    def _shoes(self, js):
+        clothing = json.loads(js).get("Clothing", {})
+        return clothing.get("footwear"), clothing.get("outfit_description") or ""
+
+    def test_shots_are_real_options(self):
+        pool = (set(FIELD_DEFINITIONS["shot_type"]["female_options"])
+                | set(FIELD_DEFINITIONS["shot_type"]["male_options"]))
+        self.assertLessEqual(_FEET_OUT_OF_FRAME_SHOTS, pool)
+
+    def test_tight_shot_drops_shoes_from_prose_but_not_json(self):
+        checked = 0
+        for shot in sorted(_FEET_OUT_OF_FRAME_SHOTS):
+            for seed in range(12):
+                prose, js = generate_character(seed, "Female", {"shot_type": shot})
+                shoes, outfit = self._shoes(js)
+                if not shoes or not outfit.endswith(f"in {shoes}"):
+                    continue
+                checked += 1
+                with self.subTest(shot=shot, seed=seed):
+                    self.assertNotIn(f"in {shoes}", prose)
+                    # The JSON keeps them: a Turnaround or Vault replay reads the shoes
+                    # back out of outfit_description for a full-body view.
+                    self.assertIn(shoes, outfit)
+        self.assertGreater(checked, 20)
+
+    def test_full_body_keeps_shoes(self):
+        for seed in range(12):
+            prose, js = generate_character(seed, "Male", {"shot_type": "full body shot"})
+            shoes, outfit = self._shoes(js)
+            if shoes and outfit.endswith(f"in {shoes}"):
+                self.assertIn(f"in {shoes}", prose)
+
+    def test_widget_locked_footwear_is_still_voiced_a_wired_lock_is_not(self):
+        # A lock beats a guard -- the user's own widget. A wired lock is every field a
+        # Turnaround or Vault replay hands back, which must reproduce the original prose.
+        locks = {"shot_type": "close-up portrait", "footwear": "loafers"}
+        checked = 0
+        for seed in range(12):
+            mine, js = generate_character(seed, "Male", locks,
+                                          widget_locked=frozenset({"footwear"}))
+            wired, _ = generate_character(seed, "Male", locks)
+            if not self._shoes(js)[1].endswith(", in loafers"):
+                continue
+            checked += 1
+            self.assertIn("in loafers", mine, f"seed {seed}")
+            self.assertNotIn("in loafers", wired, f"seed {seed}")
+        self.assertGreater(checked, 0)
+
+    def test_a_same_shot_replay_reproduces_the_trimmed_prose(self):
+        # Vault Load wires the saved document back in: the outfit arrives as a costume
+        # (whose path pops `footwear`) and every field as a wired lock. The trim must
+        # still apply, or a recalled close-up names shoes its original did not.
+        from nodes.identity_forge import run_identity_forge
+        from nodes.identity_forge_turnaround import replay_steering
+        checked = 0
+        for seed in range(12):
+            original, doc = generate_character(seed, "Female", {"shot_type": "close-up portrait"})
+            shoes, outfit = self._shoes(doc)
+            if not (shoes and outfit.endswith(f", in {shoes}")):
+                continue
+            checked += 1
+            replayed, _ = run_identity_forge(
+                {"seed": seed + 500, "archetype_json": doc, **replay_steering(doc)})
+            self.assertEqual(replayed, original, f"seed {seed}")
+        self.assertGreater(checked, 0)
+
+    def test_turnaround_view_matches_on_its_distance_half(self):
+        from nodes.identity_forge_turnaround import compose_shot
+        shot = compose_shot("Waist up", "side profile")
+        for seed in range(12):
+            prose, js = generate_character(seed, "Female", {"shot_type": shot})
+            shoes, outfit = self._shoes(js)
+            if shoes and outfit.endswith(f"in {shoes}"):
+                self.assertNotIn(f"in {shoes}", prose)
+
+
 class ModifierTests(unittest.TestCase):
     """The Modifier node: parsing, payload, and prepend application."""
+
+    def test_footwear_modifier_reaches_a_generated_outfit(self):
+        """The composer copies footwear into outfit_description before modifiers run;
+        before 1.7.0 the descriptor reached the JSON field and never the prose."""
+        mods = _parse_modifier_text("footwear: anti-gravity hover")
+        hits = 0
+        for seed in range(10):
+            prose, js = generate_character(seed, "Female", {"shot_type": "full body shot"},
+                                           modifiers=mods)
+            shoes = json.loads(js)["Clothing"].get("footwear")
+            if shoes:
+                hits += 1
+                self.assertIn(f"in {shoes}", prose)
+                self.assertTrue(shoes.startswith("anti-gravity hover"))
+        self.assertGreater(hits, 5)
 
     def test_empty_or_comment_only_yields_empty(self):
         self.assertEqual(build_modifier_json(""), "{}")
@@ -2910,6 +3066,30 @@ class ModifierTests(unittest.TestCase):
             "not_a_field: x\nNoColonHere\nfootwear: glowing\nhair_color:   "
         )
         self.assertEqual(dict(mods), {"footwear": "glowing"})  # only the valid line
+
+    def test_help_examples_never_decorate_staging_fields(self):
+        """The shipped examples are what users copy, so each must read as written.
+
+        A group key decorates every field in its group: `Setting & Shot: storm-lit`
+        once rendered "She is storm-lit standing naturally. Her expression is
+        storm-lit at ease ... during storm-lit winter".
+        """
+        staging = {"expression", "mood", "pose", "shot_type", "season", "composition"}
+        examples = [line[2:] for line in _HELP_DEFAULT.splitlines()
+                    if re.match(r"# [A-Za-z_& ]+: \S", line)]
+        examples = [line for line in examples if _parse_modifier_text(line)]
+        self.assertGreater(len(examples), 5)
+        for line in examples:
+            mods = _parse_modifier_text(line)
+            word = next(iter(mods.values()))
+            for seed in range(1, 6):
+                _, js = generate_character(seed, "Any", {}, modifiers=mods)
+                decorated = {field for group in json.loads(js).values()
+                             if isinstance(group, dict)
+                             for field, value in group.items()
+                             if isinstance(value, str) and value.startswith(word)}
+                with self.subTest(example=line, seed=seed):
+                    self.assertFalse(decorated & staging, decorated)
 
     def test_payload_is_extracted_as_modifiers_not_locks(self):
         doc = build_modifier_json("footwear: sci-fi")
@@ -5971,7 +6151,10 @@ class WardrobeAxisTests(unittest.TestCase):
         for seed in range(60):
             locked = {"footwear": "combat boots", "clothing_color": "jewel tones",
                       "clothing_pattern": "stripes"}
-            prose, raw = generate_character(seed, "Female", dict(locked))
+            # Widget locks, as the main node passes them: since 1.7.0 a WIRED footwear
+            # lock is trimmed from the prose of a framing that crops the feet.
+            prose, raw = generate_character(seed, "Female", dict(locked),
+                                            widget_locked=frozenset(locked))
             outfit = self._clothing(raw)["outfit_description"]
             with self.subTest(seed=seed):
                 from data.fields import PALETTE_HUES

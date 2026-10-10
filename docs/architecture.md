@@ -186,7 +186,8 @@ Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge 
 - **Modifier** → prepends a descriptor to one field or a whole group.
 - **Vault Save/Load** → persist a generated `prompt_json` under `ComfyUI/user/identity_forge/`.
   The frontend's list/preview/delete/rename routes are registered by `_register_vault_routes()`
-  in `__init__.py`. Path safety is `sanitize_name` + `_entry_dir` (resolve, then require the
+  in `__init__.py`; `_register_roll_route()` beside it adds the read-only
+  `POST /identity_forge/roll` behind the main node's "Roll + lock all" button (1.7.0). Path safety is `sanitize_name` + `_entry_dir` (resolve, then require the
   parent to *be* the vault root), which blocks `..` and absolute-path escapes. **0.72.0 added a
   content-type check on the two mutating routes**: `request.json()` parses any body regardless of
   content type, and a `text/plain` POST is a CORS-*simple* request a browser sends cross-origin
@@ -2141,7 +2142,7 @@ those the mask is an *alternate* costume. Honouring `locked_clean` would render 
 buns under the Boushh helmet — a regression wearing a fix's clothes.
 
 So `generate_character` takes a keyword-only **`widget_locked: frozenset[str] | None`**, built
-in `execute` straight from `kwargs` (a field whose widget is not `"Random"`). The rule both
+in `run_identity_forge` (the body of `execute`) straight from `kwargs` (a field whose widget is not `"Random"`). The rule both
 blocks now share is one sentence: **the mask hides the face; only your own widget overrides
 it.** `_CONCEALED_FACE_SOFT_FIELDS` was narrowed from `locked_clean` to the same set so there
 is a single semantic — verified a no-op on shipped data (`Harley Quinn` is the only entry

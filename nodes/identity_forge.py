@@ -583,6 +583,28 @@ _COSTUME_SUPPRESSED_EXTRAS: frozenset[str] = frozenset({
 #: is untouched (removing a shipped combo value is a soft break).
 _FOOTWEAR_CLAUSES: dict[str, str] = {"bare feet": "barefoot"}
 
+#: 1.7.0: ``shot_type`` distances that crop the feet out of frame. The prose drops the
+#: footwear clause for these (measured: every framing named the shoes, "extreme
+#: close-up on face" included). Prose only -- the JSON keeps the shoes, because a
+#: replay (Turnaround, Vault Load) reads them back out of ``outfit_description`` and
+#: a full-body view of the same character must still have them. Matched on the part
+#: before the first comma, so a Turnaround view ("medium shot from waist up, side
+#: profile") counts too. Footwear the user locked on the WIDGET is still voiced (a lock
+#: beats a guard); a wired lock is not, since a replay wires every field back in and must
+#: reproduce the original prose.
+_FEET_OUT_OF_FRAME_SHOTS: frozenset[str] = frozenset({
+    "extreme close-up on face", "close-up portrait", "medium close-up from chest up",
+    "medium shot from waist up", "cowboy shot from mid-thigh up",
+})
+
+#: Fields ``_compose_outfit_clause`` writes into a generated ``outfit_description``
+#: verbatim, so a Modifier descriptor on one must decorate that copy too -- before
+#: 1.7.0 ``footwear: anti-gravity hover`` reached the JSON and never the prose.
+#: ``clothing_color`` and ``clothing_pattern`` are left out: the composer voices a
+#: hue from the palette and a reworded pattern tail, so their values are not in the
+#: text to decorate.
+_VERBATIM_OUTFIT_FIELDS: tuple[str, ...] = ("footwear", "legwear")
+
 #: 1.5.2: values whose words draw an OBJECT (maintainer renders): "money piece
 #: highlights" drew a fan of banknotes, "feathered brows" drew feathers along the
 #: neckline, "birthmark on neck" beside a collarbone tattoo drew a red paint splash.
@@ -612,10 +634,33 @@ _GATHERED_HAIR_STYLES: frozenset[str] = frozenset(
     for v in FIELD_FAMILIES["hair_style"][fam]["variants"])
 
 
+#: 1.7.0: the same reasoning for every NOUN style. Hung bare after the comma ("hair is long
+#: wavy brown, French braid") a cut or braid read as a tag list and dropped its article.
+#: Styles that are already predicates ("worn down", "slicked back") keep their words; a
+#: fringe or a finish takes "with"; any other drawn style is "worn in" one. Values outside
+#: the families (a free-text lock) are voiced as written.
+_PREDICATE_HAIR_STYLES: frozenset[str] = frozenset(
+    v for fam in ("loose_styled", "loose_natural")
+    for v in FIELD_FAMILIES["hair_style"][fam]["variants"]) - {"tousled bedhead"}
+_WITH_HAIR_STYLES: frozenset[str] = frozenset(
+    v for fam in ("bangs", "loose_wet") for v in FIELD_FAMILIES["hair_style"][fam]["variants"])
+_FAMILY_HAIR_STYLES: frozenset[str] = frozenset(
+    v for fam in FIELD_FAMILIES["hair_style"].values() for v in fam["variants"])
+
+#: 1.7.0: lengths that are a noun (a cut), not a measure. Voiced last behind an article
+#: ("a sleek straight dark brown chin length bob"), never mid-run ("chin length bob sleek
+#: straight dark brown").
+_NOUN_HAIR_LENGTHS: frozenset[str] = frozenset({"short pixie", "chin length bob"})
+
+
 def _hair_style_voice(style: str) -> str:
-    if style not in _GATHERED_HAIR_STYLES:
+    if style in _PREDICATE_HAIR_STYLES or style not in _FAMILY_HAIR_STYLES:
         return style
-    return f"worn {style}" if style == "half up half down" else f"worn in {_article_if_singular(style)}"
+    if style == "half up half down":
+        return f"worn {style}"
+    if style in _WITH_HAIR_STYLES:
+        return f"with {_article_if_singular(style)}"
+    return f"worn in {_article_if_singular(style)}"
 
 #: 1.5.0 round 4: how a MASCULINE presentation voices its jewellery. "a cross necklace"
 #: rendered as a fine, glittering diamond-cut chain on a man; plain-metal wording and a
@@ -3083,6 +3128,7 @@ def _format_prose(
     species: dict | None = None, hands_visible: bool = True,
     mask_text: str | None = None, anatomy_note: str | None = None,
     presentation: str | None = None,  # APPENDED (1.5.0 round 4)
+    feet_visible: bool = True,        # APPENDED (1.7.0): see _FEET_OUT_OF_FRAME_SHOTS
 ) -> str:
     """Build a natural-language description from resolved field values.
 
@@ -3305,8 +3351,15 @@ def _format_prose(
     if g("hair_length") == "bald":
         sentences.append(f"{poss} head is bald")
     is_bald = g("hair_length") == "bald"
-    hair_desc = ("" if is_bald
-                 else _words(g("hair_length"), g("hair_texture"), g("hair_color")))
+    if is_bald:
+        hair_desc = ""
+    elif g("hair_length") in _NOUN_HAIR_LENGTHS:
+        # "gray-streaked dark hair" and "black with colored tips" cannot sit before the noun.
+        color, _, tips = re.sub(r" hair$", "", g("hair_color")).partition(" with ")
+        hair_desc = (_an(_words(g("hair_texture"), color, g("hair_length")))
+                     + (f" with {tips}" if tips else ""))
+    else:
+        hair_desc = _words(g("hair_length"), g("hair_texture"), g("hair_color"))
     if hair_desc:
         s = f"{poss} hair is {hair_desc}"
         if g("hair_style"):
@@ -3405,14 +3458,17 @@ def _format_prose(
     # footwear/colour/pattern fields are only voiced when there is no full outfit.
     clothing = []
     outfit = g("outfit_description")
+    shoes = g("footwear")
     if outfit:
+        # A framing that crops the feet has already had the footwear clause trimmed off
+        # the outfit by generate_character (see _FEET_OUT_OF_FRAME_SHOTS).
         clothing.append(f"{subj} {wears} {outfit}")
     else:
         pattern_color = _words(g("clothing_color"), g("clothing_pattern"))
         if pattern_color:
             clothing.append(f"{subj} {wears} {pattern_color} clothing")
-        if g("footwear"):
-            clothing.append(f"in {g('footwear')}")
+        if shoes and feet_visible:
+            clothing.append(f"in {shoes}")
     if g("bag"):
         # 1.5.1: "a leather briefcase in black" rendered as a small top-handle purse on a
         # man (#00547); the shape word is what carries it. Voice only -- the option value
@@ -3789,7 +3845,8 @@ def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None)
     """
     if not modifiers:
         return
-    for field, value in list(resolved.items()):
+    for field in list(resolved):
+        value = resolved[field]  # live, not a snapshot: a copy inside the outfit may have changed
         if _is_absent(value):
             continue
         descriptor = modifiers.get(field)
@@ -3798,6 +3855,15 @@ def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None)
             descriptor = modifiers.get(group) if group else None
         if descriptor:
             resolved[field] = _prepend_descriptor(value, descriptor)
+            outfit = resolved.get("outfit_description") or ""
+            if field in _VERBATIM_OUTFIT_FIELDS and outfit:
+                # The last whole-phrase occurrence: the composer appends these after
+                # the garment, and garments name no footwear or legwear.
+                hits = list(re.finditer(rf"(?<![\w-]){re.escape(value)}(?![\w-])", outfit))
+                if hits:
+                    start, end = hits[-1].span()
+                    resolved["outfit_description"] = (
+                        outfit[:start] + resolved[field] + outfit[end:])
 
 
 def generate_character(
@@ -3817,12 +3883,12 @@ def generate_character(
     gender_variants: dict[str, dict[str, str]] | None = None,
     size_scale: str = _SIZE_SCALE_AUTO,
     character_scale: str = "",
+    # Keyword-only from here (1.7.0). `execute` passes the parameters above
+    # positionally, so one inserted mid-signature silently shifted every argument
+    # after it -- it put a string into `gender_variants` and crashed on `.get`.
+    # Add new parameters after the `*`, where position cannot matter.
+    *,
     widget_locked: frozenset[str] | None = None,
-    # APPENDED, not inserted mid-signature. `execute` calls this positionally, so a
-    # parameter added in the middle silently shifts every argument after it -- it put
-    # a string into `gender_variants` and crashed on `.get`. The same shape as the
-    # widgets_values shift fixed twice already this release: positional interfaces
-    # tolerate appends and nothing else.
     mask_text: str | None = None,
     anatomy_note: str | None = None,
 ) -> tuple[str, str]:
@@ -4016,6 +4082,7 @@ def generate_character(
     # sometimes contradiction ("barefoot" beside heeled boots) — to the JSON.
     # Drop them when a costume is set; the prose already omits them in that case.
     # When no costume is supplied, generate one from the random outfit_style.
+    framed_shoes = ""  # the costume branch below sets it; a generated outfit reads it later
     if _is_absent(resolved.get("outfit_description")):
         # 0.83.0: the generated outfit is a GARMENT phrase, so the palette, pattern and
         # footwear compose onto it instead of being drawn and thrown away. Mutates
@@ -4051,6 +4118,9 @@ def generate_character(
             if garment else garment
         )
     else:
+        # A replay (Turnaround, Vault Load) hands back a generated outfit as this costume,
+        # its footwear clause included; the framing trim below still needs the shoes.
+        framed_shoes = resolved.get("footwear") or ""
         for field in ("outfit_style", "footwear", "clothing_color", "clothing_pattern"):
             resolved.pop(field, None)
         # A preset costume is already a finished outfit string, so the deferred
@@ -4282,9 +4352,24 @@ def generate_character(
     hands_covered = full_shell or bool(
         _GLOVE_RE.search(outfit_text) and not _FINGERLESS_RE.search(outfit_text)
     ) or resolved.get("accessories") in _GLOVE_ACCESSORY_VALUES
-    prose = _format_prose(resolved, gender, cosplay_label, species,
+    shot_distance = (resolved.get("shot_type") or "").split(",")[0].strip()
+    feet_visible = ("footwear" in (widget_locked or ())
+                    or shot_distance not in _FEET_OUT_OF_FRAME_SHOTS)
+    prose_fields = resolved
+    outfit = resolved.get("outfit_description") or ""
+    shoes = resolved.get("footwear") or framed_shoes
+    if not feet_visible and outfit and shoes:
+        # The composer appends the footwear clause last; drop only that exact tail. On a
+        # copy: the JSON keeps it, so a full-body replay of this character has the shoes.
+        for raw, clause in [*_FOOTWEAR_CLAUSES.items(), (shoes, f"in {shoes}")]:
+            if shoes.endswith(raw) and outfit.endswith(f", {clause}"):
+                prose_fields = {**resolved,
+                                "outfit_description": outfit[: -len(f", {clause}")]}
+                break
+    prose = _format_prose(prose_fields, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text,
-                          anatomy_note=anatomy_note, presentation=presentation)
+                          anatomy_note=anatomy_note, presentation=presentation,
+                          feet_visible=feet_visible)
     # Fields a preset or a widget deliberately locked ABSENT. They are stripped from
     # the group output (``group_fields`` drops "None"), so without recording them the
     # document cannot round-trip through the vault -- a recalled She-Hulk grew a
@@ -4489,6 +4574,119 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
     return flat
 
 
+def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str]:
+    """The IdentityForge node's whole run, from widget values to ``(prose, json)``.
+
+    Module-level (1.7.0) so the "Roll + lock all" route resolves a roll through the same
+    path as a queued run, with every weight and constraint applied.
+    """
+    seed = int(kwargs.get("seed", 0))
+
+    archetype = _parse_archetype_json(kwargs.get("archetype_json", ""))
+    cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
+    covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
+    mask_text = archetype.pop(_MASK_KEY, None)
+    anatomy_note = archetype.pop(_ANATOMY_NOTE_KEY, None)
+    covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
+    covers_hair = bool(archetype.pop(_COVERS_HAIR_KEY, None))
+    character_scale = archetype.pop(_SCALE_TIER_KEY, "") or ""
+    modifiers = archetype.pop(_MODIFIERS_KEY, None)
+    species = archetype.pop(_SPECIES_KEY, None)
+    gender_variants = archetype.pop(_VARIANTS_KEY, None)
+    if species is not None and not species.get("slots"):
+        species = None  # form without anatomy → nothing to render
+
+    # Gender: an explicit widget choice wins; "Any" defers to the archetype.
+    widget_gender = kwargs.get("gender", "Any")
+    gender = widget_gender if widget_gender != "Any" else archetype.get("gender", "Any")
+    if gender not in _SUBJ:
+        gender = "Any"
+
+    # Control fields are not body fields; they live only in _meta. When the
+    # widget is explicitly set to _AUTO_PRESET we defer to the wired
+    # character's own recorded value (recall of a vault save made with
+    # wardrobe='Any' / a full-spectrum hair colour). The widget default is
+    # preserved otherwise, so a recall never silently overrides a
+    # deliberate user choice -- that was the 0.91.1 trap, and the reason
+    # these controls were not honoured until the sentinel existed.
+    widget_hair_scope = kwargs.get("hair_color_scope", "Natural only")
+    if widget_hair_scope == _AUTO_PRESET:
+        # Defer to the wired character's recorded scope; fall back to the
+        # default when nothing is wired (never pass the sentinel through).
+        hair_color_scope = archetype.get(_HAIR_COLOR_SCOPE_KEY) or "Natural only"
+    else:
+        hair_color_scope = widget_hair_scope
+    widget_wardrobe = kwargs.get("wardrobe", "Match gender")
+    if widget_wardrobe == _AUTO_PRESET:
+        wardrobe = archetype.get(_WARDROBE_KEY) or "Match gender"
+    else:
+        wardrobe = widget_wardrobe
+    accessory_density = kwargs.get("accessory_density", "Balanced")
+    location_setting = kwargs.get("location_setting", "Any indoor/outdoor")
+
+    # Locked fields: the wired character's values, overridden by explicit
+    # widgets. The 'set_all_fields' reset turns every untouched field into
+    # an omit, while leaving the wired character's signature look intact.
+    #
+    # A wired "None" is an *explicit omit* the character chose -- the
+    # cosplayer builder injects them to suppress fields the costume already
+    # settles: skin_tone/complexion under body paint, scalp hair on a bald
+    # head, eye_shape/size under a free-text eye colour. They MUST survive to
+    # the engine; excluding them let a default "Random" widget re-randomize a
+    # human skin tone under She-Hulk's green or hair on Voldemort's bald head.
+    # Kept here so a deliberate concrete widget choice still overrides (handled
+    # in resolve_locked_fields), but an untouched "Random" widget preserves the
+    # omit. "Random" itself carries no information and stays excluded.
+    archetype_locked: dict[str, str] = {
+        name: value
+        for name, value in archetype.items()
+        if name in FIELD_DEFINITIONS
+        and name not in _CONTROL_FIELDS
+        and value != "Random"
+    }
+    set_all = kwargs.get("set_all_fields", _SET_ALL_OFF)
+    locked = resolve_locked_fields(kwargs, archetype_locked, set_all)
+
+    # Which locks are the USER's own widget choices, as opposed to the wired
+    # character's authored look. `locked` above deliberately merges the two, but
+    # the concealment blocks need to tell them apart: a mask must hide a
+    # cosplayer's signature hair while still obeying a user who deliberately
+    # moved the hair_color widget. See _CONCEALED_FACE_GROUPS. Read straight
+    # from kwargs, so a `set_all_fields` reset (which writes "None" into fields
+    # the user never touched) correctly does not count as a widget lock.
+    widget_locked = frozenset(
+        name for name in FIELD_DEFINITIONS
+        if name not in _HIDDEN_FIELDS
+        and name not in _CONTROL_FIELDS
+        and kwargs.get(name, "Random") != "Random"
+    )
+
+    prose, json_output = generate_character(
+        seed, gender, locked, hair_color_scope, wardrobe,
+        accessory_density, location_setting, cosplay_label, covers_face,
+        covers_body, covers_hair, modifiers, species, gender_variants,
+        kwargs.get("size_scale", _SIZE_SCALE_AUTO),
+        character_scale,
+        widget_locked=widget_locked,
+        mask_text=mask_text,
+        anatomy_note=anatomy_note,
+    )
+    return prose, json_output
+
+
+def roll_field_values(widgets: dict[str, Any], seed: int) -> dict[str, str]:
+    """Every field value one engine run resolves, for the frontend to lock.
+
+    1.7.0: "Roll + lock all" used to pick each dropdown uniformly in JS, so it ignored
+    the weights and could lock a pair the engine forbids. Fields the run left absent
+    are omitted; the frontend locks those to "None".
+    """
+    _, json_output = run_identity_forge({**widgets, "seed": seed})
+    return {name: value for name, value in _parse_archetype_json(json_output).items()
+            if name in FIELD_DEFINITIONS and name not in _HIDDEN_FIELDS
+            and name not in _CONTROL_FIELDS}
+
+
 # ===========================================================================
 # ComfyUI V3 node
 # ===========================================================================
@@ -4674,95 +4872,4 @@ if _COMFY_AVAILABLE:
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
-            seed = int(kwargs.get("seed", 0))
-
-            archetype = _parse_archetype_json(kwargs.get("archetype_json", ""))
-            cosplay_label = archetype.pop(_COSPLAY_LABEL_KEY, None)
-            covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
-            mask_text = archetype.pop(_MASK_KEY, None)
-            anatomy_note = archetype.pop(_ANATOMY_NOTE_KEY, None)
-            covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
-            covers_hair = bool(archetype.pop(_COVERS_HAIR_KEY, None))
-            character_scale = archetype.pop(_SCALE_TIER_KEY, "") or ""
-            modifiers = archetype.pop(_MODIFIERS_KEY, None)
-            species = archetype.pop(_SPECIES_KEY, None)
-            gender_variants = archetype.pop(_VARIANTS_KEY, None)
-            if species is not None and not species.get("slots"):
-                species = None  # form without anatomy → nothing to render
-
-            # Gender: an explicit widget choice wins; "Any" defers to the archetype.
-            widget_gender = kwargs.get("gender", "Any")
-            gender = widget_gender if widget_gender != "Any" else archetype.get("gender", "Any")
-            if gender not in _SUBJ:
-                gender = "Any"
-
-            # Control fields are not body fields; they live only in _meta. When the
-            # widget is explicitly set to _AUTO_PRESET we defer to the wired
-            # character's own recorded value (recall of a vault save made with
-            # wardrobe='Any' / a full-spectrum hair colour). The widget default is
-            # preserved otherwise, so a recall never silently overrides a
-            # deliberate user choice -- that was the 0.91.1 trap, and the reason
-            # these controls were not honoured until the sentinel existed.
-            widget_hair_scope = kwargs.get("hair_color_scope", "Natural only")
-            if widget_hair_scope == _AUTO_PRESET:
-                # Defer to the wired character's recorded scope; fall back to the
-                # default when nothing is wired (never pass the sentinel through).
-                hair_color_scope = archetype.get(_HAIR_COLOR_SCOPE_KEY) or "Natural only"
-            else:
-                hair_color_scope = widget_hair_scope
-            widget_wardrobe = kwargs.get("wardrobe", "Match gender")
-            if widget_wardrobe == _AUTO_PRESET:
-                wardrobe = archetype.get(_WARDROBE_KEY) or "Match gender"
-            else:
-                wardrobe = widget_wardrobe
-            accessory_density = kwargs.get("accessory_density", "Balanced")
-            location_setting = kwargs.get("location_setting", "Any indoor/outdoor")
-
-            # Locked fields: the wired character's values, overridden by explicit
-            # widgets. The 'set_all_fields' reset turns every untouched field into
-            # an omit, while leaving the wired character's signature look intact.
-            #
-            # A wired "None" is an *explicit omit* the character chose -- the
-            # cosplayer builder injects them to suppress fields the costume already
-            # settles: skin_tone/complexion under body paint, scalp hair on a bald
-            # head, eye_shape/size under a free-text eye colour. They MUST survive to
-            # the engine; excluding them let a default "Random" widget re-randomize a
-            # human skin tone under She-Hulk's green or hair on Voldemort's bald head.
-            # Kept here so a deliberate concrete widget choice still overrides (handled
-            # in resolve_locked_fields), but an untouched "Random" widget preserves the
-            # omit. "Random" itself carries no information and stays excluded.
-            archetype_locked: dict[str, str] = {
-                name: value
-                for name, value in archetype.items()
-                if name in FIELD_DEFINITIONS
-                and name not in _CONTROL_FIELDS
-                and value != "Random"
-            }
-            set_all = kwargs.get("set_all_fields", _SET_ALL_OFF)
-            locked = resolve_locked_fields(kwargs, archetype_locked, set_all)
-
-            # Which locks are the USER's own widget choices, as opposed to the wired
-            # character's authored look. `locked` above deliberately merges the two, but
-            # the concealment blocks need to tell them apart: a mask must hide a
-            # cosplayer's signature hair while still obeying a user who deliberately
-            # moved the hair_color widget. See _CONCEALED_FACE_GROUPS. Read straight
-            # from kwargs, so a `set_all_fields` reset (which writes "None" into fields
-            # the user never touched) correctly does not count as a widget lock.
-            widget_locked = frozenset(
-                name for name in FIELD_DEFINITIONS
-                if name not in _HIDDEN_FIELDS
-                and name not in _CONTROL_FIELDS
-                and kwargs.get(name, "Random") != "Random"
-            )
-
-            prose, json_output = generate_character(
-                seed, gender, locked, hair_color_scope, wardrobe,
-                accessory_density, location_setting, cosplay_label, covers_face,
-                covers_body, covers_hair, modifiers, species, gender_variants,
-                kwargs.get("size_scale", _SIZE_SCALE_AUTO),
-                character_scale,
-                widget_locked=widget_locked,
-                mask_text=mask_text,
-                anatomy_note=anatomy_note,
-            )
-            return io.NodeOutput(prose, json_output)
+            return io.NodeOutput(*run_identity_forge(kwargs))

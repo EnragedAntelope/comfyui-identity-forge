@@ -30,7 +30,8 @@ A field's dropdown value *is* its lock state — there is no separate lock butto
   **character only** and add your own scene in a larger prompt.
 
 Master buttons act on all fields: **Unlock all (set to Random)** and **Roll + lock all fields**
-(freeze the current random values so you can tweak from there). Click a group header to collapse
+(lock every `Random` field to one coherent roll from the engine, so you can tweak from there;
+fields you already locked are kept and shape the roll). Click a group header to collapse
 it.
 
 To go the other way — start from *nothing* and switch on only a handful of fields — set
@@ -145,7 +146,7 @@ to check that your custom field values are valid options.
 Seed `42`, Female, `hair_color` = auburn:
 
 > A 22-year-old Finnish woman with an average build, short, and very pale skin. …
-> Her hair is mid back loosely wavy auburn, French twist. … She wears a fresh-faced
+> Her hair is mid back loosely wavy auburn, worn in a French twist. … She wears a fresh-faced
 > dewy look, cool browns and taupes eyeshadow, …, and natural finish. She has a
 > simple gold bracelet, a chain bracelet, and medium length natural nails. She
 > wears a burgundy wrap dress with gold hoop earrings and strappy heels, carrying

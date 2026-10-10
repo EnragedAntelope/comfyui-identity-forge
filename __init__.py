@@ -58,6 +58,27 @@ WEB_DIRECTORY = "./js"
 __all__ = ["comfy_entrypoint", "WEB_DIRECTORY"]
 
 
+async def _json_body(request):  # type: ignore[no-untyped-def]
+    """Parse a POST route's JSON body, or return an error response.
+
+    Returns ``(body, None)`` on success and ``(None, response)`` on failure, so
+    the caller can bail out with a 4xx instead of raising into a 500. Enforces
+    a JSON content type — see the CSRF note in ``_register_vault_routes``.
+    """
+    from aiohttp import web
+
+    if request.content_type != "application/json":
+        return None, web.json_response(
+            {"error": "Content-Type must be application/json"}, status=415)
+    try:
+        body = await request.json()
+    except Exception:  # noqa: BLE001 — any parse failure is a client error
+        return None, web.json_response({"error": "Malformed JSON body"}, status=400)
+    if not isinstance(body, dict):
+        return None, web.json_response({"error": "Body must be a JSON object"}, status=400)
+    return body, None
+
+
 def _register_vault_routes() -> None:
     """Register the vault's HTTP API for the frontend (list/preview/manage).
 
@@ -98,24 +119,6 @@ def _register_vault_routes() -> None:
         return
 
     routes = PromptServer.instance.routes
-
-    async def _json_body(request):  # type: ignore[no-untyped-def]
-        """Parse a mutating route's JSON body, or return an error response.
-
-        Returns ``(body, None)`` on success and ``(None, response)`` on failure, so
-        the caller can bail out with a 4xx instead of raising into a 500. Enforces
-        a JSON content type — see the CSRF note in this function's docstring.
-        """
-        if request.content_type != "application/json":
-            return None, web.json_response(
-                {"error": "Content-Type must be application/json"}, status=415)
-        try:
-            body = await request.json()
-        except Exception:  # noqa: BLE001 — any parse failure is a client error
-            return None, web.json_response({"error": "Malformed JSON body"}, status=400)
-        if not isinstance(body, dict):
-            return None, web.json_response({"error": "Body must be a JSON object"}, status=400)
-        return body, None
 
     @routes.get("/identity_forge/vault/characters")
     async def _characters(_request):  # type: ignore[no-untyped-def]
@@ -167,7 +170,38 @@ def _register_vault_routes() -> None:
     _LOG.info("Vault API routes registered.")
 
 
+def _register_roll_route() -> None:
+    """1.7.0: ``POST /identity_forge/roll`` for the main node's "Roll + lock all" button.
+
+    Runs the engine once on the node's widget values and a fresh seed, and returns
+    every resolved field, so the button locks a roll that honours the weights and
+    constraints. Read-only: it touches no file and computes text. Best-effort like the
+    vault routes; without it the button reports that it needs the server.
+    """
+    try:
+        from aiohttp import web
+        from server import PromptServer  # type: ignore[import-not-found]
+
+        from .nodes.identity_forge import roll_field_values
+    except Exception as exc:  # noqa: BLE001 — never block node registration
+        _LOG.warning("Roll route not registered: %s", exc)
+        return
+
+    @PromptServer.instance.routes.post("/identity_forge/roll")
+    async def _roll(request):  # type: ignore[no-untyped-def]
+        body, error = await _json_body(request)
+        if error is not None:
+            return error
+        widgets, seed = body.get("widgets"), body.get("seed")
+        if (not isinstance(widgets, dict) or not isinstance(seed, int)
+                or not all(isinstance(v, (str, int, float)) for v in widgets.values())):
+            return web.json_response(
+                {"error": "expected {'widgets': {name: value}, 'seed': int}"}, status=400)
+        return web.json_response({"values": roll_field_values(widgets, seed)})
+
+
 _register_vault_routes()
+_register_roll_route()
 
 
 class IdentityForgeExtension(ComfyExtension):

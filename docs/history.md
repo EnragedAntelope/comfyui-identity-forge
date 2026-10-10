@@ -881,3 +881,47 @@ default, puts the look on anyone, and the picker still finds them by ethnicity. 
 keep their prefix, since nothing maps a renamed archetype for saved workflows.
 
 **Declined:** see `docs/suggested-additions.md` → "Field options — declined (1.6.0)".
+
+## 1.7.0 — engine and UX fixes from the 1.6.0 review
+
+Five fixes the 1.6.0 review queued. None of them moves a draw, so a seed resolves the same
+values as on 1.6.0; the prose wording changes where noted.
+
+**"Roll + lock all" locks one engine roll.** The button used to pick each dropdown uniformly
+in JS. A lock beats a guard, so the engine kept every pick, clashes included: over 50 such
+rolls the engine logged 799 lock conflicts ("waist length" hair locked beside a quiff). The
+button now posts the node's widgets and a fresh seed to `POST /identity_forge/roll`, which runs
+the node's own path (`run_identity_forge`, factored out of `execute`) and returns every resolved
+field. Each `Random` field locks to that value, and a field the run left absent locks to `None`.
+The same 50 rolls log one conflict, and a test pins that re-running a locked roll reproduces it
+field for field. The route is read-only and shares the vault routes' JSON content-type check.
+Without it (an older server) the button falls back to the uniform pick and warns in the console.
+
+**A framing that crops the feet no longer names the shoes.** Extreme close-up through cowboy
+shot (`_FEET_OUT_OF_FRAME_SHOTS`) drop the footwear clause from the prose; full-body framings
+keep it. The JSON keeps `footwear` in its `outfit_description`, because a Turnaround or Vault
+replay reads the shoes from there and may re-frame to full body. Turnaround's composed shot
+("medium shot from waist up, side profile") matches on its distance half. Footwear the user
+locked on the widget is still voiced; a wired lock is not, because a Vault Load replay wires
+every field back in (and hands the outfit back as a costume, whose path pops `footwear`), and
+a test pins that a same-shot replay reproduces the trimmed prose. Measured: from about 14% of
+tight framings to none.
+
+**Hair reads as prose.** Every noun style now gets a connector, as the gathered styles already
+had since 1.5.3: "worn in a fade", "worn in a French braid", "with curtain bangs", "with a wet
+look". Styles that are already predicates ("worn down", "slicked back") keep their words, and a
+free-text style outside the families is voiced as written. The two noun lengths go last behind
+an article ("a sleek straight dark brown chin length bob"). Before, about 58% of hair sentences
+ended in a bare noun ("hair is very short loosely curled jet black, fade"); now none do.
+
+**A footwear or legwear modifier reaches a generated outfit.** The composed `outfit_description`
+voices those values verbatim, but `_apply_modifiers` decorated only the field, so the prose
+showed the plain shoes. The decorated value now replaces its last whole-phrase occurrence in the
+composed outfit. Colour and pattern are rewritten when composed, so they are left as a backlog
+item. The Modifier node's help example used group keys (`Makeup`, `Setting & Shot`) that
+decorate every field in the group, staging fields included ("galaxy-glitter smiling"); it now
+shows field keys and says what a group key does.
+
+**`generate_character` is keyword-only from `widget_locked`.** It was documented so, but had
+no `*`, and `execute` passes the parameters before it positionally: one inserted mid-signature
+would silently shift every argument after it.

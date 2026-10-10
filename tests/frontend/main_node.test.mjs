@@ -8,6 +8,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { __getExtension } from "./stubs/app.js";
+import { __setFetchApiHandler, __getFetchApiCalls, __resetApi } from "./stubs/api.js";
 import { createNode, createNodeTwice, widgetsFor } from "./fake_node.mjs";
 
 await import("../../js/identity_forge.js");
@@ -144,6 +145,41 @@ test("switching gender re-scopes gender-divergent option lists and resets an inv
     "switching back to Male must restore the male-only option");
 });
 
+/* 1.7.0: "Roll + lock all" picked each dropdown uniformly, so it ignored the weights and
+   could lock a pair the engine forbids. It now locks what one engine run resolved. */
+test("Roll + lock all locks the engine's resolved values, None for an absent field", async () => {
+  __resetApi();
+  __setFetchApiHandler(async (route) => ({
+    ok: route === "/identity_forge/roll",
+    json: async () => ({ values: { age: "48", hair_color: "chestnut", facial_hair: "not-an-option" } }),
+  }));
+  const node = await createNode(ext, "IdentityForge");
+  const w = (name) => node.widgets.find((x) => x.name === name);
+  w("skin_tone").value = "deep";  // a user lock is left alone
+  await node.widgets.find((x) => x.name.includes("Roll + lock")).callback();
+
+  const [call] = __getFetchApiCalls();
+  assert.equal(call.route, "/identity_forge/roll");
+  const body = JSON.parse(call.opts.body);
+  assert.equal(body.widgets.skin_tone, "deep", "the node's own locks reach the engine");
+  assert.ok(Number.isInteger(body.seed) && !("seed" in body.widgets));
+  assert.equal(w("age").value, "48");
+  assert.equal(w("hair_color").value, "chestnut");
+  assert.equal(w("skin_tone").value, "deep");
+  assert.equal(w("facial_hair").value, "Random", "a value outside the options is not forced in");
+  assert.equal(w("lighting").value, "None", "a field the run left absent locks to None");
+  __resetApi();
+});
+
+test("Roll + lock all falls back to a uniform pick when the route is missing", async () => {
+  __resetApi();
+  __setFetchApiHandler(async () => ({ ok: false, json: async () => ({}) }));
+  const node = await createNode(ext, "IdentityForge");
+  await node.widgets.find((x) => x.name.includes("Roll + lock")).callback();
+  const age = node.widgets.find((x) => x.name === "age");
+  assert.ok(!["Random", "None"].includes(age.value), "every field still gets a concrete lock");
+  __resetApi();
+});
 
 /* --- Re-entry guard (0.97.0) ------------------------------------------------
    Four of the five setup functions in this pack had no guard, while the comment
