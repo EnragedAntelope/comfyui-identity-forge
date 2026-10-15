@@ -82,5 +82,24 @@ class CheckDetectsDriftTests(unittest.TestCase):
         self.assertEqual(self._run_check_against(perturbed), 1)
 
 
+class UnreachableValuesTests(unittest.TestCase):
+    """Nothing in a field pool is accidentally gated (1.8.0): the values the committed
+    baseline never draws must be exactly the ones ``unreachable_by_design.json`` explains."""
+
+    def test_the_unreachable_set_equals_the_committed_exceptions(self):
+        baseline = json.loads(sweep_marginals.BASELINE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(
+            sorted(sweep_marginals._unreachable(baseline)),
+            sweep_marginals._committed_unreachable(),
+            "a value is gated with no recorded reason, or an exception is stale; "
+            "see `python scripts/sweep_marginals.py --unreachable`")
+
+    def test_every_exception_states_its_reason(self):
+        groups = json.loads(sweep_marginals.UNREACHABLE_PATH.read_text(
+            encoding="utf-8"))["unreachable"]
+        for group in groups:
+            self.assertGreater(len(group["reason"]), 20, group["field"])
+
+
 if __name__ == "__main__":
     unittest.main()
