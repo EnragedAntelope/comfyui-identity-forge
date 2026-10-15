@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-09-27T22:43:31.187402",
-  "version": "1.5.0",
+  "generated": "2026-10-15T15:12:07.331156",
+  "version": "1.8.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -124,10 +124,13 @@
     "1.2.0",
     "1.3.0",
     "1.4.0",
-    "1.5.0"
+    "1.5.0",
+    "1.5.1",
+    "1.6.0",
+    "1.8.0"
   ],
-  "total_entries": 261,
-  "entries_with_images": 261,
+  "total_entries": 262,
+  "entries_with_images": 262,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1978,6 +1981,14 @@
       "group": "Marine Life",
       "added": "0.67.0",
       "image": "images/starfish.jpeg"
+    },
+    {
+      "name": "stegosaurus",
+      "has_image": true,
+      "gender": "any",
+      "group": "Reptiles & Amphibians",
+      "added": "1.8.0",
+      "image": "images/stegosaurus.jpeg"
     },
     {
       "name": "stick insect",
