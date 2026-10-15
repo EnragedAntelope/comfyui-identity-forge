@@ -1567,7 +1567,6 @@ const COSPLAYER_FRANCHISES = {
     "Jean Grey",
     "Jubilee",
     "Juggernaut",
-    "Julia Carpenter",
     "Justice (New Warriors)",
     "Kang the Conqueror",
     "Karnak",
@@ -2693,6 +2692,10 @@ const COSPLAYER_FRANCHISES = {
     "Mr. Incredible",
     "Syndrome",
     "Violet"
+  ],
+  "The Invisibles": [
+    "Lord Fanny",
+    "Ragged Robin"
   ],
   "The Iron Giant": [
     "The Iron Giant"

@@ -954,12 +954,17 @@ stays.
 hue and pattern adjective it voiced; `_apply_modifiers` decorates that word, with the right
 article ("an emerald" becomes "a faded emerald"). A group key still decorates as before.
 
-**Roster.** Seven cosplayers (Megamind, Alita with a Motorball alternate, Sesshomaru, Raya,
-Barbie with the pink cowboy and 1959 swimsuit looks, Effie Trinket, Minion), three
-archetypes (American Football Player, Scuba Diver, Thai Classical Dancer) and one creature
+**Roster.** New cosplayers: Megamind, Alita with a Motorball alternate, Sesshomaru, Raya,
+Barbie with the pink cowboy and 1959 swimsuit looks, Minion, and Lord Fanny and Ragged Robin
+(The Invisibles, a new franchise in the DC category; Ragged Robin's Volume 2 leather look is
+an alternate). Effie Trinket was rewritten rather than duplicated: the Reaping look is the
+primary and the Catching Fire liquid-gold look the alternate; the unverified grey Mockingjay
+alternate was dropped. "Julia Carpenter" and "Spider-Woman (Julia Carpenter)" were one
+character listed twice, so they are now one entry with the classic suit as an alternate
+(a saved workflow naming "Julia Carpenter" falls back to a random pick). Three archetypes
+(American Football Player, Scuba Diver, Thai Classical Dancer) and one creature
 (stegosaurus). Canon was written from knowledge plus the maintainer's hooks, not from reference
-images: Effie's alternate looks in particular are unverified. Anxiety was declined (see
-`docs/suggested-additions.md`).
+images. Anxiety was declined (see `docs/suggested-additions.md`).
 The football archetype is gated to the two park locations because no stadium location exists;
 adding one is a field-value change and was left out.
 

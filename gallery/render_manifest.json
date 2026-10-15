@@ -3103,8 +3103,9 @@
         "rendered": "pre-existing"
       },
       "Effie Trinket": {
-        "hash": "d5fee2a5f407a343",
-        "rendered": "2026-10-15"
+        "hash": "654f37b96eccbf9f",
+        "rendered": "2026-10-15",
+        "seed": 1028794807340367851
       },
       "Ekko": {
         "hash": "ceee6875398fd6b4",
@@ -4615,10 +4616,6 @@
         "hash": "4f450f624fd7da01",
         "rendered": "pre-existing"
       },
-      "Julia Carpenter": {
-        "hash": "1cf3d63aeb8de973",
-        "rendered": "pre-existing"
-      },
       "Julie": {
         "hash": "79711fab98f6f852",
         "rendered": "2026-08-30",
@@ -5369,6 +5366,10 @@
       "Looten Plunder": {
         "hash": "0ec3526e2a6e7a23",
         "rendered": "pre-existing"
+      },
+      "Lord Fanny": {
+        "hash": "fb89cc0ee191ee10",
+        "rendered": "2026-10-15"
       },
       "Lord Farquaad": {
         "hash": "8a4772ef67a63c65",
@@ -7036,6 +7037,11 @@
         "hash": "746b4091f0616ff3",
         "rendered": "2026-09-29"
       },
+      "Ragged Robin": {
+        "hash": "840d4fbd4826fce4",
+        "rendered": "2026-10-15",
+        "seed": 1110698027532149195
+      },
       "Ragyo Kiryuin": {
         "hash": "8bc4102815ea1f47",
         "rendered": "2026-08-22"
@@ -8119,8 +8125,8 @@
         "rendered": "pre-existing"
       },
       "Spider-Woman (Julia Carpenter)": {
-        "hash": "980987b7c87b8940",
-        "rendered": "pre-existing"
+        "hash": "39ad233d8582696d",
+        "rendered": "2026-10-15"
       },
       "Spike Spiegel": {
         "hash": "ecf0ef8f37bad871",
@@ -10514,7 +10520,7 @@
       }
     }
   },
-  "generated": "2026-10-15T12:54:38",
+  "generated": "2026-10-15T14:13:17",
   "render": {
     "cfg": 1,
     "height": 2432,

@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**2080 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2081 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (385)
 
@@ -1201,7 +1201,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (175)
+## DC (177)
 
 ### DC
 
@@ -1376,6 +1376,11 @@
 ### Super Friends
 
 - **Apache Chief** (M, giant)
+
+### The Invisibles
+
+- **Lord Fanny** (F)
+- **Ragged Robin** (F, +1 alt)
 
 ### The Sandman
 
@@ -1759,7 +1764,7 @@
 
 ### The Hunger Games
 
-- **Effie Trinket** (F, +2 alt)
+- **Effie Trinket** (F, +1 alt)
 - **Katniss Everdeen** (F, prop)
 
 ### The Lord of the Rings
@@ -1808,7 +1813,7 @@
 
 - **Zorro** (M, prop)
 
-## Marvel (194)
+## Marvel (193)
 
 ### Marvel
 
@@ -1884,7 +1889,6 @@
 - **Jean Grey** (F)
 - **Jubilee** (F)
 - **Juggernaut** (M, giant, masked)
-- **Julia Carpenter** (F)
 - **Justice (New Warriors)** (M)
 - **Kang the Conqueror** (M, masked, +1 alt)
 - **Karnak** (M)
@@ -1971,7 +1975,7 @@
 - **Spider-Gwen** (F)
 - **Spider-Man** (M, masked)
 - **Spider-Woman** (F)
-- **Spider-Woman (Julia Carpenter)** (F)
+- **Spider-Woman (Julia Carpenter)** (F, +1 alt)
 - **Spiral** (F, prop)
 - **Sprite** (M, +1 alt)
 - **Squirrel Girl** (F)

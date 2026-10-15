@@ -6013,18 +6013,18 @@ class RandomPoolTests(unittest.TestCase):
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
-        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (seven
-        # new cosplayers) to the new ground truth, and is expected to need refreshing every time the roster
+        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
+        # cosplayers, one folded duplicate) to the new ground truth, and is expected to need refreshing every time the roster
         # grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Sabretooth',
+            (_RANDOM_ANY, 0): 'Sabine Wren',
             (_RANDOM_ANY, 1): 'Falcon',
             (_RANDOM_ANY, 2): 'Brand',
-            (_RANDOM_ANY, 3): 'Kurumi Tokisaki',
-            (_RANDOM_ANY, 4): 'Krillin',
-            (_RANDOM_FEMALE, 0): 'Sophitia Alexandra',
+            (_RANDOM_ANY, 3): 'Kwame',
+            (_RANDOM_ANY, 4): 'Kristoff',
+            (_RANDOM_FEMALE, 0): 'Sonya Blade',
             (_RANDOM_FEMALE, 1): 'Captain Janeway',
-            (_RANDOM_FEMALE, 2): 'Xena',
+            (_RANDOM_FEMALE, 2): 'X-23',
             (_RANDOM_FEMALE, 3): 'Enchantress (Marvel)',
             (_RANDOM_FEMALE, 4): 'Emily (Corpse Bride)',
             (_RANDOM_MALE, 0): 'Ruby Rhod',
