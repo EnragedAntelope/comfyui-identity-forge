@@ -4239,7 +4239,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "My Hero Academia",
         "gender": "Male",
         "costume": "a black outfit hung with severed pale hands, one clutched over the "
-                   "face, and chapped, cracked pale skin",
+                   "face, and chapped, cracked skin",
         "eyes": "red-rimmed crimson",
         "signature": {"hair_color": "silver", "hair_length": "shoulder length",
                       "hair_texture": "fine and wispy"},
@@ -11134,10 +11134,11 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         # Femizon wrestler (6'2", muscular). Red halter top + high-cut bottoms with black trim,
         # a torn black fishnet single sleeve on the right arm, tall black over-the-knee wrestling
-        # boots, over very pale skin; blue eyes that flare fiery red when her powers are active.
+        # boots; blue eyes that flare fiery red when her powers are active. Her very pale
+        # skin is in physique (Full character only).
         "costume": "a revealing two-piece wrestler's uniform -- a vivid red halter top and high-cut "
                    "bottoms with black trim, the right arm sheathed in a torn black fishnet sleeve, "
-                   "and tall black over-the-knee wrestling boots, over strikingly pale skin",
+                   "and tall black over-the-knee wrestling boots",
         "signature": {"hair_color": "raven black", "hair_length": "very long",
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "very pale"},

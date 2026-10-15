@@ -33,9 +33,6 @@ rather than left to be re-surveyed. Add a row here only with a fresh, written ca
 | Item | Case |
 |---|---|
 | Legwear in a tight shot | 1.7.0 drops the shoes when the framing crops the feet, but tights and stockings are still voiced in a close-up (about 1% of renders). |
-| Colour and pattern field modifiers on a generated outfit | A `footwear` or `legwear` modifier reaches the composed outfit since 1.7.0 because those values appear in it verbatim; `clothing_color` and `clothing_pattern` are rewritten when composed, so their field modifiers still miss. The `Clothing` group key reaches everything. |
-| A negative and/or tags output, and a subject/scene split | Downstream graphs re-parse the prose today. |
-| An on-node readout of the resolved prompt | `onExecuted`, so the user sees what a seed drew without a Show Text node. |
 | Free-text `held_item` | Today only archetypes set it. |
 | A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Worth it alongside the expression sheet, not alone. |
 | An expression-sheet node | Re-run like Turnaround, releasing `smile_type` and `mood` per view. |
@@ -80,6 +77,13 @@ reason Ryze, Swain and Viktor were declined below.
 ## Decided against
 
 Closed with a reason. Reopen only with a **new** argument, not a repeat of the request.
+
+### Engine and UX
+
+| Candidate | Why |
+|---|---|
+| A negative and/or tags output | Maintainer: not needed. (The subject/scene half of the same row shipped at 1.8.0 as `subject_text`.) |
+| An on-node readout of the resolved prompt | Maintainer: not needed. |
 
 ### Individual characters
 

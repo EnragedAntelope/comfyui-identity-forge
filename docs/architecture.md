@@ -172,7 +172,7 @@ socket. On overlap, the node **closest to IdentityForge wins** (downstream wins)
 `_meta`) is the chaining primitive.
 
 ```
-Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge ─▶ prompt_text + prompt_json
+Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge ─▶ prompt_text + prompt_json + subject_text
 ```
 
 - **IdentityForge** ([nodes/identity_forge.py](../nodes/identity_forge.py)) — the engine. Many

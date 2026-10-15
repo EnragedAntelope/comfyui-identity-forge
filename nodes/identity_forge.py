@@ -2942,8 +2942,15 @@ def _compose_outfit_clause(
     garment: str, resolved: dict[str, str], locked_clean: set[str],
     rng: random.Random | None = None,  # APPENDED (1.5.0): picks a palette's hue
     presentation: str | None = None,   # APPENDED (1.5.0): masculine hue subsets
+    voiced: dict[str, str] | None = None,  # APPENDED (1.8.0): the words actually inserted
 ) -> str:
     """Compose the generated outfit with its palette, pattern and footwear (0.83.0).
+
+    ``voiced`` (1.8.0), when a dict, receives the words this clause actually put in the
+    outfit -- ``clothing_color`` -> the lead hue, ``clothing_pattern`` -> the adjective --
+    so ``_apply_modifiers`` can decorate them in place. The field values ("jewel tones",
+    "stripes") never appear in the outfit verbatim, which is why a colour or pattern
+    modifier used to miss it.
 
     ``garment`` is a garment phrase from ``OUTFIT_DESCRIPTIONS`` — garments and fabrics
     only, no leading article. Returns the finished clause for the "wears ..." slot, e.g.
@@ -3002,6 +3009,8 @@ def _compose_outfit_clause(
                 phrase = _colour_the_rest(phrase, colour, adjective, hues, rng)
             phrase = f"{adjective} {phrase}"
             colour_word = adjective
+            if voiced is not None:
+                voiced["clothing_color"] = adjective
         else:                    # unmapped value: say nothing rather than guess
             resolved.pop("clothing_color", None)
 
@@ -3024,6 +3033,8 @@ def _compose_outfit_clause(
         adjective = PATTERN_ADJECTIVES.get(pattern)
         if adjective:
             phrase = _insert_after_hue(phrase, adjective, colour_word)
+            if voiced is not None:
+                voiced["clothing_pattern"] = adjective
         elif adjective is None:   # a user-added pattern: the old tail, else say nothing
             tail = PATTERN_TAILS.get(pattern) or ""
             if not tail:
@@ -3129,8 +3140,13 @@ def _format_prose(
     mask_text: str | None = None, anatomy_note: str | None = None,
     presentation: str | None = None,  # APPENDED (1.5.0 round 4)
     feet_visible: bool = True,        # APPENDED (1.7.0): see _FEET_OUT_OF_FRAME_SHOTS
+    subject_only: bool = False,       # APPENDED (1.8.0): person + outfit, no pose/scene
 ) -> str:
     """Build a natural-language description from resolved field values.
+
+    ``subject_only`` (1.8.0) is the ``subject_text`` output: everything except the
+    mouth/smile, the pose/held-item sentence and the scene sentence -- the parts a
+    larger graph that brings its own pose and scene would otherwise re-parse away.
 
     When ``cosplay_label`` is set, the prose is prefixed ``Cosplaying as <label>:`` --
     unless the subject is Feral, where the label is apposed instead (``<label>, a
@@ -3279,7 +3295,7 @@ def _format_prose(
     if g("eyebrows"):
         brows = g("eyebrows")
         features.append(brows if "brow" in brows else f"{brows} eyebrows")
-    if g("smile_type"):
+    if g("smile_type") and not subject_only:  # the mouth is expression state
         # Mouth/smile state (kept coherent with expression by constraints.py). Named
         # smiles read as-is; the bare modifiers (asymmetric / broad / subtle dimpled)
         # qualify "smile"; "closed mouth" voices the no-smile state.
@@ -3486,6 +3502,8 @@ def _format_prose(
     # held_item is a hidden, preset-only field (a cosplayer's signature prop);
     # voiced here as "holding <value>", folded into the pose sentence when present.
     pose, held = g("pose"), g("held_item")
+    if subject_only:
+        pose = held = ""
     if pose and held:
         sentences.append(f"{subj} {is_v} {pose}, holding {held}")
     elif pose:
@@ -3517,7 +3535,7 @@ def _format_prose(
     # when identical.
     if g("mood") and g("mood") != g("expression"):
         scene.append(f"with {_a(g('mood'))} {g('mood')} mood")
-    if scene:
+    if scene and not subject_only:
         sentences.append(_join(scene) if len(scene) > 1 else scene[0])
 
     # Capitalize each sentence's first letter (0.83.0). The join has always been a plain
@@ -3829,7 +3847,10 @@ def _format_json(
     return json.dumps(document, indent=2)
 
 
-def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None) -> None:
+def _apply_modifiers(
+    resolved: dict[str, str], modifiers: dict[str, str] | None,
+    voiced: dict[str, str] | None = None,  # APPENDED (1.8.0): see _compose_outfit_clause
+) -> None:
     """Prepend style descriptors onto ``resolved`` values, in place.
 
     ``modifiers`` keys are either a field name (applies to that field only) or a
@@ -3842,6 +3863,12 @@ def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None)
     article in front: a costume reads "a gothic black dress" by convention, and a
     blind prepend produced "wears weathered a gothic black dress". Values with a
     plural / mass head ("robes", "plate armor") just take the descriptor in front.
+
+    ``clothing_color`` / ``clothing_pattern`` are palette and pattern *names*; the
+    outfit holds the hue ("emerald") or adjective ("striped") the composer chose from
+    them. ``voiced`` carries that word, and a modifier keyed on the field itself is
+    applied in front of its first whole-word occurrence ("a faded emerald ..."). A
+    group-key modifier already decorates the whole outfit, so it is left alone.
     """
     if not modifiers:
         return
@@ -3856,6 +3883,16 @@ def _apply_modifiers(resolved: dict[str, str], modifiers: dict[str, str] | None)
         if descriptor:
             resolved[field] = _prepend_descriptor(value, descriptor)
             outfit = resolved.get("outfit_description") or ""
+            word = (voiced or {}).get(field)
+            if word and outfit and modifiers.get(field) is not None:
+                hit = re.search(
+                    rf"(?:\b(?:an?)\s+)?(?<![\w-]){re.escape(word)}(?![\w-])", outfit)
+                if hit:
+                    new = f"{descriptor} {word}"
+                    if hit.group(0) != word:  # an article preceded it: re-article
+                        new = _an(new)
+                    resolved["outfit_description"] = (
+                        outfit[:hit.start()] + new + outfit[hit.end():])
             if field in _VERBATIM_OUTFIT_FIELDS and outfit:
                 # The last whole-phrase occurrence: the composer appends these after
                 # the garment, and garments name no footwear or legwear.
@@ -3891,8 +3928,14 @@ def generate_character(
     widget_locked: frozenset[str] | None = None,
     mask_text: str | None = None,
     anatomy_note: str | None = None,
-) -> tuple[str, str]:
-    """Engine entry point. Returns ``(prose, json_output)``.
+    with_subject: bool = False,  # APPENDED (1.8.0): also return the subject-only prose
+) -> tuple[str, str] | tuple[str, str, str]:
+    """Engine entry point. Returns ``(prose, json_output)``, or
+    ``(prose, json_output, subject)`` when ``with_subject`` is true.
+
+    ``subject`` is the person and outfit only -- no pose, held item, expression, mouth
+    or scene -- built from the same resolved fields with no extra RNG draws, so the
+    other two outputs are identical either way.
 
     ``locked`` maps field_name → chosen value for every user-locked field
     (control fields excluded). A locked ``outfit_description`` is honoured as a
@@ -4083,6 +4126,7 @@ def generate_character(
     # Drop them when a costume is set; the prose already omits them in that case.
     # When no costume is supplied, generate one from the random outfit_style.
     framed_shoes = ""  # the costume branch below sets it; a generated outfit reads it later
+    voiced: dict[str, str] = {}  # colour/pattern words the composed outfit actually holds
     if _is_absent(resolved.get("outfit_description")):
         # 0.83.0: the generated outfit is a GARMENT phrase, so the palette, pattern and
         # footwear compose onto it instead of being drawn and thrown away. Mutates
@@ -4114,7 +4158,8 @@ def generate_character(
                 if field in resolved and field not in locked_clean:
                     resolved[field] = absent
         resolved["outfit_description"] = (
-            _compose_outfit_clause(garment, resolved, set(locked_clean), rng, presentation)
+            _compose_outfit_clause(garment, resolved, set(locked_clean), rng, presentation,
+                                   voiced)
             if garment else garment
         )
     else:
@@ -4335,7 +4380,7 @@ def generate_character(
     # Style modifiers: prepend a descriptor to the surviving values. Applied last so
     # it decorates exactly what prose and JSON will show (and never an item that was
     # pruned above). Both outputs read from the same modified ``resolved``.
-    _apply_modifiers(resolved, modifiers)
+    _apply_modifiers(resolved, modifiers, voiced)
     # The same modifiers can tilt the whole species group (e.g. "Species & Anatomy:
     # bioluminescent"); a per-slot key wins over the group key if a future Modifier
     # node exposes slot names.
@@ -4386,6 +4431,14 @@ def generate_character(
         size_scale=(size_scale if size_scale != _SIZE_SCALE_AUTO else character_scale),
         omitted=omitted,
     )
+    if with_subject:
+        # `resolved`, not `prose_fields`: the framing is scene, so the subject keeps
+        # the full outfit including footwear.
+        subject = _format_prose(resolved, gender, cosplay_label, species,
+                                hands_visible=not hands_covered, mask_text=mask_text,
+                                anatomy_note=anatomy_note, presentation=presentation,
+                                feet_visible=True, subject_only=True)
+        return prose, json_output, subject
     return prose, json_output
 
 
@@ -4574,8 +4627,9 @@ def _parse_archetype_json(raw: str) -> dict[str, str]:
     return flat
 
 
-def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str]:
-    """The IdentityForge node's whole run, from widget values to ``(prose, json)``.
+def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str, str]:
+    """The IdentityForge node's whole run, from widget values to
+    ``(prose, json, subject)`` -- ``subject`` is the person and outfit only (1.8.0).
 
     Module-level (1.7.0) so the "Roll + lock all" route resolves a roll through the same
     path as a queued run, with every weight and constraint applied.
@@ -4661,7 +4715,7 @@ def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str]:
         and kwargs.get(name, "Random") != "Random"
     )
 
-    prose, json_output = generate_character(
+    prose, json_output, subject = generate_character(
         seed, gender, locked, hair_color_scope, wardrobe,
         accessory_density, location_setting, cosplay_label, covers_face,
         covers_body, covers_hair, modifiers, species, gender_variants,
@@ -4670,8 +4724,9 @@ def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str]:
         widget_locked=widget_locked,
         mask_text=mask_text,
         anatomy_note=anatomy_note,
+        with_subject=True,
     )
-    return prose, json_output
+    return prose, json_output, subject
 
 
 def roll_field_values(widgets: dict[str, Any], seed: int) -> dict[str, str]:
@@ -4681,7 +4736,7 @@ def roll_field_values(widgets: dict[str, Any], seed: int) -> dict[str, str]:
     the weights and could lock a pair the engine forbids. Fields the run left absent
     are omitted; the frontend locks those to "None".
     """
-    _, json_output = run_identity_forge({**widgets, "seed": seed})
+    _, json_output, _ = run_identity_forge({**widgets, "seed": seed})
     return {name: value for name, value in _parse_archetype_json(json_output).items()
             if name in FIELD_DEFINITIONS and name not in _HIDDEN_FIELDS
             and name not in _CONTROL_FIELDS}
@@ -4857,6 +4912,8 @@ if _COMFY_AVAILABLE:
                 outputs=[
                     io.String.Output(display_name="prompt_text"),
                     io.String.Output(display_name="prompt_json"),
+                    # Appended last (1.8.0) so links on slots 0 and 1 stay intact.
+                    io.String.Output(display_name="subject_text"),
                 ],
             )
 

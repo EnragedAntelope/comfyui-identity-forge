@@ -154,6 +154,13 @@ Seed `42`, Female, `hair_color` = auburn:
 
 `prompt_json` mirrors this, nested by group with a small `_meta` block.
 
+`subject_text` (the third output, 1.8.0) is the same prose cut down to the **person and outfit**: no
+pose, held item, expression, mouth or scene. Use it when a larger graph brings its own pose and
+scene and would otherwise re-parse them out. It keeps the `Cosplaying as ...` label, face, hair,
+makeup, jewellery and the full outfit including footwear (framing is scene, so shoes are never
+trimmed). It is built from the same roll with no extra random draws, so `prompt_text` and
+`prompt_json` are unchanged.
+
 ## Turnaround views
 
 The **Identity Forge Turnaround** node builds a reference set: one character, every camera
