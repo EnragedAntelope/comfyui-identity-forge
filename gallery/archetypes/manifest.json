@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-10-10T09:44:23.694405",
-  "version": "1.6.0",
+  "generated": "2026-10-15T15:12:01.819084",
+  "version": "1.8.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -126,10 +126,11 @@
     "1.4.0",
     "1.5.0",
     "1.5.1",
-    "1.6.0"
+    "1.6.0",
+    "1.8.0"
   ],
-  "total_entries": 272,
-  "entries_with_images": 272,
+  "total_entries": 275,
+  "entries_with_images": 275,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -308,6 +309,14 @@
       "group": "athletic",
       "added": "0.67.0",
       "image": "images/Alpine Skier.jpeg"
+    },
+    {
+      "name": "American Football Player",
+      "has_image": true,
+      "gender": "any",
+      "group": "athletic",
+      "added": "1.8.0",
+      "image": "images/American Football Player.jpeg"
     },
     {
       "name": "Ancient Roman Patrician",
@@ -1830,6 +1839,14 @@
       "image": "images/Scientist.jpeg"
     },
     {
+      "name": "Scuba Diver",
+      "has_image": true,
+      "gender": "Any",
+      "group": "athletic",
+      "added": "1.8.0",
+      "image": "images/Scuba Diver.jpeg"
+    },
+    {
       "name": "Sea Captain",
       "has_image": true,
       "gender": "Any",
@@ -2052,6 +2069,14 @@
       "group": "athletic",
       "added": "0.28.0",
       "image": "images/Tennis Player.jpeg"
+    },
+    {
+      "name": "Thai Classical Dancer",
+      "has_image": true,
+      "gender": "Female",
+      "group": "evening formal",
+      "added": "1.8.0",
+      "image": "images/Thai Classical Dancer.jpeg"
     },
     {
       "name": "Toymaker",
