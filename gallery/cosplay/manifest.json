@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-09-30T11:03:37.794388",
-  "version": "1.5.4",
+  "generated": "2026-10-15T15:11:54.203729",
+  "version": "1.8.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -125,10 +125,12 @@
     "1.3.0",
     "1.4.0",
     "1.5.0",
-    "1.5.1"
+    "1.5.1",
+    "1.6.0",
+    "1.8.0"
   ],
-  "total_entries": 2073,
-  "entries_with_images": 2073,
+  "total_entries": 2081,
+  "entries_with_images": 2081,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -475,6 +477,14 @@
       "group": "Food Wars",
       "added": "0.79.0",
       "image": "images/Alice Nakiri.jpeg"
+    },
+    {
+      "name": "Alita",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Alita: Battle Angel",
+      "added": "1.8.0",
+      "image": "images/Alita.jpeg"
     },
     {
       "name": "All Might",
@@ -1307,6 +1317,14 @@
       "group": "Barbarella",
       "added": "1.1.0",
       "image": "images/Barbarella.jpeg"
+    },
+    {
+      "name": "Barbie",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Barbie",
+      "added": "1.8.0",
+      "image": "images/Barbie.jpeg"
     },
     {
       "name": "Barley Lightfoot",
@@ -4083,6 +4101,14 @@
       "group": "Winnie the Pooh",
       "added": "0.19.0",
       "image": "images/Eeyore.jpeg"
+    },
+    {
+      "name": "Effie Trinket",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Hunger Games",
+      "added": "1.8.0",
+      "image": "images/Effie Trinket.jpeg"
     },
     {
       "name": "Ekko",
@@ -7093,14 +7119,6 @@
       "image": "images/Juggernaut.jpeg"
     },
     {
-      "name": "Julia Carpenter",
-      "has_image": true,
-      "gender": "Female",
-      "group": "Marvel",
-      "added": "0.69.0",
-      "image": "images/Julia Carpenter.jpeg"
-    },
-    {
       "name": "Julie",
       "has_image": true,
       "gender": "Female",
@@ -8597,6 +8615,14 @@
       "image": "images/Looten Plunder.jpeg"
     },
     {
+      "name": "Lord Fanny",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Invisibles",
+      "added": "1.8.0",
+      "image": "images/Lord Fanny.jpeg"
+    },
+    {
       "name": "Lord Farquaad",
       "has_image": true,
       "gender": "Male",
@@ -9485,6 +9511,14 @@
       "image": "images/Megaera.jpeg"
     },
     {
+      "name": "Megamind",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Megamind",
+      "added": "1.8.0",
+      "image": "images/Megamind.jpeg"
+    },
+    {
       "name": "Megara",
       "has_image": true,
       "gender": "Female",
@@ -9811,6 +9845,14 @@
       "group": "Flash Gordon",
       "added": "1.1.0",
       "image": "images/Ming the Merciless.jpeg"
+    },
+    {
+      "name": "Minion",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Despicable Me",
+      "added": "1.8.0",
+      "image": "images/Minion.jpeg"
     },
     {
       "name": "Minnie Mouse",
@@ -11901,6 +11943,14 @@
       "image": "images/Rage (Marvel).jpeg"
     },
     {
+      "name": "Ragged Robin",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Invisibles",
+      "added": "1.8.0",
+      "image": "images/Ragged Robin.jpeg"
+    },
+    {
       "name": "Ragyo Kiryuin",
       "has_image": true,
       "gender": "Female",
@@ -12059,6 +12109,14 @@
       "group": "Archer",
       "added": "0.69.0",
       "image": "images/Ray Gillette.jpeg"
+    },
+    {
+      "name": "Raya",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Raya and the Last Dragon",
+      "added": "1.8.0",
+      "image": "images/Raya.jpeg"
     },
     {
       "name": "Rayne",
@@ -13307,6 +13365,14 @@
       "group": "Marvel",
       "added": "0.69.0",
       "image": "images/Sersi.jpeg"
+    },
+    {
+      "name": "Sesshomaru",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Inuyasha",
+      "added": "1.8.0",
+      "image": "images/Sesshomaru.jpeg"
     },
     {
       "name": "Sett",
