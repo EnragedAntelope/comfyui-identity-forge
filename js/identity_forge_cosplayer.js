@@ -96,6 +96,9 @@ const COSPLAYER_FRANCHISES = {
     "Vasquez",
     "Xenomorph"
   ],
+  "Alita: Battle Angel": [
+    "Alita"
+  ],
   "Amagi Brilliant Park": [
     "Isuzu Sento",
     "Latifa Fleuranza",
@@ -188,6 +191,9 @@ const COSPLAYER_FRANCHISES = {
   "Barbarella": [
     "Barbarella",
     "The Great Tyrant (Black Queen)"
+  ],
+  "Barbie": [
+    "Barbie"
   ],
   "Barsoom": [
     "Dejah Thoris"
@@ -704,7 +710,8 @@ const COSPLAYER_FRANCHISES = {
     "Zenitsu Agatsuma"
   ],
   "Despicable Me": [
-    "Gru"
+    "Gru",
+    "Minion"
   ],
   "Destiny": [
     "Mara Sov"
@@ -1225,6 +1232,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Inside Out": [
     "Anger",
+    "Anxiety",
     "Joy",
     "Sadness"
   ],
@@ -1235,7 +1243,8 @@ const COSPLAYER_FRANCHISES = {
     "Inuyasha",
     "Kagome Higurashi",
     "Kikyo",
-    "Sango"
+    "Sango",
+    "Sesshomaru"
   ],
   "Invincible": [
     "Allen the Alien",
@@ -1719,6 +1728,9 @@ const COSPLAYER_FRANCHISES = {
   "Mega Man": [
     "Mega Man"
   ],
+  "Megamind": [
+    "Megamind"
+  ],
   "Metal Gear": [
     "Quiet",
     "Solid Snake"
@@ -2098,6 +2110,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Ratchet & Clank": [
     "Rivet"
+  ],
+  "Raya and the Last Dragon": [
+    "Raya"
   ],
   "Re:Zero": [
     "Emilia",
@@ -2668,6 +2683,7 @@ const COSPLAYER_FRANCHISES = {
     "Quasimodo"
   ],
   "The Hunger Games": [
+    "Effie Trinket",
     "Katniss Everdeen"
   ],
   "The Incredibles": [
@@ -3104,12 +3120,44 @@ function filteredOptions(allOptions, franchise, currentValue) {
   return kept;
 }
 
+//: 1.8.0 -- save `widgets_values` in SCHEMA order, so a tool without a browser can read it.
+//: ComfyUI saves one value per entry of `node.widgets`, positionally. This file re-sorts
+//: the widgets and inserts buttons and headers, so the saved array no longer matched the
+//: node's declared inputs. The visual grouping stays (in the Nodes 2.0 renderer array
+//: order IS display order); only the SAVED array is written in schema order, marked with
+//: a node property so a load can tell it from a pre-1.8.0 interleaved save. The same
+//: three helpers live in identity_forge_creature.js and identity_forge_cosplayer.js.
+const WIDGET_ORDER_PROPERTY = "if_widget_order";
+
+function serializeInSchemaOrder(node, o) {
+  const schema = node.__ifSchemaWidgets;
+  if (!schema || !o) return;
+  o.widgets_values = schema.map((w) => w.value);
+  o.properties = { ...(o.properties || {}), [WIDGET_ORDER_PROPERTY]: "schema" };
+}
+
+/** Saved schema-order values expanded into display order, or null for an unmarked save. */
+function expandSchemaOrderValues(node, info) {
+  const schema = node.__ifSchemaWidgets;
+  const values = info?.widgets_values;
+  if (!schema || !Array.isArray(values)) return null;
+  if (info.properties?.[WIDGET_ORDER_PROPERTY] !== "schema") return null;
+  // A widget the save does not reach (a field appended in a later release) keeps its default.
+  return (node.widgets || []).map((w) => {
+    const i = schema.indexOf(w);
+    return i > -1 && i < values.length ? values[i] : w.value;
+  });
+}
+
 function setupCosplayer(node) {
   const widgets = node.widgets || [];
   const character = widgets.find((w) => w.name === CHARACTER_WIDGET);
   if (!character) return;
   // Re-entry guard: onNodeCreated can fire again for the same node on some paths.
   if (widgets.some((w) => w.name === FILTER_WIDGET)) return;
+  // Before the filter is added: the schema widgets, which is what a stock node saves.
+  // `franchise_filter` is then never saved, matching its own tooltip.
+  node.__ifSchemaWidgets = widgets.slice();
 
   // Snapshot the pristine list once; every filter is derived from this, never
   // from the currently-filtered list (which would narrow irreversibly).
@@ -3426,13 +3474,29 @@ app.registerExtension({
       return result;
     };
 
+    const onSerialize = nodeType.prototype.onSerialize;
+    nodeType.prototype.onSerialize = function (o) {
+      const result = onSerialize?.apply(this, arguments);
+      try {
+        serializeInSchemaOrder(this, o);
+      } catch (err) {
+        console.error("[IdentityForgeCosplayer] schema-order save failed", err);
+      }
+      return result;
+    };
+
     // `configure`, not `onConfigure`: LiteGraph applies widgets_values and only then
     // calls onConfigure, so by then the values are already in the wrong widgets.
     // onNodeCreated has run by now, so the filter exists and can be located by name.
     const configure = nodeType.prototype.configure;
     nodeType.prototype.configure = function (info) {
       try {
-        if (info && Array.isArray(info.widgets_values)) {
+        // A schema-order save (1.8.0) is expanded into display order; anything else
+        // is a pre-1.8.0 interleaved save and takes the legacy padding below.
+        const expanded = expandSchemaOrderValues(this, info);
+        if (expanded) {
+          info = { ...info, widgets_values: dodgeUpstreamMigrationBug(this, expanded) };
+        } else if (info && Array.isArray(info.widgets_values)) {
           info = {
             ...info,
             widgets_values: dodgeUpstreamMigrationBug(

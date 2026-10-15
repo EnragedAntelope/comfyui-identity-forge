@@ -1147,6 +1147,17 @@ sees anything. Serialization order and visual order are already decoupled; the a
 just uses that fact. So `tattoos` sits in Body and `legwear` in Clothing on screen while
 living at the end of the dict on disk.
 
+**1.8.0: the saved array is in schema order.** Until 1.8.0 the claim above held only for the
+*meaning* of the order: the array was written in display order, interleaved with the buttons
+and headers the JS adds, which a tool without a browser (a headless workflow validator) cannot
+map to the schema. `IdentityForge`, `IdentityForgeCreature` and `IdentityForgeCosplayer` now
+snapshot the schema widgets before reordering, write `widgets_values` from that snapshot in
+`onSerialize`, and mark the save with `properties.if_widget_order = "schema"`. A load that
+sees the marker expands the array into display order (a field appended in a later release
+takes its default) and skips the legacy padding; an unmarked, pre-1.8.0 save takes the
+legacy path unchanged. `franchise_filter` is no longer written, as its tooltip always said.
+The Nodes 2.0 renderer draws in array order, so the widgets themselves are not moved.
+
 Proved against the real thing rather than argued: the running pre-0.90.0 instance
 reports 74 widgets, the new schema 77, and the first 74 names match index for index.
 
