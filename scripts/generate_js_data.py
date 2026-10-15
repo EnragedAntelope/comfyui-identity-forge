@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -223,6 +224,33 @@ def _cosplayer_trait_words(entry: dict) -> list[str]:
     return words
 
 
+# Restated literally from nodes/identity_forge_cosplayer.py (_BODY_PAINT_RE) for the
+# same no-import reason as above; tests/test_js_sync.py proves the two agree.
+_BODY_PAINT_RE = re.compile(
+    r"\ban even\b.*?\bcoat of\b|\bsmooth, flawless\b|\buniform, all-over\b",
+    re.IGNORECASE,
+)
+
+
+def _cosplayer_traits(entry: dict) -> list[str]:
+    """The structured trait flags the picker's facets read (``giant``, ``tiny``,
+    ``masked``, ``mascot``, ``beast``, ``nonhuman``). One name per backend scope in
+    ``_SPECIAL_SCOPES``; the parity test in tests/test_js_sync.py keeps them equal.
+    ``nonhuman`` restates ``_scope_is_nonhuman``: ``body_paint`` override, then the
+    ``skin`` key, then the body-paint marker in the costume."""
+    traits = [w for w in _cosplayer_trait_words(entry) if w in ("giant", "tiny", "masked", "mascot")]
+    if entry.get("body_plan") == "feral":
+        traits.append("beast")
+    override = entry.get("body_paint")
+    if override is not None:
+        nonhuman = bool(override)
+    else:
+        nonhuman = bool(entry.get("skin")) or bool(_BODY_PAINT_RE.search(entry.get("costume", "")))
+    if nonhuman:
+        traits.append("nonhuman")
+    return traits
+
+
 def _cosplayer_roster_entry(
     name: str, entry: dict, franchise_categories: dict[str, str], default_category: str,
 ) -> dict:
@@ -242,7 +270,7 @@ def _cosplayer_roster_entry(
     aliases = entry.get("aliases")
     if aliases:
         haystack_parts.extend(aliases)
-    return {
+    roster = {
         "kind": "cosplayer",
         "name": name,
         "franchise": franchise,
@@ -250,6 +278,10 @@ def _cosplayer_roster_entry(
         "gender": gender,
         "haystack": " ".join(haystack_parts).lower(),
     }
+    traits = _cosplayer_traits(entry)
+    if traits:
+        roster["traits"] = traits
+    return roster
 
 
 def _flatten_field_values(fields: dict) -> list[str]:

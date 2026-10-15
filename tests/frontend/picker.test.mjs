@@ -236,16 +236,24 @@ test("the trait facet composes with both the tab and the query", async () => {
     picker.renderGrid();
     const facetOnly = picker.visible.length;
     assert.ok(facetOnly > 0, "sanity: the giant facet matches something");
-    assert.ok(picker.visible.every((e) => e.haystack.includes("giant")), "facet must hold on the All tab");
+    assert.ok(
+      picker.visible.every((e) => e.kind === "cosplayer" && (e.traits || []).includes("giant")),
+      "facet must hold on the All tab, and trait facets match cosplayers only",
+    );
 
+    // Trait facets are cosplayer-only, so another kind's tab is empty under one...
     picker.activeTab = "creature";
     picker.renderGrid();
-    assert.ok(picker.visible.length > 0 && picker.visible.length < facetOnly,
-      "tab + facet must narrow further than the facet alone");
-    assert.ok(
-      picker.visible.every((e) => e.kind === "creature" && e.haystack.includes("giant")),
-      "both the tab and the facet must apply at once",
-    );
+    assert.equal(picker.visible.length, 0, "no creature matches a trait facet");
+
+    // ...and the cosplayer tab shows exactly the facet's matches.
+    picker.activeTab = "cosplayer";
+    picker.renderGrid();
+    assert.equal(picker.visible.length, facetOnly);
+    picker.activeTab = "__all__";
+    picker.query = "zzzz-no-such-character";
+    picker.renderGrid();
+    assert.equal(picker.visible.length, 0, "the query narrows the facet too");
     picker.close();
   } finally {
     stub.restore();
@@ -505,17 +513,25 @@ test("facet predicates match real entries with the corresponding trait word", ()
   assert.ok(__testing.FACET_PREDICATES["Mascot suits and beasts only"](teemo));
 });
 
-test('"Non-human / colored" also matches the "an even ... coat of" phrasing, not just the two "smooth"/"uniform" wordings', () => {
-  // Fix-round finding: the facet originally checked only two of the backend
-  // regex's three alternatives, missing every entry using the legacy
-  // "an even, all-over coat of <colour> <material>" wording (Maui among them)
-  // -- 97 of ~301 backend-flagged entries in the real roster.
-  const maui = REAL_ROSTER.find((e) => e.name === "Maui");
-  assert.ok(maui, "sanity: Maui exists in the real roster");
-  assert.ok(
-    __testing.FACET_PREDICATES["Non-human / colored"](maui),
-    'Maui uses "coat of" phrasing and must match the facet',
-  );
+test('"Non-human / colored" reads the nonhuman flag, whatever wording the costume uses', () => {
+  const sheHulk = REAL_ROSTER.find((e) => e.name === "She-Hulk");
+  assert.ok(sheHulk, "sanity: She-Hulk exists in the real roster");
+  assert.ok(__testing.FACET_PREDICATES["Non-human / colored"](sheHulk));
+});
+
+test("a costume that merely says 'tiny' is not Tiny: facets read traits, not prose", () => {
+  const ivy = {
+    kind: "cosplayer", name: "Poison Ivy-style", haystack: "poison ivy tiny leaves entwined in the hair",
+  };
+  assert.ok(!__testing.FACET_PREDICATES["Tiny characters"](ivy));
+  assert.ok(!__testing.FACET_PREDICATES["Non-human / colored"](ivy));
+  const real = { ...ivy, traits: ["tiny"] };
+  assert.ok(__testing.FACET_PREDICATES["Tiny characters"](real));
+  assert.deepEqual(__testing.traitChips(real), ["tiny"]);
+  // Trait facets are cosplayer-only; an archetype whose prose says "giant" never matches.
+  const arch = { kind: "archetype", name: "X", haystack: "giant tiny beast", traits: ["giant"] };
+  assert.ok(!__testing.FACET_PREDICATES["Giant characters"](arch));
+  assert.ok(!__testing.FACET_PREDICATES["People only — no mascot suits or beasts"](arch));
 });
 
 // --- bug 1 (critical): the trigger button must be inert while its node is a

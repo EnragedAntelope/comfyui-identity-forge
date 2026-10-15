@@ -169,6 +169,49 @@ class CosplayerFranchisesInSync(unittest.TestCase):
                          "built-in entries unreachable through franchise_filter")
 
 
+class RosterTraitsMatchBackendScopes(unittest.TestCase):
+    """The picker's trait facets read ``traits`` flags in the roster index; the
+    Cosplayer node's ``random_scope`` / ``random_pool`` read predicates over the
+    entry. The two are written separately (the generator must not import the node
+    module), so this is the pin: for every built-in cosplayer, the generated flags
+    equal the set of backend scopes that are true for it. A facet that disagrees
+    with the node's randomizer is the Poison-Ivy-is-Tiny bug again."""
+
+    _SCOPE_TO_TRAIT = {
+        "Giant characters": "giant",
+        "Tiny characters": "tiny",
+        "Non-human / colored": "nonhuman",
+        "Masked": "masked",
+        "Mascot / full-suit": "mascot",
+        "Beast / non-humanoid": "beast",
+    }
+
+    def test_traits_equal_the_backend_scopes_for_every_cosplayer(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "_gen_js_data", ROOT / "scripts" / "generate_js_data.py")
+        gen = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(gen)
+        from nodes.identity_forge_cosplayer import (
+            _SPECIAL_SCOPES, _pool_is_mascot_or_beast, _pool_is_people)
+
+        # The committed literal, not the imported COSPLAYERS (which merges a
+        # maintainer's private user_options.json).
+        cosplayers = gen._module_literal(ROOT / "data" / "cosplayers.py", "COSPLAYERS")
+        roster = {e["name"]: e for e in json.loads(
+            (ROOT / "js" / "identity_forge_roster.json").read_text(encoding="utf-8"))
+            if e["kind"] == "cosplayer"}
+        self.assertEqual(set(cosplayers), set(roster))
+        for name, entry in cosplayers.items():
+            expected = {trait for scope, trait in self._SCOPE_TO_TRAIT.items()
+                        if _SPECIAL_SCOPES[scope](entry)}
+            got = set(roster[name].get("traits", []))
+            self.assertEqual(got, expected, f"{name}: roster traits != backend scopes")
+            # the two random_pool values are derived from mascot/beast
+            self.assertEqual(_pool_is_mascot_or_beast(entry), bool(got & {"mascot", "beast"}))
+            self.assertEqual(_pool_is_people(entry), not (got & {"mascot", "beast"}))
+
+
 class RosterJsonSizeTests(unittest.TestCase):
     """``js/identity_forge_roster.json`` is the picker modal's bulk search index
     (a separate, later task builds the modal that fetches it). It is regenerated

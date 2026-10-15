@@ -3430,7 +3430,11 @@ workflow loading.
 JSON array tagging every entry with a `kind` discriminator (`cosplayer` / `archetype` /
 `creature`) and a precomputed, lowercased `haystack` string (name + franchise/category + costume
 prose + derived trait words such as `masked`, `mascot`, `feral`, `giant`, `tiny`) for
-substring/keyword search. Search is case-insensitive substring matching with multi-word tokens
+substring/keyword search. Cosplayer entries also carry a structured `traits` list (`giant`,
+`tiny`, `masked`, `mascot`, `beast`, `nonhuman`) that the **trait facets read instead of the prose**
+(a substring test over costume text put Poison Ivy's "tiny leaves" under Tiny);
+`tests/test_js_sync.py::RosterTraitsMatchBackendScopes` pins it to the Cosplayer node's scope
+predicates. Search is the text half; facets are the flag half. Search is case-insensitive substring matching with multi-word tokens
 AND'd (order-independent), **filtered within the active tab** — the "All" tab is what searches
 every kind at once, and the trait facet composes on top of both. This replaced the original
 "a query spans every tab, tabs only apply to an empty box" rule, which meant a user who had
