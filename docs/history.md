@@ -954,11 +954,12 @@ stays.
 hue and pattern adjective it voiced; `_apply_modifiers` decorates that word, with the right
 article ("an emerald" becomes "a faded emerald"). A group key still decorates as before.
 
-**Roster.** Eight cosplayers (Megamind, Alita with a Motorball alternate, Sesshomaru, Raya,
-Barbie with the pink cowboy and 1959 swimsuit looks, Effie Trinket, Minion, Anxiety), three
+**Roster.** Seven cosplayers (Megamind, Alita with a Motorball alternate, Sesshomaru, Raya,
+Barbie with the pink cowboy and 1959 swimsuit looks, Effie Trinket, Minion), three
 archetypes (American Football Player, Scuba Diver, Thai Classical Dancer) and one creature
 (stegosaurus). Canon was written from knowledge plus the maintainer's hooks, not from reference
-images: Anxiety's teal sweater and Effie's alternate looks in particular are unverified.
+images: Effie's alternate looks in particular are unverified. Anxiety was declined (see
+`docs/suggested-additions.md`).
 The football archetype is gated to the two park locations because no stadium location exists;
 adding one is a field-value change and was left out.
 

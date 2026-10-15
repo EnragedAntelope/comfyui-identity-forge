@@ -36,7 +36,6 @@ rather than left to be re-surveyed. Add a row here only with a fresh, written ca
 | Free-text `held_item` | Today only archetypes set it. |
 | A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Worth it alongside the expression sheet, not alone. |
 | An expression-sheet node | Re-run like Turnaround, releasing `smile_type` and `mood` per view. |
-| CI | Make publish depend on CI; add a Windows runner. |
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,
@@ -89,6 +88,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 
 | Candidate | Why |
 |---|---|
+| Anxiety (Inside Out) | **Declined at 1.8.0 on the render bar.** The look is a teal turtleneck, high trousers and boots over bright orange skin, and the model could not hold it: two renders kept pale human skin (the orange only reached the hair) and spread the teal from the sweater onto the trousers and boots, so the tile read as a pale redhead in a teal outfit. Body-paint wording that works for a single-colour figure (Megamind's blue) fails when a second saturated costume colour is present. Reopen with a costume that is not a second saturated colour, or if the model's skin-colour handling changes. |
 | Kliff (Crimson Desert) | **Revisited and DECLINED at 1.4.0.** The original reason was wrong: Kliff is a *fixed* protagonist (set face, body and voice, the Geralt model), not a vendor-built one -- only his hair, facial hair, tattoos and outfit *colours* are customizable. The decline stands on the other half: his equipment and clothing are explicitly "highly customizable", so there is still no single canonical outfit to describe, and what is left -- a bearded man in fantasy leathers -- is the silhouette `Geralt` and `Conan the Barbarian` already carry. Reopen only if a marketing-canonical outfit becomes the settled default look. |
 | M3GAN (1.5.0 maintainer shortlist) | **Adults-only bar.** Canonically a child-sized android doll modelled on a young girl: rendering her as a child breaks the bar, and rendering her as an adult is not canon. Approved on the shortlist, declined at research. |
 | Marinette Dupain-Cheng, Adrien Agreste (civilian) | Ordinary modern teen dress. Their transformed looks (Ladybug, Cat Noir) carry them. |
