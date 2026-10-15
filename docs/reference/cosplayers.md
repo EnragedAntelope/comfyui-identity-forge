@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2073 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2080 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (383)
+## Anime & Manga (385)
 
 ### Akame ga Kill
 
@@ -16,6 +16,10 @@
 ### Akira
 
 - **Kaneda** (M)
+
+### Alita: Battle Angel
+
+- **Alita** (F, +1 alt)
 
 ### Amagi Brilliant Park
 
@@ -295,6 +299,7 @@
 - **Kagome Higurashi** (F, prop)
 - **Kikyo** (F)
 - **Sango** (F, prop)
+- **Sesshomaru** (M)
 
 ### JoJo's Bizarre Adventure
 
@@ -672,7 +677,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (271)
+## Comics & Cartoons (273)
 
 ### Adventure Time
 
@@ -788,6 +793,7 @@
 ### Despicable Me
 
 - **Gru** (M)
+- **Minion** (M, tiny, masked)
 
 ### Dora the Explorer
 
@@ -934,6 +940,10 @@
 - **Skeletor** (M, masked, prop)
 - **Sorceress** (F, prop)
 - **Teela** (F, prop)
+
+### Megamind
+
+- **Megamind** (M, prop)
 
 ### Miraculous Ladybug
 
@@ -1386,7 +1396,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M)
 
-## Disney (111)
+## Disney (112)
 
 ### 101 Dalmatians
 
@@ -1539,6 +1549,10 @@
 
 - **Pocahontas** (F)
 
+### Raya and the Last Dragon
+
+- **Raya** (F, prop)
+
 ### Robin Hood (1973)
 
 - **Maid Marian** (F, masked)
@@ -1625,7 +1639,7 @@
 - **Judy Hopps** (F)
 - **Nick Wilde** (M, masked)
 
-## Fantasy & Literature (91)
+## Fantasy & Literature (92)
 
 ### Anne of Green Gables
 
@@ -1745,6 +1759,7 @@
 
 ### The Hunger Games
 
+- **Effie Trinket** (F, +2 alt)
 - **Katniss Everdeen** (F, prop)
 
 ### The Lord of the Rings
@@ -1992,7 +2007,7 @@
 - **Yondu** (M, prop)
 - **Zuras** (M)
 
-## Movies & TV (233)
+## Movies & TV (234)
 
 ### A Nightmare on Elm Street
 
@@ -2028,6 +2043,10 @@
 
 - **Barbarella** (F, +2 alt)
 - **The Great Tyrant (Black Queen)** (F, prop)
+
+### Barbie
+
+- **Barbie** (F, +2 alt)
 
 ### Battlestar Galactica
 

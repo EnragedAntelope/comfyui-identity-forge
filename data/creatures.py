@@ -3283,6 +3283,19 @@ CREATURES: dict[str, dict] = {
         "legs_feet": "muscular legs ending in cloven hooves",
         "tail": "a short dark tail",
     },
+    # --- 1.8.0 ---------------------------------------------------------------
+    "stegosaurus": {
+        "class": "Reptiles & Amphibians", "palette": "mottled olive",
+        "palette_pool": ["mottled olive", "earthy brown", "slate grey-green"],
+        "head": "a small low narrow head with a toothless beaked snout",
+        "eyes": "small dark eyes set on the sides of the head",
+        "integument": "a double row of broad upright diamond-shaped bony plates running "
+                      "down the back over thick pebbled hide",
+        "arms": "short sturdy forelegs",
+        "hands": "broad blunt-toed forefeet",
+        "legs_feet": "tall massive hind legs",
+        "tail": "a heavy tail ending in four long horizontal bony spikes",
+    },
 }
 
 

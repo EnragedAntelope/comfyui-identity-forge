@@ -5382,6 +5382,77 @@ ARCHETYPES: dict[str, dict[str, str]] = {
         "shot_type": "full body shot",
         "mood": "mysterious",
     },
+    # === 1.8.0 roster additions =========================================
+    "American Football Player": {
+        "body_type": "athletic",
+        "height": "tall",
+        "fitness_level": "muscular",
+        "makeup_style": "no makeup",
+        "outfit_style": "athletic",
+        "outfit_description": "broad {team_color} shoulder pads under a numbered mesh "
+                              "jersey, tight white football pants with built-in hip and "
+                              "thigh pads, black cleats, thick black eye-black stripes "
+                              "under both eyes, and a {team_color} helmet held under one arm",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "determined",
+        "location": ["sunny city park", "autumn park with falling leaves"],
+        "lighting": "harsh overhead midday sun",
+        "shot_type": "full body shot",
+        "mood": "intense",
+    },
+    "Scuba Diver": {
+        "gender": "Any",
+        "body_type": "athletic",
+        "height": "average height",
+        "fitness_level": "very fit",
+        "makeup_style": "no makeup",
+        "outfit_style": "athletic",
+        "outfit_description": "a black full-length neoprene wetsuit with {neon} panels along "
+                              "the shoulders and sides, a buoyancy vest strapped over it, "
+                              "an air tank on the back, a dive mask pushed up on the "
+                              "forehead, and black split fins on the feet",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "confident",
+        "location": ["wide sandy beach", "working harbor dock", "harbor with moored boats",
+                     "lakeside pier"],
+        "lighting": "golden hour sunlight",
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+    },
+    "Thai Classical Dancer": {
+        "gender": "Female",
+        "ethnicity": "Thai",
+        # No skin_tone lock: ethnicity decides it (1.8.0 -- the Body group is dropped in
+        # Essentials, and in Full the ethnicity's own band draws).
+        "body_type": "slender",
+        "height": "average height",
+        "hair_color": "jet black",
+        "hair_length": "long",
+        "hair_texture": "sleek straight",
+        "hair_style": "chignon",
+        "makeup_style": "soft glam",
+        "outfit_style": "evening formal",
+        "outfit_description": "a fitted {jewel_tone} silk sabai chest cloth embroidered in "
+                              "gold and draped diagonally over one shoulder, a {jewel_tone} "
+                              "silk pha nung wrapped skirt pleated at the front, a tall "
+                              "spired golden chada crown, a broad gold collar necklace, and "
+                              "gold armlets above the elbows",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "piercings": "no piercings beyond ears",
+        "other_jewelry": "no other jewelry",
+        "bracelet": "none",
+        "rings": "none",
+        "expression": "serene",
+        "location": "Buddhist temple hall",
+        "lighting": "warm candlelight",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+    },
 }
 
 

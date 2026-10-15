@@ -1232,7 +1232,6 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Inside Out": [
     "Anger",
-    "Anxiety",
     "Joy",
     "Sadness"
   ],

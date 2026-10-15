@@ -3,7 +3,7 @@
 
 # Creature reference
 
-**261 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**262 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
 ## Mammals (55)
 
@@ -97,7 +97,7 @@
 - **toucan** (black and white)
 - **vulture** (sooty brown)
 
-## Reptiles & Amphibians (24)
+## Reptiles & Amphibians (25)
 
 - **alligator** (dark olive)
 - **axolotl** (pale pink)
@@ -120,6 +120,7 @@
 - **salamander** (black and gold)
 - **sea turtle** (olive green)
 - **snapping turtle** (muddy brown)
+- **stegosaurus** (mottled olive)
 - **tortoise** (earthy olive)
 - **triceratops** (slate grey-green)
 - **tyrannosaurus rex** (mottled olive-green)

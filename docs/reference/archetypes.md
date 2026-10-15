@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**272 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**275 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Any]
@@ -27,6 +27,7 @@
 - **1990s Grunge** [Any] -- edgy alternative
 - **Alchemist** -- vintage retro
 - **Alpine Skier** -- athletic
+- **American Football Player** -- athletic
 - **Ancient Roman Patrician** [Male] -- evening formal
 - **Andean Cholita** [Female] -- vintage retro
 - **Angelic Being** [Any] -- evening formal
@@ -217,6 +218,7 @@
 - **Sapeur** [Male] -- evening formal
 - **Scandi Minimalist**
 - **Scientist** [Any] -- business casual
+- **Scuba Diver** [Any] -- athletic
 - **Sea Captain** [Any] -- vintage retro
 - **Shadow Monk** [Any] -- loungewear
 - **Skateboarder** -- streetwear
@@ -245,6 +247,7 @@
 - **Teacher** [Any] -- smart casual
 - **Teddy Boy** [Male] -- vintage retro
 - **Tennis Player** -- athletic
+- **Thai Classical Dancer** [Female] -- evening formal
 - **Toymaker** -- vintage retro
 - **Train Conductor** -- business casual
 - **Trapeze Artist** -- athletic

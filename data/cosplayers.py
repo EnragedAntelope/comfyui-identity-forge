@@ -19558,8 +19558,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Coraline",
         "gender": "Female",
         "costume": "a slim black high-necked dress with a fitted waist and long "
-                   "sleeves, black flat shoes, elongated needle-thin fingers, "
-                   "and large black buttons stitched over both eyes",
+                   "sleeves, black flat shoes, and elongated needle-thin fingers",
+        # The buttons ARE the eyes: voiced as the eyes (not as a costume item beside a
+        # random eye colour), so every render shows them instead of a pair of human eyes.
+        "eyes": "round, flat, glossy black, four-holed sewn-on button",
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
                       "hair_texture": "wavy"},
         "physique": {"body_type": "very slim", "height": "very tall",
@@ -25760,6 +25762,134 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a small brass bulb squeeze horn",
     },
 
+    # === 1.8.0 roster additions =========================================
+    "Megamind": {
+        "franchise": "Megamind",
+        "gender": "Male",
+        "bald": True,
+        "costume": "a black bodysuit with a tall spiked collar rising behind the head, a "
+                   "long black cape, a gold lightning-bolt emblem on the chest, and black "
+                   "gloves and boots, over smooth, flawless bright blue skin, with an "
+                   "enormous bald domed head",
+        "eyes": "bright emerald green",
+        "signature": {"facial_hair": "goatee"},
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a chunky blue and silver dehydration gun with a wide barrel",
+    },
+    "Alita": {
+        "franchise": "Alita: Battle Angel",
+        "gender": "Female",
+        # A cyborg body under a human face: covers_body for the machine limbs, no
+        # covers_face so the face and the huge eyes stay.
+        "covers_body": True,
+        "anatomy_note": "a sleek cyborg body of matte gunmetal-grey mechanical plating with "
+                        "visible seams and articulated joints at the shoulders, elbows and "
+                        "knees, below a fully human face",
+        "costume": "a fitted black bodysuit under segmented gunmetal-grey armor plates on "
+                   "the torso, shoulders, forearms and shins, with red inlaid trim along "
+                   "the plate edges",
+        "eyes": "huge, unnaturally large dark brown",
+        "signature": {"hair_color": "dark brown", "hair_length": "chin length bob",
+                      "hair_style": "side-swept bangs", "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+        "costumes": [
+            {   # Motorball racer
+                "costume": "a skintight black racing bodysuit with red and white armored "
+                           "shoulder, forearm and shin guards and armored roller skates",
+                "signature": {"hair_color": "dark brown", "hair_length": "chin length bob",
+                              "hair_style": "side-swept bangs"},
+            },
+        ],
+    },
+    "Sesshomaru": {
+        "franchise": "Inuyasha",
+        "gender": "Male",
+        "costume": "a white kimono with red geometric trim at the sleeves and hem, a "
+                   "spiked armor pauldron on the left shoulder, a thick white fur boa "
+                   "draped over the right shoulder, a yellow obi sash, and two swords at "
+                   "the hip, with a blue crescent moon on the forehead, two magenta "
+                   "stripes on each cheek and pointed ears",
+        "signature": {"hair_color": "silver", "hair_length": "hip length",
+                      "hair_style": "worn down", "hair_texture": "sleek straight",
+                      "eye_color": "amber",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Raya": {
+        "franchise": "Raya and the Last Dragon",
+        "gender": "Female",
+        "costume": "a red and yellow wrapped sabai chest cloth, loose green dhoti pants "
+                   "tucked into wrapped boots, a long dark high-collared cape, and a "
+                   "wide woven straw hat tied on with a chin cord",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "low ponytail", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "warm tan"},
+        "prop": "a segmented whip sword with a curved hilt, held low in one hand",
+    },
+    "Barbie": {
+        "franchise": "Barbie",
+        "gender": "Female",
+        "costume": "a pink gingham halter-neck dress with a full knee-length skirt and "
+                   "white open-toe heeled sandals",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+        "costumes": [
+            {   # pink western look
+                "costume": "a bright pink fringed western shirt and matching pink "
+                           "flared trousers with a pink cowboy hat and white cowboy boots",
+                "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                              "hair_style": "worn down", "eye_color": "bright blue"},
+            },
+            {   # the 1959 original swimsuit
+                "costume": "a black and white striped strapless swimsuit, white cat-eye "
+                           "sunglasses and white open-toe heeled sandals",
+                "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                              "hair_style": "high ponytail", "eye_color": "bright blue"},
+            },
+        ],
+    },
+    "Effie Trinket": {
+        "franchise": "The Hunger Games",
+        "gender": "Female",
+        "costume": "a structured pastel pink dress with enormous sculpted puffed sleeves "
+                   "and a high collar over a tightly fitted bodice, spiky gold heels, and "
+                   "a heavily powdered face with bold pink lips",
+        "signature": {"hair_color": "baby pink", "hair_length": "chin length bob",
+                      "hair_style": "updo", "eye_color": "gray"},
+        "physique": {"body_type": "slender", "height": "average height"},
+        "costumes": [
+            {   # Capitol finery
+                "costume": "a sculptural gold-and-black gown with towering swept-up "
+                           "shoulders, long black gloves and spiky gold heels, and a "
+                           "heavily powdered face with bold dark lips",
+                "signature": {"hair_color": "platinum blonde", "hair_length": "chin length bob",
+                              "hair_style": "updo", "eye_color": "gray"},
+            },
+            {   # Mockingjay-era Capitol
+                "costume": "a fitted grey military-style jacket over a grey pencil skirt "
+                           "with a gold mockingjay pin at the collar and black heeled "
+                           "boots",
+                "signature": {"hair_color": "ash blonde", "hair_length": "jaw length",
+                              "hair_style": "freshly blown out", "eye_color": "gray"},
+            },
+        ],
+    },
+    "Minion": {
+        "franchise": "Despicable Me",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a rounded yellow capsule-shaped head with one large round silver-rimmed "
+                "goggle held on by a black strap, a wide toothy grin and a few black hairs "
+                "on top",
+        "costume": "blue denim dungarees with a single front pocket, black rubber gloves "
+                   "and black boots, on a short round yellow capsule-shaped body",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and about three feet tall",
+        "physique": {"body_type": "chubby", "height": "very petite"},
+    },
 }
 
 
@@ -25772,7 +25902,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Naruto", "Dragon Ball", "One Piece", "Bleach", "Demon Slayer", "Jujutsu Kaisen",
         "My Hero Academia", "JoJo's Bizarre Adventure", "Fullmetal Alchemist", "Death Note",
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
-        "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
+        "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Alita: Battle Angel", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Speed Racer",
         "Record of Ragnarok",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
@@ -25817,7 +25947,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Robin Hood (1973)", "DuckTales", "Darkwing Duck",
         # Pixar and Walt Disney Animation titles group under Disney by precedent
         # (The Incredibles, Toy Story, Frozen are already here).
-        "Inside Out", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
+        "Inside Out", "Raya and the Last Dragon", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
         "Encanto",
         "Onward",  # 1.4.0
     ),
@@ -25872,6 +26002,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     ),
     "Movies & TV": (
         "Squid Game",  # 1.4.0
+        "Barbie",  # 1.8.0 -- explicit, so the doll is not left to the default bucket
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
         "Judge Dredd", "Mad Max", "Evil Dead",  # Evil Dead 0.97.0
         "Escape from New York", "Pirates of the Caribbean", "The Addams Family",
@@ -25920,7 +26051,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fathom", "Chaos! Comics", "Betty Boop", "The Flintstones", "The Jetsons",
         "Top Cow", "Witchblade", "Youngblood", "WildStorm",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
-        "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
+        "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "Megamind", "The Mask",
         "Gravity Falls",  # 0.98.0 -- Bill Cipher ships alone; see his entry comment
         "Steven Universe", "Popeye", "Johnny Bravo", "Ben 10",
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",

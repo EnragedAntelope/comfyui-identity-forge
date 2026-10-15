@@ -6013,21 +6013,21 @@ class RandomPoolTests(unittest.TestCase):
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
-        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) to the new
-        # ground truth, and is expected to need refreshing every time the roster
+        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (seven
+        # new cosplayers) to the new ground truth, and is expected to need refreshing every time the roster
         # grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Saeko Busujima',
-            (_RANDOM_ANY, 1): 'Fatality',
-            (_RANDOM_ANY, 2): 'Briar',
-            (_RANDOM_ANY, 3): 'Kyle Broflovski',
-            (_RANDOM_ANY, 4): 'Krusty the Clown',
-            (_RANDOM_FEMALE, 0): 'Spider-Woman',
-            (_RANDOM_FEMALE, 1): 'Captain Mizuki',
-            (_RANDOM_FEMALE, 2): 'Yamato (One Piece)',
-            (_RANDOM_FEMALE, 3): 'Erina Nakiri',
-            (_RANDOM_FEMALE, 4): 'Enchantress (Suicide Squad)',
-            (_RANDOM_MALE, 0): 'Ryu',
+            (_RANDOM_ANY, 0): 'Sabretooth',
+            (_RANDOM_ANY, 1): 'Falcon',
+            (_RANDOM_ANY, 2): 'Brand',
+            (_RANDOM_ANY, 3): 'Kurumi Tokisaki',
+            (_RANDOM_ANY, 4): 'Krillin',
+            (_RANDOM_FEMALE, 0): 'Sophitia Alexandra',
+            (_RANDOM_FEMALE, 1): 'Captain Janeway',
+            (_RANDOM_FEMALE, 2): 'Xena',
+            (_RANDOM_FEMALE, 3): 'Enchantress (Marvel)',
+            (_RANDOM_FEMALE, 4): 'Emily (Corpse Bride)',
+            (_RANDOM_MALE, 0): 'Ruby Rhod',
             (_RANDOM_MALE, 1): 'Electro',
             (_RANDOM_MALE, 2): 'Brock',
             (_RANDOM_MALE, 3): 'Jotaro Kujo',
@@ -9704,7 +9704,8 @@ class ColourPatternModifierTests(unittest.TestCase):
                 out = self._outfit(doc)
                 # Same roll: the modified outfit is the base with the descriptor added
                 # (articles aside, since "an emerald" becomes "a faded emerald").
-                strip = lambda t: re.sub(r"\b(?:an?) ", "", t)
+                def strip(t):
+                    return re.sub(r"\b(?:an?) ", "", t)
                 self.assertEqual(strip(out.replace(f"{descriptor} ", "", 1)), strip(base),
                                  f"seed {seed}")
                 self.assertNotIn(f"an {descriptor}" if article == "a" else f"a {descriptor}",

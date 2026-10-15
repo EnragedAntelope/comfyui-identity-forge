@@ -90,6 +90,10 @@
         "hash": "38bc1a4f73c453b4",
         "rendered": "2026-09-28"
       },
+      "American Football Player": {
+        "hash": "7363a482bd20a1ac",
+        "rendered": "2026-10-15"
+      },
       "Ancient Roman Patrician": {
         "hash": "303154feae95ef8d",
         "rendered": "2026-09-28"
@@ -859,6 +863,10 @@
         "hash": "a5f35644600f19b2",
         "rendered": "2026-09-28"
       },
+      "Scuba Diver": {
+        "hash": "1260484299f7c2ab",
+        "rendered": "2026-10-15"
+      },
       "Sea Captain": {
         "hash": "6311eb6f36310095",
         "rendered": "2026-09-28"
@@ -971,6 +979,10 @@
       "Tennis Player": {
         "hash": "acf370a25fbd727d",
         "rendered": "pre-existing"
+      },
+      "Thai Classical Dancer": {
+        "hash": "528e82c072782044",
+        "rendered": "2026-10-15"
       },
       "Toymaker": {
         "hash": "01a9713cc7f3b892",
@@ -1274,6 +1286,10 @@
       "Alice Nakiri": {
         "hash": "73c3b95d0728ac04",
         "rendered": "pre-existing"
+      },
+      "Alita": {
+        "hash": "dff31d0540d9e432",
+        "rendered": "2026-10-15"
       },
       "All Might": {
         "hash": "51da6e8e5b87ee16",
@@ -1693,6 +1709,10 @@
         "rendered": "2026-08-30",
         "seed": 410370770738048411
       },
+      "Barbie": {
+        "hash": "7231f9727d16eecd",
+        "rendered": "2026-10-15"
+      },
       "Barley Lightfoot": {
         "hash": "12da4fbe58871b55",
         "rendered": "2026-09-15"
@@ -2043,8 +2063,8 @@
         "rendered": "2026-08-10"
       },
       "Brienne of Tarth": {
-        "hash": "7551142897365b06",
-        "rendered": "2026-08-10"
+        "hash": "320cbc5eed501017",
+        "rendered": "2026-10-15"
       },
       "Brigitte": {
         "hash": "41c0a5d7bb6d8075",
@@ -2223,8 +2243,8 @@
         "rendered": "2026-08-22"
       },
       "Captain Nemo": {
-        "hash": "aea90735d09aedde",
-        "rendered": "2026-08-26"
+        "hash": "93f8869cd7a99a9c",
+        "rendered": "2026-10-15"
       },
       "Captain Olimar": {
         "hash": "2252a8a57a497354",
@@ -2327,8 +2347,8 @@
         "rendered": "2026-08-28"
       },
       "Cersei Lannister": {
-        "hash": "2cbf67896a9d5be5",
-        "rendered": "2026-08-10"
+        "hash": "c71607debb096aaa",
+        "rendered": "2026-10-15"
       },
       "Cervantes de Leon": {
         "hash": "cf20a0d5f6e4b30c",
@@ -2675,8 +2695,8 @@
         "rendered": "2026-08-10"
       },
       "Dark Magician Girl": {
-        "hash": "ccc6aed164e32730",
-        "rendered": "2026-08-10"
+        "hash": "5f014f2f8a6278e6",
+        "rendered": "2026-10-15"
       },
       "Dark Trooper": {
         "hash": "bb814007694278a4",
@@ -3082,6 +3102,10 @@
         "hash": "4843feb386de57f3",
         "rendered": "pre-existing"
       },
+      "Effie Trinket": {
+        "hash": "d5fee2a5f407a343",
+        "rendered": "2026-10-15"
+      },
       "Ekko": {
         "hash": "ceee6875398fd6b4",
         "rendered": "pre-existing"
@@ -3107,8 +3131,8 @@
         "rendered": "pre-existing"
       },
       "Eleven": {
-        "hash": "16c26d56b0e434e2",
-        "rendered": "2026-08-10"
+        "hash": "272ec65906d2b772",
+        "rendered": "2026-10-15"
       },
       "Eliot": {
         "hash": "b19a60fa1083f062",
@@ -4143,8 +4167,8 @@
         "rendered": "2026-09-29"
       },
       "Ice": {
-        "hash": "c3046abceeaa9b51",
-        "rendered": "pre-existing"
+        "hash": "c8d7b7db1353c558",
+        "rendered": "2026-10-15"
       },
       "Ice King": {
         "hash": "8b082a9e51eb06e9",
@@ -4536,8 +4560,8 @@
         "rendered": "pre-existing"
       },
       "Jon Snow": {
-        "hash": "bf6594215a02ea15",
-        "rendered": "2026-08-10"
+        "hash": "93140ada510c81cb",
+        "rendered": "2026-10-15"
       },
       "Jon Talbain": {
         "hash": "3f836e9735f09c4d",
@@ -5118,8 +5142,8 @@
         "seed": 866590982850219579
       },
       "Lascivious": {
-        "hash": "f773489d40595fca",
-        "rendered": "pre-existing"
+        "hash": "1d16a64f456950f2",
+        "rendered": "2026-10-15"
       },
       "Latifa Fleuranza": {
         "hash": "30797f3a9e2069b1",
@@ -5716,8 +5740,8 @@
         "rendered": "pre-existing"
       },
       "Maui": {
-        "hash": "3f331f44be15bf89",
-        "rendered": "pre-existing"
+        "hash": "b7bd44c694b55a0b",
+        "rendered": "2026-10-15"
       },
       "Mavis": {
         "hash": "1039ab51acf41b9a",
@@ -5791,6 +5815,10 @@
         "hash": "ed506f4c112a2857",
         "rendered": "2026-08-26"
       },
+      "Megamind": {
+        "hash": "6b8c77e11d232e2a",
+        "rendered": "2026-10-15"
+      },
       "Megara": {
         "hash": "135cd0ece35af62a",
         "rendered": "pre-existing"
@@ -5840,8 +5868,8 @@
         "rendered": "pre-existing"
       },
       "Melisandre": {
-        "hash": "6cc4da6bad62afa8",
-        "rendered": "2026-08-10"
+        "hash": "0bafdf286e393991",
+        "rendered": "2026-10-15"
       },
       "Menat": {
         "hash": "09e890fc8fe492b7",
@@ -5954,6 +5982,10 @@
       "Ming the Merciless": {
         "hash": "b6e916fc4cf86453",
         "rendered": "2026-08-30"
+      },
+      "Minion": {
+        "hash": "b7107c70c01604e4",
+        "rendered": "2026-10-15"
       },
       "Minnie Mouse": {
         "hash": "7203825034198757",
@@ -6371,8 +6403,8 @@
         "rendered": "pre-existing"
       },
       "Nick Valentine": {
-        "hash": "d409100ddc92af87",
-        "rendered": "2026-08-10"
+        "hash": "c2352bb5f698a152",
+        "rendered": "2026-10-15"
       },
       "Nick Wilde": {
         "hash": "4a2e1d6936becc21",
@@ -6576,8 +6608,8 @@
         "rendered": "pre-existing"
       },
       "Other Mother": {
-        "hash": "786d4ea9031a59a6",
-        "rendered": "pre-existing"
+        "hash": "db81bb9300901164",
+        "rendered": "2026-10-15"
       },
       "Ozymandias": {
         "hash": "16e70348a6b2861a",
@@ -7084,6 +7116,10 @@
         "hash": "88014da53a12cb5b",
         "rendered": "pre-existing"
       },
+      "Raya": {
+        "hash": "edaab16d7919fb83",
+        "rendered": "2026-10-15"
+      },
       "Rayne": {
         "hash": "484c6d524151df33",
         "rendered": "pre-existing"
@@ -7555,8 +7591,8 @@
         "rendered": "pre-existing"
       },
       "Sara Pezzini": {
-        "hash": "c873ec9cca762036",
-        "rendered": "pre-existing"
+        "hash": "a107e3e5079a3050",
+        "rendered": "2026-10-15"
       },
       "Sarah Connor": {
         "hash": "f906aae11e832385",
@@ -7709,6 +7745,10 @@
       "Sersi": {
         "hash": "64aa5b8d0c9a15e2",
         "rendered": "pre-existing"
+      },
+      "Sesshomaru": {
+        "hash": "3adc9cb4bbb6d2f6",
+        "rendered": "2026-10-15"
       },
       "Sett": {
         "hash": "d36e37f7690782e4",
@@ -8685,8 +8725,8 @@
         "rendered": "pre-existing"
       },
       "Tomura Shigaraki": {
-        "hash": "6e772df2b24ddad2",
-        "rendered": "pre-existing"
+        "hash": "e8ca41d049d7024d",
+        "rendered": "2026-10-15"
       },
       "Tony Stark": {
         "hash": "5cae2245539f9f35",
@@ -10348,6 +10388,10 @@
         "hash": "6ac61904b91f9c39",
         "rendered": "pre-existing"
       },
+      "stegosaurus": {
+        "hash": "dd6e7ac80ec10367",
+        "rendered": "2026-10-15"
+      },
       "stick insect": {
         "hash": "27a3d2b9cc0ac007",
         "rendered": "2026-08-09"
@@ -10470,7 +10514,7 @@
       }
     }
   },
-  "generated": "2026-10-10T08:05:19",
+  "generated": "2026-10-15T12:54:38",
   "render": {
     "cfg": 1,
     "height": 2432,
