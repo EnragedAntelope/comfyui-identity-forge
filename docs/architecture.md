@@ -993,6 +993,9 @@ User additions are first-class (0.46.1):
   after any schema change. `--check` is CI-enforced.
 - **CI:** `.github/workflows/ci.yml` runs `validate_data.py`, the unittest suite, all three
   `--check` generators, and (in a separate job) the frontend jsdom suite on every push/PR.
+  Since 1.8.0 it is callable (`workflow_call`), every job has a 30-minute cap, a Windows leg
+  runs the suite with autocrlf off, and `publish_action.yml` runs it first: `publish-node`
+  `needs: ci`, with no new write scope.
 
 ### Frontend smoke tests
 
