@@ -5,6 +5,8 @@ on:
       - main
   pull_request:
   workflow_dispatch:
+  # Lets publish_action.yml gate on this same workflow (1.8.0).
+  workflow_call:
 
 # Least privilege: CI only needs to read the repo.
 permissions:
@@ -13,13 +15,28 @@ permissions:
 jobs:
   test:
     name: Validate data, tests & generated docs
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    # A hung step otherwise runs for the 6-hour default.
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         # Cover the floor (requires-python = ">=3.10") and a current release.
         python-version: ["3.10", "3.13"]
+        include:
+          # The maintainer's machine is Windows: one leg proves the pack and the
+          # `--check` generators (which compare files) behave there too.
+          - os: windows-latest
+            python-version: "3.13"
     steps:
+      - name: Keep line endings as stored
+        # .gitattributes is `text=auto`; the --check generators compare files, so a
+        # Windows checkout must not rewrite LF to CRLF before they run.
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
       - name: Check out code
         # Pinned to the same commit SHA (v7.0.1) the publish workflow uses.
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -83,6 +100,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     # A SEPARATE job on purpose. The test job above must stay dependency-free,
     # because that is the property being asserted: the pack and its tests import
     # nothing but the standard library. ruff is developer tooling, so installing
@@ -103,6 +121,7 @@ jobs:
   frontend:
     name: Frontend smoke tests
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     # A SEPARATE job for the same reason `lint` is: the `test` job's
     # dependency-free property (stdlib only) is itself being asserted, and
     # this job's own devDependency (jsdom) must never leak into it.

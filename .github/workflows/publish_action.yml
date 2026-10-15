@@ -13,9 +13,16 @@ permissions:
   contents: read
 
 jobs:
+  ci:
+    # 1.8.0: a version bump on main publishes only if the full CI passes.
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
   publish-node:
     name: Publish Custom Node to registry
+    needs: ci
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     # Skip on forks so the action only runs in the source repository.
     if: ${{ github.repository_owner == 'EnragedAntelope' }}
     steps:
