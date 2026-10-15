@@ -182,8 +182,11 @@ def build_archetype_json(archetype: str, seed: int = 0, lock_level: str = _ESSEN
         body_kept = archetype in BODY_IS_THE_LOOK
 
         def keep(f: str) -> bool:
+            # skin_tone is ethnicity's proxy, so it stays out of Essentials even when
+            # the body is the look (1.8.0); the rest of the Body group is kept.
             return _is_essential(f) or (
-                body_kept and FIELD_DEFINITIONS.get(f, {}).get("group") == "Body")
+                body_kept and f != "skin_tone"
+                and FIELD_DEFINITIONS.get(f, {}).get("group") == "Body")
 
         preset = {f: v for f, v in preset.items() if keep(f)}
         filtered_variants = {

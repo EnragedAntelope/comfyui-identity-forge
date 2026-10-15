@@ -1731,7 +1731,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
                       "hair_texture": "curly", "facial_hair": "short beard",
                       "eye_color": "dark gray", "body_type": "lean",
-                      "height": "average height", "skin_tone": "fair"},
+                      "height": "average height"},
+        "physique": {"skin_tone": "fair"},
         "prop": "a longsword with a pale wolf's-head pommel and a dark leather grip",
     },
     "The Night King": {
@@ -1760,7 +1761,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "copper", "hair_length": "waist length",
                       "hair_texture": "loosely wavy", "hair_style": "worn down",
                       "necklace": "no necklace", "body_type": "slender",
-                      "height": "average height", "skin_tone": "fair"},
+                      "height": "average height"},
+        "physique": {"skin_tone": "fair"},
     },
     "Brienne of Tarth": {
         "franchise": "Game of Thrones",
@@ -1773,8 +1775,8 @@ COSPLAYERS: dict[str, dict] = {
                    "gambeson with a heavy leather sword belt and tall riding boots",
         "signature": {"hair_color": "dirty blonde", "hair_length": "short pixie",
                       "hair_texture": "fine and wispy", "eye_color": "pale blue",
-                      "body_type": "athletic", "height": "very tall",
-                      "skin_tone": "fair"},
+                      "body_type": "athletic", "height": "very tall"},
+        "physique": {"skin_tone": "fair"},
         "prop": "a longsword with a gilded lion-head pommel and a rippled blade",
     },
     "Cersei Lannister": {
@@ -1786,7 +1788,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "golden blonde", "hair_length": "very short",
                       "hair_style": "slicked back", "eye_color": "green",
                       "age": "45", "body_type": "slim",
-                      "height": "average height", "skin_tone": "fair"},
+                      "height": "average height"},
+        "physique": {"skin_tone": "fair"},
     },
     "Xena": {
         "franchise": "Xena: Warrior Princess",
@@ -5070,14 +5073,12 @@ COSPLAYERS: dict[str, dict] = {
     "Maui": {
         "franchise": "Moana",
         "gender": "Male",
-        "costume": "a leaf skirt over a huge frame covered in an even, all-over coat of "
-                   "bold dark tribal tattoos, with a bone hook",
+        "costume": "a leaf skirt over a huge frame covered in bold dark Polynesian "
+                   "tattoos, with a bone hook",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
                       "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
-        # 'tattoos' isn't a material the colour-anchor regex catches, and the tattoo
-        # coat would otherwise suppress his brown skin entirely; anchor it explicitly.
-        "skin": "warm brown",
-        "physique": {"body_type": "stocky", "height": "very tall"},
+        "physique": {"body_type": "stocky", "height": "very tall",
+                     "skin_tone": "warm brown"},
         "prop": "a giant carved bone fish-hook",
     },
 
@@ -6357,7 +6358,7 @@ COSPLAYERS: dict[str, dict] = {
     "Ice": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a blue-and-white costume with an icy crystalline shimmer over pale skin",
+        "costume": "a blue-and-white costume with an icy crystalline shimmer",
         "signature": {"hair_color": "platinum blonde", "hair_length": "long",
                       "eye_color": "ice blue"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
@@ -11372,7 +11373,7 @@ COSPLAYERS: dict[str, dict] = {
                    "spirals out from a bladed gauntlet on the right arm to sheathe the body in "
                    "little more than sharp curved plates and a bladed bikini, with a large red "
                    "eye-like gem set into the back of the gauntlet's hand and razor-sharp "
-                   "silver tendrils coiling away from the armor's edges, over fair skin",
+                   "silver tendrils coiling away from the armor's edges",
         "signature": {"hair_color": "dark brown", "hair_length": "very long",
                       "hair_texture": "curly", "eye_color": "deep blue"},
         "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
@@ -21111,8 +21112,8 @@ COSPLAYERS: dict[str, dict] = {
                    "the tip, and blue armored thigh-high boots",
         "signature": {"hair_color": "golden blonde", "hair_length": "mid back",
                       "hair_texture": "loosely wavy", "eye_color": "green",
-                      "body_type": "slim", "height": "average height",
-                      "skin_tone": "fair"},
+                      "body_type": "slim", "height": "average height"},
+        "physique": {"skin_tone": "fair"},
         "prop": "a short pale blue spiral wand with a rounded tip",
     },
     "Dark Magician": {
@@ -21227,8 +21228,8 @@ COSPLAYERS: dict[str, dict] = {
                    "a thin trickle of fresh blood running from one nostril",
         "signature": {"hair_color": "dark brown", "hair_length": "buzzed very short",
                       "makeup_style": "no makeup", "age": "18",
-                      "body_type": "petite and slim", "height": "petite",
-                      "skin_tone": "fair"},
+                      "body_type": "petite and slim", "height": "petite"},
+        "physique": {"skin_tone": "fair"},
     },
     "Seong Gi-hun": {
         "franchise": "Squid Game",
@@ -21592,8 +21593,9 @@ COSPLAYERS: dict[str, dict] = {
         # body_type/height pinned: a hardboiled synth detective was rolling
         # "a softly curved build, slightly below average height".
         "signature": {"hair_color": "salt and pepper", "hair_length": "very short",
-                      "facial_hair": "clean shaven", "skin_tone": "pale",
-                      "age": "45", "body_type": "lean", "height": "tall"},
+                      "facial_hair": "clean shaven", "age": "45",
+                      "body_type": "lean", "height": "tall"},
+        "physique": {"skin_tone": "pale"},
     },
     "Inuyasha": {
         "franchise": "Inuyasha",
@@ -22928,10 +22930,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Twenty Thousand Leagues Under the Sea",
         "gender": "Male",
         # Exotic submarine captain; distinctive turban and robes, unique silhouette.
-        "costume": "an ornate Eastern-style robe with gold embroidery and a sash, a turban with a jewel ornament, and soft leather boots, over smooth, flawless olive skin",
+        "costume": "an ornate Eastern-style robe with gold embroidery and a sash, a turban with a jewel ornament, and soft leather boots",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
                       "hair_texture": "sleek straight", "facial_hair": "short beard"},
-        "physique": {"body_type": "lean", "height": "average height"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "olive"},
         "prop": "a brass-bound diving helmet with glass viewports",
     },
     "Goliath": {

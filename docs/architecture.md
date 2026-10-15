@@ -539,7 +539,14 @@ list; the working principles at the top of this file also apply):
    images are keyed on the entry name, so a rename must also move the file on
    `gh-pages` and rename the key in `gallery/render_manifest.json`. The `entry_hash`
    covers the entry *dict*, not the key, so no re-render is needed.
-7. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
+7. **Ethnicity only in Full mode.** A natural human skin tone (anything in the `skin_tone`
+   pool: fair, olive, tan, brown...) is ethnicity's proxy. It lives only in `physique` (Full
+   character) -- never in `signature`, a `skin` key or costume prose, all of which render in
+   Costume only too. A *stylized or supernatural* pallor that is the character's look
+   (vampires, the Endless, aliens) may stay in the costume, using the skin-native wording
+   from rule 5. `EthnicityOnlyInFullModeTests` enforces it for every cosplayer and archetype;
+   a pallor that must stay goes in its `_STYLIZED_PALLOR_OK` allowlist with a reason.
+8. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
    `python scripts/generate_reference_docs.py`, and commit the refreshed reference index.
 
 #### Judgement calls that keep recurring

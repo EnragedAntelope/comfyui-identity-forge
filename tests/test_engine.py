@@ -9531,6 +9531,86 @@ def _live_exclusions_for(field, value, target):
             and r["excludes_field"] == target for v in r["excludes_values"]}
 
 
+class EthnicityOnlyInFullModeTests(unittest.TestCase):
+    """Ethnicity and a natural human skin tone lock only in "Full character" /
+    "Full preset" (1.8.0).
+
+    Costume only (cosplayer) and Essentials (archetype) randomize the person under
+    the look, so neither may pin an ethnicity, nor a `skin_tone` drawn from the human
+    pool (a skin-tone is the proxy for ethnicity). Two things legitimately appear:
+    the `"None"` suppression, and a free-text colour anchor for body-paint characters
+    (green, orange, ...), which is not a pool option. Costume prose may not smuggle a
+    natural tone in either ("over fair skin" renders in both modes); a stylized or
+    supernatural pallor that IS the character's look is allowed by name below.
+    """
+
+    #: Stylized / supernatural pallors that are the character, not an ethnicity.
+    #: Add a name here only with a one-line reason; a natural complexion belongs in
+    #: `physique` (Full-only), not in costume text.
+    _STYLIZED_PALLOR_OK: "dict[str, str]" = {}
+
+    @staticmethod
+    def _leaves(document: dict):
+        for group, values in document.items():
+            if group == "_meta" or not isinstance(values, dict):
+                continue
+            yield from values.items()
+
+    def _assert_no_ethnicity(self, label: str, document: dict) -> None:
+        human_tones = set(FIELD_DEFINITIONS["skin_tone"]["female_options"]) | set(
+            FIELD_DEFINITIONS["skin_tone"]["male_options"])
+        for field, value in self._leaves(document):
+            if field == "ethnicity":
+                self.assertEqual(value, "None", f"{label}: ethnicity {value!r} locked")
+            if field == "skin_tone":
+                self.assertNotIn(value, human_tones, f"{label}: skin_tone {value!r} locked")
+
+    def test_cosplayer_costume_only_never_pins_ethnicity_or_a_human_skin_tone(self):
+        from data.cosplayers import COSPLAYERS
+        from nodes.identity_forge_cosplayer import build_cosplayer_json
+        for name, entry in COSPLAYERS.items():
+            looks = 1 + len(entry.get("costumes") or ())
+            for seed in range(looks + 3):
+                document = json.loads(
+                    build_cosplayer_json(name, seed, look_level="Costume only"))
+                self._assert_no_ethnicity(f"{name} seed {seed}", document)
+
+    def test_archetype_essentials_never_pins_ethnicity_or_a_human_skin_tone(self):
+        from data.templates import ARCHETYPES
+        from nodes.identity_forge_archetype import build_archetype_json
+        for name in ARCHETYPES:
+            for seed in range(3):
+                document = json.loads(build_archetype_json(name, seed, "Essentials"))
+                self._assert_no_ethnicity(f"{name} seed {seed}", document)
+                for gender, look in (document.get("_meta", {}).get("variants") or {}).items():
+                    self._assert_no_ethnicity(
+                        f"{name} [{gender}] seed {seed}",
+                        {"look": look} if not any(isinstance(v, dict) for v in look.values())
+                        else look)
+
+    def test_no_costume_prose_names_a_natural_skin_tone(self):
+        from data.cosplayers import COSPLAYERS
+        tones = sorted(
+            set(FIELD_DEFINITIONS["skin_tone"]["female_options"])
+            | set(FIELD_DEFINITIONS["skin_tone"]["male_options"]), key=len, reverse=True)
+        pattern = re.compile(r"(?:" + "|".join(map(re.escape, tones)) + r")\s+skin", re.I)
+        offenders = []
+        for name, entry in COSPLAYERS.items():
+            if name in self._STYLIZED_PALLOR_OK:
+                continue
+            texts = [entry.get("costume", ""), entry.get("prop_costume", "")]
+            for alt in entry.get("costumes") or ():
+                texts.append(alt if isinstance(alt, str) else alt.get("costume", ""))
+                if isinstance(alt, dict):
+                    texts.append(alt.get("prop_costume", ""))
+            for text in texts:
+                match = pattern.search(text or "")
+                if match:
+                    offenders.append(f"{name}: ...{text[max(0, match.start() - 30):match.end() + 10]}")
+        self.assertEqual(offenders, [], "natural skin tone in costume prose -- move it to "
+                         "physique, or allowlist a stylized pallor with a reason")
+
+
 class ComfyApiStubPurgeTests(unittest.TestCase):
     """1.5.5: a broken `comfy_api` already in sys.modules must not poison the stub.
 
