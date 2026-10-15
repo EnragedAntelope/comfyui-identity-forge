@@ -127,7 +127,7 @@ randomized identities, so your own results will vary:
 
 | Node | What it does |
 | --- | --- |
-| **Identity Forge** | Lockable dropdowns in collapsible groups + the constraint engine → `prompt_text` (prose) and `prompt_json`. |
+| **Identity Forge** | Lockable dropdowns in collapsible groups + the constraint engine → `prompt_text` (prose), `prompt_json` and `subject_text` (the person and outfit only, no pose or scene). |
 | **Archetype** | Themed presets (knight, sorceress, pirate, samurai, pop star, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes. Also has the in-node roster picker. |
 | **Cosplayer** | Fictional characters (Spider-Man, 2B, She-Hulk, Zelda…) as a *cosplay look* — the costume on a random, optionally cross-gender person. An in-node picker browses and searches the whole roster with trait facets and thumbnails. |
 | **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. Generic species only — a *named* fictional beast (Appa, Toothless) is a Cosplayer entry. Also has the in-node roster picker. |

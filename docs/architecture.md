@@ -172,7 +172,7 @@ socket. On overlap, the node **closest to IdentityForge wins** (downstream wins)
 `_meta`) is the chaining primitive.
 
 ```
-Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge ─▶ prompt_text + prompt_json
+Archetype ─▶ Cosplayer ─▶ Creature ─▶ Modifier ─▶ IdentityForge ─▶ prompt_text + prompt_json + subject_text
 ```
 
 - **IdentityForge** ([nodes/identity_forge.py](../nodes/identity_forge.py)) — the engine. Many
@@ -539,7 +539,14 @@ list; the working principles at the top of this file also apply):
    images are keyed on the entry name, so a rename must also move the file on
    `gh-pages` and rename the key in `gallery/render_manifest.json`. The `entry_hash`
    covers the entry *dict*, not the key, so no re-render is needed.
-7. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
+7. **Ethnicity only in Full mode.** A natural human skin tone (anything in the `skin_tone`
+   pool: fair, olive, tan, brown...) is ethnicity's proxy. It lives only in `physique` (Full
+   character) -- never in `signature`, a `skin` key or costume prose, all of which render in
+   Costume only too. A *stylized or supernatural* pallor that is the character's look
+   (vampires, the Endless, aliens) may stay in the costume, using the skin-native wording
+   from rule 5. `EthnicityOnlyInFullModeTests` enforces it for every cosplayer and archetype;
+   a pallor that must stay goes in its `_STYLIZED_PALLOR_OK` allowlist with a reason.
+8. **Validate before commit.** Run `python tests/validate_data.py`, the unittest suite, and
    `python scripts/generate_reference_docs.py`, and commit the refreshed reference index.
 
 #### Judgement calls that keep recurring
@@ -986,6 +993,9 @@ User additions are first-class (0.46.1):
   after any schema change. `--check` is CI-enforced.
 - **CI:** `.github/workflows/ci.yml` runs `validate_data.py`, the unittest suite, all three
   `--check` generators, and (in a separate job) the frontend jsdom suite on every push/PR.
+  Since 1.8.0 it is callable (`workflow_call`), every job has a 30-minute cap, a Windows leg
+  runs the suite with autocrlf off, and `publish_action.yml` runs it first: `publish-node`
+  `needs: ci`, with no new write scope.
 
 ### Frontend smoke tests
 
@@ -1139,6 +1149,17 @@ This costs nothing in UI terms, because `js/identity_forge.js` **rebuilds
 sees anything. Serialization order and visual order are already decoupled; the append
 just uses that fact. So `tattoos` sits in Body and `legwear` in Clothing on screen while
 living at the end of the dict on disk.
+
+**1.8.0: the saved array is in schema order.** Until 1.8.0 the claim above held only for the
+*meaning* of the order: the array was written in display order, interleaved with the buttons
+and headers the JS adds, which a tool without a browser (a headless workflow validator) cannot
+map to the schema. `IdentityForge`, `IdentityForgeCreature` and `IdentityForgeCosplayer` now
+snapshot the schema widgets before reordering, write `widgets_values` from that snapshot in
+`onSerialize`, and mark the save with `properties.if_widget_order = "schema"`. A load that
+sees the marker expands the array into display order (a field appended in a later release
+takes its default) and skips the legacy padding; an unmarked, pre-1.8.0 save takes the
+legacy path unchanged. `franchise_filter` is no longer written, as its tooltip always said.
+The Nodes 2.0 renderer draws in array order, so the widgets themselves are not moved.
 
 Proved against the real thing rather than argued: the running pre-0.90.0 instance
 reports 74 widgets, the new schema 77, and the first 74 names match index for index.
@@ -3430,7 +3451,11 @@ workflow loading.
 JSON array tagging every entry with a `kind` discriminator (`cosplayer` / `archetype` /
 `creature`) and a precomputed, lowercased `haystack` string (name + franchise/category + costume
 prose + derived trait words such as `masked`, `mascot`, `feral`, `giant`, `tiny`) for
-substring/keyword search. Search is case-insensitive substring matching with multi-word tokens
+substring/keyword search. Cosplayer entries also carry a structured `traits` list (`giant`,
+`tiny`, `masked`, `mascot`, `beast`, `nonhuman`) that the **trait facets read instead of the prose**
+(a substring test over costume text put Poison Ivy's "tiny leaves" under Tiny);
+`tests/test_js_sync.py::RosterTraitsMatchBackendScopes` pins it to the Cosplayer node's scope
+predicates. Search is the text half; facets are the flag half. Search is case-insensitive substring matching with multi-word tokens
 AND'd (order-independent), **filtered within the active tab** — the "All" tab is what searches
 every kind at once, and the trait facet composes on top of both. This replaced the original
 "a query spans every tab, tabs only apply to an empty box" rule, which meant a user who had

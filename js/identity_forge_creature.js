@@ -101,12 +101,42 @@ function resize(node) {
   node.setDirtyCanvas(true, true);
 }
 
+//: 1.8.0 -- save `widgets_values` in SCHEMA order, so a tool without a browser can read it.
+//: ComfyUI saves one value per entry of `node.widgets`, positionally. This file re-sorts
+//: the widgets and inserts buttons and headers, so the saved array no longer matched the
+//: node's declared inputs. The visual grouping stays (in the Nodes 2.0 renderer array
+//: order IS display order); only the SAVED array is written in schema order, marked with
+//: a node property so a load can tell it from a pre-1.8.0 interleaved save. The same
+//: three helpers live in identity_forge_creature.js and identity_forge_cosplayer.js.
+const WIDGET_ORDER_PROPERTY = "if_widget_order";
+
+function serializeInSchemaOrder(node, o) {
+  const schema = node.__ifSchemaWidgets;
+  if (!schema || !o) return;
+  o.widgets_values = schema.map((w) => w.value);
+  o.properties = { ...(o.properties || {}), [WIDGET_ORDER_PROPERTY]: "schema" };
+}
+
+/** Saved schema-order values expanded into display order, or null for an unmarked save. */
+function expandSchemaOrderValues(node, info) {
+  const schema = node.__ifSchemaWidgets;
+  const values = info?.widgets_values;
+  if (!schema || !Array.isArray(values)) return null;
+  if (info.properties?.[WIDGET_ORDER_PROPERTY] !== "schema") return null;
+  // A widget the save does not reach (a field appended in a later release) keeps its default.
+  return (node.widgets || []).map((w) => {
+    const i = schema.indexOf(w);
+    return i > -1 && i < values.length ? values[i] : w.value;
+  });
+}
+
 function setupCreature(node) {
   // Re-entry guard -- see ALL_RANDOM_LABEL in js/identity_forge.js. Without it a
   // second call duplicates the group headers and the two bulk-set buttons.
   if ((node.widgets || []).some((w) => w.name === BULK_FOLLOW_LABEL)) return;
   const original = node.widgets ? node.widgets.slice() : [];
   if (!original.length) return;
+  node.__ifSchemaWidgets = original;
 
   const byName = new Map(original.map((w) => [w.name, w]));
   const multiline = new Set(MULTILINE_AFTER_HEADLINE);
@@ -197,6 +227,31 @@ app.registerExtension({
         console.error("[IdentityForgeCreature] frontend setup failed:", err);
       }
       return result;
+    };
+
+    const onSerialize = nodeType.prototype.onSerialize;
+    nodeType.prototype.onSerialize = function (o) {
+      const result = onSerialize ? onSerialize.apply(this, arguments) : undefined;
+      try {
+        serializeInSchemaOrder(this, o);
+      } catch (err) {
+        console.error("[IdentityForgeCreature] schema-order save failed:", err);
+      }
+      return result;
+    };
+
+    // `configure`, not `onConfigure`: LiteGraph applies widgets_values first. A save
+    // marked schema-order is expanded into display order; a pre-1.8.0 save was
+    // written in display order already and passes through untouched.
+    const configure = nodeType.prototype.configure;
+    nodeType.prototype.configure = function (info) {
+      try {
+        const expanded = expandSchemaOrderValues(this, info);
+        if (expanded) info = { ...info, widgets_values: expanded };
+      } catch (err) {
+        console.error("[IdentityForgeCreature] widget mapping failed:", err);
+      }
+      return configure ? configure.apply(this, [info]) : undefined;
     };
   },
 });

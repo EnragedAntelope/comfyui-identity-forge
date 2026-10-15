@@ -43,7 +43,7 @@ def _forge(seed: int, **steer: str) -> tuple[str, str]:
         accessory_density="Balanced", location_setting="Any indoor/outdoor",
     )
     kwargs.update(steer)
-    return IdentityForge.execute(**kwargs).args
+    return IdentityForge.execute(**kwargs).args[:2]  # [2] is subject_text (1.8.0)
 
 
 def _cosplayer_document(name: str, seed: int = 7) -> str:

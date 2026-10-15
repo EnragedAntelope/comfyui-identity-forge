@@ -33,13 +33,9 @@ rather than left to be re-surveyed. Add a row here only with a fresh, written ca
 | Item | Case |
 |---|---|
 | Legwear in a tight shot | 1.7.0 drops the shoes when the framing crops the feet, but tights and stockings are still voiced in a close-up (about 1% of renders). |
-| Colour and pattern field modifiers on a generated outfit | A `footwear` or `legwear` modifier reaches the composed outfit since 1.7.0 because those values appear in it verbatim; `clothing_color` and `clothing_pattern` are rewritten when composed, so their field modifiers still miss. The `Clothing` group key reaches everything. |
-| A negative and/or tags output, and a subject/scene split | Downstream graphs re-parse the prose today. |
-| An on-node readout of the resolved prompt | `onExecuted`, so the user sees what a seed drew without a Show Text node. |
 | Free-text `held_item` | Today only archetypes set it. |
 | A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Worth it alongside the expression sheet, not alone. |
 | An expression-sheet node | Re-run like Turnaround, releasing `smile_type` and `mood` per view. |
-| CI | Make publish depend on CI; add a Windows runner. |
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,
@@ -81,10 +77,18 @@ reason Ryze, Swain and Viktor were declined below.
 
 Closed with a reason. Reopen only with a **new** argument, not a repeat of the request.
 
+### Engine and UX
+
+| Candidate | Why |
+|---|---|
+| A negative and/or tags output | Maintainer: not needed. (The subject/scene half of the same row shipped at 1.8.0 as `subject_text`.) |
+| An on-node readout of the resolved prompt | Maintainer: not needed. |
+
 ### Individual characters
 
 | Candidate | Why |
 |---|---|
+| Anxiety (Inside Out) | **Declined at 1.8.0 on the render bar.** The look is a teal turtleneck, high trousers and boots over bright orange skin, and the model could not hold it: two renders kept pale human skin (the orange only reached the hair) and spread the teal from the sweater onto the trousers and boots, so the tile read as a pale redhead in a teal outfit. Body-paint wording that works for a single-colour figure (Megamind's blue) fails when a second saturated costume colour is present. Reopen with a costume that is not a second saturated colour, or if the model's skin-colour handling changes. |
 | Kliff (Crimson Desert) | **Revisited and DECLINED at 1.4.0.** The original reason was wrong: Kliff is a *fixed* protagonist (set face, body and voice, the Geralt model), not a vendor-built one -- only his hair, facial hair, tattoos and outfit *colours* are customizable. The decline stands on the other half: his equipment and clothing are explicitly "highly customizable", so there is still no single canonical outfit to describe, and what is left -- a bearded man in fantasy leathers -- is the silhouette `Geralt` and `Conan the Barbarian` already carry. Reopen only if a marketing-canonical outfit becomes the settled default look. |
 | M3GAN (1.5.0 maintainer shortlist) | **Adults-only bar.** Canonically a child-sized android doll modelled on a young girl: rendering her as a child breaks the bar, and rendering her as an adult is not canon. Approved on the shortlist, declined at research. |
 | Marinette Dupain-Cheng, Adrien Agreste (civilian) | Ordinary modern teen dress. Their transformed looks (Ladybug, Cat Noir) carry them. |

@@ -1731,7 +1731,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
                       "hair_texture": "curly", "facial_hair": "short beard",
                       "eye_color": "dark gray", "body_type": "lean",
-                      "height": "average height", "skin_tone": "fair"},
+                      "height": "average height"},
+        "physique": {"skin_tone": "fair"},
         "prop": "a longsword with a pale wolf's-head pommel and a dark leather grip",
     },
     "The Night King": {
@@ -1760,7 +1761,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "copper", "hair_length": "waist length",
                       "hair_texture": "loosely wavy", "hair_style": "worn down",
                       "necklace": "no necklace", "body_type": "slender",
-                      "height": "average height", "skin_tone": "fair"},
+                      "height": "average height"},
+        "physique": {"skin_tone": "fair"},
     },
     "Brienne of Tarth": {
         "franchise": "Game of Thrones",
@@ -1773,8 +1775,8 @@ COSPLAYERS: dict[str, dict] = {
                    "gambeson with a heavy leather sword belt and tall riding boots",
         "signature": {"hair_color": "dirty blonde", "hair_length": "short pixie",
                       "hair_texture": "fine and wispy", "eye_color": "pale blue",
-                      "body_type": "athletic", "height": "very tall",
-                      "skin_tone": "fair"},
+                      "body_type": "athletic", "height": "very tall"},
+        "physique": {"skin_tone": "fair"},
         "prop": "a longsword with a gilded lion-head pommel and a rippled blade",
     },
     "Cersei Lannister": {
@@ -1786,7 +1788,8 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "golden blonde", "hair_length": "very short",
                       "hair_style": "slicked back", "eye_color": "green",
                       "age": "45", "body_type": "slim",
-                      "height": "average height", "skin_tone": "fair"},
+                      "height": "average height"},
+        "physique": {"skin_tone": "fair"},
     },
     "Xena": {
         "franchise": "Xena: Warrior Princess",
@@ -4236,7 +4239,7 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "My Hero Academia",
         "gender": "Male",
         "costume": "a black outfit hung with severed pale hands, one clutched over the "
-                   "face, and chapped, cracked pale skin",
+                   "face, and chapped, cracked skin",
         "eyes": "red-rimmed crimson",
         "signature": {"hair_color": "silver", "hair_length": "shoulder length",
                       "hair_texture": "fine and wispy"},
@@ -5070,14 +5073,12 @@ COSPLAYERS: dict[str, dict] = {
     "Maui": {
         "franchise": "Moana",
         "gender": "Male",
-        "costume": "a leaf skirt over a huge frame covered in an even, all-over coat of "
-                   "bold dark tribal tattoos, with a bone hook",
+        "costume": "a leaf skirt over a huge frame covered in bold dark Polynesian "
+                   "tattoos, with a bone hook",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
                       "hair_texture": "thick and voluminous", "eye_color": "dark brown"},
-        # 'tattoos' isn't a material the colour-anchor regex catches, and the tattoo
-        # coat would otherwise suppress his brown skin entirely; anchor it explicitly.
-        "skin": "warm brown",
-        "physique": {"body_type": "stocky", "height": "very tall"},
+        "physique": {"body_type": "stocky", "height": "very tall",
+                     "skin_tone": "warm brown"},
         "prop": "a giant carved bone fish-hook",
     },
 
@@ -6357,7 +6358,7 @@ COSPLAYERS: dict[str, dict] = {
     "Ice": {
         "franchise": "DC",
         "gender": "Female",
-        "costume": "a blue-and-white costume with an icy crystalline shimmer over pale skin",
+        "costume": "a blue-and-white costume with an icy crystalline shimmer",
         "signature": {"hair_color": "platinum blonde", "hair_length": "long",
                       "eye_color": "ice blue"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "very pale"},
@@ -11133,10 +11134,11 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         # Femizon wrestler (6'2", muscular). Red halter top + high-cut bottoms with black trim,
         # a torn black fishnet single sleeve on the right arm, tall black over-the-knee wrestling
-        # boots, over very pale skin; blue eyes that flare fiery red when her powers are active.
+        # boots; blue eyes that flare fiery red when her powers are active. Her very pale
+        # skin is in physique (Full character only).
         "costume": "a revealing two-piece wrestler's uniform -- a vivid red halter top and high-cut "
                    "bottoms with black trim, the right arm sheathed in a torn black fishnet sleeve, "
-                   "and tall black over-the-knee wrestling boots, over strikingly pale skin",
+                   "and tall black over-the-knee wrestling boots",
         "signature": {"hair_color": "raven black", "hair_length": "very long",
                       "hair_texture": "sleek straight", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "very pale"},
@@ -11372,7 +11374,7 @@ COSPLAYERS: dict[str, dict] = {
                    "spirals out from a bladed gauntlet on the right arm to sheathe the body in "
                    "little more than sharp curved plates and a bladed bikini, with a large red "
                    "eye-like gem set into the back of the gauntlet's hand and razor-sharp "
-                   "silver tendrils coiling away from the armor's edges, over fair skin",
+                   "silver tendrils coiling away from the armor's edges",
         "signature": {"hair_color": "dark brown", "hair_length": "very long",
                       "hair_texture": "curly", "eye_color": "deep blue"},
         "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "fair"},
@@ -14610,16 +14612,6 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "loosely wavy", "eye_color": "blue-gray"},
         "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "fair"},
     },
-    "Julia Carpenter": {
-        "franchise": "Marvel",
-        "gender": "Female",
-        # The second Spider-Woman / Arachne.
-        "costume": "a matte black bodysuit with a large white spider emblem spanning the chest "
-                   "and back, white elbow-length gloves, and white thigh-high boots",
-        "signature": {"hair_color": "dark brown", "hair_length": "long",
-                      "hair_style": "worn down", "eye_color": "dark brown"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
-    },
     "Night Thrasher": {
         "franchise": "Marvel",
         "gender": "Male",
@@ -16391,10 +16383,9 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "Mjolnir, a short-handled squared war hammer",
     },
-    # The wildcard list's "Symbiote Suit Spiderwoman" is Julia Carpenter's black
-    # and white suit, a different character from the Jessica Drew "Spider-Woman"
-    # already in the roster -- so it gets its own entry rather than becoming an
-    # alternate look that would be canonically wrong.
+    # Julia Carpenter, the second Spider-Woman (Arachne). One character, so one entry:
+    # 1.8.0 folded the separate "Julia Carpenter" entry in as the alternate look. She is a
+    # different character from the Jessica Drew "Spider-Woman" already in the roster.
     "Spider-Woman (Julia Carpenter)": {
         "franchise": "Marvel",
         "gender": "Female",
@@ -16402,9 +16393,15 @@ COSPLAYERS: dict[str, dict] = {
                    "emblem spanning the chest and shoulders, white web-line "
                    "patterning down the arms and legs, and white gloves",
         "signature": {"hair_color": "dark brown", "hair_length": "long",
-                      "hair_texture": "loosely wavy", "eye_color": "amber"},
-        "physique": {"body_type": "athletic", "height": "tall",
-                     "skin_tone": "golden tan"},
+                      "hair_texture": "loosely wavy", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        "costumes": [
+            {   # The classic Spider-Woman II suit
+                "costume": "a matte black bodysuit with a large white spider emblem "
+                           "spanning the chest and back, white elbow-length gloves, and "
+                           "white thigh-high boots",
+            },
+        ],
     },
     "Nova Terra": {
         "franchise": "StarCraft",
@@ -19556,8 +19553,10 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Coraline",
         "gender": "Female",
         "costume": "a slim black high-necked dress with a fitted waist and long "
-                   "sleeves, black flat shoes, elongated needle-thin fingers, "
-                   "and large black buttons stitched over both eyes",
+                   "sleeves, black flat shoes, and elongated needle-thin fingers",
+        # The buttons ARE the eyes: voiced as the eyes (not as a costume item beside a
+        # random eye colour), so every render shows them instead of a pair of human eyes.
+        "eyes": "round, flat, glossy black, four-holed sewn-on button",
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
                       "hair_texture": "wavy"},
         "physique": {"body_type": "very slim", "height": "very tall",
@@ -21111,8 +21110,8 @@ COSPLAYERS: dict[str, dict] = {
                    "the tip, and blue armored thigh-high boots",
         "signature": {"hair_color": "golden blonde", "hair_length": "mid back",
                       "hair_texture": "loosely wavy", "eye_color": "green",
-                      "body_type": "slim", "height": "average height",
-                      "skin_tone": "fair"},
+                      "body_type": "slim", "height": "average height"},
+        "physique": {"skin_tone": "fair"},
         "prop": "a short pale blue spiral wand with a rounded tip",
     },
     "Dark Magician": {
@@ -21227,8 +21226,8 @@ COSPLAYERS: dict[str, dict] = {
                    "a thin trickle of fresh blood running from one nostril",
         "signature": {"hair_color": "dark brown", "hair_length": "buzzed very short",
                       "makeup_style": "no makeup", "age": "18",
-                      "body_type": "petite and slim", "height": "petite",
-                      "skin_tone": "fair"},
+                      "body_type": "petite and slim", "height": "petite"},
+        "physique": {"skin_tone": "fair"},
     },
     "Seong Gi-hun": {
         "franchise": "Squid Game",
@@ -21592,8 +21591,9 @@ COSPLAYERS: dict[str, dict] = {
         # body_type/height pinned: a hardboiled synth detective was rolling
         # "a softly curved build, slightly below average height".
         "signature": {"hair_color": "salt and pepper", "hair_length": "very short",
-                      "facial_hair": "clean shaven", "skin_tone": "pale",
-                      "age": "45", "body_type": "lean", "height": "tall"},
+                      "facial_hair": "clean shaven", "age": "45",
+                      "body_type": "lean", "height": "tall"},
+        "physique": {"skin_tone": "pale"},
     },
     "Inuyasha": {
         "franchise": "Inuyasha",
@@ -22928,10 +22928,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Twenty Thousand Leagues Under the Sea",
         "gender": "Male",
         # Exotic submarine captain; distinctive turban and robes, unique silhouette.
-        "costume": "an ornate Eastern-style robe with gold embroidery and a sash, a turban with a jewel ornament, and soft leather boots, over smooth, flawless olive skin",
+        "costume": "an ornate Eastern-style robe with gold embroidery and a sash, a turban with a jewel ornament, and soft leather boots",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
                       "hair_texture": "sleek straight", "facial_hair": "short beard"},
-        "physique": {"body_type": "lean", "height": "average height"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "olive"},
         "prop": "a brass-bound diving helmet with glass viewports",
     },
     "Goliath": {
@@ -25756,6 +25757,192 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a small brass bulb squeeze horn",
     },
 
+    # === 1.8.0 roster additions =========================================
+    "Megamind": {
+        "franchise": "Megamind",
+        "gender": "Male",
+        "bald": True,
+        "costume": "a black bodysuit with a tall spiked collar rising behind the head, a "
+                   "long black cape, a gold lightning-bolt emblem on the chest, and black "
+                   "gloves and boots, over smooth, flawless bright blue skin, with an "
+                   "enormous bald domed head",
+        "eyes": "bright emerald green",
+        "signature": {"facial_hair": "goatee"},
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a chunky blue and silver dehydration gun with a wide barrel",
+    },
+    "Alita": {
+        "franchise": "Alita: Battle Angel",
+        "gender": "Female",
+        # A cyborg body under a human face: covers_body for the machine limbs, no
+        # covers_face so the face and the huge eyes stay.
+        "covers_body": True,
+        "anatomy_note": "a sleek cyborg body of matte gunmetal-grey mechanical plating with "
+                        "visible seams and articulated joints at the shoulders, elbows and "
+                        "knees, below a fully human face",
+        "costume": "a fitted black bodysuit under segmented gunmetal-grey armor plates on "
+                   "the torso, shoulders, forearms and shins, with red inlaid trim along "
+                   "the plate edges",
+        "eyes": "huge, unnaturally large dark brown",
+        "signature": {"hair_color": "dark brown", "hair_length": "chin length bob",
+                      "hair_style": "side-swept bangs", "hair_texture": "sleek straight"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
+        "costumes": [
+            {   # Motorball racer
+                "costume": "a skintight black racing bodysuit with red and white armored "
+                           "shoulder, forearm and shin guards and armored roller skates",
+                "signature": {"hair_color": "dark brown", "hair_length": "chin length bob",
+                              "hair_style": "side-swept bangs"},
+            },
+        ],
+    },
+    "Sesshomaru": {
+        "franchise": "Inuyasha",
+        "gender": "Male",
+        "costume": "a white kimono with red geometric trim at the sleeves and hem, a "
+                   "spiked armor pauldron on the left shoulder, a thick white fur boa "
+                   "draped over the right shoulder, a yellow obi sash, and two swords at "
+                   "the hip, with a blue crescent moon on the forehead, two magenta "
+                   "stripes on each cheek and pointed ears",
+        "signature": {"hair_color": "silver", "hair_length": "hip length",
+                      "hair_style": "worn down", "hair_texture": "sleek straight",
+                      "eye_color": "amber",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+    },
+    "Raya": {
+        "franchise": "Raya and the Last Dragon",
+        "gender": "Female",
+        "costume": "a red and yellow wrapped sabai chest cloth, loose green dhoti pants "
+                   "tucked into wrapped boots, a long dark high-collared cape, and a "
+                   "wide woven straw hat tied on with a chin cord",
+        "signature": {"hair_color": "near black", "hair_length": "long",
+                      "hair_style": "low ponytail", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "warm tan"},
+        "prop": "a segmented whip sword with a curved hilt, held low in one hand",
+    },
+    "Barbie": {
+        "franchise": "Barbie",
+        "gender": "Female",
+        "costume": "a pink gingham halter-neck dress with a full knee-length skirt and "
+                   "white open-toe heeled sandals",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
+        "costumes": [
+            {   # pink western look
+                "costume": "a bright pink fringed western shirt and matching pink "
+                           "flared trousers with a pink cowboy hat and white cowboy boots",
+                "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                              "hair_style": "worn down", "eye_color": "bright blue"},
+            },
+            {   # the 1959 original swimsuit
+                "costume": "a black and white striped strapless swimsuit, white cat-eye "
+                           "sunglasses and white open-toe heeled sandals",
+                "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                              "hair_style": "high ponytail", "eye_color": "bright blue"},
+            },
+        ],
+    },
+    "Effie Trinket": {
+        "franchise": "The Hunger Games",
+        "gender": "Female",
+        # The Reaping look (74th Games): ultra-bright pastels against District 12.
+        "costume": "a tightly tailored fuchsia-pink structured peplum jacket with "
+                   "exaggerated bulbous 1980s shoulders and small frills on the sleeves "
+                   "over a very narrow corset-bound pencil skirt with rivet details, a "
+                   "thick fabric flower choker blooming at the throat, flared black "
+                   "gloves, black open-front boot-shoes, an oversized floral corsage "
+                   "fascinator pinned off-centre on a voluminous permed pink wig, a thick "
+                   "airbrushed layer of white pancake powder over the face, a red-tinged "
+                   "ring of eyeshadow around the eyes, and small glossy deep-red "
+                   "doll-bow lips",
+        "signature": {"hair_color": "baby pink", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "hair_texture": "tightly curled",
+                      "eyebrows": "bleached", "eye_color": "gray",
+                      "makeup_style": "heavy glam", "lips_makeup": "deep red",
+                      "eye_makeup": "colorful bold eyeshadow"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "porcelain"},
+        "costumes": [
+            {   # Third Quarter Quell: all precious metal, in solidarity with Katniss
+                "costume": "a liquid-gold structured cocktail dress and matching coat "
+                           "embroidered with thousands of metallic scales and gold "
+                           "threadwork, a high collar and sharp constricting shoulders, a "
+                           "chunky heavy gold statement bracelet, towering avant-garde gold "
+                           "heel-less wedges, a stiff high-gloss metallic gold curled wig, "
+                           "a powdered porcelain face with extravagant laser-cut "
+                           "gold-and-black paper eyelash extensions, metallic gold lips, "
+                           "and fine gold dust across the cheekbones and brow bones",
+                "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                              "hair_style": "worn down", "hair_texture": "tightly curled",
+                              "eyebrows": "bleached", "eye_color": "gray",
+                              "makeup_style": "heavy glam", "lips_makeup": "high shine gloss",
+                              "eye_makeup": "glittery"},
+            },
+        ],
+    },
+    "Minion": {
+        "franchise": "Despicable Me",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a rounded yellow capsule-shaped head with one large round silver-rimmed "
+                "goggle held on by a black strap, a wide toothy grin and a few black hairs "
+                "on top",
+        "costume": "blue denim dungarees with a single front pocket, black rubber gloves "
+                   "and black boots, on a short round yellow capsule-shaped body",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and about three feet tall",
+        "physique": {"body_type": "chubby", "height": "very petite"},
+    },
+    # --- The Invisibles (Vertigo) ---------------------------------------
+    "Lord Fanny": {
+        "franchise": "The Invisibles",
+        "gender": "Female",
+        # Brian Bolland's Vol. 2 #1 cover look: club-kid glam over Rio streetwear.
+        "costume": "a tight cropped red-and-white striped halter top baring the midriff, "
+                   "ultra-short frayed denim shorts, fishnet stockings, sky-high chunky "
+                   "platform boots, a heavy choker necklace, stacked bangles, and "
+                   "exaggerated meticulous glamour makeup with heavily lined eyes, bright "
+                   "lipstick and sharply defined brows",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_style": "curled pigtails", "eye_color": "medium brown",
+                      "makeup_style": "bold glam", "lips_makeup": "classic red",
+                      "eyeliner": "dramatic winged"},
+        "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "olive",
+                     "ethnicity": "Brazilian"},
+    },
+    "Ragged Robin": {
+        "franchise": "The Invisibles",
+        "gender": "Female",
+        # The Volume 1 / Volume 2 main look: black latex under a studded harness, a
+        # Raggedy Ann doll face. The early witchy dress and floppy hat are the alternate.
+        # The face paint leads the costume text and the signature blush is "no blush":
+        # a soft blush draws over the flat rouge discs and the model keeps a natural face.
+        "costume": "a chalk-white clown-doll face painted flat white with two solid, "
+                   "perfectly round, flat bright red circles painted on the cheeks and "
+                   "small glossy red lips, a high-necked glossy black latex bodysuit cut "
+                   "high on the hips under an X-shaped studded black leather harness with "
+                   "molded cups, black fishnet tights, shiny black knee-high lace-up "
+                   "boots, and a wide gold cuff on one wrist",
+        "signature": {"hair_color": "deep red", "hair_length": "shoulder length",
+                      "hair_texture": "tightly curled", "hair_style": "natural and unstyled",
+                      "eye_color": "bright green", "makeup_style": "editorial makeup",
+                      "blush": "no blush", "lips_makeup": "classic red"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain",
+                     "ethnicity": "English"},
+        "costumes": [
+            {   # Early issues: whimsical witchy chic
+                "costume": "a chalk-white clown-doll face painted flat white with two "
+                           "solid, perfectly round, flat bright red circles painted on "
+                           "the cheeks, a flowing multi-layered tattered witchy dress in "
+                           "cheap pretty fabrics, an oversized floppy hat, and the red "
+                           "mane sectioned off and tied with dozens of tiny black bows",
+            },
+        ],
+    },
 }
 
 
@@ -25768,7 +25955,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Naruto", "Dragon Ball", "One Piece", "Bleach", "Demon Slayer", "Jujutsu Kaisen",
         "My Hero Academia", "JoJo's Bizarre Adventure", "Fullmetal Alchemist", "Death Note",
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
-        "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Vocaloid",
+        "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Alita: Battle Angel", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Speed Racer",
         "Record of Ragnarok",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
@@ -25796,7 +25983,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Apothecary Diaries",  # 1.2.0
     ),
     "Marvel": ("Marvel",),
-    "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "Fables",
+    "DC": ("DC", "DC (Teen Titans)", "Watchmen", "The Sandman", "The Invisibles", "Fables",
            "Super Friends",  # 1.3.0
            ),
     "Star Wars": ("Star Wars",),
@@ -25813,7 +26000,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Robin Hood (1973)", "DuckTales", "Darkwing Duck",
         # Pixar and Walt Disney Animation titles group under Disney by precedent
         # (The Incredibles, Toy Story, Frozen are already here).
-        "Inside Out", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
+        "Inside Out", "Raya and the Last Dragon", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
         "Encanto",
         "Onward",  # 1.4.0
     ),
@@ -25868,6 +26055,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     ),
     "Movies & TV": (
         "Squid Game",  # 1.4.0
+        "Barbie",  # 1.8.0 -- explicit, so the doll is not left to the default bucket
         "Star Trek", "Battlestar Galactica", "The Terminator", "Alien", "Predator", "RoboCop",
         "Judge Dredd", "Mad Max", "Evil Dead",  # Evil Dead 0.97.0
         "Escape from New York", "Pirates of the Caribbean", "The Addams Family",
@@ -25916,7 +26104,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Fathom", "Chaos! Comics", "Betty Boop", "The Flintstones", "The Jetsons",
         "Top Cow", "Witchblade", "Youngblood", "WildStorm",
         "The Simpsons", "Family Guy", "Futurama", "Jem and the Holograms",
-        "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "The Mask",
+        "Looney Tunes", "Nickelodeon", "Rick and Morty", "Despicable Me", "Megamind", "The Mask",
         "Gravity Falls",  # 0.98.0 -- Bill Cipher ships alone; see his entry comment
         "Steven Universe", "Popeye", "Johnny Bravo", "Ben 10",
         "Carmen Sandiego", "Captain Planet", "Stripperella", "Red Sonja", "Gen13",

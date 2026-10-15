@@ -134,34 +134,17 @@ function matchesQuery(entry, tokens) {
 
 // --- trait facets -------------------------------------------------------------
 //
-// Mirrors nodes/identity_forge_cosplayer.py's _SPECIAL_SCOPES keys and Task 2's
-// three random_pool values verbatim, so browsing here and randomizing on the
-// Cosplayer node share one vocabulary. Do not rename any of these strings.
+// Mirrors nodes/identity_forge_cosplayer.py's _SPECIAL_SCOPES keys and the three
+// random_pool values verbatim, so browsing here and randomizing on the Cosplayer
+// node share one vocabulary. Do not rename any of these strings.
 //
-// There is no per-entry boolean flag in the roster index for any of this --
-// only the precomputed `haystack` string. scripts/generate_js_data.py folds
-// six literal trait words into a cosplayer's haystack for exactly this reason
-// (_cosplayer_trait_words: "masked"/"mascot" from covers_face/covers_body,
-// "feral"/"beast" from body_plan, "giant"/"tiny" from size_scale), so five of
-// the six scopes below are simple substring checks against those words.
-//
-// "Non-human / colored" (_scope_is_nonhuman) has no such folded keyword --
-// the backend detects it with a regex over the costume prose instead. Rather
-// than reproduce that regex against a haystack that only carries a *lowercased*
-// copy of the costume text (the "naive regex over prose" trap this repo has
-// already paid for twice; see architecture.md), this checks for the three
-// literal, non-wildcard phrases the regex's three alternatives require:
-// "smooth, flawless", "uniform, all-over", and "coat of" (the stable,
-// non-wildcard tail of `\ban even\b.*?\bcoat of\b` -- the leading "an even"
-// is dropped only because plain substring matching cannot express the `.*?`
-// gap between the two words, not because it doesn't matter). Fixed in the
-// 1.1.0 fix round: the first revision checked only the first two phrases,
-// which missed 97 of ~301 backend-flagged entries that use the "coat of"
-// wording (e.g. Maui) -- verified against the real roster after the fix.
-// Still narrower than the backend predicate in one respect (the free-text
-// `skin` override is never in the haystack at all) -- a deliberate,
-// documented approximation for a browse-time facet, not a data integrity
-// assertion.
+// Each cosplayer entry in the roster index carries a `traits` list of structured
+// flags ("giant", "tiny", "masked", "mascot", "beast", "nonhuman") emitted by
+// scripts/generate_js_data.py from the same schema keys the backend predicates
+// read; tests/test_js_sync.py keeps the two equal. Facets read the flags and
+// never the prose `haystack` -- a substring search over costume text put Poison
+// Ivy ("tiny leaves") under Tiny. Trait facets match cosplayers only, because
+// the Cosplayer node's random_scope / random_pool are their stated purpose.
 const FACET_ALL = "All characters";
 const FACET_GIANT = "Giant characters";
 const FACET_TINY = "Tiny characters";
@@ -177,30 +160,32 @@ const FACETS = [
   FACET_MASCOT, FACET_BEAST, FACET_PEOPLE, FACET_MASCOT_POOL,
 ];
 
-function hasAny(haystack, words) {
-  return words.some((w) => haystack.includes(w));
+function hasTrait(entry, ...traits) {
+  if (entry.kind !== "cosplayer") return false;
+  const have = entry.traits || [];
+  return traits.some((t) => have.includes(t));
 }
 
 const FACET_PREDICATES = {
   [FACET_ALL]: () => true,
-  [FACET_GIANT]: (e) => e.haystack.includes("giant"),
-  [FACET_TINY]: (e) => e.haystack.includes("tiny"),
-  [FACET_MASKED]: (e) => e.haystack.includes("masked"),
-  [FACET_MASCOT]: (e) => e.haystack.includes("mascot"),
-  [FACET_BEAST]: (e) => hasAny(e.haystack, ["feral", "beast"]),
-  [FACET_NONHUMAN]: (e) => hasAny(e.haystack, ["smooth, flawless", "uniform, all-over", "coat of"]),
-  [FACET_PEOPLE]: (e) => !hasAny(e.haystack, ["mascot", "feral", "beast"]),
-  [FACET_MASCOT_POOL]: (e) => hasAny(e.haystack, ["mascot", "feral", "beast"]),
+  [FACET_GIANT]: (e) => hasTrait(e, "giant"),
+  [FACET_TINY]: (e) => hasTrait(e, "tiny"),
+  [FACET_MASKED]: (e) => hasTrait(e, "masked"),
+  [FACET_MASCOT]: (e) => hasTrait(e, "mascot"),
+  [FACET_BEAST]: (e) => hasTrait(e, "beast"),
+  [FACET_NONHUMAN]: (e) => hasTrait(e, "nonhuman"),
+  [FACET_PEOPLE]: (e) => e.kind === "cosplayer" && !hasTrait(e, "mascot", "beast"),
+  [FACET_MASCOT_POOL]: (e) => hasTrait(e, "mascot", "beast"),
 };
 
-/** Trait chips shown on a card. "mascot" implies "masked" in the haystack -- show the more specific one only. */
+/** Trait chips shown on a card. "mascot" implies "masked" -- show the more specific one only. */
 function traitChips(entry) {
   const chips = [];
-  if (entry.haystack.includes("mascot")) chips.push("mascot");
-  else if (entry.haystack.includes("masked")) chips.push("masked");
-  if (hasAny(entry.haystack, ["feral", "beast"])) chips.push("beast");
-  if (entry.haystack.includes("giant")) chips.push("giant");
-  if (entry.haystack.includes("tiny")) chips.push("tiny");
+  if (hasTrait(entry, "mascot")) chips.push("mascot");
+  else if (hasTrait(entry, "masked")) chips.push("masked");
+  if (hasTrait(entry, "beast")) chips.push("beast");
+  if (hasTrait(entry, "giant")) chips.push("giant");
+  if (hasTrait(entry, "tiny")) chips.push("tiny");
   return chips;
 }
 
@@ -1153,6 +1138,7 @@ export const __testing = {
   matchesQuery,
   FACET_PREDICATES,
   FACETS,
+  traitChips,
   loadRoster,
   loadManifest,
   setWidgetValue,

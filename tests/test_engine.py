@@ -3016,7 +3016,7 @@ class FeetOutOfFrameTests(unittest.TestCase):
             if not (shoes and outfit.endswith(f", in {shoes}")):
                 continue
             checked += 1
-            replayed, _ = run_identity_forge(
+            replayed, _, _ = run_identity_forge(
                 {"seed": seed + 500, "archetype_json": doc, **replay_steering(doc)})
             self.assertEqual(replayed, original, f"seed {seed}")
         self.assertGreater(checked, 0)
@@ -6013,21 +6013,21 @@ class RandomPoolTests(unittest.TestCase):
         # gate turning red until a re-render: the snapshot below was refreshed
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
-        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) to the new
-        # ground truth, and is expected to need refreshing every time the roster
+        # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
+        # cosplayers, one folded duplicate) to the new ground truth, and is expected to need refreshing every time the roster
         # grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Saeko Busujima',
-            (_RANDOM_ANY, 1): 'Fatality',
-            (_RANDOM_ANY, 2): 'Briar',
-            (_RANDOM_ANY, 3): 'Kyle Broflovski',
-            (_RANDOM_ANY, 4): 'Krusty the Clown',
-            (_RANDOM_FEMALE, 0): 'Spider-Woman',
-            (_RANDOM_FEMALE, 1): 'Captain Mizuki',
-            (_RANDOM_FEMALE, 2): 'Yamato (One Piece)',
-            (_RANDOM_FEMALE, 3): 'Erina Nakiri',
-            (_RANDOM_FEMALE, 4): 'Enchantress (Suicide Squad)',
-            (_RANDOM_MALE, 0): 'Ryu',
+            (_RANDOM_ANY, 0): 'Sabine Wren',
+            (_RANDOM_ANY, 1): 'Falcon',
+            (_RANDOM_ANY, 2): 'Brand',
+            (_RANDOM_ANY, 3): 'Kwame',
+            (_RANDOM_ANY, 4): 'Kristoff',
+            (_RANDOM_FEMALE, 0): 'Sonya Blade',
+            (_RANDOM_FEMALE, 1): 'Captain Janeway',
+            (_RANDOM_FEMALE, 2): 'X-23',
+            (_RANDOM_FEMALE, 3): 'Enchantress (Marvel)',
+            (_RANDOM_FEMALE, 4): 'Emily (Corpse Bride)',
+            (_RANDOM_MALE, 0): 'Ruby Rhod',
             (_RANDOM_MALE, 1): 'Electro',
             (_RANDOM_MALE, 2): 'Brock',
             (_RANDOM_MALE, 3): 'Jotaro Kujo',
@@ -9529,6 +9529,224 @@ def _live_exclusions_for(field, value, target):
     return {v for r in CONSTRAINT_RULES
             if r.get("type") == "exclusion" and r["field"] == field and r["value"] == value
             and r["excludes_field"] == target for v in r["excludes_values"]}
+
+
+class EthnicityOnlyInFullModeTests(unittest.TestCase):
+    """Ethnicity and a natural human skin tone lock only in "Full character" /
+    "Full preset" (1.8.0).
+
+    Costume only (cosplayer) and Essentials (archetype) randomize the person under
+    the look, so neither may pin an ethnicity, nor a `skin_tone` drawn from the human
+    pool (a skin-tone is the proxy for ethnicity). Two things legitimately appear:
+    the `"None"` suppression, and a free-text colour anchor for body-paint characters
+    (green, orange, ...), which is not a pool option. Costume prose may not smuggle a
+    natural tone in either ("over fair skin" renders in both modes); a stylized or
+    supernatural pallor that IS the character's look is allowed by name below.
+    """
+
+    #: Stylized / supernatural pallors that are the character, not an ethnicity.
+    #: Add a name here only with a one-line reason; a natural complexion belongs in
+    #: `physique` (Full-only), not in costume text.
+    _STYLIZED_PALLOR_OK: "dict[str, str]" = {
+        "Kratos": "ash-white skin from the ash of his family is his look",
+        "Dream of the Endless": "an Endless: a supernatural pallor, not a human complexion",
+        "Delirium": "an Endless: a supernatural pallor, not a human complexion",
+        "Astarte": "a goddess with moon-pale skin; supernatural, written as such",
+        "Ki-Adi-Mundi": "an alien (Cerean); pale skin is species colour",
+        "Greez Dritus": "an alien (Dowutin); orange-tan is species colour",
+        "Ferengi": "an alien; orange-tan is species colour",
+        "Mordin Solus": "an alien (Salarian); mottled greenish-tan is species colour",
+        "Edward Scissorhands": "a corpse pallor with scars is the look (see the memory note)",
+        "Nightstar": "half-Tamaranean; the golden tint is heritage, not a human complexion",
+    }
+
+    @staticmethod
+    def _leaves(document: dict):
+        for group, values in document.items():
+            if group == "_meta" or not isinstance(values, dict):
+                continue
+            yield from values.items()
+
+    def _assert_no_ethnicity(self, label: str, document: dict) -> None:
+        human_tones = set(FIELD_DEFINITIONS["skin_tone"]["female_options"]) | set(
+            FIELD_DEFINITIONS["skin_tone"]["male_options"])
+        for field, value in self._leaves(document):
+            if field == "ethnicity":
+                self.assertEqual(value, "None", f"{label}: ethnicity {value!r} locked")
+            if field == "skin_tone":
+                self.assertNotIn(value, human_tones, f"{label}: skin_tone {value!r} locked")
+
+    def test_cosplayer_costume_only_never_pins_ethnicity_or_a_human_skin_tone(self):
+        from data.cosplayers import COSPLAYERS
+        from nodes.identity_forge_cosplayer import build_cosplayer_json
+        for name, entry in COSPLAYERS.items():
+            looks = 1 + len(entry.get("costumes") or ())
+            for seed in range(looks + 3):
+                document = json.loads(
+                    build_cosplayer_json(name, seed, look_level="Costume only"))
+                self._assert_no_ethnicity(f"{name} seed {seed}", document)
+
+    def test_archetype_essentials_never_pins_ethnicity_or_a_human_skin_tone(self):
+        from data.templates import ARCHETYPES
+        from nodes.identity_forge_archetype import build_archetype_json
+        for name in ARCHETYPES:
+            for seed in range(3):
+                document = json.loads(build_archetype_json(name, seed, "Essentials"))
+                self._assert_no_ethnicity(f"{name} seed {seed}", document)
+                for gender, look in (document.get("_meta", {}).get("variants") or {}).items():
+                    self._assert_no_ethnicity(
+                        f"{name} [{gender}] seed {seed}",
+                        {"look": look} if not any(isinstance(v, dict) for v in look.values())
+                        else look)
+
+    def test_no_costume_prose_names_a_natural_skin_tone(self):
+        from data.cosplayers import COSPLAYERS
+        tones = sorted(
+            set(FIELD_DEFINITIONS["skin_tone"]["female_options"])
+            | set(FIELD_DEFINITIONS["skin_tone"]["male_options"]), key=len, reverse=True)
+        pattern = re.compile(r"\b(?:" + "|".join(map(re.escape, tones)) + r")\s+skin\b", re.I)
+        offenders = []
+        for name, entry in COSPLAYERS.items():
+            if name in self._STYLIZED_PALLOR_OK:
+                continue
+            texts = [entry.get("costume", ""), entry.get("prop_costume", "")]
+            for alt in entry.get("costumes") or ():
+                texts.append(alt if isinstance(alt, str) else alt.get("costume", ""))
+                if isinstance(alt, dict):
+                    texts.append(alt.get("prop_costume", ""))
+            for text in texts:
+                match = pattern.search(text or "")
+                if match:
+                    offenders.append(f"{name}: ...{text[max(0, match.start() - 30):match.end() + 10]}")
+        self.assertEqual(offenders, [], "natural skin tone in costume prose -- move it to "
+                         "physique, or allowlist a stylized pallor with a reason")
+
+
+class SubjectTextTests(unittest.TestCase):
+    """``subject_text`` (1.8.0): the person and outfit, no pose, expression or scene."""
+
+    _KW = dict(locked={}, gender="Female")
+
+    def _gen(self, seed, with_subject=False, **locks):
+        return generate_character(seed, "Female", dict(locks), with_subject=with_subject)
+
+    def test_prompt_text_is_byte_identical_with_and_without_subject(self):
+        for seed in range(200):
+            plain = generate_character(seed, "Female", {})
+            withsub = generate_character(seed, "Female", {}, with_subject=True)
+            self.assertEqual(plain[0], withsub[0], f"seed {seed}: prose changed")
+            self.assertEqual(plain[1], withsub[1], f"seed {seed}: json changed")
+            self.assertEqual(len(plain), 2)
+            self.assertEqual(len(withsub), 3)
+
+    def test_subject_has_no_pose_scene_or_expression(self):
+        for seed in range(40):
+            _, doc, subject = self._gen(seed, with_subject=True)
+            fields = {k: v for g in json.loads(doc).values() if isinstance(g, dict)
+                      for k, v in g.items()}
+            # Single words ("confident") collide with body/posture fields, so check the
+            # voiced scene clauses and the pose sentence, not raw values.
+            for clause in ("expression is ", "set in ", "the framing is ",
+                           "composed with ", " mood"):
+                self.assertNotIn(clause, subject, f"seed {seed}: {clause!r}")
+            for key in ("pose", "location", "lighting"):
+                value = fields.get(key)
+                if value and len(value) > 12:
+                    self.assertNotIn(value, subject, f"seed {seed}: {key}={value!r}")
+            if fields.get("smile_type"):  # voiced as a mouth clause, not by its raw value
+                self.assertNotRegex(subject, r"\bsmile\b|closed mouth|toothy grin")
+            outfit = fields.get("outfit_description")
+            if outfit:
+                self.assertIn(outfit, subject, f"seed {seed}: outfit missing")
+
+    def test_subject_keeps_the_cosplay_label(self):
+        _, _, subject = generate_character(
+            3, "Female", {}, cosplay_label="Test Character (Test)", with_subject=True)
+        self.assertTrue(subject.startswith("Cosplaying as Test Character (Test):"), subject)
+
+    def test_subject_keeps_shoes_on_a_close_up(self):
+        checked = 0
+        for seed in range(30):
+            prose, doc, subject = generate_character(
+                seed, "Female", {"shot_type": "close-up portrait"}, with_subject=True)
+            fields = {k: v for g in json.loads(doc).values() if isinstance(g, dict)
+                      for k, v in g.items()}
+            outfit = fields.get("outfit_description", "")
+            shoes = fields.get("footwear")
+            if shoes and outfit.endswith(f", in {shoes}"):
+                checked += 1
+                self.assertNotIn(outfit, prose, "sanity: the close-up trims shoes from prompt_text")
+                self.assertIn(outfit, subject)
+        self.assertGreater(checked, 0)
+
+    def test_subject_is_identical_across_location_locks(self):
+        a = generate_character(7, "Female", {"location": "a retro diner"}, with_subject=True)[2]
+        b = generate_character(7, "Female", {"location": "a snowy mountain pass"}, with_subject=True)[2]
+        self.assertEqual(a, b)
+
+
+class ColourPatternModifierTests(unittest.TestCase):
+    """A ``clothing_color`` / ``clothing_pattern`` field modifier reaches a generated
+    outfit (1.8.0). The field holds a palette *name* ("jewel tones"); the outfit holds
+    the hue the composer drew ("emerald"), so the modifier is applied to that word."""
+
+    @staticmethod
+    def _outfit(doc):
+        return json.loads(doc)["Clothing"].get("outfit_description", "")
+
+    def test_a_colour_modifier_decorates_the_hue_with_the_right_article(self):
+        hit = {"faded": 0, "ashen": 0}
+        for seed in range(80):
+            base = self._outfit(generate_character(seed, "Female", {})[1])
+            for descriptor, article in (("faded", "a"), ("ashen", "an")):
+                doc = generate_character(
+                    seed, "Female", {}, modifiers={"clothing_color": descriptor})[1]
+                out = self._outfit(doc)
+                # Same roll: the modified outfit is the base with the descriptor added
+                # (articles aside, since "an emerald" becomes "a faded emerald").
+                def strip(t):
+                    return re.sub(r"\b(?:an?) ", "", t)
+                self.assertEqual(strip(out.replace(f"{descriptor} ", "", 1)), strip(base),
+                                 f"seed {seed}")
+                self.assertNotIn(f"an {descriptor}" if article == "a" else f"a {descriptor}",
+                                 out, f"seed {seed}: {out!r}")
+                if descriptor in out:
+                    hit[descriptor] += 1
+                    # a singular lead takes the descriptor's article, a plural none
+                    lead = re.search(rf"(?:\b(an?) )?\b{descriptor} ", out)
+                    if lead.group(1):
+                        self.assertEqual(lead.group(1), article, f"seed {seed}: {out!r}")
+        self.assertGreater(hit["faded"], 40, "the colour modifier should reach most outfits")
+        self.assertGreater(hit["ashen"], 40)
+
+    def test_a_pattern_modifier_decorates_the_pattern_adjective(self):
+        from data.fields import PATTERN_ADJECTIVES
+        seen = 0
+        for seed in range(120):
+            doc = generate_character(
+                seed, "Female", {}, modifiers={"clothing_pattern": "bold"})[1]
+            clothing = json.loads(doc)["Clothing"]
+            pattern = clothing.get("clothing_pattern", "").removeprefix("bold ")
+            adjective = PATTERN_ADJECTIVES.get(pattern)
+            if adjective and adjective in clothing.get("outfit_description", ""):
+                seen += 1
+                self.assertIn(f"bold {adjective}", clothing["outfit_description"],
+                              f"seed {seed}")
+        self.assertGreater(seen, 10)
+
+    def test_a_group_key_still_decorates_the_outfit_as_before(self):
+        for seed in range(20):
+            out = self._outfit(generate_character(
+                seed, "Female", {}, modifiers={"Clothing": "weathered"})[1])
+            self.assertTrue(out.startswith(("a weathered ", "weathered ")),
+                            f"seed {seed}: {out!r}")
+            self.assertNotIn("weathered weathered", out)
+
+    def test_no_modifier_changes_nothing(self):
+        for seed in range(30):
+            self.assertEqual(
+                generate_character(seed, "Female", {}),
+                generate_character(seed, "Female", {}, modifiers={}))
 
 
 class ComfyApiStubPurgeTests(unittest.TestCase):

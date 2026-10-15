@@ -1,0 +1,63 @@
+{
+  "comment": "Pool values that no gender lock draws under default widgets in tests/fixtures/marginals_baseline.json, each with the reason it is by design. tests/test_sweep_marginals.py requires this list to EQUAL what `python scripts/sweep_marginals.py --unreachable` computes: a new accidental gate fails it, and so does a stale exception.",
+  "unreachable": [
+    {
+      "field": "gender",
+      "values": ["Female", "Male", "Any"],
+      "reason": "A control widget, not a drawn trait: the sweep locks it, so the value is the lock and is never a resolved field."
+    },
+    {
+      "field": "hair_color_scope",
+      "values": ["Full spectrum", "Natural only"],
+      "reason": "A control widget: it steers the hair_color pool and is never itself a resolved field."
+    },
+    {
+      "field": "location_setting",
+      "values": ["Any indoor/outdoor", "Indoor", "Outdoor", "Studio / solid backdrop"],
+      "reason": "A control widget: it filters the location pool and is never itself a resolved field."
+    },
+    {
+      "field": "outfit_description",
+      "values": ["auto"],
+      "reason": "The widget's 'generate one' sentinel, replaced by the composed outfit; the sweep skips free text."
+    },
+    {
+      "field": "held_item",
+      "values": ["auto"],
+      "reason": "The widget's 'generate one' sentinel, replaced by the drawn item; the sweep skips free text."
+    },
+    {
+      "field": "hair_color",
+      "values": [
+        "hot pink", "baby pink", "magenta", "lavender", "purple", "deep purple",
+        "electric blue", "navy blue", "teal", "mint green", "emerald green",
+        "lime green", "orange", "coral", "yellow", "platinum white", "rose gold",
+        "iridescent", "rainbow ombre", "black with colored tips", "burgundy"
+      ],
+      "reason": "Vivid colours need hair_color_scope = Full spectrum; the default is Natural only."
+    },
+    {
+      "field": "eyebrows",
+      "values": ["bleached"],
+      "reason": "Follows a vivid hair colour, so it only draws under hair_color_scope = Full spectrum."
+    },
+    {
+      "field": "location",
+      "values": [
+        "seamless grey studio backdrop", "solid white studio backdrop",
+        "solid black studio backdrop", "chroma-key green screen backdrop"
+      ],
+      "reason": "Studio backdrops only draw when location_setting is Studio / solid backdrop."
+    },
+    {
+      "field": "hair_accessory",
+      "values": ["thin headband"],
+      "reason": "Only the male pool lists it, and the 1.5.0 coherence rule (data/constraints.py) removes it for men because it rendered as a women's hairband."
+    },
+    {
+      "field": "tattoo_placement",
+      "values": ["behind one ear"],
+      "reason": "Lock-only since 1.5.1 (nodes/identity_forge.py): at random it landed on the temple, neck or ponytail; a lock still gets it."
+    }
+  ]
+}

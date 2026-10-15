@@ -925,3 +925,78 @@ shows field keys and says what a group key does.
 **`generate_character` is keyword-only from `widget_locked`.** It was documented so, but had
 no `*`, and `execute` passes the parameters before it positionally: one inserted mid-signature
 would silently shift every argument after it.
+
+## 1.8.0 — facets read flags, ethnicity locks only in Full, `subject_text`, and a reachability gate
+
+**Picker trait facets read structured flags, not prose.** The Tiny / Giant / Masked / Mascot /
+Non-human / Beast facets matched words in the costume, so Poison Ivy ("tiny leaves") showed as
+Tiny and a green-skinned human as Non-human. `scripts/generate_js_data.py` now emits a `traits`
+list per cosplayer, computed from the same data the backend's `_SPECIAL_SCOPES` predicates read
+(`size_scale`, `covers_face`, `covers_body`, `mask`, `body_plan`, the body-paint marker).
+`RosterTraitsMatchBackendScopes` compares the committed roster's traits with those predicates, so
+the picker and the Random scope cannot disagree. Facets apply to cosplayers only; archetypes and
+creatures carry no traits.
+
+**Ethnicity and skin tone lock only in Full character / Full preset.** A signature `skin_tone`
+and costume prose that named a natural skin tone ("over fair skin") locked both under Essentials,
+which promises a Costume-only lock. They moved to `physique` (Full only) or out of the prose;
+Essentials archetypes no longer keep `skin_tone` from the Body group. Stylized or supernatural
+pallors (Kratos, Dream of the Endless, a Ferengi and similar) stay in the costume and are listed,
+each with its reason, in `_STYLIZED_PALLOR_OK` in `tests/test_engine.py`. The regex sweep over
+costume prose is the test that keeps new entries honest.
+
+**`subject_text` output.** A new last output: the person and their outfit, with no pose, smile or
+scene, so it can feed a prompt that has its own scene. The prose output is byte-identical with
+and without it (200 seeds pinned). Shoes stay on close-ups, unlike the prose; the cosplay label
+stays.
+
+**Colour and pattern modifiers reach a generated outfit.** `_compose_outfit_clause` records the
+hue and pattern adjective it voiced; `_apply_modifiers` decorates that word, with the right
+article ("an emerald" becomes "a faded emerald"). A group key still decorates as before.
+
+**Roster.** New cosplayers: Megamind, Alita with a Motorball alternate, Sesshomaru, Raya,
+Barbie with the pink cowboy and 1959 swimsuit looks, Minion, and Lord Fanny and Ragged Robin
+(The Invisibles, a new franchise in the DC category; Ragged Robin's Volume 2 leather look is
+an alternate). Effie Trinket was rewritten rather than duplicated: the Reaping look is the
+primary and the Catching Fire liquid-gold look the alternate; the unverified grey Mockingjay
+alternate was dropped. "Julia Carpenter" and "Spider-Woman (Julia Carpenter)" were one
+character listed twice, so they are now one entry with the classic suit as an alternate
+(a saved workflow naming "Julia Carpenter" falls back to a random pick). Three archetypes
+(American Football Player, Scuba Diver, Thai Classical Dancer) and one creature
+(stegosaurus). Canon was written from knowledge plus the maintainer's hooks, not from reference
+images. Anxiety was declined (see `docs/suggested-additions.md`).
+The football archetype is gated to the two park locations because no stadium location exists;
+adding one is a field-value change and was left out.
+
+**Reachability.** Every value in a field pool that no gender draws under default widgets is now
+listed by `python scripts/sweep_marginals.py --unreachable` and must match
+`tests/fixtures/unreachable_by_design.json`, each with a reason: the control widgets, the vivid
+hair colours (Natural scope), `bleached` eyebrows (Full spectrum), the four studio backdrops
+(Studio setting), `thin headband` (removed for men in 1.5.0) and `behind one ear` (lock-only
+since 1.5.1). `test_sweep_marginals` fails on a new accidental gate and on a stale exception.
+A value only one gender draws is a gendered coherence filter, so it is not listed.
+
+**Coherence checklist for this release.** Items 1-6 were run for each new value, phrase and
+entry. Hidden items: the football helmet is held, the dive mask is pushed up on the forehead and
+the fins are on the feet (full-body framing only). Masculine defaults: the wetsuit and the pads
+read for either gender, so no single-gender costume ships without variants. Gating: the sweep
+baseline did not move (`--check` clean at 4,000 seeds per gender), and `ethnicity` and
+`skin_tone` stay flat across genders in `--report`. The Random cosplayer pick stays uniform; the
+roster only grew.
+
+**Saved widget order readable without a browser.** ComfyUI writes `widgets_values` positionally,
+one entry per `node.widgets` item, buttons included. `IdentityForge` and `IdentityForgeCreature`
+re-sort their widgets under headers and `IdentityForgeCosplayer` splices `franchise_filter` in
+after `character`, so a headless tool mapped the array onto the wrong inputs. Each now saves the
+schema widgets only, marks the save `properties.if_widget_order = "schema"`, and expands a marked
+save back into display order on load; unmarked (pre-1.8.0) saves take the legacy path unchanged.
+Read in the installed frontend bundle rather than assumed: a widget added with
+`{serialize: false}` carries it in `options` only, so it still takes a positional slot, and
+restoration indexes `widgets_values` over every such widget. The jsdom suite pins serialize,
+round trip, a pre-1.8.0 interleaved save, and a marked save one field short. **Not run live:**
+the server loads a separate installed copy of the pack, so the Playwright check in both
+renderers is left for the maintainer after pulling the branch there.
+
+**CI.** `ci.yml` is callable, every job has a 30-minute cap, and a Windows leg runs the suite
+with autocrlf off. `publish_action.yml` runs it first and `publish-node` needs it, with no new
+write scope.

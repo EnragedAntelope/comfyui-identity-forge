@@ -718,6 +718,35 @@ function resize(node) {
 //: "Fix node (recreate)", which produces a genuinely new node object.
 const ALL_RANDOM_LABEL = "🎲 Unlock all (set to Random)";
 
+//: 1.8.0 -- save `widgets_values` in SCHEMA order, so a tool without a browser can read it.
+//: ComfyUI saves one value per entry of `node.widgets`, positionally. This file re-sorts
+//: the widgets and inserts buttons and headers, so the saved array no longer matched the
+//: node's declared inputs. The visual grouping stays (in the Nodes 2.0 renderer array
+//: order IS display order); only the SAVED array is written in schema order, marked with
+//: a node property so a load can tell it from a pre-1.8.0 interleaved save. The same
+//: three helpers live in identity_forge_creature.js and identity_forge_cosplayer.js.
+const WIDGET_ORDER_PROPERTY = "if_widget_order";
+
+function serializeInSchemaOrder(node, o) {
+  const schema = node.__ifSchemaWidgets;
+  if (!schema || !o) return;
+  o.widgets_values = schema.map((w) => w.value);
+  o.properties = { ...(o.properties || {}), [WIDGET_ORDER_PROPERTY]: "schema" };
+}
+
+/** Saved schema-order values expanded into display order, or null for an unmarked save. */
+function expandSchemaOrderValues(node, info) {
+  const schema = node.__ifSchemaWidgets;
+  const values = info?.widgets_values;
+  if (!schema || !Array.isArray(values)) return null;
+  if (info.properties?.[WIDGET_ORDER_PROPERTY] !== "schema") return null;
+  // A widget the save does not reach (a field appended in a later release) keeps its default.
+  return (node.widgets || []).map((w) => {
+    const i = schema.indexOf(w);
+    return i > -1 && i < values.length ? values[i] : w.value;
+  });
+}
+
 function setupIdentityForge(node) {
   const original = node.widgets ? node.widgets.slice() : [];
   if (!original.length) return;
@@ -726,6 +755,7 @@ function setupIdentityForge(node) {
   // set of group headers, and wraps the gender callback twice. The Cosplayer file
   // has had this since 0.89.0; the other four setups had not (0.97.0).
   if (original.some((w) => w.name === ALL_RANDOM_LABEL)) return;
+  node.__ifSchemaWidgets = original;
 
   const fields = original.filter(isFieldWidget);
   const fieldSet = new Set(fields);
@@ -886,6 +916,17 @@ app.registerExtension({
       return result;
     };
 
+    const onSerialize = nodeType.prototype.onSerialize;
+    nodeType.prototype.onSerialize = function (o) {
+      const result = onSerialize ? onSerialize.apply(this, arguments) : undefined;
+      try {
+        serializeInSchemaOrder(this, o);
+      } catch (err) {
+        console.error("[IdentityForge] schema-order save failed:", err);
+      }
+      return result;
+    };
+
     // Must wrap `configure` itself, not `onConfigure`: LiteGraph applies
     // widgets_values and THEN calls onConfigure, so by then the damage is done.
     // `onNodeCreated` has already run at this point, so node.widgets is built and
@@ -893,7 +934,10 @@ app.registerExtension({
     const configure = nodeType.prototype.configure;
     nodeType.prototype.configure = function (info) {
       try {
-        if (info && Array.isArray(info.widgets_values)) {
+        const expanded = expandSchemaOrderValues(this, info);
+        if (expanded) {
+          info = { ...info, widgets_values: expanded };
+        } else if (info && Array.isArray(info.widgets_values)) {
           info = { ...info, widgets_values: padLegacyWidgetValues(this, info.widgets_values) };
         }
       } catch (err) {
