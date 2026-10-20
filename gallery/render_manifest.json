@@ -1755,7 +1755,7 @@
       },
       "Bartok": {
         "hash": "02989488dbb2c7d1",
-        "published": false,
+        "published": true,
         "rendered": "2026-10-20"
       },
       "Bass Armstrong": {
@@ -5375,7 +5375,7 @@
       },
       "Lola Bunny": {
         "hash": "f9b2310a26eee921",
-        "published": false,
+        "published": true,
         "rendered": "2026-10-20"
       },
       "Looten Plunder": {
@@ -8434,7 +8434,7 @@
       },
       "Tasmanian Devil": {
         "hash": "275ed373e5592495",
-        "published": false,
+        "published": true,
         "rendered": "2026-10-20"
       },
       "Tatsumaki": {
@@ -10545,7 +10545,7 @@
       }
     }
   },
-  "generated": "2026-10-20T10:07:31",
+  "generated": "2026-10-20T10:16:19",
   "render": {
     "cfg": 1,
     "height": 2432,
