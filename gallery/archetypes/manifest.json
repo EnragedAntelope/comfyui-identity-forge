@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-10-19T22:37:02.414363",
-  "version": "1.9.0",
+  "generated": "2026-10-20T13:51:58.806356",
+  "version": "1.11.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -128,10 +128,11 @@
     "1.5.1",
     "1.6.0",
     "1.8.0",
-    "1.9.0"
+    "1.9.0",
+    "1.11.0"
   ],
-  "total_entries": 276,
-  "entries_with_images": 276,
+  "total_entries": 287,
+  "entries_with_images": 287,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -158,6 +159,14 @@
       "group": "vintage retro",
       "added": "0.49.0",
       "image": "images/1950s Diner Waitress.jpeg"
+    },
+    {
+      "name": "1950s Gas Station Attendant",
+      "has_image": true,
+      "gender": "Any",
+      "group": "utility workwear",
+      "added": "1.11.0",
+      "image": "images/1950s Gas Station Attendant.jpeg"
     },
     {
       "name": "1950s Greaser",
@@ -222,6 +231,14 @@
       "group": "bohemian",
       "added": "0.34.0",
       "image": "images/1970s Boho It-Girl.jpeg"
+    },
+    {
+      "name": "1970s Fast-Food Crew",
+      "has_image": true,
+      "gender": "Any",
+      "group": "vintage retro",
+      "added": "1.11.0",
+      "image": "images/1970s Fast-Food Crew.jpeg"
     },
     {
       "name": "1970s Leisure Lounge",
@@ -496,6 +513,14 @@
       "image": "images/Beekeeper.jpeg"
     },
     {
+      "name": "Bellhop",
+      "has_image": true,
+      "gender": "Any",
+      "group": "business formal",
+      "added": "1.11.0",
+      "image": "images/Bellhop.jpeg"
+    },
+    {
       "name": "Belly Dancer",
       "has_image": true,
       "gender": "Female",
@@ -590,6 +615,14 @@
       "group": "smart casual",
       "added": "0.29.0",
       "image": "images/Calligrapher.jpeg"
+    },
+    {
+      "name": "Carhop",
+      "has_image": true,
+      "gender": "Any",
+      "group": "vintage retro",
+      "added": "1.11.0",
+      "image": "images/Carhop.jpeg"
     },
     {
       "name": "Carpenter",
@@ -1304,6 +1337,14 @@
       "image": "images/Lifeguard.jpeg"
     },
     {
+      "name": "Lounge Singer",
+      "has_image": true,
+      "gender": "Any",
+      "group": "evening formal",
+      "added": "1.11.0",
+      "image": "images/Lounge Singer.jpeg"
+    },
+    {
       "name": "Luchador",
       "has_image": true,
       "gender": "Any",
@@ -1334,6 +1375,22 @@
       "group": "",
       "added": "0.17.0",
       "image": "images/Mad Scientist.jpeg"
+    },
+    {
+      "name": "Mail Carrier",
+      "has_image": true,
+      "gender": "Any",
+      "group": "utility workwear",
+      "added": "1.11.0",
+      "image": "images/Mail Carrier.jpeg"
+    },
+    {
+      "name": "Majorette",
+      "has_image": true,
+      "gender": "Female",
+      "group": "athletic",
+      "added": "1.11.0",
+      "image": "images/Majorette.jpeg"
     },
     {
       "name": "Marching Band Drum Major",
@@ -1454,6 +1511,14 @@
       "group": "vintage retro",
       "added": "1.9.0",
       "image": "images/Morris Dancer.jpeg"
+    },
+    {
+      "name": "Mountaineer",
+      "has_image": true,
+      "gender": "Any",
+      "group": "athletic",
+      "added": "1.11.0",
+      "image": "images/Mountaineer.jpeg"
     },
     {
       "name": "Muay Thai Fighter",
@@ -1774,6 +1839,22 @@
       "group": "athletic",
       "added": "0.17.0",
       "image": "images/Rock Climber.jpeg"
+    },
+    {
+      "name": "Rodeo Rider",
+      "has_image": true,
+      "gender": "Any",
+      "group": "vintage retro",
+      "added": "1.11.0",
+      "image": "images/Rodeo Rider.jpeg"
+    },
+    {
+      "name": "Roller Derby",
+      "has_image": true,
+      "gender": "Any",
+      "group": "athletic",
+      "added": "1.11.0",
+      "image": "images/Roller Derby.jpeg"
     },
     {
       "name": "Roman Centurion",
@@ -2342,6 +2423,14 @@
       "group": "vintage retro",
       "added": "1.6.0",
       "image": "images/Yukata.jpeg"
+    },
+    {
+      "name": "Zoot Suit",
+      "has_image": true,
+      "gender": "Male",
+      "group": "vintage retro",
+      "added": "1.11.0",
+      "image": "images/Zoot Suit.jpeg"
     }
   ]
 }
