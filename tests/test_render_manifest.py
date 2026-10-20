@@ -63,10 +63,27 @@ class CheckPassesTests(unittest.TestCase):
         for kind, records in manifest["entries"].items():
             for name, record in records.items():
                 self.assertEqual(
-                    set(record) - {"hash", "rendered", "seed"}, set(),
-                    f"{kind}/{name} records more than a hash, a date and an "
-                    f"optional re-rolled seed",
+                    set(record) - {"hash", "rendered", "seed", "published"}, set(),
+                    f"{kind}/{name} records more than a hash, a date, an "
+                    f"optional re-rolled seed and a publish flag",
                 )
+
+    def test_a_render_that_never_reached_gh_pages_fails_check(self) -> None:
+        # 1.10.0: a tile rendered and recorded but never published used to pass
+        # --check. A record without the key predates the flag.
+        manifest = render_gallery.load_manifest()
+        kind = "cosplay"
+        name = next(iter(manifest["entries"][kind]))
+        self.assertNotIn(name, render_gallery.survey((kind,))[kind]["unpublished"])
+        manifest["entries"][kind][name]["published"] = False
+        original = render_gallery.load_manifest
+        render_gallery.load_manifest = lambda: manifest
+        try:
+            self.assertIn(name, render_gallery.survey((kind,))[kind]["unpublished"])
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(render_gallery.main(["--check", "--kind", kind]), 1)
+        finally:
+            render_gallery.load_manifest = original
 
 
 class EntryHashTests(unittest.TestCase):

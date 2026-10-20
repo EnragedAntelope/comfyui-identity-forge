@@ -398,7 +398,7 @@ def save_manifest(manifest: dict) -> None:
 
 
 def survey(kinds: tuple[str, ...] = KINDS) -> dict[str, dict[str, list[str]]]:
-    """Return ``{kind: {missing, stale, orphan}}`` against the manifest.
+    """Return ``{kind: {missing, stale, unpublished, orphan}}`` against the manifest.
 
     Deliberately manifest-only: ``gallery/.render_out`` is scratch and never
     reaches a clone, so testing for a file on disk would report every entry as
@@ -410,17 +410,22 @@ def survey(kinds: tuple[str, ...] = KINDS) -> dict[str, dict[str, list[str]]]:
     for kind in kinds:
         entries = entries_for(kind)
         recorded = recorded_all.get(kind, {})
-        missing, stale = [], []
+        missing, stale, unpublished = [], [], []
         for name in entries:
             record = recorded.get(name)
             if record is None:
                 missing.append(name)
             elif record.get("hash") != entry_hash(kind, name):
                 stale.append(name)
+            # 1.10.0: rendered but never pushed to gh-pages, which --check used to
+            # pass. A record without the key predates it: published.
+            elif record.get("published", True) is False:
+                unpublished.append(name)
         orphan = [name for name in recorded if name not in entries]
         result[kind] = {
             "missing": sorted(missing),
             "stale": sorted(stale),
+            "unpublished": sorted(unpublished),
             "orphan": sorted(orphan),
         }
     return result
@@ -814,14 +819,24 @@ def publish_kind(kind: str, names: list[str] | None = None) -> bool:
 # Entry point
 # ---------------------------------------------------------------------------
 
+def _mark_published(kind: str, names: list[str]) -> None:
+    """Record that ``names`` reached gh-pages, so ``--check`` stops failing on them."""
+    manifest = load_manifest()
+    recorded = manifest["entries"].get(kind, {})
+    for name in names:
+        if name in recorded:
+            recorded[name]["published"] = True
+    save_manifest(manifest)
+
+
 def _report(results: dict[str, dict[str, list[str]]], limit: int = 15) -> bool:
     dirty = False
     for kind, buckets in results.items():
         counts = {key: len(value) for key, value in buckets.items()}
         print(f"{kind}: {len(entries_for(kind))} entries | "
               f"missing {counts['missing']}, stale {counts['stale']}, "
-              f"orphan {counts['orphan']}")
-        for label in ("missing", "stale", "orphan"):
+              f"unpublished {counts['unpublished']}, orphan {counts['orphan']}")
+        for label in ("missing", "stale", "unpublished", "orphan"):
             names = buckets[label]
             if names:
                 dirty = True
@@ -882,6 +897,9 @@ def main(argv: list[str] | None = None) -> int:
                         help="Cap this run. Resumable: the manifest saves per image.")
     parser.add_argument("--publish", action="store_true",
                         help="After a clean run, publish each kind touched to gh-pages.")
+    parser.add_argument("--publish-pending", action="store_true",
+                        help="Publish everything --check calls unpublished, from the "
+                             "local originals. Renders nothing.")
     parser.add_argument("--dry-run", action="store_true",
                         help="Print the resolved prompt and graph; queue nothing.")
     parser.add_argument("--save-originals", action="store_true",
@@ -902,7 +920,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     kinds = KINDS if args.kind == "all" else (args.kind,)
-    acting = args.seed_manifest or args.entry or args.missing or args.stale
+    acting = (args.seed_manifest or args.entry or args.missing or args.stale
+              or args.publish_pending)
     if not acting and not args.dry_run:
         args.check = True
 
@@ -917,13 +936,30 @@ def main(argv: list[str] | None = None) -> int:
                      for name in results[kind][bucket][:1]),
                     "--missing",
                 )
-                print("\nRe-render them, e.g.:")
-                print(f"  python scripts/render_gallery.py {first} "
-                      f"--save-originals --publish")
+                if first != "--missing":
+                    print("\nRe-render them, e.g.:")
+                    print(f"  python scripts/render_gallery.py {first} "
+                          f"--save-originals --publish")
+                if any(results[kind]["unpublished"] for kind in kinds):
+                    print("\nPublish the unpublished ones (no re-render):")
+                    print("  python scripts/render_gallery.py --publish-pending")
                 print("An orphan is pruned by deleting its manifest entry in the "
                       "same commit that removed the roster entry.")
                 return 1
             print("\nEvery entry's recorded image matches its current text.")
+            return 0
+
+        if args.publish_pending:
+            results = survey(kinds)
+            pending = {kind: results[kind]["unpublished"] for kind in kinds
+                       if results[kind]["unpublished"]}
+            if not pending:
+                print("Nothing unpublished.")
+                return 0
+            for kind, names in sorted(pending.items()):
+                if not publish_kind(kind, names):
+                    return 1
+                _mark_published(kind, names)
             return 0
 
         if args.seed_manifest:
@@ -1007,7 +1043,8 @@ def main(argv: list[str] | None = None) -> int:
             if render_one(client, kind, name, settings, normalize_name,
                           front=not args.back, save_originals=args.save_originals,
                           reroll=args.reroll):
-                record = {"hash": entry_hash(kind, name), "rendered": today}
+                record = {"hash": entry_hash(kind, name), "rendered": today,
+                          "published": False}
                 if args.reroll:
                     record["seed"] = entry_seed(name, args.reroll)
                 manifest["entries"].setdefault(kind, {})[name] = record
@@ -1026,6 +1063,7 @@ def main(argv: list[str] | None = None) -> int:
             for kind in sorted(touched):
                 if not publish_kind(kind, touched[kind]):
                     return 1
+                _mark_published(kind, touched[kind])
         return 0
 
     except RenderError as error:

@@ -28,15 +28,13 @@ that is what the Creature node is for.
 | The Corinthian (The Sandman) | [Netflix's cast reference](https://www.netflix.com/tudum/galleries/the-sandman-cast-gallery) confirms mouths in the eye sockets. That anatomy is new; the suit and sunglasses alone are ordinary modern dress. Consider only an exposed-eye look, and require a render that holds both tooth-lined sockets before admission. |
 | Barreleye creature | [MBARI's observation](https://www.mbari.org/news/researchers-solve-mystery-of-deep-sea-fish-with-tubular-eyes-and-transparent-head/) shows internal tubular eyes inside a transparent head dome. The review render lost the dome and drew ordinary external fish eyes, so it remains unshipped. Revisit only with wording or a model that preserves that anatomy; another generic fish head adds nothing. |
 
-**Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, see
-`docs/history.md` → "1.7.0"):
+**Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, and the
+tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
+`docs/history.md`):
 
 | Item | Case |
 |---|---|
-| Legwear in a tight shot | 1.7.0 drops the shoes when the framing crops the feet, but tights and stockings are still voiced in a close-up (about 1% of renders). |
-| Free-text `held_item` | Today only archetypes set it. |
-| A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Worth it alongside the expression sheet, not alone. |
-| An expression-sheet node | Re-run like Turnaround, releasing `smile_type` and `mood` per view. |
+| A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Planned for 2.0.0, the seed-epoch release, now that the expression sheet exists. |
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,

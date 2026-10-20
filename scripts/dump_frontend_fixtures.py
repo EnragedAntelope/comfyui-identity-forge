@@ -46,6 +46,7 @@ from nodes.identity_forge_cosplayer import IdentityForgeCosplayer  # noqa: E402
 from nodes.identity_forge_creature import IdentityForgeCreature  # noqa: E402
 from nodes.identity_forge_modifier import IdentityForgeModifier  # noqa: E402
 from nodes.identity_forge_turnaround import IdentityForgeTurnaround  # noqa: E402
+from nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet  # noqa: E402
 from nodes.identity_forge_vault_load import (  # noqa: E402
     IdentityForgeVaultLoad, _NO_CHARACTERS,
 )
@@ -53,7 +54,7 @@ from nodes.identity_forge_vault_save import IdentityForgeVaultSave  # noqa: E402
 
 _FIXTURE_PATH = ROOT / "tests" / "frontend" / "fixtures" / "nodes.json"
 
-# Order matches the seven node_id values used across nodes/*.py.
+# Every node_id used across nodes/*.py.
 _NODE_CLASSES = {
     "IdentityForge": IdentityForge,
     "IdentityForgeArchetype": IdentityForgeArchetype,
@@ -61,6 +62,7 @@ _NODE_CLASSES = {
     "IdentityForgeCreature": IdentityForgeCreature,
     "IdentityForgeModifier": IdentityForgeModifier,
     "IdentityForgeTurnaround": IdentityForgeTurnaround,
+    "IdentityForgeExpressionSheet": IdentityForgeExpressionSheet,
     "IdentityForgeVaultLoad": IdentityForgeVaultLoad,
     "IdentityForgeVaultSave": IdentityForgeVaultSave,
 }

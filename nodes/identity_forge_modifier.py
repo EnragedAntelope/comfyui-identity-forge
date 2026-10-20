@@ -29,6 +29,9 @@ Modifiers only **decorate values that are present** — they style an element, t
 not force an absent / ``None`` element to appear. Clearing the box (or muting the
 node) disables it entirely.
 
+The optional ``held_item`` text box (1.10.0) is the one exception to "never a lock":
+free text the character holds, voiced as "holding ...", replacing any upstream prop.
+
 The engine half (:func:`build_modifier_json`) is a pure function, testable without
 ComfyUI.
 """
@@ -130,17 +133,27 @@ def _parse_modifier_text(text: str) -> "OrderedDict[str, str]":
     return mods
 
 
-def build_modifier_json(text: str = "") -> str:
-    """Return a preset document carrying only a ``_modifiers`` section.
+def build_modifier_json(text: str = "", held_item: str = "") -> str:
+    """Return a preset document carrying a ``_modifiers`` section and/or a ``held_item``.
 
     Empty / all-comment input yields ``"{}"`` so an inactive node simply passes its
     ``upstream`` through (mirrors the other preset nodes' "None" behaviour).
+
+    ``held_item`` (1.10.0) is the one field lock this node sets: free text voiced as
+    "holding <it>". Downstream wins in :func:`merge_preset_documents`, so it replaces
+    an upstream Cosplayer prop.
     """
     mods = _parse_modifier_text(text)
-    if not mods:
+    held = (held_item or "").strip()
+    if held.lower().startswith("holding "):  # the engine adds the verb itself
+        held = held[len("holding "):].strip()
+    if not mods and not held:
         return "{}"
     document: "OrderedDict[str, Any]" = OrderedDict()
-    document[_MODIFIERS_DOC_KEY] = mods
+    if held:
+        document[FIELD_DEFINITIONS["held_item"]["group"]] = {"held_item": held}
+    if mods:
+        document[_MODIFIERS_DOC_KEY] = mods
     return json.dumps(document, indent=2)
 
 
@@ -200,7 +213,19 @@ if _COMFY_AVAILABLE:
                         tooltip="Optional: connect an Archetype / Cosplayer (or another "
                                 "Modifier) character_json here to stack presets. This "
                                 "node only adds modifiers, so it never overrides their "
-                                "field locks.",
+                                "field locks - except held_item, when you fill it in.",
+                    ),
+                    # APPENDED (1.10.0) after `upstream`, so saved workflows keep their
+                    # widgets_values order.
+                    io.String.Input(
+                        "held_item",
+                        default="",
+                        optional=True,
+                        tooltip="Optional: something the character holds, as a noun "
+                                "phrase - 'a red paper umbrella', 'a steaming mug of "
+                                "coffee'. Voiced as 'holding ...', and poses that need "
+                                "both hands free are dropped. Replaces a Cosplayer's "
+                                "signature prop. Leave empty for none.",
                     ),
                 ],
                 outputs=[io.String.Output(display_name="character_json")],
@@ -208,6 +233,7 @@ if _COMFY_AVAILABLE:
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
-            own = build_modifier_json(kwargs.get("style_modifiers", ""))
+            own = build_modifier_json(kwargs.get("style_modifiers", ""),
+                                      kwargs.get("held_item", ""))
             character_json = merge_preset_documents(kwargs.get("upstream", ""), own)
             return io.NodeOutput(character_json)

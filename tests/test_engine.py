@@ -52,7 +52,7 @@ from nodes.identity_forge import (
     _a,
     _prepend_descriptor,
     _compose_outfit_clause,
-    _FOOTWEAR_CLAUSES, _FEET_OUT_OF_FRAME_SHOTS,
+    _FOOTWEAR_CLAUSES, _FEET_OUT_OF_FRAME_SHOTS, _LEGS_OUT_OF_FRAME_SHOTS,
     _article_if_singular,
     _format_prose,
 )
@@ -2980,6 +2980,33 @@ class FeetOutOfFrameTests(unittest.TestCase):
                     self.assertIn(shoes, outfit)
         self.assertGreater(checked, 20)
 
+    def test_tight_shot_drops_legwear_from_prose_but_not_json(self):
+        # 1.10.0: tights and stockings were still voiced in a close-up.
+        checked = 0
+        for shot in sorted(_LEGS_OUT_OF_FRAME_SHOTS):
+            for seed in range(300):
+                prose, js = generate_character(seed, "Female", {"shot_type": shot})
+                clothing = json.loads(js).get("Clothing", {})
+                hose = clothing.get("legwear")
+                if not hose or f", with {hose}" not in (clothing.get("outfit_description") or ""):
+                    continue
+                checked += 1
+                with self.subTest(shot=shot, seed=seed):
+                    self.assertNotIn(f"with {hose}", prose)
+        self.assertGreater(checked, 10)
+
+    def test_cowboy_shot_keeps_legwear(self):
+        locks = {"shot_type": "cowboy shot from mid-thigh up", "legwear": "sheer black tights",
+                 "outfit_style": "smart casual"}
+        voiced = 0
+        for seed in range(60):
+            prose, js = generate_character(seed, "Female", locks)
+            outfit = json.loads(js).get("Clothing", {}).get("outfit_description") or ""
+            if ", with sheer black tights" in outfit:
+                voiced += 1
+                self.assertIn("with sheer black tights", prose)
+        self.assertGreater(voiced, 0)
+
     def test_full_body_keeps_shoes(self):
         for seed in range(12):
             prose, js = generate_character(seed, "Male", {"shot_type": "full body shot"})
@@ -3146,6 +3173,18 @@ class ModifierTests(unittest.TestCase):
         self.assertEqual(
             json.loads(js)["Clothing"]["outfit_description"], COSPLAYERS["2B"]["costume"]
         )
+
+    def test_free_text_held_item_is_voiced_and_occupies_the_hands(self):
+        # 1.10.0: a held_item from the Modifier node, not only from an archetype.
+        doc = build_modifier_json("", "holding a red paper umbrella")
+        flat = _parse_archetype_json(doc)
+        self.assertEqual(flat.get("held_item"), "a red paper umbrella")
+        locked = {k: v for k, v in flat.items() if k not in _CONTROL_FIELDS}
+        for seed in range(40):
+            prose, _ = generate_character(seed, "Female", locked)
+            self.assertIn("holding a red paper umbrella", prose)
+            self.assertNotIn("stretching both arms overhead", prose)
+        self.assertEqual(build_modifier_json("", "   "), "{}")
 
 
 class GloveSuppressionTests(unittest.TestCase):
@@ -4082,6 +4121,17 @@ class PerformablePoseTests(unittest.TestCase):
         for pose in ("adjusting one cuff", "touching the collar with one hand",
                      "posing with hands in pockets"):
             self.assertNotIn(pose, got)
+
+    def test_a_coat_of_fur_or_a_suit_of_armour_is_not_a_garment(self):
+        # 1.10.0: Bartok's "an all-over coat of downy white fur" drew hands in pockets.
+        for outfit in ("an even, all-over coat of downy white fur",
+                       "a suit of polished silver plate armour"):
+            got = _performable_poses(self._pool(), {"hair_length": "long",
+                                                    "outfit_description": outfit},
+                                     False, False, False)
+            for pose in ("adjusting one cuff", "touching the collar with one hand",
+                         "posing with hands in pockets"):
+                self.assertNotIn(pose, got, outfit)
 
     def test_fully_covered_creature_drops_both(self):
         got = _performable_poses(self._pool(), {"hair_length": "None"}, True, True, True)
@@ -6164,6 +6214,10 @@ class WardrobeAxisTests(unittest.TestCase):
                 # 1.5.0 round 4: the pattern is an adjective on the lead garment.
                 self.assertIn("striped", outfit)
                 self.assertNotIn("in stripes", outfit)
+                hose = self._clothing(raw).get("legwear")
+                if hose and any(shot in prose for shot in _LEGS_OUT_OF_FRAME_SHOTS):
+                    # 1.10.0: a leg-cropping framing drops unlocked legwear from the prose.
+                    outfit = re.sub(rf", with [^,]*{re.escape(hose)}(?=,|$)", "", outfit)
                 self.assertIn(outfit, prose)
 
     def test_a_supplied_costume_still_drops_all_three(self):
@@ -9645,6 +9699,32 @@ class SubjectTextTests(unittest.TestCase):
             self.assertEqual(plain[1], withsub[1], f"seed {seed}: json changed")
             self.assertEqual(len(plain), 2)
             self.assertEqual(len(withsub), 3)
+
+    def test_the_typing_overloads_match_the_implementation(self):
+        # 1.10.0: three @overload stubs repeat the signature and nothing type-checks them
+        # in CI, so a parameter added to one copy only would drift silently. ast, not
+        # typing.get_overloads: CI still runs 3.10.
+        import ast
+        source = (Path(__file__).resolve().parents[1] / "nodes" / "identity_forge.py")
+        tree = ast.parse(source.read_text(encoding="utf-8"))
+        defs = [node for node in tree.body if isinstance(node, ast.FunctionDef)
+                and node.name == "generate_character"]
+        self.assertEqual(len(defs), 4, "three overloads plus the implementation")
+
+        def shape(node):
+            args = node.args
+            names = [(a.arg, ast.unparse(a.annotation)) for a in args.args]
+            kwonly = [a.arg for a in args.kwonlyargs]
+            defaults = [ast.unparse(d) for d in args.defaults]
+            # with_subject is the one parameter whose type the overloads narrow.
+            kw_annotations = [ast.unparse(a.annotation) for a in args.kwonlyargs
+                              if a.arg != "with_subject"]
+            return names, kwonly, defaults, kw_annotations
+
+        expected = shape(defs[-1])
+        for overload_def in defs[:-1]:
+            self.assertEqual(shape(overload_def), expected,
+                             f"overload at line {overload_def.lineno} drifted")
 
     def test_subject_has_no_pose_scene_or_expression(self):
         for seed in range(40):
