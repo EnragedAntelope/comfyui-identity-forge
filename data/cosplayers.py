@@ -13224,8 +13224,11 @@ COSPLAYERS: dict[str, dict] = {
         # the render dropped them and showed a human face in a blonde wig.
         "covers_body": True,
         "covers_face": True,
-        "mask": "a cream-and-tan rabbit head with very long upright ears, bright blue eyes, "
-                "and blonde head-fur tied back in a ponytail with a purple scrunchie",
+        # Muzzle, nose and whiskers make it a full rabbit head; "blue eyes and blonde
+        # hair" alone drew a human woman in a wig and ears.
+        "mask": "a tan cartoon rabbit head with a cream muzzle, a small pink nose and "
+                "whiskers, big blue eyes with long lashes, very long upright tan ears, and "
+                "a blonde tuft of head-fur tied back with a purple scrunchie",
         "costume": "a purple-and-white Tune Squad basketball jersey numbered 10, matching "
                    "shorts, and white high-top sneakers, over an even, all-over coat of "
                    "cream-and-tan fur, with a fluffy rabbit tail",
