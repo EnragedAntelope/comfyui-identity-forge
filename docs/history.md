@@ -1081,3 +1081,69 @@ focused Pyright check passed. Reference docs, JS data, frontend fixtures, releas
 stamps and gallery hashes are current. The field-marginals baseline and reachability
 gate passed, as did the public-safety and maintainer documentation checks. Review
 renders were published to the galleries at merge.
+
+## 1.10.0 - engine and tooling: expression sheets, a free-text prop, and a publish gate
+
+Random characters do not move: `sweep_marginals.py --check` reports no drift against the
+4000-seed baseline. Four cosplay entries do: the garment-regex fix below changes their pose
+pool (Bartok, Lola Bunny, Tellarite and Tasmanian Devil, each "a coat of" fur or hair).
+Found by diffing `resolve_prose` for every gallery entry against the previous release;
+`render_gallery.py --check` cannot see it, because `entry_hash` covers the entry's data,
+not the engine's prose. Hashing the resolved prose instead would catch an engine change
+too, but it marks every record stale, so it waits for the 2.0.0 re-render.
+
+**Those four re-renders exposed bad entries, repaired here.** Each had its defining
+anatomy in the costume text, which a t2i model reads as a person in clothes:
+
+- Bartok drew a man in a shirt holding a small bat. A foot-tall upright bat nobody can be
+  inside is the feral case (architecture.md -> "Animal characters split four ways"), so
+  it is now `body_plan: "feral"`, tiny, with its own upright poses.
+- Lola Bunny drew a human face in a blonde wig with no ears; Tasmanian Devil drew a
+  man's bare face over a shaggy suit. Both now follow their Looney Tunes siblings Bugs
+  and Daffy: the head, ears and jaw live in `mask` with `covers_face` + `covers_body`.
+- Tellarite drew a plain man in a tweed overcoat: the snout was lost and "a shaggy coat
+  of thick facial and body hair" drew a garment. Four rewordings failed (an authored
+  head; head plus `covers_body`; the canonical porcine description; a beardless boar
+  head): each drew a human or a generic ridged alien, never the snout and tusks. The
+  entry keeps its 1.9.0 text and tile, and the attempts are logged in
+  `docs/suggested-additions.md` for 1.11.0.
+
+**Expression Sheet node.** The backlog asked for a re-run like Turnaround that "releases"
+`smile_type` and `mood` per view. Releasing would need a seed per view and could land two
+views on the same face, so each view instead pins a curated (expression, mood, smile_type)
+triple. Tests check every triple's values are still live options and that no triple pairs
+values a live rule excludes (a lock beats a rule, so the engine would otherwise voice a
+contradiction). A `covers_face` character has no visible expression and emits one view.
+The node reuses the Turnaround's replay helpers rather than copying them.
+
+**Free-text `held_item`.** It lives on the Modifier node as an optional box, so the main
+node's schema is unchanged. It is emitted as an ordinary `held_item` lock, which means the
+existing "holding ..." voicing and the hands-occupied pose gate already apply; downstream
+wins in `merge_preset_documents`, so it replaces an upstream Cosplayer prop. The input is
+appended after `upstream`, keeping saved workflows' `widgets_values` order.
+
+**Legwear in a tight shot.** The 1.7.0 rule drops the shoes from the prose when the framing
+crops the feet. Legwear now follows for the framings that also crop the legs; the cowboy
+shot is the one feet-cropping framing that still shows the thighs, so it keeps them. Prose
+only, no draw, the JSON keeps the value, and a widget lock still voices it.
+
+**The pockets gap was mostly stale.** AGENTS.md listed `_POCKETED_RE` as an allowlist that
+lets a pocketless costume draw a pockets gesture. Measured over every cosplay entry
+(8,340 renders), 47 drew a pockets gesture and all but one were legitimate. The one bug was
+a body, not a garment: Bartok's "coat of downy white fur" matched `coat`. In the roster
+"a coat of ..." is always fur, feathers or paint and "a suit of ..." is armour, so the
+collar, cuff and pocket regexes now refuse a garment word followed by "of". The gap is
+removed from the known-gaps list.
+
+**Typing overloads kept, guarded.** A review suggested dropping the three
+`generate_character` overloads. Removing them broke pyright at `execute`, which unpacks the
+triple. They stay, and a test now compares each overload's parameters, annotations, keyword-
+only arguments and defaults with the implementation by `ast` (CI runs Python 3.10, which
+cannot introspect overloads), so a signature change that skips the stubs fails.
+
+**Gallery publish gate.** The render loop now records `"published": false` for a new
+image and flips it to `true` only after `publish_kind` succeeds; `--check` fails on a record
+still marked unpublished. A missing key counts as published, so earlier records pass.
+`--publish-pending` publishes those images without re-rendering. The six 1.9.0 images
+thought to be unpublished were already on `gh-pages`; the mismatch was a git quotepath
+artifact on "Dia de los Muertos".

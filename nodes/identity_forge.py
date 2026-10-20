@@ -596,6 +596,10 @@ _FEET_OUT_OF_FRAME_SHOTS: frozenset[str] = frozenset({
     "extreme close-up on face", "close-up portrait", "medium close-up from chest up",
     "medium shot from waist up", "cowboy shot from mid-thigh up",
 })
+#: 1.10.0: the framings that also crop the legs, so tights and stockings are not voiced.
+#: A cowboy shot still shows the thighs.
+_LEGS_OUT_OF_FRAME_SHOTS: frozenset[str] = _FEET_OUT_OF_FRAME_SHOTS - {
+    "cowboy shot from mid-thigh up"}
 
 #: Fields ``_compose_outfit_clause`` writes into a generated ``outfit_description``
 #: verbatim, so a Modifier descriptor on one must decorate that copy too -- before
@@ -1560,18 +1564,20 @@ def _repick(
 _CUFFED_RE = re.compile(
     r"\b(?:shirt|blouse|blazer|jacket|coat|suit|tuxedo|sweater|cardigan|sweatshirt|hoodie|"
     r"henley|flannel|overshirt|long-sleeve|long sleeve|turtleneck|roll-neck|crewneck|jumper|"
-    r"thermal|shacket|trench|peacoat|parka|overcoat|topcoat|raincoat|anorak)\b",
+    r"thermal|shacket|trench|peacoat|parka|overcoat|topcoat|raincoat|anorak)\b(?!\s+of\b)",
     re.IGNORECASE)
 _COLLARED_RE = re.compile(
     r"\b(?:shirt|blouse|polo|blazer|jacket|coat|suit|tuxedo|turtleneck|roll-neck|collar\w*|"
-    r"trench|peacoat|shacket|overshirt|henley|lapel|overcoat|topcoat|raincoat)\b",
+    r"trench|peacoat|shacket|overshirt|henley|lapel|overcoat|topcoat|raincoat)\b(?!\s+of\b)",
     re.IGNORECASE)
 
 
+# 1.10.0: `(?!\s+of\b)` on all three. In the roster "a coat of ..." is always a body
+# (fur, feathers, paint) and "a suit of ..." armour; Bartok's fur coat drew hands in pockets.
 _POCKETED_RE = re.compile(
     r"\b(?:trousers|jeans|pants|chinos|slacks|cargos|corduroys|shorts|joggers|jacket|coat|"
     r"blazer|hoodie|overalls|coveralls|jumpsuit|suit|tuxedo|cardigan|denim|parka|trench|"
-    r"overcoat|topcoat|raincoat|anorak)\b",
+    r"overcoat|topcoat|raincoat|anorak)\b(?!\s+of\b)",
     re.IGNORECASE)
 # 1.5.1: a costume that HOLDS something ("a clipboard in one hand", "a rolled mat under one
 # arm") occupies a hand exactly like a Cosplayer ``held_item`` does -- "stretching both arms
@@ -4489,6 +4495,15 @@ def generate_character(
                 prose_fields = {**resolved,
                                 "outfit_description": outfit[: -len(f", {clause}")]}
                 break
+    hose = resolved.get("legwear")
+    if (hose and not _is_absent(hose) and "legwear" not in (widget_locked or ())
+            and shot_distance in _LEGS_OUT_OF_FRAME_SHOTS):
+        # 1.10.0: the same trim for the composer's ", with <legwear>" clause (a Modifier
+        # descriptor may prefix the value, hence the [^,]*). Generated outfits only: a
+        # costume never carries the clause, because legwear is suppressed for costumes.
+        trimmed = re.sub(rf", with [^,]*{re.escape(hose)}(?=,|$)", "",
+                         prose_fields.get("outfit_description") or "", count=1)
+        prose_fields = {**prose_fields, "outfit_description": trimmed}
     prose = _format_prose(prose_fields, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text,
                           anatomy_note=anatomy_note, presentation=presentation,

@@ -202,6 +202,33 @@ Everything else belongs on the Identity Forge node - it owns the character and t
 the Turnaround owns only the camera. For a clean reference sheet, set that node's
 `location_setting` to `Studio / solid backdrop` and lock `composition` to `centered symmetry`.
 
+## Expression sheets
+
+The **Identity Forge Expression Sheet** node is wired exactly like the Turnaround
+(`prompt_json` into `character_json`, `prompt` into CLIPTextEncode, `view_label` into Save
+Image's `filename_prefix`), and it owns only the face's emotion: `expression`, `mood` and
+`smile_type`. The person, outfit, scene and pose are the document's, unchanged.
+
+- **`sheet`** - `Basic (6)` (neutral, smile, laughing, surprised, serious, sad), `Full (10)`
+  (adds angry, smirk, thoughtful, worried) or `Smiles (3)` (smile, laughing, smirk).
+- **`framing`** - `Head and shoulders` by default, so the face is large enough to read.
+  `Unspecified` keeps the character's own framing.
+
+Each view sets a fixed, curated expression/mood/smile combination, so a sheet is
+deterministic and no two views land on the same face. A face-covering character (a mascot
+head, a full helmet) has no visible expression, so the sheet emits one view, `1-masked`.
+
+## Holding something specific
+
+The Modifier node's optional **`held_item`** box takes a free-text noun phrase - `a red
+paper umbrella`, `a steaming mug of coffee` - voiced as "holding ...". It counts as a
+lock: poses that need both hands free are dropped, and it replaces a Cosplayer's own prop
+when the Modifier sits downstream of it. Leave it empty for none.
+
+A related framing rule: a shot that crops the legs (a close-up or a waist-up portrait) no
+longer names tights or stockings in the prose, the same way it drops the shoes. The JSON
+keeps the value, and a cowboy shot (mid-thigh up) still voices it.
+
 ## Notes
 
 - The ethnicity-to-skin-tone link is a *soft* bias over coarse regional bands; lock `skin_tone`

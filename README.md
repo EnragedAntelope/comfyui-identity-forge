@@ -42,11 +42,15 @@ emits front / three-quarter / profile / back views of the same **resolved** char
 between views, unlike an auto-incrementing index widget where an upstream node left on `randomize` swaps
 the person on every frame. Full controls and the back-view face-omission behavior: [docs/usage.md](docs/usage.md#turnaround-views).
 
+The **Expression Sheet** node is its face-side sibling: the same resolved character, one image per
+expression (neutral, smile, laughing, surprised, serious, sad, and more), with only the expression,
+mood and smile changing. See [docs/usage.md](docs/usage.md#expression-sheets).
+
 ### Additional layers
 
 - **Archetype:** Themed looks (knight, sorceress, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes.
 - **Creature:** Turn the person into an animal, monster, or alien. Hybridized slot-by-slot (head, eyes, integument, arms, hands, legs, tail, wings).
-- **Modifier:** Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`).
+- **Modifier:** Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`), or type a free-text `held_item` for the character to hold.
 - **Vault Save / Load:** Save a generated character with a thumbnail; recall it later as a chainable preset.
 
 All preset nodes stack via an `upstream` input — chain them through each other and keep them all wired. Set any node to `None` and it passes through.
@@ -131,9 +135,10 @@ randomized identities, so your own results will vary:
 | **Archetype** | Themed presets (knight, sorceress, pirate, samurai, pop star, astronaut, surgeon, 1950s homemaker…) that set the *look* while the person randomizes. Also has the in-node roster picker. |
 | **Cosplayer** | Fictional characters (Spider-Man, 2B, She-Hulk, Zelda…) as a *cosplay look* — the costume on a random, optionally cross-gender person. An in-node picker browses and searches the whole roster with trait facets and thumbnails. |
 | **Creature** | Render the character as a non-human form (animal, insect, marine, reptile, bird, monster, alien, mythic, plant), across all classes or one, hybridized slot-by-slot. Generic species only — a *named* fictional beast (Appa, Toothless) is a Cosplayer entry. Also has the in-node roster picker. |
-| **Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`). |
+| **Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`). An optional `held_item` box sets a free-text prop ("a red paper umbrella"). |
 | **Vault Save / Load** | Save a generated character (with a thumbnail) to a local vault; recall it later as a chainable preset, with a Manage Vault gallery. |
 | **Turnaround** | A reference-sheet builder: wire Identity Forge's `prompt_json` in and it emits front / three-quarter / profile / back as a **list**, so one queue renders the whole set of the same person. It only moves the camera - the character and the scene stay configured on Identity Forge. |
+| **Expression Sheet** | The same idea for the face: wire `prompt_json` in and it emits one prompt per expression (Basic 6, Full 10 or Smiles 3) as a **list**. Only expression, mood and smile change. |
 
 ---
 

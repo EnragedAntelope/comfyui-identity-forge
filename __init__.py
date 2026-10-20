@@ -1,6 +1,6 @@
 """comfyui-identity-forge — V3 custom node pack entrypoint.
 
-Exposes eight nodes:
+Exposes nine nodes:
 
 * ``IdentityForge`` — a multi-field character description randomizer with a
   constraint engine and dual prose/JSON output.
@@ -13,6 +13,8 @@ Exposes eight nodes:
   groups (e.g. "sci-fi" shoes) for per-element stylistic tilts.
 * ``IdentityForgeTurnaround`` — takes a resolved character and emits every camera
   view of it as a list, so one queue renders a whole reference set.
+* ``IdentityForgeExpressionSheet`` - the same idea for the face: one resolved
+  character, several expressions, as a list.
 * ``IdentityForgeVaultSave`` — save a generated character to a local vault.
 * ``IdentityForgeVaultLoad`` — recall a saved character as a chainable preset.
 
@@ -40,6 +42,7 @@ try:
     from .nodes.identity_forge_creature import IdentityForgeCreature
     from .nodes.identity_forge_modifier import IdentityForgeModifier
     from .nodes.identity_forge_turnaround import IdentityForgeTurnaround
+    from .nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet
     from .nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from .nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 except ImportError:  # pragma: no cover
@@ -49,6 +52,7 @@ except ImportError:  # pragma: no cover
     from nodes.identity_forge_creature import IdentityForgeCreature
     from nodes.identity_forge_modifier import IdentityForgeModifier
     from nodes.identity_forge_turnaround import IdentityForgeTurnaround
+    from nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet
     from nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 
@@ -210,6 +214,7 @@ class IdentityForgeExtension(ComfyExtension):
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
         return [IdentityForge, IdentityForgeArchetype, IdentityForgeCosplayer,
                 IdentityForgeCreature, IdentityForgeModifier, IdentityForgeTurnaround,
+                IdentityForgeExpressionSheet,
                 IdentityForgeVaultSave, IdentityForgeVaultLoad]
 
 
