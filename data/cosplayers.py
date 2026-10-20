@@ -13220,13 +13220,15 @@ COSPLAYERS: dict[str, dict] = {
     "Lola Bunny": {
         "franchise": "Looney Tunes",
         "gender": "Female",
-        # Anthropomorphic rabbit: features live in the costume, the person underneath randomizes.
-        "costume": "a slender upright anthropomorphic rabbit with an even, all-over coat of "
-                   "cream-and-tan fur, long upright ears, and a fluffy tail, blonde head-fur tied "
-                   "back with a purple scrunchie, wearing a purple-and-white Tune Squad "
-                   "basketball jersey numbered 10, matching shorts, and white high-top sneakers",
-        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
-                      "hair_style": "high ponytail", "eye_color": "bright blue"},
+        # 1.10.0: the Bugs Bunny head-in-mask pattern. With the ears in the costume text
+        # the render dropped them and showed a human face in a blonde wig.
+        "covers_body": True,
+        "covers_face": True,
+        "mask": "a cream-and-tan rabbit head with very long upright ears, bright blue eyes, "
+                "and blonde head-fur tied back in a ponytail with a purple scrunchie",
+        "costume": "a purple-and-white Tune Squad basketball jersey numbered 10, matching "
+                   "shorts, and white high-top sneakers, over an even, all-over coat of "
+                   "cream-and-tan fur, with a fluffy rabbit tail",
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Anastasia": {
@@ -14836,12 +14838,30 @@ COSPLAYERS: dict[str, dict] = {
     "Bartok": {
         "franchise": "Anastasia",
         "gender": "Male",
-        # Rasputin's albino bat sidekick; non-human, features carried in the costume.
-        "costume": "a small upright anthropomorphic albino bat with an even, all-over coat of "
-                   "downy white fur, oversized round ears, big expressive eyes, a little pot "
-                   "belly, and a pair of leathery wings",
-        "signature": {},
-        "physique": {"body_type": "chubby", "height": "very petite"},
+        # 1.10.0: feral. A foot-tall upright bat nobody can be inside; as a costume it
+        # rendered a man in a shirt holding a small bat.
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "upright albino bat",
+        "creature_class": "Mammals",
+        "mask": "a round white bat face with oversized round pink-lined ears, a short "
+                "upturned pug snout and a wide expressive mouth",
+        "costume": "soft downy pure white fur over a round little pot belly",
+        "anatomy": {
+            "eyes": "big round expressive eyes",
+            "wings": "a pair of thin pinkish-grey leathery wings used as arms, each with a "
+                     "small clawed thumb",
+            "legs_feet": "two short stubby legs on small clawed feet",
+        },
+        "poses": [
+            "standing upright with the wings folded across the belly",
+            "standing upright with one wing raised in a shrug",
+            "standing upright with both wings spread wide",
+        ],
+        "size_scale": "tiny",
+        "scale_prose": "small, about a foot tall",
+        "physique": {"body_type": "chubby"},
     },
     "Dowager Empress Marie": {
         "franchise": "Anastasia",
@@ -16970,10 +16990,15 @@ COSPLAYERS: dict[str, dict] = {
     "Tasmanian Devil": {
         "franchise": "Looney Tunes",
         "gender": "Male",
-        "costume": "an even, all-over coat of shaggy dark brown fur with a "
-                   "cream-furred belly, an oversized fanged jaw and small "
-                   "pointed ears",
-        "eyes": "small and dark under a heavy brow",
+        # 1.10.0: the Bugs Bunny head-in-mask pattern; the jaw and ears in the costume
+        # text rendered a man's bare face over a shaggy suit.
+        "covers_body": True,
+        "covers_face": True,
+        "mask": "a dark brown cartoon devil-beast head with an oversized grinning jaw full "
+                "of sharp fangs, a big black nose, small pointed ears, and small dark eyes "
+                "under a heavy brow",
+        "costume": "an even, all-over coat of shaggy dark brown fur with a cream-furred "
+                   "belly, on a squat barrel-chested frame with short legs",
         "physique": {"body_type": "stocky", "height": "short"},
     },
 

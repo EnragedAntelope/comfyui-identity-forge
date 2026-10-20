@@ -1085,12 +1085,28 @@ renders were published to the galleries at merge.
 ## 1.10.0 - engine and tooling: expression sheets, a free-text prop, and a publish gate
 
 Random characters do not move: `sweep_marginals.py --check` reports no drift against the
-4000-seed baseline. Four cosplay entries do, by design: the garment-regex fix below changes
-their pose pool, so Bartok, Lola Bunny, Tellarite and Tasmanian Devil (each "a coat of" fur or
-hair) were re-rendered. Found by diffing `resolve_prose` for every gallery entry against the
-previous release; `render_gallery.py --check` cannot see it, because `entry_hash` covers the
-entry's data, not the engine's prose. Hashing the resolved prose instead would catch an
-engine change too, but it marks every record stale, so it waits for the 2.0.0 re-render.
+4000-seed baseline. Four cosplay entries do: the garment-regex fix below changes their pose
+pool (Bartok, Lola Bunny, Tellarite and Tasmanian Devil, each "a coat of" fur or hair).
+Found by diffing `resolve_prose` for every gallery entry against the previous release;
+`render_gallery.py --check` cannot see it, because `entry_hash` covers the entry's data,
+not the engine's prose. Hashing the resolved prose instead would catch an engine change
+too, but it marks every record stale, so it waits for the 2.0.0 re-render.
+
+**Those four re-renders exposed bad entries, repaired here.** Each had its defining
+anatomy in the costume text, which a t2i model reads as a person in clothes:
+
+- Bartok drew a man in a shirt holding a small bat. A foot-tall upright bat nobody can be
+  inside is the feral case (architecture.md -> "Animal characters split four ways"), so
+  it is now `body_plan: "feral"`, tiny, with its own upright poses.
+- Lola Bunny drew a human face in a blonde wig with no ears; Tasmanian Devil drew a
+  man's bare face over a shaggy suit. Both now follow their Looney Tunes siblings Bugs
+  and Daffy: the head, ears and jaw live in `mask` with `covers_face` + `covers_body`.
+- Tellarite drew a plain man in a tweed overcoat: the snout was lost and "a shaggy coat
+  of thick facial and body hair" drew a garment. Four rewordings failed (an authored
+  head; head plus `covers_body`; the canonical porcine description; a beardless boar
+  head): each drew a human or a generic ridged alien, never the snout and tusks. The
+  entry keeps its 1.9.0 text and tile, and the attempts are logged in
+  `docs/suggested-additions.md` for 1.11.0.
 
 **Expression Sheet node.** The backlog asked for a re-run like Turnaround that "releases"
 `smile_type` and `mood` per view. Releasing would need a seed per view and could land two
