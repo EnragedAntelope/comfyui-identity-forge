@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-10-15T15:12:01.819084",
-  "version": "1.8.0",
+  "generated": "2026-10-19T22:37:02.414363",
+  "version": "1.9.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -127,10 +127,11 @@
     "1.5.0",
     "1.5.1",
     "1.6.0",
-    "1.8.0"
+    "1.8.0",
+    "1.9.0"
   ],
-  "total_entries": 275,
-  "entries_with_images": 275,
+  "total_entries": 276,
+  "entries_with_images": 276,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1445,6 +1446,14 @@
       "group": "vintage retro",
       "added": "0.96.0",
       "image": "images/Mongolian Deel.jpeg"
+    },
+    {
+      "name": "Morris Dancer",
+      "has_image": true,
+      "gender": "Any",
+      "group": "vintage retro",
+      "added": "1.9.0",
+      "image": "images/Morris Dancer.jpeg"
     },
     {
       "name": "Muay Thai Fighter",
