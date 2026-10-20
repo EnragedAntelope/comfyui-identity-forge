@@ -23,9 +23,10 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-**Under consideration is empty.** The 0.87.0 survey list was worked to completion at 0.88.0: everything with a
-real case shipped, and everything else was closed into [Decided against](#decided-against)
-rather than left to be re-surveyed. Add a row here only with a fresh, written case.
+| Candidate | Case and remaining gate |
+|---|---|
+| The Corinthian (The Sandman) | [Netflix's cast reference](https://www.netflix.com/tudum/galleries/the-sandman-cast-gallery) confirms mouths in the eye sockets. That anatomy is new; the suit and sunglasses alone are ordinary modern dress. Consider only an exposed-eye look, and require a render that holds both tooth-lined sockets before admission. |
+| Barreleye creature | [MBARI's observation](https://www.mbari.org/news/researchers-solve-mystery-of-deep-sea-fish-with-tubular-eyes-and-transparent-head/) shows internal tubular eyes inside a transparent head dome. The review render lost the dome and drew ordinary external fish eyes, so it remains unshipped. Revisit only with wording or a model that preserves that anatomy; another generic fish head adds nothing. |
 
 **Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, see
 `docs/history.md` → "1.7.0"):

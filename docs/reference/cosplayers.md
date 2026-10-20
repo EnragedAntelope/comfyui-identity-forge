@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**2081 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2085 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (385)
 
@@ -677,7 +677,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (273)
+## Comics & Cartoons (276)
 
 ### Adventure Time
 
@@ -734,6 +734,10 @@
 ### Betty Boop
 
 - **Betty Boop** (F)
+
+### Bloodshot
+
+- **Bloodshot** (M, masked, prop)
 
 ### Bob's Burgers
 
@@ -798,6 +802,10 @@
 ### Dora the Explorer
 
 - **Dora the Explorer** (F, prop)
+
+### East of West
+
+- **Crow (East of West)** (F, masked, prop)
 
 ### Family Guy
 
@@ -871,7 +879,6 @@
 - **Avengelyne** (F, prop)
 - **Glory** (F)
 - **Lady Supreme** (F)
-- **Savage Dragon** (M)
 - **Spawn** (M, masked)
 - **The Maxx** (M, masked)
 
@@ -1010,9 +1017,17 @@
 
 - **Reptar** (M, giant, beast)
 
+### Saga
+
+- **Prince Robot IV** (M, masked)
+
 ### Samurai Jack
 
 - **Samurai Jack** (M, prop)
+
+### Savage Dragon
+
+- **Savage Dragon** (M, masked)
 
 ### Scott Pilgrim
 
@@ -1201,7 +1216,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (177)
+## DC (178)
 
 ### DC
 
@@ -1391,6 +1406,7 @@
 - **Destiny of the Endless** (M, prop)
 - **Destruction of the Endless** (M)
 - **Dream of the Endless** (M, prop)
+- **Mervyn Pumpkinhead** (M, masked, prop)
 
 ### Watchmen
 

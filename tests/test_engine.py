@@ -519,7 +519,7 @@ class HairScopeTests(unittest.TestCase):
         for seed in range(40):
             _, js = generate_character(seed, "Female", {})
             self.assertIn(json.loads(js)["Hair"]["hair_color"], natural)
-        self.assertEqual(json.loads(js)["_meta"]["hair_color_scope"], "Natural only")
+            self.assertEqual(json.loads(js)["_meta"]["hair_color_scope"], "Natural only")
 
 
 class BaldHairLengthTests(unittest.TestCase):
@@ -6014,24 +6014,24 @@ class RandomPoolTests(unittest.TestCase):
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
         # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
-        # cosplayers, one folded duplicate) to the new ground truth, and is expected to need refreshing every time the roster
-        # grows.
+        # cosplayers, one folded duplicate), and at 1.9.0 to the new ground truth.
+        # It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Sabine Wren',
-            (_RANDOM_ANY, 1): 'Falcon',
-            (_RANDOM_ANY, 2): 'Brand',
-            (_RANDOM_ANY, 3): 'Kwame',
-            (_RANDOM_ANY, 4): 'Kristoff',
-            (_RANDOM_FEMALE, 0): 'Sonya Blade',
+            (_RANDOM_ANY, 0): 'Ryuko',
+            (_RANDOM_ANY, 1): 'Fairy Godmother',
+            (_RANDOM_ANY, 2): 'Brainiac 5',
+            (_RANDOM_ANY, 3): 'Kurapika',
+            (_RANDOM_ANY, 4): 'Kraven the Hunter',
+            (_RANDOM_FEMALE, 0): 'Songbird',
             (_RANDOM_FEMALE, 1): 'Captain Janeway',
-            (_RANDOM_FEMALE, 2): 'X-23',
-            (_RANDOM_FEMALE, 3): 'Enchantress (Marvel)',
-            (_RANDOM_FEMALE, 4): 'Emily (Corpse Bride)',
-            (_RANDOM_MALE, 0): 'Ruby Rhod',
-            (_RANDOM_MALE, 1): 'Electro',
-            (_RANDOM_MALE, 2): 'Brock',
-            (_RANDOM_MALE, 3): 'Jotaro Kujo',
-            (_RANDOM_MALE, 4): 'Jon Snow',
+            (_RANDOM_FEMALE, 2): 'Wonder Woman',
+            (_RANDOM_FEMALE, 3): 'Emma Frost',
+            (_RANDOM_FEMALE, 4): 'Emilia',
+            (_RANDOM_MALE, 0): 'Roy Batty',
+            (_RANDOM_MALE, 1): 'Ekko',
+            (_RANDOM_MALE, 2): 'Brand',
+            (_RANDOM_MALE, 3): 'Josuke Higashikata',
+            (_RANDOM_MALE, 4): 'Jolly Green Giant',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
@@ -8007,7 +8007,7 @@ class FeralBodyPlanTests(unittest.TestCase):
             _resolve_character("Random — any", random.Random(seed), "Beast / non-humanoid")
             for seed in range(120)
         }
-        picked.discard(None)
+        picked = {name for name in picked if name is not None}
         self.assertTrue(picked)
         for name in picked:
             self.assertEqual(COSPLAYERS[name].get("body_plan"), _FERAL,
@@ -8624,7 +8624,9 @@ class NewFieldValueTests(unittest.TestCase):
                 seed, "Female", {}, hair_color_scope="Any",
                 accessory_density="Maximal")[0]
             # 1.5.1: a bag may be voiced differently from its value (_BAG_VOICE).
-            seen |= {v for v in wanted if v in prose or _BAG_VOICE.get(v, v) in prose}
+            seen |= {v for v in wanted
+                     if v in prose or ((voiced := _BAG_VOICE.get(v, v)) is not None
+                                       and voiced in prose)}
             if seen == wanted:
                 break
         self.assertEqual(wanted - seen, set(), "unreachable new values")
@@ -8688,6 +8690,7 @@ class OutfitStyleByLocationTests(unittest.TestCase):
         seen = set()
         for loc in _LOCATION_FAMILY:
             allowed = outfit_styles_allowed_at(loc)
+            assert allowed is not None, f"unmapped built-in location: {loc}"
             self.assertTrue(allowed, loc)
             self.assertTrue(allowed <= styles, loc)
             seen |= allowed
@@ -8720,7 +8723,7 @@ class OutfitStyleByLocationTests(unittest.TestCase):
         from data.constraints import outfit_styles_allowed_at
         for seed in range(500):
             _, d = _resolved_1_5(seed)
-            allowed = outfit_styles_allowed_at(d.get("location"))
+            allowed = outfit_styles_allowed_at(d["location"])
             if allowed is not None and "outfit_style" in d:
                 self.assertIn(d["outfit_style"], allowed, f"seed {seed}")
 
@@ -8729,7 +8732,9 @@ class OutfitStyleByLocationTests(unittest.TestCase):
         for seed in range(60):
             _, d = _resolved_1_5(seed, locked={"outfit_style": "evening formal"})
             self.assertEqual(d["outfit_style"], "evening formal")
-            self.assertIn("evening formal", outfit_styles_allowed_at(d["location"]),
+            allowed = outfit_styles_allowed_at(d["location"])
+            assert allowed is not None, f"unmapped location: {d['location']}"
+            self.assertIn("evening formal", allowed,
                           f"seed {seed}: {d['location']}")
 
 
@@ -9085,7 +9090,7 @@ class RoundTwoSceneGateTests(unittest.TestCase):
                   "transit_travel"}
         for seed in range(800):
             _, d = _resolved_1_5(seed)
-            loc, light = d.get("location"), d.get("lighting")
+            loc, light = d["location"], d.get("lighting")
             if light == "fire and flame warm flicker":
                 self.assertIn(loc, FIRE_LOCATIONS, f"seed {seed}")
             if loc in OUTDOOR_LOCATIONS:
@@ -9132,7 +9137,7 @@ class EthnicAndAgeColouringTests(unittest.TestCase):
         young = old = old_grey = 0
         for seed in range(2500):
             _, d = _resolved_1_5(seed)
-            band = ETHNICITY_REGION.get(d.get("ethnicity"))
+            band = ETHNICITY_REGION.get(d["ethnicity"])
             n[band] += 1
             lh[band] += d.get("hair_color") in light_hair
             le[band] += d.get("eye_color") not in dark_eyes
@@ -9512,7 +9517,7 @@ class ContentOneSixQaTests(unittest.TestCase):
         for d in self.both:
             if d.get("hair_style") == "mohawk":
                 self.assertNotIn(d.get("outfit_style"), formal)
-                self.assertLess(int(d.get("age")), 55)
+                self.assertLess(int(d["age"]), 55)
         for style in sorted(formal):
             self.assertIn("mohawk", _live_exclusions_for("outfit_style", style, "hair_style"))
 
@@ -9520,7 +9525,9 @@ class ContentOneSixQaTests(unittest.TestCase):
         from data.constraints import outfit_styles_allowed_at
         for seed in range(300):
             d = _resolved_1_5(seed, locked={"outfit_style": "loungewear"})[1]
-            self.assertIn("loungewear", outfit_styles_allowed_at(d.get("location")),
+            allowed = outfit_styles_allowed_at(d["location"])
+            assert allowed is not None, f"unmapped location: {d['location']}"
+            self.assertIn("loungewear", allowed,
                           f"seed {seed}: {d.get('location')}")
 
 
@@ -9627,8 +9634,8 @@ class SubjectTextTests(unittest.TestCase):
 
     _KW = dict(locked={}, gender="Female")
 
-    def _gen(self, seed, with_subject=False, **locks):
-        return generate_character(seed, "Female", dict(locks), with_subject=with_subject)
+    def _gen(self, seed, **locks):
+        return generate_character(seed, "Female", dict(locks), with_subject=True)
 
     def test_prompt_text_is_byte_identical_with_and_without_subject(self):
         for seed in range(200):
@@ -9641,7 +9648,7 @@ class SubjectTextTests(unittest.TestCase):
 
     def test_subject_has_no_pose_scene_or_expression(self):
         for seed in range(40):
-            _, doc, subject = self._gen(seed, with_subject=True)
+            _, doc, subject = self._gen(seed)
             fields = {k: v for g in json.loads(doc).values() if isinstance(g, dict)
                       for k, v in g.items()}
             # Single words ("confident") collide with body/posture fields, so check the
@@ -9685,6 +9692,48 @@ class SubjectTextTests(unittest.TestCase):
         self.assertEqual(a, b)
 
 
+class ComicRosterCoherenceTests(unittest.TestCase):
+    def test_savage_dragon_keeps_the_fin_and_never_draws_random_hair(self):
+        for mode in ("Costume only", "Full character"):
+            for gender in ("Male", "Female"):
+                for seed in range(6):
+                    with self.subTest(mode=mode, gender=gender, seed=seed):
+                        prose, raw = _render_cosplayer(
+                            "Savage Dragon", seed, mode, gender=gender)
+                        doc = json.loads(raw)
+                        self.assertFalse(doc.get("Hair"))
+                        self.assertNotIn("hair is", prose)
+                        self.assertIn("bald", prose)
+                        self.assertIn("fin", prose)
+                        self.assertEqual(doc["Body"]["height"], "average height")
+                        self.assertNotIn("size_scale", doc["_meta"])
+
+    def test_pumpkin_and_television_heads_hide_the_random_human_face(self):
+        for name in ("Mervyn Pumpkinhead", "Prince Robot IV"):
+            for mode in ("Costume only", "Full character"):
+                for seed in range(3):
+                    with self.subTest(name=name, mode=mode, seed=seed):
+                        prose, raw = _render_cosplayer(name, seed, mode)
+                        doc = json.loads(raw)
+                        self.assertFalse(doc.get("Face"))
+                        self.assertFalse(doc.get("Hair"))
+                        self.assertNotIn("skin_tone", doc.get("Body", {}))
+                        self.assertIn(COSPLAYERS[name]["mask"], prose)
+
+    def test_colored_heads_keep_their_body_color_without_random_face_traits(self):
+        for name, color in (("Crow (East of West)", "ink-black"),
+                            ("Bloodshot", "stark paper-white")):
+            for mode in ("Costume only", "Full character"):
+                for seed in range(3):
+                    with self.subTest(name=name, mode=mode, seed=seed):
+                        prose, raw = _render_cosplayer(name, seed, mode)
+                        doc = json.loads(raw)
+                        self.assertFalse(doc.get("Face"))
+                        self.assertFalse(doc.get("Hair"))
+                        self.assertEqual(doc["Body"]["skin_tone"], color)
+                        self.assertIn(COSPLAYERS[name]["mask"], prose)
+
+
 class ColourPatternModifierTests(unittest.TestCase):
     """A ``clothing_color`` / ``clothing_pattern`` field modifier reaches a generated
     outfit (1.8.0). The field holds a palette *name* ("jewel tones"); the outfit holds
@@ -9714,6 +9763,7 @@ class ColourPatternModifierTests(unittest.TestCase):
                     hit[descriptor] += 1
                     # a singular lead takes the descriptor's article, a plural none
                     lead = re.search(rf"(?:\b(an?) )?\b{descriptor} ", out)
+                    assert lead is not None, f"missing descriptor: {out!r}"
                     if lead.group(1):
                         self.assertEqual(lead.group(1), article, f"seed {seed}: {out!r}")
         self.assertGreater(hit["faded"], 40, "the colour modifier should reach most outfits")

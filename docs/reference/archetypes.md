@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**275 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**276 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Any]
@@ -169,6 +169,7 @@
 - **Metrosexual** [Male] -- smart casual
 - **Mime** -- edgy alternative
 - **Mongolian Deel** [Any] -- vintage retro
+- **Morris Dancer** [Any] -- vintage retro
 - **Muay Thai Fighter** [Any] -- athletic
 - **Musician** -- streetwear
 - **Musketeer** -- vintage retro

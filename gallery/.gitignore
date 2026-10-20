@@ -2,6 +2,10 @@
 # A clone of main must never pull ~200 MB of samples.
 images/
 
+# Deployment output, rebuilt from the actual published images by publish.py.
+# Keep it on gh-pages; a checked-in main-branch snapshot silently goes stale.
+*/manifest.json
+
 # Scratch output from cross_reference.py. Regenerate on demand, never commit.
 missing.txt
 orphans.txt

@@ -6587,6 +6587,23 @@ COSPLAYERS: dict[str, dict] = {
     },
 
     # --- The Sandman / The Endless ---------------------------------------
+    "Mervyn Pumpkinhead": {
+        "franchise": "The Sandman",
+        "gender": "Male",
+        "aliases": ["Merv Pumpkinhead"],
+        # Comic look: Todd Klein's published Merv panel (kleinletters.com/Fables1.html).
+        # Human-scale scarecrow, not a giant pumpkin monster or Jack Pumpkinhead of Oz.
+        "covers_face": True,
+        "covers_body": True,
+        "anatomy_note": "a lanky scarecrow framework with spindly wooden limbs and a thin vine neck",
+        "mask": "an oversized ribbed orange pumpkin head with a curved green stalk, "
+                "narrow triangular carved eyes, a triangular nose and a jagged lopsided "
+                "grin cut into the hollow shell",
+        "costume": "a rumpled white long-sleeved shirt under loose faded blue denim bib "
+                   "overalls, a green bow tie, green work gloves and worn brown work shoes",
+        "physique": {"body_type": "very slim", "height": "tall"},
+        "prop": "a long wooden-handled janitor's broom with a broad worn bristle head",
+    },
     "Dream of the Endless": {
         "franchise": "The Sandman",
         "gender": "Male",
@@ -15414,15 +15431,83 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Added batch 7: Image / WildStorm / Top Cow -------------------------
     "Savage Dragon": {
-        "franchise": "Image",
+        "franchise": "Savage Dragon",
         "gender": "Male",
-        # Green-skinned finned powerhouse; the head-fin is his signature.
-        "costume": "smooth, flawless green skin over a huge, heavily-muscled scarred torso, a "
-                   "tall blade-like fin running back along the top of the head, torn police-blue "
-                   "trousers, and a wide belt",
+        # Official profile: wiki.savagedragon.com/profiles/characters/Dragon/.
+        # 5'10" without the fin, 6'6" to its tip; green eyes, not black. No giant tier.
+        "bald": True,
+        "covers_face": True,
+        # The actual alien head, like Despero's: random human face traits bury the fin.
+        "anatomy_note": "a high triangular green dorsal fin rising from the center of the "
+                        "scalp, its thin flat blade projecting forward above the forehead",
+        "mask": "a completely bald green humanoid head with a heavy brow, small green "
+                "eyes, a broad nose and a massive protruding square jaw",
+        "costume": "a fitted white tank top with a ragged torn hem, blue jeans fastened "
+                   "with a wide black utility belt, and black boots over smooth, flawless "
+                   "vivid green skin",
         "eyes": "green",
-        "signature": {},
-        "physique": {"body_type": "stocky", "height": "very tall"},
+        "signature": {"body_type": "stocky", "fitness_level": "muscular",
+                      "height": "average height", "shoulder_width": "very broad",
+                      "bust": "large", "waist": "defined", "neck_length": "thick"},
+    },
+    "Crow (East of West)": {
+        "franchise": "East of West",
+        "gender": "Female",
+        # Nick Dragotta's original art and Image's free East of West #1, pp. 16-17.
+        # The black face/body are skin, not a lower-face wrap or striped tactical suit.
+        "covers_face": True,
+        # Describe the spirit's actual head, not a fabric mask; random human face
+        # structure was overpowering both the black skin and the white eye marking.
+        "mask": "a stark-white domino eye mask painted across both eyes and the bridge "
+                "of the nose on a solid ink-black face, leaving the lower face black, "
+                "with black lips "
+                "and extremely long straight white hair parted down the middle "
+                "and falling down the back",
+        "costume": "uniform, all-over ink-black skin over the entire body, a sleeveless "
+                   "black leotard, a broad layered silver-and-ivory collar with long "
+                   "looped necklaces across the chest, segmented pale bands "
+                   "around the upper arms and forearms, long white loincloth panels at the "
+                   "front and back of the hips, and white knee-high boots",
+        "signature": {"necklace": "no necklace", "tattoos": "no tattoos"},
+        "physique": {"body_type": "slender", "height": "average height"},
+        "prop": "a pair of short curved silver knives, one in each hand",
+    },
+    "Prince Robot IV": {
+        "franchise": "Saga",
+        "gender": "Male",
+        # Fiona Staples' Saga #12 cover: TV head + cavalry uniform, not generic armor.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a silver box-shaped television head with a curved glass screen showing "
+                "vertical multicolored test bars, a black stripe along each side and "
+                "two thin aerials rising from the top",
+        "costume": "a powder-blue military tailcoat with a high collar and fringed "
+                   "epaulets, a pale grey double-breasted waistcoat with gold buttons, "
+                   "grey trousers, pale gloves and tall black riding boots",
+        "physique": {"body_type": "lean", "height": "tall"},
+    },
+    "Bloodshot": {
+        "franchise": "Bloodshot",
+        "gender": "Male",
+        # Barry Windsor-Smith's classic omnibus cover: open shell-loaded vest,
+        # white temple streak and exposed red chest disc. Human-sized supersoldier;
+        # no giant scale or film-version bald head.
+        "covers_face": True,
+        "mask": "a stark paper-white face with intensely glowing solid-red eyes, "
+                "a heavy brow, a strong square jaw, and short jet-black hair "
+                "slicked straight back from the forehead with a small white "
+                "lightning-shaped streak at one temple",
+        "costume": "uniform, all-over stark paper-white skin with a large solid crimson-red "
+                   "disc centered on the bare chest, an open sleeveless dark navy "
+                   "leather combat vest with rows of red shotgun shells in metallic "
+                   "loops along both front edges, leaving the chest disc fully exposed, "
+                   "olive-green military cargo trousers, a black "
+                   "utility belt with ammunition pouches, black fingerless gloves "
+                   "and heavy black combat boots",
+        "signature": {"body_type": "athletic", "fitness_level": "muscular",
+                      "shoulder_width": "broad", "tattoos": "no tattoos"},
+        "physique": {"height": "tall"},
+        "prop": "a pair of heavy silver semiautomatic pistols with black grips, one in each hand",
     },
     "The Maxx": {
         "franchise": "Image",
@@ -26099,7 +26184,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
     # "Anime & Manga" below, not here.
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
-        "Invincible", "Image", "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
+        "Invincible", "Image", "Savage Dragon", "East of West", "Saga", "Bloodshot",
+        "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
         "The Smurfs", "Adventure Time", "Thundercats", "G.I. Joe", "TMNT", "Monster High",
         "Fathom", "Chaos! Comics", "Betty Boop", "The Flintstones", "The Jetsons",
         "Top Cow", "Witchblade", "Youngblood", "WildStorm",

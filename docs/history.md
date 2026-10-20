@@ -1000,3 +1000,84 @@ renderers is left for the maintainer after pulling the branch there.
 **CI.** `ci.yml` is callable, every job has a 30-minute cap, and a Windows leg runs the suite
 with autocrlf off. `publish_action.yml` runs it first and `publish-node` needs it, with no new
 write scope.
+
+## 1.9.0 - independent-comics curation and maintenance
+
+**Canon before supplied AI descriptions.** Mervyn Pumpkinhead uses the comic look in
+[Todd Klein's published panel](https://kleinletters.com/LetteringImages/MervP.jpg):
+orange carved pumpkin head, a thin scarecrow frame, white shirt, denim bib overalls,
+green bow tie and work gloves. The optional broom is supported by
+[Netflix's character reference](https://www.netflix.com/tudum/articles/the-sandman-merv-pumpkinhead-mark-hamill-clip).
+He is human-scale, not a giant, and the pumpkin head and wooden body use the existing
+head/body concealment flags. `Merv Pumpkinhead` is an alias, not a duplicate entry.
+
+Prince Robot IV earns the Saga entry on the television head and cavalry uniform,
+shown together on [Fiona Staples' Saga #12 cover](https://imagecomics.com/comics/releases/saga-12).
+Its screen can show color bars; an extra held gun would misrepresent the character's
+transforming hand, so none was invented. The worn military look and artificial head
+remain separate for Unmask.
+
+Crow's look follows [Nick Dragotta's original drawing](https://www.2dgalleries.com/art/crow-from-east-of-west-93778?lang=en)
+and [Image's free East of West #1](https://imagecomics.com/read/east-of-west):
+ink-black skin, extremely long white hair, an ivory marking across the eyes, a
+layered pale collar and necklaces, pale arm bands, white loin panels and boots.
+The supplied black face wrap and striped tactical bodysuit were not supported by
+that artwork. Her optional props are paired short knives; no permanent magic aura
+was invented. She files under `East of West`, separate from Eric Draven's `The Crow`.
+
+Bloodshot uses [Barry Windsor-Smith's classic omnibus cover](https://valiantentertainment.com/comics/bloodshot/bloodshot-classic-omnibus-vol-1-hc/):
+paper-white skin, red eyes, short black hair with a white temple streak, an open
+shell-loaded dark vest, an exposed red chest disc, olive military trousers and
+combat boots. Paired pistols are optional. The supplied exact height and weight
+were not corroborated, so he retains normal human scale with a tall, muscular
+build. For both Crow and Bloodshot, random human face and hair sentences washed
+out their defining colors in the first samples. Their actual heads now use the
+existing authored-head field (`mask` with `covers_face`), as other nonhuman heads
+already do; this does not invent a worn face covering. Their body skin color also
+stays explicit in the costume text.
+The final samples kept Bloodshot's shell loops and white temple streak, and
+Crow's white eye-mask pattern after explicit painted-makeup wording.
+
+**Savage Dragon.** The [official profile](https://wiki.savagedragon.com/profiles/characters/Dragon/)
+lists green eyes, a bald head and a disproportionately massive upper body. It gives
+5'10" without the fin and 6'6" to its tip, so the old `very tall` physique was wrong
+and a giant tier would be wrong too. The fin leads the anatomy sentence; the head is
+authored separately to suppress random human facial traits, and `bald: True` also
+suppresses any random hair. The white tank top, jeans and utility belt follow the
+official art. No generic weapon or healing aura was added. The entry now files under
+`Savage Dragon`, rather than the publisher-level `Image` bucket.
+
+**Other silhouettes were gated by rendering.** Morris Dancer uses a coherent
+[EFDSS Cotswold kit](https://www.efdss.org/learning/resources/beginners-guides/34-english-folk-costume/2462-efdss-section-3-cotswold-morris):
+white shirt and trousers, crossed colored baldrics, rosettes, a floral straw hat,
+shin bell pads and handkerchiefs. The review image preserved those features and
+stays distinct from Court Jester's motley. A barreleye candidate had new anatomy
+on paper, but its render lost the transparent dome and put ordinary eyes on the
+outside of the fish head. It was removed before review; the remaining case and
+render gate live in `docs/suggested-additions.md`. The Corinthian also stays a
+candidate until exposed tooth-lined eye sockets render correctly; a suit and
+sunglasses alone do not earn an entry. Existing Sandman characters were not
+duplicated to fill out the cast.
+
+**Gallery manifests have one owner.** Removed the stale deployment snapshots from
+`main` for every gallery and ignored their paths. The publisher already rebuilds each
+manifest from the staged images on `gh-pages`; it never copied these snapshots, and
+the picker already fetched the live site. Local preview instructions are in
+[gallery/README.md](../gallery/README.md). `gallery/render_manifest.json` remains the
+tracked render-hash gate. Exercising each real manifest generator against a temporary
+images directory proved the deleted snapshots are unnecessary.
+
+**Pyright contracts.** `generate_character` has overloads for its default pair,
+`with_subject=True` triple, and a dynamic boolean. The runtime parameters and engine
+body are unchanged. Parsed presets and archetype templates now admit their existing
+nested metadata and list alternatives in their annotations. Tests narrow optional
+values before indexing or membership checks; diagnostics are fixed at their source,
+without diagnostic suppression. The Random character snapshot is refreshed for the
+curated roster; the field-marginals baseline remains unchanged.
+
+**Validation.** The full dependency-free Python suite passed (the image test that
+requires Pillow was skipped by that interpreter). The frontend suite, Ruff and
+focused Pyright check passed. Reference docs, JS data, frontend fixtures, release
+stamps and gallery hashes are current. The field-marginals baseline and reachability
+gate passed, as did the public-safety and maintainer documentation checks. Review
+renders were published to the galleries at merge.

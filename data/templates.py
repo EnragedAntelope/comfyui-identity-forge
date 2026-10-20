@@ -9,6 +9,7 @@ Values must match options defined in data.fields.FIELD_DEFINITIONS, except
 from __future__ import annotations
 
 import re
+from typing import Any
 
 #: Wildcard pools used to vary costume descriptions. A costume string may
 #: reference any of these as ``{slot}``; the archetype node fills each slot with
@@ -104,7 +105,8 @@ def fill_costume(template: str, rng) -> str:
     return re.sub(r"\{(\w+)\}", _plain_slot, filled)
 
 
-ARCHETYPES: dict[str, dict[str, str]] = {
+# Fields may hold a string or a list of alternatives; variants hold nested looks.
+ARCHETYPES: dict[str, dict[str, Any]] = {
     # Fantasy
     "Elven Ranger": {
         "ethnicity": "Swedish",
@@ -1693,6 +1695,23 @@ ARCHETYPES: dict[str, dict[str, str]] = {
                 "mood": "tense",
             },
         },
+    },
+    "Morris Dancer": {
+        # EFDSS Cotswold Morris: crossed baldrics and shin bell pads, not the
+        # Court Jester's motley, pointed hat and curled shoes.
+        "gender": "Any",
+        "outfit_style": "vintage retro",
+        "outfit_description": "a white cotton shirt and white trousers with crossed "
+                              "{team_color} baldrics across the chest, matching ribbon "
+                              "rosettes, a straw hat decorated with flowers and ribbons, "
+                              "leather bell pads covered in rows of small brass bells "
+                              "strapped around both shins below the knees, white socks "
+                              "and black leather dancing shoes",
+        "held_item": "a pair of white dance handkerchiefs, one in each hand",
+        "accessories": "no accessories", "bag": "no bag",
+        "necklace": "no necklace", "other_jewelry": "no other jewelry",
+        "location": "cobblestone old-town street", "season": "summer",
+        "shot_type": "full body shot", "mood": "joyful",
     },
     "Court Jester": {
         "accessories": "no accessories",
@@ -5783,7 +5802,7 @@ def get_archetype_names() -> list[str]:
     return sorted(ARCHETYPES.keys())
 
 
-def get_archetype_preset(name: str) -> dict[str, str]:
+def get_archetype_preset(name: str) -> dict[str, Any]:
     """Return field preset for the named archetype."""
     return ARCHETYPES.get(name, {}).copy()
 

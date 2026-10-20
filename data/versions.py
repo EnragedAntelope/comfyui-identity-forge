@@ -144,6 +144,7 @@ RELEASES: tuple[str, ...] = (
     "1.5.1",
     "1.6.0",
     "1.8.0",
+    "1.9.0",
 )
 
 #: Entry name -> the release it first shipped in.
@@ -360,6 +361,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Blaidd the Half-Wolf': "0.76.0",
         'Blanka': "0.7.0",
         'Blink': "0.18.0",
+        'Bloodshot': "1.9.0",
         'Bloodsport': "0.22.0",
         'Bloody Mary': "0.18.0",
         'Blossom': "0.76.0",
@@ -519,6 +521,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Crimson Countess': "0.62.0",
         'Crimson Viper': "0.58.0",
         'Crono': "1.0.0",
+        'Crow (East of West)': "1.9.0",
         'Cruella de Vil': "0.6.0",
         'Crysta': "0.63.0",
         'Crystal': "0.18.0",
@@ -1341,6 +1344,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Mercy': "0.6.0",
         'Merida': "0.6.0",
         'Merlin': "0.19.0",
+        'Mervyn Pumpkinhead': "1.9.0",
         'Mewtwo': "0.21.0",
         'Mia Wallace': "0.76.0",
         'Michael Myers': "0.16.0",
@@ -1579,6 +1583,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Praetorian Guard': "0.20.0",
         'Predator': "0.16.0",
         'Prince Eric': "0.77.0",
+        'Prince Robot IV': "1.9.0",
         'Prince Thrakhath': "1.4.0",
         'Prince Vultan': "1.1.0",
         'Princess Allura': "0.74.0",
@@ -2396,6 +2401,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Metrosexual': "0.34.0",
         'Mime': "0.50.0",
         'Mongolian Deel': "0.96.0",
+        'Morris Dancer': "1.9.0",
         'Muay Thai Fighter': "1.6.0",
         'Musician': "0.5.0",
         'Musketeer': "0.67.0",
