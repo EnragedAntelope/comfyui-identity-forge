@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-10-20T10:16:14.939986",
-  "version": "1.10.0",
+  "generated": "2026-10-20T13:52:06.157327",
+  "version": "1.11.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -128,10 +128,11 @@
     "1.5.1",
     "1.6.0",
     "1.8.0",
-    "1.9.0"
+    "1.9.0",
+    "1.11.0"
   ],
-  "total_entries": 2085,
-  "entries_with_images": 2085,
+  "total_entries": 2099,
+  "entries_with_images": 2099,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -670,6 +671,14 @@
       "group": "Marvel",
       "added": "0.17.0",
       "image": "images/Angel.jpeg"
+    },
+    {
+      "name": "Angel Dust",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Hazbin Hotel",
+      "added": "1.11.0",
+      "image": "images/Angel Dust.jpeg"
     },
     {
       "name": "Angela",
@@ -1662,6 +1671,14 @@
       "group": "Marvel",
       "added": "0.18.0",
       "image": "images/Binary.jpeg"
+    },
+    {
+      "name": "Birdie the Early Bird",
+      "has_image": true,
+      "gender": "Female",
+      "group": "McDonald's",
+      "added": "1.11.0",
+      "image": "images/Birdie the Early Bird.jpeg"
     },
     {
       "name": "Bishamon",
@@ -2670,6 +2687,14 @@
       "group": "Peanuts",
       "added": "0.77.0",
       "image": "images/Charlie Brown.jpeg"
+    },
+    {
+      "name": "Charlie Morningstar",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hazbin Hotel",
+      "added": "1.11.0",
+      "image": "images/Charlie Morningstar.jpeg"
     },
     {
       "name": "Charlotte Smoothie",
@@ -3704,6 +3729,14 @@
       "image": "images/Dizzy.jpeg"
     },
     {
+      "name": "Doc Brown",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Back to the Future",
+      "added": "1.11.0",
+      "image": "images/Doc Brown.jpeg"
+    },
+    {
       "name": "Doctor Blight",
       "has_image": true,
       "gender": "Female",
@@ -4232,6 +4265,14 @@
       "image": "images/Elle Driver.jpeg"
     },
     {
+      "name": "Elle Woods",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Legally Blonde",
+      "added": "1.11.0",
+      "image": "images/Elle Woods.jpeg"
+    },
+    {
       "name": "Ellen Joe",
       "has_image": true,
       "gender": "Female",
@@ -4374,6 +4415,14 @@
       "group": "Team Fortress 2",
       "added": "0.88.0",
       "image": "images/Engineer (Team Fortress 2).jpeg"
+    },
+    {
+      "name": "Enid Sinclair",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The Addams Family",
+      "added": "1.11.0",
+      "image": "images/Enid Sinclair.jpeg"
     },
     {
       "name": "Eowyn",
@@ -5976,6 +6025,14 @@
       "image": "images/Himiko Toga.jpeg"
     },
     {
+      "name": "Himmel",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Frieren: Beyond Journey's End",
+      "added": "1.11.0",
+      "image": "images/Himmel.jpeg"
+    },
+    {
       "name": "Hinata Hyuga",
       "has_image": true,
       "gender": "Female",
@@ -6902,6 +6959,14 @@
       "group": "Tekken",
       "added": "0.16.0",
       "image": "images/Jin Kazama.jpeg"
+    },
+    {
+      "name": "Jin Sakai",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Ghost of Tsushima",
+      "added": "1.11.0",
+      "image": "images/Jin Sakai.jpeg"
     },
     {
       "name": "Jinhsi",
@@ -8126,6 +8191,14 @@
       "group": "Baldur's Gate 3",
       "added": "0.16.0",
       "image": "images/Lae'zel.jpeg"
+    },
+    {
+      "name": "Laios Touden",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Delicious in Dungeon",
+      "added": "1.11.0",
+      "image": "images/Laios Touden.jpeg"
     },
     {
       "name": "Lana Kane",
@@ -9696,6 +9769,14 @@
       "image": "images/Mervyn Pumpkinhead.jpeg"
     },
     {
+      "name": "Messmer the Impaler",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Elden Ring",
+      "added": "1.11.0",
+      "image": "images/Messmer the Impaler.jpeg"
+    },
+    {
       "name": "Mewtwo",
       "has_image": true,
       "gender": "Male",
@@ -9830,6 +9911,14 @@
       "group": "Mortal Kombat",
       "added": "0.16.0",
       "image": "images/Mileena.jpeg"
+    },
+    {
+      "name": "Miles Morales",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.11.0",
+      "image": "images/Miles Morales.jpeg"
     },
     {
       "name": "Milim Nava",
@@ -14136,6 +14225,14 @@
       "image": "images/Spider-Man.jpeg"
     },
     {
+      "name": "Spider-Punk",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Marvel",
+      "added": "1.11.0",
+      "image": "images/Spider-Punk.jpeg"
+    },
+    {
       "name": "Spider-Woman",
       "has_image": true,
       "gender": "Female",
@@ -14590,6 +14687,14 @@
       "group": "Looney Tunes",
       "added": "0.98.0",
       "image": "images/Sylvester.jpeg"
+    },
+    {
+      "name": "Sylvie",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Marvel",
+      "added": "1.11.0",
+      "image": "images/Sylvie.jpeg"
     },
     {
       "name": "Symmetra",
@@ -15766,6 +15871,14 @@
       "group": "Fallout",
       "added": "0.88.0",
       "image": "images/Vault Dweller.jpeg"
+    },
+    {
+      "name": "Vecna",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Stranger Things",
+      "added": "1.11.0",
+      "image": "images/Vecna.jpeg"
     },
     {
       "name": "Vega",
