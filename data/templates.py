@@ -5472,6 +5472,337 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "shot_type": "full body shot",
         "mood": "tranquil",
     },
+    # === 1.11.0 roster additions ========================================
+    # Every one uses an existing location value: a new location moves every random
+    # character's seed, which belongs in the 2.0.0 seed epoch.
+    "1970s Fast-Food Crew": {
+        # A generic counter-crew uniform: no brand words (maintainer decision).
+        "gender": "Any",
+        "age": ["18", "19", "20", "22", "25"],
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "held_item": "a paper takeout bag",
+        "expression": "bright smile",
+        "location": "bustling food court",
+        "lighting": "harsh fluorescent lighting",
+        "shot_type": "full body shot",
+        "mood": "cheerful",
+        "variants": {
+            "Female": {
+                "hair_length": "shoulder length",
+                "hair_style": ["high ponytail", "pigtails"],
+                "hair_accessory": "satin ribbon tied in hair",
+                "outfit_description": [
+                    "a red-and-white striped polyester crew shirt with a wide pointed "
+                    "collar, a matching red paper boat cap, a chunky plastic name tag, a "
+                    "short white waist apron, dark polyester slacks, and white sneakers",
+                    "a mustard-and-rust striped polyester crew shirt with a wide pointed "
+                    "collar, a matching rust visor, a chunky plastic name tag, a short "
+                    "brown waist apron, brown polyester slacks, and white sneakers",
+                ],
+            },
+            "Male": {
+                "hair_length": "ear length",
+                "hair_style": ["natural and unstyled", "shag"],
+                "facial_hair": ["clean shaven", "mustache"],
+                "outfit_description": [
+                    "a red-and-white striped polyester crew shirt with a wide pointed "
+                    "collar, a matching red paper boat cap, a chunky plastic name tag, a "
+                    "short white waist apron, dark polyester slacks, and black sneakers",
+                    "a mustard-and-rust striped polyester crew shirt with a wide pointed "
+                    "collar, a matching rust visor, a chunky plastic name tag, a short "
+                    "brown waist apron, brown polyester slacks, and black sneakers",
+                ],
+            },
+        },
+    },
+    "Carhop": {
+        # The roller skates and the loaded tray separate her from the 1950s Diner
+        # Waitress, who never leaves the counter.
+        "gender": "Any",
+        "age": ["18", "20", "22", "25"],
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "held_item": "a round tray of burgers and milkshakes balanced on one hand",
+        "expression": "bright smile",
+        # Skating the order out to the cars is the job.
+        "location": "the parking lot of a retro drive-in diner with classic cars",
+        "lighting": ["golden hour sunlight", "neon sign glow in multiple colors"],
+        "shot_type": "full body shot",
+        "mood": "cheerful",
+        "variants": {
+            "Female": {
+                "hair_length": "shoulder length",
+                "hair_style": "high ponytail",
+                "hair_accessory": "satin ribbon tied in hair",
+                "makeup_style": "vintage 1950s pin-up makeup",
+                # A pastel alone rendered drab: a bright dress with white trim, or a
+                # candy stripe.
+                "outfit_description": [
+                    "a short-sleeved {team_color} carhop uniform dress with a crisp "
+                    "white collar, white cuffs and white piping, a flared knee-length "
+                    "skirt under a small white apron, a small white paper cap, a name "
+                    "tag, white ankle socks, and white quad roller skates",
+                    "a short-sleeved {pastel}-and-white candy-striped carhop uniform "
+                    "dress with a white collar and a flared knee-length skirt, a small "
+                    "white paper cap, a name tag, white ankle socks, and white quad "
+                    "roller skates",
+                ],
+            },
+            "Male": {
+                "hair_length": "very short",
+                "hair_style": "slicked back",
+                "facial_hair": "clean shaven",
+                "outfit_description": (
+                    "a crisp white short-sleeved carhop shirt with a {pastel} bow tie, a "
+                    "white paper garrison cap, a name tag, pressed dark trousers, and "
+                    "white quad roller skates"),
+            },
+        },
+    },
+    "Bellhop": {
+        "gender": "Any",
+        "age": ["19", "20", "22", "25", "28"],
+        "outfit_style": "business formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "outfit_description": (
+            "a fitted {color} bellhop jacket with two rows of brass buttons and gold "
+            "braid at the cuffs, a matching round pillbox hat held on with a chin strap, "
+            "white gloves, black trousers with a gold side stripe, and polished black "
+            "shoes"),
+        "held_item": "a small leather suitcase",
+        "expression": "warm smile",
+        "posture": "upright",
+        "location": "hotel lobby with marble floors",
+        "lighting": "warm incandescent lamp glow",
+        "shot_type": "full body shot",
+        "mood": "cheerful",
+        "variants": {
+            "Female": {"hair_length": "shoulder length", "hair_style": "sleek bun"},
+            "Male": {"hair_length": "very short", "facial_hair": "clean shaven"},
+        },
+    },
+    "Mail Carrier": {
+        "gender": "Any",
+        "age": ["25", "30", "35", "40", "45", "50"],
+        "outfit_style": "utility workwear",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "outfit_description": (
+            "a light blue-grey short-sleeved postal uniform shirt with a round patch on "
+            "the sleeve, navy blue trousers with a dark stripe down each leg, a navy "
+            "blue cap, sturdy black walking shoes, and a heavy brown leather mail "
+            "satchel on a strap across the body, stuffed with letters"),
+        "held_item": "a bundle of letters",
+        "expression": "warm smile",
+        "location": "tree-lined boulevard",
+        "lighting": "soft morning light",
+        "shot_type": "full body shot",
+        "mood": "cheerful",
+        "variants": {
+            "Female": {"hair_style": "low ponytail"},
+            "Male": {"hair_length": "very short",
+                     "facial_hair": ["clean shaven", "mustache", "short beard"]},
+        },
+    },
+    "Roller Derby": {
+        "gender": "Any",
+        "age": ["22", "25", "28", "30", "33", "35"],
+        "body_type": "athletic",
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "expression": "defiant",
+        "location": "roller skating rink",
+        "lighting": "cool LED overhead lighting",
+        "shot_type": "full body shot",
+        "mood": "fierce",
+        "variants": {
+            "Female": {
+                "hair_style": ["braided pigtails", "dutch braids"],
+                "outfit_description": (
+                    "a fitted {team_color} team jersey with a big number on the front, "
+                    "black stretch shorts over ripped fishnet tights, a black helmet "
+                    "with a silver star on the side, a mouthguard, knee pads, elbow "
+                    "pads, wrist guards, and quad roller skates"),
+            },
+            "Male": {
+                "hair_length": "very short",
+                "facial_hair": ["stubble", "short beard", "full beard"],
+                "outfit_description": (
+                    "a fitted {team_color} team jersey with a big number on the front, "
+                    "black athletic shorts over long striped tube socks, a black helmet "
+                    "with a silver star on the side, a mouthguard, knee pads, elbow "
+                    "pads, wrist guards, and quad roller skates"),
+            },
+        },
+    },
+    "Majorette": {
+        # The plumed shako and mace are the Drum Major's; she carries a baton and wears
+        # a sequinned leotard and tasselled boots, which nothing else in the roster does.
+        "gender": "Female",
+        "age": ["18", "19", "20", "22"],
+        "body_type": "athletic",
+        "hair_length": "shoulder length",
+        "hair_style": "high ponytail",
+        "makeup_style": "full glam",
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "outfit_description": (
+            "a long-sleeved {team_color} sequinned majorette leotard with gold fringe "
+            "across the shoulders and a white satin sash, a small white plumed cap, "
+            "sheer tan tights, and white knee-high majorette boots with tassels"),
+        "held_item": "a silver twirling baton",
+        "expression": "bright smile",
+        "location": ["outdoor amphitheater", "high school gymnasium"],
+        "lighting": ["harsh overhead midday sun", "high key bright even lighting"],
+        "shot_type": "full body shot",
+        "mood": "exuberant",
+    },
+    "Mountaineer": {
+        # The ice axe, rope and harness separate it from the Arctic Explorer's parka.
+        "gender": "Any",
+        "age": ["25", "30", "35", "40", "45"],
+        "body_type": "athletic",
+        "complexion": "ruddy",
+        "outfit_style": "athletic",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "outfit_description": (
+            "a puffy {neon} down expedition suit, a climbing harness hung with "
+            "carabiners, a coiled rope over one shoulder, a white climbing helmet, "
+            "dark glacier glasses with side shields, thick insulated gloves, and "
+            "heavy mountaineering boots strapped into steel crampons"),
+        "held_item": "an ice axe",
+        "expression": "determined",
+        "location": ["mountain overlook", "alpine glacier lake"],
+        "lighting": "snow-reflected daylight",
+        "season": "winter",
+        "shot_type": "full body shot",
+        "mood": "triumphant",
+        "variants": {
+            "Female": {"hair_style": "braided ponytail"},
+            "Male": {"facial_hair": ["stubble", "short beard", "full beard"]},
+        },
+    },
+    "Zoot Suit": {
+        # 1940s. Men's only: the pachuca variant failed two renders (a cropped vest,
+        # no drape jacket); see docs/suggested-additions.md.
+        "gender": "Male",
+        "age": ["20", "22", "25", "28", "30"],
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "expression": "confident",
+        "location": ["neon-lit city street", "speakeasy-style basement bar"],
+        "lighting": ["neon sign glow in multiple colors", "warm incandescent lamp glow"],
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+        "hair_length": "very short",
+        "hair_style": ["slicked back", "pompadour"],
+        "facial_hair": ["clean shaven", "mustache"],
+        "outfit_description": (
+            "a {color} zoot suit with a long knee-length jacket and wide padded "
+            "shoulders, high-waisted billowing trousers pegged tight at the "
+            "ankle, a long silver watch chain looping to the knee, a white "
+            "shirt with a wide tie, a wide-brimmed fedora with a feather, and "
+            "two-tone wingtip shoes"),
+    },
+    "Lounge Singer": {
+        "gender": "Any",
+        "age": ["28", "30", "33", "35", "40", "45"],
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "held_item": "a vintage chrome microphone",
+        "expression": ["sultry", "subtle soft smile"],
+        "location": "dimly lit cocktail lounge",
+        "lighting": "warm candlelight",
+        "shot_type": "full body shot",
+        "mood": "moody",
+        "variants": {
+            "Female": {
+                "hair_length": "shoulder length",
+                "hair_texture": "loosely curled",
+                "makeup_style": "full glam",
+                "lips_makeup": "classic red",
+                "outfit_description": (
+                    "a floor-length {jewel_tone} sequinned gown with a sweetheart "
+                    "neckline and a thigh-high slit, long satin opera gloves, and "
+                    "strappy heels"),
+            },
+            "Male": {
+                "hair_length": "very short",
+                "hair_style": "slicked back",
+                "facial_hair": "clean shaven",
+                "outfit_description": (
+                    "a white dinner jacket with a black satin shawl collar, a black "
+                    "bow tie, a white dress shirt, black tuxedo trousers, and polished "
+                    "black patent shoes"),
+            },
+        },
+    },
+    "1950s Gas Station Attendant": {
+        "gender": "Any",
+        "age": ["19", "20", "22", "25", "30"],
+        "outfit_style": "utility workwear",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "outfit_description": (
+            "a crisp white service-station uniform shirt with an oval name patch over "
+            "the pocket, a black bow tie, {menswear_color} uniform trousers with a "
+            "matching short jacket, a peaked service cap with a round emblem badge, "
+            "and polished black shoes"),
+        "held_item": "an oil can with a long spout",
+        "expression": "warm smile",
+        "location": "auto repair shop service bay",
+        "lighting": "harsh fluorescent lighting",
+        "shot_type": "full body shot",
+        "mood": "cheerful",
+        "variants": {
+            "Male": {"hair_length": "very short", "hair_style": "slicked back",
+                     "facial_hair": "clean shaven"},
+            "Female": {"hair_length": "shoulder length", "hair_style": "high ponytail"},
+        },
+    },
+    "Rodeo Rider": {
+        # The chaps, the protective vest and the pinned competition number separate it
+        # from the Rancher. No rodeo-arena location exists and a new one would move
+        # random seeds, so the amphitheater stands in for the arena stands.
+        "gender": "Any",
+        "age": ["20", "22", "25", "28", "30", "33"],
+        "body_type": "athletic",
+        "complexion": "ruddy",
+        "outfit_style": "vintage retro",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "outfit_description": (
+            "a {color} pearl-snap western shirt under a padded black rodeo protective "
+            "vest with a paper competition number pinned to the front, long fringed "
+            "leather chaps over blue jeans, a big silver rodeo belt buckle, leather "
+            "riding gloves, a wide-brimmed cowboy hat, and cowboy boots with spurs"),
+        "held_item": "a coiled lasso",
+        "expression": "determined",
+        "location": "outdoor amphitheater",
+        "lighting": "harsh overhead midday sun",
+        "shot_type": "full body shot",
+        "mood": "fierce",
+        "variants": {
+            "Female": {"hair_length": "mid back", "hair_style": "low ponytail"},
+            "Male": {"hair_length": "very short",
+                     "facial_hair": ["clean shaven", "stubble", "mustache"]},
+        },
+    },
 }
 
 

@@ -11536,12 +11536,18 @@ COSPLAYERS: dict[str, dict] = {
     "Tellarite": {
         "franchise": "Star Trek",
         "gender": "Male",
-        "costume": "a heavy padded Tellarite uniform on a short, broad, powerfully stocky frame, "
-                   "with a coarse pig-like snout, deep-set eyes, small tusks, and a shaggy coat "
-                   "of thick facial and body hair",
-        "signature": {"hair_color": "dark brown", "hair_length": "short pixie",
-                      "hair_texture": "coily"},
-        "physique": {"body_type": "stocky", "height": "short", "skin_tone": "tan"},
+        # 1.11.0: the canon head on the mascot route. No render has held the snout yet
+        # (see docs/suggested-additions.md), but the old "shaggy coat of thick facial
+        # and body hair" drew an overcoat, and this text is the accurate one.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a full-head latex pig-faced Tellarite prosthetic mask with a large upturned "
+                "pink pig snout and flared nostrils, two short tusks curving up over the "
+                "lower lip, small deep-set eyes under a heavy wrinkled brow, ruddy pink "
+                "wrinkled leathery skin, and a bushy brown beard",
+        "costume": "a heavy padded Tellarite uniform tunic with a high collar on a short, "
+                   "broad, barrel-chested frame, and thick gloves",
+        "physique": {"body_type": "stocky", "height": "short"},
     },
     "Vulcan": {
         "franchise": "Star Trek",
@@ -13231,7 +13237,9 @@ COSPLAYERS: dict[str, dict] = {
                 "a blonde tuft of head-fur tied back with a purple scrunchie",
         "costume": "a purple-and-white Tune Squad basketball jersey numbered 10, matching "
                    "shorts, and white high-top sneakers, over an even, all-over coat of "
-                   "cream-and-tan fur, with a fluffy rabbit tail",
+                   "cream-and-tan fur covering the bare arms and legs, with furry tan "
+                   "rabbit arms and legs, furry tan rabbit paws for hands, and a fluffy "
+                   "rabbit tail",
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Anastasia": {
@@ -21325,8 +21333,9 @@ COSPLAYERS: dict[str, dict] = {
     # --- Squid Game -------------------------------------------------------
     # Stranger Things, new franchise at 0.90.0 with a single entry. Ordinary
     # garments, but iconic AND specific -- the same bar that admitted Sandy Olsson
-    # and Mia Wallace. Vecna and the Demogorgon were declined: no worn garments at
-    # all, which is Creature-node shape.
+    # and Mia Wallace. The Demogorgon was declined: no worn garments at all, which
+    # is Creature-node shape. Vecna, declined on the same ground, shipped at 1.11.0
+    # on the mascot-suit route (a full prosthetic body, render-gated).
     "Eleven": {
         "franchise": "Stranger Things",
         "gender": "Female",
@@ -26056,6 +26065,241 @@ COSPLAYERS: dict[str, dict] = {
             },
         ],
     },
+
+    # =====================================================================
+    # 1.11.0 roster batch. Each entry is render-gated: one rewording after a
+    # failed render, then a logged decline in docs/suggested-additions.md.
+    # =====================================================================
+    # --- Marvel (Spider-Verse, Loki) --------------------------------------
+    "Miles Morales": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # Into the Spider-Verse: the suit is black with red, not red-and-blue, which is
+        # what keeps him apart from the shipped Spider-Man. The hoodie and high-tops are
+        # the film's street layer.
+        "covers_face": True,
+        "mask": "a full matte black face mask etched with thin red web lines, with "
+                "large white angular eye lenses",
+        "costume": "a skintight matte black spider suit with a large bright red spider "
+                   "emblem spread across the chest, red web-line gloves, an open black "
+                   "zip-up hoodie worn over the suit, and red-black-and-white high-top "
+                   "basketball sneakers",
+        "physique": {"body_type": "lean", "height": "average height"},
+    },
+    "Spider-Punk": {
+        "franchise": "Marvel",
+        "gender": "Male",
+        # Hobie Brown (Across the Spider-Verse). The spiked mohawk through the top of the
+        # mask and the studded vest carry the silhouette; the guitar is his weapon.
+        "covers_face": True,
+        "mask": "a torn red-and-blue spider mask patched with safety pins, with large "
+                "white eye lenses and a tall spiked mohawk of locs poking up through "
+                "the top",
+        "costume": "a torn sleeveless black denim vest covered in metal studs, safety "
+                   "pins and punk band patches over a ripped red-and-blue spider suit, "
+                   "spiked leather wristbands, tattered tartan trousers hung with "
+                   "chains, and scuffed black combat boots",
+        "physique": {"body_type": "lean", "height": "tall"},
+        "prop": "a battered electric guitar covered in stickers",
+    },
+    "Sylvie": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        # Loki (TV), season 1. The broken horned circlet worn askew is the silhouette.
+        "costume": "a long dark green leather coat with black panels over a dark tunic, "
+                   "fitted black trousers, black knee boots, and a golden horned circlet "
+                   "worn tilted on the head with one horn snapped off",
+        "signature": {"hair_color": "dirty blonde", "hair_length": "shoulder length",
+                      "hair_texture": "loosely wavy", "hair_style": "tousled bedhead",
+                      "eye_color": "blue-gray", "age": "30"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair"},
+        "prop": "a short curved sword",
+    },
+    # --- Back to the Future -----------------------------------------------
+    "Doc Brown": {
+        "franchise": "Back to the Future",
+        "gender": "Male",
+        # The 1985 Twin Pines Mall look (maintainer pick). A lab coat and wild hair is the
+        # shape that declined Dr. Zarkov; the radiation suit, goggles and remote carry him.
+        "costume": "a baggy white anti-radiation coverall zipped up the front, a pair "
+                   "of dark tinted goggles pushed up on the forehead, thick white rubber "
+                   "gloves, and a chunky digital wristwatch",
+        "signature": {"age": "65", "hair_color": "white", "hair_length": "jaw length",
+                      "hair_texture": "thick and voluminous",
+                      "hair_style": "natural and unstyled", "facial_hair": "clean shaven",
+                      "expression": "surprised", "eye_color": "dark brown"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
+        "prop": "a boxy handheld radio remote control with a long antenna",
+    },
+    # --- Legally Blonde ---------------------------------------------------
+    "Elle Woods": {
+        "franchise": "Legally Blonde",
+        "gender": "Female",
+        # All-pink everything plus Bruiser: the chihuahua is what makes "a blonde in a
+        # pink dress" read as her.
+        "costume": "a fitted hot pink sleeveless sheath dress with a square neckline, a "
+                   "pink pearl necklace, and hot pink pointed-toe stiletto heels",
+        "signature": {"hair_color": "golden blonde", "hair_length": "slightly past shoulders",
+                      "hair_texture": "softly curled", "hair_style": "worn down",
+                      "eye_color": "bright blue", "makeup_style": "soft glam",
+                      "expression": "bright smile", "necklace": "no necklace",
+                      "age": "22"},
+        "physique": {"body_type": "slim", "height": "petite", "skin_tone": "fair"},
+        "prop": "a tiny chihuahua dressed in a pink sweater",
+    },
+    # --- Stranger Things --------------------------------------------------
+    "Vecna": {
+        "franchise": "Stranger Things",
+        "gender": "Male",
+        # Reopened at 1.11.0 (declined at 0.90.0 for having no worn garments) on the
+        # mascot-suit route: a person fits inside the prosthetic body, the same shape
+        # Pyramid Head and the Xenomorph-class suits ship under.
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a gaunt hairless head of cracked, burned reddish-brown flesh wrapped in "
+                "twisting black root-like tendrils, with a sunken hole where the nose "
+                "should be, a lipless mouth of bared teeth, and deep-set clouded eyes",
+        "costume": "a tall gaunt body of cracked, blistered reddish-brown flesh bound in "
+                   "twisting black vine-like tendrils, with long bony fingers ending in "
+                   "sharp yellowed nails",
+        "physique": {"body_type": "slim", "height": "very tall"},
+    },
+    # --- The Addams Family (Wednesday, Netflix) ---------------------------
+    "Enid Sinclair": {
+        "franchise": "The Addams Family",
+        "gender": "Female",
+        # Wednesday's roommate: the rainbow knitwear and the werewolf claws are the
+        # opposite of Wednesday's black-and-white, which is the whole joke.
+        "costume": "a fluffy chunky-knit cardigan striped in pastel pink, yellow and "
+                   "blue over a pink crop top, a short pleated pink skirt, rainbow "
+                   "striped knee socks, chunky platform sneakers, long sharp "
+                   "pink-painted werewolf claws, and blonde hair dyed pink and blue at "
+                   "the ends",
+        "signature": {"hair_color": "light blonde", "hair_length": "shoulder length",
+                      "hair_texture": "loosely wavy", "hair_style": "half up half down",
+                      "eye_color": "bright blue", "expression": "bright smile",
+                      "makeup_style": "soft natural makeup", "age": "18"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "fair"},
+    },
+    # --- Elden Ring ---------------------------------------------------------
+    "Messmer the Impaler": {
+        "franchise": "Elden Ring",
+        "gender": "Male",
+        # Shadow of the Erdtree. Canon: the right eye is a yellow prosthetic seal and the
+        # left is kept shut; the asymmetry goes in the costume, not the `eyes` key.
+        "costume": "ornate light black-and-gold plate armor over a long crimson cloak "
+                   "and skirt, a great red-scaled serpent coiled around the torso and "
+                   "shoulders, smaller black serpents writhing out from under the "
+                   "armor, the right eye a glowing yellow prosthetic and the left eye "
+                   "shut",
+        "signature": {"hair_color": "bright red", "hair_length": "waist length",
+                      "hair_texture": "thick and voluminous", "hair_style": "windswept",
+                      "facial_hair": "clean shaven", "necklace": "no necklace"},
+        "physique": {"body_type": "slim", "height": "very tall", "skin_tone": "pale"},
+        "prop": "a long golden spear wreathed in dark red flame",
+    },
+    # --- Delicious in Dungeon / Frieren (render-gated on the name bar) ----
+    "Laios Touden": {
+        "franchise": "Delicious in Dungeon",
+        "gender": "Male",
+        # Admitted only on a render that reads as more than a generic adventurer (the
+        # monster-cooking hook rides on the prop).
+        "costume": "a plain steel breastplate with shoulder guards over a dark chainmail "
+                   "shirt and a navy blue tunic, brown leather gloves, and a belt hung "
+                   "with pouches and a cooking ladle",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very short",
+                      "hair_texture": "slightly wavy", "hair_style": "natural and unstyled",
+                      "eye_color": "amber", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
+        "prop": "a longsword with a winged crest on the guard",
+    },
+    "Himmel": {
+        "franchise": "Frieren: Beyond Journey's End",
+        "gender": "Male",
+        # The Hero. Same render gate as Laios: blue hair and the white-and-blue cape are
+        # all that separate him from a generic fantasy hero.
+        "costume": "a white tunic with gold trim and a blue sash, a long white cape "
+                   "lined in blue fastened with a gold clasp, white gloves, and tall "
+                   "brown boots",
+        "signature": {"hair_color": "electric blue", "hair_length": "ear length",
+                      "hair_style": "natural and unstyled", "eye_color": "bright blue",
+                      "facial_hair": "clean shaven", "expression": "warm smile",
+                      "age": "25"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
+        "prop": "a plain hero's sword with a blue hilt",
+    },
+    # --- Ghost of Tsushima --------------------------------------------------
+    "Jin Sakai": {
+        "franchise": "Ghost of Tsushima",
+        "gender": "Male",
+        # The cover look: the Ghost armour, Mask of the Ghost and headband (maintainer
+        # supplied; the mask over nose and jaw is the signature, so it leads).
+        "costume": "a grimacing dark iron demon half-mask covering the nose and jaw, a "
+                   "white cloth headband, sleek dark charcoal lamellar armor wrapped in "
+                   "black cloth with leather straps, a dark flowing hooded cape, and "
+                   "black tabi boots",
+        "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                      "hair_style": "top knot", "eye_color": "dark brown",
+                      "facial_hair": "stubble", "expression": "intense gaze",
+                      "age": "28"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair", "ethnicity": "Japanese"},
+        "prop": "a katana",
+    },
+    # --- Hazbin Hotel -------------------------------------------------------
+    "Charlie Morningstar": {
+        "franchise": "Hazbin Hotel",
+        "gender": "Female",
+        # Princess of Hell. The chalk-white skin with flat red cheek circles is the
+        # cartoon pallor (Ragged Robin wording), so it stays skin-native.
+        "costume": "a fitted red tuxedo jacket with black lapels and cuffs over a white "
+                   "dress shirt and a black bow tie, matching red trousers, and black "
+                   "heels, over smooth, flawless chalk-white skin with two round flat "
+                   "rosy red circles on the cheeks",
+        "skin": "chalk white",
+        "signature": {"hair_color": "golden blonde", "hair_length": "mid back",
+                      "hair_style": "worn down", "eye_color": "amber",
+                      "expression": "beaming", "blush": "no blush", "age": "22"},
+        "physique": {"body_type": "slim", "height": "average height"},
+    },
+    "Angel Dust": {
+        "franchise": "Hazbin Hotel",
+        "gender": "Male",
+        # A spider demon: six arms (anatomy_note, the Spiral wording) and white-and-pink
+        # fur, so the head is authored in `mask`.
+        "anatomy_note": (
+            "a six-armed body: the natural pair of arms at the shoulders and two further pairs set below them down the torso, six arms in total"
+        ),
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a slender white-furred spider-demon face with pink markings around the "
+                "eyes, large pink eyes, a sly smile showing a single gold tooth, and a "
+                "fluffy tuft of white fur swept over one eye",
+        "costume": "a cropped pink-and-white striped suit jacket open over a fluffy white "
+                   "fur chest ruff, a black bow tie, long pink gloves on every hand, "
+                   "black shorts, and tall pink thigh-high boots, over an even, "
+                   "all-over coat of white fur with pink spots",
+        "physique": {"body_type": "slender", "height": "very tall"},
+    },
+    # --- McDonald's ---------------------------------------------------------
+    "Birdie the Early Bird": {
+        "franchise": "McDonald's",
+        "gender": "Female",
+        # The Mayor McCheese mascot route. The mask names the beak and bird face: hair
+        # and eye colour alone draw a woman in ears (the 1.10.0 animal-heads rule).
+        "covers_face": True,
+        "covers_body": True,
+        "mask": "a round yellow cartoon bird head with a small orange beak, big friendly "
+                "eyes with long lashes, and soft yellow feathered cheeks, topped by a "
+                "brown leather aviator cap with goggles and two orange pigtails tied "
+                "with pink ribbons",
+        "costume": "a pink one-piece flight suit belted at the waist, a purple scarf "
+                   "knotted at the throat, and white gloves, over an even, all-over "
+                   "coat of yellow feathers, with orange bird feet",
+        "physique": {"body_type": "chubby", "height": "short"},
+    },
 }
 
 
@@ -26141,6 +26385,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Mega Man", "Hollow Knight",  # 0.97.0
         "Undertale", "Cuphead", "Animal Crossing",  # 0.98.0
         "Chrono Trigger", "Clair Obscur: Expedition 33",  # 1.0.0
+        "Ghost of Tsushima",  # 1.11.0
         "Xenoblade Chronicles", "Valkyria Chronicles", "Magic: The Gathering",
         "Ace Attorney", "The Rising of the Shield Hero", "A Certain Scientific Railgun",
         "Destiny",  # 1.2.0 -- Mara Sov
@@ -26193,6 +26438,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Grease", "Pulp Fiction", "James Bond", "The Girl with the Dragon Tattoo",
         "Farscape", "Doctor Who", "Squid Game",
         "Back to the Future", "The Big Lebowski",
+        "Legally Blonde",  # 1.11.0
         # 0.95.0, all three singletons -- below _FRANCHISE_SCOPE_MINIMUM, so no new
         # random_scope option appears.
         "How to Train Your Dragon", "The NeverEnding Story",

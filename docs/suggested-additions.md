@@ -25,9 +25,7 @@ that is what the Creature node is for.
 
 | Candidate | Case and remaining gate |
 |---|---|
-| The Corinthian (The Sandman) | [Netflix's cast reference](https://www.netflix.com/tudum/galleries/the-sandman-cast-gallery) confirms mouths in the eye sockets. That anatomy is new; the suit and sunglasses alone are ordinary modern dress. Consider only an exposed-eye look, and require a render that holds both tooth-lined sockets before admission. |
-| Tellarite repair (Star Trek) | The shipped entry renders a plain stocky man: no snout, no tusks, and "a shaggy coat of thick facial and body hair" draws an overcoat. 1.10.0 tried four wordings and each failed at the gallery's full-body framing: an authored head in `mask`; that plus `covers_body` (drops the demographics); the canonical porcine description (upturned pig snout, ruddy pink wrinkled leathery skin, tusks over the lip, bushy beard) drew a bearded human; a beardless "boar-faced" head drew a generic ridged alien. Next ideas: a mascot-style full prosthetic head ("a full latex Tellarite prosthetic mask"), or a gallery framing override so the face is large. Keep the 1.9.0 text until a render holds the snout. |
-| Barreleye creature | [MBARI's observation](https://www.mbari.org/news/researchers-solve-mystery-of-deep-sea-fish-with-tubular-eyes-and-transparent-head/) shows internal tubular eyes inside a transparent head dome. The review render lost the dome and drew ordinary external fish eyes, so it remains unshipped. Revisit only with wording or a model that preserves that anatomy; another generic fish head adds nothing. |
+| Tellarite repair (Star Trek) | The 1.9.0 entry rendered a plain stocky man: no snout, no tusks, and "a shaggy coat of thick facial and body hair" drew an overcoat. 1.10.0 tried four wordings and each failed at the gallery's full-body framing: an authored head in `mask`; that plus `covers_body` (drops the demographics); the canonical porcine description (upturned pig snout, ruddy pink wrinkled leathery skin, tusks over the lip, bushy beard) drew a bearded human; a beardless "boar-faced" head drew a generic ridged alien. 1.11.0 tried the full latex prosthetic head in `mask`, alone and with `covers_body`: the first drew a bearded man, the second a ridged forehead over a beard. 1.11.0 ships the second anyway (the maintainer's call): it is the accurate canon text and drops the overcoat misread, and it renders no worse than the 1.9.0 text. The snout is still open; the one untried idea is a gallery framing override (`_GALLERY_SHOT`) on a close framing so the face is large. |
 
 **Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, and the
 tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
@@ -36,6 +34,7 @@ tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, s
 | Item | Case |
 |---|---|
 | A gaze field | Gaze lives inside `pose` (the `looking` family), so a render cannot have both "arms crossed" and "looking off-camera". A field needs a widget, the JS repair, moving `looking` out of `pose` (which moves every seed's pose draw) and gates against from-behind shots, selfies and closed-eye faces. Planned for 2.0.0, the seed-epoch release, now that the expression sheet exists. |
+| An article for noun expressions | The scene sentence voices `"{poss} expression is {expression}"`, so a noun value reads "His expression is bright smile" while an adjective reads fine ("is confident"). Fix it at the render layer (an article, or "wearing a bright smile"), never by renaming values, which archetypes and cosplayers lock. It moves no seed but changes gallery prose, so it ships in 2.0.0 with the prose-hash gallery gate. Found in the 1.11.0 renders. |
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,
@@ -175,6 +174,9 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Sylvia (KonoSuba: Legend of Crimson) | A film-only antagonist whose worn look -- a crimson leather dress, white gloves and stockings, with elf ears -- renders as a generic elf woman in a red dress without the name doing the work. |
 | Yunyun, Wiz, Chris / Eris, Beldia (KonoSuba) | Yunyun's Crimson Demon outfit without Megumin's hat and staff reads as a generic anime girl; Wiz is a plain robed shopkeeper; Chris/Eris is a thief outfit or a generic goddess gown; Beldia is black plate armour whose one distinguishing trait, a carried head, does not render. |
 | Ian Lightfoot (Onward) | A hoodie and jeans on a blue elf; `Barley Lightfoot` carries the film (the Captain Mizuki pattern). |
+| The Corinthian (The Sandman) | **Declined at 1.11.0 on the render bar.** The mouths in his eye sockets ([Netflix's cast reference](https://www.netflix.com/tudum/galleries/the-sandman-cast-gallery)) are the only thing that separates him from a man in a cream suit, and the model would not draw them. An anatomy note left the random eye colour and shape in the prose, so the retry used an `eyes` override ("two small gaping mouths lined with sharp white teeth for eyes"), which drew ordinary eyes, and the platinum hair aged him past seventy despite a pinned age of 33. Without the sockets the look is ordinary modern dress. |
+| Feyd-Rautha (Dune: Part Two) | **Declined at 1.11.0 on the render bar.** The chalk-white hairless head is the whole look; the black armour alone is any villain. Two wordings failed: the `bald` flag drew hair, and a "smooth shaved bald head" costume clause drew a dark-skinned man with the white skin ignored. |
+| Verso (Clair Obscur: Expedition 33) | Long dark hair, a full beard and a heavy dark fur-trimmed coat with a sword: a near-duplicate of the shipped `Gustave` from the same game. Nothing in the look separates the two at silhouette scale. |
 | Proxima the Broodseeker, and the Mortal Shell / Mortal Shell 2 shells | Full-plate knights under closed or horned helmets -- the armoured silhouette the "Researched and skipped" list closes against -- from a niche soulslike series. |
 
 ### Whole classes
@@ -191,6 +193,10 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Gravity Falls; Hocus Pocus | Closed unshipped at 0.88.0 when the row they shared with Encanto was split. Encanto had four distinct silhouettes; these two are ordinary modern dress and period costume respectively, carried by the ensemble rather than by any one look. `Bill Cipher` ships at 0.98.0 as the exception that carries the franchise (the Captain Mizuki pattern): a one-eyed dream demon is neither modern dress nor period costume. The closure still stands for the human cast. |
 
 ### Creature-node animals — the recurring rejects
+
+> **barreleye (1.11.0, render-tested and declined).** [MBARI's observation](https://www.mbari.org/news/researchers-solve-mystery-of-deep-sea-fish-with-tubular-eyes-and-transparent-head/) shows tubular eyes inside a transparent head dome, and that dome is the only thing that separates it from the generic fish closed below. Two renders lost it: the first drew ordinary external fish eyes; the retry led the head phrase with the dome and put the eyes inside it, and drew green eyes on an opaque fish head, on legs. Revisit only with a model that holds the anatomy.
+
+> **vampire squid (1.11.0, render-tested and declined).** The webbed cloak joining its arms is the anatomy that separates it from `squid`, and neither render showed it. The first drew a woman in a scaly mushroom-shaped hat; the retry named the animal in the head phrase and drew a squid-headed alien with red eyes, still with a human-shaped face and the arms hidden. A red squid already ships through `squid`'s palette pool.
 
 > **arachne / drider (1.5.0, render-tested and declined).** The spider-taur was built with its lower body leading the first slot and rendered twice; both times the anthropomorphic form produced an ordinary man in a suit standing in front of a giant spider. The Creature node keeps a humanoid body under that form by design, and only the centaur survives it (a horse body is too strongly learned to lose). `owlbear` and `bighorn ram` passed the same test against `owl` / `bear` / `gryphon` and `goat` / `markhor` and shipped.
 
@@ -222,7 +228,7 @@ orb-weaver / widow spiders** (tarantula), **luna moth** (moth, and it is a palet
 and pufferfish own the spine-ball), **swordfish / marlin / sailfish** and **betta**
 (thinner differentiators than lionfish, which took the fish slot), **wombat / wallaby**
 (koala, kangaroo), **opossum** (raccoon, rat), **gibbon** (orangutan shipped instead),
-**dog** (wolf).
+**dog** (wolf), **thorny devil** (horned lizard already owns the spiny desert lizard).
 
 **The insect list (0.94.0)** resolved into twelve anatomies, and the ~390 names spent
 themselves on ten the class already owns. Its rejection patterns, on top of the ones
@@ -271,6 +277,9 @@ butterfly** (the `translucent` finish), **death's-head hawkmoth** (a marking on 
 | Frank-N-Furter (1.1.0 retro/camp survey) | **Dr. Frank-N-Furter** (The Rocky Horror Picture Show) — identical character, no add needed. |
 | The Fourth Doctor (1.1.0 retro/camp survey) | **Ships verbatim** (Doctor Who) — the long multicoloured scarf, floppy hat, tweed coat description in the candidate matches the existing entry exactly. |
 | Captain Nemo (1.1.0 retro/camp survey) | **Ships** under Twenty Thousand Leagues Under the Sea — same character (Victorian submariner uniform, turban, diving helmet prop), no add needed. |
+| Racing Driver (1.11.0 plan) | **Race Car Driver** archetype |
+| Kirin (1.11.0 plan) | **qilin** creature |
+| Nudibranch (1.11.0 plan) | **nudibranch** creature, under the same name |
 | Vintage deep-sea diver (0.98.0 render session) | **Deep Sea Diver** archetype — its first costume is the brass-and-canvas suit with the helmet under one arm. The backlog row was never closed. |
 
 > **Those three came from an external audit at 0.97.0 that reported them "verified
@@ -334,6 +343,8 @@ From the third-party wildcard packs mined at 1.6.0. What shipped is in docs/hist
 | Saree (half of the 1.5.0 "Saree + Sherwani" pair) | **Already ships.** `Bollywood Heroine` carries a chiffon sari, a silk sari with its pallu and a lehenga. The sherwani was the real gap and ships in `Lehenga & Sherwani`. |
 | Techwear / Gorpcore | **Cyberpunk Netrunner already is a techwear look** — its costume is literally "a {dark_color} techwear jacket with {color} LED trim, utility straps, and a sleek visor". Stripping the sci-fi trim to leave shell-jacket-and-cargo-trousers is not a second silhouette, it is the same one with less to draw. |
 | A dark/gothic counterpart to Kawaii Street Fashion | Declined on two counts. The pastel silhouette is already `Kawaii Street Fashion` (ruffled blouse, tiered skirt, platform Mary-Janes) and the dark one is already `1990s Goth`, so the candidate sits between two shipped entries rather than beside them. The maintainer also rejected the subculture's usual name outright. **Do not re-propose it under a synonym.** |
+| Zoot Suit women's (pachuca) variant (1.11.0 plan) | **Declined at 1.11.0 on the render bar; `Zoot Suit` ships men's only.** The long drape jacket and the watch chain are the whole look. Both wordings failed: the first (a long-line jacket over a short pleated skirt) did not read as a zoot suit, and the retry (fingertip-length drape jacket, pegged trousers) drew a sleeveless cropped vest with no chain. |
+| Rockabilly (1.11.0 plan) | Sits between two shipped entries: `1950s Greaser` carries the cuffed jeans, leather jacket and pompadour, and `Pin-up Model` the halter dress, victory rolls and red lip. A third entry would be a blend of the two, not a new look. |
 
 ---
 
@@ -344,12 +355,13 @@ Open. No decision has been made either way.
 | # | Question | Where it stands |
 |---|---|---|
 | 2 | **Costume text that asserts a body trait against an unpinned random field.** A costume reading "on a hulking frame" can render beside "a very slim build" in the same sentence, because `physique` applies only in Full-character mode while `costume` renders in both. | Measured at 0.90.0, **33 entries** (`Colossus`, `Gollum`, `Jabba the Hutt`, `Space Marine`, `Brook`, …). Not swept, for two reasons. First, the `signature` / `physique` split is *deliberate* — the schema says physique is Full-mode-only, so a randomly-built person wearing the costume is the intended behaviour, and most of the 33 are mascot suits where the suit supplies the bulk regardless of the wearer. Second, a naive regex reported **171** and was wrong: "tiny" on `Trinity` and `Neo` is their *sunglasses*, "enormous" on `Edna Mode` is her *lashes*. Requiring the adjective to modify a body noun cut it to 33. **If this is ever taken up, measure it again from scratch — do not trust the 171.** The four entries fixed at 0.90.0 (`Dexter Jettster`, `Figrin D'an`, `Ithorian`, plus the new Fallout/GoT entries) pin the trait in `signature`, which applies in both modes; that is the pattern to follow. |
-| 5 | **Birdie the Early Bird** (McDonald's, from the 1.1.0 Mayor McCheese survey) — legible mascot silhouette (giant yellow bird, bonnet) but judged a weak icon next to the roster's existing bird mascots. | No decision made either way. Revisit with a stronger case (e.g. a distinguishing prop or silhouette detail the existing bird mascots lack) rather than re-proposing the same description. |
 | 10 | **Some archetype `outfit_style` proxies disagree with the location gate** (e.g. `Opera Singer` evening formal at an outdoor amphitheater). | Harmless in Full lock level (both locked, the rule only logs); in Essentials the location is steered to a fitting venue. Only worth touching if a real render looks wrong. |
 | 12 | **Women's `hair_length` is flat across 14 lengths**, so about 22% of women draw a buzz, very short hair or a pixie. | Not a coherence bug and never flagged; a population lean would be a deliberate bias decision (the `age` question below has the same shape). Decide the target share first. |
 | 13 | **Two values stay reachable only through a lock or a narrow style.** No men's garment bares the back, so a man's shoulder-blade tattoo never shows by default; `dark dress socks` shows only under a cuffed or ankle-length hem (smart casual, vintage retro). | Both are true to life; both used to be reached only through false positives (`dress` matching "dress shirt"). Revisit only if a render asks for them. |
 | 11 | **`age` tops out at 70.** An everyday population has older people too. | A bias decision, not a gap: 60/65/70 are 3 of 19 values (~16%, near the world share of 60+). Adding 75/80 flat would push that to ~24%; a weighted add would hold it. Decide the target share first. |
 | 14 | **Indoor everyday locations draw studio-rig lighting about as often as practical light.** A 5,000-seed sweep (1.5.5 audit) on `location_setting: Indoor` put `harsh angled spotlight`, `butterfly beauty lighting`, `high key bright even lighting`, `low key moody single light source` and `dramatic single overhead spotlight` each at 4.7–5.1% of renders, alongside ordinary practical sources like `warm lantern light` (5.3%) and `golden bokeh lights in background` (5.1%) — a photo-studio rig lighting a living room or a kitchen at the same rate as a window or a lamp. | Not flagged in the 1.5.5 audit (only vitiligo/eye-colour/wet-look/tattoo-placement were). `lighting` is a `FIELD_FAMILIES` field (`studio_shape` / `studio_stage`), so fixing this the bias-safe way needs a whole-family exclusion keyed on `location_setting` or `location`, not a partial cull — see the family-weight rule. Revisit only with a render that actually looks wrong. |
+
+**Closed at 1.11.0 - Birdie the Early Bird (was row 5).** Shipped on the mascot-suit route. The aviator cap with goggles, the orange pigtails and the pink flight suit are the silhouette detail the roster's other bird mascots lack, and the render held all three.
 
 **Closed at 1.5.0 round 4 — rows 3, 6 and 8.** The pockets gesture now needs a garment that
 HAS pockets (an allowlist the other way round), so a harness over a bare chest cannot put its

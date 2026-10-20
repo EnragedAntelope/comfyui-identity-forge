@@ -3296,6 +3296,63 @@ CREATURES: dict[str, dict] = {
         "legs_feet": "tall massive hind legs",
         "tail": "a heavy tail ending in four long horizontal bony spikes",
     },
+
+    # ======================================================================
+    # 1.11.0. Each one names the body the roster could not already render.
+    # ======================================================================
+    "frilled lizard": {
+        # The neck frill: no lizard on the roster has an erectile ruff around the jaws.
+        "class": "Reptiles & Amphibians", "palette": "sandy tan",
+        "palette_pool": ["sandy tan", "rust brown", "charcoal grey"],
+        "head": "a lizard head ringed by a huge fan-like neck frill spread wide like an "
+                "open umbrella around the jaws, its edges veined in orange and red",
+        "eyes": "sharp golden reptilian eyes",
+        "integument": "fine dry pebbled scales",
+        "arms": "lean scaled arms",
+        "hands": "long-toed clawed hands",
+        "legs_feet": "long running legs with clawed feet",
+        "tail": "a long whip-thin tail",
+        "extras": "a gaping bright yellow mouth",
+    },
+    "quetzalcoatl": {
+        # A feathered serpent: dragon and wyvern are scaled, naga is bare-scaled, and the
+        # thunderbird is a bird. Scales turning to plumage is the new integument.
+        "class": "Mythic & Fantasy", "palette": "emerald green",
+        "palette_pool": ["emerald green", "turquoise", "jade and gold"],
+        "head": "a fanged serpent head crowned with a fan of long iridescent quetzal plumes",
+        "eyes": "fierce obsidian-black eyes",
+        "integument": "glossy scales that overlap into long iridescent feathers along the body",
+        "arms": "feather-fringed arms",
+        "hands": "taloned hands",
+        "legs_feet": "a long coiling feathered serpent body in place of legs",
+        "wings": "a pair of broad feathered wings",
+        "tail": "a tail ending in a fan of trailing plumes",
+    },
+    "leafy sea dragon": {
+        # Seahorse has bony rings; this body is covered in leaf-shaped camouflage lobes.
+        "class": "Marine Life", "palette": "olive yellow",
+        "palette_pool": ["olive yellow", "golden amber", "rust orange"],
+        "head": "a long tubular-snouted head sprouting leafy kelp-like fronds",
+        "eyes": "small swiveling eyes",
+        "integument": "a slender ridged body covered in leaf-shaped kelp-like lobes",
+        "arms": "thin leaf-fringed arms",
+        "hands": "delicate frond-tipped hands",
+        "legs_feet": "a long tapering frond-sprouting tail in place of legs",
+        "wings": "tiny translucent fluttering fins",
+    },
+    "giant isopod": {
+        # A pill-bug body: arched overlapping segments over many paired legs. The horseshoe
+        # crab's is a two-part hinged shield and the cockroach's a flat wing-cased back.
+        "class": "Marine Life", "palette": "pale lilac grey",
+        "palette_pool": ["pale lilac grey", "dusky pink", "sand beige"],
+        "head": "a broad flat armored head with two pairs of short antennae",
+        "eyes": "large faceted compound eyes set wide on the head",
+        "integument": "overlapping armored segments arched over the back like plated shingles",
+        "arms": "short jointed arms",
+        "hands": "small hooked claws",
+        "legs_feet": "seven pairs of jointed walking legs beneath the segmented shell",
+        "tail": "a broad fan-shaped tail plate",
+    },
 }
 
 

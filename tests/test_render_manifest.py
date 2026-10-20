@@ -162,6 +162,14 @@ class GalleryShotPoolTests(unittest.TestCase):
                 self.assertIn(name, COSPLAYERS)
                 self.assertIn(pose, poses, name)
 
+    def test_shot_pins_name_real_entries_and_gallery_shots(self) -> None:
+        from data.templates import ARCHETYPES
+        for kind, pins in render_gallery._GALLERY_SHOT.items():
+            self.assertEqual(kind, "archetypes")
+            for name, shot in pins.items():
+                self.assertIn(name, ARCHETYPES)
+                self.assertIn(shot, render_gallery._GALLERY_SHOTS, name)
+
 
 class RuntimeLoggingTests(unittest.TestCase):
     """1.2.0: node runtime messages go to `logging`, not stdout.

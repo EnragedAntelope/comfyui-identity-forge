@@ -178,6 +178,7 @@ const COSPLAYER_FRANCHISES = {
     "Zuko"
   ],
   "Back to the Future": [
+    "Doc Brown",
     "Marty McFly"
   ],
   "Baldur's Gate 3": [
@@ -697,6 +698,7 @@ const COSPLAYER_FRANCHISES = {
     "Ryuk"
   ],
   "Delicious in Dungeon": [
+    "Laios Touden",
     "Marcille Donato"
   ],
   "Demon Slayer": [
@@ -816,6 +818,7 @@ const COSPLAYER_FRANCHISES = {
     "Blaidd the Half-Wolf",
     "Malenia, Blade of Miquella",
     "Melina",
+    "Messmer the Impaler",
     "Queen Marika the Eternal",
     "Ranni the Witch",
     "Rennala, Queen of the Full Moon",
@@ -978,6 +981,7 @@ const COSPLAYER_FRANCHISES = {
   "Frieren: Beyond Journey's End": [
     "Fern",
     "Frieren",
+    "Himmel",
     "Ubel"
   ],
   "Frozen": [
@@ -1061,6 +1065,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Ghost in the Shell": [
     "Motoko Kusanagi"
+  ],
+  "Ghost of Tsushima": [
+    "Jin Sakai"
   ],
   "Ghostbusters": [
     "Ghostbuster",
@@ -1148,7 +1155,9 @@ const COSPLAYER_FRANCHISES = {
     "Sirius Black"
   ],
   "Hazbin Hotel": [
-    "Alastor"
+    "Alastor",
+    "Angel Dust",
+    "Charlie Morningstar"
   ],
   "Heavy Metal": [
     "Julie",
@@ -1431,6 +1440,9 @@ const COSPLAYER_FRANCHISES = {
     "Zilean",
     "Zyra"
   ],
+  "Legally Blonde": [
+    "Elle Woods"
+  ],
   "Legend": [
     "King Arthur",
     "Merlin"
@@ -1596,6 +1608,7 @@ const COSPLAYER_FRANCHISES = {
     "Mary Jane Watson",
     "Maximus",
     "Medusa",
+    "Miles Morales",
     "Mister Fantastic",
     "Mister Sinister",
     "Mistress Death",
@@ -1657,6 +1670,7 @@ const COSPLAYER_FRANCHISES = {
     "Speedball",
     "Spider-Gwen",
     "Spider-Man",
+    "Spider-Punk",
     "Spider-Woman",
     "Spider-Woman (Julia Carpenter)",
     "Spiral",
@@ -1667,6 +1681,7 @@ const COSPLAYER_FRANCHISES = {
     "Stature",
     "Storm",
     "Sunfire (Exiles)",
+    "Sylvie",
     "Taskmaster",
     "Thanos",
     "The Thing",
@@ -1720,6 +1735,7 @@ const COSPLAYER_FRANCHISES = {
     "Teela"
   ],
   "McDonald's": [
+    "Birdie the Early Bird",
     "Grimace",
     "Hamburglar",
     "Mayor McCheese",
@@ -2482,7 +2498,8 @@ const COSPLAYER_FRANCHISES = {
     "Topaz"
   ],
   "Stranger Things": [
-    "Eleven"
+    "Eleven",
+    "Vecna"
   ],
   "Strawberry Shortcake": [
     "Strawberry Shortcake"
@@ -2624,6 +2641,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "The Addams Family": [
     "Cousin Itt",
+    "Enid Sinclair",
     "Gomez Addams",
     "Lurch",
     "Morticia Addams",

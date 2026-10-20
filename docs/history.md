@@ -1147,3 +1147,59 @@ still marked unpublished. A missing key counts as published, so earlier records 
 `--publish-pending` publishes those images without re-rendering. The six 1.9.0 images
 thought to be unpublished were already on `gh-pages`; the mismatch was a git quotepath
 artifact on "Dia de los Muertos".
+
+## 1.11.0 - roster release: new cosplayers, retro archetypes, a drive-in, and four declines
+
+Random characters move through one change only: a new location value, `the parking lot of
+a retro drive-in diner with classic cars`, joins the `urban_outdoor` family. Family weights
+are frozen, so the family's share is unchanged, and the marginals sweep shows no other share
+moving (`sweep_marginals.py --check` reported only the new value, at about 0.6%, before
+`--write`). Per seed the move is wider: every seed that draws the family re-picks within a
+longer list, so it can land on a different street place, and its outfit, lighting and pose
+then re-resolve to fit. A main-vs-branch diff of 1500 seeds per gender changed 225 of 4500
+characters (5%), every one of them with a moved location; 17 landed on the drive-in. A location
+cannot be lock-only: the validator requires the families to partition the options with
+positive weights, and the engine draws any leftover value. The value is also in
+`OUTDOOR_LOCATIONS`, the neon-signage venues and the floor-free places (an asphalt lot
+takes no floor pose).
+
+**New roster, each render-gated.** Cosplay: Miles Morales, Spider-Punk, Sylvie, Doc
+Brown (the 1985 radiation suit), Elle Woods, Vecna (reopened on the mascot-suit route: a
+full prosthetic body), Enid Sinclair, Messmer the Impaler, Laios Touden, Himmel, Jin
+Sakai, Charlie Morningstar, Angel Dust, and Birdie the Early Bird (the backlog row closed:
+the aviator cap, pigtails and flight suit are what the other bird mascots lack).
+Archetypes: 1970s Fast-Food Crew, Carhop, Bellhop, Mail Carrier, Roller Derby,
+Majorette, Mountaineer, Zoot Suit, Lounge Singer, 1950s Gas Station Attendant and Rodeo
+Rider. Creatures: frilled lizard, quetzalcoatl, leafy sea dragon and giant isopod.
+
+**Gallery framing pins.** `render_gallery.py` gained `_GALLERY_SHOT`, alongside the
+gender and pose pins: a sample whose defining feature sits below mid-thigh must not draw a
+cowboy shot. Carhop (roller skates, pinned female) and Zoot Suit (the knee-length drape)
+use it. A test checks every pin names a real archetype and an allowed gallery framing.
+
+**Carhop.** The first tile drew the male variant in a cowboy shot, so the skates never
+showed. A pastel dress alone read drab, so the women's `outfit_description` is now a
+seed-picked list: a bright `{team_color}` dress with white trim and apron, or a
+`{pastel}`-and-white candy stripe. The location moved from an indoor diner to the new
+drive-in lot, under golden-hour or neon light.
+
+**Repairs.** Lola Bunny's costume names fur on the arms and legs and "furry tan rabbit
+paws for hands"; with fur on the limbs alone, the render still drew bare human hands. The costume's "covering her bare
+arms" became "the bare arms": costume text stays pronoun-free so crossplay reads
+correctly (`CostumePronounTests`). Tellarite ships the canon text (a full latex
+prosthetic head with snout, tusks and beard, on the mascot route) at the maintainer's
+call. It still renders a ridged brow and a beard with no snout, no worse than the 1.9.0
+text, and it drops the "shaggy coat of hair" that drew an overcoat. The snout stays open
+in `docs/suggested-additions.md`.
+
+**Declined on the render bar** (one rewording each, reasons in
+`docs/suggested-additions.md`): The Corinthian (the eye-socket mouths never drew),
+Feyd-Rautha (the chalk-white hairless head never held), the women's pachuca variant of
+Zoot Suit (a cropped vest twice; the archetype ships men's only), the barreleye (the
+transparent dome never drew), and the vampire squid (the webbed cloak never showed; a red
+squid already ships through `squid`'s palette). Verso, Rockabilly and the thorny devil
+were declined before rendering as near-duplicates of shipped entries.
+
+**Render-script gotcha.** A render can fail with `OSError: [Errno 22] Invalid argument`
+on the output PNG when that file is open in a viewer. Move the old image aside before
+re-rendering an entry someone may be looking at.

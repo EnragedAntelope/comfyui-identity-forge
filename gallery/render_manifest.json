@@ -14,6 +14,11 @@
         "hash": "d7d87ca680259c14",
         "rendered": "pre-existing"
       },
+      "1950s Gas Station Attendant": {
+        "hash": "eb6074dd3ac96653",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "1950s Greaser": {
         "hash": "f1da521da7a8dd2f",
         "rendered": "2026-09-28"
@@ -45,6 +50,11 @@
       "1970s Boho It-Girl": {
         "hash": "47bb527019083909",
         "rendered": "pre-existing"
+      },
+      "1970s Fast-Food Crew": {
+        "hash": "15c5004978f7a2fa",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "1970s Leisure Lounge": {
         "hash": "7280a3319e505c0a",
@@ -182,6 +192,11 @@
         "hash": "9cad5582f42f45da",
         "rendered": "pre-existing"
       },
+      "Bellhop": {
+        "hash": "d7492e9140f578d1",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Belly Dancer": {
         "hash": "b433c0339bade35c",
         "rendered": "pre-existing"
@@ -229,6 +244,11 @@
       "Calligrapher": {
         "hash": "f4b80bc9c705ae5b",
         "rendered": "2026-09-28"
+      },
+      "Carhop": {
+        "hash": "c6df516b776b2094",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Carpenter": {
         "hash": "ef86a80f2a1f89eb",
@@ -592,6 +612,11 @@
         "hash": "9160294e0f53f830",
         "rendered": "2026-09-28"
       },
+      "Lounge Singer": {
+        "hash": "ea78de5d96fa4288",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Luchador": {
         "hash": "9fa6cce26031ce69",
         "rendered": "2026-09-28"
@@ -607,6 +632,16 @@
       "Mad Scientist": {
         "hash": "f22cc312dafb58c1",
         "rendered": "2026-09-28"
+      },
+      "Mail Carrier": {
+        "hash": "4d9c3d8919425242",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
+      "Majorette": {
+        "hash": "f0370696aa1f2bec",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Marching Band Drum Major": {
         "hash": "b0c119efd10e0a34",
@@ -668,6 +703,11 @@
       "Morris Dancer": {
         "hash": "d156ecd55797aea4",
         "rendered": "2026-10-19"
+      },
+      "Mountaineer": {
+        "hash": "29e398a505ffd48c",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Muay Thai Fighter": {
         "hash": "aa11bc6572961c3d",
@@ -830,6 +870,16 @@
       "Rock Climber": {
         "hash": "f2358e399e12f617",
         "rendered": "2026-09-28"
+      },
+      "Rodeo Rider": {
+        "hash": "75f36090c4955687",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
+      "Roller Derby": {
+        "hash": "b4e5c2925516cb2e",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Roman Centurion": {
         "hash": "85aa31adf4c5dafd",
@@ -1116,6 +1166,11 @@
         "hash": "d194127432e1c02b",
         "rendered": "2026-10-10",
         "seed": 654984263461680621
+      },
+      "Zoot Suit": {
+        "hash": "d377d1df71b6be1c",
+        "published": true,
+        "rendered": "2026-10-20"
       }
     },
     "cosplay": {
@@ -1386,6 +1441,11 @@
       "Angel": {
         "hash": "1655c379a287fce2",
         "rendered": "pre-existing"
+      },
+      "Angel Dust": {
+        "hash": "0c51dbf0a331ff1b",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Angela": {
         "hash": "c63280552b25b778",
@@ -1886,6 +1946,11 @@
       "Binary": {
         "hash": "0390b062847f4123",
         "rendered": "pre-existing"
+      },
+      "Birdie the Early Bird": {
+        "hash": "7fa86d9928714dca",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Bishamon": {
         "hash": "b6753381316e20cc",
@@ -2390,6 +2455,11 @@
       "Charlie Brown": {
         "hash": "313df0225b6459a8",
         "rendered": "pre-existing"
+      },
+      "Charlie Morningstar": {
+        "hash": "8da44c5e8211ea7c",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Charlotte Smoothie": {
         "hash": "1e7721a9aada1e80",
@@ -2908,6 +2978,11 @@
         "hash": "824851d9dd3cbec4",
         "rendered": "2026-08-10"
       },
+      "Doc Brown": {
+        "hash": "12ccf353ff3fceef",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Doctor Blight": {
         "hash": "21a9328dff87d410",
         "rendered": "pre-existing"
@@ -3173,6 +3248,11 @@
         "hash": "07f58a84431f82c4",
         "rendered": "pre-existing"
       },
+      "Elle Woods": {
+        "hash": "304036deb131c175",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Ellen Joe": {
         "hash": "a94e5141785f89f7",
         "rendered": "2026-09-15"
@@ -3244,6 +3324,11 @@
       "Engineer (Team Fortress 2)": {
         "hash": "cca9bda6165aba50",
         "rendered": "2026-08-10"
+      },
+      "Enid Sinclair": {
+        "hash": "ee3128c2f11a8669",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Eowyn": {
         "hash": "54a56018bb35b739",
@@ -4048,6 +4133,11 @@
         "hash": "4b1d1d073685a5da",
         "rendered": "pre-existing"
       },
+      "Himmel": {
+        "hash": "fc67d1942ccf4e41",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Hinata Hyuga": {
         "hash": "166fd96867eb8a7e",
         "rendered": "pre-existing"
@@ -4513,6 +4603,11 @@
       "Jin Kazama": {
         "hash": "a7dac7fcd1107cf4",
         "rendered": "pre-existing"
+      },
+      "Jin Sakai": {
+        "hash": "03fcc6305aa1508f",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Jinhsi": {
         "hash": "e41e0f8349cda9a4",
@@ -5127,6 +5222,11 @@
         "hash": "ea90e211d8fe332b",
         "rendered": "pre-existing"
       },
+      "Laios Touden": {
+        "hash": "32fb7fd2d57fc637",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Lana Kane": {
         "hash": "74f51e172a4194c6",
         "rendered": "pre-existing"
@@ -5374,7 +5474,7 @@
         "rendered": "pre-existing"
       },
       "Lola Bunny": {
-        "hash": "f9b2310a26eee921",
+        "hash": "0729232c4f204c32",
         "published": true,
         "rendered": "2026-10-20"
       },
@@ -5915,6 +6015,11 @@
         "hash": "98b65d59f48f6579",
         "rendered": "2026-10-19"
       },
+      "Messmer the Impaler": {
+        "hash": "0c3f85d30ca86cf9",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Mewtwo": {
         "hash": "5d61d009765d9fdc",
         "rendered": "pre-existing"
@@ -5982,6 +6087,11 @@
       "Mileena": {
         "hash": "a4011bf8eea3c713",
         "rendered": "pre-existing"
+      },
+      "Miles Morales": {
+        "hash": "2c5e7309863df70f",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Milim Nava": {
         "hash": "703b6c4343b65e94",
@@ -8144,6 +8254,11 @@
         "hash": "73a29505871b8fde",
         "rendered": "pre-existing"
       },
+      "Spider-Punk": {
+        "hash": "17f2ba5866def355",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Spider-Woman": {
         "hash": "5e4efe256848bc24",
         "rendered": "pre-existing"
@@ -8372,6 +8487,11 @@
         "hash": "8508a1e3faf43410",
         "rendered": "2026-08-24"
       },
+      "Sylvie": {
+        "hash": "2dc0493eca8845f3",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "Symmetra": {
         "hash": "7bb9ba1ea08282a5",
         "rendered": "pre-existing"
@@ -8466,8 +8586,9 @@
         "rendered": "pre-existing"
       },
       "Tellarite": {
-        "hash": "2cce64ce7ed94dd4",
-        "rendered": "pre-existing"
+        "hash": "bc5b193e27d6dbb1",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Temari": {
         "hash": "ee382bf448a51f85",
@@ -8963,6 +9084,11 @@
       "Vault Dweller": {
         "hash": "63707b13666ef46e",
         "rendered": "2026-08-10"
+      },
+      "Vecna": {
+        "hash": "6e4edf6d74adcb79",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "Vega": {
         "hash": "bee540c34f674578",
@@ -9796,6 +9922,11 @@
         "hash": "cc1e7a083c7e1bd3",
         "rendered": "pre-existing"
       },
+      "frilled lizard": {
+        "hash": "3bfb64904b9441d3",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "frog": {
         "hash": "d02b2ba8c40cd168",
         "rendered": "pre-existing"
@@ -9823,6 +9954,11 @@
       "ghoul": {
         "hash": "9f3febf0cf7e08c6",
         "rendered": "pre-existing"
+      },
+      "giant isopod": {
+        "hash": "f78cb9df3e7872e2",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "gila monster": {
         "hash": "bf07caf1317ef275",
@@ -9992,6 +10128,11 @@
       "ladybug": {
         "hash": "99531aded2f7ec07",
         "rendered": "pre-existing"
+      },
+      "leafy sea dragon": {
+        "hash": "8def51e3d3cad673",
+        "published": true,
+        "rendered": "2026-10-20"
       },
       "lemur": {
         "hash": "24d209b200a7340a",
@@ -10270,6 +10411,11 @@
         "hash": "7dd03cde7ce303f7",
         "rendered": "2026-08-10"
       },
+      "quetzalcoatl": {
+        "hash": "1feedbc4c05c56df",
+        "published": true,
+        "rendered": "2026-10-20"
+      },
       "rabbit": {
         "hash": "92ca35bf8f161651",
         "rendered": "pre-existing"
@@ -10545,7 +10691,7 @@
       }
     }
   },
-  "generated": "2026-10-20T10:16:19",
+  "generated": "2026-10-20T13:52:16",
   "render": {
     "cfg": 1,
     "height": 2432,

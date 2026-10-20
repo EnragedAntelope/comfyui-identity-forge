@@ -1655,6 +1655,7 @@ _FLOOR_FREE_PLACES = frozenset([
     "roller skating rink", "karaoke room with song menus", "busy city crosswalk",
     "neon-lit city street", "rainy street with umbrellas", "bus stop shelter",
     "pedestrian shopping street", "open-air street food market",
+    "the parking lot of a retro drive-in diner with classic cars",
     "construction site with scaffolding", "working harbor dock", "Times Square",
     "Shibuya Crossing", "the Brooklyn Bridge pedestrian walkway", "Trafalgar Square",
     "rooftop cocktail bar",
