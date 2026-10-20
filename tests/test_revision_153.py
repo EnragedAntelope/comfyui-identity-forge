@@ -48,7 +48,9 @@ class CosplayJewelryTests(unittest.TestCase):
         for name in ("Detective Frank Harris", "Kitana", "Chewbacca", "Daredevil"):
             for seed in range(8):
                 prose, _ = render(name, "", "Full character", seed)
-                self.assertNotRegex(prose, _JEWELRY_WORDS, f"{name} {seed}")
+                # The scene can name "chain nets" on a basketball court; only the person counts.
+                person = re.split(r"\b[Ss]et in ", prose)[0]
+                self.assertNotRegex(person, _JEWELRY_WORDS, f"{name} {seed}")
                 self.assertNotIn(" nails", prose, f"{name} {seed}")
 
     def test_costume_only_keeps_jewelry_unmasked_and_drops_it_masked(self):

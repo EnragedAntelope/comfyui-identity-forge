@@ -3,7 +3,7 @@
 
 # Creature reference
 
-**262 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
+**266 creatures.** Each fills a hybrid's anatomy slots; the default colour palette is shown in parentheses.
 
 ## Mammals (55)
 
@@ -97,13 +97,14 @@
 - **toucan** (black and white)
 - **vulture** (sooty brown)
 
-## Reptiles & Amphibians (25)
+## Reptiles & Amphibians (26)
 
 - **alligator** (dark olive)
 - **axolotl** (pale pink)
 - **chameleon** (shifting teal)
 - **cobra** (olive and gold)
 - **crocodile** (swamp-green)
+- **frilled lizard** (sandy tan)
 - **frog** (bright green)
 - **gecko** (leaf-green)
 - **gila monster** (black and coral)
@@ -155,7 +156,7 @@
 - **tardigrade** (translucent amber)
 - **wasp** (black and yellow)
 
-## Marine Life (29)
+## Marine Life (31)
 
 - **anglerfish** (abyssal black)
 - **clownfish** (bright orange)
@@ -163,11 +164,13 @@
 - **cuttlefish** (mottled sand)
 - **dolphin** (pale grey)
 - **eel** (olive-green)
+- **giant isopod** (pale lilac grey)
 - **goblin shark** (flabby pale rose)
 - **hammerhead shark** (slate grey)
 - **horseshoe crab** (dark bronze)
 - **jellyfish** (translucent rose)
 - **koi** (white and orange)
+- **leafy sea dragon** (olive yellow)
 - **lionfish** (russet red)
 - **lobster** (deep blue-black)
 - **manta ray** (ink-blue and white)
@@ -231,7 +234,7 @@
 - **radial alien** (pale coral)
 - **reptilian alien** (venom-green)
 
-## Mythic & Fantasy (40)
+## Mythic & Fantasy (41)
 
 - **banshee** (spectral pale grey)
 - **basilisk** (venomous green)
@@ -264,6 +267,7 @@
 - **pegasus** (pearl white)
 - **phoenix** (fiery orange-gold)
 - **qilin** (burnished gold)
+- **quetzalcoatl** (emerald green)
 - **satyr** (earthy brown)
 - **selkie** (wet seal grey)
 - **sphinx** (sandstone-gold)

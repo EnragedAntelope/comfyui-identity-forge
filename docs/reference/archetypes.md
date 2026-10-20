@@ -3,11 +3,12 @@
 
 # Archetype reference
 
-**276 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**287 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Any]
 - **1950s Diner Waitress** [Female] -- vintage retro
+- **1950s Gas Station Attendant** [Any] -- utility workwear
 - **1950s Greaser** [Any] -- vintage retro
 - **1950s Homemaker** [Female] -- vintage retro
 - **1950s Sock Hop** [Any] -- vintage retro
@@ -16,6 +17,7 @@
 - **1960s Hippie** -- bohemian
 - **1960s Mod** [Any] -- vintage retro
 - **1970s Boho It-Girl** [Female] -- bohemian
+- **1970s Fast-Food Crew** [Any] -- vintage retro
 - **1970s Leisure Lounge** [Male] -- vintage retro
 - **1970s Used Car Salesman** [Male] -- vintage retro
 - **1980s Action Star** [Any] -- casual
@@ -50,6 +52,7 @@
 - **Battle Bard** [Any]
 - **Beauty Pageant Contestant** [Female] -- evening formal
 - **Beekeeper** -- casual
+- **Bellhop** [Any] -- business formal
 - **Belly Dancer** [Female] -- edgy alternative
 - **Berserker Barbarian** [Any] -- edgy alternative
 - **Biker** -- edgy alternative
@@ -62,6 +65,7 @@
 - **Butler** -- business formal
 - **Cabaret Witch** [Female] -- evening formal
 - **Calligrapher** -- smart casual
+- **Carhop** [Any] -- vintage retro
 - **Carpenter** -- casual
 - **Cartographer** -- vintage retro
 - **Celestial Cleric** [Any] -- evening formal
@@ -151,10 +155,13 @@
 - **Lehenga & Sherwani** [Any] -- evening formal
 - **Librarian** [Any] -- smart casual
 - **Lifeguard** [Any] -- athletic
+- **Lounge Singer** [Any] -- evening formal
 - **Luchador** [Any] -- athletic
 - **Lumberjack** [Any]
 - **Maasai** [Any] -- bohemian
 - **Mad Scientist** [Any]
+- **Mail Carrier** [Any] -- utility workwear
+- **Majorette** [Female] -- athletic
 - **Marching Band Drum Major** -- evening formal
 - **Mardi Gras Reveler** [Any]
 - **Mariachi Charro** [Any]
@@ -170,6 +177,7 @@
 - **Mime** -- edgy alternative
 - **Mongolian Deel** [Any] -- vintage retro
 - **Morris Dancer** [Any] -- vintage retro
+- **Mountaineer** [Any] -- athletic
 - **Muay Thai Fighter** [Any] -- athletic
 - **Musician** -- streetwear
 - **Musketeer** -- vintage retro
@@ -210,6 +218,8 @@
 - **Roaring Flapper** [Female] -- vintage retro
 - **Roaring Twenties Gent** [Male] -- vintage retro
 - **Rock Climber** [Any] -- athletic
+- **Rodeo Rider** [Any] -- vintage retro
+- **Roller Derby** [Any] -- athletic
 - **Roman Centurion** [Male] -- athletic
 - **Royal Guard** [Any] -- business formal
 - **Rude Boy** [Male] -- vintage retro
@@ -281,3 +291,4 @@
 - **Yeoman Warder** [Any] -- evening formal
 - **Yoga Instructor** [Any] -- athletic
 - **Yukata** [Any] -- vintage retro
+- **Zoot Suit** [Male] -- vintage retro

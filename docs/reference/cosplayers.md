@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2085 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2099 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (385)
+## Anime & Manga (387)
 
 ### Akame ga Kill
 
@@ -134,6 +134,7 @@
 
 ### Delicious in Dungeon
 
+- **Laios Touden** (M, prop)
 - **Marcille Donato** (F, prop)
 
 ### Demon Slayer
@@ -226,6 +227,7 @@
 
 - **Fern** (F, +1 alt, prop)
 - **Frieren** (F, prop)
+- **Himmel** (M, prop)
 - **Ubel** (F)
 
 ### Fullmetal Alchemist
@@ -677,7 +679,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (276)
+## Comics & Cartoons (278)
 
 ### Adventure Time
 
@@ -857,6 +859,8 @@
 ### Hazbin Hotel
 
 - **Alastor** (M, prop)
+- **Angel Dust** (M, masked)
+- **Charlie Morningstar** (F)
 
 ### Heavy Metal
 
@@ -1829,7 +1833,7 @@
 
 - **Zorro** (M, prop)
 
-## Marvel (193)
+## Marvel (196)
 
 ### Marvel
 
@@ -1929,6 +1933,7 @@
 - **Mary Jane Watson** (F)
 - **Maximus** (M, +1 alt)
 - **Medusa** (F, +1 alt)
+- **Miles Morales** (M, masked)
 - **Mister Fantastic** (M)
 - **Mister Sinister** (M)
 - **Mistress Death** (F)
@@ -1990,6 +1995,7 @@
 - **Speedball** (M)
 - **Spider-Gwen** (F)
 - **Spider-Man** (M, masked)
+- **Spider-Punk** (M, masked, prop)
 - **Spider-Woman** (F)
 - **Spider-Woman (Julia Carpenter)** (F, +1 alt)
 - **Spiral** (F, prop)
@@ -2000,6 +2006,7 @@
 - **Stature** (F, giant)
 - **Storm** (F)
 - **Sunfire (Exiles)** (F)
+- **Sylvie** (F, prop)
 - **Taskmaster** (M, masked, prop)
 - **Thanos** (M, giant)
 - **The Thing** (M)
@@ -2027,7 +2034,7 @@
 - **Yondu** (M, prop)
 - **Zuras** (M)
 
-## Movies & TV (234)
+## Movies & TV (239)
 
 ### A Nightmare on Elm Street
 
@@ -2057,6 +2064,7 @@
 
 ### Back to the Future
 
+- **Doc Brown** (M, prop)
 - **Marty McFly** (M)
 
 ### Barbarella
@@ -2304,6 +2312,10 @@
 - **Jareth the Goblin King** (M, prop)
 - **Sarah Williams** (F)
 
+### Legally Blonde
+
+- **Elle Woods** (F, prop)
+
 ### Mad Max
 
 - **Immortan Joe** (M, masked)
@@ -2316,6 +2328,7 @@
 
 ### McDonald's
 
+- **Birdie the Early Bird** (F, masked)
 - **Grimace** (M, masked)
 - **Hamburglar** (M, masked)
 - **Mayor McCheese** (M, masked)
@@ -2434,7 +2447,7 @@
 - **Klingon** (M, prop)
 - **Mr. Spock** (M)
 - **Seven of Nine** (F, +3 alt)
-- **Tellarite** (M)
+- **Tellarite** (M, masked)
 - **Uhura** (F)
 - **Vulcan** (M)
 - **Worf** (M, prop)
@@ -2442,6 +2455,7 @@
 ### Stranger Things
 
 - **Eleven** (F)
+- **Vecna** (M, masked)
 
 ### Taroman
 
@@ -2458,6 +2472,7 @@
 ### The Addams Family
 
 - **Cousin Itt** (M, masked)
+- **Enid Sinclair** (F)
 - **Gomez Addams** (M)
 - **Lurch** (M)
 - **Morticia Addams** (F)
@@ -2727,7 +2742,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (498)
+## Video Games (500)
 
 ### A Certain Scientific Railgun
 
@@ -2934,6 +2949,7 @@
 - **Blaidd the Half-Wolf** (M, masked, prop)
 - **Malenia, Blade of Miquella** (F, +1 alt)
 - **Melina** (F)
+- **Messmer the Impaler** (M, prop)
 - **Queen Marika the Eternal** (F, prop)
 - **Ranni the Witch** (F)
 - **Rennala, Queen of the Full Moon** (F, prop)
@@ -3007,6 +3023,10 @@
 - **Wanderer (Genshin Impact)** (M)
 - **Yae Miko** (F)
 - **Zhongli** (M)
+
+### Ghost of Tsushima
+
+- **Jin Sakai** (M, prop)
 
 ### God of War
 

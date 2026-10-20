@@ -163,7 +163,8 @@ def _gallery_shot(seed: int) -> str | None:
 #: coin-flips. Changing a row needs a manual `--entry` re-render: render settings are
 #: not in the manifest hash.
 _GALLERY_GENDER: dict[str, dict[str, str]] = {
-    "archetypes": {"Cheerleader": "Female", "Irish Step Dancer": "Female"},
+    "archetypes": {"Carhop": "Female", "Cheerleader": "Female",
+                   "Irish Step Dancer": "Female"},
 }
 
 #: Gallery-only pose pins, same terms as _GALLERY_GENDER: a sample whose defining
@@ -171,6 +172,13 @@ _GALLERY_GENDER: dict[str, dict[str, str]] = {
 #: raised; at his sides they rendered as a cape).
 _GALLERY_POSE: dict[str, dict[str, str]] = {
     "cosplay": {"Black Bolt": "stretching both arms overhead"},
+}
+
+#: Gallery-only framing pins, same terms: a sample whose defining feature is below
+#: mid-thigh (the Carhop's roller skates, the zoot suit's knee-length drape) must not
+#: draw a cowboy shot.
+_GALLERY_SHOT: dict[str, dict[str, str]] = {
+    "archetypes": {"Carhop": "full body shot", "Zoot Suit": "full body shot"},
 }
 
 #: Front-facing framings that show most of the body and the face (1.5.1).
@@ -534,7 +542,7 @@ def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
 
     character_json = _unwrap(preset)[0]
     forge_kwargs = _forge_kwargs(IdentityForge, character_json, seed)
-    shot = _gallery_shot(seed)
+    shot = _GALLERY_SHOT.get(kind, {}).get(name) or _gallery_shot(seed)
     if shot:
         forge_kwargs["shot_type"] = shot
     if name in _GALLERY_GENDER.get(kind, {}):
