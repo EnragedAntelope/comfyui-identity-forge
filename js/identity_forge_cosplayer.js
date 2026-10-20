@@ -284,6 +284,9 @@ const COSPLAYER_FRANCHISES = {
   "Bloodborne": [
     "Lady Maria"
   ],
+  "Bloodshot": [
+    "Bloodshot"
+  ],
   "Bob's Burgers": [
     "Bob Belcher",
     "Gene Belcher",
@@ -803,6 +806,9 @@ const COSPLAYER_FRANCHISES = {
   "Durarara!!": [
     "Celty Sturluson"
   ],
+  "East of West": [
+    "Crow (East of West)"
+  ],
   "Edward Scissorhands": [
     "Edward Scissorhands"
   ],
@@ -1223,7 +1229,6 @@ const COSPLAYER_FRANCHISES = {
     "Avengelyne",
     "Glory",
     "Lady Supreme",
-    "Savage Dragon",
     "Spawn",
     "The Maxx"
   ],
@@ -2175,6 +2180,9 @@ const COSPLAYER_FRANCHISES = {
   "Rugrats": [
     "Reptar"
   ],
+  "Saga": [
+    "Prince Robot IV"
+  ],
   "Sailor Moon": [
     "Luna (Sailor Moon)",
     "Queen Beryl",
@@ -2194,6 +2202,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Samurai Shodown": [
     "Nakoruru"
+  ],
+  "Savage Dragon": [
+    "Savage Dragon"
   ],
   "Scooby-Doo": [
     "Daphne Blake",
@@ -2824,7 +2835,8 @@ const COSPLAYER_FRANCHISES = {
     "Despair of the Endless",
     "Destiny of the Endless",
     "Destruction of the Endless",
-    "Dream of the Endless"
+    "Dream of the Endless",
+    "Mervyn Pumpkinhead"
   ],
   "The Seven Deadly Sins": [
     "Diane",

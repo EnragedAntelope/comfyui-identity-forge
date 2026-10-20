@@ -665,6 +665,10 @@
         "hash": "63b594659723b3a2",
         "rendered": "2026-09-28"
       },
+      "Morris Dancer": {
+        "hash": "d156ecd55797aea4",
+        "rendered": "2026-10-19"
+      },
       "Muay Thai Fighter": {
         "hash": "aa11bc6572961c3d",
         "rendered": "2026-10-10",
@@ -1962,6 +1966,10 @@
         "hash": "7496ea93dee46d88",
         "rendered": "pre-existing"
       },
+      "Bloodshot": {
+        "hash": "a48e43a9762561d5",
+        "rendered": "2026-10-19"
+      },
       "Bloodsport": {
         "hash": "506cee9582a2ee57",
         "rendered": "pre-existing"
@@ -2597,6 +2605,11 @@
       "Crono": {
         "hash": "8abc0236fd44ff0e",
         "rendered": "2026-08-26"
+      },
+      "Crow (East of West)": {
+        "hash": "e834f647b1a4c719",
+        "rendered": "2026-10-19",
+        "seed": 145305931327713267
       },
       "Cruella de Vil": {
         "hash": "05e592345193d496",
@@ -5896,6 +5909,10 @@
         "hash": "6e4cc8370e4c009e",
         "rendered": "pre-existing"
       },
+      "Mervyn Pumpkinhead": {
+        "hash": "98b65d59f48f6579",
+        "rendered": "2026-10-19"
+      },
       "Mewtwo": {
         "hash": "5d61d009765d9fdc",
         "rendered": "pre-existing"
@@ -6853,6 +6870,10 @@
         "hash": "7ea70aa96641c171",
         "rendered": "pre-existing"
       },
+      "Prince Robot IV": {
+        "hash": "82c6bb26673c702f",
+        "rendered": "2026-10-19"
+      },
       "Prince Thrakhath": {
         "hash": "5c22fa3592c0e826",
         "rendered": "2026-09-15"
@@ -7641,8 +7662,9 @@
         "rendered": "pre-existing"
       },
       "Savage Dragon": {
-        "hash": "ed710c7d1d88024f",
-        "rendered": "pre-existing"
+        "hash": "a6bfc7c2c820882c",
+        "rendered": "2026-10-19",
+        "seed": 602378052816021644
       },
       "Saw Gerrera": {
         "hash": "300b9d2a7cf0ee0e",
@@ -10520,11 +10542,11 @@
       }
     }
   },
-  "generated": "2026-10-15T14:13:17",
+  "generated": "2026-10-19T21:49:16",
   "render": {
     "cfg": 1,
     "height": 2432,
-    "lora_name": "krea2\\krea2_turbo_r64_bf16.safetensors",
+    "lora_name": "krea2\\specialty\\krea2_turbo_r64_bf16.safetensors",
     "sampler_name": "er_sde",
     "scheduler": "bong_tangent",
     "steps": 10,

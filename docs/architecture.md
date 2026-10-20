@@ -74,7 +74,8 @@ sample render per roster entry to GitHub Pages. Full detail in
 [gallery/README.md](../gallery/README.md); the parts that constrain future work:
 
 - **Images live only on `gh-pages`.** `gallery/.gitignore` blocks `images/` on `main`, so
-  a clone never pulls hundreds of megabytes. Pages, scripts and manifests live on `main`.
+  a clone never pulls hundreds of megabytes. Page sources and scripts live on `main`;
+  deployment manifests live on `gh-pages` (see [gallery/README.md](../gallery/README.md)).
 - **The manifest is rebuilt from what is published, never from the source folder.** This
   is the whole safety model: your source folder only adds or overwrites, so an entry you
   did not supply an image for is never touched and never deleted. The removed `deploy.py`

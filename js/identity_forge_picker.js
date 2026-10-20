@@ -194,10 +194,9 @@ function traitChips(entry) {
 // Text-first, zero image payload by default. Enabling "Show preview images"
 // fetches the LIVE gh-pages gallery manifest for a kind with a plain, absolute
 // `fetch` -- explicitly not `api.fetchApi`, which targets the ComfyUI server,
-// not GitHub Pages -- and lazy-loads <img> tags via IntersectionObserver. Any
-// copy of a manifest.json committed under gallery/ on `main` is a stale
-// snapshot and must never be read for URLs; only the published gh-pages file
-// is ever fetched here.
+// not GitHub Pages -- and lazy-loads <img> tags via IntersectionObserver.
+// Gallery manifests are deployment output on gh-pages, not source artifacts
+// on main; only the published file is ever fetched here.
 
 const GH_PAGES_GALLERY_ROOT = "https://enragedantelope.github.io/comfyui-identity-forge/gallery/";
 const PREVIEW_PREF_KEY = "identity_forge.picker.show_previews";

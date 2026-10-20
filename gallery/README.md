@@ -10,7 +10,17 @@ Three sibling galleries, one per preset node:
 
 **Images live only on the `gh-pages` branch.** `gallery/.gitignore` blocks `images/`
 on `main`, so cloning or pulling the repo never drags down hundreds of megabytes of
-samples. The pages, scripts and manifests live on `main`; publishing copies them across.
+samples. Page sources and scripts live on `main`; publishing copies the pages across.
+Each gallery's `manifest.json` is deployment output on `gh-pages`, rebuilt from the
+images actually published there. It is ignored on `main` so a stale snapshot cannot
+misreport coverage. `gallery/render_manifest.json` is separate: it stays tracked as
+the render hash gate.
+
+For a local gallery preview, generate its manifest against your local optimized JPEGs:
+
+```bash
+python gallery/cosplay/build_manifest.py --images gallery/cosplay/images
+```
 
 ---
 

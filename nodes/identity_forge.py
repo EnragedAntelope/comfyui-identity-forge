@@ -25,7 +25,7 @@ from collections import OrderedDict
 import json
 import random
 import re
-from typing import Any
+from typing import Any, Literal, overload
 
 # Dual import: package-relative inside ComfyUI (avoids polluting sys.path with
 # the generic "data"/"nodes" names), absolute when run standalone for tests.
@@ -3903,6 +3903,84 @@ def _apply_modifiers(
                         outfit[:start] + resolved[field] + outfit[end:])
 
 
+@overload
+def generate_character(
+    seed: int,
+    gender: str,
+    locked: dict[str, str],
+    hair_color_scope: str = "Natural only",
+    wardrobe: str = "Match gender",
+    accessory_density: str = "Balanced",
+    location_setting: str = "Any indoor/outdoor",
+    cosplay_label: str | None = None,
+    covers_face: bool = False,
+    covers_body: bool = False,
+    covers_hair: bool = False,
+    modifiers: dict[str, str] | None = None,
+    species: dict | None = None,
+    gender_variants: dict[str, dict[str, str]] | None = None,
+    size_scale: str = _SIZE_SCALE_AUTO,
+    character_scale: str = "",
+    *,
+    widget_locked: frozenset[str] | None = None,
+    mask_text: str | None = None,
+    anatomy_note: str | None = None,
+    with_subject: Literal[False] = False,
+) -> tuple[str, str]: ...
+
+
+@overload
+def generate_character(
+    seed: int,
+    gender: str,
+    locked: dict[str, str],
+    hair_color_scope: str = "Natural only",
+    wardrobe: str = "Match gender",
+    accessory_density: str = "Balanced",
+    location_setting: str = "Any indoor/outdoor",
+    cosplay_label: str | None = None,
+    covers_face: bool = False,
+    covers_body: bool = False,
+    covers_hair: bool = False,
+    modifiers: dict[str, str] | None = None,
+    species: dict | None = None,
+    gender_variants: dict[str, dict[str, str]] | None = None,
+    size_scale: str = _SIZE_SCALE_AUTO,
+    character_scale: str = "",
+    *,
+    widget_locked: frozenset[str] | None = None,
+    mask_text: str | None = None,
+    anatomy_note: str | None = None,
+    with_subject: Literal[True],
+) -> tuple[str, str, str]: ...
+
+
+@overload
+def generate_character(
+    seed: int,
+    gender: str,
+    locked: dict[str, str],
+    hair_color_scope: str = "Natural only",
+    wardrobe: str = "Match gender",
+    accessory_density: str = "Balanced",
+    location_setting: str = "Any indoor/outdoor",
+    cosplay_label: str | None = None,
+    covers_face: bool = False,
+    covers_body: bool = False,
+    covers_hair: bool = False,
+    modifiers: dict[str, str] | None = None,
+    species: dict | None = None,
+    gender_variants: dict[str, dict[str, str]] | None = None,
+    size_scale: str = _SIZE_SCALE_AUTO,
+    character_scale: str = "",
+    *,
+    widget_locked: frozenset[str] | None = None,
+    mask_text: str | None = None,
+    anatomy_note: str | None = None,
+    with_subject: bool,
+) -> tuple[str, str] | tuple[str, str, str]: ...
+
+
 def generate_character(
     seed: int,
     gender: str,
@@ -4475,12 +4553,14 @@ def resolve_locked_fields(
     return locked
 
 
-def _parse_archetype_json(raw: str) -> dict[str, str]:
+def _parse_archetype_json(raw: str) -> dict[str, Any]:
     """Parse an optional archetype JSON string into a field→value dict.
 
     Accepts either a flat ``{field: value}`` mapping or the grouped document
     produced by :class:`IdentityForge` / the archetype node (``_meta`` plus
-    per-group sub-dicts). Returns ``{}`` on empty or malformed input.
+    per-group sub-dicts). Reserved metadata keys may hold nested dictionaries
+    (species, variants, modifiers), while field values are strings.
+    Returns ``{}`` on empty or malformed input.
     """
     raw = (raw or "").strip()
     if not raw:
