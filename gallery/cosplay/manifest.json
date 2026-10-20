@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-10-15T15:11:54.203729",
-  "version": "1.8.0",
+  "generated": "2026-10-19T22:36:55.880637",
+  "version": "1.9.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -127,10 +127,11 @@
     "1.5.0",
     "1.5.1",
     "1.6.0",
-    "1.8.0"
+    "1.8.0",
+    "1.9.0"
   ],
-  "total_entries": 2081,
-  "entries_with_images": 2081,
+  "total_entries": 2085,
+  "entries_with_images": 2085,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1823,6 +1824,14 @@
       "image": "images/Blink.jpeg"
     },
     {
+      "name": "Bloodshot",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Bloodshot",
+      "added": "1.9.0",
+      "image": "images/Bloodshot.jpeg"
+    },
+    {
       "name": "Bloodsport",
       "has_image": true,
       "gender": "Male",
@@ -3093,6 +3102,14 @@
       "group": "Chrono Trigger",
       "added": "1.0.0",
       "image": "images/Crono.jpeg"
+    },
+    {
+      "name": "Crow (East of West)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "East of West",
+      "added": "1.9.0",
+      "image": "images/Crow (East of West).jpeg"
     },
     {
       "name": "Cruella de Vil",
@@ -9671,6 +9688,14 @@
       "image": "images/Merlin.jpeg"
     },
     {
+      "name": "Mervyn Pumpkinhead",
+      "has_image": true,
+      "gender": "Male",
+      "group": "The Sandman",
+      "added": "1.9.0",
+      "image": "images/Mervyn Pumpkinhead.jpeg"
+    },
+    {
       "name": "Mewtwo",
       "has_image": true,
       "gender": "Male",
@@ -11575,6 +11600,14 @@
       "image": "images/Prince Eric.jpeg"
     },
     {
+      "name": "Prince Robot IV",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Saga",
+      "added": "1.9.0",
+      "image": "images/Prince Robot IV.jpeg"
+    },
+    {
       "name": "Prince Thrakhath",
       "has_image": true,
       "gender": "Male",
@@ -13146,7 +13179,7 @@
       "name": "Savage Dragon",
       "has_image": true,
       "gender": "Male",
-      "group": "Image",
+      "group": "Savage Dragon",
       "added": "0.69.0",
       "image": "images/Savage Dragon.jpeg"
     },
