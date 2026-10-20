@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-10-15T15:12:07.331156",
-  "version": "1.8.0",
+  "generated": "2026-10-20T13:52:13.536089",
+  "version": "1.11.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -127,10 +127,12 @@
     "1.5.0",
     "1.5.1",
     "1.6.0",
-    "1.8.0"
+    "1.8.0",
+    "1.9.0",
+    "1.11.0"
   ],
-  "total_entries": 262,
-  "entries_with_images": 262,
+  "total_entries": 266,
+  "entries_with_images": 266,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -743,6 +745,14 @@
       "image": "images/fox.jpeg"
     },
     {
+      "name": "frilled lizard",
+      "has_image": true,
+      "gender": "any",
+      "group": "Reptiles & Amphibians",
+      "added": "1.11.0",
+      "image": "images/frilled lizard.jpeg"
+    },
+    {
       "name": "frog",
       "has_image": true,
       "gender": "any",
@@ -797,6 +807,14 @@
       "group": "Mythic & Fantasy",
       "added": "0.44.0",
       "image": "images/ghoul.jpeg"
+    },
+    {
+      "name": "giant isopod",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "added": "1.11.0",
+      "image": "images/giant isopod.jpeg"
     },
     {
       "name": "gila monster",
@@ -1133,6 +1151,14 @@
       "group": "Insects & Arachnids",
       "added": "0.44.0",
       "image": "images/ladybug.jpeg"
+    },
+    {
+      "name": "leafy sea dragon",
+      "has_image": true,
+      "gender": "any",
+      "group": "Marine Life",
+      "added": "1.11.0",
+      "image": "images/leafy sea dragon.jpeg"
     },
     {
       "name": "lemur",
@@ -1685,6 +1711,14 @@
       "group": "Mythic & Fantasy",
       "added": "0.90.0",
       "image": "images/qilin.jpeg"
+    },
+    {
+      "name": "quetzalcoatl",
+      "has_image": true,
+      "gender": "any",
+      "group": "Mythic & Fantasy",
+      "added": "1.11.0",
+      "image": "images/quetzalcoatl.jpeg"
     },
     {
       "name": "rabbit",
