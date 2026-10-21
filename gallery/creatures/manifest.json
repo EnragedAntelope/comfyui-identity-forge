@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "creatures",
-  "generated": "2026-10-20T13:52:13.536089",
-  "version": "1.11.0",
+  "generated": "2026-10-20T21:01:47.840225",
+  "version": "2.0.0",
   "releases": [
     "0.5.0",
     "0.5.1",
