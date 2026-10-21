@@ -248,9 +248,11 @@ async function configurableMainNode() {
 }
 
 for (const [label, dropped] of [
-  ["1.4.0 (missing outerwear)", ["outerwear"]],
-  ["0.89.0 (missing outerwear + the three 0.90.0 fields)",
-   ["outerwear", "tattoos", "tattoo_placement", "legwear"]],
+  // Interleaved (pre-1.8.0) saves also predate the 2.0.0 gaze field.
+  ["1.7.0 (missing gaze)", ["gaze"]],
+  ["1.4.0 (missing outerwear and gaze)", ["outerwear", "gaze"]],
+  ["0.89.0 (missing outerwear, gaze + the three 0.90.0 fields)",
+   ["outerwear", "gaze", "tattoos", "tattoo_placement", "legwear"]],
 ]) {
   test(`configure restores a ${label} workflow onto the right widgets`, async () => {
     const { node, FakeNodeType } = await configurableMainNode();

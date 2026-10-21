@@ -25,6 +25,8 @@ from data.fields import (
     PALETTE_ADJECTIVES, PATTERN_TAILS, PATTERN_ADJECTIVES, WORN_ITEM_RES, SHOE_RE,
     LEADING_ARTICLE_RE,
     ETHNICITY_REGION, STUDIO_BACKDROPS,
+    COLOUR_WORD_RE, PATTERN_WORD_RE, FABRIC_WORD_RE, LAYER_WORD_RE, OUTER_LAYER_RE,
+    LIGHT_LAYER_RE, WARM_ONLY_GARMENT_RE, BARE_TOP_RE,
 )
 from data.constraints import CONSTRAINT_RULES, lock_clash
 from data.templates import ARCHETYPES, COSTUME_SLOTS
@@ -324,6 +326,35 @@ def validate() -> list[str]:
             available = len(buckets[bucket]) + len(buckets["unisex"])
             if available < 4:
                 errors.append(f"outfit style '{style}' ({bucket}): only {available} options")
+
+    # --- per-garment variation slots (2.0.0) -------------------------
+    # A corpus {slot} must name a COSTUME_SLOTS pool with an underscore in it (so no
+    # word-boundary garment regex reads the unfilled placeholder). Its values must never
+    # name a colour or a pattern (those are clothing_color / clothing_pattern), and every
+    # garment guard must answer the same for each value, so the slot draw cannot flip a
+    # guard. COLD_ONLY_GARMENT_RE is exempt: the season gate filters values by it.
+    _uniform = (FABRIC_WORD_RE, LAYER_WORD_RE, OUTER_LAYER_RE, LIGHT_LAYER_RE,
+                WARM_ONLY_GARMENT_RE, BARE_TOP_RE)
+    corpus_slots: set[str] = set()
+    for style, buckets in OUTFIT_DESCRIPTIONS.items():
+        if style in USER_ADDED_OUTFIT_STYLES:
+            continue
+        for bucket, items in buckets.items():
+            for item in items:
+                for slot in re.findall(r"\{(\w+)\}", item if isinstance(item, str) else ""):
+                    corpus_slots.add(slot)
+                    if slot not in COSTUME_SLOTS or "_" not in slot:
+                        errors.append(f"outfit '{style}' ({bucket}) {item!r}: slot "
+                                      f"{{{slot}}} must be a COSTUME_SLOTS pool with an '_'")
+    for slot in sorted(corpus_slots & set(COSTUME_SLOTS)):
+        values = COSTUME_SLOTS[slot]
+        for value in values:
+            if COLOUR_WORD_RE.search(value) or PATTERN_WORD_RE.search(value):
+                errors.append(f"garment slot {slot!r}: {value!r} names a colour or pattern")
+        for guard in _uniform:
+            if len({bool(guard.search(v)) for v in values}) > 1:
+                errors.append(f"garment slot {slot!r}: values disagree on a garment guard "
+                              f"({guard.pattern[:40]}...)")
 
     # --- the 0.83.0 garment-only corpus contract ---------------------
     # The three Clothing widgets (footwear / clothing_color / clothing_pattern) were
@@ -799,6 +830,17 @@ def validate() -> list[str]:
                     errors.append(f"cosplayer '{name}': anatomy_note describes the "
                                   f"BODY, not the clothes -- move "
                                   f"{worn.group(0)!r} into 'costume' ({note!r})")
+        # --- costume_back (2.0.0) -------------------------------------
+        # The costume seen from behind, swapped in by the Turnaround for back views
+        # (back_costume_document). It replaces `costume` verbatim, so it needs one.
+        back = entry.get("costume_back")
+        if back is not None:
+            if not isinstance(back, str) or not back.strip():
+                errors.append(f"cosplayer '{name}': 'costume_back' must be a "
+                              f"non-empty string")
+            elif not entry.get("costume") or body_plan == "feral":
+                errors.append(f"cosplayer '{name}': 'costume_back' needs a worn "
+                              f"'costume' to replace")
         anatomy = entry.get("anatomy")
         if anatomy is not None:
             if not isinstance(anatomy, dict) or not anatomy:

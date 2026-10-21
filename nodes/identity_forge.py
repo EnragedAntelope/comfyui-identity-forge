@@ -54,6 +54,7 @@ try:
         OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS, FOOTWEAR_BY_STYLE, _LOCATION_FAMILY,
         _BATHING_PLACES,
     )
+    from ..data.templates import COSTUME_SLOTS, LENGTH_SLOTS, fill_costume  # 2.0.0
 except ImportError:  # pragma: no cover — standalone/test context
     from data.fields import (
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
@@ -73,6 +74,7 @@ except ImportError:  # pragma: no cover — standalone/test context
         OUTERWEAR_BY_STYLE, OUTERWEAR_SEASONS, FOOTWEAR_BY_STYLE, _LOCATION_FAMILY,
         _BATHING_PLACES,
     )
+    from data.templates import COSTUME_SLOTS, LENGTH_SLOTS, fill_costume  # 2.0.0
 
 # ---------------------------------------------------------------------------
 # ComfyUI V3 API import — guarded so the engine helpers remain importable
@@ -130,6 +132,12 @@ _PRESET_HIDDEN_FIELDS: frozenset[str] = frozenset({"outfit_description", "held_i
 #: placement it drew before. The set below is derived from this, so the two cannot drift.
 _DEFERRED_ORDER: tuple[str, ...] = ("tattoos", "legwear", "outerwear", "tattoo_placement")
 _DEFERRED_FIELDS: frozenset[str] = frozenset(_DEFERRED_ORDER)
+#: 2.0.0: drawn after everything else, outfit and deferred fields included, by
+#: :func:`_draw_pose_and_gaze`, so the pose sees the finished garment and the gaze sees
+#: the pose. Unlike the deferred fields, rules naming these two are live: the draw
+#: filters through :func:`_live_exclusions`.
+_LAST_DRAWN: tuple[str, ...] = ("pose", "gaze")
+_GAZE_VALUES: frozenset[str] = frozenset(FIELD_DEFINITIONS["gaze"]["female_options"])
 
 #: The one shot_type value that occupies a hand (holding the camera at arm's length),
 #: same as a held prop. Read by _performable_poses so a selfie never draws a
@@ -194,20 +202,18 @@ def _name_already_carries_franchise(name: str, franchise: str) -> bool:
     franchise string, and a bare prefix check would let a one-letter parenthetical
     swallow a long franchise.
 
-    **Scope, deliberately narrow.** Everything past the exact-match test applies only
-    to keys that actually carry a "(...)" disambiguator -- which is what the 0.77.0
-    rule is about. It does NOT touch an *eponymous* key whose franchise repeats it
-    ("Shrek" under "Shrek", "Godzilla" under "Godzilla", "Sterling Archer" under
-    "Archer"). Those render as "Shrek (Shrek)", which is redundant but has shipped
-    that way for many releases, and broadening the rule to cover them would rewrite
-    91 more entries' prose -- silently invalidating 91 published gallery images,
-    since ``entry_hash`` hashes the entry dict and cannot see a prose-only change.
-    That is a separate decision with a real re-render bill attached, not a
-    side effect of this fix.
+    * (2.0.0) the name IS the franchise -- "Shrek" under "Shrek" rendered
+      "Shrek (Shrek)". It waited for the 2.0.0 full gallery re-render because it
+      rewrites every eponymous entry's prose.
+
+    **Scope.** Past those two exact tests, the rule applies only to keys that carry
+    a "(...)" disambiguator. A name that merely contains its franchise
+    ("Sterling Archer" under "Archer") keeps the suffix: there the franchise adds
+    the show the name alone does not say.
 
     Prose-only -- no RNG draw here, so no seed drift.
     """
-    if name.endswith(f"({franchise})"):
+    if name.casefold() == franchise.casefold() or name.endswith(f"({franchise})"):
         return True
     match = _KEY_PARENTHETICAL_RE.match(name)
     if not match:
@@ -1025,6 +1031,12 @@ def _a(word: str) -> str:
     return "an" if first[:1] and first[0] in "aeiou" else "a"
 
 
+#: 2.0.0: an expression whose head is a countable noun takes an article ("His expression
+#: is a bright smile"); adjectives ("confident") and mass nouns ("quiet amusement") do not.
+#: Render-layer only: the values are locked across the roster, so they are not renamed.
+_EXPRESSION_NOUN_RE = re.compile(r"\b(?:smile|grin|gaze|mid-laugh)$", re.IGNORECASE)
+
+
 def _an(value: str, noun: str = "") -> str:
     """Render ``value`` (optionally with a trailing ``noun``) with its article."""
     tail = f" {noun}" if noun else ""
@@ -1366,7 +1378,7 @@ _LIGHT_HAIR_FAMILIES: tuple[str, ...] = ("blonde", "red")
 #: ethnicity lean below). Under 35 is 0, as the grey -> age rule in constraints.py states.
 _GREY_BY_AGE: dict[int, float] = {
     35: 0.05, 38: 0.08, 40: 0.1, 43: 0.15, 45: 0.2, 48: 0.28, 50: 0.35, 55: 0.5,
-    60: 0.65, 65: 0.78, 70: 0.88}
+    60: 0.65, 65: 0.78, 70: 0.88, 75: 0.93, 80: 0.96}
 
 
 _GREY_HAIR: frozenset[str] = frozenset(FIELD_FAMILIES["hair_color"]["gray_white"]["variants"])
@@ -2152,68 +2164,71 @@ def _fit_extras_to_garment(resolved: dict[str, str], locked: set[str]) -> None:
         resolved["other_jewelry"] = "no other jewelry"
 
 
-def _repair_pose(
+def _values_that_exclude(
+    field: str, resolved: dict[str, str], presentation: str | None = None
+) -> set[str]:
+    """Values of ``field`` that, once drawn, would fire a rule against a value already set.
+
+    The contrapositive of :func:`_live_exclusions`, for a field drawn after its rule
+    targets: a locked ``gaze`` keeps the ``pose`` drawn before it from contradicting it.
+    """
+    banned: set[str] = set()
+    for rule in CONSTRAINT_RULES:
+        if rule["type"] != "exclusion" or rule["field"] != field:
+            continue
+        if rule.get("presentation_gated") and presentation != "Masculine":
+            continue
+        if resolved.get(rule["excludes_field"]) in rule["excludes_values"]:
+            banned.add(rule["value"])
+    return banned
+
+
+def _draw_pose_and_gaze(
     resolved: dict[str, str],
     gender: str,
-    locked: set[str],
     covers_face: bool,
     covers_body: bool,
     covers_hair: bool,
     scale_class: str,
     rng: random.Random,
-    # APPENDED, not inserted -- generate_character calls this positionally.
     feral: bool = False,
-    presentation: str | None = None,  # APPENDED (1.5.0 round 4)
+    presentation: str | None = None,
 ) -> None:
-    """Re-pick ``pose`` if the finished outfit made the drawn one unperformable.
+    """Draw ``pose`` and then ``gaze``, the last two draws of a character (2.0.0).
 
-    :func:`_performable_poses` runs inside the randomize loop, where ``pose`` (field
-    index 67) is drawn long before a *generated* ``outfit_description`` exists — it is
-    composed after the loop ends. So its garment tests read an empty string, and the
-    whole ``GARMENT_DEPENDENT_POSES`` gate was inert for every randomly generated
-    outfit. The ``_DEFERRED_FIELDS`` note has named this trap for two releases; this
-    closes it. Measured before the fix: of 324 random outfits matching
-    ``_POCKETLESS_GARMENT_RE`` in 6,000 runs, **26 (8.0%)** drew a pockets/collar
-    gesture -- "a pastel off-shoulder mermaid gown with long satin gloves" while
-    "posing with hands in pockets".
+    Until 2.0.0 ``pose`` was drawn mid-loop, before a generated outfit existed, so its
+    garment gate read an empty string and a ``_repair_pose`` pass re-picked it after
+    the fact. Drawing it here, once the outfit is final, retires that repair: the
+    garment, hair, prop, scale and rule filters all see their real inputs the first
+    time. It was not done earlier because moving a mid-stream draw changes every seed;
+    2.0.0 is the release that breaks seeds on purpose.
 
-    **Why a repair rather than deferral.** Moving ``pose`` into
-    :data:`_DEFERRED_FIELDS` is the obvious fix and the wrong one: it relocates a draw
-    that sits in the middle of the stream, so every existing seed would resolve to a
-    different pose *and* different tattoos/legwear -- silently invalidating every
-    published gallery image, exactly as the 0.90.0 prose change did, and
-    ``entry_hash`` could not flag it. Repairing after the fact costs nothing instead.
-    This runs at the very end of the draw order (after
-    :func:`_resolve_deferred_fields`, and nothing is drawn later), and **consumes no
-    RNG at all unless the pose is genuinely unperformable** -- the pool membership
-    test is free. So a seed only changes when its pose was already wrong, and even
-    then nothing downstream shifts, because nothing downstream draws.
-
-    A preset costume was already in ``resolved`` during the loop, so its poses were
-    filtered correctly the first time and this is a no-op for the whole cosplayer and
-    archetype roster. An explicit lock is skipped, as everywhere else.
+    ``gaze`` comes after ``pose`` because its rules read the pose (a wave is aimed at
+    the camera). Both pools are filtered through the live rules, and the pose also
+    drops any value that would contradict an already-set (locked) gaze. A feral
+    subject draws no gaze: its authored pose already says where the head points. A
+    locked value, including "None", is never redrawn.
     """
-    if "pose" in locked:
-        return
-    current = resolved.get("pose")
-    if not current or _is_absent(current):
-        return
-    field_def = FIELD_DEFINITIONS["pose"]
-    pool = _performable_poses(
-        _build_option_pool("pose", field_def, gender, resolved),
-        resolved, covers_face, covers_body, covers_hair, feral,
-    )
-    if scale_class:
-        pool = _scale_coherent_pool("pose", pool, scale_class)
-    # 1.5.0 round 2: the re-pick must also respect the pose rules already in force
-    # (the floor-pose gate), or it hands a public place the pose the loop removed.
-    # 1.5.0 round 4: with the presentation, or the masculine pose trims (hand on hip)
-    # and the masculine family weights were skipped on every repair.
-    live = _live_exclusions("pose", resolved, presentation)
-    pool = [p for p in pool if p not in live]
-    if current in pool or not pool:
-        return  # still performable (or nothing better on offer) -- no RNG spent
-    resolved["pose"] = _repick("pose", field_def, pool, gender, rng, presentation)
+    if "pose" not in resolved:
+        field_def = FIELD_DEFINITIONS["pose"]
+        pool = _performable_poses(
+            _build_option_pool("pose", field_def, gender, resolved),
+            resolved, covers_face, covers_body, covers_hair, feral,
+        )
+        if scale_class:
+            pool = _scale_coherent_pool("pose", pool, scale_class)
+        banned = (_live_exclusions("pose", resolved, presentation)
+                  | _values_that_exclude("pose", resolved, presentation))
+        pool = [p for p in pool if p not in banned]
+        resolved["pose"] = (_repick("pose", field_def, pool, gender, rng, presentation)
+                            if pool else "None")
+    if "gaze" not in resolved and not feral:
+        field_def = FIELD_DEFINITIONS["gaze"]
+        banned = _live_exclusions("gaze", resolved, presentation)
+        pool = [v for v in _build_option_pool("gaze", field_def, gender, resolved)
+                if v not in banned]
+        resolved["gaze"] = (_repick("gaze", field_def, pool, gender, rng, presentation)
+                            if pool else "None")
 
 
 #: 1.5.0 round 3: how many adornment pieces one person wears at most, by presentation.
@@ -2392,13 +2407,9 @@ def _randomize_fields(
     ``locked`` maps field_name → user-chosen value (already excludes control
     and hidden fields). The returned dict contains every field.
 
-    The ``covers_*`` flags are the cosplayer coverage flags; they only narrow the
-    ``pose`` pool (see :func:`_performable_poses`). Every other suppression they
-    drive happens after the fill, in :func:`generate_character`.
-
-    ``feral`` marks a non-humanoid subject (a ``body_plan: "feral"`` cosplayer or a
-    Creature node on the Feral form) and, like the ``covers_*`` flags, only narrows
-    ``pose``.
+    The ``covers_*`` and ``feral`` flags are unused here since 2.0.0: they only ever
+    narrowed ``pose``, which is now drawn last by :func:`_draw_pose_and_gaze`. They
+    stay in the signature because callers pass them.
 
     ``scale_class`` is ``"giant"`` / ``"tiny"`` / ``""`` and narrows the scene and
     build pools so the render can show the scale (see :func:`_scale_coherent_pool`).
@@ -2415,8 +2426,8 @@ def _randomize_fields(
     for field_name, field_def in FIELD_DEFINITIONS.items():
         if field_name in _HIDDEN_FIELDS or field_name in _CONTROL_FIELDS:
             continue
-        if field_name in _DEFERRED_FIELDS:
-            continue  # needs the finished outfit; drawn by _resolve_deferred_fields
+        if field_name in _DEFERRED_FIELDS or field_name in _LAST_DRAWN:
+            continue  # needs the finished outfit; drawn after it
         if field_name in resolved:  # locked
             continue
 
@@ -2435,9 +2446,6 @@ def _randomize_fields(
             pool = _bias_hair_texture(pool, resolved.get("ethnicity"), rng)
         elif field_name == "hair_style":
             pool = _bias_hair_style(pool, resolved.get("ethnicity"), rng)
-        elif field_name == "pose":
-            pool = _performable_poses(pool, resolved, covers_face, covers_body,
-                                      covers_hair, feral)
         if scale_class:
             pool = _scale_coherent_pool(field_name, pool, scale_class)
         forced_absent = _maybe_absent(field_name, pool, accessory_density, rng,
@@ -2744,13 +2752,20 @@ def _apply_constraints(
 
 
 def _resolve_outfit_description(
-    resolved: dict[str, str], gender: str, wardrobe: str, rng: random.Random
+    resolved: dict[str, str], gender: str, wardrobe: str, rng: random.Random,
+    slot_rng: random.Random | None = None,  # APPENDED (2.0.0)
 ) -> str:
     """Pick an outfit matching ``outfit_style`` and the wardrobe mode.
 
     The pool is the style's ``unisex`` bucket plus the gendered bucket selected
     by ``wardrobe``: "Match gender" follows the character's gender, while
     "Feminine"/"Masculine"/"Any" let a user deliberately mix wardrobes.
+
+    2.0.0: a phrase may carry ``{slot}`` placeholders (per-garment variation slots),
+    filled here from :data:`COSTUME_SLOTS` so every later gate reads the finished
+    words. ``slot_rng`` is a stream of its own, so a slot draw moves no other field:
+    a phrase gaining slots in a later release changes only its own words. Each value
+    must pass the same season and age gates the phrase did.
     """
     buckets = OUTFIT_DESCRIPTIONS.get(resolved.get("outfit_style", "casual"))
     if not buckets:
@@ -2781,7 +2796,26 @@ def _resolve_outfit_description(
         if "summer" not in OUTERWEAR_SEASONS.get(coat, frozenset(["summer"])):
             pool = [g for g in pool if not _SUMMER_TOP_RE.search(g)
                     and not WARM_ONLY_GARMENT_RE.search(g)] or pool
-    return rng.choice(pool) if pool else ""
+    if not pool:
+        return ""
+    garment = rng.choice(pool)
+    if "{" not in garment:
+        return garment
+    older = age.isdigit() and int(age) >= 45
+
+    def fits(slot: str, value: str) -> bool:
+        phrase = garment.replace("{" + slot + "}", value)
+        return (_garment_fits_season(phrase, resolved.get("season"))
+                and not (older and _YOUTHFUL_GARMENT_RE.search(phrase)))
+
+    return fill_costume(garment, slot_rng or rng, keep=fits)
+
+
+#: 2.0.0: the length-slot words, dropped from the prose of a generated outfit when the
+#: framing crops the legs (the JSON keeps them, as it keeps the shoes).
+_LENGTH_WORD_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(v) for s in sorted(LENGTH_SLOTS)
+                        for v in COSTUME_SLOTS[s]) + r")\s", re.IGNORECASE)
 
 
 #: 1.5.0 round 4 garment filters (engine corpus only).
@@ -3507,20 +3541,19 @@ def _format_prose(
     # --- Pose & held item ----------------------------------------------
     # held_item is a hidden, preset-only field (a cosplayer's signature prop);
     # voiced here as "holding <value>", folded into the pose sentence when present.
-    pose, held = g("pose"), g("held_item")
-    if subject_only:
-        pose = held = ""
-    if pose and held:
-        sentences.append(f"{subj} {is_v} {pose}, holding {held}")
-    elif pose:
-        sentences.append(f"{subj} {is_v} {pose}")
-    elif held:
-        sentences.append(f"{subj} {is_v} holding {held}")
+    # 2.0.0: the gaze closes the same sentence ("standing naturally, looking ...").
+    action = [p for p in (g("pose"), g("held_item") and f"holding {g('held_item')}",
+                          g("gaze")) if p]
+    if action and not subject_only:
+        sentences.append(f"{subj} {is_v} {', '.join(action)}")
 
     # --- Setting & shot -------------------------------------------------
     scene = []
     if g("expression"):
-        scene.append(f"{poss} expression is {g('expression')}")
+        expression = g("expression")
+        if _EXPRESSION_NOUN_RE.search(expression) and not LEADING_ARTICLE_RE.match(expression):
+            expression = _an(expression)
+        scene.append(f"{poss} expression is {expression}")
     if g("location"):
         scene.append(f"set in {_location_clause(g('location'))}")
     if g("lighting"):
@@ -4149,6 +4182,11 @@ def generate_character(
             ):
                 locked_clean[name] = value
 
+    # 2.0.0: the `looking` poses became the `gaze` field. A workflow, vault character or
+    # preset that locked one as a pose keeps it, as a gaze, instead of re-rolling.
+    if locked_clean.get("pose") in _GAZE_VALUES:
+        locked_clean.setdefault("gaze", locked_clean.pop("pose"))
+
     # The gender gate must hold for *injected* locks too. An archetype emits
     # look-defining fields (incl. facial_hair) and its own gender; when the
     # downstream gender widget overrides that gender, a value that is invalid for
@@ -4210,12 +4248,16 @@ def generate_character(
     # Drop them when a costume is set; the prose already omits them in that case.
     # When no costume is supplied, generate one from the random outfit_style.
     framed_shoes = ""  # the costume branch below sets it; a generated outfit reads it later
+    generated_outfit = False  # 2.0.0: only a generated outfit's length words are trimmed
     voiced: dict[str, str] = {}  # colour/pattern words the composed outfit actually holds
     if _is_absent(resolved.get("outfit_description")):
         # 0.83.0: the generated outfit is a GARMENT phrase, so the palette, pattern and
         # footwear compose onto it instead of being drawn and thrown away. Mutates
         # `resolved`, popping any axis a guard suppressed, so the JSON matches the prose.
-        garment = _resolve_outfit_description(resolved, gender, wardrobe, rng)
+        # 2.0.0: the garment's {slot} words draw from their own stream (see the helper).
+        garment = _resolve_outfit_description(resolved, gender, wardrobe, rng,
+                                              random.Random(f"{seed}:garment-slots"))
+        generated_outfit = True
         # Three-step, and the order is forced. `legwear` gates on the garment, and
         # the composed clause then VOICES legwear -- so it has to be drawn between
         # picking the garment and composing around it. Parking the raw garment in
@@ -4259,13 +4301,9 @@ def generate_character(
         _resolve_deferred_fields(resolved, gender, accessory_density, rng,
                                  presentation=presentation, locked=set(locked_clean))
 
-    # The outfit is final at last, so the pose gate can finally see it -- inside the
-    # randomize loop a *generated* costume does not exist yet. Free unless the drawn
-    # pose is genuinely unperformable in the finished garment, and nothing is drawn
-    # after this point, so no seed drifts except the ones that were already wrong.
-    # See _repair_pose for why this is a repair rather than a deferral.
-    _repair_pose(resolved, gender, set(locked_clean), covers_face, covers_body,
-                 covers_hair, scale_class, rng, is_feral, presentation)
+    # The outfit is final, so the pose can see it; the gaze then sees the pose.
+    _draw_pose_and_gaze(resolved, gender, covers_face, covers_body, covers_hair,
+                        scale_class, rng, is_feral, presentation)
 
     # Gloved/gauntleted hands hide the fingers, so a randomized fingernail polish or
     # ring would render on top of the glove (the reported bug). Force the finger
@@ -4504,6 +4542,10 @@ def generate_character(
         trimmed = re.sub(rf", with [^,]*{re.escape(hose)}(?=,|$)", "",
                          prose_fields.get("outfit_description") or "", count=1)
         prose_fields = {**prose_fields, "outfit_description": trimmed}
+    if generated_outfit and shot_distance in _LEGS_OUT_OF_FRAME_SHOTS:
+        # 2.0.0: a skirt length the frame cannot show is dropped from the prose too.
+        trimmed = _LENGTH_WORD_RE.sub("", prose_fields.get("outfit_description") or "")
+        prose_fields = {**prose_fields, "outfit_description": trimmed}
     prose = _format_prose(prose_fields, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text,
                           anatomy_note=anatomy_note, presentation=presentation,
@@ -4641,10 +4683,10 @@ def _parse_archetype_json(raw: str) -> dict[str, Any]:
                 # ("Red (Pokemon)", "Zero (Code Geass)"), so appending again
                 # stuttered -- "Cosplaying as Red (Pokemon) (Pokemon)". 29 shipped
                 # entries did this. Prose-only, no RNG draw, no seed drift.
-                named = isinstance(franchise, str) and bool(franchise)
                 flat[_COSPLAY_LABEL_KEY] = (
                     f"{cosplay_of} ({franchise})"
-                    if named and not _name_already_carries_franchise(cosplay_of, franchise)
+                    if isinstance(franchise, str) and franchise
+                    and not _name_already_carries_franchise(cosplay_of, franchise)
                     else cosplay_of
                 )
             if meta.get("covers_face"):

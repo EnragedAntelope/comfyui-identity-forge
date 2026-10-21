@@ -18,8 +18,10 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
     }),
     ("age", {
         "group": 'Demographics',
-        "female_options": ['18', '19', '20', '22', '25', '28', '30', '33', '35', '38', '40', '43', '45', '48', '50', '55', '60', '65', '70'],
-        "male_options": ['18', '19', '20', '22', '25', '28', '30', '33', '35', '38', '40', '43', '45', '48', '50', '55', '60', '65', '70'],
+        "female_options": ['18', '19', '20', '22', '25', '28', '30', '33', '35', '38', '40', '43', '45', '48', '50', '55', '60', '65', '70', '75', '80'],
+        "male_options": ['18', '19', '20', '22', '25', '28', '30', '33', '35', '38', '40', '43', '45', '48', '50', '55', '60', '65', '70', '75', '80'],
+        # 2.0.0: 75 and 80 joined; weighted so 60+ stays near its old 3-of-19 share (~16%).
+        "weights": {"60": 0.9, "65": 0.85, "70": 0.8, "75": 0.5, "80": 0.35},
         "optional": False
     }),
     ("ethnicity", {
@@ -218,7 +220,12 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # 1.5.0 round 2: men drew all fifteen lengths flat, so half of random men
         # had shoulder-length-or-longer hair (then braids, buns and blowouts to go
         # with it). Leans a MASCULINE presentation short; every length stays reachable.
+        # 2.0.0: women drew the three shortest lengths flat, ~21% together; 0.4 each
+        # brings them near 10%. "short pixie" is pinned at 1 for a Masculine
+        # presentation below so men keep their 1.5.0 odds.
+        "weights": {"buzzed very short": 0.4, "very short": 0.4, "short pixie": 0.4},
         "masculine_weights": {
+            "short pixie": 1,
             "bald": 1.2, "buzzed very short": 3, "very short": 4, "ear length": 2.5,
             "jaw length": 1, "shoulder length": 0.6, "slightly past shoulders": 0.3,
             "mid back": 0.12, "lower back": 0.08, "long": 0.25, "very long": 0.12,
@@ -629,8 +636,8 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         # weight, zero bias impact) to "standing with arms relaxed at the sides",
         # "touching the collar with one hand" and "holding both hands loosely
         # clasped". `PoseGrammarTests` pins the rule for new values.
-        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step', 'wrapping both arms around the body', 'sitting with elbows on knees', 'kneeling seiza-style', 'sitting on the ground with legs folded to one side', 'clasping both hands behind the head', 'flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart'],
-        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'looking over one shoulder', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'glancing back', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'tilting the head slightly', 'lifting the chin slightly', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera', 'walking toward the camera', 'pausing mid-step', 'wrapping both arms around the body', 'sitting with elbows on knees', 'kneeling seiza-style', 'sitting on the ground with legs folded to one side', 'clasping both hands behind the head', 'flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart'],
+        "female_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'walking toward the camera', 'pausing mid-step', 'wrapping both arms around the body', 'sitting with elbows on knees', 'kneeling seiza-style', 'sitting on the ground with legs folded to one side', 'clasping both hands behind the head', 'flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart'],
+        "male_options": ['standing naturally', 'standing with arms crossed', 'leaning against a wall', 'sitting relaxed', 'sitting upright', 'walking mid-stride', 'crouching low', 'kneeling gracefully', 'reclining', 'posing with a hand on one hip', 'posing with hands in pockets', 'in a relaxed contrapposto stance', 'in a confident power pose', 'resting chin on one hand', 'standing with arms relaxed at the sides', 'touching the collar with one hand', 'standing with weight on one leg', 'standing tall with shoulders back', 'perched on the edge of a seat', 'sitting cross-legged', 'leaning forward slightly', 'leaning back casually', 'turning toward the viewer mid-stride', 'stepping forward', 'running one hand through the hair', 'holding both hands loosely clasped', 'standing with hands clasped behind the back', 'standing with feet planted wide', 'sitting on the floor with knees drawn up', 'sitting with one leg crossed over the other', 'striding forward with purpose', 'stretching both arms overhead', 'adjusting one cuff', 'walking toward the camera', 'pausing mid-step', 'wrapping both arms around the body', 'sitting with elbows on knees', 'kneeling seiza-style', 'sitting on the ground with legs folded to one side', 'clasping both hands behind the head', 'flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart'],
         "optional": True
     }),
     ("held_item", {
@@ -838,6 +845,23 @@ FIELD_DEFINITIONS: OrderedDict[str, dict] = OrderedDict([
         "male_options": ['no outerwear', 'trench coat', 'wool overcoat', 'peacoat', 'parka', 'puffer coat', 'shearling coat', 'duffle coat', 'leather jacket', 'denim jacket', 'bomber jacket', 'quilted jacket', 'waxed field jacket', 'rain jacket', 'windbreaker'],
         "optional": True
     }),
+    # 2.0.0: where the eyes and head point, split out of `pose` (its former `looking`
+    # family) so a render can have both "arms crossed" and "looking off past the
+    # camera". Drawn last, after `pose`, and gated by ordinary CONSTRAINT_RULES that the
+    # draw reads directly (data/constraints.py -> "gaze"). Every value is a participle
+    # phrase voiced after the pose: "She is standing naturally, looking ...".
+    ("gaze", {
+        "group": 'Setting & Shot',
+        "female_options": ['looking directly into the camera', 'looking off past the camera', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully', 'looking over one shoulder', 'glancing back'],
+        "male_options": ['looking directly into the camera', 'looking off past the camera', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully', 'looking over one shoulder', 'glancing back'],
+        # Eye contact leads, as in portrait work; the over-the-shoulder turns stay rarer
+        # because from the front they also turn the body away.
+        "weights": {"looking directly into the camera": 4, "looking off past the camera": 3,
+                    "tilting the head slightly": 2, "lifting the chin slightly": 1.5,
+                    "looking down thoughtfully": 1, "looking over one shoulder": 0.5,
+                    "glancing back": 0.35},
+        "optional": True
+    }),
 ])
 
 #: Per-field help, shown as the tooltip on that field's dropdown (0.78.0).
@@ -929,11 +953,12 @@ FIELD_HELP: dict[str, str] = {
     "composition": "Where the subject sits within the frame - layout, not camera position. Kept coherent with shot_type.",
     "season": "Time of year, outdoors only (dropped indoors; locking it moves the location outside). What is worn follows it, and seasonal places keep their own season.",
     "mood": "Overall emotional tone of the image. Set to 'None' if a downstream rendering pack owns this axis.",
-    "pose": "What the body is doing. A pose needing something the subject lacks is dropped: hair or pockets to reach for, a free hand when a prop is held, a seat at giant scale. A lock wins.",
+    "pose": "What the body is doing (the eyes are gaze). A pose needing what the subject lacks is dropped: hair or pockets to reach for, a free hand beside a prop, a seat at giant scale. A lock wins.",
     "tattoos": "Body ink - style and how much of it. Deliberately uncommon at random, and scaled by the accessory density control. Where it sits is tattoo_placement.",
     "legwear": "Tights, stockings or socks. Only rendered when the outfit actually shows leg, so it never appears under trousers. Feminine wardrobe only.",
     "tattoo_placement": "Where the tattoo sits. Placements the clothing would hide are dropped automatically - no forearm ink under long sleeves, no thigh ink under a skirt-less outfit or opaque tights.",
     "outerwear": "A coat or jacket over the outfit: outdoors only, never in summer, heavy coats only in winter, never over an outfit with its own outer layer.",
+    "gaze": "Where the eyes and head point, voiced after the pose. Kept coherent with the framing (a view from behind turns the head back, a selfie looks at the lens), the pose and the expression.",
 }
 
 
@@ -1292,11 +1317,7 @@ POSE_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # 1.6.0: one-handed social gestures aimed at the viewer. Their own family so a heavy
     # mood, a sad face or an extreme close-up drops them whole.
     ("gesture_social", {"weight": 18, "variants": ['flashing a peace sign', 'giving a thumbs up', 'waving at the camera', 'making a finger heart']}),
-    # 0.85.0: two eye-contact variants grown in place (family weight unchanged, only
-    # the per-value share shifts) -- the documented bias-safe channel for adding to an
-    # existing family. Closes the gap where the pack had no way to state eye contact
-    # at all.
-    ("looking", {"weight": 72, "variants": ['looking over one shoulder', 'glancing back', 'tilting the head slightly', 'lifting the chin slightly', 'looking down thoughtfully', 'looking directly into the camera', 'looking off past the camera']}),
+    # 2.0.0: the former `looking` family (weight 72) is now the `gaze` field.
 ])
 
 #: Poses the engine drops when a character has no visible scalp hair (a full mask, a
@@ -1341,9 +1362,9 @@ FURNITURE_DEPENDENT_POSES: frozenset[str] = frozenset(POSE_FAMILIES["seated_perc
 #: the Creature node's Feral form, which sets neither flag (it suppresses by group).
 #: ``seated_perch`` joins them because perching on the edge of a seat is a human sit.
 #:
-#: What SURVIVES is the point: `standing`, `seated`, `leaning`, `motion` and `looking`
-#: all read correctly on an animal -- standing four-square, lying down, walking
-#: mid-stride, looking over one shoulder. Whole families throughout, so the survivors
+#: What SURVIVES is the point: `standing`, `seated`, `leaning` and `motion` all read
+#: correctly on an animal -- standing four-square, lying down, walking mid-stride.
+#: (A feral subject draws no `gaze`: its authored pose owns the head.) Whole families throughout, so the survivors
 #: keep their proportional shares (the POSE_FAMILIES rule above).
 QUADRUPED_UNPERFORMABLE_POSES: frozenset[str] = frozenset(
     POSE_FAMILIES["standing_hands_bound"]["variants"]
@@ -1465,7 +1486,11 @@ LIGHTING_FAMILIES: OrderedDict[str, dict] = OrderedDict([
     # together -- Rembrandt / butterfly / split / soft-box / chiaroscuro / low key /
     # three-point all describe the SHAPE of light on the face and are achievable on
     # location with a reflector, so they are not fixture claims and need no allowlist.
-    ("studio_shape", {"weight": 960, "variants": ['dramatic single overhead spotlight', 'soft studio three-point lighting', 'high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
+    # 2.0.0: split at 96 per variant (no share moves). `studio_shape` keeps the portrait
+    # RIG setups and spotlights, which an everyday interior does not have; `studio_mood`
+    # holds the three light qualities a lit room can show. Only the rig is gated indoors.
+    ("studio_shape", {"weight": 672, "variants": ['dramatic single overhead spotlight', 'soft studio three-point lighting', 'harsh angled spotlight casting long hard shadows', 'soft-box style diffused light', 'split lighting with deep shadow', 'butterfly beauty lighting', 'Rembrandt lighting']}),
+    ("studio_mood", {"weight": 288, "variants": ['high key bright even lighting', 'low key moody single light source', 'dramatic chiaroscuro side lighting']}),
     ("studio_stage", {"weight": 96, "variants": ['stage spotlight from above']}),
     # 1.6.0: weather lives in lighting (the field that already owns hour, sky and
     # light), composed with any outdoor place rather than baked into locations. Two NEW
@@ -1781,7 +1806,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         'female': [
             'fitted sheath dress with a thin belt',
             'cardigan over a silk blouse with a knee-length pencil skirt',
-            'poplin blouse tucked into an A-line skirt',
+            'poplin blouse tucked into an A-line {skirt_length} skirt',  # 2.0.0 slots
             'shift dress under a cropped jacket',
             'crepe blouse with straight-leg tailored trousers',
             'soft blazer over a shell top with cropped wool trousers',
@@ -1794,7 +1819,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'peplum top with cigarette trousers',  # 1.5.1 wildcard review
         ],
         'male': [
-            'dress shirt with cuffed sleeves and pressed chinos',
+            'dress shirt with cuffed sleeves and pressed {chino_cut} chinos',  # 2.0.0 slots
             'merino v-neck over a collared shirt with wool trousers',
             'soft blazer over an oxford shirt with flat-front trousers',
             'long-sleeve knitted polo with tailored chinos',
@@ -2031,7 +2056,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
         'male': [
             'compression shirt with training shorts',
             'sports jersey with basketball shorts',
-            'moisture-wicking tee with tapered training joggers',
+            'moisture-wicking {tee_fit} tee with tapered training joggers',  # 2.0.0 slots
             'sleeveless training top with mesh shorts',
             'half-zip base layer with running tights',
             'lightweight running singlet with split shorts',
@@ -2129,7 +2154,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
     },
     'preppy': {
         'female': [
-            'knife-pleated skirt with a fine-knit sweater',
+            'knife-pleated {skirt_length} skirt with a {knit_weight} sweater',  # 2.0.0 slots
             'cable-knit sweater over a poplin shirt with tailored shorts',
             'sleeveless polo dress with a knitted trim',
             'quilted jacket over a rugby shirt with slim chinos',
@@ -2142,7 +2167,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'cable-knit cardigan over a boatneck tee with cuffed chinos',  # 1.5.0
         ],
         'male': [
-            'cable-knit sweater over an oxford shirt with chinos',
+            '{knit_weight} sweater over an oxford shirt with {chino_cut} chinos',  # 2.0.0 slots
             'quarter-zip lambswool sweater with pressed chinos',
             'rugby shirt with straight-leg chinos and a webbing belt',
             'blazer over a button-down shirt with cotton trousers',
@@ -2241,7 +2266,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
     # layers here (chore coat, work jacket) are real workwear layers, not weather wear.
     'utility workwear': {
         'female': [
-            'canvas chore coat over a henley with carpenter trousers',
+            '{work_canvas} chore coat over a henley with carpenter trousers',  # 2.0.0 slots
             'twill coveralls with the sleeves rolled to the elbow',
             'heavyweight work shirt with double-knee work trousers',
             'bib overalls over a thermal long sleeve',
@@ -2253,7 +2278,7 @@ OUTFIT_DESCRIPTIONS: dict[str, dict[str, list[str]]] = {
             'waxed canvas apron over a chambray shirt and work trousers',
         ],
         'male': [
-            'canvas chore coat over a thermal henley with double-knee work trousers',
+            '{work_canvas} chore coat over a thermal henley with double-knee work trousers',  # 2.0.0 slots
             'heavyweight pocket tee with carpenter jeans',
             'twill work shirt with rugged cargo work trousers',
             'insulated work vest over a flannel shirt with work jeans',

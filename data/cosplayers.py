@@ -1226,6 +1226,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "an iconic red bustier with a golden eagle chest emblem, blue "
                    "star-spangled briefs, red mid-calf boots, golden forearm bracers, "
                    "and a golden tiara with a red star",
+        "costume_back": "a red bustier, blue star-spangled briefs, red mid-calf boots, golden forearm bracers, and a golden tiara",
         "signature": {"hair_color": "raven black", "hair_length": "long",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "statuesque", "skin_tone": "warm tan"},
@@ -2423,6 +2424,7 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "a skintight red and blue bodysuit with black webbing lines across the "
                    "red, a large black spider emblem on the chest, red gloves, and red boots",
+        "costume_back": "a skintight red and blue bodysuit with black webbing lines across the red, a large red spider emblem on the back, red gloves, and red boots",
         "mask": "a full face mask with large white teardrop eye lenses",
         "physique": {"body_type": "lean", "height": "average height"},
     },
@@ -2452,6 +2454,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a blue scale-textured uniform with a white star on the chest, red and "
                    "white horizontal stripes across the midsection, a snug blue cowl with "
                    "a white A, red gloves, and red boots",
+        "costume_back": "a blue scale-textured uniform with red and white horizontal stripes around the midsection, a snug blue cowl, red gloves, and red boots",
         "signature": {"hair_color": "golden blonde", "hair_length": "very short",
                       "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -2666,6 +2669,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a skintight blue bodysuit with a large red and yellow diamond S shield "
                    "on the chest, a red cape, red briefs, red boots, a golden belt, and a "
                    "single curl of hair falling on the forehead",
+        "costume_back": "a skintight blue bodysuit under a long red cape that falls down the back, red briefs, red boots, and a golden belt",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -2677,6 +2681,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a dark grey armored bodysuit with a black bat emblem across the chest, "
                    "a long scalloped black cape, a yellow utility belt, and black "
                    "gauntlets with fin blades",
+        "costume_back": "a long scalloped black cape draped down the back over a dark grey armored bodysuit, a yellow utility belt, and black gauntlets with fin blades",
         "mask": "a black cowl with pointed bat ears",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
@@ -2695,6 +2700,7 @@ COSPLAYERS: dict[str, dict] = {
         "covers_face": True,
         "costume": "a full red bodysuit with a golden lightning-bolt emblem in a white "
                    "circle on the chest and golden boots",
+        "costume_back": "a full red bodysuit and golden boots",
         "mask": "a red cowl with small golden wing bolts at the ears",
         "physique": {"body_type": "lean", "height": "average height"},
     },

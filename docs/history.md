@@ -1203,3 +1203,81 @@ were declined before rendering as near-duplicates of shipped entries.
 **Render-script gotcha.** A render can fail with `OSError: [Errno 22] Invalid argument`
 on the output PNG when that file is open in a viewer. Move the old image aside before
 re-rendering an entry someone may be looking at.
+
+## 2.0.0 - the seed epoch: every seed-moving change at once
+
+**Seeds break in this release, on purpose.** A given seed resolves to a different person
+in 2.0.0 than in 1.11.0, for every gender. Every
+change that had to move seeds was held back into this one release so the break happens
+once. Over 4000 seeds per gender against 1.11.0, every seed changed at least one field
+(gaze on all of them, by construction; pose, outfit and age on most). The per-item numbers
+below are each step diffed against the step before it, measured with the same 4000 seeds.
+
+**`gaze`, a new widget.** The `looking` family of `pose` (seven values) moved into its own
+field, appended last in the schema and drawn last with `pose` (see architecture.md -> "pose
+and gaze draw last"). A character can now stand one way and look another, and the gaze is
+gated: a view from behind turns the head back over the shoulder, a selfie and a social
+gesture look at the lens, walking toward the camera never glances back, lost-in-thought
+never stares into the lens, and warm or intense expressions do not look down. Step diff:
+4000/4000 seeds per gender changed (gaze on all; pose on 7742 of 8000, because `pose` now
+draws after the outfit; outfit on 7061, because pose no longer consumes a draw mid-loop).
+Shares over 1000 seeds per gender: looking into the camera 31.1%, off past the camera
+21.1%, tilting the head 14.9%, lifting the chin 12.0%, over one shoulder 11.7%, glancing
+back 7.2%, looking down thoughtfully 1.9% (the turn-back share is mostly forced by
+from-behind framings). First weights gave 23% turn-back gazes; the two were lowered.
+0 live-rule violations for pose or gaze. A save that locked a `looking` pose migrates to a
+gaze lock. The Expression Sheet gained a `gaze` input; a Turnaround that pins the stance
+states no gaze.
+
+**`pose` is deferred, and `_repair_pose` is retired.** The 0.92.0 repair existed only
+because moving the pose draw would move seeds; in the epoch release the clean fix is
+allowed. Pose now draws after the generated outfit, so the pocket/collar gesture gate reads
+the real garment, and its rules are live (the from-behind pose rule was rewritten as an
+allowlist of back-readable poses).
+
+**Women's hair length and the oldest ages.** The three shortest women's lengths were
+weighted to 0.4 (9.7% of women over 4000 seeds, down from 22.1%); `75` and `80` joined `age`,
+weighted so 60+ holds near 16% (first tuning gave 14.4%; retuned to 16.1%). Step diff:
+3995/4000 female and 3898/4000 male seeds changed (a new age option shifts the weighted
+index for every seed).
+
+**Studio lighting needs a studio.** A portrait rig (`studio_shape`) no longer lights an
+everyday interior; it stays legal in a studio, outdoors, and in the listed interiors that
+own one (`_STUDIO_LIT_INTERIORS`). The first cut gated the whole studio family and caused
+48 archetype lock clashes, so the family was split: `studio_shape` (the rigs) is gated,
+`studio_mood` (low-key, colour gels and similar) is not. Indoor rig lighting fell from
+32.6% to 1.7% of indoor renders; mood lighting rose from 14.4% to 20.7%. Step diff: about
+1936/4000 female and 1882/4000 male seeds changed.
+
+**Per-garment variation slots.** Seven corpus phrases in the thinnest style x gender cells
+carry `{slot}` words (knit weight, chino cut, skirt length, tee fit, work canvas), filled
+from their own seed stream so a slot moves no other draw; season and age gates apply per
+value, and a leg-cropping framing drops the skirt length from the prose. Two slot values
+were changed before shipping so every value answers every garment guard the same way
+(`ribbed` -> `rib-knit`, `moleskin` -> `twill`); validate_data.py now enforces that. Step
+diff: 59/4000 female and 115/4000 male seeds changed a field (the outfit text, plus the
+gates that read it: legwear, tattoo placement, pose, gaze, pattern), 47 female seeds
+changed prose only (the length trim).
+
+**Turnaround back views (`costume_back`).** The first known gap from 1.x: a back view drew
+the chest emblem. Entries may now carry an opt-in `costume_back`, swapped in for back and
+rear-three-quarter views. The first entries are Superman, Batman, Spider-Man, The Flash,
+Captain America and Wonder Woman; verified that the back views swap the text for all six in
+both Costume only and Full character, and every other view is unchanged.
+
+**Prose-only items.** An eponymous entry no longer reads "Name (Name)" (93 entries, e.g.
+Sailor Moon, Mulan, Bayonetta). A noun expression takes an article ("her expression is a
+bright smile"); 16.6% of random characters draw one.
+
+**The gallery hash covers resolved prose.** `entry_hash` now hashes what the entry renders
+from rather than the entry dict, so an engine change marks its images stale (it could not
+before; see architecture.md -> "The gallery render pipeline"). Its first run marked every
+entry stale, because every entry's prose moved with the seeds.
+
+**No full gallery re-render (maintainer decision).** The plan was to re-render the whole
+roster once. It was dropped: no entry's own text changed, only the random person and scene
+around it plus a gaze clause, the same incidental drift 0.90.0 and 0.97.0 accepted, and
+`costume_back` only reaches Turnaround back views, which the gallery never renders. Three
+samples were rendered and published (Superman, Carhop, owlbear); every other record was
+accepted as-is with the new `render_gallery.py --rehash`, which moves only the recorded
+hash. From here the prose hash flags any entry whose text changes.

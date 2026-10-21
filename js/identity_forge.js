@@ -94,7 +94,8 @@ const FIELD_TO_GROUP = {
   "tattoos": "Body",
   "legwear": "Clothing",
   "tattoo_placement": "Body",
-  "outerwear": "Clothing"
+  "outerwear": "Clothing",
+  "gaze": "Setting & Shot"
 };
 const GENDER_POOLS = {
   "bust": {
@@ -857,6 +858,7 @@ function applyGender(node, gender) {
  * and false when READING, and every existing Cosplayer node had to be recreated.
  */
 const FIELDS_ADDED_BY_RELEASE = [
+  ["gaze"], // 2.0.0
   ["outerwear"], // 1.5.0
   ["tattoos", "tattoo_placement", "legwear"], // 0.90.0
 ];

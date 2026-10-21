@@ -182,9 +182,9 @@ class TurnaroundStabilityTests(unittest.TestCase):
                           for group, values in json.loads(document).items()
                           if group != "_meta" and isinstance(values, dict)
                           for name, value in values.items()}
+                # 2.0.0: keep, not re-pin, the pose: pinning any stance drops the gaze.
                 replayed, _ = resolve_turnaround(
-                    document, "Front + profile (2)", "Unspecified",
-                    fields.get("pose", _KEEP_POSE),
+                    document, "Front + profile (2)", "Unspecified", _KEEP_POSE,
                 )
                 # View 0 pins the document's own rotation only if it happened to
                 # be the front shot, so compare on the shot the document names.
@@ -260,8 +260,9 @@ class FaceOutOfFrameTests(unittest.TestCase):
     def test_the_back_view_drops_every_face_only_field(self):
         _, document = _forge(42)
         own = self._fields(document)
+        # Keep the pose: a pinned stance drops the gaze from every view (2.0.0).
         prompts, labels = resolve_turnaround(document, "Turnaround (6)", "Full body",
-                                             _NEUTRAL_POSES[0])
+                                             _KEEP_POSE)
         back = prompts[labels.index("6-back")]
         front = prompts[labels.index("1-front")]
         for name in _FACE_ONLY_FIELDS:

@@ -68,6 +68,13 @@ _SHEETS: "dict[str, tuple[str, ...]]" = {
 
 _DEFAULT_FRAMING = "Head and shoulders"
 
+#: 2.0.0: the sheet can hold one gaze across every view (one sheet per gaze). Kept
+#: last in the schema so a saved node's values still line up.
+_KEEP_GAZE = "Keep the character's gaze"
+_GAZES: "tuple[str, ...]" = (_KEEP_GAZE, "looking directly into the camera",
+                             "looking off past the camera", "tilting the head slightly",
+                             "lifting the chin slightly", "None")
+
 
 def _covers_face(character_json: str) -> bool:
     try:
@@ -79,7 +86,7 @@ def _covers_face(character_json: str) -> bool:
 
 
 def resolve_expression_sheet(
-    character_json: str, sheet_name: str, framing_name: str,
+    character_json: str, sheet_name: str, framing_name: str, gaze_name: str = _KEEP_GAZE,
 ) -> "tuple[list[str], list[str]]":
     """Render one resolved character once per expression. Returns ``(prompts, labels)``."""
     forge = _forge_class()
@@ -94,6 +101,8 @@ def resolve_expression_sheet(
     framing = _FRAMINGS.get(framing_name, "")
     if framing:
         base["shot_type"] = framing
+    if gaze_name in _GAZES and gaze_name != _KEEP_GAZE:
+        base["gaze"] = gaze_name
 
     if _covers_face(character_json):
         _LOG.warning("A face-covering character has no visible expression; "
@@ -157,6 +166,15 @@ if _COMFY_AVAILABLE:
                                 "keeps the face large enough to read. 'Unspecified' "
                                 "keeps the character's own framing.",
                     ),
+                    io.Combo.Input(
+                        "gaze",
+                        options=list(_GAZES),
+                        default=_KEEP_GAZE,
+                        tooltip="Where every view looks. 'Looking directly into the "
+                                "camera' makes a classic reference sheet; the "
+                                "default keeps the character's own gaze, and "
+                                "'None' leaves it unstated.",
+                    ),
                 ],
                 outputs=[
                     io.String.Output(
@@ -183,5 +201,6 @@ if _COMFY_AVAILABLE:
                 kwargs.get("character_json", ""),
                 kwargs.get("sheet", "Basic (6)"),
                 kwargs.get("framing", _DEFAULT_FRAMING),
+                kwargs.get("gaze", _KEEP_GAZE),
             )
             return io.NodeOutput(prompts, labels)
