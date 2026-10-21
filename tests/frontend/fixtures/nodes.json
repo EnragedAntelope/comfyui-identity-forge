@@ -118,6 +118,8 @@
         "60",
         "65",
         "70",
+        "75",
+        "80",
         "None"
       ]
     },
@@ -1999,14 +2001,12 @@
         "leaning against a wall",
         "sitting relaxed",
         "sitting upright",
-        "looking over one shoulder",
         "walking mid-stride",
         "crouching low",
         "kneeling gracefully",
         "reclining",
         "posing with a hand on one hip",
         "posing with hands in pockets",
-        "glancing back",
         "in a relaxed contrapposto stance",
         "in a confident power pose",
         "resting chin on one hand",
@@ -2022,8 +2022,6 @@
         "stepping forward",
         "running one hand through the hair",
         "holding both hands loosely clasped",
-        "tilting the head slightly",
-        "lifting the chin slightly",
         "standing with hands clasped behind the back",
         "standing with feet planted wide",
         "sitting on the floor with knees drawn up",
@@ -2031,9 +2029,6 @@
         "striding forward with purpose",
         "stretching both arms overhead",
         "adjusting one cuff",
-        "looking down thoughtfully",
-        "looking directly into the camera",
-        "looking off past the camera",
         "walking toward the camera",
         "pausing mid-step",
         "wrapping both arms around the body",
@@ -2148,6 +2143,22 @@
         "waxed field jacket",
         "rain jacket",
         "windbreaker",
+        "None"
+      ]
+    },
+    {
+      "name": "gaze",
+      "default": "Random",
+      "type": "combo",
+      "options": [
+        "Random",
+        "looking directly into the camera",
+        "looking off past the camera",
+        "tilting the head slightly",
+        "lifting the chin slightly",
+        "looking down thoughtfully",
+        "looking over one shoulder",
+        "glancing back",
         "None"
       ]
     }
@@ -7378,6 +7389,19 @@
         "Chest up",
         "Head and shoulders",
         "Unspecified"
+      ]
+    },
+    {
+      "name": "gaze",
+      "default": "Keep the character's gaze",
+      "type": "combo",
+      "options": [
+        "Keep the character's gaze",
+        "looking directly into the camera",
+        "looking off past the camera",
+        "tilting the head slightly",
+        "lifting the chin slightly",
+        "None"
       ]
     }
   ],

@@ -2279,6 +2279,8 @@ class LightingBucketFamilyTests(unittest.TestCase):
             # 0.83.0: both halves of the studio split trace to the same 0.81.0 parent,
             # which is exactly the 10:1 proportionality assertion.
             "studio_shape": "studio", "studio_stage": "studio",
+            # 2.0.0: the rig/mood split, at the same per-variant rate.
+            "studio_mood": "studio",
         }
         # 1.6.0: two NEW families take share at a priced per-variant weight (snowfall at
         # the window/artificial 88, weather at 66 -- see fields.py), so every older
@@ -2313,8 +2315,8 @@ class NeonSignageGateTests(unittest.TestCase):
     def test_lighting_family_weights_sum_to_5302(self):
         from data.fields import LIGHTING_FAMILIES
         self.assertEqual(sum(d["weight"] for d in LIGHTING_FAMILIES.values()), 5302)
-        self.assertEqual(len(LIGHTING_FAMILIES), 17,
-                          "seeds drift for `lighting` -- 17 families since 1.6.0 (weather)")
+        self.assertEqual(len(LIGHTING_FAMILIES), 18,
+                          "seeds drift for `lighting` -- 18 families since 2.0.0 (studio_mood)")
 
     #: Ordinary indoor rooms and quiet rural/outdoor spots -- exactly the class
     #: of place the old, ungated `neon_venue` was illegally reaching (the
@@ -3319,7 +3321,7 @@ class PoseFamilyTests(unittest.TestCase):
     #: POSE_FAMILIES exactly as it stood at 0.65.0, before any split.
     _BASELINE = {
         "standing": (5, 7), "seated": (5, 7), "leaning": (1, 3), "motion": (1, 3),
-        "gesture": (4, 6), "looking": (2, 4),
+        "gesture": (4, 6),  # "looking": (2, 4) became the gaze field in 2.0.0
     }
 
     @staticmethod
@@ -3373,7 +3375,7 @@ class PoseFamilyTests(unittest.TestCase):
 
     #: Families that are NEW rather than a split of a 0.65.0 one, with their priced
     #: share of the whole field.
-    _ADDED_FAMILIES = {"gesture_social": 18 / 666}  # 1.6.0
+    _ADDED_FAMILIES = {"gesture_social": 18 / 594}  # 1.6.0; 594 since 2.0.0 (no looking)
 
     def test_added_families_take_their_priced_share(self):
         cur_total = sum(fam["weight"] for fam in POSE_FAMILIES.values())
@@ -7020,15 +7022,10 @@ class FranchiseLabelTests(unittest.TestCase):
         self.assertEqual(offenders, [], f"stuttering cosplay labels: {offenders}")
 
     def test_the_rule_is_scoped_to_disambiguated_keys_only(self):
-        """An eponymous key keeps its franchise suffix.
-
-        Broadening the rule to "Shrek (Shrek)" would rewrite 91 more entries' prose
-        and silently invalidate their published gallery images, because entry_hash
-        hashes the entry dict and cannot see a prose-only change. That is a separate
-        decision with a re-render bill, not a side effect -- pinned here so it is not
-        "tidied up" by accident.
-        """
-        self.assertFalse(_name_already_carries_franchise("Shrek", "Shrek"))
+        """A name equal to its franchise drops the suffix (2.0.0); a name that only
+        contains it keeps the suffix, which names the show."""
+        self.assertTrue(_name_already_carries_franchise("Shrek", "Shrek"))
+        self.assertTrue(_name_already_carries_franchise("RoboCop", "Robocop"))
         self.assertFalse(_name_already_carries_franchise("Sterling Archer", "Archer"))
         # ...while the disambiguated forms are all suppressed. "Joker (Persona 5)"
         # is kept as a SHAPE case only -- no roster key looks like that since
@@ -7134,7 +7131,8 @@ class TattooAndLegwearTests(unittest.TestCase):
         FIELD_DEFINITIONS *before* these, or one of these is un-deferred, the extra
         RNG call shifts the outfit draw and every seed silently yields someone else.
         """
-        names = list(FIELD_DEFINITIONS)
+        # 2.0.0: `gaze` is appended after them and drawn last of all (_LAST_DRAWN).
+        names = [n for n in FIELD_DEFINITIONS if n != "gaze"]
         for field in _DEFERRED_FIELDS:
             self.assertIn(field, names)
         deferred_positions = [names.index(f) for f in _DEFERRED_FIELDS]
@@ -7824,8 +7822,8 @@ class FeralPoseGateTests(unittest.TestCase):
         every = {v for spec in POSE_FAMILIES.values() for v in spec["variants"]}
         survivors = every - QUADRUPED_UNPERFORMABLE_POSES
         self.assertGreater(len(survivors), 20)
-        # The families that must survive: an animal can stand, sit, walk and look.
-        for family in ("standing", "seated", "motion", "looking", "leaning"):
+        # The families that must survive: an animal can stand, sit and walk.
+        for family in ("standing", "seated", "motion", "leaning"):
             self.assertTrue(set(POSE_FAMILIES[family]["variants"]) <= survivors,
                             f"{family} should stay performable for a beast")
 
@@ -8924,7 +8922,8 @@ class OuterwearTests(unittest.TestCase):
 
     def test_it_is_deferred_appended_last_and_ruleless(self):
         self.assertIn("outerwear", _DEFERRED_FIELDS)
-        self.assertEqual(list(FIELD_DEFINITIONS)[-1], "outerwear")
+        # 2.0.0: gaze was appended after it (and is drawn last, not deferred).
+        self.assertEqual(list(FIELD_DEFINITIONS)[-2:], ["outerwear", "gaze"])
         for rule in CONSTRAINT_RULES:
             self.assertNotEqual(rule.get("excludes_field"), "outerwear",
                                 "a rule on a deferred field is inert")
@@ -9136,7 +9135,8 @@ class RoundTwoSceneGateTests(unittest.TestCase):
     def test_the_gates_hold_over_a_sweep(self):
         from data.constraints import _FLOOR_POSES, _LOCATION_FAMILY
         from data.fields import FIRE_LOCATIONS, OUTDOOR_LOCATIONS
-        studio = set(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+        studio = (set(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+                  | set(FIELD_FAMILIES["lighting"]["studio_mood"]["variants"]))
         grey = set(FIELD_FAMILIES["hair_color"]["gray_white"]["variants"])
         hats = {"wide brim sun hat", "baseball cap", "beret", "woven hat", "flat cap",
                 "bucket hat", "wool beanie", "earmuffs"}
@@ -9366,11 +9366,10 @@ class RoundFourQaTests(unittest.TestCase):
         back = {"view from directly behind",
                 "from behind and slightly below, looking up toward subject",
                 "from above and behind, looking down toward subject"}
-        turn = {"looking over one shoulder", "glancing back",
-                "turning toward the viewer mid-stride"}
+        turn = {"looking over one shoulder", "glancing back"}  # the gaze field since 2.0.0
         for seed, d in self._sample(600):
             if d.get("shot_type") in back:
-                self.assertIn(d.get("pose"), turn, f"seed {seed}")
+                self.assertIn(d.get("gaze"), turn, f"seed {seed}")
 
     def test_the_pattern_is_voiced_on_the_lead_garment(self):
         from data.fields import PATTERN_ADJECTIVES
@@ -9550,7 +9549,7 @@ class ContentOneSixQaTests(unittest.TestCase):
         for expr in ("lost in thought", "daydreaming"):
             for seed in range(150):
                 d = _resolved_1_5(seed, locked={"expression": expr})[1]
-                self.assertNotEqual(d.get("pose"), "looking directly into the camera",
+                self.assertNotEqual(d.get("gaze"), "looking directly into the camera",
                                     f"{expr} @ seed {seed}")
 
     def test_troubled_faces_are_not_gendered(self):

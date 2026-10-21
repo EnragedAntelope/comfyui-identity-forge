@@ -2,8 +2,9 @@
 
 The three galleries show one image per cosplayer, archetype and creature.
 Keeping ~2,200 of those honest by hand is not possible, so the build is
-content-addressed: every image records a hash of the entry that produced it,
-and an entry whose text has changed is reported stale until it is re-rendered.
+content-addressed: every image records a hash of the prose that produced it,
+and an entry whose prose has changed (its own text, or an engine change) is
+reported stale until it is re-rendered.
 
     python scripts/render_gallery.py --check            # the CI gate
     python scripts/render_gallery.py --missing          # render what is absent
@@ -340,8 +341,18 @@ def entries_for(kind: str) -> dict[str, dict]:
     raise RenderError(f"Unknown kind: {kind!r}")
 
 
-def entry_hash(kind: str, name: str) -> str:
-    """Hash the whole entry dict, so any edit to its text shows up as stale.
+def entry_hash(kind: str, name: str, reroll: int = 0) -> str:
+    """Hash the prose the entry renders from, so any change to it shows up as stale.
+
+    2.0.0: the prose, not the entry dict. A dict hash could not see an engine or
+    pool change that rewrote an entry's prompt, so a release could silently leave
+    published images that no longer match what the node emits. The prose covers
+    the entry's own text too, plus the gallery pins. ``reroll`` is the tile's
+    recorded seed shift (see :func:`record_reroll`). Costs a full resolve per
+    entry, about 17 s for the whole roster.
+
+    A local ``user_options.json`` merges into the data layer at import and can
+    move prose, so ``--check`` is only meaningful in a tree without one (CI is).
 
     **The render settings are deliberately NOT in this hash.** The sibling
     stylebook pipeline folds model, sampler and size into its per-tile hash, and
@@ -351,9 +362,13 @@ def entry_hash(kind: str, name: str) -> str:
     stale on the day this landed. Changing the model is therefore a deliberate,
     manual re-render - it is not, and must not become, an automatic one.
     """
-    entry = entries_for(kind)[name]
-    payload = "v1:" + json.dumps(entry, sort_keys=True, ensure_ascii=True, default=str)
+    payload = "v2:" + resolve_prose(kind, name, reroll)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+
+
+def record_reroll(name: str, record: dict) -> int:
+    """The ``--reroll`` a manifest record was rendered with (0 when it has no seed)."""
+    return record.get("seed", entry_seed(name)) - entry_seed(name)
 
 
 def entry_seed(name: str, reroll: int = 0) -> int:
@@ -423,7 +438,7 @@ def survey(kinds: tuple[str, ...] = KINDS) -> dict[str, dict[str, list[str]]]:
             record = recorded.get(name)
             if record is None:
                 missing.append(name)
-            elif record.get("hash") != entry_hash(kind, name):
+            elif record.get("hash") != entry_hash(kind, name, record_reroll(name, record)):
                 stale.append(name)
             # 1.10.0: rendered but never pushed to gh-pages, which --check used to
             # pass. A record without the key predates it: published.
@@ -894,6 +909,10 @@ def main(argv: list[str] | None = None) -> int:
                              "No network, no GPU. The default when nothing else is given.")
     parser.add_argument("--seed-manifest", action="store_true",
                         help="One-time: record every current entry as pre-existing.")
+    parser.add_argument("--rehash", action="store_true",
+                        help="Accept the current prose of every recorded entry without "
+                             "re-rendering (a deliberate release-wide prose change). "
+                             "Renders and publishes nothing.")
     parser.add_argument("--kind", choices=(*KINDS, "all"), default="all")
     parser.add_argument("--entry", action="append", default=[], metavar="NAME",
                         help="Render one entry by exact name. Repeatable.")
@@ -928,7 +947,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     kinds = KINDS if args.kind == "all" else (args.kind,)
-    acting = (args.seed_manifest or args.entry or args.missing or args.stale
+    acting = (args.seed_manifest or args.rehash or args.entry or args.missing or args.stale
               or args.publish_pending)
     if not acting and not args.dry_run:
         args.check = True
@@ -968,6 +987,27 @@ def main(argv: list[str] | None = None) -> int:
                 if not publish_kind(kind, names):
                     return 1
                 _mark_published(kind, names)
+            return 0
+
+        if args.rehash:
+            # 2.0.0: the seed epoch moved every entry's prose without changing any
+            # entry's own look, so the published images are kept, not re-rendered.
+            # Only an existing record's hash moves; missing entries stay missing and
+            # the rendered/published/seed keys are untouched.
+            manifest = load_manifest()
+            moved = 0
+            for kind in kinds:
+                recorded = manifest["entries"].get(kind, {})
+                for name in entries_for(kind):
+                    record = recorded.get(name)
+                    if record is None:
+                        continue
+                    fresh = entry_hash(kind, name, record_reroll(name, record))
+                    if record.get("hash") != fresh:
+                        record["hash"] = fresh
+                        moved += 1
+            save_manifest(manifest)
+            print(f"Rehashed {moved} entries; no image was rendered or published.")
             return 0
 
         if args.seed_manifest:
@@ -1051,7 +1091,7 @@ def main(argv: list[str] | None = None) -> int:
             if render_one(client, kind, name, settings, normalize_name,
                           front=not args.back, save_originals=args.save_originals,
                           reroll=args.reroll):
-                record = {"hash": entry_hash(kind, name), "rendered": today,
+                record = {"hash": entry_hash(kind, name, args.reroll), "rendered": today,
                           "published": False}
                 if args.reroll:
                     record["seed"] = entry_seed(name, args.reroll)

@@ -86,6 +86,32 @@ class CheckPassesTests(unittest.TestCase):
             render_gallery.load_manifest = original
 
 
+class RehashTests(unittest.TestCase):
+    def test_rehash_clears_stale_and_keeps_everything_else(self) -> None:
+        # 2.0.0: accept a release-wide prose change without re-rendering. Only the
+        # hash moves; an unpublished tile stays unpublished.
+        kind = "creatures"
+        manifest = render_gallery.load_manifest()
+        names = list(manifest["entries"][kind])[:2]
+        for name in names:
+            manifest["entries"][kind][name]["hash"] = "0" * 16
+        manifest["entries"][kind][names[1]]["published"] = False
+        saved = {}
+        original_load, original_save = render_gallery.load_manifest, render_gallery.save_manifest
+        render_gallery.load_manifest = lambda: manifest
+        render_gallery.save_manifest = lambda m: saved.setdefault("m", m)
+        try:
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(render_gallery.main(["--rehash", "--kind", kind]), 0)
+            result = render_gallery.survey((kind,))[kind]
+            self.assertEqual(result["stale"], [])
+            self.assertEqual(result["unpublished"], [names[1]])
+            self.assertIs(saved["m"], manifest)
+        finally:
+            render_gallery.load_manifest = original_load
+            render_gallery.save_manifest = original_save
+
+
 class EntryHashTests(unittest.TestCase):
     def test_hash_is_stable_across_calls(self) -> None:
         first = render_gallery.entry_hash("cosplay", "2B")
@@ -111,11 +137,27 @@ class EntryHashTests(unittest.TestCase):
         name = next(iter(ARCHETYPES))
         before = render_gallery.entry_hash("archetypes", name)
         entry = ARCHETYPES[name]
-        entry["__probe__"] = "x"
+        original = entry["outfit_description"]
+        entry["outfit_description"] = original + ", and a red scarf"
         try:
             self.assertNotEqual(before, render_gallery.entry_hash("archetypes", name))
         finally:
-            entry.pop("__probe__")
+            entry["outfit_description"] = original
+
+    def test_hash_is_over_the_resolved_prose(self) -> None:
+        # 2.0.0: an engine change that rewrites the prose must mark the tile stale,
+        # which a hash over the entry dict could not see.
+        import hashlib
+
+        prose = render_gallery.resolve_prose("cosplay", "2B")
+        expected = hashlib.sha256(("v2:" + prose).encode("utf-8")).hexdigest()[:16]
+        self.assertEqual(render_gallery.entry_hash("cosplay", "2B"), expected)
+
+    def test_a_rerolled_tile_hashes_its_own_seed(self) -> None:
+        name = "2B"
+        record = {"seed": render_gallery.entry_seed(name, 3)}
+        self.assertEqual(render_gallery.record_reroll(name, record), 3)
+        self.assertEqual(render_gallery.record_reroll(name, {}), 0)
 
     def test_seed_is_deterministic_and_matches_the_recorded_formula(self) -> None:
         import hashlib

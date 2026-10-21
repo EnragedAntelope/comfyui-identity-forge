@@ -57,8 +57,10 @@ except ImportError:  # pragma: no cover — exercised only outside ComfyUI
 
 
 try:
+    from ..data.cosplayers import COSPLAYERS
     from .identity_forge import FIELD_DEFINITIONS
 except ImportError:  # pragma: no cover — standalone/test context
+    from data.cosplayers import COSPLAYERS
     from nodes.identity_forge import FIELD_DEFINITIONS
 
 
@@ -163,9 +165,9 @@ _FACE_OUT_OF_FRAME: "frozenset[str]" = frozenset({_BACK})
 _FACE_ONLY_GROUPS: "frozenset[str]" = frozenset({"Face", "Makeup"})
 
 #: Face-only fields filed under some other group: a beard reads only from the
-#: front, and ``expression`` lives with the scene. Ear and neck jewellery are
+#: front, and ``expression`` and ``gaze`` (2.0.0) live with the scene. Ear and neck jewellery are
 #: deliberately NOT here -- earrings read perfectly well from behind.
-_FACE_ONLY_EXTRA: "frozenset[str]" = frozenset({"facial_hair", "expression"})
+_FACE_ONLY_EXTRA: "frozenset[str]" = frozenset({"facial_hair", "expression", "gaze"})
 
 #: Everything omitted from a view whose camera is behind the subject.
 #:
@@ -228,6 +230,41 @@ def replay_steering(character_json: str) -> "dict[str, str]":
     }
 
 
+#: Rotations that show the costume's back, where a roster entry's ``costume_back``
+#: replaces its front-facing costume text (2.0.0).
+_BACK_OF_COSTUME: "frozenset[str]" = frozenset({_BACK, _REAR_THREE_QUARTER})
+
+
+def back_costume_document(character_json: str) -> "str | None":
+    """The document with its cosplayer's ``costume_back`` swapped in, or None.
+
+    A costume is one free-text string, so a back view used to draw the chest emblem on
+    the back. An entry may carry an opt-in ``costume_back``: the same costume as seen
+    from behind. The resolved document names its cosplayer in ``_meta.cosplay_of``
+    (the key, or "key (franchise)"). The swap replaces the entry's front costume where
+    it appears verbatim in the resolved outfit, so a rolled alternate costume or a
+    downstream outfit that replaced it is left alone.
+    """
+    try:
+        document = json.loads(character_json or "{}")
+    except (ValueError, TypeError):
+        return None
+    meta = document.get("_meta") if isinstance(document, dict) else None
+    label = meta.get("cosplay_of") if isinstance(meta, dict) else None
+    if not isinstance(label, str):
+        return None
+    entry = COSPLAYERS.get(label) or COSPLAYERS.get(label.rsplit(" (", 1)[0]) or {}
+    front, back = entry.get("costume"), entry.get("costume_back")
+    group = document.get(FIELD_DEFINITIONS["outfit_description"]["group"])
+    if not isinstance(group, dict):
+        return None
+    outfit = group.get("outfit_description")
+    if not (front and back and isinstance(outfit, str) and front in outfit):
+        return None
+    group["outfit_description"] = outfit.replace(front, back)
+    return json.dumps(document)
+
+
 def resolve_turnaround(
     character_json: str,
     views_name: str,
@@ -264,11 +301,19 @@ def resolve_turnaround(
     base.update(replay_steering(character_json))
     if pose_name != _KEEP_POSE:
         base["pose"] = pose_name
+        # A neutral stance faces the way the camera says; a gaze ("looking over one
+        # shoulder") would turn the head differently in every view. Until 2.0.0 the gaze
+        # was part of the pose, so pinning the pose replaced it too.
+        base["gaze"] = "None"
+
+    back_document = back_costume_document(character_json)
 
     prompts: "list[str]" = []
     labels: "list[str]" = []
     for position, rotation in enumerate(rotations, start=1):
         view = dict(base)
+        if back_document and rotation in _BACK_OF_COSTUME:
+            view["archetype_json"] = back_document
         # shot_type is already in `base` (as "Random"), so it is overwritten
         # rather than passed alongside — the one field this node owns.
         view["shot_type"] = compose_shot(framing_name, rotation)
@@ -373,8 +418,9 @@ if _COMFY_AVAILABLE:
                                 "asymmetric pose (a hand on one hip, "
                                 "contrapposto) reads as a different body from "
                                 "each side, which is why the character's own "
-                                "pose is replaced by default. Choose 'Keep the "
-                                "character's pose' for a looser character sheet.",
+                                "pose (and gaze) is replaced by default. Choose "
+                                "'Keep the character's pose' for a looser "
+                                "character sheet.",
                     ),
                 ],
                 outputs=[

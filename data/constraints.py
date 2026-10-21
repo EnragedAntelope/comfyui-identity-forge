@@ -1636,12 +1636,35 @@ for _style, _allowed in PATTERN_BY_STYLE.items():
 # graffiti-covered skate park, under colored gel lighting" (#00598). Neon SIGNAGE stays
 # legal on the neon streets; a club's rig does not hang over one. Still whole families.
 _STUDIO_SHAPE_LIGHTS: list[str] = (list(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+                                   + list(FIELD_FAMILIES["lighting"]["studio_mood"]["variants"])
                                    + list(FIELD_FAMILIES["lighting"]["venue_rig"]["variants"]))
 for _loc in sorted(OUTDOOR_LOCATIONS):
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "location", "value": _loc,
         "excludes_field": "lighting", "excludes_values": list(_STUDIO_SHAPE_LIGHTS),
         "reason": f"'{_loc}' is outdoors: no studio lighting rig"})
+
+# --- an everyday interior has no portrait rig either (2.0.0) ----------------------------
+# "a laundromat, under butterfly beauty lighting". The `studio_shape` family (portrait rigs
+# and spotlights) drops whole at every built interior except the places that own stage,
+# display or broadcast lighting; the void backdrops are their own `studio` family and keep
+# it. `studio_mood` (high key, low key, chiaroscuro) stays legal indoors: it is a quality
+# of light, and archetypes lock it at ordinary rooms. `studio_stage` is already a fixture
+# gated by STAGE_LOCATIONS.
+_STUDIO_LIT_INTERIORS = frozenset([
+    "photography studio with backdrop", "empty theater stage with the curtain up",
+    "community theatre auditorium", "backstage dressing room", "art gallery opening night",
+    "natural history museum hall", "luxury retail boutique", "newsroom with desks and monitors",
+    "high school gymnasium",
+])
+_STUDIO_SHAPE_ONLY: list[str] = list(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
+for _loc, _fam in _LOCATION_FAMILY.items():
+    if (_fam != "studio" and _loc not in OUTDOOR_LOCATIONS
+            and _loc not in _STUDIO_LIT_INTERIORS):
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "lighting", "excludes_values": list(_STUDIO_SHAPE_ONLY),
+            "reason": f"'{_loc}' is an everyday interior: no studio lighting rig"})
 
 # --- nobody sits on the floor of a public or formal place ---------------------------
 # `seated_floor` is a whole POSE_FAMILIES sub-family (the 1.5.0 split), so dropping it
@@ -2512,14 +2535,26 @@ CONSTRAINT_RULES.append({
         "in a relaxed contrapposto stance", "standing tall with shoulders back",
         "standing with arms relaxed at the sides"],
     "reason": "a selfie is held at arm's length, not struck as a full-body pose"})
-_LOOK_BACK = ["looking over one shoulder", "glancing back", "turning toward the viewer mid-stride"]
+# 2.0.0: the head turning back is now the `gaze` field (rules below), so a view from
+# behind keeps the poses that read from the back: standing, the hands-behind and
+# overhead gestures, leaning on a wall, walking away. Seated, face-side and
+# toward-the-camera poses go.
+_FROM_BEHIND_SHOTS = ("view from directly behind",
+                      "from behind and slightly below, looking up toward subject",
+                      "from above and behind, looking down toward subject")
+_BACK_READABLE_POSES = frozenset(
+    [v for f in ("standing", "standing_hands_bound", "gesture_two_hands", "gesture_hair")
+     for v in _POSE[f]["variants"]]
+    + ["leaning against a wall", "walking mid-stride", "turning toward the viewer mid-stride",
+       "striding forward with purpose", "pausing mid-step", "posing with a hand on one hip",
+       "posing with hands in pockets"])
 _ALL_POSES = [v for f in _POSE.values() for v in f["variants"]]
-for _shot in ("view from directly behind", "from behind and slightly below, looking up toward subject",
-              "from above and behind, looking down toward subject"):
+for _shot in _FROM_BEHIND_SHOTS:
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "shot_type", "value": _shot,
-        "excludes_field": "pose", "excludes_values": [p for p in _ALL_POSES if p not in _LOOK_BACK],
-        "reason": "seen from behind, the face only shows if the head turns back"})
+        "excludes_field": "pose",
+        "excludes_values": [p for p in _ALL_POSES if p not in _BACK_READABLE_POSES],
+        "reason": "seen from behind, only a pose that reads from the back"})
 
 # 1.6.0: the social gestures (peace sign, thumbs up, wave, finger heart) are a cheerful
 # address to the camera. A sad or troubled face and a heavy or enigmatic mood stand and
@@ -2540,12 +2575,51 @@ CONSTRAINT_RULES.append({
     "type": "exclusion", "field": "shot_type", "value": "extreme close-up on face",
     "excludes_field": "pose", "excludes_values": _SOCIAL_GESTURES,
     "reason": "an extreme close-up has no room for a hand gesture"})
+# --- gaze (2.0.0) -----------------------------------------------------------------------
+# `gaze` is drawn last, after `pose`, by `_draw_pose_and_gaze` in nodes/identity_forge.py,
+# which filters its pool through these rules (`_live_exclusions`). That consumer is what
+# makes rules naming `gaze` live; the older deferred fields (legwear, tattoos) have none.
+# `gaze` is flat (no FIELD_FAMILIES entry), so a narrowed pool keeps the survivors'
+# relative weights. No expression closes the eyes, so there is no closed-eye gate.
+_GAZE_TURN_BACK = ["looking over one shoulder", "glancing back"]
+_GAZE_AWAY = ["looking off past the camera", "looking down thoughtfully"] + _GAZE_TURN_BACK
+_ALL_GAZES = list(FIELD_DEFINITIONS["gaze"]["female_options"])
+for _shot in _FROM_BEHIND_SHOTS:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "shot_type", "value": _shot,
+        "excludes_field": "gaze",
+        "excludes_values": [g for g in _ALL_GAZES if g not in _GAZE_TURN_BACK],
+        "reason": "seen from behind, the face only shows if the head turns back"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "shot_type", "value": "selfie framing at arm's length",
+    "excludes_field": "gaze", "excludes_values": list(_GAZE_AWAY),
+    "reason": "a selfie looks at the phone held out in front"})
+for _pose in _SOCIAL_GESTURES:
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "pose", "value": _pose,
+        "excludes_field": "gaze", "excludes_values": list(_GAZE_AWAY),
+        "reason": f"'{_pose}' is addressed to the camera"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "pose", "value": "walking toward the camera",
+    "excludes_field": "gaze", "excludes_values": list(_GAZE_TURN_BACK),
+    "reason": "walking toward the camera faces it"})
+CONSTRAINT_RULES.append({
+    "type": "exclusion", "field": "pose", "value": "resting chin on one hand",
+    "excludes_field": "gaze", "excludes_values": ["lifting the chin slightly"],
+    "reason": "a chin resting on a hand is not lifted"})
 # A face turned inward does not meet the lens.
 for _expr in ("lost in thought", "daydreaming"):
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "expression", "value": _expr,
-        "excludes_field": "pose", "excludes_values": ["looking directly into the camera"],
+        "excludes_field": "gaze", "excludes_values": ["looking directly into the camera"],
         "reason": f"a '{_expr}' face is not looking into the lens"})
+# "Thoughtfully" belongs to a quiet face: not a grin, a glare, a smirk or a startle.
+for _efam in ("warm", "intense", "playful", "reactive"):
+    for _expr in FIELD_FAMILIES["expression"][_efam]["variants"]:
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "expression", "value": _expr,
+            "excludes_field": "gaze", "excludes_values": ["looking down thoughtfully"],
+            "reason": f"a '{_expr}' face is not looking down thoughtfully"})
 
 # --- the face and the mood agree, family by family ------------------------------------------
 # Round 2 gated warm faces off heavy moods and sad faces off positive ones; the flagged

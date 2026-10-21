@@ -1051,6 +1051,16 @@ checked-in workflows and drag-dropped onto `update_gallery.bat`, and nothing any
 when that was forgotten. Adding an entry is now: write it → `--missing --publish` → done, and
 forgetting turns the build red.
 
+**Since 2.0.0 the hash covers the resolved prose, not the entry dict** (`entry_hash` in
+`scripts/render_gallery.py`). An engine or pool change that rewrites an entry's prompt now
+marks its image stale, so a release can no longer leave a published tile that does not match
+what the node emits. Sections below that call `entry_hash` blind to prose-only changes
+describe the pre-2.0.0 gate; the reasoning they record (avoid needless gallery churn) still
+holds, but the gate now reports that churn instead of hiding it. When the churn is accepted
+on purpose (a release-wide prose change that leaves every entry's own look alone, as 2.0.0
+did), `render_gallery.py --rehash` records the current hash for every existing record and
+renders nothing; re-render any entry whose own text changed first.
+
 **Prompts are resolved in-process, and the posted graph contains none of this pack's nodes.**
 This is the load-bearing design decision, so it is worth stating why the obvious approach does
 not work. An entry name is a **dropdown widget value** on `IdentityForgeCosplayer` /
@@ -2264,7 +2274,8 @@ signature prop occupies a hand. One more generated rule excludes the environment
 Identity Forge with owning it. Two variants, `looking directly into the camera` and
 `looking off past the camera`, were grown into the existing `looking` `POSE_FAMILIES` entry in
 place (family weight unchanged, 5 -> 7 variants) — the documented bias-safe channel, not a new
-family and not a re-weight.
+family and not a re-weight. (2.0.0 moved the whole `looking` family out of `pose` into its own
+`gaze` field; see "pose and gaze draw last".)
 
 **On the Stylebook pairing itself: docs and tooltips only, no default change.** `lighting` and
 `mood` keep defaulting to `Random` — most users run this pack standalone, and `lighting` in
@@ -2391,8 +2402,8 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   **It is deliberately scoped to keys that carry a `(...)` disambiguator**, which is what the
   0.77.0 rule is about. It does *not* touch an eponymous key whose franchise repeats it —
   `Shrek (Shrek)`, `Godzilla (Godzilla)`, `Sterling Archer (Archer)`. Broadening it there is a
-  one-line change that rewrites **91 more entries' prose**, and because `entry_hash` hashes the
-  entry dict and cannot see a prose-only change, the gate would *not* flag them — 91 published
+  one-line change that rewrites **91 more entries' prose**, and because `entry_hash` hashed the
+  entry dict and could not see a prose-only change (until 2.0.0), the gate would *not* flag them — 91 published
   gallery images would silently stop matching their prompt. That is a separate decision with a
   real re-render bill, not a side effect, and `test_the_rule_is_scoped_to_disambiguated_keys_only`
   pins it so it is not "tidied up" by accident.
@@ -2797,8 +2808,8 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   head to the body's material with a **colour-free** word (`waxen`, `furred to the jaw`, `sheathed
   in the same warty hide`, `framed in the same shaggy fur`). Never name a colour in a slot — the
   slots are colour-free precisely so `palette` can recolour them. An engine-side restatement
-  would also have silently invalidated ~189 published gallery images, because `entry_hash` hashes
-  the entry dict and cannot see a prose-only change.
+  would also have invalidated ~189 published gallery images (before 2.0.0 silently, because
+  `entry_hash` hashed the entry dict; it now hashes the prose and would flag them).
 
 ### A hand-maintained mirror needs a bidirectional gate (1.2.0)
 
@@ -2943,8 +2954,8 @@ measure the realized rate, and measure it after every dial you turn.
 
 The female pool is deliberately **not** gated. `fishnet tights` can still land on
 `business formal`, which is a genuine gap — but gating it moves `legwear` prose across the
-shipped roster and `entry_hash` hashes the entry dict, not the resolved prose, so `--check`
-could not flag one invalidated gallery image. Logged in the backlog with that cost. Proven
+shipped roster and `entry_hash` then hashed the entry dict, not the resolved prose, so `--check`
+could not flag one invalidated gallery image (it can since 2.0.0). Logged in the backlog with that cost. Proven
 rather than asserted: over 1500 fixed seeds with only the legwear change reverted, **0
 female draws differ**.
 
@@ -3088,6 +3099,10 @@ relocates a draw from the middle of the stream, so every existing seed would res
 different pose *and* different tattoos/legwear — silently invalidating every published gallery
 image exactly as the 0.90.0 prose change did, with `entry_hash` unable to flag it. That is the
 same append-only reasoning `_DEFERRED_FIELDS` itself documents, applied to its own remedy.
+
+**Superseded at 2.0.0** (the seed-epoch release, where moving a draw was allowed): `pose` is
+now drawn last, after the deferred fields, by `_draw_pose_and_gaze`; see "pose and gaze draw
+last" below. The 0.92.0 design, kept for the record:
 
 `_repair_pose` instead runs at the very end of the draw order, after
 `_resolve_deferred_fields`, and **consumes no RNG unless the pose is genuinely unperformable** —
@@ -3514,6 +3529,69 @@ mask length. Neither bug lived in this pack's business logic; both were closed b
 platform behaviour (gating the trigger on `node.flags.ghost`, and padding one inert trailing
 `widgets_values` element to dodge the length collision) rather than by touching the platform
 itself.
+
+### pose and gaze draw last (2.0.0)
+
+`pose` and the new `gaze` field are drawn by `_draw_pose_and_gaze`, after the deferred fields
+and the composed outfit, so every gate they need (a generated garment, the framing, the
+expression, a held prop) is settled before they draw. `gaze` is the former `looking` family of
+`pose`, moved into its own widget so a character can stand one way and look another.
+
+- **Unlike a `_DEFERRED_FIELDS` member, their rules are live.** The draw filters both pools
+  through `_live_exclusions`, so a `CONSTRAINT_RULES` entry naming `pose` or `gaze` as its
+  target works, and the final-state invariant test covers them. The from-behind, selfie,
+  social-gesture and expression rules for `gaze` sit in one block near the end of
+  `constraints.py`.
+- **A lock steers the draw before it, too.** `_values_that_exclude` drops any pose whose rule
+  would exclude an already-locked gaze (the contrapositive the main loop does for other
+  fields), so a locked "glancing back" never draws "walking toward the camera".
+- **A feral subject draws no gaze.** A beast has no eye-contact convention worth voicing.
+- **An old save that locked a `looking` pose** migrates: `generate_character` moves a pose
+  lock whose value is a gaze value into the `gaze` lock. The widget append rule is the usual
+  one (see "Adding a field without breaking saved workflows"); `FIELDS_ADDED_BY_RELEASE` in
+  `js/identity_forge.js` lists `gaze` for the legacy pre-1.8.0 interleaved saves.
+- **Prose:** the gaze follows the pose and any held item in one clause ("She is leaning
+  against a wall, holding a mug, looking off past the camera.").
+- **Turnaround / Expression Sheet:** a Turnaround that pins the stance states no gaze (each
+  view's camera decides where the head points). The Expression Sheet keeps the character's
+  gaze by default and offers a `gaze` input to hold one across every view.
+
+There is no closed-eye gate because no `expression` value closes the eyes; add one beside
+the gaze block if such a value is ever added.
+
+### Per-garment variation slots (2.0.0)
+
+An `OUTFIT_DESCRIPTIONS` phrase may carry `{slot}` placeholders drawn from `COSTUME_SLOTS`
+(`data/templates.py`), reusing the cosplayer `fill_costume` machinery, so one phrase covers
+several cuts or weights without growing the corpus or adding a widget. The first users are
+the thinnest style x gender cells (preppy, business casual, athletic, utility workwear).
+
+- **Own seed stream.** `_resolve_outfit_description` fills slots from
+  `random.Random(f"{seed}:garment-slots")`, so a phrase gaining a slot in a later release
+  moves only that phrase's words, never another field's draw. That is what "the slot draw
+  goes last" means here. `GarmentSlotTests` proves it by swapping the stream and diffing.
+- **Gates still apply per value.** `fill_costume(keep=...)` narrows each pool to the values
+  whose filled phrase passes the season gate and, at 45+, the youthful-garment gate (no mini
+  skirt). A pool the gate would empty is used whole.
+- **Words that the frame cannot show.** `LENGTH_SLOTS` values (a skirt length) are dropped
+  from the prose of a generated outfit in a leg-cropping framing; the JSON keeps them, as it
+  keeps cropped shoes.
+- **validate_data.py enforces the contract:** a corpus slot must be a `COSTUME_SLOTS` pool
+  whose name has an underscore (so no word-boundary garment regex reads the placeholder), no
+  value may name a colour or pattern, and every garment guard (fabric, layer, outer/light
+  layer, warm-only, bare-top) must answer the same for each value of a pool, so the slot draw
+  cannot flip a guard. The cold-only regex is exempt because the season gate filters by it.
+
+### Turnaround back views: `costume_back` (2.0.0)
+
+A cosplayer entry may carry an optional `costume_back` string: the costume as seen from
+behind (the cape, the back emblem) with any front-only detail left out. The Turnaround's
+back and rear-three-quarter views swap it in for the entry's `costume` text
+(`back_costume_document` in `nodes/identity_forge_turnaround.py`, looked up through
+`_meta.cosplay_of`); every other view and every entry without one is unchanged. It is
+opt-in per entry rather than parsed from the front text, which is the regex-over-prose
+trap. validate_data.py requires a non-empty string on a non-feral entry that has a
+`costume`.
 
 ## Release history
 

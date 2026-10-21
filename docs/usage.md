@@ -188,15 +188,22 @@ Three controls, all camera:
   combined with the angle and replaces whatever framing the character resolved to.
 - **`pose`** - a standing, symmetric stance, so the only thing changing between views is
   the camera. An asymmetric pose (a hand on one hip) reads as a different body from each
-  side. `Keep the character's pose` leaves it alone for a looser character sheet.
+  side. `Keep the character's pose` leaves it alone for a looser character sheet. A pinned
+  stance also drops the character's `gaze`, so each view's camera decides where the head
+  points.
 
 The straight-back view drops the face automatically. A t2i model draws whatever the prose
 names, so "bright blue eyes ... deep red lip colour ... a broad smile" made it turn the head
-to show them - which is not a back view. On `6-back` the Face and Makeup fields, `facial_hair`
-and `expression` are simply omitted; hair, costume, build, earrings and the scene all stay,
+to show them - which is not a back view. On `6-back` the Face and Makeup fields, `facial_hair`,
+`expression` and `gaze` are simply omitted; hair, costume, build, earrings and the scene all stay,
 and a masked character keeps their mask. Nothing is ever *negated* (a prompt that says "the
 face is not visible" draws a face). `5-rear-three-quarter` keeps its face description, because
 at that angle a cheek and jaw genuinely are in frame.
+
+Some cosplayers also carry a back-of-costume description (2.0.0: Superman's cape, the
+spider on Spider-Man's back). The back and rear-three-quarter views use it in place of the
+front costume text, so a chest emblem is not drawn on the back. Entries without one keep
+their usual costume text in every view.
 
 Everything else belongs on the Identity Forge node - it owns the character and the scene,
 the Turnaround owns only the camera. For a clean reference sheet, set that node's
@@ -213,6 +220,8 @@ Image's `filename_prefix`), and it owns only the face's emotion: `expression`, `
   (adds angry, smirk, thoughtful, worried) or `Smiles (3)` (smile, laughing, smirk).
 - **`framing`** - `Head and shoulders` by default, so the face is large enough to read.
   `Unspecified` keeps the character's own framing.
+- **`gaze`** - `Keep the character's gaze` by default; pick one (into the camera, off past
+  it, a head tilt, a lifted chin) to hold it across every view, or `None` to state none.
 
 Each view sets a fixed, curated expression/mood/smile combination, so a sheet is
 deterministic and no two views land on the same face. A face-covering character (a mascot

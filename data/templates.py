@@ -52,7 +52,21 @@ COSTUME_SLOTS: dict[str, list[str]] = {
     # medical archetypes draw from this instead (same rationale as menswear_color).
     "scrub_color": ["teal", "ceil blue", "navy blue", "hunter green", "wine",
                     "charcoal grey", "royal blue", "plum", "pewter grey"],
+    # 2.0.0: garment-scoped pools for the engine's own OUTFIT_DESCRIPTIONS corpus
+    # (per-garment variation slots). Their names carry an underscore so no
+    # word-boundary garment regex can match the unfilled placeholder, and no value
+    # names a colour or a pattern: those belong to clothing_color / clothing_pattern.
+    # tests/validate_data.py checks both.
+    "knit_weight": ["fine-knit", "rib-knit", "cable-knit", "chunky-knit", "waffle-knit"],
+    "chino_cut": ["slim", "straight-leg", "pleated", "relaxed", "tapered"],
+    "skirt_length": ["knee-length", "midi", "mini"],
+    "tee_fit": ["fitted", "loose", "boxy", "longline"],
+    "work_canvas": ["canvas", "duck-canvas", "waxed-canvas", "corduroy", "twill"],
 }
+
+#: Slots that state a garment's length; the engine drops their words from the prose
+#: when the framing crops the legs (2.0.0).
+LENGTH_SLOTS: frozenset[str] = frozenset({"skirt_length"})
 
 
 def _article(value: str) -> str:
@@ -66,9 +80,11 @@ def _article(value: str) -> str:
     return "an" if value[:1].lower() in "aeiou" else "a"
 
 
-def fill_costume(template: str, rng) -> str:
+def fill_costume(template: str, rng, keep=None) -> str:
     """Replace ``{slot}`` placeholders in a costume string with seeded picks.
 
+    ``keep(slot, value)``, when given, narrows each pool first (the engine passes its
+    season and age gates); a pool it would empty is used whole.
     Each distinct slot is resolved once, so repeated ``{color}`` reads the same.
     Unknown placeholders are left untouched. An indefinite article written directly
     before a slot ("a {color}", "an {earth_tone}") is recomputed from the resolved
@@ -81,7 +97,10 @@ def fill_costume(template: str, rng) -> str:
         if slot not in COSTUME_SLOTS:
             return None
         if slot not in chosen:
-            chosen[slot] = rng.choice(COSTUME_SLOTS[slot])
+            pool = COSTUME_SLOTS[slot]
+            if keep is not None:
+                pool = [v for v in pool if keep(slot, v)] or pool
+            chosen[slot] = rng.choice(pool)
         return chosen[slot]
 
     def _article_slot(match: "re.Match[str]") -> str:

@@ -138,7 +138,7 @@ randomized identities, so your own results will vary:
 | **Modifier** | Prepend a custom descriptor to one field (`footwear: sci-fi`) or a whole group (`Clothing: weathered`). An optional `held_item` box sets a free-text prop ("a red paper umbrella"). |
 | **Vault Save / Load** | Save a generated character (with a thumbnail) to a local vault; recall it later as a chainable preset, with a Manage Vault gallery. |
 | **Turnaround** | A reference-sheet builder: wire Identity Forge's `prompt_json` in and it emits front / three-quarter / profile / back as a **list**, so one queue renders the whole set of the same person. It only moves the camera - the character and the scene stay configured on Identity Forge. |
-| **Expression Sheet** | The same idea for the face: wire `prompt_json` in and it emits one prompt per expression (Basic 6, Full 10 or Smiles 3) as a **list**. Only expression, mood and smile change. |
+| **Expression Sheet** | The same idea for the face: wire `prompt_json` in and it emits one prompt per expression (Basic 6, Full 10 or Smiles 3) as a **list**. Only expression, mood and smile change (plus the gaze, if you pick one to hold). |
 
 ---
 
@@ -203,6 +203,11 @@ for a ready-to-run workflow.
   JSON. A seed reproduces the same character only within one installed version — a release can
   change pools, weights or rules, which shifts what a given seed draws. To keep a specific
   character across updates, save it with **Vault Save** and recall it with **Vault Load**.
+  **2.0.0 moves every seed on purpose:** the same seed gives a different character than in 1.x
+  (a new `gaze` field, a later `pose` draw, new ages and weights, garment variation). Saved
+  workflows still load. A vault character saved in 1.x recalls as before plus a drawn gaze; one
+  saved with a "looking ..." pose keeps that as its gaze and draws a new pose.
+  See [docs/history.md](docs/history.md) -> "2.0.0".
 - **Every field is `Random` (roll) / a value (lock) / `None` (omit).** Set scene fields
   (`location`, `lighting`, framing) to `None` for a character-only description to splice elsewhere.
 - **`accessory_density`** — drop it to `Minimal`/`None` for clean portraits without locking fields by hand.
