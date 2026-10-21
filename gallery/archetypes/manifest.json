@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-10-20T13:51:58.806356",
-  "version": "1.11.0",
+  "generated": "2026-10-20T21:01:35.781365",
+  "version": "2.0.0",
   "releases": [
     "0.5.0",
     "0.5.1",
