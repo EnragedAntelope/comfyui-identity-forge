@@ -1321,6 +1321,19 @@ legs where a person's are). Every one rendered as the machine or object alone on
 seed, with no person in frame. Wrecking Ball, BD-1, the Mouse Droid and K-9 were declined;
 see suggested-additions.md.
 
+**The sd-character-finder survey.** The catalogue (Danbooru, e621 and AnimaDex tags with a
+popularity rank) was ranked against the roster. Its unmatched top is mostly large uniform or
+gacha casts the backlog already closes, so the survivors ship: the first Touhou entries (Reimu
+Hakurei, Marisa Kirisame, Sakuya Izayoi, Yukari Yakumo), Black Rock Shooter, Noriaki Kakyoin,
+Mash Kyrielight, Edelgard (her Part II emperor look), Shantae, Catra (the 2018 reboot, its own
+franchise beside the 1985 She-Ra) and Kasane Teto as worn looks; Toriel, Undyne, Doraemon,
+Hello Kitty, Kuromi, Meta Knight, King Dedede, Monokuma and Tony Tony Chopper on the mascot
+route (the last two with the Pikachu scale pin); Snoopy and Kyubey on the feral route. The
+Hololive VTubers were left out at the maintainer's call; Domo-kun, the maintainer's own pick, joins on the mascot route. Two authoring notes: a body-colour
+clause needs a material noun ("a coat of blue fur"), or the colour capture runs on to the
+next comma and voices "a red skin"; Doraemon uses the `skin` key instead. A feral pose
+sentence follows "He is", so it cannot say "its back".
+
 **Unmask on a droid.** The question was whether "Unmask (show face)" should put a person
 inside a droid. It already does for a suit entry (C-3PO, Lumiere, Cogsworth): a cosplayer
 with the helmet off. It stays a no-op on a feral entry, because a human head on R2-D2's body

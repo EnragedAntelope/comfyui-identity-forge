@@ -228,6 +228,19 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "pigtails"},
         "physique": {"body_type": "slim", "height": "petite", "skin_tone": "fair", "age": "18"},
     },
+    "Kasane Teto": {
+        "franchise": "UTAU",
+        "gender": "Female",
+        "costume": "a dark grey military-style cropped jacket with a high collar, gold "
+                   "double-breasted buttons, red trim and epaulets, a matching pleated "
+                   "skirt, detached grey sleeves, black thigh-high boots, and red "
+                   "headphones",
+        "eyes": "crimson",
+        "signature": {"hair_color": "deep red", "hair_length": "shoulder length",
+                      "hair_style": "curled pigtails"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "25"},
+    },
     "Android 18": {
         "franchise": "Dragon Ball",
         "gender": "Female",
@@ -3940,6 +3953,18 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "deep blue"},
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "light"},
     },
+    "Noriaki Kakyoin": {
+        "franchise": "JoJo's Bizarre Adventure",
+        "gender": "Male",
+        "costume": "a long dark green gakuran school coat buttoned to the high collar "
+                   "with gold buttons, matching trousers, brown loafers, dangling red "
+                   "cherry earrings, and one long curled forelock of hair hanging down "
+                   "over the face",
+        "eyes": "violet",
+        "signature": {"hair_color": "deep red", "hair_length": "ear length"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "light",
+                     "age": "18"},
+    },
     "Dio Brando": {
         "franchise": "JoJo's Bizarre Adventure",
         "gender": "Male",
@@ -5716,6 +5741,21 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_texture": "thick and voluminous", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "a jewel-hilted golden Sword of Protection",
+    },
+    "Catra": {
+        # The 2018 Netflix design, so the franchise is the reboot, not Masters of the
+        # Universe (the 1985 She-Ra above).
+        "franchise": "She-Ra and the Princesses of Power",
+        "gender": "Female",
+        "costume": "a fitted maroon top with a pointed neckline, dark brown leggings "
+                   "with torn stirrup feet, a red mask-tiara with pointed ear covers "
+                   "framing the face, furry brown cat ears, and a long brown cat tail",
+        "eyes": "one blue and one yellow",
+        "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous",
+                      "hair_style": "windswept"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "warm tan", "age": "22"},
     },
     "Doom Slayer": {
         "franchise": "Doom",
@@ -9617,6 +9657,32 @@ COSPLAYERS: dict[str, dict] = {
                    "rounded feet",
         "mask": "a round pink face with large dark oval eyes and rosy oval cheeks",
         "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Meta Knight": {
+        "franchise": "Kirby",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a small round dark-blue ball-shaped body with white gloves and "
+                   "purple shoes, grey pauldrons lined in yellow, and a long dark-blue "
+                   "cape",
+        "mask": "a silver knight's mask with a T-shaped visor slit showing two glowing "
+                "yellow eyes",
+        "prop": "a golden sword with branching spikes along the blade",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "King Dedede": {
+        "franchise": "Kirby",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of blue fur on a big round penguin body, a red "
+                   "coat with white fur trim and a gold peace-sign emblem on the back, "
+                   "a red-and-yellow zigzag belt, and yellow mittens",
+        "mask": "a round blue penguin face with a wide yellow beak and a smug grin, "
+                "under a red tuque with a white pom-pom and a gold crown-like brim",
+        "prop": "a giant wooden mallet",
+        "physique": {"body_type": "plus size", "height": "tall"},
     },
     "Fox McCloud": {
         "franchise": "Star Fox",
@@ -17374,6 +17440,23 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "curvy", "height": "average height",
                      "skin_tone": "fair"},
     },
+    "Monokuma": {
+        "franchise": "Danganronpa",
+        "gender": "Male",
+        # Mascot-suit case with the Pikachu scale pin: a two-foot bear, never a man.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of plush fur split straight down the middle, "
+                   "white on one half and black on the other, on a round stubby "
+                   "teddy-bear body with a white belly, on a tiny figure about two feet "
+                   "tall",
+        "mask": "a round teddy-bear head split down the middle, the white half with a "
+                "plain black dot eye and a small smile, the black half with a jagged red "
+                "eye and a wide toothy grin",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and about two feet tall",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
     "Ken Kaneki": {
         "franchise": "Tokyo Ghoul",
         "gender": "Male",
@@ -17594,6 +17677,18 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall",
                      "skin_tone": "porcelain"},
         "prop": "a long crimson-shafted spear with a barbed head",
+    },
+    "Mash Kyrielight": {
+        "franchise": "Fate/Grand Order",
+        "gender": "Female",
+        "costume": "a black-and-purple armored bodysuit with a cutout at the midriff, "
+                   "armored gauntlets, and black armored thigh-high boots",
+        "eyes": "violet",
+        "signature": {"hair_color": "lavender", "hair_length": "jaw length",
+                      "hair_style": "side-swept bangs"},
+        "physique": {"body_type": "petite and curvy", "height": "short",
+                     "skin_tone": "fair", "age": "18"},
+        "prop": "an enormous cross-shaped shield nearly as tall as its bearer",
     },
     "Rebecca (Cyberpunk)": {
         "franchise": "Cyberpunk: Edgerunners",
@@ -18296,6 +18391,32 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a yellow t-shirt with a black zigzag stripe running around the "
                    "chest, black shorts, white socks, and plain brown shoes",
         "signature": {"hair_color": "light blonde", "hair_length": "buzzed very short"},
+    },
+    "Snoopy": {
+        "franchise": "Peanuts",
+        "gender": "Male",
+        # Feral: a dog, nobody inside. The doghouse roof is his signature place.
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "white cartoon beagle",
+        "creature_class": "Mammals",
+        "mask": "a rounded white beagle head with a long rounded snout, a round black "
+                "nose, and long floppy black ears",
+        "costume": "short smooth white fur with no spots",
+        "anatomy": {
+            "eyes": "small black oval eyes",
+            "legs_feet": "four short white legs, the hind pair long enough to stand on",
+            "tail": "a short white tail",
+        },
+        "poses": [
+            "lying belly-up on top of the peaked roof of a red doghouse",
+            "standing upright on the hind legs in a happy dance with the head thrown back",
+            "sitting upright with the ears hanging down",
+        ],
+        "size_scale": "tiny",
+        "scale_prose": "small, about a foot and a half tall",
+        "physique": {"body_type": "slim"},
     },
     # Classic design leads because it is the look actually cosplayed; the
     # high-school design from the spin-off series is the alternate.
@@ -20111,6 +20232,34 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "deep blue"},
         "physique": {"body_type": "slim", "height": "average height",
                      "skin_tone": "fair"},
+    },
+    "Kyubey": {
+        "franchise": "Madoka Magica",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "small white cat-like familiar",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a small round white cat-like face with a fixed tiny smile and two short "
+                "pointed ears",
+        "costume": "smooth pure white fur, with a red oval marking in the middle of the "
+                   "back",
+        "anatomy": {
+            "eyes": "round glossy red eyes",
+            "legs_feet": "four short slender legs on small white paws",
+            "tail": "a large fluffy white tail curled upward",
+            "extras": "two long white tendrils hanging from inside the ears, each ringed "
+                      "by a floating gold band and tipped with pink",
+        },
+        "poses": [
+            "sitting upright with the tail curled behind",
+            "perched on a ledge with the head tilted toward the viewer",
+            "standing on all four legs looking at the viewer",
+        ],
+        "size_scale": "tiny",
+        "scale_prose": "tiny, about a foot tall",
+        "physique": {"body_type": "slim"},
     },
     "Juvia Lockser": {
         "franchise": "Fairy Tail",
@@ -23269,6 +23418,32 @@ COSPLAYERS: dict[str, dict] = {
         "prop": "a plate of spaghetti",
         "physique": {"body_type": "slim", "height": "very tall"},
     },
+    "Toriel": {
+        "franchise": "Undertale",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of white fur on a tall motherly frame, dressed "
+                   "in a long purple robe with white sleeves and a white winged Delta Rune "
+                   "emblem on the chest",
+        "mask": "a gentle white-furred goat face with long floppy ears, two small "
+                "rounded horns, red eyes, and a soft smile",
+        "physique": {"body_type": "full figured", "height": "very tall"},
+    },
+    "Undyne": {
+        "franchise": "Undertale",
+        "gender": "Female",
+        # A fish monster: the face is authored in `mask` so no human face draws.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "uniform, all-over blue scaled skin on a tall athletic frame, a black "
+                   "tank top, blue jeans, and red boots",
+        "mask": "a blue-scaled fish-woman face with red finned ears, a black eyepatch "
+                "over the left eye, a single yellow eye, a grin of sharp yellow fangs, "
+                "and a long bright red ponytail tied high",
+        "prop": "a glowing cyan energy spear",
+        "physique": {"body_type": "athletic", "height": "very tall"},
+    },
     "Cuphead": {
         "franchise": "Cuphead",
         # Mascot-suit case (Pikachu route): the porcelain cup head IS the mask, so
@@ -23646,6 +23821,19 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
         "prop": "the Falchion, a longsword with an ornate golden hilt and a "
                 "fang at the base of the blade",
+    },
+    "Edelgard": {
+        # Her Part II emperor look, the one fan art draws.
+        "franchise": "Fire Emblem",
+        "gender": "Female",
+        "costume": "a crimson-and-gold armored imperial gown with gold pauldrons, a long "
+                   "red cape, black gloves, and a gold crown with horn-like spikes",
+        "eyes": "violet",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair", "age": "22"},
+        "prop": "a red-bladed battle axe",
     },
     "Nakoruru": {
         "franchise": "Samurai Shodown",
@@ -26058,6 +26246,22 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "skin_tone": "fair"},
         "prop": "a massive spiked iron kanabo club",
     },
+    "Tony Tony Chopper": {
+        "franchise": "One Piece",
+        "gender": "Male",
+        # His small "brain point" form, with the Pikachu scale pin.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of brown fur on a small upright reindeer body "
+                   "with little hooves, and baggy maroon shorts, on a tiny figure under "
+                   "three feet tall",
+        "mask": "a small round reindeer face with a blue nose and big dark eyes, under a "
+                "pink top hat marked with a white X, small branching antlers poking out "
+                "from under the brim",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and under three feet tall",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
     "Kafka (Honkai: Star Rail)": {
         "franchise": "Honkai: Star Rail",
         "gender": "Female",
@@ -26532,6 +26736,132 @@ COSPLAYERS: dict[str, dict] = {
                    "coat of yellow feathers, with orange bird feet",
         "physique": {"body_type": "chubby", "height": "short"},
     },
+    # --- 2.1.0: sd-character-finder catalogue survey ------------------------
+    "Reimu Hakurei": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a red-and-white shrine maiden outfit: a red sleeveless top with a "
+                   "yellow neck scarf, white detached sleeves tied at the shoulders, a "
+                   "long red skirt, a large red frilled hair bow, and red-and-white hair "
+                   "tubes on the sidelocks",
+        "signature": {"hair_color": "dark brown", "hair_length": "mid back"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a gohei wand trailing white zigzag paper streamers",
+    },
+    "Marisa Kirisame": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a large black witch hat with a white bow, a black sleeveless dress "
+                   "over a white blouse, a white frilled apron, and black boots",
+        "eyes": "golden yellow",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_style": "side braid"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "fair", "age": "18"},
+        "prop": "a straw broom",
+    },
+    "Sakuya Izayoi": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a blue-and-white maid uniform with a short puffed-sleeve dress, a "
+                   "white frilled apron, a white maid headdress, white thigh-high "
+                   "stockings, and green bows tying two thin braids at the front of the "
+                   "hair",
+        "signature": {"hair_color": "silver", "hair_length": "jaw length",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "slightly above average height",
+                     "skin_tone": "pale", "age": "20"},
+        "prop": "a fan of silver throwing knives",
+    },
+    "Yukari Yakumo": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a purple Chinese-style tabard marked with trigram symbols over a long "
+                   "pale pink dress, white elbow gloves, and a pink mob cap with a red "
+                   "ribbon",
+        "eyes": "violet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair",
+                     "age": "28"},
+        "prop": "a frilled pink parasol",
+    },
+    "Black Rock Shooter": {
+        "franchise": "Black Rock Shooter",
+        "gender": "Female",
+        "costume": "a cropped black hooded jacket with a long tailed back and white stars "
+                   "on the sleeves, a black bikini top, black short shorts with a pale "
+                   "grey belt, knee-high black boots, and a flickering blue flame burning "
+                   "from the left eye",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "pigtails", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "pale",
+                     "age": "18"},
+        "prop": "a huge black rock cannon",
+    },
+    "Shantae": {
+        "franchise": "Shantae",
+        "gender": "Female",
+        "costume": "a red bra top with gold trim, sheer red harem pants, a gold tiara, "
+                   "gold armlets and bracers, big gold hoop earrings, and small pointed "
+                   "ears",
+        "signature": {"hair_color": "purple", "hair_length": "very long",
+                      "hair_style": "high ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "petite and curvy", "height": "short",
+                     "skin_tone": "caramel", "age": "20"},
+    },
+    "Doraemon": {
+        "franchise": "Doraemon",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "skin": "glossy blue",
+        "costume": "an even, all-over coat of glossy blue on a round robot-cat body with "
+                   "a white belly, a white half-moon pouch on the belly, round white ball "
+                   "hands, white feet, and a small red ball-tipped tail",
+        "mask": "a big round blue robot-cat head with a white face, large oval eyes, a "
+                "round red nose, long black whiskers, and a wide smile, above a red "
+                "collar with a gold bell",
+        "physique": {"body_type": "plump", "height": "short"},
+    },
+    "Hello Kitty": {
+        "franchise": "Sanrio",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of white fur on a short round cartoon-cat "
+                   "body, dressed in blue overalls over a yellow shirt",
+        "mask": "a large round white cartoon-cat head with small black oval eyes, a "
+                "yellow oval nose, three black whiskers on each cheek, and a red bow over "
+                "the left ear",
+        "physique": {"body_type": "plump", "height": "short"},
+    },
+    "Kuromi": {
+        "franchise": "Sanrio",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of white fur on a short round cartoon body, a "
+                   "black one-piece outfit, and a thin black devil tail with a pointed tip",
+        "mask": "a round white rabbit face with small black eyes, a pink nose, and a "
+                "mischievous grin, inside a black jester hood with two long floppy ear "
+                "points and a pink skull emblem on the front",
+        "physique": {"body_type": "petite and slim", "height": "short"},
+    },
+    "Domo-kun": {
+        # NHK's mascot, worn as a suit at events: the mascot route.
+        "franchise": "Domo",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of shaggy brown fur on a boxy rectangular "
+                   "body with no neck, short stubby arms, and short stubby legs",
+        "mask": "a flat brown furry face that is simply the front of a box-shaped head "
+                "and body in one piece, with two small round black eyes set wide apart and a huge wide-open rectangular mouth lined top "
+                "and bottom with jagged white sawtooth teeth around a red interior",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
 }
 
 
@@ -26546,6 +26876,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Alita: Battle Angel", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Speed Racer",
+        "Black Rock Shooter", "Doraemon", "UTAU",  # 2.1.0
         "Record of Ragnarok",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
@@ -26619,6 +26950,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Undertale", "Cuphead", "Animal Crossing",  # 0.98.0
         "Chrono Trigger", "Clair Obscur: Expedition 33",  # 1.0.0
         "Ghost of Tsushima",  # 1.11.0
+        "Touhou Project", "Shantae",  # 2.1.0
         "Xenoblade Chronicles", "Valkyria Chronicles", "Magic: The Gathering",
         "Ace Attorney", "The Rising of the Shield Hero", "A Certain Scientific Railgun",
         "Destiny",  # 1.2.0 -- Mara Sov
@@ -26686,12 +27018,13 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Rocketeer", "Barbarella", "Forbidden Planet", "Buck Rogers",
         "Mars Attacks!", "Thunderbirds", "The Toxic Avenger",  # 1.1.0
         "Rocky", "Taroman",  # 1.3.0
-        "Short Circuit",  # 2.1.0
+        "Short Circuit", "Domo",  # 2.1.0
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
+        "She-Ra and the Princesses of Power", "Sanrio",  # 2.1.0
         "Invincible", "Image", "Savage Dragon", "East of West", "Saga", "Bloodshot",
         "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
         "The Smurfs", "Adventure Time", "Thundercats", "G.I. Joe", "TMNT", "Monster High",

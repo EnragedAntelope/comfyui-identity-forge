@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2106 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2129 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (387)
+## Anime & Manga (395)
 
 ### Akame ga Kill
 
@@ -60,6 +60,10 @@
 - **Balalaika** (F)
 - **Revy** (F, prop)
 
+### Black Rock Shooter
+
+- **Black Rock Shooter** (F, prop)
+
 ### Bleach
 
 - **Byakuya Kuchiki** (M)
@@ -105,6 +109,7 @@
 ### Danganronpa
 
 - **Junko Enoshima** (F)
+- **Monokuma** (M, tiny, masked)
 
 ### Darling in the Franxx
 
@@ -150,6 +155,10 @@
 - **Shinobu Kocho** (F)
 - **Tanjiro Kamado** (M, prop)
 - **Zenitsu Agatsuma** (M)
+
+### Doraemon
+
+- **Doraemon** (M, masked)
 
 ### Dorohedoro
 
@@ -207,6 +216,7 @@
 ### Fate/Grand Order
 
 - **Jeanne d'Arc (Fate)** (F, prop)
+- **Mash Kyrielight** (F, prop)
 - **Scathach** (F, prop)
 
 ### Fate/stay night
@@ -312,6 +322,7 @@
 - **Josuke Higashikata** (M)
 - **Jotaro Kujo** (M)
 - **Lisa Lisa** (F)
+- **Noriaki Kakyoin** (M)
 
 ### Jujutsu Kaisen
 
@@ -351,6 +362,7 @@
 
 - **Homura Akemi (Devil)** (F)
 - **Kyoko Sakura** (F, prop)
+- **Kyubey** (M, tiny, beast)
 - **Madoka Kaname (Ultimate)** (F, prop)
 - **Mami Tomoe** (F, prop)
 - **Sayaka Miki** (F, prop)
@@ -458,6 +470,7 @@
 - **Sanji** (M)
 - **Shanks** (M)
 - **Shirahoshi** (F, giant)
+- **Tony Tony Chopper** (M, tiny, masked)
 - **Trafalgar Law** (M, prop)
 - **Usopp** (M, prop)
 - **Yamato (One Piece)** (F, prop)
@@ -651,6 +664,10 @@
 
 - **Vash the Stampede** (M)
 
+### UTAU
+
+- **Kasane Teto** (F)
+
 ### Urusei Yatsura
 
 - **Lum Invader** (F)
@@ -679,7 +696,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (278)
+## Comics & Cartoons (282)
 
 ### Adventure Time
 
@@ -992,6 +1009,7 @@
 ### Peanuts
 
 - **Charlie Brown** (M)
+- **Snoopy** (M, tiny, beast)
 
 ### Peepoodo
 
@@ -1029,6 +1047,11 @@
 
 - **Samurai Jack** (M, prop)
 
+### Sanrio
+
+- **Hello Kitty** (F, masked)
+- **Kuromi** (F, masked)
+
 ### Savage Dragon
 
 - **Savage Dragon** (M, masked)
@@ -1036,6 +1059,10 @@
 ### Scott Pilgrim
 
 - **Ramona Flowers** (F, prop)
+
+### She-Ra and the Princesses of Power
+
+- **Catra** (F)
 
 ### Sheena, Queen of the Jungle
 
@@ -2040,7 +2067,7 @@
 - **Yondu** (M, prop)
 - **Zuras** (M)
 
-## Movies & TV (241)
+## Movies & TV (242)
 
 ### A Nightmare on Elm Street
 
@@ -2154,6 +2181,10 @@
 - **The Fourth Doctor** (M)
 - **The Tenth Doctor** (M, prop)
 - **Weeping Angel** (F, masked)
+
+### Domo
+
+- **Domo-kun** (M, masked)
 
 ### Duolingo
 
@@ -2753,7 +2784,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (502)
+## Video Games (512)
 
 ### A Certain Scientific Railgun
 
@@ -3015,6 +3046,7 @@
 ### Fire Emblem
 
 - **Azura** (F)
+- **Edelgard** (F, prop)
 - **Lucina** (F, prop)
 
 ### Gears of War
@@ -3130,7 +3162,9 @@
 
 ### Kirby
 
+- **King Dedede** (M, masked, prop)
 - **Kirby** (M, masked)
+- **Meta Knight** (M, masked, prop)
 
 ### League of Legends
 
@@ -3350,6 +3384,10 @@
 
 - **Nakoruru** (F, prop)
 
+### Shantae
+
+- **Shantae** (F)
+
 ### Silent Hill
 
 - **Nurse (Silent Hill)** (F, masked)
@@ -3532,10 +3570,19 @@
 
 - **Lara Croft** (F, prop)
 
+### Touhou Project
+
+- **Marisa Kirisame** (F, prop)
+- **Reimu Hakurei** (F, prop)
+- **Sakuya Izayoi** (F, prop)
+- **Yukari Yakumo** (F, prop)
+
 ### Undertale
 
 - **Papyrus** (M, masked, prop)
 - **Sans** (M, masked, prop)
+- **Toriel** (F, masked)
+- **Undyne** (F, masked, prop)
 
 ### Valkyria Chronicles
 

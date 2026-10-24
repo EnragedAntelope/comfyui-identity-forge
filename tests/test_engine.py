@@ -6069,21 +6069,21 @@ class RandomPoolTests(unittest.TestCase):
         # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0 and at 2.1.0 to the new
         # ground truth. It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Rose (Street Fighter)',
-            (_RANDOM_ANY, 1): 'Erza Scarlet',
-            (_RANDOM_ANY, 2): 'Bowser',
-            (_RANDOM_ANY, 3): 'Kool-Aid Man',
-            (_RANDOM_ANY, 4): 'Kiss-Shot Acerola-Orion Heart-Under-Blade',
-            (_RANDOM_FEMALE, 0): 'Smurfette',
-            (_RANDOM_FEMALE, 1): 'Captain Carter',
-            (_RANDOM_FEMALE, 2): 'Wicked Witch of the West',
-            (_RANDOM_FEMALE, 3): 'Elvira',
-            (_RANDOM_FEMALE, 4): 'Elphelt Valentine',
-            (_RANDOM_MALE, 0): 'RoboCop',
-            (_RANDOM_MALE, 1): 'Duros',
+            (_RANDOM_ANY, 0): 'Robin Hood',
+            (_RANDOM_ANY, 1): 'Erina Nakiri',
+            (_RANDOM_ANY, 2): 'Bothan',
+            (_RANDOM_ANY, 3): 'Kiss-Shot Acerola-Orion Heart-Under-Blade',
+            (_RANDOM_ANY, 4): 'King Ghidorah',
+            (_RANDOM_FEMALE, 0): 'Rose Quartz',
+            (_RANDOM_FEMALE, 1): 'Frankie Stein',
+            (_RANDOM_FEMALE, 2): 'Bo Peep',
+            (_RANDOM_FEMALE, 3): 'Lilo',
+            (_RANDOM_FEMALE, 4): 'Liliana Vess',
+            (_RANDOM_MALE, 0): 'Riku',
+            (_RANDOM_MALE, 1): 'Duke Nukem (video game)',
             (_RANDOM_MALE, 2): 'Brainiac 5',
-            (_RANDOM_MALE, 3): 'Johnny Bravo',
-            (_RANDOM_MALE, 4): 'Joel Miller',
+            (_RANDOM_MALE, 3): 'John Stewart',
+            (_RANDOM_MALE, 4): 'Jinu',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
