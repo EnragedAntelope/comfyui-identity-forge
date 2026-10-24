@@ -963,7 +963,8 @@ if _COMFY_AVAILABLE:
                                 "randomized face/hair. 'Unmask (show face)' drops the "
                                 "mask so the randomized head/hair shows under the suit "
                                 "(a helmet-off look). No effect on face-visible "
-                                "characters.",
+                                "characters, or on beasts and non-humanoid droids "
+                                "(R2-D2, a Dalek), which have no person inside.",
                     ),
                     io.Combo.Input(
                         "props",

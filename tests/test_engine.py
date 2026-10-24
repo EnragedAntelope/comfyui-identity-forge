@@ -6066,24 +6066,24 @@ class RandomPoolTests(unittest.TestCase):
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
         # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
-        # cosplayers, one folded duplicate), at 1.9.0 and at 1.11.0 to the new ground
-        # truth. It is expected to need refreshing every time the roster grows.
+        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0 and at 2.1.0 to the new
+        # ground truth. It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Roy Batty',
-            (_RANDOM_ANY, 1): 'Eureka',
+            (_RANDOM_ANY, 0): 'Rose (Street Fighter)',
+            (_RANDOM_ANY, 1): 'Erza Scarlet',
             (_RANDOM_ANY, 2): 'Bowser',
-            (_RANDOM_ANY, 3): 'Kraven the Hunter',
-            (_RANDOM_ANY, 4): 'Kokoro',
-            (_RANDOM_FEMALE, 0): 'Snow White',
+            (_RANDOM_ANY, 3): 'Kool-Aid Man',
+            (_RANDOM_ANY, 4): 'Kiss-Shot Acerola-Orion Heart-Under-Blade',
+            (_RANDOM_FEMALE, 0): 'Smurfette',
             (_RANDOM_FEMALE, 1): 'Captain Carter',
-            (_RANDOM_FEMALE, 2): 'Widowmaker',
+            (_RANDOM_FEMALE, 2): 'Wicked Witch of the West',
             (_RANDOM_FEMALE, 3): 'Elvira',
             (_RANDOM_FEMALE, 4): 'Elphelt Valentine',
-            (_RANDOM_MALE, 0): 'Roger Rabbit',
-            (_RANDOM_MALE, 1): 'Eevee',
+            (_RANDOM_MALE, 0): 'RoboCop',
+            (_RANDOM_MALE, 1): 'Duros',
             (_RANDOM_MALE, 2): 'Brainiac 5',
-            (_RANDOM_MALE, 3): 'Jolly Green Giant',
-            (_RANDOM_MALE, 4): 'Johnny Cage',
+            (_RANDOM_MALE, 3): 'Johnny Bravo',
+            (_RANDOM_MALE, 4): 'Joel Miller',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))

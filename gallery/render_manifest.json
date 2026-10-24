@@ -2580,6 +2580,11 @@
         "hash": "8c77f4b2be5ff46d",
         "rendered": "pre-existing"
       },
+      "Claptrap": {
+        "hash": "d45219d026602c66",
+        "published": true,
+        "rendered": "2026-10-24"
+      },
       "Cloud Strife": {
         "hash": "89ec174508cb01aa",
         "rendered": "pre-existing"
@@ -2592,9 +2597,19 @@
         "hash": "85ab07f8554b1e05",
         "rendered": "pre-existing"
       },
+      "Codsworth": {
+        "hash": "b6a413f4bfe4bd02",
+        "published": true,
+        "rendered": "2026-10-24"
+      },
       "Cody Travers": {
         "hash": "c9174f2f8231cdfe",
         "rendered": "2026-09-15"
+      },
+      "Cogsworth": {
+        "hash": "8be863f18a6ed051",
+        "published": true,
+        "rendered": "2026-10-24"
       },
       "Colonel Sanders": {
         "hash": "2a480a26515ea4f3",
@@ -2760,6 +2775,11 @@
       "Daki": {
         "hash": "ee2b18889a507287",
         "rendered": "pre-existing"
+      },
+      "Dalek": {
+        "hash": "e7792f6625d91e4a",
+        "published": true,
+        "rendered": "2026-10-24"
       },
       "Danny Phantom": {
         "hash": "944848177edb43b0",
@@ -4645,6 +4665,11 @@
         "hash": "2bb6b31ac19b94f2",
         "rendered": "pre-existing"
       },
+      "Johnny 5": {
+        "hash": "ea205f10dda5f3a5",
+        "published": true,
+        "rendered": "2026-10-24"
+      },
       "Johnny Bravo": {
         "hash": "305075c953e2d07c",
         "rendered": "pre-existing"
@@ -6361,6 +6386,11 @@
       "Mr. Spock": {
         "hash": "edb2e964d0c4c1d0",
         "rendered": "pre-existing"
+      },
+      "Mrs. Potts": {
+        "hash": "f4fcb041cc0ecb8f",
+        "published": true,
+        "rendered": "2026-10-24"
       },
       "Ms. Marvel (Kamala Khan)": {
         "hash": "7c262b7d66b324ea",
@@ -9204,6 +9234,11 @@
         "hash": "ce2356ec7738945d",
         "rendered": "pre-existing"
       },
+      "WALL-E": {
+        "hash": "e13346bd145502b7",
+        "published": true,
+        "rendered": "2026-10-24"
+      },
       "Waluigi": {
         "hash": "77398fde304273f9",
         "rendered": "pre-existing"
@@ -10698,7 +10733,7 @@
       }
     }
   },
-  "generated": "2026-10-24T01:42:52",
+  "generated": "2026-10-24T02:38:33",
   "render": {
     "cfg": 1,
     "height": 2432,

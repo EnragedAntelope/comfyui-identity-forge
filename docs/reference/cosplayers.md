@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**2099 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2106 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (387)
 
@@ -1421,7 +1421,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M)
 
-## Disney (112)
+## Disney (115)
 
 ### 101 Dalmatians
 
@@ -1452,8 +1452,10 @@
 - **Babette** (F, +1 alt, prop)
 - **Beast (Beauty and the Beast)** (M, masked)
 - **Belle** (F, prop)
+- **Cogsworth** (M, masked)
 - **Gaston** (M)
 - **Lumiere** (M, masked)
+- **Mrs. Potts** (F, beast)
 
 ### Big Hero 6
 
@@ -1653,6 +1655,10 @@
 ### Up
 
 - **Carl Fredricksen** (M, prop)
+
+### WALL-E
+
+- **WALL-E** (M, beast)
 
 ### Wreck-It Ralph
 
@@ -2034,7 +2040,7 @@
 - **Yondu** (M, prop)
 - **Zuras** (M)
 
-## Movies & TV (239)
+## Movies & TV (241)
 
 ### A Nightmare on Elm Street
 
@@ -2144,6 +2150,7 @@
 ### Doctor Who
 
 - **Cyberman** (M, masked)
+- **Dalek** (M, beast)
 - **The Fourth Doctor** (M)
 - **The Tenth Doctor** (M, prop)
 - **Weeping Angel** (F, masked)
@@ -2409,6 +2416,10 @@
 ### Scream
 
 - **Ghostface** (M, masked, prop)
+
+### Short Circuit
+
+- **Johnny 5** (M, beast)
 
 ### Shrek
 
@@ -2742,7 +2753,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (500)
+## Video Games (502)
 
 ### A Certain Scientific Railgun
 
@@ -2804,6 +2815,7 @@
 ### Borderlands
 
 - **Amara** (F)
+- **Claptrap** (M, beast)
 - **Handsome Jack** (M)
 - **Lilith (Borderlands)** (F)
 - **Mad Moxxi** (F)
@@ -2962,6 +2974,7 @@
 ### Fallout
 
 - **Brotherhood of Steel Knight** (M, masked)
+- **Codsworth** (M, beast)
 - **Nick Valentine** (M)
 - **The Ghoul** (M, masked, prop)
 - **Vault Dweller** (M)

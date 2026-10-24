@@ -1284,10 +1284,11 @@ hash. From here the prose hash flags any entry whose text changes.
 
 ## 2.1.0 - droids render as droids, Ted Kord's colours, a picker gender filter
 
-**Random characters are unchanged.** Every change is either one roster entry's own text or
-the picker UI. One knock-on: the three droids leave the Cosplayer node's `Masked` scope and
-its "People only" `random_pool`, and join `Beast / non-humanoid`, so a fixed seed under one
-of those three can now pick a different character. The `Random - any` pick is unaffected.
+**Random characters are unchanged.** Every change is a roster entry's own text, a new
+roster entry, or the picker UI. Two knock-ons for the Cosplayer node's random picks: the
+three droids leave the `Masked` scope and the "People only" `random_pool` for `Beast /
+non-humanoid`, and the new entries grow the candidate list, so a fixed seed under any
+`Random - ...` choice can now pick a different character (as at every roster release).
 
 **R2-D2, BB-8 and Gonk Droid moved to `body_plan: "feral"`.** The maintainer saw a man
 posing beside R2-D2 in the gallery. The published BB-8 tile showed the same thing, and Gonk
@@ -1313,6 +1314,17 @@ cowl, a dark beetle shape across the chest and shoulders, and yellow goggles. A 
 supplied description added white lenses and antenna lines on the cowl; no source backed either,
 so neither was used. The first render drew the right suit on a heavy 55-year-old; one
 `--reroll` gave the published tile.
+
+**More machines and enchanted objects.** Claptrap, WALL-E, Dalek, Johnny 5, Codsworth and
+Mrs. Potts ship on the feral route, and Cogsworth on the suit route beside Lumiere (arms and
+legs where a person's are). Every one rendered as the machine or object alone on its first
+seed, with no person in frame. Wrecking Ball, BD-1, the Mouse Droid and K-9 were declined;
+see suggested-additions.md.
+
+**Unmask on a droid.** The question was whether "Unmask (show face)" should put a person
+inside a droid. It already does for a suit entry (C-3PO, Lumiere, Cogsworth): a cosplayer
+with the helmet off. It stays a no-op on a feral entry, because a human head on R2-D2's body
+is the Gonk render this release removed. The mask tooltip now says so.
 
 **Roster picker gender filter.** A Female / Male select beside the trait facet. Entries with no
 single gender (creatures, "Any" archetypes) stay visible under both choices. Like the facet,

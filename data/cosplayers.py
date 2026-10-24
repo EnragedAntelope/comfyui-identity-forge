@@ -19494,6 +19494,47 @@ COSPLAYERS: dict[str, dict] = {
                 "a steady flame burning at the crown",
         "physique": {"body_type": "slim", "height": "short"},
     },
+    "Cogsworth": {
+        # 2.1.0. Same body plan as Lumiere (arms and legs where a person's are), so the
+        # same suit route.
+        "franchise": "Beauty and the Beast",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an ornate carved wooden mantel-clock body with gilded scrollwork, a "
+                   "round white clock face with black hands on the chest, a swinging "
+                   "brass pendulum behind a small glass door at the belly, short "
+                   "wooden arms with white-gloved hands, and stubby wooden legs",
+        "mask": "a scrolled wooden clock-top head with a stern little face, a bristling "
+                "mustache, and a gilded finial at the crown",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "Mrs. Potts": {
+        # 2.1.0, feral route: a teapot has no limbs at all, so a suit reading would
+        # put a woman beside the pot (the R2-D2 failure).
+        "franchise": "Beauty and the Beast",
+        "gender": "Female",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "living porcelain teapot",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a round white porcelain lid with a small knob, sitting on top like a "
+                "little hat",
+        "costume": "a plump round white porcelain body with a band of blue floral "
+                   "pattern and gold trim",
+        "anatomy": {
+            "eyes": "kind blue eyes in a motherly smiling face with rosy cheeks on the "
+                    "front of the pot",
+            "extras": "a curved spout on one side and a looped handle on the other",
+        },
+        "poses": [
+            "resting on a wooden table with the face turned toward the viewer",
+            "sitting on a silver serving tray",
+            "standing still with the spout turned to one side",
+        ],
+        "scale_prose": "tiny, about ten inches tall",
+    },
     "Edna Mode": {
         "franchise": "The Incredibles",
         "gender": "Female",
@@ -21775,6 +21816,31 @@ COSPLAYERS: dict[str, dict] = {
                       "body_type": "lean", "height": "tall"},
         "physique": {"skin_tone": "pale"},
     },
+    "Codsworth": {
+        # 2.1.0, feral machine route (see Dalek): a sphere on a jet thruster.
+        "franchise": "Fallout",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "three-armed hovering robot butler",
+        "creature_class": "Machines",
+        "mask": "three short eyestalks rising from the top of the body, each ending in a "
+                "round glowing camera eye",
+        "costume": "a polished, slightly tarnished chrome spherical metal body",
+        "anatomy": {
+            "arms": "three jointed mechanical arms hanging below the body, ending in a "
+                    "pincer claw, a circular buzzsaw and a small flamer nozzle",
+            "legs_feet": "a single jet thruster nozzle under the body with a small blue "
+                         "flame",
+        },
+        "poses": [
+            "hovering at chest height on the jet thruster",
+            "hovering with all three eyes turned toward the viewer",
+            "hovering with the claw arm raised as if offering a greeting",
+        ],
+        "scale_prose": "about four feet tall",
+    },
     "Inuyasha": {
         "franchise": "Inuyasha",
         "gender": "Male",
@@ -22990,6 +23056,33 @@ COSPLAYERS: dict[str, dict] = {
             "eye_color": "dark brown",
         },
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "deep ebony"},
+    },
+    "Claptrap": {
+        # 2.1.0, feral machine route (see Dalek). The old decline rested on "a machine
+        # cannot take the feral route", which lapsed with R2-D2.
+        "franchise": "Borderlands",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "one-wheeled box-shaped robot",
+        "creature_class": "Machines",
+        "mask": "one large round camera-lens eye glowing blue, set in the upper front of "
+                "the box body, with a short antenna on top",
+        "costume": "a bright yellow riveted metal body with grey trim and a dark vent "
+                   "grille below the eye",
+        "anatomy": {
+            "arms": "two thin jointed mechanical arms on the sides of the body",
+            "hands": "small three-fingered grabber hands",
+            "legs_feet": "a single thick rubber wheel under the body",
+        },
+        "poses": [
+            "standing upright on the single wheel with both arms raised in an excited "
+            "wave",
+            "rolling forward on the single wheel",
+            "standing still on the wheel with the eye turned toward the viewer",
+        ],
+        "scale_prose": "small, about three and a half feet tall",
     },
     "The Invisible Man": {
         "franchise": "Universal Monsters",
@@ -24637,6 +24730,59 @@ COSPLAYERS: dict[str, dict] = {
                    "and a chest panel lit with rows of small dials",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
+    "WALL-E": {
+        # 2.1.0, feral machine route (see Dalek): a box on treads has nowhere for a
+        # person to be.
+        "franchise": "WALL-E",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "small trash-compacting robot",
+        "creature_class": "Machines",
+        "mask": "a pair of large binocular-shaped camera eyes on a short folding neck "
+                "above the body",
+        "costume": "a rusty, dented, faded-yellow cube-shaped metal body with a front "
+                   "compactor hatch",
+        "anatomy": {
+            "arms": "two short jointed arms on the sides of the body",
+            "hands": "mitten-like clamp hands",
+            "legs_feet": "a pair of tank treads under the body",
+        },
+        "poses": [
+            "rolling forward on the treads",
+            "standing still on the treads with the binocular eyes tilted toward the "
+            "viewer",
+            "standing on the treads with both arms raised",
+        ],
+        "scale_prose": "small, about two feet tall",
+    },
+    "Johnny 5": {
+        # 2.1.0, feral machine route (see Dalek): treads, no legs. Kept distinct from
+        # WALL-E by the tall thin frame, the grey military finish and the long neck.
+        "franchise": "Short Circuit",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "tall tracked military robot",
+        "creature_class": "Machines",
+        "mask": "a pair of binocular camera eyes with movable eyebrow-like flaps on top "
+                "of a long slender neck",
+        "costume": "a slim grey-and-silver metal frame with exposed wiring and a small "
+                   "laser mounted on one shoulder",
+        "anatomy": {
+            "arms": "two long jointed mechanical arms",
+            "hands": "three-fingered gripper hands",
+            "legs_feet": "a pair of tank treads on a triangular track base",
+        },
+        "poses": [
+            "rolling forward on the treads",
+            "standing on the treads with the head cocked toward the viewer",
+            "standing tall on the treads with both arms spread wide",
+        ],
+        "scale_prose": "about five feet tall",
+    },
     "Princess Ardala": {
         "franchise": "Buck Rogers",
         "gender": "Female",
@@ -24797,6 +24943,34 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a blank silver helmet with round hollow eye sockets lit faint cold "
                 "blue, a narrow horizontal mouth slit, and a metal handlebar looping "
                 "over the crown between both sides of the head",
+    },
+    "Dalek": {
+        # 2.1.0, feral machine route (architecture.md -> "Writing a feral entry"): no
+        # human limbs anywhere, so a suit entry would add a person beside the casing.
+        # The modern (2005-on) bronze casing, the one most people picture.
+        "franchise": "Doctor Who",
+        "gender": "Male",  # genderless mascot convention -- see Robby the Robot
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "pepperpot-shaped armored war machine",
+        "creature_class": "Machines",
+        "mask": "a rounded metal dome head with a single eyestalk ending in a glowing "
+                "blue lens and two small round lamps on top of the dome",
+        "costume": "a bronze-gold riveted metal casing, rings of slatted grille around the "
+                   "middle and rows of round hemispherical studs down the flared lower "
+                   "skirt",
+        "anatomy": {
+            "arms": "a plunger-tipped manipulator arm and a short gun stick jutting from "
+                    "the front of the middle section",
+            "legs_feet": "a wide flared skirt base sitting flat on the floor",
+        },
+        "poses": [
+            "gliding forward across the floor with the gun stick raised",
+            "standing still with the eyestalk turned toward the viewer",
+            "standing in full profile with the whole casing in frame",
+        ],
+        "scale_prose": "about five feet tall",
     },
     "Dr. Mrs. The Monarch": {
         "franchise": "The Venture Bros",
@@ -26418,6 +26592,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Inside Out", "Raya and the Last Dragon", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
         "Encanto",
         "Onward",  # 1.4.0
+        "WALL-E",  # 2.1.0
     ),
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
@@ -26511,6 +26686,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Rocketeer", "Barbarella", "Forbidden Planet", "Buck Rogers",
         "Mars Attacks!", "Thunderbirds", "The Toxic Avenger",  # 1.1.0
         "Rocky", "Taroman",  # 1.3.0
+        "Short Circuit",  # 2.1.0
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.

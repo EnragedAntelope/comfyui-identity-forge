@@ -211,8 +211,10 @@ const COSPLAYER_FRANCHISES = {
     "Babette",
     "Beast (Beauty and the Beast)",
     "Belle",
+    "Cogsworth",
     "Gaston",
-    "Lumiere"
+    "Lumiere",
+    "Mrs. Potts"
   ],
   "Beetlejuice": [
     "Beetlejuice",
@@ -297,6 +299,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Borderlands": [
     "Amara",
+    "Claptrap",
     "Handsome Jack",
     "Lilith (Borderlands)",
     "Mad Moxxi",
@@ -733,6 +736,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Doctor Who": [
     "Cyberman",
+    "Dalek",
     "The Fourth Doctor",
     "The Tenth Doctor",
     "Weeping Angel"
@@ -870,6 +874,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Fallout": [
     "Brotherhood of Steel Knight",
+    "Codsworth",
     "Nick Valentine",
     "The Ghoul",
     "Vault Dweller"
@@ -2240,6 +2245,9 @@ const COSPLAYER_FRANCHISES = {
   "Sherlock Holmes": [
     "Sherlock Holmes"
   ],
+  "Short Circuit": [
+    "Johnny 5"
+  ],
   "Shrek": [
     "Lord Farquaad",
     "Princess Fiona",
@@ -3009,6 +3017,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Voltron": [
     "Princess Allura"
+  ],
+  "WALL-E": [
+    "WALL-E"
   ],
   "Warhammer 40,000": [
     "Commissar",
