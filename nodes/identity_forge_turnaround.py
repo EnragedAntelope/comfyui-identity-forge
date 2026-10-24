@@ -31,9 +31,6 @@ Why a list output rather than an auto-incrementing ``index`` widget:
   downstream once per element (``execution.py`` -> ``merge_result_data``), and
   shorter inputs — the negative prompt, the model, the latent — broadcast off
   their last element, so an ordinary graph needs no rewiring.
-* **No cache hack.** With no auto-advancing widget and no RNG this node is a pure
-  function of its inputs, so it needs no ``fingerprint_inputs`` (contrast the
-  four seeded nodes — architecture.md -> "Seeded nodes re-roll every queue").
 
 Why the resolved document is enough to re-render from: ``prompt_json`` is
 self-describing by contract — it is exactly what Vault Save writes and Vault Load
@@ -444,11 +441,6 @@ if _COMFY_AVAILABLE:
                     ),
                 ],
             )
-
-        # No fingerprint_inputs on purpose. The four seeded nodes need one because
-        # control_after_generate silently advances a widget between queues
-        # (ComfyUI#11905); this node has no such widget and no RNG, so it is a
-        # pure function of its inputs and ComfyUI's normal caching is correct.
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
