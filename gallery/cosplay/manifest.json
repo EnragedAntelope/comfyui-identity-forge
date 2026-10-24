@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-10-24T08:45:30.066860",
+  "generated": "2026-10-24T08:56:42.344201",
   "version": "2.1.0",
   "releases": [
     "0.5.0",
@@ -132,8 +132,8 @@
     "1.11.0",
     "2.1.0"
   ],
-  "total_entries": 2128,
-  "entries_with_images": 2128,
+  "total_entries": 2129,
+  "entries_with_images": 2129,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -3856,6 +3856,14 @@
       "group": "Marvel",
       "added": "0.7.0",
       "image": "images/Domino.jpeg"
+    },
+    {
+      "name": "Domo-kun",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Domo",
+      "added": "2.1.0",
+      "image": "images/Domo-kun.jpeg"
     },
     {
       "name": "Donald Duck",
