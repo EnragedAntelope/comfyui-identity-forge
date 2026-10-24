@@ -1281,3 +1281,39 @@ around it plus a gaze clause, the same incidental drift 0.90.0 and 0.97.0 accept
 samples were rendered and published (Superman, Carhop, owlbear); every other record was
 accepted as-is with the new `render_gallery.py --rehash`, which moves only the recorded
 hash. From here the prose hash flags any entry whose text changes.
+
+## 2.1.0 - droids render as droids, Ted Kord's colours, a picker gender filter
+
+**Random characters are unchanged.** Every change is either one roster entry's own text or
+the picker UI. One knock-on: the three droids leave the Cosplayer node's `Masked` scope and
+its "People only" `random_pool`, and join `Beast / non-humanoid`, so a fixed seed under one
+of those three can now pick a different character. The `Random - any` pick is unaffected.
+
+**R2-D2, BB-8 and Gonk Droid moved to `body_plan: "feral"`.** The maintainer saw a man
+posing beside R2-D2 in the gallery. The published BB-8 tile showed the same thing, and Gonk
+showed a man's head out of a grey box. All three were suit entries whose prompt led "a short
+man with a stocky build ... He wears a ... droid body": a famous name makes the model draw the
+machine as an object, and the sentence then adds a person next to it. As feral entries
+("R2-D2 (Star Wars), a three-legged astromech droid, ...") all three rendered as the droid
+alone on the first seed. Chopper and Lumiere stay suit entries: both rendered correctly
+because their long descriptions win, and neither tile is wrong. The feral route was written
+for animals, so this opens it to non-humanoid machines with a cosplay-only
+`creature_class: "Machines"`; see architecture.md -> "Writing a feral entry". The Claptrap
+and Wrecking Ball declines rested on the old "a machine is not a beast" reading, and are
+marked lapsed in suggested-additions.md.
+
+The look level was considered as the switch ("Costume only" = a person in an R2-D2 costume,
+"Full character" = R2-D2 itself) and not built: the person-in-costume reading is exactly the
+render that failed.
+
+**Blue Beetle (Ted Kord) rewritten.** The entry said black cowl, black gloves and boots and
+"large round black goggles", and rendered a black hood with black swim goggles. Canon
+(Wikipedia plus figure references) is a light-blue suit with dark navy gloves, trunks, boots and
+cowl, a dark beetle shape across the chest and shoulders, and yellow goggles. A maintainer-
+supplied description added white lenses and antenna lines on the cowl; no source backed either,
+so neither was used. The first render drew the right suit on a heavy 55-year-old; one
+`--reroll` gave the published tile.
+
+**Roster picker gender filter.** A Female / Male select beside the trait facet. Entries with no
+single gender (creatures, "Any" archetypes) stay visible under both choices. Like the facet,
+it survives closing the picker and resets on reload.

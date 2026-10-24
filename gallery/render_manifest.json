@@ -1720,8 +1720,9 @@
         "rendered": "pre-existing"
       },
       "BB-8": {
-        "hash": "494f8385fadac899",
-        "rendered": "pre-existing"
+        "hash": "16b7dc61a9d4c92b",
+        "published": true,
+        "rendered": "2026-10-24"
       },
       "Baba Yaga": {
         "hash": "ddbaab5c826fbd80",
@@ -2053,8 +2054,10 @@
         "rendered": "pre-existing"
       },
       "Blue Beetle (Ted Kord)": {
-        "hash": "48de78995434a3ed",
-        "rendered": "pre-existing"
+        "hash": "87cb6198eca5f939",
+        "published": true,
+        "rendered": "2026-10-24",
+        "seed": 745125657226728449
       },
       "Bluto": {
         "hash": "bd7bc5d1254a3dc1",
@@ -3858,8 +3861,9 @@
         "rendered": "2026-08-09"
       },
       "Gonk Droid": {
-        "hash": "0592df3ae24df19d",
-        "rendered": "pre-existing"
+        "hash": "71f61cd2245b7905",
+        "published": true,
+        "rendered": "2026-10-24"
       },
       "Goofy": {
         "hash": "fb386a6f84544438",
@@ -7147,8 +7151,9 @@
         "rendered": "pre-existing"
       },
       "R2-D2": {
-        "hash": "645fcc979de94770",
-        "rendered": "pre-existing"
+        "hash": "bdbc76cc87c3b2d1",
+        "published": true,
+        "rendered": "2026-10-24"
       },
       "Ra's al Ghul": {
         "hash": "957c8944fe0f9ba3",
@@ -10693,7 +10698,7 @@
       }
     }
   },
-  "generated": "2026-10-20T21:02:51",
+  "generated": "2026-10-24T01:42:52",
   "render": {
     "cfg": 1,
     "height": 2432,

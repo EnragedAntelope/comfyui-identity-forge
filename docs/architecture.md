@@ -876,6 +876,18 @@ underneath to randomize; that also closes the costume-asserts-a-body-trait probl
 `eyes` and `costumes` alternates are rejected by `validate_data.py`: a beast has no
 hand for a prop, its colour is its integument, and a body plan is not a look.
 
+**Non-humanoid machines take this path too (2.1.0).** `R2-D2`, `BB-8` and `Gonk Droid`
+shipped as suit entries and the gallery drew a man posing *beside* the droid: a famous
+name makes the model draw the machine as an object, and "a short man ... wears a ...
+droid body" then adds a person next to it. As feral entries all three rendered as the
+droid alone on the first try. The test is the body plan, not "beast or machine": no
+human limbs in the right places (a ball, a three-legged can, a box on legs) means feral;
+a humanoid robot (C-3PO, Bender, Megatron) stays a suit entry with `covers_body`. They
+use `creature_class: "Machines"`, a cosplay-only class `validate_data.py` accepts beside
+`CREATURE_CLASSES` (it only decides the "monstrous" adjective, and a generic creature
+never needs it). The look level does not switch a machine back to a person in costume:
+that reading is the render that failed.
+
 **Prose framing.** A feral subject does **not** take the `Cosplaying as X:` prefix —
 that framing tells a t2i model to render a human in a suit, which is precisely the
 failure the path exists to fix. The label is apposed instead: *"Appa (Avatar: The Last

@@ -6401,10 +6401,14 @@ COSPLAYERS: dict[str, dict] = {
     "Blue Beetle (Ted Kord)": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a classic late-1980s blue spandex superhero bodysuit with black "
-                   "gloves and boots, a stylized black beetle emblem on the chest, a "
-                   "snug black cowl over the head, and large round black goggles, with "
-                   "the lower face exposed",
+        # 2.1.0 rewrite: the old text said black cowl, gloves and goggles, and rendered a
+        # black hood and black swim goggles. Canon is two blues and yellow goggles.
+        "costume": "a classic 1980s light-blue spandex superhero bodysuit with dark navy-"
+                   "blue gloves, trunks and mid-calf boots, a large dark navy-blue "
+                   "stylized beetle shape spread across the chest and shoulders like an "
+                   "insect's wing-cases, edged in thin black lines, a snug dark navy-blue "
+                   "cowl over the whole head, and large round yellow-lensed goggles over "
+                   "the eyes, with the mouth and chin exposed",
         "covers_hair": True,  # snug cowl encloses the scalp; lower face shows
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
@@ -8494,13 +8498,33 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "R2-D2": {
+        # 2.1.0: moved to body_plan "feral". As a suit entry the prose led "a short man
+        # with a stocky build ... He wears a ... droid body" and the gallery drew a man
+        # posing beside R2-D2. The name is famous enough that the model draws the droid
+        # as an object, so nothing human may appear in the sentence.
         "franchise": "Star Wars",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a riveted white-and-blue cylindrical droid body with three "
-                   "mechanical legs",
-        "mask": "a white-and-blue rotating dome head with a single blue photoreceptor eye",
-        "physique": {"body_type": "stocky", "height": "short"},
+        "covers_body": True,
+        "creature_of": "three-legged astromech droid",
+        "creature_class": "Machines",
+        "mask": "a rounded silver dome head set directly on top of the body, with blue "
+                "panels, one large black radar-eye lens and a small round holoprojector "
+                "lens",
+        "costume": "a riveted white cylindrical metal body trimmed with blue panels and "
+                   "vents",
+        "anatomy": {
+            "legs_feet": "two thick legs mounted on the sides of the body, each ending in "
+                         "a wide flat powered foot, plus a shorter third leg under the "
+                         "middle of the body",
+        },
+        "poses": [
+            "standing upright on all three legs",
+            "rolling forward on the powered feet",
+            "standing still with the dome head turned toward the viewer",
+        ],
+        "scale_prose": "small, about three and a half feet tall",
     },
     "C-3PO": {
         "franchise": "Star Wars",
@@ -8512,13 +8536,26 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "average height"},
     },
     "BB-8": {
+        # 2.1.0: moved to body_plan "feral" (see R2-D2): the suit reading drew a man
+        # kneeling beside a BB-8, and nobody can be inside a rolling ball anyway.
         "franchise": "Star Wars",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a rolling spherical white-and-orange droid body",
-        "mask": "a domed white-and-orange head with a single round eye that stays on top "
-                "as it rolls",
-        "physique": {"body_type": "stocky", "height": "petite"},
+        "covers_body": True,
+        "creature_of": "spherical rolling droid",
+        "creature_class": "Machines",
+        "mask": "a small white half-dome head resting directly on top of the ball, banded "
+                "in orange and silver, with one large round black eye-lens and a thin "
+                "antenna",
+        "costume": "a white ball-shaped metal body covered in large orange circular panels "
+                   "with silver centres",
+        "poses": [
+            "rolling forward across the ground",
+            "resting still with the dome head tilted toward the viewer",
+            "rolling with the dome head held level on top",
+        ],
+        "scale_prose": "small, about two feet tall",
     },
     "Captain Rex": {
         "franchise": "Star Wars",
@@ -9319,13 +9356,28 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "very slim", "height": "tall"},
     },
     "Gonk Droid": {
+        # 2.1.0: moved to body_plan "feral" (see R2-D2): the suit reading drew a man's
+        # head poking out of a grey box. A GNK droid has no head at all.
         "franchise": "Star Wars",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a boxy gray walking power-droid body shaped like an upright crate, "
-                   "plodding on two stubby thick legs",
-        "mask": "a featureless boxy droid head-end with two small dim photoreceptor lights",
-        "physique": {"body_type": "stocky", "height": "short"},
+        "covers_body": True,
+        "creature_of": "boxy walking power droid",
+        "creature_class": "Machines",
+        "mask": "no separate head, only the flat top of the box body, with two small dim "
+                "round sensor lights on the front face",
+        "costume": "a weathered grey metal body shaped like an upright crate, with ribbed "
+                   "vents and access panels",
+        "anatomy": {
+            "legs_feet": "two short stubby thick legs under the box, with flat square feet",
+        },
+        "poses": [
+            "plodding forward on both stubby legs",
+            "standing still with the front face toward the viewer",
+            "standing in full profile with the whole body in frame",
+        ],
+        "scale_prose": "about three and a half feet tall",
     },
     "2-1B Droid": {
         "franchise": "Star Wars",

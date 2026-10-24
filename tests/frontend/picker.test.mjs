@@ -260,6 +260,27 @@ test("the trait facet composes with both the tab and the query", async () => {
   }
 });
 
+test("the gender filter keeps that gender plus entries that suit either", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    picker.activeTab = "__all__";
+    picker.renderGrid();
+    const all = picker.visible.length;
+    picker.gender = "Male";
+    picker.renderGrid();
+    assert.ok(picker.visible.length > 0 && picker.visible.length < all);
+    assert.ok(picker.visible.every((e) => !e.gender || e.gender === "Any" || e.gender === "Male"),
+      "no Female-only entry under Male");
+    assert.ok(picker.visible.some((e) => e.kind === "creature"), "genderless creatures stay");
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
 test("while filtering, every tab shows its own match count so other kinds stay discoverable", async () => {
   resetDom();
   __testing.__resetForTests();

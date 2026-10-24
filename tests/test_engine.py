@@ -8021,7 +8021,7 @@ class FeralBodyPlanTests(unittest.TestCase):
                     pose, r"^(standing|sitting|lying|moving|at rest|sprawled|propped|"
                           r"perched|coiled|hovering|gliding|flying|swimming|walking|"
                           r"crouched|curled|settled|rearing|padding|prowling|floating|"
-                          r"drifting|resting)\b",
+                          r"drifting|resting|rolling|plodding)\b",
                     f"{pose!r} does not complete 'He is ...'")
 
     def test_the_species_group_is_built_from_mask_and_costume(self):

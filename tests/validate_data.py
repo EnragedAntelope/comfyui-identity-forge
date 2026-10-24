@@ -863,7 +863,9 @@ def validate() -> list[str]:
             errors.append(f"cosplayer '{name}': 'poses' must be a non-empty list of "
                           f"non-empty strings")
         creature_class = entry.get("creature_class")
-        if creature_class is not None and creature_class not in CREATURE_CLASSES:
+        # "Machines" is cosplay-only (2.1.0): a named droid has no generic creature to
+        # share a class with, and the class only decides the "monstrous" adjective.
+        if creature_class is not None and creature_class not in (*CREATURE_CLASSES, "Machines"):
             errors.append(f"cosplayer '{name}': creature_class {creature_class!r} is not "
                           f"one of {list(CREATURE_CLASSES)}")
         # Required on a feral entry, for the same reason ``creature_of`` is: the node
