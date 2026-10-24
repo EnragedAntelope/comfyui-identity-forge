@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-10-24T08:56:42.344201",
+  "generated": "2026-10-24T11:07:24.719817",
   "version": "2.1.0",
   "releases": [
     "0.5.0",
@@ -132,8 +132,8 @@
     "1.11.0",
     "2.1.0"
   ],
-  "total_entries": 2129,
-  "entries_with_images": 2129,
+  "total_entries": 2154,
+  "entries_with_images": 2154,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -882,6 +882,14 @@
       "image": "images/Archon.jpeg"
     },
     {
+      "name": "Arcueid Brunestud",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tsukihime",
+      "added": "2.1.0",
+      "image": "images/Arcueid Brunestud.jpeg"
+    },
+    {
       "name": "Ariel",
       "has_image": true,
       "gender": "Female",
@@ -1344,6 +1352,14 @@
       "group": "Onward",
       "added": "1.4.0",
       "image": "images/Barley Lightfoot.jpeg"
+    },
+    {
+      "name": "Barnaby Brooks Jr.",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Tiger & Bunny",
+      "added": "2.1.0",
+      "image": "images/Barnaby Brooks Jr.jpeg"
     },
     {
       "name": "Barney Rubble",
@@ -1834,6 +1850,14 @@
       "image": "images/Blaidd the Half-Wolf.jpeg"
     },
     {
+      "name": "Blake Belladonna",
+      "has_image": true,
+      "gender": "Female",
+      "group": "RWBY",
+      "added": "2.1.0",
+      "image": "images/Blake Belladonna.jpeg"
+    },
+    {
       "name": "Blanka",
       "has_image": true,
       "gender": "Male",
@@ -2240,6 +2264,14 @@
       "group": "Bleach",
       "added": "0.16.0",
       "image": "images/Byakuya Kuchiki.jpeg"
+    },
+    {
+      "name": "Byleth",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Fire Emblem",
+      "added": "2.1.0",
+      "image": "images/Byleth.jpeg"
     },
     {
       "name": "C-3PO",
@@ -2808,6 +2840,14 @@
       "group": "Dragon Ball",
       "added": "0.16.0",
       "image": "images/Chi-Chi.jpeg"
+    },
+    {
+      "name": "Chiaki Nanami",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Danganronpa",
+      "added": "2.1.0",
+      "image": "images/Chiaki Nanami.jpeg"
     },
     {
       "name": "Chiana",
@@ -4682,6 +4722,14 @@
       "image": "images/Falcon.jpeg"
     },
     {
+      "name": "Falin Touden",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Delicious in Dungeon",
+      "added": "2.1.0",
+      "image": "images/Falin Touden.jpeg"
+    },
+    {
       "name": "Falkor",
       "has_image": true,
       "gender": "Male",
@@ -4704,6 +4752,14 @@
       "group": "DC",
       "added": "0.18.0",
       "image": "images/Fatality.jpeg"
+    },
+    {
+      "name": "Fate Testarossa",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Magical Girl Lyrical Nanoha",
+      "added": "2.1.0",
+      "image": "images/Fate Testarossa.jpeg"
     },
     {
       "name": "Fawkes",
@@ -5154,6 +5210,14 @@
       "image": "images/Ganyu.jpeg"
     },
     {
+      "name": "Gardevoir",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Pokemon",
+      "added": "2.1.0",
+      "image": "images/Gardevoir.jpeg"
+    },
+    {
       "name": "Gargamel",
       "has_image": true,
       "gender": "Male",
@@ -5440,6 +5504,14 @@
       "group": "The Wizard of Oz",
       "added": "0.77.0",
       "image": "images/Glinda.jpeg"
+    },
+    {
+      "name": "Gloria (Pokemon)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Pokemon",
+      "added": "2.1.0",
+      "image": "images/Gloria (Pokemon).jpeg"
     },
     {
       "name": "Glory",
@@ -6090,6 +6162,14 @@
       "image": "images/Hermione Granger.jpeg"
     },
     {
+      "name": "Hilda (Pokemon)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Pokemon",
+      "added": "2.1.0",
+      "image": "images/Hilda (Pokemon).jpeg"
+    },
+    {
       "name": "Himeno",
       "has_image": true,
       "gender": "Female",
@@ -6544,6 +6624,14 @@
       "group": "Marvel",
       "added": "0.6.0",
       "image": "images/Invisible Woman.jpeg"
+    },
+    {
+      "name": "Iono",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Pokemon",
+      "added": "2.1.0",
+      "image": "images/Iono.jpeg"
     },
     {
       "name": "Iori Yagami",
@@ -7192,6 +7280,14 @@
       "group": "Darkstalkers",
       "added": "0.59.0",
       "image": "images/Jon Talbain.jpeg"
+    },
+    {
+      "name": "Jonathan Joestar",
+      "has_image": true,
+      "gender": "Male",
+      "group": "JoJo's Bizarre Adventure",
+      "added": "2.1.0",
+      "image": "images/Jonathan Joestar.jpeg"
     },
     {
       "name": "Joseph Joestar",
@@ -10706,6 +10802,14 @@
       "image": "images/Mystique.jpeg"
     },
     {
+      "name": "Nagito Komaeda",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Danganronpa",
+      "added": "2.1.0",
+      "image": "images/Nagito Komaeda.jpeg"
+    },
+    {
       "name": "Nakoruru",
       "has_image": true,
       "gender": "Female",
@@ -10784,6 +10888,14 @@
       "group": "Lilo and Stitch",
       "added": "0.74.0",
       "image": "images/Nani Pelekai.jpeg"
+    },
+    {
+      "name": "Nanoha Takamachi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Magical Girl Lyrical Nanoha",
+      "added": "2.1.0",
+      "image": "images/Nanoha Takamachi.jpeg"
     },
     {
       "name": "Naoto Shirogane",
@@ -11098,6 +11210,14 @@
       "image": "images/Nocturne.jpeg"
     },
     {
+      "name": "Noel Vermillion",
+      "has_image": true,
+      "gender": "Female",
+      "group": "BlazBlue",
+      "added": "2.1.0",
+      "image": "images/Noel Vermillion.jpeg"
+    },
+    {
       "name": "Noelle Silva",
       "has_image": true,
       "gender": "Female",
@@ -11352,6 +11472,14 @@
       "group": "Bleach",
       "added": "0.16.0",
       "image": "images/Orihime Inoue.jpeg"
+    },
+    {
+      "name": "Orion",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Star Trek",
+      "added": "2.1.0",
+      "image": "images/Orion.jpeg"
     },
     {
       "name": "Orko",
@@ -12242,6 +12370,14 @@
       "image": "images/Ragged Robin.jpeg"
     },
     {
+      "name": "Ragna the Bloodedge",
+      "has_image": true,
+      "gender": "Male",
+      "group": "BlazBlue",
+      "added": "2.1.0",
+      "image": "images/Ragna the Bloodedge.jpeg"
+    },
+    {
       "name": "Ragyo Kiryuin",
       "has_image": true,
       "gender": "Female",
@@ -12962,6 +13098,14 @@
       "image": "images/Ruby Rhod.jpeg"
     },
     {
+      "name": "Ruby Rose",
+      "has_image": true,
+      "gender": "Female",
+      "group": "RWBY",
+      "added": "2.1.0",
+      "image": "images/Ruby Rose.jpeg"
+    },
+    {
       "name": "Rukia Kuchiki",
       "has_image": true,
       "gender": "Female",
@@ -13618,6 +13762,14 @@
       "image": "images/Selvaria Bles.jpeg"
     },
     {
+      "name": "Senshi",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Delicious in Dungeon",
+      "added": "2.1.0",
+      "image": "images/Senshi.jpeg"
+    },
+    {
       "name": "Senua",
       "has_image": true,
       "gender": "Female",
@@ -13672,6 +13824,14 @@
       "group": "Marvel",
       "added": "0.69.0",
       "image": "images/Sersi.jpeg"
+    },
+    {
+      "name": "Serval (Kemono Friends)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Kemono Friends",
+      "added": "2.1.0",
+      "image": "images/Serval (Kemono Friends).jpeg"
     },
     {
       "name": "Sesshomaru",
@@ -14794,6 +14954,14 @@
       "image": "images/Sukuna.jpeg"
     },
     {
+      "name": "Suletta Mercury",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Mobile Suit Gundam",
+      "added": "2.1.0",
+      "image": "images/Suletta Mercury.jpeg"
+    },
+    {
       "name": "Sumire Yoshizawa",
       "has_image": true,
       "gender": "Female",
@@ -14960,6 +15128,14 @@
       "group": "DC",
       "added": "0.18.0",
       "image": "images/Talia al Ghul.jpeg"
+    },
+    {
+      "name": "Tamamo no Mae",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Fate/Grand Order",
+      "added": "2.1.0",
+      "image": "images/Tamamo no Mae.jpeg"
     },
     {
       "name": "Tanjiro Kamado",
@@ -16418,6 +16594,14 @@
       "image": "images/Weeping Angel.jpeg"
     },
     {
+      "name": "Weiss Schnee",
+      "has_image": true,
+      "gender": "Female",
+      "group": "RWBY",
+      "added": "2.1.0",
+      "image": "images/Weiss Schnee.jpeg"
+    },
+    {
       "name": "Wendy",
       "has_image": true,
       "gender": "Female",
@@ -16496,6 +16680,14 @@
       "group": "Overwatch",
       "added": "0.6.0",
       "image": "images/Widowmaker.jpeg"
+    },
+    {
+      "name": "Wild Tiger",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Tiger & Bunny",
+      "added": "2.1.0",
+      "image": "images/Wild Tiger.jpeg"
     },
     {
       "name": "Wildcat",
@@ -16712,6 +16904,14 @@
       "group": "Yu-Gi-Oh!",
       "added": "0.87.0",
       "image": "images/Yami Yugi.jpeg"
+    },
+    {
+      "name": "Yang Xiao Long",
+      "has_image": true,
+      "gender": "Female",
+      "group": "RWBY",
+      "added": "2.1.0",
+      "image": "images/Yang Xiao Long.jpeg"
     },
     {
       "name": "Yasuo",
