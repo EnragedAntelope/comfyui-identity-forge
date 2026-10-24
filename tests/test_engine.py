@@ -60,6 +60,7 @@ from nodes.identity_forge import (
     _COSPLAY_LABEL_KEY, _COVERS_FACE_KEY, _COVERS_BODY_KEY, _COVERS_HAIR_KEY,
     _MASK_KEY,
     _ANATOMY_NOTE_KEY,
+    _SUBJECT_NOUN_KEY,
     _PRENOMINAL_HEIGHTS,
     _COMPOSITIONS_TOO_TIGHT_FOR_GIANT,
     _COMPOSITIONS_TOO_WIDE_FOR_TINY,
@@ -6069,21 +6070,21 @@ class RandomPoolTests(unittest.TestCase):
         # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0 and at 2.1.0 to the new
         # ground truth. It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Robin Hood',
-            (_RANDOM_ANY, 1): 'Erina Nakiri',
-            (_RANDOM_ANY, 2): 'Bothan',
-            (_RANDOM_ANY, 3): 'Kiss-Shot Acerola-Orion Heart-Under-Blade',
-            (_RANDOM_ANY, 4): 'King Ghidorah',
-            (_RANDOM_FEMALE, 0): 'Rose Quartz',
-            (_RANDOM_FEMALE, 1): 'Frankie Stein',
-            (_RANDOM_FEMALE, 2): 'Bo Peep',
-            (_RANDOM_FEMALE, 3): 'Lilo',
-            (_RANDOM_FEMALE, 4): 'Liliana Vess',
-            (_RANDOM_MALE, 0): 'Riku',
-            (_RANDOM_MALE, 1): 'Duke Nukem (video game)',
-            (_RANDOM_MALE, 2): 'Brainiac 5',
-            (_RANDOM_MALE, 3): 'John Stewart',
-            (_RANDOM_MALE, 4): 'Jinu',
+            (_RANDOM_ANY, 0): 'Rick Flag',
+            (_RANDOM_ANY, 1): 'Eowyn',
+            (_RANDOM_ANY, 2): 'Borg Drone',
+            (_RANDOM_ANY, 3): 'King',
+            (_RANDOM_ANY, 4): 'Kilik',
+            (_RANDOM_FEMALE, 0): 'Rin Tohsaka',
+            (_RANDOM_FEMALE, 1): 'Fire',
+            (_RANDOM_FEMALE, 2): 'Bloody Mary',
+            (_RANDOM_FEMALE, 3): 'Lexa',
+            (_RANDOM_FEMALE, 4): 'Lei Fang',
+            (_RANDOM_MALE, 0): 'Rhino',
+            (_RANDOM_MALE, 1): 'Duke',
+            (_RANDOM_MALE, 2): 'Brainiac',
+            (_RANDOM_MALE, 3): 'Joel Miller',
+            (_RANDOM_MALE, 4): 'Jin Kazama',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
@@ -7945,6 +7946,7 @@ def _render_cosplayer(character, seed, look_level="Costume only",
     covers_hair = bool(flat.pop(_COVERS_HAIR_KEY, None))
     mask_text = flat.pop(_MASK_KEY, None)
     anatomy_note = flat.pop(_ANATOMY_NOTE_KEY, None)
+    subject_noun = flat.pop(_SUBJECT_NOUN_KEY, None)
     scale = flat.pop(_SCALE_TIER_KEY, "") or ""
     locked = {k: v for k, v in flat.items()
               if k not in _CONTROL_FIELDS and not k.startswith("__")}
@@ -7952,7 +7954,7 @@ def _render_cosplayer(character, seed, look_level="Costume only",
         seed, gender, locked, cosplay_label=label, species=species,
         covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
         character_scale=scale, mask_text=mask_text,
-        anatomy_note=anatomy_note)
+        anatomy_note=anatomy_note, subject_noun=subject_noun)
 
 
 class FeralBodyPlanTests(unittest.TestCase):
@@ -8408,6 +8410,57 @@ class AnatomyNoteTests(unittest.TestCase):
         for name, entry in COSPLAYERS.items():
             if isinstance(entry, dict) and entry.get("body_plan") == "feral":
                 self.assertIsNone(entry.get("anatomy_note"), name)
+
+
+class SubjectNounTests(unittest.TestCase):
+    """``subject`` replaces "man"/"woman" in the lead phrase (2.1.0).
+
+    A non-human face voiced only in a later sentence lost to "a short man" on every
+    Tellarite render; leading with "a short pig-headed humanoid alien" kept the snout.
+    """
+
+    def test_it_leads_in_place_of_the_gender_noun(self):
+        prose, _ = _render_cosplayer("Tellarite", 5)
+        noun = COSPLAYERS["Tellarite"]["subject"]
+        self.assertIn(noun, prose.split(".")[0])
+        self.assertNotRegex(prose.split(".")[0], r"\bman\b")
+
+    def test_it_also_reaches_a_maskless_face(self):
+        prose, _ = _render_cosplayer("Leela", 5, gender="Female")
+        self.assertIn(COSPLAYERS["Leela"]["subject"], prose.split(".")[0])
+
+    def test_unmasking_restores_the_gender_noun(self):
+        # The person underneath shows, so the alien noun must not lead.
+        prose, _ = _render_cosplayer("Tellarite", 5, mask_mode=_MASK_OFF)
+        self.assertNotIn(COSPLAYERS["Tellarite"]["subject"], prose)
+
+    def test_it_survives_the_json_round_trip(self):
+        # The vault reloads a saved character from its JSON output.
+        _, json_output = _render_cosplayer("Tellarite", 5)
+        flat = _parse_archetype_json(json_output)
+        self.assertEqual(flat.get(_SUBJECT_NOUN_KEY), COSPLAYERS["Tellarite"]["subject"])
+
+    def test_a_downstream_costume_drops_it(self):
+        upstream = build_cosplayer_json("Tellarite", 0)
+        downstream = build_cosplayer_json("Hermione Granger", 0)
+        merged = json.loads(merge_preset_documents(upstream, downstream))
+        self.assertNotIn("subject", merged.get("_meta", {}))
+
+    def test_costume_weights_lean_the_look_roll(self):
+        # Orion: TOS dancer 2, Gaila's cadet uniform 1.
+        cadet = sum("cadet" in build_cosplayer_json("Orion", seed) for seed in range(300))
+        self.assertTrue(60 <= cadet <= 140, cadet)
+
+    def test_an_unweighted_entry_keeps_its_uniform_pick(self):
+        # costume_weights must not move any existing entry's seeds: without the key
+        # _pick_look still makes exactly the one rng.choice call it always made.
+        import random
+        from nodes.identity_forge_cosplayer import _pick_look
+        entry = {"costume": "a", "costumes": ["b", "c"]}
+        for seed in range(50):
+            expected = random.Random(seed).choice(["a", "b", "c"])
+            self.assertEqual(_pick_look(entry, random.Random(seed))["costume"], expected)
+
 
 class MaleAccessoryTrimTests(unittest.TestCase):
     """``accessories`` and ``brooch`` get masculine trims (1.4.0).

@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2129 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2154 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (395)
+## Anime & Manga (416)
 
 ### Akame ga Kill
 
@@ -108,8 +108,10 @@
 
 ### Danganronpa
 
+- **Chiaki Nanami** (F, prop)
 - **Junko Enoshima** (F)
 - **Monokuma** (M, tiny, masked)
+- **Nagito Komaeda** (M)
 
 ### Darling in the Franxx
 
@@ -139,8 +141,10 @@
 
 ### Delicious in Dungeon
 
+- **Falin Touden** (F, prop)
 - **Laios Touden** (M, prop)
 - **Marcille Donato** (F, prop)
+- **Senshi** (M, prop)
 
 ### Demon Slayer
 
@@ -218,6 +222,7 @@
 - **Jeanne d'Arc (Fate)** (F, prop)
 - **Mash Kyrielight** (F, prop)
 - **Scathach** (F, prop)
+- **Tamamo no Mae** (F, prop)
 
 ### Fate/stay night
 
@@ -318,6 +323,7 @@
 - **Dio Brando** (M)
 - **Giorno Giovanna** (M)
 - **Jolyne Cujoh** (F)
+- **Jonathan Joestar** (M)
 - **Joseph Joestar** (M)
 - **Josuke Higashikata** (M)
 - **Jotaro Kujo** (M)
@@ -337,6 +343,10 @@
 ### Kakegurui
 
 - **Yumeko Jabami** (F)
+
+### Kemono Friends
+
+- **Serval (Kemono Friends)** (F)
 
 ### Kill la Kill
 
@@ -371,6 +381,11 @@
 
 - **Morgiana** (F)
 
+### Magical Girl Lyrical Nanoha
+
+- **Fate Testarossa** (F, prop)
+- **Nanoha Takamachi** (F, prop)
+
 ### Medaka Box
 
 - **Medaka Kurokami** (F)
@@ -382,6 +397,7 @@
 ### Mobile Suit Gundam
 
 - **Char Aznable** (M)
+- **Suletta Mercury** (F)
 
 ### Monogatari
 
@@ -512,9 +528,13 @@
 - **Dawn** (F)
 - **Eevee** (M, tiny, beast)
 - **Elesa** (F)
+- **Gardevoir** (F, masked)
 - **Gary Oak** (M)
 - **Gengar** (M, masked)
+- **Gloria (Pokemon)** (F)
 - **Gyarados** (M, giant, beast)
+- **Hilda (Pokemon)** (F, prop)
+- **Iono** (F)
 - **Iris** (F)
 - **James (Team Rocket)** (M)
 - **Jessie (Team Rocket)** (F)
@@ -544,6 +564,13 @@
 - **Kate Takenomiya** (F)
 - **Mari Kurihara** (F)
 - **Meiko Shiraki** (F, +1 alt)
+
+### RWBY
+
+- **Blake Belladonna** (F, prop)
+- **Ruby Rose** (F, prop)
+- **Weiss Schnee** (F, prop)
+- **Yang Xiao Long** (F)
 
 ### Ranma 1/2
 
@@ -654,6 +681,11 @@
 - **Elizabeth Liones** (F)
 - **Meliodas** (M)
 
+### Tiger & Bunny
+
+- **Barnaby Brooks Jr.** (M)
+- **Wild Tiger** (M)
+
 ### Tokyo Ghoul
 
 - **Ken Kaneki** (M)
@@ -663,6 +695,10 @@
 ### Trigun
 
 - **Vash the Stampede** (M)
+
+### Tsukihime
+
+- **Arcueid Brunestud** (F)
 
 ### UTAU
 
@@ -2067,7 +2103,7 @@
 - **Yondu** (M, prop)
 - **Zuras** (M)
 
-## Movies & TV (242)
+## Movies & TV (243)
 
 ### A Nightmare on Elm Street
 
@@ -2488,6 +2524,7 @@
 - **Ilia** (F)
 - **Klingon** (M, prop)
 - **Mr. Spock** (M)
+- **Orion** (F, +1 alt)
 - **Seven of Nine** (F, +3 alt)
 - **Tellarite** (M, masked)
 - **Uhura** (F)
@@ -2784,7 +2821,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (512)
+## Video Games (515)
 
 ### A Certain Scientific Railgun
 
@@ -2834,6 +2871,11 @@
 ### Black Myth: Wukong
 
 - **Destined One (Black Myth: Wukong)** (M, masked)
+
+### BlazBlue
+
+- **Noel Vermillion** (F, prop)
+- **Ragna the Bloodedge** (M, prop)
 
 ### BloodRayne
 
@@ -3046,6 +3088,7 @@
 ### Fire Emblem
 
 - **Azura** (F)
+- **Byleth** (M, prop)
 - **Edelgard** (F, prop)
 - **Lucina** (F, prop)
 
@@ -3329,7 +3372,7 @@
 
 ### Pac-Man
 
-- **Pac-Man** (M, masked)
+- **Pac-Man** (M, beast)
 
 ### Persona
 

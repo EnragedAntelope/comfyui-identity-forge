@@ -23,9 +23,7 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-| Candidate | Case and remaining gate |
-|---|---|
-| Tellarite repair (Star Trek) | The 1.9.0 entry rendered a plain stocky man: no snout, no tusks, and "a shaggy coat of thick facial and body hair" drew an overcoat. 1.10.0 tried four wordings and each failed at the gallery's full-body framing: an authored head in `mask`; that plus `covers_body` (drops the demographics); the canonical porcine description (upturned pig snout, ruddy pink wrinkled leathery skin, tusks over the lip, bushy beard) drew a bearded human; a beardless "boar-faced" head drew a generic ridged alien. 1.11.0 tried the full latex prosthetic head in `mask`, alone and with `covers_body`: the first drew a bearded man, the second a ridged forehead over a beard. 1.11.0 ships the second anyway (the maintainer's call): it is the accurate canon text and drops the overcoat misread, and it renders no worse than the 1.9.0 text. The snout is still open; the one untried idea is a gallery framing override (`_GALLERY_SHOT`) on a close framing so the face is large. |
+Nothing is open; the last row (the Tellarite snout) closed in 2.1.0 with the `subject` lead noun.
 
 **Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, and the
 tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
@@ -163,6 +161,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Wrecking Ball (Overwatch) | Re-decided at 2.1.0 on the feral route and still declined: a hamster pilot inside a ball mech is two subjects in one frame, and Overwatch is already one of the roster's largest game franchises. |
 | BD-1, Mouse Droid (Star Wars), K-9 (Doctor Who) | Considered with the 2.1.0 machine batch. BD-1 is a game-only deep cut; the MSE-6 is a plain black box on wheels; K-9 would render as a generic boxy robot dog. Star Wars and Doctor Who keep their droids in R2-D2, BB-8, Gonk, Chopper and the Dalek. |
 | Hololive VTubers (Gawr Gura and others), Touhou's Remilia, Flandre and Cirno | From the 2.1.0 sd-character-finder survey, whose other survivors shipped. The VTubers are avatars of real performers (maintainer's call). The three Touhou characters fail the child-bodied rule. |
+| Kiana Kaslana (Honkai Impact 3rd), Caesar Zeppeli (JoJo) | From the 2.1.0 survey second tier. Kiana has no one stable outfit (each battlesuit is a different look) and Caesar's outfit colours could not be verified across the manga and anime; the defining items alone (a headband, fingerless gloves) render as a generic man. |
 | The rest of the Overwatch cast (Sigma, Baptiste, Sojourn, Ramattra, Mauga, Lifeweaver, Illari, Venture, Juno, Hazard, Freja, Wuyang) | Real looks, but each repeats a silhouette the curated set already carries (armoured soldier, robed omnic, tattooed brawler, sci-fi ranger). Overwatch stops where new entries stop adding visual ground. |
 | Aether (Genshin Impact) | The same kit and silhouette as the shipped `Lumine` in the other gender; the node's own gender control already crossplays. |
 | Keqing, Nilou, Eula, Xiao, Diluc (Genshin Impact) | Each is a well-drawn anime fantasy look, but the differentiator against a shipped neighbour is hair colour and elemental trim. `Mona`, `Wanderer` and `Arlecchino` shipped because a hat, a hat-and-veil and a pair of X-shaped pupils survive at silhouette scale. |

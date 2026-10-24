@@ -3605,6 +3605,41 @@ opt-in per entry rather than parsed from the front text, which is the regex-over
 trap. validate_data.py requires a non-empty string on a non-feral entry that has a
 `costume`.
 
+### The lead noun: `subject` (2.1.0)
+
+The first sentence names what the image is of: "a short man with a stocky build". A
+non-human face voiced only in a later sentence (the mask, or `eyes`) loses to that noun.
+Every Tellarite render drew a bearded man in a tunic with no snout, and many mascots drew
+a person holding a plush of the character. An optional `subject` string replaces
+"man"/"woman" in that lead phrase: "a short pig-headed humanoid alien with a stocky
+build", "a life-size Pikachu mascot".
+
+* It is a bare noun phrase: no article, no trailing punctuation. The engine supplies the
+  article and the height and build words around it.
+* It travels as `_SUBJECT_NOUN_KEY` beside the mask and is written to the JSON `_meta`, so
+  a vault reload keeps it. It is in `_COSTUME_META_KEYS`, so a downstream costume drops
+  it, like the mask.
+* The cosplayer node leaves it out on unmask, because the person underneath then shows.
+  It is rejected on a feral entry, which already leads with `creature_of`.
+* Use it when the face is the identity and is not human (aliens, skull heads, animal
+  heads that rendered as a person) and for a mascot that rendered as a person beside a
+  plush ("life-size X mascot"). Give it only after a before/after render shows a gain.
+* A face that still loses with the noun often wins as a **"full-head latex ... mask"** in
+  the mask text (Tellarite, Red Skull): the model knows that object, while a bare "skull-
+  like face" rendered a plain man.
+* Known limit: a single eye. The model draws one eye only in a short prompt about nothing
+  else; the character name or a full-length prompt brings back two (Allen the Alien, Leela).
+  See docs/history.md -> "2.1.0" for the trials.
+
+### Weighted alternate looks: `costume_weights` (2.1.0)
+
+`_pick_look` picks among the canonical `costume` and its `costumes` alternates with a
+plain `rng.choice`. An optional `costume_weights` list (one positive number per look,
+canonical first) switches that entry to `rng.choices` with those weights, so the
+best-known look can lead (Orion: the TOS dancer 2, Gaila's cadet uniform 1). An entry
+without the key keeps the one `rng.choice` call it always made, so no existing seed
+moves. validate_data.py checks the length against the look count.
+
 ## Release history
 
 Per-release investigation notes (measured numbers, what was tried, what was declined)

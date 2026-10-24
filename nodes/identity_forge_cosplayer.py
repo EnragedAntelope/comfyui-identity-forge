@@ -500,7 +500,11 @@ def _pick_look(entry: dict, rng: random.Random) -> dict:
         return entry
     pool: list[dict] = [{"costume": entry["costume"]}]
     pool += [alt if isinstance(alt, dict) else {"costume": alt} for alt in alternates]
-    chosen = rng.choice(pool)
+    # Optional ``costume_weights`` (2.1.0), one per look in pool order, leans the
+    # roll toward the best-known look. Unweighted entries keep rng.choice, so their
+    # seeds do not move.
+    weights = entry.get("costume_weights")
+    chosen = rng.choices(pool, weights=weights)[0] if weights else rng.choice(pool)
     merged = dict(entry)
     merged.pop("costumes", None)
     # Overlay only the keys the chosen look actually sets; absent keys fall back to the
@@ -800,6 +804,11 @@ def build_cosplayer_json(
     # NOT clear it -- it is not part of the head.
     if not feral and entry.get("anatomy_note"):
         document["_meta"]["anatomy_note"] = entry["anatomy_note"]
+    # The lead noun for a non-human head ("pig-headed humanoid alien", "one-eyed
+    # cyclops woman"), only while that head is shown - dropped when unmasking reveals
+    # the person underneath. See ``_SUBJECT_NOUN_KEY`` in identity_forge.py.
+    if not feral and not unmask and entry.get("subject"):
+        document["_meta"]["subject"] = entry["subject"]
     size_scale = entry.get("size_scale", "")
     if size_scale:
         document["_meta"]["size_scale"] = size_scale

@@ -269,6 +269,10 @@ const COSPLAYER_FRANCHISES = {
     "Rick Deckard",
     "Roy Batty"
   ],
+  "BlazBlue": [
+    "Noel Vermillion",
+    "Ragna the Bloodedge"
+  ],
   "Bleach": [
     "Byakuya Kuchiki",
     "Grimmjow",
@@ -616,8 +620,10 @@ const COSPLAYER_FRANCHISES = {
     "Momo Ayase"
   ],
   "Danganronpa": [
+    "Chiaki Nanami",
     "Junko Enoshima",
-    "Monokuma"
+    "Monokuma",
+    "Nagito Komaeda"
   ],
   "Danger Girl": [
     "Abbey Chase",
@@ -705,8 +711,10 @@ const COSPLAYER_FRANCHISES = {
     "Ryuk"
   ],
   "Delicious in Dungeon": [
+    "Falin Touden",
     "Laios Touden",
-    "Marcille Donato"
+    "Marcille Donato",
+    "Senshi"
   ],
   "Demon Slayer": [
     "Akaza",
@@ -909,7 +917,8 @@ const COSPLAYER_FRANCHISES = {
   "Fate/Grand Order": [
     "Jeanne d'Arc (Fate)",
     "Mash Kyrielight",
-    "Scathach"
+    "Scathach",
+    "Tamamo no Mae"
   ],
   "Fate/stay night": [
     "Gilgamesh",
@@ -959,6 +968,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Fire Emblem": [
     "Azura",
+    "Byleth",
     "Edelgard",
     "Lucina"
   ],
@@ -1301,6 +1311,7 @@ const COSPLAYER_FRANCHISES = {
     "Dio Brando",
     "Giorno Giovanna",
     "Jolyne Cujoh",
+    "Jonathan Joestar",
     "Joseph Joestar",
     "Josuke Higashikata",
     "Jotaro Kujo",
@@ -1346,6 +1357,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Kellogg's": [
     "Tony the Tiger"
+  ],
+  "Kemono Friends": [
+    "Serval (Kemono Friends)"
   ],
   "Kick-Ass": [
     "Hit-Girl"
@@ -1528,6 +1542,10 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Magic: The Gathering": [
     "Liliana Vess"
+  ],
+  "Magical Girl Lyrical Nanoha": [
+    "Fate Testarossa",
+    "Nanoha Takamachi"
   ],
   "Mars Attacks!": [
     "The Martian Ambassador"
@@ -1820,7 +1838,8 @@ const COSPLAYER_FRANCHISES = {
     "Moana"
   ],
   "Mobile Suit Gundam": [
-    "Char Aznable"
+    "Char Aznable",
+    "Suletta Mercury"
   ],
   "Monogatari": [
     "Hitagi Senjougahara",
@@ -2091,9 +2110,13 @@ const COSPLAYER_FRANCHISES = {
     "Dawn",
     "Eevee",
     "Elesa",
+    "Gardevoir",
     "Gary Oak",
     "Gengar",
+    "Gloria (Pokemon)",
     "Gyarados",
+    "Hilda (Pokemon)",
+    "Iono",
     "Iris",
     "James (Team Rocket)",
     "Jessie (Team Rocket)",
@@ -2137,6 +2160,12 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Pulp Fiction": [
     "Mia Wallace"
+  ],
+  "RWBY": [
+    "Blake Belladonna",
+    "Ruby Rose",
+    "Weiss Schnee",
+    "Yang Xiao Long"
   ],
   "Rainbow Brite": [
     "Rainbow Brite"
@@ -2381,6 +2410,7 @@ const COSPLAYER_FRANCHISES = {
     "Ilia",
     "Klingon",
     "Mr. Spock",
+    "Orion",
     "Seven of Nine",
     "Tellarite",
     "Uhura",
@@ -2963,6 +2993,10 @@ const COSPLAYER_FRANCHISES = {
     "Panthro",
     "Tygra"
   ],
+  "Tiger & Bunny": [
+    "Barnaby Brooks Jr.",
+    "Wild Tiger"
+  ],
   "Tokyo Ghoul": [
     "Ken Kaneki",
     "Rize Kamishiro",
@@ -3001,6 +3035,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Tron": [
     "Quorra"
+  ],
+  "Tsukihime": [
+    "Arcueid Brunestud"
   ],
   "Twenty Thousand Leagues Under the Sea": [
     "Captain Nemo"
