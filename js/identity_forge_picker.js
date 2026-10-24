@@ -166,6 +166,15 @@ function hasTrait(entry, ...traits) {
   return traits.some((t) => have.includes(t));
 }
 
+// Gender filter (2.1.0). An entry with no single gender (creatures, "Any"
+// archetypes) suits either choice, so it stays visible under both.
+const GENDER_ANY = "Any gender";
+const GENDERS = [GENDER_ANY, "Female", "Male"];
+
+function matchesGender(entry, gender) {
+  return gender === GENDER_ANY || !entry.gender || entry.gender === "Any" || entry.gender === gender;
+}
+
 const FACET_PREDICATES = {
   [FACET_ALL]: () => true,
   [FACET_GIANT]: (e) => hasTrait(e, "giant"),
@@ -320,6 +329,7 @@ class IdentityForgePicker {
     this.query = "";
     this.activeTab = config.kind;
     this.facet = FACET_ALL;
+    this.gender = GENDER_ANY;
     this.showPreviews = loadPreviewPref();
     this.focusIndex = 0;
     this.visible = [];
@@ -481,6 +491,23 @@ class IdentityForgePicker {
     });
     this.facetSelect = facet;
 
+    const genderSelect = document.createElement("select");
+    genderSelect.className = "if-picker-facet";
+    genderSelect.setAttribute("aria-label", "Filter by gender");
+    for (const value of GENDERS) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      genderSelect.appendChild(option);
+    }
+    genderSelect.value = this.gender;
+    genderSelect.addEventListener("change", () => {
+      this.gender = genderSelect.value;
+      this.focusIndex = 0;
+      this.renderGrid();
+    });
+    this.genderSelect = genderSelect;
+
     const previewLabel = document.createElement("label");
     previewLabel.className = "if-picker-preview-toggle";
     const previewCheckbox = document.createElement("input");
@@ -501,7 +528,7 @@ class IdentityForgePicker {
     close.setAttribute("aria-label", "Close (" + this.config.title + ")");
     close.addEventListener("click", () => this.close());
 
-    header.append(search, facet, count, previewLabel, close);
+    header.append(search, facet, genderSelect, count, previewLabel, close);
 
     const notice = document.createElement("div");
     notice.className = "if-picker-notice";
@@ -698,6 +725,9 @@ class IdentityForgePicker {
       const predicate = FACET_PREDICATES[this.facet] || FACET_PREDICATES[FACET_ALL];
       list = list.filter(predicate);
     }
+    if (this.gender !== GENDER_ANY) {
+      list = list.filter((entry) => matchesGender(entry, this.gender));
+    }
     return list;
   }
 
@@ -719,7 +749,8 @@ class IdentityForgePicker {
 
   /** True while anything is narrowing the roster -- when the counts are worth showing. */
   isFiltering() {
-    return Boolean(tokenize(this.query).length) || this.facet !== FACET_ALL;
+    return Boolean(tokenize(this.query).length) || this.facet !== FACET_ALL
+      || this.gender !== GENDER_ANY;
   }
 
   renderGrid() {

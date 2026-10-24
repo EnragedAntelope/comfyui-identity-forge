@@ -27,7 +27,7 @@ The Cosplayer node is where Identity Forge really shines. Most character wildcar
 
 Ask a plain wildcard for Chun-Li and your prompt says `Chun-Li`. Ask this Cosplayer node and you get: *the blue qipao with gold trim, brown tights, white cross-laced boots, and spiked bracelets.* The look renders even on checkpoints that have never heard of the character.
 
-**Find one fast:** open the in-node picker to browse and search the whole roster without leaving the node — trait facets (Giant, Masked, Mascot/full-suit, Beast) and optional thumbnail previews. Franchise is searchable too, just not a dedicated facet chip. The picker remembers your search, tab and facet while the workflow is open, so you can pick, close and come back to the same filtered view; reloading starts fresh.
+**Find one fast:** open the in-node picker to browse and search the whole roster without leaving the node — trait facets (Giant, Masked, Mascot/full-suit, Beast), a Female/Male filter, and optional thumbnail previews. Franchise is searchable too, just not a dedicated facet chip. The picker remembers your search, tab and facet while the workflow is open, so you can pick, close and come back to the same filtered view; reloading starts fresh.
 
 **Characters from every major franchise:** Marvel, DC, Star Wars, anime, video games, fantasy, sci-fi, horror. Each one with multiple costume variants where applicable (Harley Quinn's three iconic looks, Catwoman's different suits, etc.). Characters rotate between variants by seed, so the same name yields a different signature costume each roll.
 

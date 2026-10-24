@@ -876,6 +876,18 @@ underneath to randomize; that also closes the costume-asserts-a-body-trait probl
 `eyes` and `costumes` alternates are rejected by `validate_data.py`: a beast has no
 hand for a prop, its colour is its integument, and a body plan is not a look.
 
+**Non-humanoid machines take this path too (2.1.0).** `R2-D2`, `BB-8` and `Gonk Droid`
+shipped as suit entries and the gallery drew a man posing *beside* the droid: a famous
+name makes the model draw the machine as an object, and "a short man ... wears a ...
+droid body" then adds a person next to it. As feral entries all three rendered as the
+droid alone on the first try. The test is the body plan, not "beast or machine": no
+human limbs in the right places (a ball, a three-legged can, a box on legs) means feral;
+a humanoid robot (C-3PO, Bender, Megatron) stays a suit entry with `covers_body`. They
+use `creature_class: "Machines"`, a cosplay-only class `validate_data.py` accepts beside
+`CREATURE_CLASSES` (it only decides the "monstrous" adjective, and a generic creature
+never needs it). The look level does not switch a machine back to a person in costume:
+that reading is the render that failed.
+
 **Prose framing.** A feral subject does **not** take the `Cosplaying as X:` prefix —
 that framing tells a t2i model to render a human in a suit, which is precisely the
 failure the path exists to fix. The label is apposed instead: *"Appa (Avatar: The Last
@@ -3592,6 +3604,41 @@ back and rear-three-quarter views swap it in for the entry's `costume` text
 opt-in per entry rather than parsed from the front text, which is the regex-over-prose
 trap. validate_data.py requires a non-empty string on a non-feral entry that has a
 `costume`.
+
+### The lead noun: `subject` (2.1.0)
+
+The first sentence names what the image is of: "a short man with a stocky build". A
+non-human face voiced only in a later sentence (the mask, or `eyes`) loses to that noun.
+Every Tellarite render drew a bearded man in a tunic with no snout, and many mascots drew
+a person holding a plush of the character. An optional `subject` string replaces
+"man"/"woman" in that lead phrase: "a short pig-headed humanoid alien with a stocky
+build", "a life-size Pikachu mascot".
+
+* It is a bare noun phrase: no article, no trailing punctuation. The engine supplies the
+  article and the height and build words around it.
+* It travels as `_SUBJECT_NOUN_KEY` beside the mask and is written to the JSON `_meta`, so
+  a vault reload keeps it. It is in `_COSTUME_META_KEYS`, so a downstream costume drops
+  it, like the mask.
+* The cosplayer node leaves it out on unmask, because the person underneath then shows.
+  It is rejected on a feral entry, which already leads with `creature_of`.
+* Use it when the face is the identity and is not human (aliens, skull heads, animal
+  heads that rendered as a person) and for a mascot that rendered as a person beside a
+  plush ("life-size X mascot"). Give it only after a before/after render shows a gain.
+* A face that still loses with the noun often wins as a **"full-head latex ... mask"** in
+  the mask text (Tellarite, Red Skull): the model knows that object, while a bare "skull-
+  like face" rendered a plain man.
+* Known limit: a single eye. The model draws one eye only in a short prompt about nothing
+  else; the character name or a full-length prompt brings back two (Allen the Alien, Leela).
+  See docs/history.md -> "2.1.0" for the trials.
+
+### Weighted alternate looks: `costume_weights` (2.1.0)
+
+`_pick_look` picks among the canonical `costume` and its `costumes` alternates with a
+plain `rng.choice`. An optional `costume_weights` list (one positive number per look,
+canonical first) switches that entry to `rng.choices` with those weights, so the
+best-known look can lead (Orion: the TOS dancer 2, Gaila's cadet uniform 1). An entry
+without the key keeps the one `rng.choice` call it always made, so no existing seed
+moves. validate_data.py checks the length against the look count.
 
 ## Release history
 

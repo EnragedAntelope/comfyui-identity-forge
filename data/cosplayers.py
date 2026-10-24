@@ -228,6 +228,19 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "pigtails"},
         "physique": {"body_type": "slim", "height": "petite", "skin_tone": "fair", "age": "18"},
     },
+    "Kasane Teto": {
+        "franchise": "UTAU",
+        "gender": "Female",
+        "costume": "a dark grey military-style cropped jacket with a high collar, gold "
+                   "double-breasted buttons, red trim and epaulets, a matching pleated "
+                   "skirt, detached grey sleeves, black thigh-high boots, and red "
+                   "headphones",
+        "eyes": "crimson",
+        "signature": {"hair_color": "deep red", "hair_length": "shoulder length",
+                      "hair_style": "curled pigtails"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "25"},
+    },
     "Android 18": {
         "franchise": "Dragon Ball",
         "gender": "Female",
@@ -3940,6 +3953,29 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "deep blue"},
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "light"},
     },
+    "Noriaki Kakyoin": {
+        "franchise": "JoJo's Bizarre Adventure",
+        "gender": "Male",
+        "costume": "a long dark green gakuran school coat buttoned to the high collar "
+                   "with gold buttons, matching trousers, brown loafers, dangling red "
+                   "cherry earrings, and one long curled forelock of hair hanging down "
+                   "over the face",
+        "eyes": "violet",
+        "signature": {"hair_color": "deep red", "hair_length": "ear length"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "light",
+                     "age": "18"},
+    },
+    "Jonathan Joestar": {
+        "franchise": "JoJo's Bizarre Adventure",
+        "gender": "Male",
+        "costume": "a dark navy sleeveless fitted tunic, a broad brown leather belt, fitted "
+                   "light trousers, brown wristbands, and tall brown boots",
+        "signature": {"hair_color": "navy blue", "hair_length": "ear length",
+                      "hair_texture": "slightly wavy", "eye_color": "deep blue",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "light",
+                     "age": "20"},
+    },
     "Dio Brando": {
         "franchise": "JoJo's Bizarre Adventure",
         "gender": "Male",
@@ -4440,6 +4476,7 @@ COSPLAYERS: dict[str, dict] = {
         # Pokedex: 0.4 m / 1'04" -- TINY tier. "very petite" alone read as a short human.
         "franchise": "Pokemon",
         "gender": "Male",
+        "subject": "life-size Pikachu mascot",
         "covers_face": True,
         "covers_body": True,
         "costume": "a round chubby body of bright yellow fur with two brown stripes on the "
@@ -4519,6 +4556,7 @@ COSPLAYERS: dict[str, dict] = {
         # Pokedex: 0.5 m / 1'08" -- TINY tier.
         "franchise": "Pokemon",
         "gender": "Female",
+        "subject": "life-size Jigglypuff mascot",
         "covers_face": True,
         "covers_body": True,
         "costume": "a round balloon-like pink body with stubby arms and feet and a small "
@@ -4541,6 +4579,7 @@ COSPLAYERS: dict[str, dict] = {
     "Gengar": {
         "franchise": "Pokemon",
         "gender": "Male",
+        "subject": "life-size Gengar mascot",
         "covers_face": True,
         "costume": "a round squat dark purple shadow body covered in small spikes along the "
                    "back, with stubby clawed limbs",
@@ -4556,6 +4595,20 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a sculpted gray Mewtwo face with a small snout, a defined brow, and piercing "
                 "violet eyes",
         "physique": {"body_type": "lean", "height": "very tall"},
+    },
+    "Gardevoir": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "subject": "life-size Gardevoir mascot",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of smooth white skin on a tall slender body, a "
+                   "flowing white gown-like lower body that parts into two long panels at "
+                   "the hem, slender pale green arms, and a red horn-like fin jutting from "
+                   "the chest",
+        "mask": "a white Gardevoir face with large red eyes, framed by a pale green bob of "
+                "hair-like plumes that sweeps across one eye and curls out at both cheeks",
+        "physique": {"body_type": "slender", "height": "tall"},
     },
     "Psyduck": {
         "franchise": "Pokemon",
@@ -5219,9 +5272,14 @@ COSPLAYERS: dict[str, dict] = {
     "Red Skull": {
         "franchise": "Marvel",
         "gender": "Male",
+        "subject": "red-skulled villain",
         "covers_face": True,
         "costume": "a green military uniform under a long black leather coat",
-        "mask": "a skinless crimson skull-like face",
+        # "Full-head latex mask" is what beats the person's face (as for the
+        # Tellarite); a bare "skull-like face" rendered a plain man.
+        "mask": "a full-head red latex Red Skull mask: a hairless bright crimson skull with "
+                "deep black sunken eye sockets, a flat nose cavity and a lipless grin of "
+                "bared teeth",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Baron Zemo": {
@@ -5388,6 +5446,7 @@ COSPLAYERS: dict[str, dict] = {
     "Kilowog": {
         "franchise": "DC",
         "gender": "Male",
+        "subject": "boar-faced Bolovaxian alien",
         "bald": True,
         # covers_face + mask, per the non-human recipe. Without it the engine kept
         # describing a full randomized HUMAN face over a Bolovaxian -- "his face is
@@ -5463,6 +5522,7 @@ COSPLAYERS: dict[str, dict] = {
     "Larfleeze": {
         "franchise": "DC",
         "gender": "Male",
+        "subject": "gaunt orange-skinned alien",
         "bald": True,
         # Same fix as Kilowog: the alien head was being overwritten by a randomized
         # human face while the costume mentioned the ears and grin in passing.
@@ -5717,6 +5777,21 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
         "prop": "a jewel-hilted golden Sword of Protection",
     },
+    "Catra": {
+        # The 2018 Netflix design, so the franchise is the reboot, not Masters of the
+        # Universe (the 1985 She-Ra above).
+        "franchise": "She-Ra and the Princesses of Power",
+        "gender": "Female",
+        "costume": "a fitted maroon top with a pointed neckline, dark brown leggings "
+                   "with torn stirrup feet, a red mask-tiara with pointed ear covers "
+                   "framing the face, furry brown cat ears, and a long brown cat tail",
+        "eyes": "one blue eye and one yellow eye",
+        "signature": {"hair_color": "dark brown", "hair_length": "very long",
+                      "hair_texture": "thick and voluminous",
+                      "hair_style": "windswept"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "warm tan", "age": "22"},
+    },
     "Doom Slayer": {
         "franchise": "Doom",
         "gender": "Male",
@@ -5921,6 +5996,7 @@ COSPLAYERS: dict[str, dict] = {
     "Witch-King of Angmar": {
         "franchise": "The Lord of the Rings",
         "gender": "Male",
+        "subject": "faceless armored wraith",
         # Chief of the Nazgul; the only one whose face is fully sealed behind an iron mask (no eye slits, no visible skin). Spiked iron crown helm is the visual signature that distinguishes him from Sauron's own helm. Size: very tall, NOT giant -- the Witch-king is the tallest Nazgul (~7 ft) but human-scaled, unlike Sauron.
         "covers_face": True,
         "covers_body": True,
@@ -6401,10 +6477,14 @@ COSPLAYERS: dict[str, dict] = {
     "Blue Beetle (Ted Kord)": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a classic late-1980s blue spandex superhero bodysuit with black "
-                   "gloves and boots, a stylized black beetle emblem on the chest, a "
-                   "snug black cowl over the head, and large round black goggles, with "
-                   "the lower face exposed",
+        # 2.1.0 rewrite: the old text said black cowl, gloves and goggles, and rendered a
+        # black hood and black swim goggles. Canon is two blues and yellow goggles.
+        "costume": "a classic 1980s light-blue spandex superhero bodysuit with dark navy-"
+                   "blue gloves, trunks and mid-calf boots, a large dark navy-blue "
+                   "stylized beetle shape spread across the chest and shoulders like an "
+                   "insect's wing-cases, edged in thin black lines, a snug dark navy-blue "
+                   "cowl over the whole head, and large round yellow-lensed goggles over "
+                   "the eyes, with the mouth and chin exposed",
         "covers_hair": True,  # snug cowl encloses the scalp; lower face shows
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
     },
@@ -6887,6 +6967,7 @@ COSPLAYERS: dict[str, dict] = {
     "Orko": {
         "franchise": "Masters of the Universe",
         "gender": "Male",
+        "subject": "faceless little wizard",
         "covers_face": True,
         "costume": "a floating blue robe with a wide red hat, a yellow scarf, and an 'O' "
                    "medallion, with no visible legs",
@@ -7922,7 +8003,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "preppy-punk fashion in plaid, black, white, and yellow, with visible "
                    "stitches on the limbs and neck, small neck bolts, and long black hair "
                    "streaked with white sections, over smooth, flawless pale mint-green skin",
-        "eyes": "one blue and one green",
+        "eyes": "one blue eye and one green eye",
         "signature": {"hair_color": "jet black", "hair_length": "very long",
                       "hair_texture": "sleek straight"},
         "physique": {"body_type": "slim", "height": "tall"},
@@ -8047,9 +8128,12 @@ COSPLAYERS: dict[str, dict] = {
     "Leela": {
         "franchise": "Futurama",
         "gender": "Female",
-        "costume": "a white tank top, black pants, black boots, a yellow jacket, a digital "
-                   "wrist device, and a single large central eye",
+        "costume": "a white tank top, black pants, black boots, a yellow jacket, and a "
+                   "digital wrist device",
         "eyes": "a single large blue eye",
+        # The model still draws two eyes on a human face whatever the wording (2.1.0
+        # trials); the noun at least names the cyclops. See history.md -> "2.1.0".
+        "subject": "one-eyed cyclops woman",
         "signature": {"hair_color": "purple", "hair_length": "very long",
                       "hair_style": "high ponytail"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -8233,10 +8317,12 @@ COSPLAYERS: dict[str, dict] = {
     "Moon Knight": {
         "franchise": "Marvel",
         "gender": "Male",
+        "subject": "faceless masked vigilante",
         "covers_face": True,
         "costume": "a hooded pure-white cloak and bodysuit with a crescent-moon emblem "
                    "on the chest",
-        "mask": "a smooth white face wrapping with no visible features",
+        "mask": "a full-head white cloth mask wrapping the whole face under the hood, "
+                "featureless except for two blank glowing white eyes, with no skin showing",
         "physique": {"body_type": "athletic", "height": "tall"},
         "prop": "a silver crescent-moon throwing dart",
     },
@@ -8494,13 +8580,33 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "lean", "height": "tall"},
     },
     "R2-D2": {
+        # 2.1.0: moved to body_plan "feral". As a suit entry the prose led "a short man
+        # with a stocky build ... He wears a ... droid body" and the gallery drew a man
+        # posing beside R2-D2. The name is famous enough that the model draws the droid
+        # as an object, so nothing human may appear in the sentence.
         "franchise": "Star Wars",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a riveted white-and-blue cylindrical droid body with three "
-                   "mechanical legs",
-        "mask": "a white-and-blue rotating dome head with a single blue photoreceptor eye",
-        "physique": {"body_type": "stocky", "height": "short"},
+        "covers_body": True,
+        "creature_of": "three-legged astromech droid",
+        "creature_class": "Machines",
+        "mask": "a rounded silver dome head set directly on top of the body, with blue "
+                "panels, one large black radar-eye lens and a small round holoprojector "
+                "lens",
+        "costume": "a riveted white cylindrical metal body trimmed with blue panels and "
+                   "vents",
+        "anatomy": {
+            "legs_feet": "two thick legs mounted on the sides of the body, each ending in "
+                         "a wide flat powered foot, plus a shorter third leg under the "
+                         "middle of the body",
+        },
+        "poses": [
+            "standing upright on all three legs",
+            "rolling forward on the powered feet",
+            "standing still with the dome head turned toward the viewer",
+        ],
+        "scale_prose": "small, about three and a half feet tall",
     },
     "C-3PO": {
         "franchise": "Star Wars",
@@ -8512,13 +8618,26 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "average height"},
     },
     "BB-8": {
+        # 2.1.0: moved to body_plan "feral" (see R2-D2): the suit reading drew a man
+        # kneeling beside a BB-8, and nobody can be inside a rolling ball anyway.
         "franchise": "Star Wars",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a rolling spherical white-and-orange droid body",
-        "mask": "a domed white-and-orange head with a single round eye that stays on top "
-                "as it rolls",
-        "physique": {"body_type": "stocky", "height": "petite"},
+        "covers_body": True,
+        "creature_of": "spherical rolling droid",
+        "creature_class": "Machines",
+        "mask": "a small white half-dome head resting directly on top of the ball, banded "
+                "in orange and silver, with one large round black eye-lens and a thin "
+                "antenna",
+        "costume": "a white ball-shaped metal body covered in large orange circular panels "
+                   "with silver centres",
+        "poses": [
+            "rolling forward across the ground",
+            "resting still with the dome head tilted toward the viewer",
+            "rolling with the dome head held level on top",
+        ],
+        "scale_prose": "small, about two feet tall",
     },
     "Captain Rex": {
         "franchise": "Star Wars",
@@ -8758,6 +8877,7 @@ COSPLAYERS: dict[str, dict] = {
     "Ithorian": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "hammerhead Ithorian alien",
         "covers_face": True,
         # Costume was "simple flowing robes, with brown leathery skin" -- no garment
         # detail, and the skin phrase was not in either canonical marker form, so the
@@ -8851,6 +8971,7 @@ COSPLAYERS: dict[str, dict] = {
     "Kuiil": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "pig-faced Ugnaught alien",
         "covers_face": True,
         "costume": "a simple brown leather smock and apron over a stout Ugnaught body with "
                    "leathery pinkish skin",
@@ -9084,15 +9205,17 @@ COSPLAYERS: dict[str, dict] = {
     "Ponda Baba": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "tusked walrus-faced alien",
         "covers_face": True,
         "costume": "a heavy quilted spacer's jacket over a broad hairy body",
-        "mask": "an Aqualish face with coarse fur, a pair of downward walrus tusks, and "
-                "large dark bulbous eyes",
+        "mask": "a hairy walrus-like Aqualish face with coarse brown fur, two thick "
+                "downward-curving tusks jutting from the mouth, and large bulging dark eyes",
         "physique": {"body_type": "stocky", "height": "average height"},
     },
     "Bothan": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "fox-faced Bothan alien",
         "covers_face": True,
         "costume": "a practical belted tunic and vest over a lean fur-covered body",
         "mask": "a fur-covered Bothan face with a short canine muzzle, alert eyes, and large "
@@ -9122,6 +9245,7 @@ COSPLAYERS: dict[str, dict] = {
     "Nien Nunb": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "mouse-faced Sullustan alien",
         "covers_face": True,
         "costume": "an orange Rebel flight suit with a life-support vest and harness",
         "mask": "a Sullustan face with heavy pouched jowls, large round dark eyes, and broad "
@@ -9131,6 +9255,7 @@ COSPLAYERS: dict[str, dict] = {
     "Unkar Plutt": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "blob-headed Crolute alien",
         "covers_face": True,
         "costume": "a grubby junk-boss apron and layered rags over a huge bloated body",
         "mask": "a Crolute face: a large pale fleshy blobby head with small sunken eyes and "
@@ -9319,13 +9444,28 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "very slim", "height": "tall"},
     },
     "Gonk Droid": {
+        # 2.1.0: moved to body_plan "feral" (see R2-D2): the suit reading drew a man's
+        # head poking out of a grey box. A GNK droid has no head at all.
         "franchise": "Star Wars",
         "gender": "Male",
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a boxy gray walking power-droid body shaped like an upright crate, "
-                   "plodding on two stubby thick legs",
-        "mask": "a featureless boxy droid head-end with two small dim photoreceptor lights",
-        "physique": {"body_type": "stocky", "height": "short"},
+        "covers_body": True,
+        "creature_of": "boxy walking power droid",
+        "creature_class": "Machines",
+        "mask": "no separate head, only the flat top of the box body, with two small dim "
+                "round sensor lights on the front face",
+        "costume": "a weathered grey metal body shaped like an upright crate, with ribbed "
+                   "vents and access panels",
+        "anatomy": {
+            "legs_feet": "two short stubby thick legs under the box, with flat square feet",
+        },
+        "poses": [
+            "plodding forward on both stubby legs",
+            "standing still with the front face toward the viewer",
+            "standing in full profile with the whole body in frame",
+        ],
+        "scale_prose": "about three and a half feet tall",
     },
     "2-1B Droid": {
         "franchise": "Star Wars",
@@ -9392,6 +9532,7 @@ COSPLAYERS: dict[str, dict] = {
     "Mynock": {
         "franchise": "Star Wars",
         "gender": "Male",
+        "subject": "eyeless bat-winged creature",
         "covers_face": True,
         "costume": "a winged black leathery parasite body with broad membranous bat-like "
                    "wings and clawed wing-tips",
@@ -9566,6 +9707,32 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a round pink face with large dark oval eyes and rosy oval cheeks",
         "physique": {"body_type": "plump", "height": "very petite"},
     },
+    "Meta Knight": {
+        "franchise": "Kirby",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a small round dark-blue ball-shaped body with white gloves and "
+                   "purple shoes, grey pauldrons lined in yellow, and a long dark-blue "
+                   "cape",
+        "mask": "a silver knight's mask with a T-shaped visor slit showing two glowing "
+                "yellow eyes",
+        "prop": "a golden sword with branching spikes along the blade",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "King Dedede": {
+        "franchise": "Kirby",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of blue fur on a big round penguin body, a red "
+                   "coat with white fur trim and a gold peace-sign emblem on the back, "
+                   "a red-and-yellow zigzag belt, and yellow mittens",
+        "mask": "a round blue penguin face with a wide yellow beak and a smug grin, "
+                "under a red tuque with a white pom-pom and a gold crown-like brim",
+        "prop": "a giant wooden mallet",
+        "physique": {"body_type": "plus size", "height": "tall"},
+    },
     "Fox McCloud": {
         "franchise": "Star Fox",
         "gender": "Male",
@@ -9587,14 +9754,25 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Pac-Man": {
+        # 2.1.0, feral route: as a suit entry every render was a person inside a
+        # yellow disc. As the character itself it rendered as the arcade Pac-Man.
         "franchise": "Pac-Man",
         "gender": "Male",
-        "covers_body": True,
+        "body_plan": "feral",
         "covers_face": True,
-        "costume": "a round bright-yellow disc-shaped body",
-        "mask": "a yellow circular head with a wide wedge-shaped open mouth and two "
-                "small round eyes",
-        "physique": {"body_type": "plump", "height": "average height"},
+        "covers_body": True,
+        "creature_of": "round yellow arcade character",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a perfectly round glossy yellow ball with a wide wedge-shaped mouth cut "
+                "into the front, open like a pie missing a slice",
+        "costume": "smooth, bright yellow plastic-like skin",
+        "anatomy": {"eyes": "one small round black eye above the mouth"},
+        "poses": [
+            "floating just above the ground with the mouth wide open",
+            "rolling forward with the mouth half open",
+            "resting on the floor with the mouth wide open",
+        ],
+        "scale_prose": "small, about two feet across",
     },
     # BioShock had shipped only Big Daddy. The Splicer is the other half of Rapture's
     # visual identity and is a completely different shape -- ruined period formalwear
@@ -9823,6 +10001,7 @@ COSPLAYERS: dict[str, dict] = {
     "SpongeBob SquarePants": {
         "franchise": "Nickelodeon",
         "gender": "Male",
+        "subject": "life-size SpongeBob mascot",
         "covers_face": True,
         "costume": "a white shirt with a red tie, brown square shorts, white knee socks "
                    "with stripes, and black shoes, on a square porous yellow sponge body",
@@ -10122,6 +10301,7 @@ COSPLAYERS: dict[str, dict] = {
     "Eeyore": {
         "franchise": "Winnie the Pooh",
         "gender": "Male",
+        "subject": "life-size Eeyore mascot",
         "covers_body": True,
         "covers_face": True,
         "costume": "an even, all-over coat of grey fur on a small droopy donkey frame, "
@@ -10132,6 +10312,7 @@ COSPLAYERS: dict[str, dict] = {
     "Piglet": {
         "franchise": "Winnie the Pooh",
         "gender": "Male",
+        "subject": "life-size Piglet mascot",
         "covers_face": True,
         "costume": "a pink-and-magenta striped pullover on a tiny piglet body barely "
                    "a foot tall",
@@ -10277,6 +10458,7 @@ COSPLAYERS: dict[str, dict] = {
     "Kool-Aid Man": {
         "franchise": "Kool-Aid",
         "gender": "Male",
+        "subject": "walking Kool-Aid pitcher",
         "covers_face": True,
         "covers_body": True,  # giant glass pitcher shell, no bare skin
         "costume": "a giant smiling glass pitcher body filled with bright red liquid",
@@ -10306,6 +10488,7 @@ COSPLAYERS: dict[str, dict] = {
     "Mr. Peanut": {
         "franchise": "Planters",
         "gender": "Male",
+        "subject": "walking peanut mascot",
         "covers_face": True,
         "covers_body": True,  # full peanut-shell mascot suit, no bare skin
         "costume": "a tan peanut-shell mascot body with slender black arms and legs, "
@@ -11041,6 +11224,7 @@ COSPLAYERS: dict[str, dict] = {
     "Sackboy": {
         "franchise": "LittleBigPlanet",
         "gender": "Male",
+        "subject": "life-size knitted Sackboy",
         "covers_face": True,
         "covers_body": True,
         "costume": "a small, stout knitted brown burlap body with a zipper up the front and "
@@ -11542,11 +11726,12 @@ COSPLAYERS: dict[str, dict] = {
     "Tellarite": {
         "franchise": "Star Trek",
         "gender": "Male",
-        # 1.11.0: the canon head on the mascot route. No render has held the snout yet
-        # (see docs/suggested-additions.md), but the old "shaggy coat of thick facial
-        # and body hair" drew an overcoat, and this text is the accurate one.
+        # 1.11.0: the canon head on the mascot route; the old "shaggy coat of thick
+        # facial and body hair" drew an overcoat. 2.1.0: the snout only held once the
+        # lead noun stopped saying "man" (``subject``).
         "covers_face": True,
         "covers_body": True,
+        "subject": "pig-headed humanoid alien",
         "mask": "a full-head latex pig-faced Tellarite prosthetic mask with a large upturned "
                 "pink pig snout and flared nostrils, two short tusks curving up over the "
                 "lower lip, small deep-set eyes under a heavy wrinkled brow, ruddy pink "
@@ -11554,6 +11739,26 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a heavy padded Tellarite uniform tunic with a high collar on a short, "
                    "broad, barrel-chested frame, and thick gloves",
         "physique": {"body_type": "stocky", "height": "short"},
+    },
+    # The Orion dancer of "The Cage" (TOS) leads; Gaila's cadet uniform (Star Trek
+    # 2009, Lower Decks) is the alternate, weighted down as the less-known look.
+    "Orion": {
+        "franchise": "Star Trek",
+        "gender": "Female",
+        "costume": "a glittering jeweled two-piece dancer's costume of strung beads and "
+                   "metallic sequined panels with sheer trailing veils at the hips, gold "
+                   "bangles stacked on both arms, and smooth, flawless emerald-green skin",
+        "costumes": [
+            {"costume": "a fitted red Starfleet cadet uniform dress with a black collar and "
+                        "a silver delta badge, black knee boots, and smooth, flawless "
+                        "emerald-green skin",
+             "signature": {"hair_color": "bright red", "hair_length": "shoulder length",
+                           "hair_texture": "tightly curled", "hair_style": "worn down"}},
+        ],
+        "costume_weights": [2, 1],
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "hair_style": "worn down"},
+        "physique": {"body_type": "slim", "height": "average height"},
     },
     "Vulcan": {
         "franchise": "Star Trek",
@@ -11670,6 +11875,7 @@ COSPLAYERS: dict[str, dict] = {
     "Voldo": {
         "franchise": "Soul Calibur",
         "gender": "Male",
+        "subject": "faceless contorted figure",
         "bald": True,
         "covers_face": True,
         "costume": "a garish purple leather bondage harness of straps, buckles and metal spikes "
@@ -11980,6 +12186,7 @@ COSPLAYERS: dict[str, dict] = {
     "Allen the Alien": {
         "franchise": "Invincible",
         "gender": "Male",
+        "subject": "one-eyed cyclops alien",
         "covers_face": True,
         "covers_body": True,
         "costume": "a light green compression t-shirt over a white bodysuit with matching light "
@@ -12117,6 +12324,7 @@ COSPLAYERS: dict[str, dict] = {
     "Krampus": {
         "franchise": "Folklore",
         "gender": "Male",
+        "subject": "goat-headed demon",
         "covers_face": True,
         "covers_body": True,
         "costume": "a towering horned demon covered in an even, all-over coat of shaggy "
@@ -12459,11 +12667,13 @@ COSPLAYERS: dict[str, dict] = {
     "Porco Rosso": {
         "franchise": "Studio Ghibli",
         "gender": "Male",
+        "subject": "anthropomorphic pig",
         "covers_face": True,
         "costume": "a tan linen suit worn under a red-brown leather flight jacket, with a "
                    "white silk scarf",
-        "mask": "the head of a pig with a broad pink snout, bristled cheeks and a stubbled "
-                "jaw, wearing a brown leather aviator cap and round goggles pushed up on the brow",
+        "mask": "a pig's head instead of a human head, with a long broad pink snout, floppy "
+                "pig ears, small eyes, bristled cheeks and a stubbled jaw, wearing a brown "
+                "leather aviator cap and round goggles pushed up on the brow",
         "physique": {"body_type": "stocky", "height": "average height"},
     },
     "No-Face": {
@@ -12596,6 +12806,7 @@ COSPLAYERS: dict[str, dict] = {
     "Vivi Ornitier": {
         "franchise": "Final Fantasy",
         "gender": "Male",
+        "subject": "faceless little black mage",
         "covers_face": True,
         "costume": "a patched steel-blue overcoat with a bright green collar, oversized brown "
                    "gloves and boots, and a tall wide-brimmed pointed wizard's hat",
@@ -12625,6 +12836,7 @@ COSPLAYERS: dict[str, dict] = {
     "Ultros": {
         "franchise": "Final Fantasy",
         "gender": "Male",
+        "subject": "octopus creature",
         "covers_face": True,
         "covers_body": True,
         "costume": "the body of a large purple octopus, a bulbous mantle above many long, "
@@ -14471,6 +14683,47 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "orange", "hair_length": "very long", "hair_style": "high ponytail",
                       "eye_color": "amber"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
+    },
+    "Hilda (Pokemon)": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "a white sleeveless top under a black vest, very short frayed denim "
+                   "cutoff shorts, black wristbands, black-and-pink high-top sneakers, a "
+                   "white-and-pink baseball cap, and a pink shoulder bag",
+        "signature": {"hair_color": "medium brown", "hair_length": "long",
+                      "hair_texture": "thick and voluminous", "hair_style": "high ponytail",
+                      "eye_color": "deep blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "light",
+                     "age": "18"},
+        "prop": "a Poke Ball - a palm-sized sphere, red on the top half and white on the "
+                "bottom, split by a black band with a round central button",
+    },
+    "Gloria (Pokemon)": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "a grey knit cardigan buttoned with small brown toggle buttons over a "
+                   "long-sleeved magenta-pink collared dress, green tartan knee socks, "
+                   "brown lace-up boots, a green-and-white tam o'shanter cap, and a brown "
+                   "backpack with gold buckles",
+        "signature": {"hair_color": "warm brown", "hair_length": "chin length bob",
+                      "eye_color": "warm hazel"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+    },
+    "Iono": {
+        "franchise": "Pokemon",
+        "gender": "Female",
+        "costume": "an oversized yellow jacket printed with dark hexagons, its sleeves "
+                   "hanging well past the fingertips, over a black halter top, black "
+                   "shorts, striped thigh-high socks, two round Magnemite-face hair clips, "
+                   "and long two-tone hair - pink on top and bright blue underneath - "
+                   "tied in two very long low pigtails with looped bow-shaped tufts at "
+                   "the crown",
+        "eyes": "pink",
+        "signature": {"hair_color": "hot pink", "hair_length": "waist length",
+                      "hair_style": "low pigtails"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "fair", "age": "18"},
     },
 
     # --- Added batch 3d: Marvel (deep cuts) ---------------------------------
@@ -17322,6 +17575,48 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "curvy", "height": "average height",
                      "skin_tone": "fair"},
     },
+    "Monokuma": {
+        "franchise": "Danganronpa",
+        "gender": "Male",
+        # Mascot-suit case with the Pikachu scale pin: a two-foot bear, never a man.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of plush fur split straight down the middle, "
+                   "white on one half and black on the other, on a round stubby "
+                   "teddy-bear body with a white belly, on a tiny figure about two feet "
+                   "tall",
+        "mask": "a round teddy-bear head split down the middle, the white half with a "
+                "plain black dot eye and a small smile, the black half with a jagged red "
+                "eye and a wide toothy grin",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and about two feet tall",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
+    "Nagito Komaeda": {
+        "franchise": "Danganronpa",
+        "gender": "Male",
+        "costume": "an open long dark green hooded parka over a white T-shirt with a red "
+                   "abstract print, dark grey jeans, and black-and-white sneakers",
+        "eyes": "grey-green",
+        "signature": {"hair_color": "white", "hair_length": "jaw length",
+                      "hair_texture": "thick and voluminous", "hair_style": "tousled bedhead",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "very slim", "height": "tall", "skin_tone": "very pale",
+                     "age": "22"},
+    },
+    "Chiaki Nanami": {
+        "franchise": "Danganronpa",
+        "gender": "Female",
+        "costume": "an open black hooded jacket with cat-ear points on the hood, over a "
+                   "white collared dress shirt with a pink neck ribbon, a dark pleated "
+                   "skirt, black thigh-high socks, a small spaceship-shaped hair clip, "
+                   "and a cat-shaped backpack",
+        "eyes": "pink",
+        "signature": {"hair_color": "strawberry blonde", "hair_length": "chin length bob"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a handheld game console",
+    },
     "Ken Kaneki": {
         "franchise": "Tokyo Ghoul",
         "gender": "Male",
@@ -17542,6 +17837,32 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "tall",
                      "skin_tone": "porcelain"},
         "prop": "a long crimson-shafted spear with a barbed head",
+    },
+    "Mash Kyrielight": {
+        "franchise": "Fate/Grand Order",
+        "gender": "Female",
+        "costume": "a black-and-purple armored bodysuit with a cutout at the midriff, "
+                   "armored gauntlets, and black armored thigh-high boots",
+        "eyes": "violet",
+        "signature": {"hair_color": "lavender", "hair_length": "jaw length",
+                      "hair_style": "side-swept bangs"},
+        "physique": {"body_type": "petite and curvy", "height": "short",
+                     "skin_tone": "fair", "age": "18"},
+        "prop": "an enormous cross-shaped shield nearly as tall as its bearer",
+    },
+    "Tamamo no Mae": {
+        "franchise": "Fate/Grand Order",
+        "gender": "Female",
+        "costume": "a blue off-the-shoulder kimono-style dress with wide detached "
+                   "sleeves, a red obi, white thigh-high stockings, large fluffy pink fox "
+                   "ears, a big fluffy pink fox tail, and long pink hair tied into two low "
+                   "tails with blue ribbons",
+        "eyes": "golden",
+        "signature": {"hair_color": "baby pink", "hair_length": "very long",
+                      "hair_style": "low pigtails"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "fair",
+                     "age": "22"},
+        "prop": "a round bronze ritual mirror",
     },
     "Rebecca (Cyberpunk)": {
         "franchise": "Cyberpunk: Edgerunners",
@@ -18245,6 +18566,32 @@ COSPLAYERS: dict[str, dict] = {
                    "chest, black shorts, white socks, and plain brown shoes",
         "signature": {"hair_color": "light blonde", "hair_length": "buzzed very short"},
     },
+    "Snoopy": {
+        "franchise": "Peanuts",
+        "gender": "Male",
+        # Feral: a dog, nobody inside. The doghouse roof is his signature place.
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "white cartoon beagle",
+        "creature_class": "Mammals",
+        "mask": "a rounded white beagle head with a long rounded snout, a round black "
+                "nose, and long floppy black ears",
+        "costume": "short smooth white fur with no spots",
+        "anatomy": {
+            "eyes": "small black oval eyes",
+            "legs_feet": "four short white legs, the hind pair long enough to stand on",
+            "tail": "a short white tail",
+        },
+        "poses": [
+            "lying belly-up on top of the peaked roof of a red doghouse",
+            "standing upright on the hind legs in a happy dance with the head thrown back",
+            "sitting upright with the ears hanging down",
+        ],
+        "size_scale": "tiny",
+        "scale_prose": "small, about a foot and a half tall",
+        "physique": {"body_type": "slim"},
+    },
     # Classic design leads because it is the look actually cosplayed; the
     # high-school design from the spin-off series is the alternate.
     "Pebbles Flintstone": {
@@ -18301,6 +18648,7 @@ COSPLAYERS: dict[str, dict] = {
     "Rosie the Robot": {
         "franchise": "The Jetsons",
         "gender": "Female",
+        "subject": "robot maid",
         # Fully encased: a metal head AND a metal body, so Face/Hair/Makeup go
         # with covers_face and the leftover skin_tone/ethnicity go with the shell.
         "covers_face": True,
@@ -18439,6 +18787,7 @@ COSPLAYERS: dict[str, dict] = {
     "Ainz Ooal Gown": {
         "franchise": "Overlord",
         "gender": "Male",
+        "subject": "skeletal lich",
         "covers_face": True,
         # A body of bare bone is "not skin", so the shell rule applies: no
         # randomized jewellery on a skeleton, and (with covers_face) no stray
@@ -19129,6 +19478,7 @@ COSPLAYERS: dict[str, dict] = {
     "Mr. Krabs": {
         "franchise": "Nickelodeon",
         "gender": "Male",
+        "subject": "life-size crab mascot",
         "covers_body": True,
         "covers_face": True,
         "mask": "a bright red crab head with two long stalked eyes rising from "
@@ -19442,6 +19792,47 @@ COSPLAYERS: dict[str, dict] = {
                 "a steady flame burning at the crown",
         "physique": {"body_type": "slim", "height": "short"},
     },
+    "Cogsworth": {
+        # 2.1.0. Same body plan as Lumiere (arms and legs where a person's are), so the
+        # same suit route.
+        "franchise": "Beauty and the Beast",
+        "gender": "Male",
+        "covers_body": True,
+        "covers_face": True,
+        "costume": "an ornate carved wooden mantel-clock body with gilded scrollwork, a "
+                   "round white clock face with black hands on the chest, a swinging "
+                   "brass pendulum behind a small glass door at the belly, short "
+                   "wooden arms with white-gloved hands, and stubby wooden legs",
+        "mask": "a scrolled wooden clock-top head with a stern little face, a bristling "
+                "mustache, and a gilded finial at the crown",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    "Mrs. Potts": {
+        # 2.1.0, feral route: a teapot has no limbs at all, so a suit reading would
+        # put a woman beside the pot (the R2-D2 failure).
+        "franchise": "Beauty and the Beast",
+        "gender": "Female",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "living porcelain teapot",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a round white porcelain lid with a small knob, sitting on top like a "
+                "little hat",
+        "costume": "a plump round white porcelain body with a band of blue floral "
+                   "pattern and gold trim",
+        "anatomy": {
+            "eyes": "kind blue eyes in a motherly smiling face with rosy cheeks on the "
+                    "front of the pot",
+            "extras": "a curved spout on one side and a looped handle on the other",
+        },
+        "poses": [
+            "resting on a wooden table with the face turned toward the viewer",
+            "sitting on a silver serving tray",
+            "standing still with the spout turned to one side",
+        ],
+        "scale_prose": "tiny, about ten inches tall",
+    },
     "Edna Mode": {
         "franchise": "The Incredibles",
         "gender": "Female",
@@ -19477,6 +19868,7 @@ COSPLAYERS: dict[str, dict] = {
     "White Rabbit": {
         "franchise": "Alice in Wonderland",
         "gender": "Male",
+        "subject": "rabbit-headed man",
         "covers_body": True,
         "covers_face": True,
         "mask": "a white rabbit head with tall upright ears, pink inner ears, "
@@ -20018,6 +20410,34 @@ COSPLAYERS: dict[str, dict] = {
                       "eye_color": "deep blue"},
         "physique": {"body_type": "slim", "height": "average height",
                      "skin_tone": "fair"},
+    },
+    "Kyubey": {
+        "franchise": "Madoka Magica",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "small white cat-like familiar",
+        "creature_class": "Mythic & Fantasy",
+        "mask": "a small round white cat-like face with a fixed tiny smile and two short "
+                "pointed ears",
+        "costume": "smooth pure white fur, with a red oval marking in the middle of the "
+                   "back",
+        "anatomy": {
+            "eyes": "round glossy red eyes",
+            "legs_feet": "four short slender legs on small white paws",
+            "tail": "a large fluffy white tail curled upward",
+            "extras": "two long white tendrils hanging from inside the ears, each ringed "
+                      "by a floating gold band and tipped with pink",
+        },
+        "poses": [
+            "sitting upright with the tail curled behind",
+            "perched on a ledge with the head tilted toward the viewer",
+            "standing on all four legs looking at the viewer",
+        ],
+        "size_scale": "tiny",
+        "scale_prose": "tiny, about a foot tall",
+        "physique": {"body_type": "slim"},
     },
     "Juvia Lockser": {
         "franchise": "Fairy Tail",
@@ -21281,6 +21701,17 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "facial_hair": "clean shaven"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
     },
+    "Suletta Mercury": {
+        "franchise": "Mobile Suit Gundam",
+        "gender": "Female",
+        "costume": "a white Asticassia pilot-course school jacket with gold shoulder "
+                   "boards and a yellow necktie, white shorts, white knee boots, and a "
+                   "black hairband",
+        "signature": {"hair_color": "deep red", "hair_length": "very long",
+                      "hair_style": "low ponytail", "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "golden tan",
+                     "age": "18"},
+    },
 
     # --- Solo Leveling ----------------------------------------------------
     "Sung Jinwoo": {
@@ -21722,6 +22153,31 @@ COSPLAYERS: dict[str, dict] = {
                       "facial_hair": "clean shaven", "age": "45",
                       "body_type": "lean", "height": "tall"},
         "physique": {"skin_tone": "pale"},
+    },
+    "Codsworth": {
+        # 2.1.0, feral machine route (see Dalek): a sphere on a jet thruster.
+        "franchise": "Fallout",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "three-armed hovering robot butler",
+        "creature_class": "Machines",
+        "mask": "three short eyestalks rising from the top of the body, each ending in a "
+                "round glowing camera eye",
+        "costume": "a polished, slightly tarnished chrome spherical metal body",
+        "anatomy": {
+            "arms": "three jointed mechanical arms hanging below the body, ending in a "
+                    "pincer claw, a circular buzzsaw and a small flamer nozzle",
+            "legs_feet": "a single jet thruster nozzle under the body with a small blue "
+                         "flame",
+        },
+        "poses": [
+            "hovering at chest height on the jet thruster",
+            "hovering with all three eyes turned toward the viewer",
+            "hovering with the claw arm raised as if offering a greeting",
+        ],
+        "scale_prose": "about four feet tall",
     },
     "Inuyasha": {
         "franchise": "Inuyasha",
@@ -22939,6 +23395,33 @@ COSPLAYERS: dict[str, dict] = {
         },
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "deep ebony"},
     },
+    "Claptrap": {
+        # 2.1.0, feral machine route (see Dalek). The old decline rested on "a machine
+        # cannot take the feral route", which lapsed with R2-D2.
+        "franchise": "Borderlands",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "one-wheeled box-shaped robot",
+        "creature_class": "Machines",
+        "mask": "one large round camera-lens eye glowing blue, set in the upper front of "
+                "the box body, with a short antenna on top",
+        "costume": "a bright yellow riveted metal body with grey trim and a dark vent "
+                   "grille below the eye",
+        "anatomy": {
+            "arms": "two thin jointed mechanical arms on the sides of the body",
+            "hands": "small three-fingered grabber hands",
+            "legs_feet": "a single thick rubber wheel under the body",
+        },
+        "poses": [
+            "standing upright on the single wheel with both arms raised in an excited "
+            "wave",
+            "rolling forward on the single wheel",
+            "standing still on the wheel with the eye turned toward the viewer",
+        ],
+        "scale_prose": "small, about three and a half feet tall",
+    },
     "The Invisible Man": {
         "franchise": "Universal Monsters",
         "gender": "Male",
@@ -23123,6 +23606,32 @@ COSPLAYERS: dict[str, dict] = {
                 "confident toothy grin",
         "prop": "a plate of spaghetti",
         "physique": {"body_type": "slim", "height": "very tall"},
+    },
+    "Toriel": {
+        "franchise": "Undertale",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of white fur on a tall motherly frame, dressed "
+                   "in a long purple robe with white sleeves and a white winged Delta Rune "
+                   "emblem on the chest",
+        "mask": "a gentle white-furred goat face with long floppy ears, two small "
+                "rounded horns, red eyes, and a soft smile",
+        "physique": {"body_type": "full figured", "height": "very tall"},
+    },
+    "Undyne": {
+        "franchise": "Undertale",
+        "gender": "Female",
+        # A fish monster: the face is authored in `mask` so no human face draws.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "uniform, all-over blue scaled skin on a tall athletic frame, a black "
+                   "tank top, blue jeans, and red boots",
+        "mask": "a blue-scaled fish-woman face with red finned ears, a black eyepatch "
+                "over the left eye, a single yellow eye, a grin of sharp yellow fangs, "
+                "and a long bright red ponytail tied high",
+        "prop": "a glowing cyan energy spear",
+        "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Cuphead": {
         "franchise": "Cuphead",
@@ -23501,6 +24010,35 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
         "prop": "the Falchion, a longsword with an ornate golden hilt and a "
                 "fang at the base of the blade",
+    },
+    "Edelgard": {
+        # Her Part II emperor look, the one fan art draws.
+        "franchise": "Fire Emblem",
+        "gender": "Female",
+        "costume": "a crimson-and-gold armored imperial gown with gold pauldrons, a long "
+                   "red cape, black gloves, and a gold crown with horn-like spikes",
+        "eyes": "violet",
+        "signature": {"hair_color": "white", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair", "age": "22"},
+        "prop": "a red-bladed battle axe",
+    },
+    "Byleth": {
+        # The default (male) Byleth, the one in Smash.
+        "franchise": "Fire Emblem",
+        "gender": "Male",
+        "costume": "a dark navy mercenary coat with a high collar over a black "
+                   "breastplate, a short black shoulder cape lined in purple, a single "
+                   "black armored gauntlet on one forearm, a dagger sheathed at the hip, "
+                   "and dark tall boots",
+        "eyes": "dark teal",
+        "signature": {"hair_color": "navy blue", "hair_length": "ear length",
+                      "hair_style": "natural and unstyled", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair",
+                     "age": "22"},
+        "prop": "the Sword of the Creator, a segmented sword with a glowing red seam "
+                "running down the blade",
     },
     "Nakoruru": {
         "franchise": "Samurai Shodown",
@@ -24585,6 +25123,59 @@ COSPLAYERS: dict[str, dict] = {
                    "and a chest panel lit with rows of small dials",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
+    "WALL-E": {
+        # 2.1.0, feral machine route (see Dalek): a box on treads has nowhere for a
+        # person to be.
+        "franchise": "WALL-E",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "small trash-compacting robot",
+        "creature_class": "Machines",
+        "mask": "a pair of large binocular-shaped camera eyes on a short folding neck "
+                "above the body",
+        "costume": "a rusty, dented, faded-yellow cube-shaped metal body with a front "
+                   "compactor hatch",
+        "anatomy": {
+            "arms": "two short jointed arms on the sides of the body",
+            "hands": "mitten-like clamp hands",
+            "legs_feet": "a pair of tank treads under the body",
+        },
+        "poses": [
+            "rolling forward on the treads",
+            "standing still on the treads with the binocular eyes tilted toward the "
+            "viewer",
+            "standing on the treads with both arms raised",
+        ],
+        "scale_prose": "small, about two feet tall",
+    },
+    "Johnny 5": {
+        # 2.1.0, feral machine route (see Dalek): treads, no legs. Kept distinct from
+        # WALL-E by the tall thin frame, the grey military finish and the long neck.
+        "franchise": "Short Circuit",
+        "gender": "Male",
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "tall tracked military robot",
+        "creature_class": "Machines",
+        "mask": "a pair of binocular camera eyes with movable eyebrow-like flaps on top "
+                "of a long slender neck",
+        "costume": "a slim grey-and-silver metal frame with exposed wiring and a small "
+                   "laser mounted on one shoulder",
+        "anatomy": {
+            "arms": "two long jointed mechanical arms",
+            "hands": "three-fingered gripper hands",
+            "legs_feet": "a pair of tank treads on a triangular track base",
+        },
+        "poses": [
+            "rolling forward on the treads",
+            "standing on the treads with the head cocked toward the viewer",
+            "standing tall on the treads with both arms spread wide",
+        ],
+        "scale_prose": "about five feet tall",
+    },
     "Princess Ardala": {
         "franchise": "Buck Rogers",
         "gender": "Female",
@@ -24745,6 +25336,34 @@ COSPLAYERS: dict[str, dict] = {
         "mask": "a blank silver helmet with round hollow eye sockets lit faint cold "
                 "blue, a narrow horizontal mouth slit, and a metal handlebar looping "
                 "over the crown between both sides of the head",
+    },
+    "Dalek": {
+        # 2.1.0, feral machine route (architecture.md -> "Writing a feral entry"): no
+        # human limbs anywhere, so a suit entry would add a person beside the casing.
+        # The modern (2005-on) bronze casing, the one most people picture.
+        "franchise": "Doctor Who",
+        "gender": "Male",  # genderless mascot convention -- see Robby the Robot
+        "body_plan": "feral",
+        "covers_face": True,
+        "covers_body": True,
+        "creature_of": "pepperpot-shaped armored war machine",
+        "creature_class": "Machines",
+        "mask": "a rounded metal dome head with a single eyestalk ending in a glowing "
+                "blue lens and two small round lamps on top of the dome",
+        "costume": "a bronze-gold riveted metal casing, rings of slatted grille around the "
+                   "middle and rows of round hemispherical studs down the flared lower "
+                   "skirt",
+        "anatomy": {
+            "arms": "a plunger-tipped manipulator arm and a short gun stick jutting from "
+                    "the front of the middle section",
+            "legs_feet": "a wide flared skirt base sitting flat on the floor",
+        },
+        "poses": [
+            "gliding forward across the floor with the gun stick raised",
+            "standing still with the eyestalk turned toward the viewer",
+            "standing in full profile with the whole casing in frame",
+        ],
+        "scale_prose": "about five feet tall",
     },
     "Dr. Mrs. The Monarch": {
         "franchise": "The Venture Bros",
@@ -25111,6 +25730,7 @@ COSPLAYERS: dict[str, dict] = {
     "Spinal": {
         "franchise": "Killer Instinct",
         "gender": "Male",
+        "subject": "skeleton pirate",
         "bald": True,
         "covers_face": True,
         "covers_body": True,
@@ -25832,6 +26452,22 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "skin_tone": "fair"},
         "prop": "a massive spiked iron kanabo club",
     },
+    "Tony Tony Chopper": {
+        "franchise": "One Piece",
+        "gender": "Male",
+        # His small "brain point" form, with the Pikachu scale pin.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of brown fur on a small upright reindeer body "
+                   "with little hooves, and baggy maroon shorts, on a tiny figure under "
+                   "three feet tall",
+        "mask": "a small round reindeer face with a blue nose and big dark eyes, under a "
+                "pink top hat marked with a white X, small branching antlers poking out "
+                "from under the brim",
+        "size_scale": "tiny",
+        "scale_prose": "tiny and under three feet tall",
+        "physique": {"body_type": "plump", "height": "very petite"},
+    },
     "Kafka (Honkai: Star Rail)": {
         "franchise": "Honkai: Star Rail",
         "gender": "Female",
@@ -26221,6 +26857,32 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "fair"},
         "prop": "a longsword with a winged crest on the guard",
     },
+    "Falin Touden": {
+        "franchise": "Delicious in Dungeon",
+        "gender": "Female",
+        "costume": "a long dark blue robe over a white long-sleeved shirt and white "
+                   "trousers, brown knee-high boots, and a dark blue beret",
+        "signature": {"hair_color": "ash blonde", "hair_length": "shoulder length",
+                      "hair_style": "natural and unstyled", "eye_color": "amber"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "22"},
+        "prop": "a tall mace shaped like an old street lamp",
+    },
+    "Senshi": {
+        "franchise": "Delicious in Dungeon",
+        "gender": "Male",
+        "costume": "a horned dwarven helmet with a chin guard, a sleeveless leather "
+                   "jerkin over bare muscular arms, a belt hung with cooking knives and "
+                   "pouches, leather bracers, sturdy boots, a large round iron cooking pot "
+                   "strapped to the back like a shield, and a very long thick black beard "
+                   "hanging to the waist",
+        "eyes": "small round black",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "facial_hair": "full beard"},
+        "physique": {"body_type": "stocky", "height": "very petite", "skin_tone": "tan",
+                     "age": "50"},
+        "prop": "a mithril cleaver-axe",
+    },
     "Himmel": {
         "franchise": "Frieren: Beyond Journey's End",
         "gender": "Male",
@@ -26306,6 +26968,283 @@ COSPLAYERS: dict[str, dict] = {
                    "coat of yellow feathers, with orange bird feet",
         "physique": {"body_type": "chubby", "height": "short"},
     },
+    # --- 2.1.0: sd-character-finder catalogue survey ------------------------
+    "Reimu Hakurei": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a red-and-white shrine maiden outfit: a red sleeveless top with a "
+                   "yellow neck scarf, white detached sleeves tied at the shoulders, a "
+                   "long red skirt, a large red frilled hair bow, and red-and-white hair "
+                   "tubes on the sidelocks",
+        "signature": {"hair_color": "dark brown", "hair_length": "mid back"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a gohei wand trailing white zigzag paper streamers",
+    },
+    "Marisa Kirisame": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a large black witch hat with a white bow, a black sleeveless dress "
+                   "over a white blouse, a white frilled apron, and black boots",
+        "eyes": "golden yellow",
+        "signature": {"hair_color": "golden blonde", "hair_length": "long",
+                      "hair_style": "side braid"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "fair", "age": "18"},
+        "prop": "a straw broom",
+    },
+    "Sakuya Izayoi": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a blue-and-white maid uniform with a short puffed-sleeve dress, a "
+                   "white frilled apron, a white maid headdress, white thigh-high "
+                   "stockings, and green bows tying two thin braids at the front of the "
+                   "hair",
+        "signature": {"hair_color": "silver", "hair_length": "jaw length",
+                      "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "slightly above average height",
+                     "skin_tone": "pale", "age": "20"},
+        "prop": "a fan of silver throwing knives",
+    },
+    "Yukari Yakumo": {
+        "franchise": "Touhou Project",
+        "gender": "Female",
+        "costume": "a purple Chinese-style tabard marked with trigram symbols over a long "
+                   "pale pink dress, white elbow gloves, and a pink mob cap with a red "
+                   "ribbon",
+        "eyes": "violet",
+        "signature": {"hair_color": "golden blonde", "hair_length": "very long",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "curvy", "height": "tall", "skin_tone": "fair",
+                     "age": "28"},
+        "prop": "a frilled pink parasol",
+    },
+    "Black Rock Shooter": {
+        "franchise": "Black Rock Shooter",
+        "gender": "Female",
+        "costume": "a cropped black hooded jacket with a long tailed back and white stars "
+                   "on the sleeves, a black bikini top, black short shorts with a pale "
+                   "grey belt, knee-high black boots, and a flickering blue flame burning "
+                   "from the left eye",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_style": "pigtails", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "pale",
+                     "age": "18"},
+        "prop": "a huge black rock cannon",
+    },
+    "Shantae": {
+        "franchise": "Shantae",
+        "gender": "Female",
+        "costume": "a red bra top with gold trim, sheer red harem pants, a gold tiara, "
+                   "gold armlets and bracers, big gold hoop earrings, and small pointed "
+                   "ears",
+        "signature": {"hair_color": "purple", "hair_length": "very long",
+                      "hair_style": "high ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "petite and curvy", "height": "short",
+                     "skin_tone": "caramel", "age": "20"},
+    },
+    "Doraemon": {
+        "franchise": "Doraemon",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "skin": "glossy blue",
+        "costume": "an even, all-over coat of glossy blue on a round robot-cat body with "
+                   "a white belly, a white half-moon pouch on the belly, round white ball "
+                   "hands, white feet, and a small red ball-tipped tail",
+        "mask": "a big round blue robot-cat head with a white face, large oval eyes, a "
+                "round red nose, long black whiskers, and a wide smile, above a red "
+                "collar with a gold bell",
+        "physique": {"body_type": "plump", "height": "short"},
+    },
+    "Hello Kitty": {
+        "franchise": "Sanrio",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of white fur on a short round cartoon-cat "
+                   "body, dressed in blue overalls over a yellow shirt",
+        "mask": "a large round white cartoon-cat head with small black oval eyes, a "
+                "yellow oval nose, three black whiskers on each cheek, and a red bow over "
+                "the left ear",
+        "physique": {"body_type": "plump", "height": "short"},
+    },
+    "Kuromi": {
+        "franchise": "Sanrio",
+        "gender": "Female",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of white fur on a short round cartoon body, a "
+                   "black one-piece outfit, and a thin black devil tail with a pointed tip",
+        "mask": "a round white rabbit face with small black eyes, a pink nose, and a "
+                "mischievous grin, inside a black jester hood with two long floppy ear "
+                "points and a pink skull emblem on the front",
+        "physique": {"body_type": "petite and slim", "height": "short"},
+    },
+    "Domo-kun": {
+        # NHK's mascot, worn as a suit at events: the mascot route.
+        "franchise": "Domo",
+        "gender": "Male",
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "an even, all-over coat of shaggy brown fur on a boxy rectangular "
+                   "body with no neck, short stubby arms, and short stubby legs",
+        "mask": "a flat brown furry face that is simply the front of a box-shaped head "
+                "and body in one piece, with two small round black eyes set wide apart and a huge wide-open rectangular mouth lined top "
+                "and bottom with jagged white sawtooth teeth around a red interior",
+        "physique": {"body_type": "stocky", "height": "short"},
+    },
+    # --- 2.1.0: catalogue survey, second tier ---------------------------------
+    "Ruby Rose": {
+        "franchise": "RWBY",
+        "gender": "Female",
+        "costume": "a black corset-laced blouse, a short black skirt with red trim, black "
+                   "stockings, black combat boots, a belt with a silver rose emblem, a "
+                   "long red hooded cloak pinned at the shoulders with silver cross pins, and "
+                   "short black hair fading to red at the tips",
+        "eyes": "silver",
+        "signature": {"hair_color": "black with colored tips", "hair_length": "chin length bob"},
+        "physique": {"body_type": "petite and slim", "height": "short", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a huge folding red-and-black scythe",
+    },
+    "Weiss Schnee": {
+        "franchise": "RWBY",
+        "gender": "Female",
+        "costume": "a white bolero jacket lined in red satin over a pale blue strapless "
+                   "knee-length dress, white wedge-heeled boots, a snowflake-emblem belt, "
+                   "a small tiara-like hair clip, and a thin vertical scar over the left "
+                   "eye",
+        "signature": {"hair_color": "platinum white", "hair_length": "waist length",
+                      "hair_style": "side ponytail", "eye_color": "ice blue"},
+        "physique": {"body_type": "very slim", "height": "short", "skin_tone": "very pale",
+                     "age": "18"},
+        "prop": "a slender silver rapier with a revolving chamber in the hilt",
+    },
+    "Blake Belladonna": {
+        "franchise": "RWBY",
+        "gender": "Female",
+        "costume": "a black buttoned vest with long coattails over a white sleeveless "
+                   "crop top, white shorts, black stockings fading to purple at the ankle, "
+                   "black low-heeled boots, black ribbons wrapped around the forearms, and "
+                   "a large black bow on top of the head",
+        "eyes": "amber",
+        "signature": {"hair_color": "jet black", "hair_length": "very long",
+                      "hair_texture": "wavy", "hair_style": "worn down"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a black katana with a cleaver-shaped sheath",
+    },
+    "Yang Xiao Long": {
+        "franchise": "RWBY",
+        "gender": "Female",
+        "costume": "a cropped tan leather jacket with puffed short sleeves over a yellow "
+                   "crop top with a burning-heart emblem, black shorts with a brown belt, "
+                   "an orange infinity scarf, brown knee boots, and chunky yellow "
+                   "shotgun gauntlets on both forearms",
+        "eyes": "lilac",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_texture": "thick and voluminous", "hair_style": "worn down"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair",
+                     "age": "19"},
+    },
+    "Wild Tiger": {
+        # Kotetsu out of the power armour: the domino-masked look every fan draws.
+        "franchise": "Tiger & Bunny",
+        "gender": "Male",
+        "costume": "a black waistcoat over a white dress shirt with the sleeves rolled up, "
+                   "a loosened green necktie, black trousers, a black-banded khaki hunting "
+                   "cap, and a green domino eye mask",
+        "signature": {"hair_color": "dark brown", "hair_length": "very short",
+                      "eye_color": "amber", "facial_hair": "goatee"},
+        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "light medium",
+                     "age": "38"},
+    },
+    "Barnaby Brooks Jr.": {
+        "franchise": "Tiger & Bunny",
+        "gender": "Male",
+        "costume": "a red leather rider's jacket over a black V-neck shirt, black jeans, "
+                   "brown boots, and black-framed rectangular glasses",
+        "signature": {"hair_color": "golden blonde", "hair_length": "ear length",
+                      "hair_texture": "curly", "eye_color": "green",
+                      "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair",
+                     "age": "25"},
+    },
+    "Nanoha Takamachi": {
+        "franchise": "Magical Girl Lyrical Nanoha",
+        "gender": "Female",
+        "costume": "a white magical-girl battle jacket trimmed in blue with a big red "
+                   "ribbon bow at the chest, a long layered white skirt over blue, white "
+                   "boots, and white fingerless gloves",
+        "eyes": "violet",
+        "signature": {"hair_color": "chestnut", "hair_length": "long",
+                      "hair_style": "side ponytail"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "19"},
+        "prop": "a white-and-gold staff topped by a red jewel set in a gold crescent",
+    },
+    "Fate Testarossa": {
+        "franchise": "Magical Girl Lyrical Nanoha",
+        "gender": "Female",
+        "costume": "a black leotard-style battle suit with a short black skirt trimmed in "
+                   "red, a black cape lined in white, black gloves under gold gauntlets, "
+                   "black thigh-high boots, and black ribbons tying the hair",
+        "eyes": "crimson",
+        "signature": {"hair_color": "golden blonde", "hair_length": "waist length",
+                      "hair_style": "low pigtails"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "fair",
+                     "age": "19"},
+        "prop": "a black axe-headed staff with a gold jewel and a crackling yellow energy "
+                "blade",
+    },
+    "Ragna the Bloodedge": {
+        "franchise": "BlazBlue",
+        "gender": "Male",
+        "costume": "a long red hooded coat with ragged split tails over a black fitted "
+                   "shirt and black trousers, black boots, and a single black glove",
+        "eyes": "one green eye and one red eye",
+        "signature": {"hair_color": "white", "hair_length": "ear length",
+                      "hair_style": "windswept", "facial_hair": "clean shaven"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair",
+                     "age": "22"},
+        "prop": "a huge jagged black broadsword",
+    },
+    "Noel Vermillion": {
+        "franchise": "BlazBlue",
+        "gender": "Female",
+        "costume": "a blue military beret, a short blue jacket with a white collar and a "
+                   "short blue cape, a black necktie, a white bodysuit, a short blue skirt, "
+                   "and black thigh-high stockings",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "eye_color": "bright green"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a pair of ornate silver-and-blue handguns",
+    },
+    "Arcueid Brunestud": {
+        "franchise": "Tsukihime",
+        "gender": "Female",
+        "costume": "a white high-necked long-sleeved turtleneck sweater, a long dark "
+                   "purple skirt, black tights, and brown boots",
+        "eyes": "crimson",
+        "signature": {"hair_color": "light blonde", "hair_length": "jaw length",
+                      "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "22"},
+    },
+    "Serval (Kemono Friends)": {
+        "franchise": "Kemono Friends",
+        "gender": "Female",
+        "costume": "a white sleeveless shirt with a spotted bow tie, a high-waisted "
+                   "orange-yellow spotted skirt, spotted elbow gloves and thigh-high "
+                   "stockings, large spotted serval cat ears, and a long spotted tail",
+        "eyes": "golden",
+        "signature": {"hair_color": "golden blonde", "hair_length": "chin length bob",
+                      "hair_texture": "slightly wavy", "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+    },
 }
 
 
@@ -26320,6 +27259,8 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Cowboy Bebop", "Fate/stay night", "Kill la Kill", "Neon Genesis Evangelion",
         "Sailor Moon", "Attack on Titan", "One Punch Man", "Ghost in the Shell", "Alita: Battle Angel", "Vocaloid",
         "Pokemon", "Madoka Magica", "Studio Ghibli", "Speed Racer",
+        "Black Rock Shooter", "Doraemon", "UTAU", "RWBY", "Tiger & Bunny",  # 2.1.0
+        "Magical Girl Lyrical Nanoha", "Tsukihime", "Kemono Friends",  # 2.1.0
         "Record of Ragnarok",
         "Fairy Tail", "The Seven Deadly Sins", "Date A Live", "Medaka Box",
         "Spy x Family", "Chainsaw Man", "Frieren: Beyond Journey's End",
@@ -26366,6 +27307,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Inside Out", "Raya and the Last Dragon", "Wreck-It Ralph", "The Nightmare Before Christmas", "Coco", "Up",
         "Encanto",
         "Onward",  # 1.4.0
+        "WALL-E",  # 2.1.0
     ),
     "Video Games": (
         "Final Fantasy", "NieR: Automata", "Street Fighter",
@@ -26392,6 +27334,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Undertale", "Cuphead", "Animal Crossing",  # 0.98.0
         "Chrono Trigger", "Clair Obscur: Expedition 33",  # 1.0.0
         "Ghost of Tsushima",  # 1.11.0
+        "Touhou Project", "Shantae", "BlazBlue",  # 2.1.0
         "Xenoblade Chronicles", "Valkyria Chronicles", "Magic: The Gathering",
         "Ace Attorney", "The Rising of the Shield Hero", "A Certain Scientific Railgun",
         "Destiny",  # 1.2.0 -- Mara Sov
@@ -26459,11 +27402,13 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "The Rocketeer", "Barbarella", "Forbidden Planet", "Buck Rogers",
         "Mars Attacks!", "Thunderbirds", "The Toxic Avenger",  # 1.1.0
         "Rocky", "Taroman",  # 1.3.0
+        "Short Circuit", "Domo",  # 2.1.0
     ),
     # NOTE: Food Wars / Amagi Brilliant Park / Prison School are registered under
     # "Anime & Manga" below, not here.
     "Comics & Cartoons": (
         "Avatar: The Last Airbender", "The Legend of Korra", "Masters of the Universe",
+        "She-Ra and the Princesses of Power", "Sanrio",  # 2.1.0
         "Invincible", "Image", "Savage Dragon", "East of West", "Saga", "Bloodshot",
         "Hellboy", "Transformers", "Vampirella", "Rainbow Brite",
         "The Smurfs", "Adventure Time", "Thundercats", "G.I. Joe", "TMNT", "Monster High",

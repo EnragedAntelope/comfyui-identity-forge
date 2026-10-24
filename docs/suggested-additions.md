@@ -23,9 +23,7 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-| Candidate | Case and remaining gate |
-|---|---|
-| Tellarite repair (Star Trek) | The 1.9.0 entry rendered a plain stocky man: no snout, no tusks, and "a shaggy coat of thick facial and body hair" drew an overcoat. 1.10.0 tried four wordings and each failed at the gallery's full-body framing: an authored head in `mask`; that plus `covers_body` (drops the demographics); the canonical porcine description (upturned pig snout, ruddy pink wrinkled leathery skin, tusks over the lip, bushy beard) drew a bearded human; a beardless "boar-faced" head drew a generic ridged alien. 1.11.0 tried the full latex prosthetic head in `mask`, alone and with `covers_body`: the first drew a bearded man, the second a ridged forehead over a beard. 1.11.0 ships the second anyway (the maintainer's call): it is the accurate canon text and drops the overcoat misread, and it renders no worse than the 1.9.0 text. The snout is still open; the one untried idea is a gallery framing override (`_GALLERY_SHOT`) on a close framing so the face is large. |
+Nothing is open; the last row (the Tellarite snout) closed in 2.1.0 with the `subject` lead noun.
 
 **Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, and the
 tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
@@ -112,7 +110,6 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 
 | Krieg (Borderlands) | Near-duplicate of the shipped `Psycho (Borderlands)`, which already carries the bandage mask, the strap harness and the buzz axe. `Zer0` and `Sir Hammerlock` shipped from the same request because neither overlaps anything on the roster. |
 | Maya (Borderlands) | `Lilith (Borderlands)` already carries the glowing blue Siren tattoos down one arm, which is the whole visual identity of the class - and unlike `Amara` (shipped 0.98.0 on the strength of her six arms), Maya has no feature Lilith lacks. |
-| Claptrap (Borderlands) | A one-wheeled box with a single lens. Fails **both** halves of the animal/mascot split: nobody can be inside it (so it is not the mascot-suit case) and it is a machine, not a beast (so `body_plan: "feral"` does not apply either). |
 
 | Faith Lehane, Willow Rosenberg, Cordelia Chase, Anya Jenkins (Buffy the Vampire Slayer) | All four wear similar modern clothing to the shipped `Buffy Summers` (tank tops, jackets, jeans). The only differentiators are hair color and minor style variations, which is not enough visual distinction to earn a separate entry. The roster enforces a uniqueness bar, and these fail it — they would render as "a woman in a leather jacket" without the name doing the work. |
 | Kaguya Shinomiya, Chika Fujiwara, Miko Iino, Ai Hayasaka (Kaguya-sama: Love Is War) | All four wear the same school uniform; only hair color and style differ. This is the exact pattern the uniqueness bar closes against — same costume with cosmetic variations would render as identical silhouettes without the name doing the work. |
@@ -160,7 +157,11 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 | Dan Hibiki, Evil Ryu, Violent Ken, Shin Akuma (Street Fighter) | Recolours or powered-up states of the shipped `Ryu` / `Ken Masters` / `Akuma` gi silhouettes -- the Shadow Jago call. **Evil Ryu ships as a `costumes` alternate on `Ryu`** (torn black gi, red aura, glowing red eyes), which is the shape rule 2 asks for. |
 | Seth, Dee Jay, Necro, Hakan (Street Fighter) | Bare-chested fighters whose remaining garment is trousers; the body alone does not separate them from shipped fighters. |
 | Q, Twelve, JP, Rashid, Sodom (Street Fighter) | Q's trench coat, fedora and featureless mask duplicate the shipped `Rorschach`; Twelve has no worn look at all; JP is an older man in a long coat who needs the name; Rashid and Sodom are narrower cuts whose shapes the roster already carries. |
-| Bastion, Orisa, Echo, Wrecking Ball (Overwatch) | Machines with no worn garments -- the Fulgore and Claptrap calls. Nobody can be inside Wrecking Ball's ball mech. |
+| Bastion, Orisa, Echo (Overwatch) | Humanoid machines with no worn garments -- the Fulgore call. |
+| Wrecking Ball (Overwatch) | Re-decided at 2.1.0 on the feral route and still declined: a hamster pilot inside a ball mech is two subjects in one frame, and Overwatch is already one of the roster's largest game franchises. |
+| BD-1, Mouse Droid (Star Wars), K-9 (Doctor Who) | Considered with the 2.1.0 machine batch. BD-1 is a game-only deep cut; the MSE-6 is a plain black box on wheels; K-9 would render as a generic boxy robot dog. Star Wars and Doctor Who keep their droids in R2-D2, BB-8, Gonk, Chopper and the Dalek. |
+| Hololive VTubers (Gawr Gura and others), Touhou's Remilia, Flandre and Cirno | From the 2.1.0 sd-character-finder survey, whose other survivors shipped. The VTubers are avatars of real performers (maintainer's call). The three Touhou characters fail the child-bodied rule. |
+| Kiana Kaslana (Honkai Impact 3rd), Caesar Zeppeli (JoJo) | From the 2.1.0 survey second tier. Kiana has no one stable outfit (each battlesuit is a different look) and Caesar's outfit colours could not be verified across the manga and anime; the defining items alone (a headband, fingerless gloves) render as a generic man. |
 | The rest of the Overwatch cast (Sigma, Baptiste, Sojourn, Ramattra, Mauga, Lifeweaver, Illari, Venture, Juno, Hazard, Freja, Wuyang) | Real looks, but each repeats a silhouette the curated set already carries (armoured soldier, robed omnic, tattooed brawler, sci-fi ranger). Overwatch stops where new entries stop adding visual ground. |
 | Aether (Genshin Impact) | The same kit and silhouette as the shipped `Lumine` in the other gender; the node's own gender control already crossplays. |
 | Keqing, Nilou, Eula, Xiao, Diluc (Genshin Impact) | Each is a well-drawn anime fantasy look, but the differentiator against a shipped neighbour is hair colour and elemental trim. `Mona`, `Wanderer` and `Arlecchino` shipped because a hat, a hat-and-veil and a pair of X-shaped pupils survive at silhouette scale. |

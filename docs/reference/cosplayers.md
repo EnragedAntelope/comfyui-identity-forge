@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2099 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2154 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (387)
+## Anime & Manga (416)
 
 ### Akame ga Kill
 
@@ -60,6 +60,10 @@
 - **Balalaika** (F)
 - **Revy** (F, prop)
 
+### Black Rock Shooter
+
+- **Black Rock Shooter** (F, prop)
+
 ### Bleach
 
 - **Byakuya Kuchiki** (M)
@@ -104,7 +108,10 @@
 
 ### Danganronpa
 
+- **Chiaki Nanami** (F, prop)
 - **Junko Enoshima** (F)
+- **Monokuma** (M, tiny, masked)
+- **Nagito Komaeda** (M)
 
 ### Darling in the Franxx
 
@@ -134,8 +141,10 @@
 
 ### Delicious in Dungeon
 
+- **Falin Touden** (F, prop)
 - **Laios Touden** (M, prop)
 - **Marcille Donato** (F, prop)
+- **Senshi** (M, prop)
 
 ### Demon Slayer
 
@@ -150,6 +159,10 @@
 - **Shinobu Kocho** (F)
 - **Tanjiro Kamado** (M, prop)
 - **Zenitsu Agatsuma** (M)
+
+### Doraemon
+
+- **Doraemon** (M, masked)
 
 ### Dorohedoro
 
@@ -207,7 +220,9 @@
 ### Fate/Grand Order
 
 - **Jeanne d'Arc (Fate)** (F, prop)
+- **Mash Kyrielight** (F, prop)
 - **Scathach** (F, prop)
+- **Tamamo no Mae** (F, prop)
 
 ### Fate/stay night
 
@@ -308,10 +323,12 @@
 - **Dio Brando** (M)
 - **Giorno Giovanna** (M)
 - **Jolyne Cujoh** (F)
+- **Jonathan Joestar** (M)
 - **Joseph Joestar** (M)
 - **Josuke Higashikata** (M)
 - **Jotaro Kujo** (M)
 - **Lisa Lisa** (F)
+- **Noriaki Kakyoin** (M)
 
 ### Jujutsu Kaisen
 
@@ -326,6 +343,10 @@
 ### Kakegurui
 
 - **Yumeko Jabami** (F)
+
+### Kemono Friends
+
+- **Serval (Kemono Friends)** (F)
 
 ### Kill la Kill
 
@@ -351,6 +372,7 @@
 
 - **Homura Akemi (Devil)** (F)
 - **Kyoko Sakura** (F, prop)
+- **Kyubey** (M, tiny, beast)
 - **Madoka Kaname (Ultimate)** (F, prop)
 - **Mami Tomoe** (F, prop)
 - **Sayaka Miki** (F, prop)
@@ -358,6 +380,11 @@
 ### Magi
 
 - **Morgiana** (F)
+
+### Magical Girl Lyrical Nanoha
+
+- **Fate Testarossa** (F, prop)
+- **Nanoha Takamachi** (F, prop)
 
 ### Medaka Box
 
@@ -370,6 +397,7 @@
 ### Mobile Suit Gundam
 
 - **Char Aznable** (M)
+- **Suletta Mercury** (F)
 
 ### Monogatari
 
@@ -458,6 +486,7 @@
 - **Sanji** (M)
 - **Shanks** (M)
 - **Shirahoshi** (F, giant)
+- **Tony Tony Chopper** (M, tiny, masked)
 - **Trafalgar Law** (M, prop)
 - **Usopp** (M, prop)
 - **Yamato (One Piece)** (F, prop)
@@ -499,9 +528,13 @@
 - **Dawn** (F)
 - **Eevee** (M, tiny, beast)
 - **Elesa** (F)
+- **Gardevoir** (F, masked)
 - **Gary Oak** (M)
 - **Gengar** (M, masked)
+- **Gloria (Pokemon)** (F)
 - **Gyarados** (M, giant, beast)
+- **Hilda (Pokemon)** (F, prop)
+- **Iono** (F)
 - **Iris** (F)
 - **James (Team Rocket)** (M)
 - **Jessie (Team Rocket)** (F)
@@ -531,6 +564,13 @@
 - **Kate Takenomiya** (F)
 - **Mari Kurihara** (F)
 - **Meiko Shiraki** (F, +1 alt)
+
+### RWBY
+
+- **Blake Belladonna** (F, prop)
+- **Ruby Rose** (F, prop)
+- **Weiss Schnee** (F, prop)
+- **Yang Xiao Long** (F)
 
 ### Ranma 1/2
 
@@ -641,6 +681,11 @@
 - **Elizabeth Liones** (F)
 - **Meliodas** (M)
 
+### Tiger & Bunny
+
+- **Barnaby Brooks Jr.** (M)
+- **Wild Tiger** (M)
+
 ### Tokyo Ghoul
 
 - **Ken Kaneki** (M)
@@ -650,6 +695,14 @@
 ### Trigun
 
 - **Vash the Stampede** (M)
+
+### Tsukihime
+
+- **Arcueid Brunestud** (F)
+
+### UTAU
+
+- **Kasane Teto** (F)
 
 ### Urusei Yatsura
 
@@ -679,7 +732,7 @@
 - **Dark Magician Girl** (F, prop)
 - **Yami Yugi** (M)
 
-## Comics & Cartoons (278)
+## Comics & Cartoons (282)
 
 ### Adventure Time
 
@@ -992,6 +1045,7 @@
 ### Peanuts
 
 - **Charlie Brown** (M)
+- **Snoopy** (M, tiny, beast)
 
 ### Peepoodo
 
@@ -1029,6 +1083,11 @@
 
 - **Samurai Jack** (M, prop)
 
+### Sanrio
+
+- **Hello Kitty** (F, masked)
+- **Kuromi** (F, masked)
+
 ### Savage Dragon
 
 - **Savage Dragon** (M, masked)
@@ -1036,6 +1095,10 @@
 ### Scott Pilgrim
 
 - **Ramona Flowers** (F, prop)
+
+### She-Ra and the Princesses of Power
+
+- **Catra** (F)
 
 ### Sheena, Queen of the Jungle
 
@@ -1421,7 +1484,7 @@
 - **Silk Spectre** (F)
 - **The Comedian** (M)
 
-## Disney (112)
+## Disney (115)
 
 ### 101 Dalmatians
 
@@ -1452,8 +1515,10 @@
 - **Babette** (F, +1 alt, prop)
 - **Beast (Beauty and the Beast)** (M, masked)
 - **Belle** (F, prop)
+- **Cogsworth** (M, masked)
 - **Gaston** (M)
 - **Lumiere** (M, masked)
+- **Mrs. Potts** (F, beast)
 
 ### Big Hero 6
 
@@ -1653,6 +1718,10 @@
 ### Up
 
 - **Carl Fredricksen** (M, prop)
+
+### WALL-E
+
+- **WALL-E** (M, beast)
 
 ### Wreck-It Ralph
 
@@ -2034,7 +2103,7 @@
 - **Yondu** (M, prop)
 - **Zuras** (M)
 
-## Movies & TV (239)
+## Movies & TV (243)
 
 ### A Nightmare on Elm Street
 
@@ -2144,9 +2213,14 @@
 ### Doctor Who
 
 - **Cyberman** (M, masked)
+- **Dalek** (M, beast)
 - **The Fourth Doctor** (M)
 - **The Tenth Doctor** (M, prop)
 - **Weeping Angel** (F, masked)
+
+### Domo
+
+- **Domo-kun** (M, masked)
 
 ### Duolingo
 
@@ -2410,6 +2484,10 @@
 
 - **Ghostface** (M, masked, prop)
 
+### Short Circuit
+
+- **Johnny 5** (M, beast)
+
 ### Shrek
 
 - **Lord Farquaad** (M, tiny)
@@ -2446,6 +2524,7 @@
 - **Ilia** (F)
 - **Klingon** (M, prop)
 - **Mr. Spock** (M)
+- **Orion** (F, +1 alt)
 - **Seven of Nine** (F, +3 alt)
 - **Tellarite** (M, masked)
 - **Uhura** (F)
@@ -2632,7 +2711,7 @@
 - **Anakin Skywalker** (M, prop)
 - **Asajj Ventress** (F, prop)
 - **Aurra Sing** (F, prop)
-- **BB-8** (M, masked)
+- **BB-8** (M, beast)
 - **Bantha** (M, giant, beast)
 - **Barriss Offee** (F, prop)
 - **Battle Droid** (M, masked)
@@ -2668,7 +2747,7 @@
 - **Figrin D'an** (M, masked, prop)
 - **Finn** (M)
 - **General Grievous** (M, masked, prop)
-- **Gonk Droid** (M, masked)
+- **Gonk Droid** (M, beast)
 - **Gran** (M, masked)
 - **Grand Admiral Thrawn** (M)
 - **Grand Inquisitor** (M, prop)
@@ -2716,7 +2795,7 @@
 - **Praetorian Guard** (M, masked, prop)
 - **Princess Leia Organa** (F, +5 alt)
 - **Qui-Gon Jinn** (M, prop)
-- **R2-D2** (M, masked)
+- **R2-D2** (M, beast)
 - **Rancor** (M, giant, masked)
 - **Rey** (F, prop)
 - **Sabine Wren** (F)
@@ -2742,7 +2821,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (500)
+## Video Games (515)
 
 ### A Certain Scientific Railgun
 
@@ -2793,6 +2872,11 @@
 
 - **Destined One (Black Myth: Wukong)** (M, masked)
 
+### BlazBlue
+
+- **Noel Vermillion** (F, prop)
+- **Ragna the Bloodedge** (M, prop)
+
 ### BloodRayne
 
 - **Rayne** (F)
@@ -2804,6 +2888,7 @@
 ### Borderlands
 
 - **Amara** (F)
+- **Claptrap** (M, beast)
 - **Handsome Jack** (M)
 - **Lilith (Borderlands)** (F)
 - **Mad Moxxi** (F)
@@ -2962,6 +3047,7 @@
 ### Fallout
 
 - **Brotherhood of Steel Knight** (M, masked)
+- **Codsworth** (M, beast)
 - **Nick Valentine** (M)
 - **The Ghoul** (M, masked, prop)
 - **Vault Dweller** (M)
@@ -3002,6 +3088,8 @@
 ### Fire Emblem
 
 - **Azura** (F)
+- **Byleth** (M, prop)
+- **Edelgard** (F, prop)
 - **Lucina** (F, prop)
 
 ### Gears of War
@@ -3117,7 +3205,9 @@
 
 ### Kirby
 
+- **King Dedede** (M, masked, prop)
 - **Kirby** (M, masked)
+- **Meta Knight** (M, masked, prop)
 
 ### League of Legends
 
@@ -3282,7 +3372,7 @@
 
 ### Pac-Man
 
-- **Pac-Man** (M, masked)
+- **Pac-Man** (M, beast)
 
 ### Persona
 
@@ -3336,6 +3426,10 @@
 ### Samurai Shodown
 
 - **Nakoruru** (F, prop)
+
+### Shantae
+
+- **Shantae** (F)
 
 ### Silent Hill
 
@@ -3519,10 +3613,19 @@
 
 - **Lara Croft** (F, prop)
 
+### Touhou Project
+
+- **Marisa Kirisame** (F, prop)
+- **Reimu Hakurei** (F, prop)
+- **Sakuya Izayoi** (F, prop)
+- **Yukari Yakumo** (F, prop)
+
 ### Undertale
 
 - **Papyrus** (M, masked, prop)
 - **Sans** (M, masked, prop)
+- **Toriel** (F, masked)
+- **Undyne** (F, masked, prop)
 
 ### Valkyria Chronicles
 

@@ -265,6 +265,13 @@ _MASK_KEY = "__mask__"
 #: body twice.
 _ANATOMY_NOTE_KEY = "__anatomy_note__"
 
+#: Reserved key carrying a cosplayer's ``subject`` noun (2.1.0): the lead phrase
+#: uses it in place of "man" / "woman" ("a short pig-headed humanoid alien", "a
+#: one-eyed cyclops woman"). A non-human face named only in a later sentence lost to
+#: "a short man" on render (the Tellarite; Leela drew two eyes). The cosplayer node
+#: omits it on unmask, where the person underneath shows.
+_SUBJECT_NOUN_KEY = "__subject_noun__"
+
 #: Reserved key carrying a cosplayer's ``covers_body`` flag through the parsed dict
 #: (a full hard suit / armour / robot shell / exoskeleton — no skin for worn
 #: jewellery to sit on).
@@ -290,7 +297,7 @@ _SCALE_TIER_KEY = "__scale_tier__"
 #: scale on Hermione, a masked cosplayer suppressing an archetype's whole face).
 _COSTUME_META_KEYS: tuple[str, ...] = (
     "covers_face", "covers_body", "covers_hair", "mask", "size_scale",
-    "anatomy_note",
+    "anatomy_note", "subject",
 )
 
 #: Top-level section name a Modifier node adds to the chained preset document,
@@ -3181,6 +3188,7 @@ def _format_prose(
     presentation: str | None = None,  # APPENDED (1.5.0 round 4)
     feet_visible: bool = True,        # APPENDED (1.7.0): see _FEET_OUT_OF_FRAME_SHOTS
     subject_only: bool = False,       # APPENDED (1.8.0): person + outfit, no pose/scene
+    subject_override: str | None = None,  # APPENDED (2.1.0): see _SUBJECT_NOUN_KEY
 ) -> str:
     """Build a natural-language description from resolved field values.
 
@@ -3213,7 +3221,7 @@ def _format_prose(
     form = species.get("form", "")
     species_lead = bool(slots) and form in (_FORM_ANTHRO, _FORM_FERAL)
     subject_noun = _species_subject(species, gender) if species_lead \
-        else _GENDER_NOUN.get(gender, "person")
+        else (subject_override or _GENDER_NOUN.get(gender, "person"))
     # Anatomy phrases in reading order, plus any extras keyed outside the canon.
     anatomy = [slots[s] for s in _SPECIES_SLOT_ORDER if slots.get(s)]
     anatomy += [v for k, v in slots.items() if k not in _SPECIES_SLOT_ORDER and v]
@@ -3789,6 +3797,7 @@ def _format_json(
     covers_face: bool = False, covers_body: bool = False, covers_hair: bool = False,
     mask_text: str | None = None, anatomy_note: str | None = None, size_scale: str = "",
     omitted: "list[str] | None" = None,
+    subject_noun: str | None = None,
 ) -> str:
     """Build a JSON document: ``_meta`` plus fields nested by group.
 
@@ -3859,6 +3868,8 @@ def _format_json(
         meta["mask"] = mask_text
     if anatomy_note:
         meta["anatomy_note"] = anatomy_note
+    if subject_noun:
+        meta["subject"] = subject_noun
     if size_scale:
         meta["size_scale"] = size_scale
     if omitted:
@@ -3964,6 +3975,7 @@ def generate_character(
     widget_locked: frozenset[str] | None = None,
     mask_text: str | None = None,
     anatomy_note: str | None = None,
+    subject_noun: str | None = None,
     with_subject: Literal[False] = False,
 ) -> tuple[str, str]: ...
 
@@ -3990,6 +4002,7 @@ def generate_character(
     widget_locked: frozenset[str] | None = None,
     mask_text: str | None = None,
     anatomy_note: str | None = None,
+    subject_noun: str | None = None,
     with_subject: Literal[True],
 ) -> tuple[str, str, str]: ...
 
@@ -4016,6 +4029,7 @@ def generate_character(
     widget_locked: frozenset[str] | None = None,
     mask_text: str | None = None,
     anatomy_note: str | None = None,
+    subject_noun: str | None = None,
     with_subject: bool,
 ) -> tuple[str, str] | tuple[str, str, str]: ...
 
@@ -4045,6 +4059,7 @@ def generate_character(
     widget_locked: frozenset[str] | None = None,
     mask_text: str | None = None,
     anatomy_note: str | None = None,
+    subject_noun: str | None = None,
     with_subject: bool = False,  # APPENDED (1.8.0): also return the subject-only prose
 ) -> tuple[str, str] | tuple[str, str, str]:
     """Engine entry point. Returns ``(prose, json_output)``, or
@@ -4549,6 +4564,7 @@ def generate_character(
     prose = _format_prose(prose_fields, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text,
                           anatomy_note=anatomy_note, presentation=presentation,
+                          subject_override=subject_noun,
                           feet_visible=feet_visible)
     # Fields a preset or a widget deliberately locked ABSENT. They are stripped from
     # the group output (``group_fields`` drops "None"), so without recording them the
@@ -4561,6 +4577,7 @@ def generate_character(
         covers_face=covers_face, covers_body=covers_body, covers_hair=covers_hair,
         mask_text=mask_text,
         anatomy_note=anatomy_note,
+        subject_noun=subject_noun,
         # The tier actually in force: the widget overrides a wired character's own,
         # which is the precedence _scale_class applies a few lines above.
         size_scale=(size_scale if size_scale != _SIZE_SCALE_AUTO else character_scale),
@@ -4572,6 +4589,7 @@ def generate_character(
         subject = _format_prose(resolved, gender, cosplay_label, species,
                                 hands_visible=not hands_covered, mask_text=mask_text,
                                 anatomy_note=anatomy_note, presentation=presentation,
+                                subject_override=subject_noun,
                                 feet_visible=True, subject_only=True)
         return prose, json_output, subject
     return prose, json_output
@@ -4699,6 +4717,9 @@ def _parse_archetype_json(raw: str) -> dict[str, Any]:
             head = meta.get("mask")
             if meta.get("covers_face") and isinstance(head, str) and head:
                 flat[_MASK_KEY] = head
+            noun = meta.get("subject")
+            if isinstance(noun, str) and noun:
+                flat[_SUBJECT_NOUN_KEY] = noun
             # NOT gated on covers_face: an anatomy note describes the body, not the
             # head, and every entry it exists for is face-visible. See
             # :data:`_ANATOMY_NOTE_KEY`.
@@ -4778,6 +4799,7 @@ def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str, str]:
     covers_face = bool(archetype.pop(_COVERS_FACE_KEY, None))
     mask_text = archetype.pop(_MASK_KEY, None)
     anatomy_note = archetype.pop(_ANATOMY_NOTE_KEY, None)
+    subject_noun = archetype.pop(_SUBJECT_NOUN_KEY, None)
     covers_body = bool(archetype.pop(_COVERS_BODY_KEY, None))
     covers_hair = bool(archetype.pop(_COVERS_HAIR_KEY, None))
     character_scale = archetype.pop(_SCALE_TIER_KEY, "") or ""
@@ -4861,6 +4883,7 @@ def run_identity_forge(kwargs: dict[str, Any]) -> tuple[str, str, str]:
         widget_locked=widget_locked,
         mask_text=mask_text,
         anatomy_note=anatomy_note,
+        subject_noun=subject_noun,
         with_subject=True,
     )
     return prose, json_output, subject

@@ -211,8 +211,10 @@ const COSPLAYER_FRANCHISES = {
     "Babette",
     "Beast (Beauty and the Beast)",
     "Belle",
+    "Cogsworth",
     "Gaston",
-    "Lumiere"
+    "Lumiere",
+    "Mrs. Potts"
   ],
   "Beetlejuice": [
     "Beetlejuice",
@@ -258,11 +260,18 @@ const COSPLAYER_FRANCHISES = {
   "Black Myth: Wukong": [
     "Destined One (Black Myth: Wukong)"
   ],
+  "Black Rock Shooter": [
+    "Black Rock Shooter"
+  ],
   "Blade Runner": [
     "Pris",
     "Rachael",
     "Rick Deckard",
     "Roy Batty"
+  ],
+  "BlazBlue": [
+    "Noel Vermillion",
+    "Ragna the Bloodedge"
   ],
   "Bleach": [
     "Byakuya Kuchiki",
@@ -297,6 +306,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Borderlands": [
     "Amara",
+    "Claptrap",
     "Handsome Jack",
     "Lilith (Borderlands)",
     "Mad Moxxi",
@@ -610,7 +620,10 @@ const COSPLAYER_FRANCHISES = {
     "Momo Ayase"
   ],
   "Danganronpa": [
-    "Junko Enoshima"
+    "Chiaki Nanami",
+    "Junko Enoshima",
+    "Monokuma",
+    "Nagito Komaeda"
   ],
   "Danger Girl": [
     "Abbey Chase",
@@ -698,8 +711,10 @@ const COSPLAYER_FRANCHISES = {
     "Ryuk"
   ],
   "Delicious in Dungeon": [
+    "Falin Touden",
     "Laios Touden",
-    "Marcille Donato"
+    "Marcille Donato",
+    "Senshi"
   ],
   "Demon Slayer": [
     "Akaza",
@@ -733,9 +748,13 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Doctor Who": [
     "Cyberman",
+    "Dalek",
     "The Fourth Doctor",
     "The Tenth Doctor",
     "Weeping Angel"
+  ],
+  "Domo": [
+    "Domo-kun"
   ],
   "Donkey Kong": [
     "Donkey Kong"
@@ -745,6 +764,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Dora the Explorer": [
     "Dora the Explorer"
+  ],
+  "Doraemon": [
+    "Doraemon"
   ],
   "Dorohedoro": [
     "Nikaido"
@@ -870,6 +892,7 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Fallout": [
     "Brotherhood of Steel Knight",
+    "Codsworth",
     "Nick Valentine",
     "The Ghoul",
     "Vault Dweller"
@@ -893,7 +916,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Fate/Grand Order": [
     "Jeanne d'Arc (Fate)",
-    "Scathach"
+    "Mash Kyrielight",
+    "Scathach",
+    "Tamamo no Mae"
   ],
   "Fate/stay night": [
     "Gilgamesh",
@@ -943,6 +968,8 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Fire Emblem": [
     "Azura",
+    "Byleth",
+    "Edelgard",
     "Lucina"
   ],
   "Firefly": [
@@ -1284,10 +1311,12 @@ const COSPLAYER_FRANCHISES = {
     "Dio Brando",
     "Giorno Giovanna",
     "Jolyne Cujoh",
+    "Jonathan Joestar",
     "Joseph Joestar",
     "Josuke Higashikata",
     "Jotaro Kujo",
-    "Lisa Lisa"
+    "Lisa Lisa",
+    "Noriaki Kakyoin"
   ],
   "Johnny Bravo": [
     "Johnny Bravo"
@@ -1328,6 +1357,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Kellogg's": [
     "Tony the Tiger"
+  ],
+  "Kemono Friends": [
+    "Serval (Kemono Friends)"
   ],
   "Kick-Ass": [
     "Hit-Girl"
@@ -1383,7 +1415,9 @@ const COSPLAYER_FRANCHISES = {
     "Sora"
   ],
   "Kirby": [
-    "Kirby"
+    "King Dedede",
+    "Kirby",
+    "Meta Knight"
   ],
   "KonoSuba": [
     "Aqua (KonoSuba)",
@@ -1498,6 +1532,7 @@ const COSPLAYER_FRANCHISES = {
   "Madoka Magica": [
     "Homura Akemi (Devil)",
     "Kyoko Sakura",
+    "Kyubey",
     "Madoka Kaname (Ultimate)",
     "Mami Tomoe",
     "Sayaka Miki"
@@ -1507,6 +1542,10 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Magic: The Gathering": [
     "Liliana Vess"
+  ],
+  "Magical Girl Lyrical Nanoha": [
+    "Fate Testarossa",
+    "Nanoha Takamachi"
   ],
   "Mars Attacks!": [
     "The Martian Ambassador"
@@ -1799,7 +1838,8 @@ const COSPLAYER_FRANCHISES = {
     "Moana"
   ],
   "Mobile Suit Gundam": [
-    "Char Aznable"
+    "Char Aznable",
+    "Suletta Mercury"
   ],
   "Monogatari": [
     "Hitagi Senjougahara",
@@ -1943,6 +1983,7 @@ const COSPLAYER_FRANCHISES = {
     "Sanji",
     "Shanks",
     "Shirahoshi",
+    "Tony Tony Chopper",
     "Trafalgar Law",
     "Usopp",
     "Yamato (One Piece)"
@@ -2005,7 +2046,8 @@ const COSPLAYER_FRANCHISES = {
     "Stocking Anarchy"
   ],
   "Peanuts": [
-    "Charlie Brown"
+    "Charlie Brown",
+    "Snoopy"
   ],
   "Peepoodo": [
     "Dr. Monique Pussycat"
@@ -2068,9 +2110,13 @@ const COSPLAYER_FRANCHISES = {
     "Dawn",
     "Eevee",
     "Elesa",
+    "Gardevoir",
     "Gary Oak",
     "Gengar",
+    "Gloria (Pokemon)",
     "Gyarados",
+    "Hilda (Pokemon)",
+    "Iono",
     "Iris",
     "James (Team Rocket)",
     "Jessie (Team Rocket)",
@@ -2114,6 +2160,12 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Pulp Fiction": [
     "Mia Wallace"
+  ],
+  "RWBY": [
+    "Blake Belladonna",
+    "Ruby Rose",
+    "Weiss Schnee",
+    "Yang Xiao Long"
   ],
   "Rainbow Brite": [
     "Rainbow Brite"
@@ -2219,6 +2271,10 @@ const COSPLAYER_FRANCHISES = {
   "Samurai Shodown": [
     "Nakoruru"
   ],
+  "Sanrio": [
+    "Hello Kitty",
+    "Kuromi"
+  ],
   "Savage Dragon": [
     "Savage Dragon"
   ],
@@ -2234,11 +2290,20 @@ const COSPLAYER_FRANCHISES = {
   "Scream": [
     "Ghostface"
   ],
+  "Shantae": [
+    "Shantae"
+  ],
+  "She-Ra and the Princesses of Power": [
+    "Catra"
+  ],
   "Sheena, Queen of the Jungle": [
     "Sheena"
   ],
   "Sherlock Holmes": [
     "Sherlock Holmes"
+  ],
+  "Short Circuit": [
+    "Johnny 5"
   ],
   "Shrek": [
     "Lord Farquaad",
@@ -2345,6 +2410,7 @@ const COSPLAYER_FRANCHISES = {
     "Ilia",
     "Klingon",
     "Mr. Spock",
+    "Orion",
     "Seven of Nine",
     "Tellarite",
     "Uhura",
@@ -2927,6 +2993,10 @@ const COSPLAYER_FRANCHISES = {
     "Panthro",
     "Tygra"
   ],
+  "Tiger & Bunny": [
+    "Barnaby Brooks Jr.",
+    "Wild Tiger"
+  ],
   "Tokyo Ghoul": [
     "Ken Kaneki",
     "Rize Kamishiro",
@@ -2940,6 +3010,12 @@ const COSPLAYER_FRANCHISES = {
     "Cyblade",
     "The Darkness (Jackie Estacado)",
     "Velocity"
+  ],
+  "Touhou Project": [
+    "Marisa Kirisame",
+    "Reimu Hakurei",
+    "Sakuya Izayoi",
+    "Yukari Yakumo"
   ],
   "Toy Story": [
     "Bo Peep",
@@ -2960,15 +3036,23 @@ const COSPLAYER_FRANCHISES = {
   "Tron": [
     "Quorra"
   ],
+  "Tsukihime": [
+    "Arcueid Brunestud"
+  ],
   "Twenty Thousand Leagues Under the Sea": [
     "Captain Nemo"
+  ],
+  "UTAU": [
+    "Kasane Teto"
   ],
   "Ultraman": [
     "Ultraman"
   ],
   "Undertale": [
     "Papyrus",
-    "Sans"
+    "Sans",
+    "Toriel",
+    "Undyne"
   ],
   "Underworld": [
     "Selene (Underworld)"
@@ -3009,6 +3093,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Voltron": [
     "Princess Allura"
+  ],
+  "WALL-E": [
+    "WALL-E"
   ],
   "Warhammer 40,000": [
     "Commissar",

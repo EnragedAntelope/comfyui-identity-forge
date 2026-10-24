@@ -1281,3 +1281,116 @@ around it plus a gaze clause, the same incidental drift 0.90.0 and 0.97.0 accept
 samples were rendered and published (Superman, Carhop, owlbear); every other record was
 accepted as-is with the new `render_gallery.py --rehash`, which moves only the recorded
 hash. From here the prose hash flags any entry whose text changes.
+
+## 2.1.0 - droids render as droids, a lead noun for non-human faces, Orion, a picker gender filter
+
+**Random characters are unchanged.** Every change is a roster entry's own text, a new
+roster entry, or the picker UI. Two knock-ons for the Cosplayer node's random picks: the
+three droids and Pac-Man leave the `Masked` scope and the "People only" `random_pool` for `Beast /
+non-humanoid`, and the new entries grow the candidate list, so a fixed seed under any
+`Random - ...` choice can now pick a different character (as at every roster release).
+
+**R2-D2, BB-8 and Gonk Droid moved to `body_plan: "feral"`.** The maintainer saw a man
+posing beside R2-D2 in the gallery. The published BB-8 tile showed the same thing, and Gonk
+showed a man's head out of a grey box. All three were suit entries whose prompt led "a short
+man with a stocky build ... He wears a ... droid body": a famous name makes the model draw the
+machine as an object, and the sentence then adds a person next to it. As feral entries
+("R2-D2 (Star Wars), a three-legged astromech droid, ...") all three rendered as the droid
+alone on the first seed. Chopper and Lumiere stay suit entries: both rendered correctly
+because their long descriptions win, and neither tile is wrong. The feral route was written
+for animals, so this opens it to non-humanoid machines with a cosplay-only
+`creature_class: "Machines"`; see architecture.md -> "Writing a feral entry". The Claptrap
+and Wrecking Ball declines rested on the old "a machine is not a beast" reading, and are
+marked lapsed in suggested-additions.md.
+
+The look level was considered as the switch ("Costume only" = a person in an R2-D2 costume,
+"Full character" = R2-D2 itself) and not built: the person-in-costume reading is exactly the
+render that failed.
+
+**Blue Beetle (Ted Kord) rewritten.** The entry said black cowl, black gloves and boots and
+"large round black goggles", and rendered a black hood with black swim goggles. Canon
+(Wikipedia plus figure references) is a light-blue suit with dark navy gloves, trunks, boots and
+cowl, a dark beetle shape across the chest and shoulders, and yellow goggles. A maintainer-
+supplied description added white lenses and antenna lines on the cowl; no source backed either,
+so neither was used. The first render drew the right suit on a heavy 55-year-old; one
+`--reroll` gave the published tile.
+
+**More machines and enchanted objects.** Claptrap, WALL-E, Dalek, Johnny 5, Codsworth and
+Mrs. Potts ship on the feral route, and Cogsworth on the suit route beside Lumiere (arms and
+legs where a person's are). Every one rendered as the machine or object alone on its first
+seed, with no person in frame. Wrecking Ball, BD-1, the Mouse Droid and K-9 were declined;
+see suggested-additions.md.
+
+**The sd-character-finder survey.** The catalogue (Danbooru, e621 and AnimaDex tags with a
+popularity rank) was ranked against the roster. Its unmatched top is mostly large uniform or
+gacha casts the backlog already closes, so the survivors ship: the first Touhou entries (Reimu
+Hakurei, Marisa Kirisame, Sakuya Izayoi, Yukari Yakumo), Black Rock Shooter, Noriaki Kakyoin,
+Mash Kyrielight, Edelgard (her Part II emperor look), Shantae, Catra (the 2018 reboot, its own
+franchise beside the 1985 She-Ra) and Kasane Teto as worn looks; Toriel, Undyne, Doraemon,
+Hello Kitty, Kuromi, Meta Knight, King Dedede, Monokuma and Tony Tony Chopper on the mascot
+route (the last two with the Pikachu scale pin); Snoopy and Kyubey on the feral route. The
+Hololive VTubers were left out at the maintainer's call; Domo-kun, the maintainer's own pick, joins on the mascot route. Two authoring notes: a body-colour
+clause needs a material noun ("a coat of blue fur"), or the colour capture runs on to the
+next comma and voices "a red skin"; Doraemon uses the `skin` key instead. A feral pose
+sentence follows "He is", so it cannot say "its back".
+
+**Unmask on a droid.** The question was whether "Unmask (show face)" should put a person
+inside a droid. It already does for a suit entry (C-3PO, Lumiere, Cogsworth): a cosplayer
+with the helmet off. It stays a no-op on a feral entry, because a human head on R2-D2's body
+is the Gonk render this release removed. The mask tooltip now says so.
+
+**Roster picker gender filter.** A Female / Male select beside the trait facet. Entries with no
+single gender (creatures, "Any" archetypes) stay visible under both choices. Like the facet,
+it survives closing the picker and resets on reload.
+
+**The lead noun (`subject`).** The Tellarite repair from 1.11.0 stayed open because the
+snout never rendered: the prompt led "a short man with a stocky build" and the mask
+sentence that followed lost to it every time. A new optional `subject` key replaces
+"man"/"woman" in that lead (architecture.md -> "The lead noun: `subject`"). With
+"pig-headed humanoid alien" the Tellarite drew the snout and beard on the first seed. The
+same test ran on every masked or mascot entry whose published tile showed a person, each
+trial at the gallery seed beside the published tile:
+
+- *Kept:* Kuiil, Unkar Plutt, Ithorian, Nien Nunb, Bothan, Kilowog, Larfleeze, Ponda Baba
+  (with a walrus-led mask rewrite), Mynock, Krampus, Ainz, Spinal, Witch-King, Orko, Vivi,
+  and the mascots that had drawn a person holding a plush: Pikachu, Jigglypuff, Gengar,
+  SpongeBob, Mr. Krabs, Eeyore, Piglet, Sackboy, Kool-Aid Man, Mr. Peanut, Rosie the
+  Robot, White Rabbit, Ultros and Voldo. Gardevoir ships with one from the start.
+- *Moved to the feral route instead:* Pac-Man. With the noun it was still a person in a
+  yellow suit; as the character itself ("a round yellow arcade character") it rendered as
+  the arcade Pac-Man alone on both seeds. A cartoon version with arms, gloves and red shoes
+  rendered as well; the arcade disc is the better-known look, and a feral entry has no
+  alternates. A person-in-a-Pac-Man-suit option was not kept: that is the render that failed.
+- *Kept, with a new mask:* the noun alone still drew a plain man for Red Skull and a
+  human face for Moon Knight. Rewritten as "a full-head red latex Red Skull mask" and "a
+  full-head white cloth mask wrapping his whole face", both rendered right on both seeds.
+  Porco Rosso, as "a pig's head instead of a human head", gets the ears and snout on one
+  seed of two; nothing tried did better.
+- *Obscure aliens:* several Star Wars species are close to unknown to the model. They keep
+  the noun and the most specific description sources support; that is where they land.
+
+**One eye is a model limit.** Allen the Alien and Leela are cyclopes, and every render drew
+two eyes. Tried, two seeds each: the noun ("one-eyed cyclops alien", "cyclops woman"); an
+eye phrase saying "no other eyes"; a latex cyclops mask; a cyclops face prosthetic on Leela
+(which also dropped her purple hair); a close-up framing. All failed. A bare prompt ("a
+photo of a big orange cyclops alien with one huge eye in the middle of his face") drew one
+eye on both seeds, so the model can do it, but the same prompt prefixed with "Cosplaying as
+Allen the Alien (Invincible):", or lengthened to the gallery's detail, drew two again. Both
+entries keep the cyclops noun and their best text; Leela's costume no longer lists "a single
+large central eye" as something she wears.
+
+**Two-colour eyes.** An `eyes` override is voiced as "She has <eyes>", so "one blue and one
+yellow" read "one blue and one yellow eyes". Catra, Frankie Stein and Ragna now say "one
+blue eye and one yellow eye" in full.
+
+**Orion.** The TOS dancer (jewelled two-piece, veils, bangles, green skin) is the canonical
+look; Gaila's red Starfleet cadet dress (Kelvin films) is the alternate. The new
+`costume_weights` key leans the pick 2:1 toward the dancer (measured: about a third of seeds
+draw the cadet), without moving any other entry's seeds (architecture.md -> "Weighted
+alternate looks").
+
+**The survey's second tier.** Hilda, Gloria, Iono, Gardevoir (mascot), Byleth, Nagito
+Komaeda, Chiaki Nanami, Jonathan Joestar, Tamamo no Mae, Falin Touden, Senshi, Suletta
+Mercury, the four RWBY leads, Wild Tiger and Barnaby, Nanoha and Fate, Ragna and Noel,
+Arcueid Brunestud and Serval. Kiana Kaslana and Caesar Zeppeli were declined (no one stable
+outfit, colours not verifiable); see suggested-additions.md.

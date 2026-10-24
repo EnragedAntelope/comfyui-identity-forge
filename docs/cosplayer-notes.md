@@ -29,7 +29,11 @@ visible face like Hulk).
 The node's **`mask`** widget controls this per render: **Default** keeps the mask
 on, while **Unmask (show face)** drops the mask *and* clears `covers_face`,
 so the randomized head/hair shows under the suit — a helmet-off look (Tony Stark in
-the Iron Man armor). It is a no-op for face-visible characters. Keeping the head
+the Iron Man armor). It is a no-op for face-visible characters, and for feral
+entries (beasts and non-humanoid droids such as R2-D2): there is no person inside,
+and a human head on a droid body is the render the feral route exists to prevent. A
+humanoid robot on the suit route (C-3PO, Lumiere) does unmask, as a cosplayer with the
+helmet off. Keeping the head
 covering in its own field is what lets it be removed cleanly, with no stray
 "faceplate" reference stranded in the costume prose.
 

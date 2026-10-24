@@ -841,6 +841,33 @@ def validate() -> list[str]:
             elif not entry.get("costume") or body_plan == "feral":
                 errors.append(f"cosplayer '{name}': 'costume_back' needs a worn "
                               f"'costume' to replace")
+        # --- subject (2.1.0) ------------------------------------------
+        # The lead noun for a non-human head ("pig-headed humanoid alien"), voiced
+        # as "a short <subject> with a stocky build". A feral entry already leads
+        # with its own ``creature_of``.
+        noun = entry.get("subject")
+        if noun is not None:
+            if not isinstance(noun, str) or not noun.strip():
+                errors.append(f"cosplayer '{name}': 'subject' must be a non-empty string")
+            elif body_plan == "feral":
+                errors.append(f"cosplayer '{name}': 'subject' is not valid on a feral "
+                              f"entry (it leads with 'creature_of')")
+            elif (noun != noun.strip() or noun.endswith((".", ","))
+                  or noun.split()[0].lower() in ("a", "an", "the")):
+                errors.append(f"cosplayer '{name}': 'subject' is a bare noun phrase (no "
+                              f"article, no trailing punctuation): {noun!r}")
+        # --- costume_weights (2.1.0) ------------------------------------
+        # One positive weight per look, canonical first, so the best-known look can
+        # lead (Orion: the TOS dancer over Gaila's cadet uniform).
+        weights = entry.get("costume_weights")
+        if weights is not None:
+            looks = 1 + len(entry.get("costumes") or [])
+            if (not isinstance(weights, list) or len(weights) != looks
+                    or not all(isinstance(w, (int, float)) and not isinstance(w, bool)
+                               and w > 0 for w in weights)):
+                errors.append(f"cosplayer '{name}': 'costume_weights' needs one positive "
+                              f"number per look ({looks}: the canonical costume, then "
+                              f"each 'costumes' alternate)")
         anatomy = entry.get("anatomy")
         if anatomy is not None:
             if not isinstance(anatomy, dict) or not anatomy:
@@ -863,7 +890,9 @@ def validate() -> list[str]:
             errors.append(f"cosplayer '{name}': 'poses' must be a non-empty list of "
                           f"non-empty strings")
         creature_class = entry.get("creature_class")
-        if creature_class is not None and creature_class not in CREATURE_CLASSES:
+        # "Machines" is cosplay-only (2.1.0): a named droid has no generic creature to
+        # share a class with, and the class only decides the "monstrous" adjective.
+        if creature_class is not None and creature_class not in (*CREATURE_CLASSES, "Machines"):
             errors.append(f"cosplayer '{name}': creature_class {creature_class!r} is not "
                           f"one of {list(CREATURE_CLASSES)}")
         # Required on a feral entry, for the same reason ``creature_of`` is: the node
