@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-10-24T01:42:48.278619",
+  "generated": "2026-10-24T02:38:28.852420",
   "version": "2.1.0",
   "releases": [
     "0.5.0",
@@ -129,10 +129,11 @@
     "1.6.0",
     "1.8.0",
     "1.9.0",
-    "1.11.0"
+    "1.11.0",
+    "2.1.0"
   ],
-  "total_entries": 2099,
-  "entries_with_images": 2099,
+  "total_entries": 2106,
+  "entries_with_images": 2106,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -2929,6 +2930,14 @@
       "image": "images/Claire Redfield.jpeg"
     },
     {
+      "name": "Claptrap",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Borderlands",
+      "added": "2.1.0",
+      "image": "images/Claptrap.jpeg"
+    },
+    {
       "name": "Cloud Strife",
       "has_image": true,
       "gender": "Male",
@@ -2953,12 +2962,28 @@
       "image": "images/Cobra Commander.jpeg"
     },
     {
+      "name": "Codsworth",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Fallout",
+      "added": "2.1.0",
+      "image": "images/Codsworth.jpeg"
+    },
+    {
       "name": "Cody Travers",
       "has_image": true,
       "gender": "Male",
       "group": "Street Fighter",
       "added": "1.4.0",
       "image": "images/Cody Travers.jpeg"
+    },
+    {
+      "name": "Cogsworth",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Beauty and the Beast",
+      "added": "2.1.0",
+      "image": "images/Cogsworth.jpeg"
     },
     {
       "name": "Colonel Sanders",
@@ -3287,6 +3312,14 @@
       "group": "Demon Slayer",
       "added": "0.76.0",
       "image": "images/Daki.jpeg"
+    },
+    {
+      "name": "Dalek",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Doctor Who",
+      "added": "2.1.0",
+      "image": "images/Dalek.jpeg"
     },
     {
       "name": "Danny Phantom",
@@ -7033,6 +7066,14 @@
       "image": "images/John Stewart.jpeg"
     },
     {
+      "name": "Johnny 5",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Short Circuit",
+      "added": "2.1.0",
+      "image": "images/Johnny 5.jpeg"
+    },
+    {
       "name": "Johnny Bravo",
       "has_image": true,
       "gender": "Male",
@@ -10447,6 +10488,14 @@
       "group": "Star Trek",
       "added": "0.7.0",
       "image": "images/Mr. Spock.jpeg"
+    },
+    {
+      "name": "Mrs. Potts",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Beauty and the Beast",
+      "added": "2.1.0",
+      "image": "images/Mrs. Potts.jpeg"
     },
     {
       "name": "Ms. Marvel (Kamala Khan)",
@@ -16095,6 +16144,14 @@
       "group": "Marvel",
       "added": "0.19.0",
       "image": "images/Vulture.jpeg"
+    },
+    {
+      "name": "WALL-E",
+      "has_image": true,
+      "gender": "Male",
+      "group": "WALL-E",
+      "added": "2.1.0",
+      "image": "images/WALL-E.jpeg"
     },
     {
       "name": "Waluigi",
