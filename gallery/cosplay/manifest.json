@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-10-24T02:38:28.852420",
+  "generated": "2026-10-24T08:45:30.066860",
   "version": "2.1.0",
   "releases": [
     "0.5.0",
@@ -132,8 +132,8 @@
     "1.11.0",
     "2.1.0"
   ],
-  "total_entries": 2106,
-  "entries_with_images": 2106,
+  "total_entries": 2128,
+  "entries_with_images": 2128,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1786,6 +1786,14 @@
       "image": "images/Black Panther.jpeg"
     },
     {
+      "name": "Black Rock Shooter",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Black Rock Shooter",
+      "added": "2.1.0",
+      "image": "images/Black Rock Shooter.jpeg"
+    },
+    {
       "name": "Black Widow",
       "has_image": true,
       "gender": "Female",
@@ -2576,6 +2584,14 @@
       "group": "Studio Ghibli",
       "added": "0.95.0",
       "image": "images/Catbus.jpeg"
+    },
+    {
+      "name": "Catra",
+      "has_image": true,
+      "gender": "Female",
+      "group": "She-Ra and the Princesses of Power",
+      "added": "2.1.0",
+      "image": "images/Catra.jpeg"
     },
     {
       "name": "Catwoman",
@@ -3914,6 +3930,14 @@
       "image": "images/Dora the Explorer.jpeg"
     },
     {
+      "name": "Doraemon",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Doraemon",
+      "added": "2.1.0",
+      "image": "images/Doraemon.jpeg"
+    },
+    {
       "name": "Dorothy Gale",
       "has_image": true,
       "gender": "Female",
@@ -4144,6 +4168,14 @@
       "group": "The Owl House",
       "added": "1.0.0",
       "image": "images/Eda Clawthorne.jpeg"
+    },
+    {
+      "name": "Edelgard",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Fire Emblem",
+      "added": "2.1.0",
+      "image": "images/Edelgard.jpeg"
     },
     {
       "name": "Edna Mode",
@@ -6018,6 +6050,14 @@
       "image": "images/Hellcat.jpeg"
     },
     {
+      "name": "Hello Kitty",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Sanrio",
+      "added": "2.1.0",
+      "image": "images/Hello Kitty.jpeg"
+    },
+    {
       "name": "Hera Syndulla",
       "has_image": true,
       "gender": "Female",
@@ -7546,6 +7586,14 @@
       "image": "images/Karnak.jpeg"
     },
     {
+      "name": "Kasane Teto",
+      "has_image": true,
+      "gender": "Female",
+      "group": "UTAU",
+      "added": "2.1.0",
+      "image": "images/Kasane Teto.jpeg"
+    },
+    {
       "name": "Kassandra",
       "has_image": true,
       "gender": "Female",
@@ -7802,6 +7850,14 @@
       "image": "images/King Bradley.jpeg"
     },
     {
+      "name": "King Dedede",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Kirby",
+      "added": "2.1.0",
+      "image": "images/King Dedede.jpeg"
+    },
+    {
       "name": "King Ghidorah",
       "has_image": true,
       "gender": "Male",
@@ -8042,6 +8098,14 @@
       "image": "images/Kurapika.jpeg"
     },
     {
+      "name": "Kuromi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Sanrio",
+      "added": "2.1.0",
+      "image": "images/Kuromi.jpeg"
+    },
+    {
       "name": "Kurumi Tokisaki",
       "has_image": true,
       "gender": "Female",
@@ -8112,6 +8176,14 @@
       "group": "Madoka Magica",
       "added": "0.77.0",
       "image": "images/Kyoko Sakura.jpeg"
+    },
+    {
+      "name": "Kyubey",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Madoka Magica",
+      "added": "2.1.0",
+      "image": "images/Kyubey.jpeg"
     },
     {
       "name": "L Lawliet",
@@ -9402,6 +9474,14 @@
       "image": "images/Marisa.jpeg"
     },
     {
+      "name": "Marisa Kirisame",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Touhou Project",
+      "added": "2.1.0",
+      "image": "images/Marisa Kirisame.jpeg"
+    },
+    {
       "name": "Marnie",
       "has_image": true,
       "gender": "Female",
@@ -9472,6 +9552,14 @@
       "group": "Mary Poppins",
       "added": "0.18.0",
       "image": "images/Mary Poppins.jpeg"
+    },
+    {
+      "name": "Mash Kyrielight",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Fate/Grand Order",
+      "added": "2.1.0",
+      "image": "images/Mash Kyrielight.jpeg"
     },
     {
       "name": "Master Chief",
@@ -9816,6 +9904,14 @@
       "group": "Elden Ring",
       "added": "1.11.0",
       "image": "images/Messmer the Impaler.jpeg"
+    },
+    {
+      "name": "Meta Knight",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Kirby",
+      "added": "2.1.0",
+      "image": "images/Meta Knight.jpeg"
     },
     {
       "name": "Mewtwo",
@@ -10280,6 +10376,14 @@
       "group": "Kim Possible",
       "added": "0.69.0",
       "image": "images/Monkey Fist.jpeg"
+    },
+    {
+      "name": "Monokuma",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Danganronpa",
+      "added": "2.1.0",
+      "image": "images/Monokuma.jpeg"
     },
     {
       "name": "Moogle",
@@ -10992,6 +11096,14 @@
       "group": "Black Clover",
       "added": "1.0.0",
       "image": "images/Noelle Silva.jpeg"
+    },
+    {
+      "name": "Noriaki Kakyoin",
+      "has_image": true,
+      "gender": "Male",
+      "group": "JoJo's Bizarre Adventure",
+      "added": "2.1.0",
+      "image": "images/Noriaki Kakyoin.jpeg"
     },
     {
       "name": "Nosferatu",
@@ -12370,6 +12482,14 @@
       "image": "images/Rei Ayanami.jpeg"
     },
     {
+      "name": "Reimu Hakurei",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Touhou Project",
+      "added": "2.1.0",
+      "image": "images/Reimu Hakurei.jpeg"
+    },
+    {
       "name": "Reinhardt",
       "has_image": true,
       "gender": "Male",
@@ -13090,6 +13210,14 @@
       "image": "images/Sakura Kasugano.jpeg"
     },
     {
+      "name": "Sakuya Izayoi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Touhou Project",
+      "added": "2.1.0",
+      "image": "images/Sakuya Izayoi.jpeg"
+    },
+    {
       "name": "Salaak",
       "has_image": true,
       "gender": "Male",
@@ -13626,6 +13754,14 @@
       "image": "images/Shanna the She-Devil.jpeg"
     },
     {
+      "name": "Shantae",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Shantae",
+      "added": "2.1.0",
+      "image": "images/Shantae.jpeg"
+    },
+    {
       "name": "Shao Kahn",
       "has_image": true,
       "gender": "Male",
@@ -14032,6 +14168,14 @@
       "group": "Team Fortress 2",
       "added": "0.88.0",
       "image": "images/Sniper (Team Fortress 2).jpeg"
+    },
+    {
+      "name": "Snoopy",
+      "has_image": true,
+      "gender": "Male",
+      "group": "Peanuts",
+      "added": "2.1.0",
+      "image": "images/Snoopy.jpeg"
     },
     {
       "name": "Snorlax",
@@ -15522,6 +15666,14 @@
       "image": "images/Tony Stark.jpeg"
     },
     {
+      "name": "Tony Tony Chopper",
+      "has_image": true,
+      "gender": "Male",
+      "group": "One Piece",
+      "added": "2.1.0",
+      "image": "images/Tony Tony Chopper.jpeg"
+    },
+    {
       "name": "Tony the Tiger",
       "has_image": true,
       "gender": "Male",
@@ -15560,6 +15712,14 @@
       "group": "Overwatch",
       "added": "1.4.0",
       "image": "images/Torbjorn.jpeg"
+    },
+    {
+      "name": "Toriel",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Undertale",
+      "added": "2.1.0",
+      "image": "images/Toriel.jpeg"
     },
     {
       "name": "Toshiro Hitsugaya",
@@ -15800,6 +15960,14 @@
       "group": "The Addams Family",
       "added": "0.59.0",
       "image": "images/Uncle Fester.jpeg"
+    },
+    {
+      "name": "Undyne",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Undertale",
+      "added": "2.1.0",
+      "image": "images/Undyne.jpeg"
     },
     {
       "name": "Unkar Plutt",
@@ -16656,6 +16824,14 @@
       "group": "Jujutsu Kaisen",
       "added": "0.16.0",
       "image": "images/Yuji Itadori.jpeg"
+    },
+    {
+      "name": "Yukari Yakumo",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Touhou Project",
+      "added": "2.1.0",
+      "image": "images/Yukari Yakumo.jpeg"
     },
     {
       "name": "Yumeko Jabami",
