@@ -217,7 +217,6 @@ and only the first was visible:
 2. **The identity was not actually fixed.** `index` advances between queues, so a complete set
    took N queues — and any upstream preset left on `control_after_generate="randomize"`
    re-rolled the character between them. A "turnaround" of six different people.
-3. It needed the ComfyUI#11905 NaN signature purely to work around its own `index` widget.
 
 The rewrite deletes the questions rather than documenting answers, on one line:
 **Identity Forge owns the character and the scene; the Turnaround owns only the camera.**
@@ -233,9 +232,6 @@ The rewrite deletes the questions rather than documenting answers, on one line:
   negative prompt, model, latent — broadcast off their last element (`slice_dict`). One queue,
   the whole set, from a single upstream resolution. Which also means an upstream node left on
   `randomize` is now a *feature*: each queue is one new character × N coherent views.
-- **No `fingerprint_inputs`.** With no auto-advancing widget and no RNG the node is a pure
-  function of its inputs, so ComfyUI's normal caching is correct — see the counter-example
-  note under "Seeded nodes re-roll every queue".
 - **`shot_type` is composed, not picked.** That field mixes distance ("full body shot"),
   orientation ("side profile") and lens in one pool, so a turnaround cannot express both halves
   by choosing a value. `compose_shot()` emits `"<distance>, <rotation>"`. The free text survives
@@ -321,10 +317,7 @@ each of these. The Turnaround shipped its first draft missing the last two.
 3. `scripts/dump_frontend_fixtures.py` — `_NODE_CLASSES`. The fixture is what the jsdom
    suite builds fake nodes from, so a node absent from that map has **no** frontend
    coverage and its `--check` gate silently passes forever.
-4. `fingerprint_inputs` returning NaN **if** any widget sets `control_after_generate` —
-   see "Seeded nodes re-roll every queue" below. The trigger is the auto-advancing
-   widget, not the presence of a seed.
-5. A tooltip on **every** input. There is no lint for this; the frontend fixture records
+4. A tooltip on **every** input. There is no lint for this; the frontend fixture records
    widget names and defaults, not help text, so only `tests/test_*.py` can hold the line
    (`test_every_widget_carries_a_tooltip`).
 
@@ -2554,16 +2547,6 @@ README gets a short "Using with Stylebook" section mirroring Stylebook's own, an
   Full preset comes out in tennis whites with a human tone, losing the green. To **layer** a tilt
   onto a cosplay instead of overwriting it, set the archetype (or cosplayer) to **Essentials** so it
   emits only the look groups and leaves the rest to flow through.
-- **Every node with an auto-advancing widget re-executes each queue via `fingerprint_inputs`.**
-  `IdentityForge`, `Archetype`, `Cosplayer` and `Creature` return `float("nan")` from
-  `fingerprint_inputs`, forcing ComfyUI to re-execute them -- otherwise a widget advanced by
-  `control_after_generate` can be served from cache and the output "sticks" (ComfyUI#11905).
-  The trigger is the auto-advancing widget, not the seed as such. Pure cache control (no RNG):
-  a *fixed* seed still reproduces exactly, and identical output keeps expensive downstream nodes
-  cached. **The Turnaround is the counter-example and stays one:** it carries no
-  `control_after_generate` widget and no RNG, so it is a pure function of its inputs and
-  ComfyUI's normal caching is correct for it. It had the NaN signature at 0.98.0 only because
-  its `index` combo auto-advanced; 0.99.0 deleted the widget, so the workaround went with it.
 - Adding RNG draws in the creature node mid-sequence shifts seed→creature mapping — append draws
   at the end.
 - The roster is large (~1300 cosplayers across ~263 franchises, ~195 creatures): always grep
@@ -3452,13 +3435,6 @@ rolled gender), and the loud full-roster fallback fires only if the pool is stil
 that relaxation. This means `random_pool` **stacks** with `random_scope` — "Franchise: Pokemon" +
 "Mascot suits and beasts only" is a real, correctly-intersected query, not two competing filters
 that only one of which can win.
-
-**`fingerprint_inputs` needed no change.** This node's `fingerprint_inputs` already ignores every
-kwarg and unconditionally returns `float("nan")` — a pre-existing workaround for
-ComfyUI#11905 that forces a re-roll on every queue regardless of any single field's value. Since
-caching is already bypassed for every input, there is nothing to add for `random_pool`
-specifically; the code documents this in a comment rather than a no-op kwargs read that would
-otherwise look like an oversight to a future reader.
 
 `_announce_scope` folds `pool` into its cache key and message text, but the default pool
 (`All characters`) omits the note entirely, so a pre-1.1.0 announcement string is unchanged
