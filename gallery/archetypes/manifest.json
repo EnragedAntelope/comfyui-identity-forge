@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "archetypes",
-  "generated": "2026-10-20T21:01:35.781365",
-  "version": "2.0.0",
+  "generated": "2026-10-28T15:27:49.096148",
+  "version": "2.2.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -129,10 +129,12 @@
     "1.6.0",
     "1.8.0",
     "1.9.0",
-    "1.11.0"
+    "1.11.0",
+    "2.1.0",
+    "2.2.0"
   ],
-  "total_entries": 287,
-  "entries_with_images": 287,
+  "total_entries": 291,
+  "entries_with_images": 291,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -1177,6 +1179,14 @@
       "image": "images/Hazmat Technician.jpeg"
     },
     {
+      "name": "Heian Court",
+      "has_image": true,
+      "gender": "Any",
+      "group": "evening formal",
+      "added": "2.2.0",
+      "image": "images/Heian Court.jpeg"
+    },
+    {
       "name": "Highland Scot",
       "has_image": true,
       "gender": "Any",
@@ -1465,6 +1475,14 @@
       "image": "images/Mechanic.jpeg"
     },
     {
+      "name": "Medieval Monarch",
+      "has_image": true,
+      "gender": "Any",
+      "group": "evening formal",
+      "added": "2.2.0",
+      "image": "images/Medieval Monarch.jpeg"
+    },
+    {
       "name": "Medieval Peasant",
       "has_image": true,
       "gender": "any",
@@ -1607,6 +1625,14 @@
       "group": "evening formal",
       "added": "0.5.0",
       "image": "images/Orchestra Conductor.jpeg"
+    },
+    {
+      "name": "Ottoman Court",
+      "has_image": true,
+      "gender": "Any",
+      "group": "evening formal",
+      "added": "2.2.0",
+      "image": "images/Ottoman Court.jpeg"
     },
     {
       "name": "Outback Bushman",
@@ -1839,6 +1865,14 @@
       "group": "athletic",
       "added": "0.17.0",
       "image": "images/Rock Climber.jpeg"
+    },
+    {
+      "name": "Rococo Courtier",
+      "has_image": true,
+      "gender": "Any",
+      "group": "evening formal",
+      "added": "2.2.0",
+      "image": "images/Rococo Courtier.jpeg"
     },
     {
       "name": "Rodeo Rider",
