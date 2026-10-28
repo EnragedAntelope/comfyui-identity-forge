@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**287 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**291 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Any]
@@ -135,6 +135,7 @@
 - **Halfling Rogue** -- casual
 - **Hanfu** [Any] -- vintage retro
 - **Hazmat Technician** -- athletic
+- **Heian Court** [Any] -- evening formal
 - **Highland Scot** [Any]
 - **Highwayman** [Male] -- vintage retro
 - **Hockey Goalie** -- athletic
@@ -171,6 +172,7 @@
 - **Matador** [Any] -- evening formal
 - **McBling Socialite** [Female] -- streetwear
 - **Mechanic** [Any] -- edgy alternative
+- **Medieval Monarch** [Any] -- evening formal
 - **Medieval Peasant** -- casual
 - **Metalhead** [Any] -- edgy alternative
 - **Metrosexual** [Male] -- smart casual
@@ -189,6 +191,7 @@
 - **Oktoberfest** [Any]
 - **Opera Singer** [Any]
 - **Orchestra Conductor** -- evening formal
+- **Ottoman Court** [Any] -- evening formal
 - **Outback Bushman** [Male] -- casual
 - **Paramedic** -- athletic
 - **Parisian Chic** [Any]
@@ -218,6 +221,7 @@
 - **Roaring Flapper** [Female] -- vintage retro
 - **Roaring Twenties Gent** [Male] -- vintage retro
 - **Rock Climber** [Any] -- athletic
+- **Rococo Courtier** [Any] -- evening formal
 - **Rodeo Rider** [Any] -- vintage retro
 - **Roller Derby** [Any] -- athletic
 - **Roman Centurion** [Male] -- athletic

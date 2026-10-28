@@ -3,7 +3,7 @@
 
 # Cosplayer reference
 
-**2154 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2160 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
 ## Anime & Manga (416)
 
@@ -1283,7 +1283,7 @@
 - **Suprema** (F)
 - **Vogue** (F)
 
-## DC (178)
+## DC (179)
 
 ### DC
 
@@ -1405,7 +1405,7 @@
 - **Ratcatcher 2** (F, prop)
 - **Red Claw** (F)
 - **Red Hood** (M, masked)
-- **Reverse-Flash** (M)
+- **Reverse-Flash** (M, masked)
 - **Rick Flag** (M, prop)
 - **Robin** (M)
 - **Rose Wilson** (F, prop)
@@ -1438,6 +1438,7 @@
 - **Tomar-Re** (M)
 - **Two-Face** (M, prop)
 - **Vixen** (F)
+- **Volcana** (F)
 - **Waverider** (M)
 - **Wildcat** (M, masked)
 - **Wonder Girl (Cassie Sandsmark)** (F)
@@ -2821,7 +2822,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (515)
+## Video Games (520)
 
 ### A Certain Scientific Railgun
 
@@ -2930,15 +2931,20 @@
 
 ### Cyberpunk 2077
 
+- **Adam Smasher** (M, masked)
 - **Johnny Silverhand** (M)
 - **Judy Alvarez** (F)
 - **Panam Palmer** (F, prop)
+- **Song So Mi** (F, +1 alt)
 
 ### Cyberpunk: Edgerunners
 
 - **David Martinez** (M)
+- **Kiwi** (F)
 - **Lucy** (F)
-- **Rebecca (Cyberpunk)** (F, prop)
+- **Maine** (M)
+- **Rebecca (Cyberpunk)** (F, +1 alt, prop)
+- **Talia Yang** (F)
 
 ### Dark Souls
 

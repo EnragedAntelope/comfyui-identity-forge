@@ -1270,7 +1270,8 @@ for _places, _styles in (
       "art gallery opening night", "grand cathedral interior",
       "hotel lobby with marble floors", "grand hotel suite",
       "cruise ship interior corridor", "the back seat of a taxi", "rooftop cocktail bar",
-      "rooftop terrace overlooking the skyline", "castle courtyard"], _DRESSY),
+      "rooftop terrace overlooking the skyline", "castle courtyard",
+      "gilded palace throne room"], _DRESSY),
     (["walk-in closet with mirrors", "tiled bathroom with a large mirror",
       "tidy bedroom with a neatly made bed"], _DRESSY | {"business formal"}),
     # A night out, a date, a wedding guest -- cocktail but not black tie.
@@ -1340,7 +1341,8 @@ for _places, _styles in (
       "luxury retail boutique", "department store perfume counter",
       "courtroom", "grand cathedral interior", "small chapel interior",
       "mosque interior", "synagogue interior", "Buddhist temple hall",
-      "Shinto shrine interior", "art gallery opening night", "city hall rotunda"],
+      "Shinto shrine interior", "art gallery opening night", "city hall rotunda",
+      "gilded palace throne room"],
      frozenset(["athletic"])),
     (["neon-lit nightclub"], frozenset(["athletic", "business formal"])),
     # 1.5.0 round 2: a hoodie-and-cargo look at a formal dinner or in court.
@@ -1811,7 +1813,8 @@ for _style, _denied in PALETTE_DENIED_BY_STYLE.items():
 # --- casual headwear stays out of formal rooms; freckles on deep skin ----------------
 for _loc in ("fine dining restaurant interior", "elegant hotel dining room",
              "dimly lit cocktail lounge", "courtroom", "grand cathedral interior",
-             "small chapel interior", "art gallery opening night", "formal dining room with chandelier"):
+             "small chapel interior", "art gallery opening night", "formal dining room with chandelier",
+             "gilded palace throne room"):
     CONSTRAINT_RULES.append({
         "type": "exclusion", "field": "location", "value": _loc,
         "excludes_field": "accessories",

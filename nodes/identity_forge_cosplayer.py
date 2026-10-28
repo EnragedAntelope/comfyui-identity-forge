@@ -462,6 +462,14 @@ _MUSCLE_RE = re.compile(r"\bmuscul(?:ar|ed)\b", re.IGNORECASE)
 _CLEAN_SHAVEN_RE = re.compile(r"clean[ -]?shaven", re.IGNORECASE)
 _CLEAN_SHAVEN_SUPPRESS: dict[str, str] = {"facial_hair": "clean shaven"}
 
+#: 2.2.0: a costume that names its own earrings or necklace must not also get a random
+#: one in Costume only mode (Volcana's gold hoops came back beside random silver hoops).
+_COSTUME_JEWELRY_RES: dict[str, re.Pattern] = {
+    "earrings": re.compile(r"\bearrings?\b|\bhoops\b|\bear studs?\b", re.IGNORECASE),
+    "necklace": re.compile(r"\bnecklaces?\b|\bchokers?\b|\bpendant\b|\blocket\b|\bdog tags\b",
+                           re.IGNORECASE),
+}
+
 # Size-scale entries ("giant"/"tiny") pair with a hand-authored ``scale_prose``
 # phrase that REPLACES the human ``height`` value (applied in build_cosplayer_json).
 # ``height``'s gender pools are identical, so the engine's gender gate passes any
@@ -877,6 +885,10 @@ def build_cosplayer_json(
             _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
     if not feral and _CLEAN_SHAVEN_RE.search(costume):
         _apply_suppress(document, _CLEAN_SHAVEN_SUPPRESS, override=False)
+    if not feral:
+        for field, pattern in _COSTUME_JEWELRY_RES.items():
+            if pattern.search(costume):
+                _apply_suppress(document, {field: "None"}, override=False)
     if not feral and _MUSCLE_RE.search(costume):
         _apply_suppress(document, {"fitness_level": "muscular"}, override=False)
     if not feral and (look_level == _FULL or (covers and not unmask)):

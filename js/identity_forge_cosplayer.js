@@ -443,14 +443,19 @@ const COSPLAYER_FRANCHISES = {
     "Cuphead"
   ],
   "Cyberpunk 2077": [
+    "Adam Smasher",
     "Johnny Silverhand",
     "Judy Alvarez",
-    "Panam Palmer"
+    "Panam Palmer",
+    "Song So Mi"
   ],
   "Cyberpunk: Edgerunners": [
     "David Martinez",
+    "Kiwi",
     "Lucy",
-    "Rebecca (Cyberpunk)"
+    "Maine",
+    "Rebecca (Cyberpunk)",
+    "Talia Yang"
   ],
   "DC": [
     "Alan Scott",
@@ -604,6 +609,7 @@ const COSPLAYER_FRANCHISES = {
     "Tomar-Re",
     "Two-Face",
     "Vixen",
+    "Volcana",
     "Waverider",
     "Wildcat",
     "Wonder Girl (Cassie Sandsmark)",

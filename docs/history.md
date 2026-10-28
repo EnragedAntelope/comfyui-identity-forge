@@ -1394,3 +1394,95 @@ Komaeda, Chiaki Nanami, Jonathan Joestar, Tamamo no Mae, Falin Touden, Senshi, S
 Mercury, the four RWBY leads, Wild Tiger and Barnaby, Nanoha and Fate, Ragna and Noel,
 Arcueid Brunestud and Serval. Kiana Kaslana and Caesar Zeppeli were declined (no one stable
 outfit, colours not verifiable); see suggested-additions.md.
+
+## 2.2.0 - Cyberpunk roster, Volcana, period court dress, a picker franchise filter
+
+**Random characters move through the outfit corpus and one new location** (below). Four new phrases (three in
+`edgy alternative`, one in `vintage retro`) change which outfit a fixed seed draws in those
+two styles; field marginals still match the committed baseline (`sweep_marginals.py
+--check`). Nine creature gallery tiles whose outfit draw moved were re-rendered.
+
+**Cyberpunk entries checked against Danbooru tag counts and the wiki, not the brief.**
+- David Martinez wore a red bomber; canon is the yellow EMT jacket with the glowing blue
+  collar. Panam Palmer and Rebecca were rebuilt the same way (Rebecca's tagged skin is
+  chalk-white with seam lines, her eyes green on red sclera; the huge cyberarms are a
+  weighted alternate).
+- New: Maine, Kiwi, Talia Yang (Edgerunners 2), Adam Smasher (a full-body suit entry, the
+  C-3PO precedent), Song So Mi (green gown primary, netrunner alternate at weight 1 of 3).
+- The brief's Maine (buzzcut, yellow optics) and Pilar (white pompadour, pink skin) did not
+  match the sources; Maine follows the tags (flattop, red shades), Pilar was declined.
+
+**Volcana (DC)** ships with fair skin and red-orange hair; the brief's olive skin is not in
+the sources.
+
+**A costume that names earrings or a necklace now suppresses the random one**
+(`_COSTUME_JEWELRY_RES` in the Cosplayer node), so Volcana's gold hoops no longer sit beside
+a second pair in Costume-only mode. Full character already dropped random jewellery, so no
+gallery tile moved.
+
+**An eyes override must not end in an eye part.** Kiwi's "feline red, yellow-sclera" dropped
+the noun "eyes" (`_EYE_PART_RE`); the adjectives were reordered.
+
+**Period court dress.** Rococo Courtier, Medieval Monarch, Ottoman Court and Heian Court were
+added from a 15-prompt historical-costume list; the rest were existing looks under other
+names (see suggested-additions.md -> "Archetypes - declined"). Ancient Roman Patrician gained
+a Female variant (stola and palla). The new looks lock "no tattoos", and `_is_essential` now
+keeps a `tattoos` lock in Essentials: before this a Heian court lady drew a modern script
+tattoo. No older archetype locks tattoos, so nothing else moved.
+
+**Picker franchise filter.** The roster picker gains a franchise select beside the gender
+filter, grouped by category, kept for the session like the other filters.
+
+**The outfit wildcards were mostly not usable.** The punk and pinup packs are lingerie worn
+as outerwear, with footwear and fabric jargon built into each line; they break the corpus
+contract and would tilt women's outfits toward sexualized looks. Four phrases were taken,
+with pattern words (tartan, leopard, gingham) removed because the `pattern` field owns them.
+
+**Render-review fixes.** Adam Smasher drew a human face over the armor ("a very tall man"
+led the prompt); a `subject` of "towering armored cyborg" fixed it. Talia Yang's mandible
+mask, last in a long costume list, was dropped; it now leads the costume. The leprechaun's
+integument repeated its palette ("ruddy freckled ruddy freckled skin", the only creature
+that did) and its gallery seed drew a woman with the folklore beard; the integument is now
+plain "skin" and the gallery tile is pinned Male (`_GALLERY_GENDER`). The node itself still
+gives a female leprechaun the beard: creature slots have no gender gate.
+
+**A `gilded palace throne room` location.** Rococo Courtier and Ottoman Court were using a
+grand hotel suite and a European castle courtyard as stand-ins. The value joins the
+`civic_institutional` family (frozen family weight, so the family's share is unchanged; the
+new value draws about 0.5% of random characters) and the formal-room rules: dressy outfit
+styles, no athletic wear, no casual headwear, candlelight allowed. Medieval Monarch stays in
+the cathedral, where coronations happen. Every seed that draws the civic family re-picks
+within a longer list, so 94 gallery samples whose prompt moved were re-rendered, and the
+marginals baseline was rewritten.
+
+**Period looks lock tattoos and piercings.** Renaissance Noble, Victorian Lady, Victorian
+Dandy, Gibson Girl, Regency Aristocrat, Greek Goddess, Egyptian Pharaoh, Roman Centurion,
+Medieval Peasant, Musketeer and Highwayman now lock "no tattoos" and "no piercings beyond
+ears", as the four new court looks do. Bracelets and rings are left free: pharaohs and
+nobles wore them. Warrior and living-tradition looks (Gladiator, Viking Shieldmaiden,
+Samurai, the cultural-dress archetypes) are unchanged.
+
+**Maintainer render review of the re-rendered tiles.** Each fix names what the render
+lacked, because the model only draws what the prose says:
+- Darth Vader drew bare hands: the costume never named the suit, gloves or boots. They are
+  named now, and `covers_body` drops the wearer's skin and build.
+- Reverse-Flash had no mask (none was written); a yellow cowl with red ear bolts now mirrors
+  The Flash entry, with `covers_face` and a `costume_back`.
+- The Maxx and the Tusken Raider showed a human face inside the mask: the prose led with "a
+  ... man with ... skin". Both take `covers_body` and a `subject` lead noun, and the Tusken
+  mask says the head is fully wrapped with no skin showing ("a bandage-wrapped face" drew a
+  face). "Unmask (show face)" still shows the face.
+- Tatsumaki's "faint" aura, last in the list, did not render; the glow now leads. Her dress
+  is canon (long sleeves, high collar, leg slits, not a sleeveless cocktail dress), and her
+  age (28) and pale skin are pinned.
+- The horseshoe crab drew a plain man ("drawn low over the face"), then a man wearing the
+  shell as a hat ("a shell in place of a head"). A negated "no human head at all" was
+  ignored on most seeds, so the head now leads positively ("a faceless horseshoe crab
+  head"), like the other arthropods. Body parts with no place on a biped ("two smooth
+  shields", "a plated abdomen", "the rear shield") rendered as a second whole crab held at
+  the side; each is now anchored (carapace over back and chest, tail from the lower back,
+  gills under the torso). Chitin arms and pincers for hands; the tile is rerolled once.
+- Three creature tiles were rerolled without a data change (`--reroll`, recorded in the
+  manifest): the biomechanical alien ("biomechanical" is a Giger style token and restyled
+  a gilded palace around it), the ocean sunfish (drew a woman holding a fish) and the
+  crystalline alien (a hoodie hid the translucent body).

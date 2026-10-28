@@ -1160,6 +1160,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "shot_type": "medium close-up from chest up", "mood": "intense",
     },
     "Renaissance Noble": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories",
         # 1.5.1: a doublet is menswear and soft glam put makeup on men (render #00656):
         # each gender gets its own noble dress, and only the woman's look is made up.
@@ -1744,6 +1747,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         },
     },
     "Egyptian Pharaoh": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories",
         "ethnicity": "Egyptian", "body_type": "lean", "skin_tone": "caramel",
         "hair_color": ["jet black", "raven black", "near black"], "hair_style": "blunt bangs", "makeup_style": "bold glam",
@@ -1761,6 +1767,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "shot_type": "medium close-up from chest up", "mood": "tranquil",
     },
     "Greek Goddess": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories",
         "gender": "Female", "ethnicity": "Greek", "body_type": "hourglass", "height": "tall",
         "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very long", "hair_texture": "softly curled",
@@ -1769,6 +1778,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "lighting": "golden hour sunlight", "shot_type": "full body shot", "mood": "dreamy",
     },
     "Roman Centurion": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories",
         "gender": "Male", "ethnicity": "Italian", "body_type": "athletic", "height": "tall",
         "fitness_level": "very fit", "facial_hair": "stubble",
@@ -2138,6 +2150,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         },
     },
     "Victorian Lady": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories",
         "gender": "Female", "ethnicity": "English", "body_type": "hourglass", "height": "average height",
         "hair_color": ["chestnut", "light chestnut", "warm brown"], "hair_length": "very long", "hair_texture": "softly curled",
@@ -2147,12 +2162,31 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "shot_type": "full body shot", "mood": "nostalgic",
     },
     "Ancient Roman Patrician": {
+        # 2.2.0: a Female variant (stola and palla); the toga look moved into Male verbatim.
         "accessories": "no accessories",
-        "gender": "Male", "ethnicity": "Italian", "body_type": "average", "height": "average height",
-        "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "very short", "hair_texture": "loosely curled",
-        "hair_style": "natural and unstyled", "skin_tone": "olive", "outfit_style": "evening formal",
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
+        "bracelet": "none",
+        "rings": "none",
+        "gender": "Male", "ethnicity": "Italian", "height": "average height",
+        "hair_color": ["dark brown", "medium brown", "near black"],
+        "skin_tone": "olive", "outfit_style": "evening formal",
         "expression": "stern", "location": "outdoor amphitheater",
         "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "commanding",
+        "variants": {
+            "Male": {
+                "body_type": "average", "hair_length": "very short",
+                "hair_texture": "loosely curled", "hair_style": "natural and unstyled",
+                "outfit_description": "a draped white toga over a tunic with a {color} border, leather sandals, and a {metal} laurel wreath",
+            },
+            "Female": {
+                "body_type": ["slim", "average"], "hair_length": "long",
+                "hair_texture": "softly curled", "hair_style": "updo",
+                "makeup_style": "soft natural makeup",
+                "necklace": "no necklace", "earrings": "no earrings",
+                "outfit_description": "a long ivory stola belted high under the bust, a {jewel_tone} palla draped over the shoulders and one arm, a gold fibula brooch at the shoulder, a fine gold hairnet over the curled updo, and leather sandals",
+            },
+        },
     },
     "Prehistoric Hunter": {
         "accessories": "no accessories",
@@ -3015,6 +3049,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "mood": "cheerful",
     },
     "Victorian Dandy": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "gender": "Male", "ethnicity": "English", "body_type": "slim", "height": "tall",
         "facial_hair": ["mustache", "van dyke", "clean shaven"],
         "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "ear length",
@@ -3043,6 +3080,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "lighting": "stage spotlight from above", "shot_type": "full body shot", "mood": "radiant",
     },
     "Gibson Girl": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "gender": "Female", "ethnicity": "English", "body_type": "hourglass", "height": "average height",
         "hair_color": ["chestnut", "warm brown", "dark brown"], "hair_length": "very long",
         "hair_texture": "softly curled", "hair_style": "updo", "skin_tone": "porcelain",
@@ -3426,6 +3466,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     # Lean unisex historical / sport / performer.
     "Musketeer": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories", "bag": "no bag",
         "hair_length": ["long", "shoulder length"], "hair_texture": ["loosely curled", "wavy"],
         "outfit_style": "vintage retro", "expression": ["confident", "smirking"],
@@ -3434,6 +3477,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "shot_type": "full body shot", "mood": "self-assured",
     },
     "Medieval Peasant": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "accessories": "no accessories", "bag": "no bag", "outfit_style": "casual",
         "expression": ["neutral", "warm smile"],
         "location": ["castle courtyard", "country dirt road"],
@@ -3610,6 +3656,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         },
     },
     "Regency Aristocrat": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "bag": "no bag",
         "gender": "Any",
         "variants": {
@@ -5404,6 +5453,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     # The name is gendered (the Mardi Gras Reveler sets the domino-mask precedent).
     "Highwayman": {
+        # 2.2.0: a period look draws no modern tattoo or nose stud.
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
         "gender": "Male",
         "outfit_style": "vintage retro",
         "accessories": "no accessories",
@@ -5822,6 +5874,138 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
                      "facial_hair": ["clean shaven", "stubble", "mustache"]},
         },
     },
+
+    # --- 2.2.0: historical court dress -------------------------------------
+    # Courts nothing else covers: Renaissance Noble, Regency Aristocrat and the
+    # Victorian pair already hold their eras. No palace location exists, so these
+    # borrow the nearest grand interiors rather than move random seeds with a new one.
+    "Rococo Courtier": {
+        "gender": "Any",
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
+        "bracelet": "none",
+        "rings": "none",
+        "age": ["20", "22", "25", "28", "30", "33", "35"],
+        "ethnicity": ["French", "English"],
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "hair_color": "white",
+        "expression": ["sly", "quiet amusement"],
+        "location": "gilded palace throne room",
+        "lighting": "warm candlelight",
+        "shot_type": "full body shot",
+        "mood": "self-assured",
+        "variants": {
+            "Female": {
+                "hair_length": "long", "hair_style": "updo", "makeup_style": "soft glam",
+                "outfit_description": "a {pastel} silk robe a la francaise spread over wide side panniers, a fitted stomacher laced with ribbon bows, tiered lace ruffles at the elbows, a floral brocade petticoat, a pearl choker, and a towering powdered pouf hairstyle trimmed with feathers and ribbons",
+                "held_item": "a painted silk folding fan",
+            },
+            "Male": {
+                "hair_length": "shoulder length", "hair_style": "low ponytail",
+                "makeup_style": "no makeup", "facial_hair": "clean shaven",
+                "outfit_description": "a {jewel_tone} silk brocade frock coat embroidered in gold and silver thread, a long matching waistcoat, knee breeches, white silk stockings, buckled heeled shoes, a lace jabot at the throat with lace cuffs, and a powdered white wig tied back with a black silk ribbon",
+                "held_item": "a black tricorn hat",
+            },
+        },
+    },
+    "Medieval Monarch": {
+        "gender": "Any",
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
+        "bracelet": "none",
+        "rings": "none",
+        "age": ["28", "30", "33", "35", "40", "45", "50", "55"],
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "expression": "stern",
+        "location": "grand cathedral interior",
+        "lighting": "light through stained glass casting colors",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+        "held_item": "a jeweled golden scepter",
+        "variants": {
+            "Female": {
+                "hair_length": "long", "hair_style": "worn down",
+                "makeup_style": "soft natural makeup",
+                "outfit_description": "a {jewel_tone} brocade surcoat over a silk gown with long trailing hanging sleeves, a heavy ermine-trimmed velvet mantle fastened at the chest with a gold clasp, a jeweled girdle at the hips, a sheer white veil, and a jeweled gold crown",
+            },
+            "Male": {
+                "hair_length": "shoulder length", "hair_style": "worn down",
+                "makeup_style": "no makeup", "facial_hair": ["short beard", "full beard"],
+                "outfit_description": "a {jewel_tone} velvet tunic embroidered with gold thread over a long white undertunic, a heavy ermine-trimmed royal mantle fastened at the chest with a gold clasp, a jeweled sword belt, tall leather boots, and a jeweled gold crown",
+            },
+        },
+    },
+    "Ottoman Court": {
+        "gender": "Any",
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
+        "bracelet": "none",
+        "rings": "none",
+        "ethnicity": "Turkish",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "expression": "confident",
+        "location": "gilded palace throne room",
+        "lighting": "warm candlelight",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+        "variants": {
+            "Female": {
+                "hair_length": "long", "hair_style": "worn down",
+                "makeup_style": "soft glam",
+                "outfit_description": "a {jewel_tone} silk kaftan embroidered with gold thread and fastened down the front with jeweled buttons, worn over a long inner robe and full silk salvar trousers, a jeweled belt at the waist, a small embroidered cap draped with a sheer veil and pinned with a jeweled plume, and pointed embroidered slippers",
+            },
+            "Male": {
+                "hair_length": "very short", "makeup_style": "no makeup",
+                "facial_hair": ["full beard", "mustache"],
+                "outfit_description": "a full-length {jewel_tone} brocade kaftan with long ornamental hanging sleeves over a silk robe and a wide sash, a towering white turban set with a jeweled plume, and soft yellow leather boots",
+            },
+        },
+    },
+    "Heian Court": {
+        "gender": "Any",
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
+        "bracelet": "none",
+        "rings": "none",
+        "ethnicity": "Japanese",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "hair_color": "jet black",
+        "expression": "serene",
+        "location": "Shinto shrine interior",
+        "lighting": "warm lantern light",
+        "shot_type": "full body shot",
+        "mood": "tranquil",
+        "variants": {
+            "Female": {
+                "hair_length": "hip length", "hair_texture": "sleek straight",
+                "hair_style": "worn down", "makeup_style": "soft natural makeup",
+                "outfit_description": "a junihitoe of many layered silk robes whose {jewel_tone}, {pastel} and white edges show in bands at the collar and wide sleeves, a stiff brocade jacket on top, a long pleated white train trailing behind, and wide crimson hakama trousers",
+                "held_item": "a painted wooden folding fan",
+            },
+            "Male": {
+                "hair_length": "long", "hair_style": "top knot",
+                "makeup_style": "no makeup", "facial_hair": "clean shaven",
+                "outfit_description": "a black sokutai court robe with wide sleeves over layered white and crimson under-robes, a long trailing train, wide white hakama trousers, and a stiff black lacquered court cap with a tall upright tail",
+                "held_item": "a flat wooden shaku baton",
+            },
+        },
+    },
 }
 
 
@@ -5974,7 +6158,6 @@ _COSTUMES: dict[str, str | list[str]] = {
     "1990s Goth": "layered black {fabric} clothing with torn fishnet sleeves, a studded leather choker, silver rings, and heavy buckled boots",
     "1980s Preppy": "a pastel polo shirt with a {color} sweater tied over the shoulders, pleated chinos, and leather boat shoes",
     "Victorian Lady": "a high-collared {jewel_tone} bustle gown of {fabric} with lace trim, puffed sleeves, buttoned boots, and a cameo brooch",
-    "Ancient Roman Patrician": "a draped white toga over a tunic with a {color} border, leather sandals, and a {metal} laurel wreath",
     "Prehistoric Hunter": "rugged {fur} hide garments with bone-and-tooth jewelry, leather wraps, and a stone-tipped spear",
     "Tennis Player": "a {color} athletic tennis polo with matching shorts, a sweatband, wristbands, and court shoes",
     "Gymnast": "a sleek {jewel_tone} long-sleeved competition leotard with metallic trim and grip wristbands",

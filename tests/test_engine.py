@@ -6067,24 +6067,24 @@ class RandomPoolTests(unittest.TestCase):
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
         # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
-        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0 and at 2.1.0 to the new
-        # ground truth. It is expected to need refreshing every time the roster grows.
+        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0, at 2.1.0 and at 2.2.0 to
+        # the new ground truth. It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Rick Flag',
-            (_RANDOM_ANY, 1): 'Eowyn',
-            (_RANDOM_ANY, 2): 'Borg Drone',
-            (_RANDOM_ANY, 3): 'King',
-            (_RANDOM_ANY, 4): 'Kilik',
-            (_RANDOM_FEMALE, 0): 'Rin Tohsaka',
+            (_RANDOM_ANY, 0): 'Rhino',
+            (_RANDOM_ANY, 1): 'Enid Sinclair',
+            (_RANDOM_ANY, 2): 'Booster Gold',
+            (_RANDOM_ANY, 3): 'Kimberly Jackson',
+            (_RANDOM_ANY, 4): 'Kikyo',
+            (_RANDOM_FEMALE, 0): 'Rikku',
             (_RANDOM_FEMALE, 1): 'Fire',
             (_RANDOM_FEMALE, 2): 'Bloody Mary',
-            (_RANDOM_FEMALE, 3): 'Lexa',
-            (_RANDOM_FEMALE, 4): 'Lei Fang',
-            (_RANDOM_MALE, 0): 'Rhino',
-            (_RANDOM_MALE, 1): 'Duke',
-            (_RANDOM_MALE, 2): 'Brainiac',
-            (_RANDOM_MALE, 3): 'Joel Miller',
-            (_RANDOM_MALE, 4): 'Jin Kazama',
+            (_RANDOM_FEMALE, 3): 'Leone',
+            (_RANDOM_FEMALE, 4): 'Leeloo',
+            (_RANDOM_MALE, 0): 'Reverse-Flash',
+            (_RANDOM_MALE, 1): 'Duff Killigan',
+            (_RANDOM_MALE, 2): 'Bowser',
+            (_RANDOM_MALE, 3): 'Jiraiya',
+            (_RANDOM_MALE, 4): 'Jiminy Cricket',
         }
         for (character, seed), name in expected.items():
             doc = json.loads(build_cosplayer_json(character, seed))
