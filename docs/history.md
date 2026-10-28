@@ -1476,8 +1476,12 @@ lacked, because the model only draws what the prose says:
   is canon (long sleeves, high collar, leg slits, not a sleeveless cocktail dress), and her
   age (28) and pale skin are pinned.
 - The horseshoe crab drew a plain man ("drawn low over the face"), then a man wearing the
-  shell as a hat ("a shell in place of a head"). The head now reads "no human head at all",
-  with chitin arms and pincers for hands, and the tile is rerolled once.
+  shell as a hat ("a shell in place of a head"). A negated "no human head at all" was
+  ignored on most seeds, so the head now leads positively ("a faceless horseshoe crab
+  head"), like the other arthropods. Body parts with no place on a biped ("two smooth
+  shields", "a plated abdomen", "the rear shield") rendered as a second whole crab held at
+  the side; each is now anchored (carapace over back and chest, tail from the lower back,
+  gills under the torso). Chitin arms and pincers for hands; the tile is rerolled once.
 - Three creature tiles were rerolled without a data change (`--reroll`, recorded in the
   manifest): the biomechanical alien ("biomechanical" is a Giger style token and restyled
   a gilded palace around it), the ocean sunfish (drew a woman holding a fish) and the

@@ -2998,16 +2998,19 @@ CREATURES: dict[str, dict] = {
         "palette": "dark bronze",
         "palette_pool": ["dark bronze", "olive brown", "weathered slate"],
         # 2.2.0: "drawn low over the face" rendered a plain man, and a "shell in place of
-        # a head" rendered a man wearing it as a hat. No human head at all.
-        "head": "no human head at all, only a wide flat horseshoe-shaped chitin shell "
-                "sitting where the head should be, sloping down over the shoulders",
+        # a head" rendered a man wearing it as a hat, and a negated "no human head" was
+        # ignored. Lead with a positive "<creature> head", like the other arthropods.
+        "head": "a faceless horseshoe crab head, a broad flat chitin dome with no face, "
+                "no mouth and no human features",
         "eyes": "a pair of kidney-shaped compound eyes set wide on the shell above smaller simple eyes ranked along its ridge",
-        "integument": "a hinged carapace plated in two smooth shields",
+        # 2.2.0: free-floating parts ("two shields", "a plated abdomen", "the rear
+        # shield") rendered as a second whole crab held at the side; anchor each to the body.
+        "integument": "a smooth hinged chitin carapace covering the back and chest",
         "arms": "segmented chitin arms",
         "hands": "small pincers in place of hands",
-        "legs_feet": "ranks of walking legs under a plated abdomen fringed with spines",
-        "tail": "a long rigid spike of a tail",
-        "extras": "stacked pages of book gills flexing beneath the rear shield",
+        "legs_feet": "chitin-plated legs, with a row of short spiny walking legs along each side of the belly",
+        "tail": "a long rigid spike of a tail trailing from the lower back",
+        "extras": "stacked book gills along the underside of the torso",
     },
 
     # ======================================================================
