@@ -2263,9 +2263,12 @@ CREATURES: dict[str, dict] = {
     },
     "leprechaun": {
         "class": "Mythic & Fantasy", "palette": "ruddy freckled",
+        # 2.2.0: the palette supplies "ruddy freckled", so the integument must not repeat
+        # it. The beard is the folklore look; the gallery tile is pinned Male
+        # (render_gallery._GALLERY_GENDER) since creature slots have no gender gate.
         "head": "a wizened impish face with a ruddy grin, pointed ears and a ginger beard",
         "eyes": "twinkling green eyes",
-        "integument": "ruddy freckled skin",
+        "integument": "skin",
         "arms": "wiry little arms",
         "hands": "nimble small hands",
         "legs_feet": "short bandy legs",
@@ -2994,11 +2997,14 @@ CREATURES: dict[str, dict] = {
         "class": "Marine Life",
         "palette": "dark bronze",
         "palette_pool": ["dark bronze", "olive brown", "weathered slate"],
-        "head": "a smooth domed horseshoe of chitin drawn low over the face",
+        # 2.2.0: "drawn low over the face" rendered a plain man, and a "shell in place of
+        # a head" rendered a man wearing it as a hat. No human head at all.
+        "head": "no human head at all, only a wide flat horseshoe-shaped chitin shell "
+                "sitting where the head should be, sloping down over the shoulders",
         "eyes": "a pair of kidney-shaped compound eyes set wide on the shell above smaller simple eyes ranked along its ridge",
         "integument": "a hinged carapace plated in two smooth shields",
-        "arms": "short jointed arms tucked beneath the shell",
-        "hands": "small pincered claws",
+        "arms": "segmented chitin arms",
+        "hands": "small pincers in place of hands",
         "legs_feet": "ranks of walking legs under a plated abdomen fringed with spines",
         "tail": "a long rigid spike of a tail",
         "extras": "stacked pages of book gills flexing beneath the rear shield",

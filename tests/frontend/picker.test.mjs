@@ -281,6 +281,30 @@ test("the gender filter keeps that gender plus entries that suit either", async 
   }
 });
 
+test("the franchise filter lists roster franchises by category and keeps only that franchise", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    const select = picker.franchiseSelect;
+    assert.ok(select.querySelectorAll("optgroup").length > 1, "options are grouped by category");
+    const franchise = REAL_ROSTER.find((e) => e.franchise).franchise;
+    assert.ok([...select.options].some((o) => o.value === franchise));
+    select.value = franchise;
+    select.dispatchEvent(new window.Event("change"));
+    assert.ok(picker.visible.length > 0);
+    assert.ok(picker.visible.every((e) => e.franchise === franchise));
+    picker.close();
+    picker.open();
+    await new Promise((r) => setTimeout(r, 0));
+    assert.equal(picker.franchiseSelect.value, franchise, "the choice survives a reopen");
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
 test("while filtering, every tab shows its own match count so other kinds stay discoverable", async () => {
   resetDom();
   __testing.__resetForTests();

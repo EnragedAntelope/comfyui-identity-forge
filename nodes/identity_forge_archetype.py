@@ -76,7 +76,9 @@ def _is_essential(field: str) -> bool:
     # 1.5.1: an `age` lock is part of the look too. Authors lock it only where the look
     # implies a life stage (K-Pop Idol young, Babushka old), and dropping it drew a
     # 70-year-old cheerleader in the gallery.
-    if field in ("gender", "age"):
+    # 2.2.0: so is a `tattoos` lock -- period looks lock "no tattoos" or a Heian court
+    # lady drew a modern script tattoo.
+    if field in ("gender", "age", "tattoos"):
         return True
     return FIELD_DEFINITIONS.get(field, {}).get("group") in _ESSENTIAL_GROUPS
 

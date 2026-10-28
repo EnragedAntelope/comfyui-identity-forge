@@ -166,6 +166,7 @@ def _gallery_shot(seed: int) -> str | None:
 _GALLERY_GENDER: dict[str, dict[str, str]] = {
     "archetypes": {"Carhop": "Female", "Cheerleader": "Female",
                    "Irish Step Dancer": "Female"},
+    "creatures": {"leprechaun": "Male"},  # 2.2.0: the folklore leprechaun is a bearded man
 }
 
 #: Gallery-only pose pins, same terms as _GALLERY_GENDER: a sample whose defining

@@ -175,6 +175,22 @@ function matchesGender(entry, gender) {
   return gender === GENDER_ANY || !entry.gender || entry.gender === "Any" || entry.gender === gender;
 }
 
+// Franchise filter (2.2.0). Only cosplayers carry a franchise, so picking one
+// narrows to cosplayers. Options come from the loaded roster, grouped by category.
+const FRANCHISE_ALL = "All franchises";
+
+function franchiseGroups(entries) {
+  const groups = new Map();
+  for (const e of entries) {
+    if (!e.franchise) continue;
+    const category = e.category || "Other";
+    if (!groups.has(category)) groups.set(category, new Set());
+    groups.get(category).add(e.franchise);
+  }
+  const byText = (a, b) => a.localeCompare(b, undefined, { sensitivity: "base" });
+  return [...groups.keys()].sort(byText).map((c) => [c, [...groups.get(c)].sort(byText)]);
+}
+
 const FACET_PREDICATES = {
   [FACET_ALL]: () => true,
   [FACET_GIANT]: (e) => hasTrait(e, "giant"),
@@ -330,6 +346,7 @@ class IdentityForgePicker {
     this.activeTab = config.kind;
     this.facet = FACET_ALL;
     this.gender = GENDER_ANY;
+    this.franchise = FRANCHISE_ALL;
     this.showPreviews = loadPreviewPref();
     this.focusIndex = 0;
     this.visible = [];
@@ -508,6 +525,17 @@ class IdentityForgePicker {
     });
     this.genderSelect = genderSelect;
 
+    const franchiseSelect = document.createElement("select");
+    franchiseSelect.className = "if-picker-facet";
+    franchiseSelect.setAttribute("aria-label", "Filter by franchise");
+    franchiseSelect.addEventListener("change", () => {
+      this.franchise = franchiseSelect.value;
+      this.focusIndex = 0;
+      this.renderGrid();
+    });
+    this.franchiseSelect = franchiseSelect;
+    this.fillFranchiseOptions();
+
     const previewLabel = document.createElement("label");
     previewLabel.className = "if-picker-preview-toggle";
     const previewCheckbox = document.createElement("input");
@@ -528,7 +556,7 @@ class IdentityForgePicker {
     close.setAttribute("aria-label", "Close (" + this.config.title + ")");
     close.addEventListener("click", () => this.close());
 
-    header.append(search, facet, genderSelect, count, previewLabel, close);
+    header.append(search, facet, genderSelect, franchiseSelect, count, previewLabel, close);
 
     const notice = document.createElement("div");
     notice.className = "if-picker-notice";
@@ -728,7 +756,30 @@ class IdentityForgePicker {
     if (this.gender !== GENDER_ANY) {
       list = list.filter((entry) => matchesGender(entry, this.gender));
     }
+    if (this.franchise !== FRANCHISE_ALL) {
+      list = list.filter((entry) => entry.franchise === this.franchise);
+    }
     return list;
+  }
+
+  /** (Re)build the franchise dropdown; a no-op until the roster has loaded. */
+  fillFranchiseOptions() {
+    const select = this.franchiseSelect;
+    if (!select || (roster && select.options.length > 1)) return;
+    const all = document.createElement("option");
+    all.value = all.textContent = FRANCHISE_ALL;
+    select.replaceChildren(all);
+    for (const [category, names] of franchiseGroups(roster || [])) {
+      const group = document.createElement("optgroup");
+      group.label = category;
+      for (const name of names) {
+        const option = document.createElement("option");
+        option.value = option.textContent = name;
+        group.appendChild(option);
+      }
+      select.appendChild(group);
+    }
+    select.value = this.franchise;
   }
 
   /** The grid's contents: the query/facet matches, narrowed to the active tab. */
@@ -750,12 +801,13 @@ class IdentityForgePicker {
   /** True while anything is narrowing the roster -- when the counts are worth showing. */
   isFiltering() {
     return Boolean(tokenize(this.query).length) || this.facet !== FACET_ALL
-      || this.gender !== GENDER_ANY;
+      || this.gender !== GENDER_ANY || this.franchise !== FRANCHISE_ALL;
   }
 
   renderGrid() {
     if (!this.grid) return;
     if (!roster) return; // ensureData() is showing the placeholder
+    this.fillFranchiseOptions();
     this.grid.replaceChildren();
     this._focused = null;
 
@@ -1168,6 +1220,7 @@ export const __testing = {
   matchesQuery,
   FACET_PREDICATES,
   FACETS,
+  FRANCHISE_ALL,
   traitChips,
   loadRoster,
   loadManifest,

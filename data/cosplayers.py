@@ -2982,8 +2982,13 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a black ribbed chest control panel, a wide belt box, and a flowing "
-                   "black cape",
+        # 2.2.0: the suit, gloves and boots were never named, so the render drew bare
+        # human hands; nothing of the wearer shows, hence covers_body.
+        "covers_body": True,
+        "costume": "a black padded leather bodysuit with black armored shoulder plates, "
+                   "black leather gloves covering both hands, a black ribbed chest control "
+                   "panel, a wide belt with two small control boxes, tall black boots, and "
+                   "a flowing black cape",
         "mask": "a glossy black domed helmet and skull-like mask with triangular eye lenses",
         "physique": {"body_type": "athletic", "height": "very tall"},
         "prop": "an ignited lightsaber with a deep red energy blade and a black "
@@ -3535,11 +3540,16 @@ COSPLAYERS: dict[str, dict] = {
     "Tatsumaki": {
         "franchise": "One Punch Man",
         "gender": "Female",
-        "costume": "a form-fitting black sleeveless cocktail dress and black heels, "
-                   "wrapped in a faint swirling green psychic aura, floating just off the ground",
+        # 2.2.0: canon dress is long-sleeved and high-collared with leg slits (it read
+        # "sleeveless cocktail dress"); a "faint" aura at the end of the list did not render,
+        # so the glow leads. Canon age 28, pinned (the sample drew a 55-year-old).
+        "costume": "a bright glowing green psychic aura swirling around the whole body, "
+                   "floating just off the ground, a form-fitting black long-sleeved dress "
+                   "with a high collar and high slits up both legs, and low black heels",
         "signature": {"hair_color": "emerald green", "hair_texture": "curly",
                       "hair_length": "short pixie", "eye_color": "green"},
-        "physique": {"body_type": "petite and slim", "height": "very petite"},
+        "physique": {"body_type": "petite and slim", "height": "very petite", "age": "28",
+                     "skin_tone": "fair"},
     },
 
     # --- Nintendo (male) --------------------------------------------------
@@ -6627,11 +6637,17 @@ COSPLAYERS: dict[str, dict] = {
     "Reverse-Flash": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a yellow speedster bodysuit with a red lightning-bolt emblem, red "
+        # 2.2.0: no mask was named, so the render drew a bare head; the cowl mirrors
+        # The Flash entry, inverted to yellow with red trim.
+        "covers_face": True,
+        "costume": "a full yellow bodysuit with a red lightning-bolt emblem in a black "
+                   "circle ringed in red on the chest, a red lightning-bolt belt, red "
                    "boots, and crackling red lightning",
-        "eyes": "glowing red",
-        "signature": {"hair_color": "dark blonde", "hair_length": "very short"},
-        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
+        "costume_back": "a full yellow bodysuit, a red lightning-bolt belt, red boots, and "
+                        "crackling red lightning",
+        "mask": "a yellow cowl with small red lightning bolts at the ears and glowing red "
+                "eyes",
+        "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Captain Cold": {
         "franchise": "DC",
@@ -7273,6 +7289,25 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "white", "hair_length": "long", "hair_style": "slicked back",
                       "eye_color": "ice blue"},
         "physique": {"body_type": "slender", "height": "tall"},
+    },
+    "Volcana": {
+        "franchise": "DC",
+        "gender": "Female",
+        # Claire Selton, Superman: TAS. Wikipedia confirms a red-haired white woman (the
+        # supplied "tan, olive" skin is wrong). No source found describes the costume, so
+        # it ships as maintainer-supplied canon; recheck against a screenshot if a render
+        # disagrees. The flames are her pyrokinesis, the one effect she always shows.
+        "costume": "a form-fitting sleeveless red mock-neck crop top with a large keyhole "
+                   "cutout across the chest, cut short beneath the bust to bare the whole "
+                   "midriff, low-rise skin-tight black trousers, red opera gloves past the "
+                   "elbows, red calf-high boots, large gold hoop earrings, a beauty mark on "
+                   "one cheek, purple eyeshadow and red lipstick, the hair rising into "
+                   "flame-like points at the crown, and small flames flickering around "
+                   "both hands",
+        "signature": {"hair_color": "orange", "hair_length": "lower back",
+                      "hair_texture": "thick and voluminous", "hair_style": "worn down",
+                      "makeup_style": "no makeup"},  # the costume names the canon makeup
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair"},
     },
     "Livewire": {
         "franchise": "DC",
@@ -8763,10 +8798,15 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "layered tan desert robes and wrappings with a bandolier and a "
-                   "pouched belt",
-        "mask": "a bandage-wrapped face with round metal goggle eyes and a hooded "
-                "mouth grille",
+        # 2.2.0: "a bandage-wrapped face" rendered a human face with bandages on it; no
+        # skin shows anywhere, hence covers_body and a lead noun in place of "a man".
+        "covers_body": True,
+        "subject": "robed desert raider",
+        "costume": "layered tan desert robes and wrappings with a bandolier, a pouched "
+                   "belt, and wrapped tan gloves",
+        "mask": "a head completely wrapped in tan bandages and cloth with no skin "
+                "showing, round metal goggle eyes, and a metal breathing grille over the "
+                "mouth, all under a hood",
         "physique": {"body_type": "lean", "height": "average height"},
         "prop": "a gaderffii war staff, a long staff with bladed and bludgeoning ends",
     },
@@ -15804,10 +15844,14 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         # Full purple costume with a toothy cowl and claws.
         "covers_face": True,
+        # 2.2.0: the render showed a human face inside the cowl; the suit covers every inch
+        # of the wearer, so covers_body, and a lead noun so "a man" no longer leads.
+        "covers_body": True,
+        "subject": "hulking purple costumed hero",
         "costume": "a bulky purple muscle-suit with yellow claws erupting from the backs of the "
                    "hands and enormous brown boots",
-        "mask": "a purple-and-yellow full head-cowl with big blank white eyes and a row of large "
-                "white teeth across the lower jaw",
+        "mask": "a purple-and-yellow full head-cowl that hides the whole face, with big blank "
+                "white eyes and a row of large white teeth across the lower jaw",
         "physique": {"body_type": "stocky", "height": "very tall"},
     },
     "Midnighter": {
@@ -17867,14 +17911,29 @@ COSPLAYERS: dict[str, dict] = {
     "Rebecca (Cyberpunk)": {
         "franchise": "Cyberpunk: Edgerunners",
         "gender": "Female",
-        "costume": "a cropped white and pink jacket over a bare midriff, baggy "
-                   "oversized shorts, chunky platform boots, and dense colourful "
-                   "tattoos covering both arms and legs",
-        "eyes": "black sclera with small glowing green irises",
-        "signature": {"hair_color": "lime green", "hair_length": "ear length",
-                      "hair_style": "space buns"},
-        "physique": {"body_type": "petite and slim", "height": "very petite",
-                     "skin_tone": "very pale"},
+        # 2.2.0: rebuilt from Wikipedia and the Cyberpunk wiki -- the old jacket, shorts,
+        # boots, full-limb tattoos, black sclera and space buns were all wrong. Three pink
+        # tattoos only; the oversized red/blue cyberarms are her late-series look.
+        "costume": "an oversized black high-collared jacket with neon-green trim and "
+                   "lining, worn hanging open over a black bra and black briefs, black "
+                   "and green high-top sneakers, a black headband, smooth, flawless "
+                   "chalk-white skin with a faint blue tint and thin seam lines under the "
+                   "eyes and around the wrists, and three hot-pink tattoos: an emblem on "
+                   "the side of the neck, a ram skull on the stomach, and lettering on "
+                   "one thigh",
+        "costumes": [
+            "an oversized black high-collared jacket with neon-green trim and lining, "
+            "worn hanging open over a black bra and black briefs, black and green high-top "
+            "sneakers, a black headband, smooth, flawless chalk-white skin with a faint "
+            "blue tint, hot-pink tattoos on the neck, stomach and one thigh, and huge "
+            "oversized chrome cyberarms with giant mechanical hands, the right arm red and "
+            "white and the left arm blue and white",
+        ],
+        "costume_weights": [2, 1],
+        "eyes": "glowing neon-green, red-sclera cybernetic",
+        "signature": {"hair_color": "teal", "hair_length": "long",
+                      "hair_style": "high pigtails"},
+        "physique": {"body_type": "petite and slim", "height": "very petite"},
         "prop": "an oversized double-barrelled shotgun",
     },
     "Nana Osaki": {
@@ -20116,13 +20175,64 @@ COSPLAYERS: dict[str, dict] = {
     "David Martinez": {
         "franchise": "Cyberpunk: Edgerunners",
         "gender": "Male",
-        "costume": "an oversized red and black bomber jacket over a dark shirt, "
-                   "cargo trousers and heavy boots, with chrome cybernetic ports "
-                   "set behind the ear and along the spine",
-        "signature": {"hair_color": "jet black", "hair_length": "ear length",
-                      "hair_texture": "thick and voluminous",
-                      "eye_color": "dark brown"},
-        "physique": {"body_type": "lean", "height": "tall", "skin_tone": "light medium"},
+        # 2.2.0: the jacket is his mother's yellow EMT jacket (Cyberpunk wiki, "David's
+        # Jacket"), not a red bomber; outfit, hair and eyes rebuilt from the wiki.
+        "costume": "a bright yellow high-visibility EMT jacket worn open, with a glowing "
+                   "blue lining inside the collar and a green edgerunner emblem painted "
+                   "on the back, over a plain black t-shirt, two thin gold chain "
+                   "necklaces with a small cross on the lower one, grey cropped "
+                   "sweatpants with yellow side straps, and white sneakers with blue "
+                   "straps, the dark hair swept up into a quiff over close-shaved sides",
+        "signature": {"hair_color": "dark brown", "hair_length": "ear length",
+                      "hair_style": "undercut", "eye_color": "light brown"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "medium"},
+    },
+    "Maine": {
+        "franchise": "Cyberpunk: Edgerunners",
+        "gender": "Male",
+        # The crew's borg leader. Wiki + tag survey: dark skin, flattop, beard, red-tinted
+        # shades, heavy chrome arms with a built-in launcher. The vest is the least
+        # attested detail (supplied as olive; the few references show it dark).
+        "costume": "a sleeveless dark vest worn open over a bare scarred chest, heavy "
+                   "cargo trousers, a thick ammunition belt, combat boots, red-tinted "
+                   "sunglasses, and massive chrome cybernetic arms with armored "
+                   "forearms housing built-in launchers, on a hulking, heavily "
+                   "muscled frame",
+        "signature": {"hair_color": "jet black", "hair_length": "very short",
+                      "hair_style": "high-top fade", "facial_hair": "goatee"},
+        "physique": {"body_type": "stocky", "height": "very tall", "skin_tone": "dark brown"},
+    },
+    "Kiwi": {
+        "franchise": "Cyberpunk: Edgerunners",
+        "gender": "Female",
+        # The jaw under the mask is missing, so the mask stays on (the lower-face regex
+        # drops the mouth fields). Wiki: very tall and slender, long red coat, blonde bob.
+        "costume": "a long bright-red high-collared coat over a dark form-fitting "
+                   "netrunner bodysuit, a black belt, black boots, and a segmented red "
+                   "cybernetic mask covering the mouth and lower face",
+        "eyes": "narrow, yellow-sclera, feline red",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs", "hair_texture": "sleek straight"},
+        "physique": {"body_type": "very slim", "height": "very tall", "skin_tone": "pale"},
+    },
+    "Talia Yang": {
+        "franchise": "Cyberpunk: Edgerunners",
+        "gender": "Female",
+        # Edgerunners 2 (2026) lead. Built from the tag survey of the first weeks of art:
+        # dark skin, pink braided ponytail with hair vents and an ahoge, blue eyes, a
+        # mandible mask over a missing jaw, chrome arms/hips and reverse-jointed legs.
+        # The supplied text missed the skin tone; its pistol model is unverified, so no prop.
+        # The mask leads: at the end of the list the 2.2.0 render dropped it.
+        "costume": "a black segmented cybernetic mask covering the mouth and jaw, split "
+                   "like insect mandibles, a black jumpsuit unzipped and peeled open to the "
+                   "waist over a grey bra, heavy grey chrome cybernetic arms and mechanical "
+                   "hips, reverse-jointed chrome cyberlegs bent like a grasshopper's, thin "
+                   "seam lines across the remaining skin, small triangle earrings, small "
+                   "metal vents set into the hair, and a single tall cowlick sticking up on "
+                   "top",
+        "signature": {"hair_color": "hot pink", "hair_length": "long",
+                      "hair_style": "braided ponytail", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "brown"},
     },
 
     # === v0.77.0 franchise-lead audit: Video Games ======================
@@ -23883,16 +23993,69 @@ COSPLAYERS: dict[str, dict] = {
             },
         ],
     },
+    "Adam Smasher": {
+        "franchise": "Cyberpunk 2077",
+        "gender": "Male",
+        # Humanoid full-body conversion, so the suit route with covers_body (C-3PO),
+        # not feral. 2077 look: dark armored frame, red optics, arm cannon, missiles.
+        "covers_face": True,
+        "covers_body": True,
+        # "a very tall man" drew a human face over the armor (2.2.0 render).
+        "subject": "towering armored cyborg",
+        "costume": "a towering full-body cyborg conversion of matte black and gunmetal-grey "
+                   "military armor plating, exposed hydraulic pistons and bundled black "
+                   "cabling at the joints, massively oversized armored shoulders with a "
+                   "missile launcher pod mounted behind one shoulder, a heavy cannon built "
+                   "into the right forearm, and small Arasaka logos and warning stencils on "
+                   "the battle-scarred plating, on a hulking frame well over seven feet tall",
+        "mask": "a smooth metal cyborg head with no hair or skin, a cluster of glowing red "
+                "optical sensors in place of eyes, and a rigid metal grille over the jaw",
+        "physique": {"body_type": "stocky", "height": "very tall"},
+    },
+    "Song So Mi": {
+        "franchise": "Cyberpunk 2077",
+        "gender": "Female",
+        "aliases": ["Songbird", "So Mi"],
+        # Phantom Liberty. The name avoids a clash with Marvel's Songbird. The backless
+        # green gown baring her chrome spine is attested in fan art; the supplied feather
+        # trim is not, so it is left out. The alternate is her netrunner look from the
+        # Cyberpunk wiki (red-to-black suit, faded denim jacket with pins, untied high-tops).
+        "costume": "a sleek emerald-green evening gown with a high neckline fastened at the "
+                   "throat and an open back that bares a polished chrome mechanical spine, "
+                   "chrome cybernetic arms with exposed yellow wiring at the joints, fine "
+                   "circuit-like lines of EMP threading across the cheeks, and dark red "
+                   "eyeshadow",
+        "costumes": [
+            "a form-fitting netrunner bodysuit fading from red at the shoulders to black "
+            "at the legs, an open cropped grey-to-black faded denim jacket with a patch and "
+            "four pin badges, a studded belt carrying a cyberdeck, untied white high-top "
+            "sneakers, chrome cybernetic arms with exposed yellow wiring at the joints, and "
+            "fine circuit-like lines of EMP threading across the cheeks",
+        ],
+        "costume_weights": [2, 1],
+        "signature": {"hair_color": "magenta", "hair_length": "jaw length",
+                      "hair_style": "worn down", "eye_color": "dark brown",
+                      "makeup_style": "no makeup"},  # the costume names the red eyeshadow
+        "physique": {"body_type": "slim", "height": "slightly below average height",
+                     "skin_tone": "light"},
+    },
     "Panam Palmer": {
         "franchise": "Cyberpunk 2077",
         "gender": "Female",
-        "costume": "a cropped olive tank top under an open sand-colored Nomad "
-                   "jacket with rolled sleeves, a worn leather holster riding one "
-                   "hip, dusty cargo trousers patched at the knee, and scuffed "
-                   "brown boots",
-        "signature": {"hair_color": "dark brown", "hair_length": "shoulder length",
-                      "hair_style": "worn down", "eye_color": "hazel"},
-        "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "olive"},
+        # 2.2.0: the sand Nomad jacket, loose hair and hazel eyes were wrong. Her look is
+        # the cropped red-and-black moto jacket over an olive bodysuit, harness, leather-
+        # panelled jeans and fingerless gloves, hair up in a bun (tag survey + wiki).
+        # She is 5'11" and has almost no visible chrome.
+        "costume": "a cropped, weathered red-and-black leather moto jacket with a high "
+                   "reinforced collar, white trim and quilted sleeves, worn open over a "
+                   "sleeveless high-necked olive-green bodysuit, black harness straps "
+                   "with red buckles across the shoulders and waist, blue jeans "
+                   "reinforced with black leather panels on the thighs and shins, a "
+                   "thigh holster, black fingerless leather gloves, scuffed black "
+                   "motorcycle boots, and a light scatter of freckles across the nose",
+        "signature": {"hair_color": "dark brown", "hair_length": "long",
+                      "hair_style": "messy bun", "eye_color": "dark brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
         "prop": "a sniper rifle slung across the back",
     },
     "Quiet": {
