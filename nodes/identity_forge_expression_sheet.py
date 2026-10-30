@@ -34,12 +34,10 @@ except ImportError:  # pragma: no cover - exercised only outside ComfyUI
     _COMFY_AVAILABLE = False
 
 try:
-    from .identity_forge_turnaround import (
-        _FRAMINGS, _REPLAY_SEED, _forge_class, _unwrap, replay_steering,
-    )
+    from .identity_forge_turnaround import _FRAMINGS, _forge_class, _unwrap, replay_base
 except ImportError:  # pragma: no cover - standalone/test context
     from nodes.identity_forge_turnaround import (
-        _FRAMINGS, _REPLAY_SEED, _forge_class, _unwrap, replay_steering,
+        _FRAMINGS, _forge_class, _unwrap, replay_base,
     )
 
 _LOG = logging.getLogger(__name__)
@@ -90,14 +88,8 @@ def resolve_expression_sheet(
 ) -> "tuple[list[str], list[str]]":
     """Render one resolved character once per expression. Returns ``(prompts, labels)``."""
     forge = _forge_class()
-    # Schema defaults for every input, then the document: the Turnaround's recipe, and
-    # its long note on why defaults (not "Random" everywhere) are load-bearing.
-    base: "dict[str, Any]" = {
-        spec.id: getattr(spec, "default", None) for spec in forge.define_schema().inputs
-    }
-    base["seed"] = _REPLAY_SEED
-    base["archetype_json"] = character_json or ""
-    base.update(replay_steering(character_json))
+    # The Turnaround's replay recipe (schema defaults, then the document).
+    base = replay_base(character_json)
     framing = _FRAMINGS.get(framing_name, "")
     if framing:
         base["shot_type"] = framing

@@ -289,6 +289,40 @@ Two engine-facing traps this rewrite hit, both silent, both now pinned by tests:
   by the "Auto (preset)" sentinel on the two widgets (see "Vault recall and the control
   sentinels"); the Turnaround did not wait, because it has no widget to add one to.
 
+### Sheets that change the person: release, don't override (2.3.0)
+
+The Turnaround and Expression Sheet override a few fields and replay the rest unchanged. The
+Outfit Sheet and Age Progression nodes change things other fields depend on (an outfit style
+gates makeup, jewellery and hair styling; an age gates hair colour, skin detail and some
+outfits), so overriding alone would replay a value a live rule now excludes, and the engine
+would log a "keeping lock" conflict. They use **release** instead. The shared helpers live in
+`nodes/identity_forge_turnaround.py`: `replay_base()` builds the common replay kwargs,
+`document_fields()` flattens a document, and `release_fields()` drops named fields from the
+document (and from `_meta.omitted`), so the engine redraws them under the new pin from its
+fixed replay seed.
+
+- **What to release is asked, not hard-coded.** For each pin (`outfit_style`, `age`, a framing,
+  a grey hair colour) the node asks `lock_clash(field, value, context)` which kept fields the
+  pin refuses, and releases those. Face and body never clash, so the person stays.
+- **Outfit Sheet:** releases the whole Clothing group, and with a studio backdrop the scene
+  fields (location, lighting, composition, season; a locked season otherwise clashes with a
+  studio). Makeup, jewellery and hair styling are released per style when that style refuses
+  them (`_RESTYLED`). A style that would refuse anything else is skipped and logged; with the
+  default backdrop that never happened over the test sweep, while "Keep the character's scene"
+  usually keeps 3 to 4 of 6 styles because many places refuse formal or athletic wear.
+- **Released fields need a per-character seed.** The fixed `_REPLAY_SEED` is right when a
+  replay redraws nothing, but a released field redrawn from a fixed seed lands on the same
+  value for every character: the first draft's per-style seeds gave 40 characters four casual
+  outfits, most of them grey. `character_seed()` hashes the document (plus a salt: the style
+  and the user's `outfit_seed`, or "age"), so a redraw differs between characters and repeats
+  for the same one. Age Progression uses it for the fields an age refuses. A cosplay, a full-body suit or a suppressed
+  Clothing group gives one view, unchanged.
+- **Age Progression:** only `age` is pinned, so face shape, eye colour, build and the rest stay.
+  Hair greys only for a natural-scope, non-cosplay, uncovered head: a stage past 55 and older
+  than the character turns dark hair salt and pepper (silver from 70), any other colour silver;
+  a grey-haired character shown younger gets a natural colour drawn once at age 20 with hair
+  colour released. A face-covering character, or one with no numeric age, gives one view.
+
 ### Vault recall and the control sentinels (1.0.0)
 
 `wardrobe` and `hair_color_scope` are control fields — they live only in `_meta`, never in
@@ -3528,6 +3562,33 @@ caught and fixed during this task's review rounds. `<img>` tags lazy-load via
 `IntersectionObserver` once a kind's manifest resolves, mirroring the public gallery page's own
 lazy-load pattern, so opening the dialog with previews on does not eagerly fetch hundreds of
 images at once.
+
+**Superseded in 2.3.0: previews go through a server-side cache.** ComfyUI's `--offline` flag adds
+a Content-Security-Policy (`img-src 'self' data: blob:; connect-src 'self' ...`) that blocks the
+browser from reaching github.io at all, so the direct fetch above showed nothing for those users.
+The picker now asks its own ComfyUI origin (`/identity_forge/gallery/<folder>/manifest.json` and
+`/identity_forge/gallery/<folder>/images/...`, via `api.apiURL`), and `nodes/gallery_cache.py`
+fetches from `gh-pages` server-side and keeps the files under ComfyUI's user directory
+(`identity_forge/gallery_cache/`). The CSP binds only the browser, so the server fetch is allowed.
+Rules that keep it safe and small:
+
+- **Only what is viewed is stored.** Images are fetched one at a time as the picker lazy-loads
+  them; nothing is prefetched. The whole gallery is a few hundred MiB, a typical session a few MiB.
+- **Only manifest-listed paths are fetched,** always from the one fixed gh-pages root, and the
+  resolved cache path must stay inside the cache folder. The kind is an allowlist. So a request
+  can never make the server fetch an arbitrary URL or write outside its folder.
+- **Freshness:** the manifest is reused for 10 minutes, an image for 7 days, then revalidated
+  with the stored ETag (a 304 just renews the file's mtime). Filenames are stable across
+  re-renders, so a re-rendered image arrives on its next revalidation.
+- **Offline fallback:** any network failure serves the cached copy; with nothing cached the
+  route returns 404 and the picker falls back to text-only, as before.
+- **Size caps and type checks:** a manifest must parse as JSON with an `entries` list, an image
+  must come back as `image/*`, and each has a byte limit. Writes are atomic.
+- **Clear cached previews** in the picker POSTs `/identity_forge/gallery/cache/clear` (a JSON
+  body is required, the same CSRF guard as the other POST routes) and reports the size freed.
+
+The server-side fetch does mean the pack contacts github.io even under `--offline` once a user
+ticks "Show preview images"; the picker's notice says so, and the checkbox stays off by default.
 
 **Two Critical bugs surfaced only by live testing**, not by the automated jsdom suite (documented
 at length in the task's own reports; named here because they shaped what shipped): the trigger

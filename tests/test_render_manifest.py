@@ -112,6 +112,22 @@ class RehashTests(unittest.TestCase):
             render_gallery.save_manifest = original_save
 
 
+class PublishPendingDryRunTests(unittest.TestCase):
+    def test_dry_run_publishes_nothing(self) -> None:
+        # 2.3.0: --publish-pending ignored --dry-run and pushed to gh-pages.
+        original_survey, original_publish = render_gallery.survey, render_gallery.publish_kind
+        render_gallery.survey = lambda kinds: {k: {"unpublished": ["X"]} for k in kinds}
+        render_gallery.publish_kind = lambda *a: self.fail("dry run must not publish")
+        try:
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                code = render_gallery.main(["--publish-pending", "--dry-run"])
+            self.assertEqual(code, 0)
+            self.assertIn("would publish X", buffer.getvalue())
+        finally:
+            render_gallery.survey, render_gallery.publish_kind = original_survey, original_publish
+
+
 class EntryHashTests(unittest.TestCase):
     def test_hash_is_stable_across_calls(self) -> None:
         first = render_gallery.entry_hash("cosplay", "2B")
@@ -203,6 +219,14 @@ class GalleryShotPoolTests(unittest.TestCase):
             for name, pose in pins.items():
                 self.assertIn(name, COSPLAYERS)
                 self.assertIn(pose, poses, name)
+
+    def test_lock_level_pins_name_real_archetypes_and_levels(self) -> None:
+        from data.templates import ARCHETYPES
+        from nodes.identity_forge_archetype import IdentityForgeArchetype
+        spec = {i.id: i for i in IdentityForgeArchetype.define_schema().inputs}
+        for name, level in render_gallery._GALLERY_LOCK_LEVEL.items():
+            self.assertIn(name, ARCHETYPES)
+            self.assertIn(level, spec["lock_level"].options, name)
 
     def test_shot_pins_name_real_entries_and_gallery_shots(self) -> None:
         from data.templates import ARCHETYPES

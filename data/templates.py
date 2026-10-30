@@ -6006,6 +6006,42 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
             },
         },
     },
+    # 2.3.0: Mexica (Aztec) nobility, after the Codex Mendoza and Florentine Codex: the
+    # knotted tilmatli cloak and maxtlatl for men, the huipil and cueitl for women, jade
+    # ear spools for both (not matched as earrings, so the random pair is locked off).
+    "Aztec Noble": {
+        "gender": "Any",
+        "tattoos": "no tattoos",
+        "piercings": "no piercings beyond ears",
+        "bracelet": "none",
+        "rings": "none",
+        "ethnicity": "Mexican",
+        "outfit_style": "evening formal",
+        "accessories": "no accessories",
+        "bag": "no bag",
+        "necklace": "no necklace",
+        "earrings": "no earrings",
+        "hair_color": "jet black",
+        "hair_highlights": "none",
+        "nails": "natural short nails",
+        "expression": "confident",
+        "location": "crumbling stone ruin",
+        "lighting": "late afternoon warm sunlight",
+        "shot_type": "full body shot",
+        "mood": "commanding",
+        "variants": {
+            "Female": {
+                "hair_length": "waist length", "hair_texture": "sleek straight",
+                "hair_style": ["worn down", "loose braids"], "makeup_style": "no makeup",
+                "outfit_description": "a white cotton huipil tunic woven with bands of {jewel_tone} and gold geometric pattern at the neck and hem, worn over a long wrapped cueitl skirt with an embroidered border, a collar of polished jade beads, jade ear spools, gold arm cuffs, and simple leather sandals",
+            },
+            "Male": {
+                "hair_length": "shoulder length", "hair_style": "worn down",
+                "makeup_style": "no makeup", "facial_hair": "clean shaven",
+                "outfit_description": "a white cotton tilmatli cloak edged with a woven {jewel_tone} and gold geometric border and knotted at one shoulder, a maxtlatl loincloth with long embroidered hanging ends, a tall headdress of long green quetzal feathers rising from a gold band, jade ear spools, gold arm cuffs, and leather sandals with high heel guards",
+            },
+        },
+    },
 }
 
 

@@ -27,7 +27,7 @@ The Cosplayer node is where Identity Forge really shines. Most character wildcar
 
 Ask a plain wildcard for Chun-Li and your prompt says `Chun-Li`. Ask this Cosplayer node and you get: *the blue qipao with gold trim, brown tights, white cross-laced boots, and spiked bracelets.* The look renders even on checkpoints that have never heard of the character.
 
-**Find one fast:** open the in-node picker to browse and search the whole roster without leaving the node — trait facets (Giant, Masked, Mascot/full-suit, Beast), Female/Male and franchise filters, and optional thumbnail previews. The picker remembers your search, tab and facet while the workflow is open, so you can pick, close and come back to the same filtered view; reloading starts fresh.
+**Find one fast:** open the in-node picker to browse and search the whole roster without leaving the node — trait facets (Giant, Masked, Mascot/full-suit, Beast), Female/Male and franchise filters, and optional thumbnail previews (fetched once by your ComfyUI server and cached on disk, so they still show when ComfyUI runs with `--offline`). The picker remembers your search, tab and facet while the workflow is open, so you can pick, close and come back to the same filtered view; reloading starts fresh.
 
 **Characters from every major franchise:** Marvel, DC, Star Wars, anime, video games, fantasy, sci-fi, horror. Each one with multiple costume variants where applicable (Harley Quinn's three iconic looks, Catwoman's different suits, etc.). Characters rotate between variants by seed, so the same name yields a different signature costume each roll.
 
@@ -45,6 +45,13 @@ the person on every frame. Full controls and the back-view face-omission behavio
 The **Expression Sheet** node is its face-side sibling: the same resolved character, one image per
 expression (neutral, smile, laughing, surprised, serious, sad, and more), with only the expression,
 mood and smile changing. See [docs/usage.md](docs/usage.md#expression-sheets).
+
+Two more sheets work the same way. The **Outfit Sheet** keeps the person and redresses them once per
+outfit style (casual, business formal, evening formal and so on) on a plain studio backdrop, and the
+**Age Progression** node shows the same person at several ages, greying natural hair as they age.
+See [docs/usage.md](docs/usage.md#outfit-sheets) and [docs/usage.md](docs/usage.md#age-progression).
+Ready-made workflows for both are in [example_workflows/](example_workflows/) and in ComfyUI's
+template browser under Identity Forge.
 
 ### Additional layers
 
@@ -139,6 +146,8 @@ randomized identities, so your own results will vary:
 | **Vault Save / Load** | Save a generated character (with a thumbnail) to a local vault; recall it later as a chainable preset, with a Manage Vault gallery. |
 | **Turnaround** | A reference-sheet builder: wire Identity Forge's `prompt_json` in and it emits front / three-quarter / profile / back as a **list**, so one queue renders the whole set of the same person. It only moves the camera - the character and the scene stay configured on Identity Forge. |
 | **Expression Sheet** | The same idea for the face: wire `prompt_json` in and it emits one prompt per expression (Basic 6, Full 10 or Smiles 3) as a **list**. Only expression, mood and smile change (plus the gaze, if you pick one to hold). |
+| **Outfit Sheet** | Wire `prompt_json` in and it emits one prompt per outfit style (Range 6, Everyday 4, Work to evening 4 or Every style) as a **list**: the same person redressed, on a studio backdrop or in their own scene; `outfit_seed` re-rolls every outfit for the same person. Makeup, jewellery and hair styling follow the outfit; face and body stay. A cosplay or full-suit character gives a single view. |
+| **Age Progression** | Wire `prompt_json` in and it emits the same person at several ages (Life stages 4, Decades 6 or Young and old 2) as a **list**. Natural hair greys with age; dyed, vivid and costume hair stay as they are. A masked character gives a single view. |
 
 ---
 

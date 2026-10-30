@@ -323,6 +323,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a brown Survey Corps jacket with the Wings of Freedom emblem, an "
                    "omni-directional maneuver gear harness, white pants, brown mid-calf "
                    "boots, and a red scarf",
+        "costume_back": "a brown Survey Corps jacket with the large Wings of Freedom emblem across the back, an omni-directional maneuver gear harness, white pants, brown mid-calf boots, and a red scarf",
         "signature": {"hair_color": "jet black", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "dark gray"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "light medium"},
@@ -1865,6 +1866,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a red, blue, and gold Kree flight suit with a gold eight-pointed "
                    "starburst chest emblem, red gloves, and red boots",
+        "costume_back": "a red, blue, and gold Kree flight suit, red gloves, and red boots",
         "costumes": [
             # Classic Ms. Marvel identity (black lightning-bolt leotard, red sash, domino mask).
             {
@@ -2012,6 +2014,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Female",
         "costume": "a blue crop top with the Superman S-shield, a red miniskirt, a red "
                    "cape, and red mid-thigh boots",
+        "costume_back": "a blue crop top, a red cape falling down the back over a red miniskirt, and red mid-thigh boots",
         "costumes": [
             # Animated-series look (white crop top, sleek straight hair).
             {
@@ -2479,6 +2482,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "sleeveless silver and black armor with rows of circular silver chest "
                    "discs, a flowing red cape, and engraved bracers",
+        "costume_back": "a flowing red cape falling down the back over sleeveless silver and black armor, and engraved bracers",
         "signature": {"hair_color": "golden blonde", "hair_length": "long",
                       "facial_hair": "short beard", "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -2531,6 +2535,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a dark blue tunic with a wide sash and high collar, a flowing red "
                    "Cloak of Levitation with a tall collar, and a golden Eye of Agamotto "
                    "amulet at the throat",
+        "costume_back": "a flowing red Cloak of Levitation with a tall collar falling down the back over a dark blue tunic and wide sash",
         "signature": {"hair_color": "gray-streaked dark hair", "hair_length": "very short",
                       "facial_hair": "goatee", "eye_color": "gray"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
@@ -2723,6 +2728,7 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "a black bodysuit with a bright green torso and shoulders, a green "
                    "circular lantern emblem on the chest, a green domino mask, green "
                    "gloves and boots, and a glowing green power ring worn on the finger",
+        "costume_back": "a black bodysuit with a bright green torso and shoulders, and green gloves and boots",
         "signature": {"hair_color": "dark brown", "hair_length": "very short",
                       "eye_color": "green"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -2820,6 +2826,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a red bodysuit with a golden lightning-bolt emblem on the chest, a "
                    "short white half-cape with gold trim, a golden sash, and golden boots",
+        "costume_back": "a red bodysuit under a short white half-cape with gold trim, a golden sash, and golden boots",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "eye_color": "bright blue"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
@@ -3517,6 +3524,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a brown Survey Corps jacket with the wings-of-freedom crest, a green "
                    "hooded cloak, and a body harness with handheld blades on ODM gear",
+        "costume_back": "a green hooded cloak with the large Wings of Freedom emblem across the back, over a brown Survey Corps jacket and a body harness with handheld blades on ODM gear",
         "signature": {"hair_color": "jet black", "hair_length": "very short",
                       "hair_style": "blunt bangs", "eye_color": "dark gray"},
         "physique": {"body_type": "lean", "height": "short", "skin_tone": "fair"},
@@ -3526,6 +3534,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a brown Survey Corps jacket and straps over a white shirt, a green "
                    "hooded cloak, and an ODM-gear harness",
+        "costume_back": "a green hooded cloak with the large Wings of Freedom emblem across the back, over a brown Survey Corps jacket, straps, and an ODM-gear harness",
         "signature": {"hair_color": "dark brown", "hair_length": "jaw length",
                       "eye_color": "green"},
         "physique": {"body_type": "athletic", "height": "average height", "skin_tone": "fair"},
@@ -3535,6 +3544,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a yellow jumpsuit with a zip collar, a white cape, red gloves, red "
                    "boots, a black belt, and a completely bald shiny head",
+        "costume_back": "a white cape falling down the back over a yellow jumpsuit, red gloves, red boots, a black belt, and a completely bald shiny head",
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
     "Tatsumaki": {
@@ -3939,6 +3949,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a black Soul Reaper robe under a white captain's haori, white "
                    "kenseikan hair ornaments, and a white scarf",
+        "costume_back": "a white captain's haori over a black Soul Reaper robe, the black kanji for six inside a diamond on the back of the haori, white kenseikan hair ornaments, and a white scarf",
         "signature": {"hair_color": "near black", "hair_length": "shoulder length",
                       "hair_texture": "sleek straight", "eye_color": "dark gray"},
         "physique": {"body_type": "lean", "height": "tall", "skin_tone": "fair"},
@@ -6329,6 +6340,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a yellow cape and green-and-gold accents over smooth, flawless deep red "
                    "android skin, with a glowing yellow gem set in the forehead",
+        "costume_back": "a yellow cape falling down the back over smooth deep red android skin with green-and-gold accents",
         "eyes": "glowing white",
         "signature": {},
         "physique": {"body_type": "athletic", "height": "tall"},
@@ -10673,6 +10685,7 @@ COSPLAYERS: dict[str, dict] = {
         "gender": "Male",
         "costume": "a red tunic with a yellow R chest emblem, green shorts, gloves and "
                    "boots, and a yellow-lined black cape",
+        "costume_back": "a yellow-lined black cape falling down the back over a red tunic, green shorts, gloves and boots",
         "signature": {"hair_color": "jet black", "hair_length": "very short", "eye_color": "bright blue"},
         "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair"},
     },
@@ -19017,6 +19030,7 @@ COSPLAYERS: dict[str, dict] = {
                    "sleeveless captain's haori over it, straw sandals, a black "
                    "eyepatch over the right eye, and hair spiked into stiff points "
                    "tipped with small bells",
+        "costume_back": "a white sleeveless captain's haori over a black Shinigami kimono, the black kanji for eleven inside a diamond on the back of the haori, straw sandals, and hair spiked into stiff points tipped with small bells",
         "prop": "a battered chipped-edged katana",
         "signature": {"hair_color": "jet black", "hair_length": "shoulder length"},
         "physique": {"body_type": "athletic", "height": "very tall",

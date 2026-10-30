@@ -148,6 +148,7 @@ RELEASES: tuple[str, ...] = (
     "1.11.0",
     "2.1.0",
     "2.2.0",
+    "2.3.0",
 )
 
 #: Entry name -> the release it first shipped in.
@@ -2352,6 +2353,7 @@ ADDED_IN: dict[str, dict[str, str]] = {
         'Astronaut': "0.5.0",
         'Astronomer': "0.29.0",
         'Athlete': "0.5.0",
+        'Aztec Noble': "2.3.0",
         'B-Boy / B-Girl': "0.42.0",
         'Babushka': "0.42.0",
         'Backyard Country Casual': "0.35.0",

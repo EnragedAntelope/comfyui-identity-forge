@@ -48,7 +48,7 @@ function rosterOkHandler(url) {
   if (url.endsWith("identity_forge_roster.json")) {
     return { ok: true, json: async () => REAL_ROSTER };
   }
-  if (url.includes("github.io")) {
+  if (url.includes("/identity_forge/gallery/")) {
     return { ok: true, json: async () => ({ entries: [] }) };
   }
   return { ok: false, status: 404 };
@@ -515,7 +515,7 @@ test("thumbnails stay off (no gallery fetch) until the preview toggle is enabled
     picker.open();
     await flush();
     assert.ok(
-      !stub.calls.some((u) => u.includes("github.io")),
+      !stub.calls.some((u) => u.includes("/identity_forge/gallery/") || u.includes("github.io")),
       "no gallery manifest request must happen before the toggle is enabled",
     );
 
@@ -523,8 +523,42 @@ test("thumbnails stay off (no gallery fetch) until the preview toggle is enabled
     picker.previewCheckbox.dispatchEvent(new window.Event("change"));
     await flush();
     assert.ok(
-      stub.calls.some((u) => u.includes("github.io") && u.includes("manifest.json")),
-      "enabling the toggle must fetch the live gh-pages manifest for the visible kind(s)",
+      stub.calls.some((u) => u.startsWith("/identity_forge/gallery/") && u.includes("manifest.json")),
+      "enabling the toggle must fetch the manifest for the visible kind(s) through the server's cache",
+    );
+    // 2.3.0: --offline's CSP allows only ComfyUI's own origin, so nothing may go to GitHub.
+    assert.ok(
+      !stub.calls.some((u) => u.includes("github.io")),
+      "the browser must never fetch the gallery from GitHub directly",
+    );
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("preview images load from the server's cache route, path segments encoded", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const node = makeFakeNode("IdentityForgeCosplayer");
+    const picker = new __testing.IdentityForgePicker({
+      kind: "cosplayer",
+      targetWidgetName: "character",
+      title: "test",
+      node,
+    });
+    picker.open();
+    await flush();
+    const art = picker.grid.querySelector('[data-if-kind="cosplayer"] .if-picker-art');
+    assert.ok(art, "a cosplayer card must be on screen");
+    const name = art.getAttribute("data-if-name");
+    picker.applyManifest("cosplayer", new Map([[name, "images/" + name + " #1.jpeg"]]));
+    const src = art.querySelector("img").getAttribute("data-src");
+    assert.equal(
+      src,
+      "/identity_forge/gallery/cosplay/images/" + encodeURIComponent(name + " #1.jpeg"),
     );
     picker.close();
   } finally {

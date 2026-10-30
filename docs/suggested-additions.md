@@ -77,6 +77,7 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 |---|---|
 | A negative and/or tags output | Maintainer: not needed. (The subject/scene half of the same row shipped at 1.8.0 as `subject_text`.) |
 | An on-node readout of the resolved prompt | Maintainer: not needed. |
+| A pair / group node (two or more resolved characters in one prompt) (2.3.0 plan) | Maintainer: deferred, not refused. Most current t2i models blend or swap traits between two described people in one prompt, so the output would not match the characters. Reopen if models hold separate subjects reliably. |
 
 ### Individual characters
 
@@ -345,6 +346,8 @@ From the third-party wildcard packs mined at 1.6.0. What shipped is in docs/hist
 | A dark/gothic counterpart to Kawaii Street Fashion | Declined on two counts. The pastel silhouette is already `Kawaii Street Fashion` (ruffled blouse, tiered skirt, platform Mary-Janes) and the dark one is already `1990s Goth`, so the candidate sits between two shipped entries rather than beside them. The maintainer also rejected the subculture's usual name outright. **Do not re-propose it under a synonym.** |
 | Zoot Suit women's (pachuca) variant (1.11.0 plan) | **Declined at 1.11.0 on the render bar; `Zoot Suit` ships men's only.** The long drape jacket and the watch chain are the whole look. Both wordings failed: the first (a long-line jacket over a short pleated skirt) did not read as a zoot suit, and the retry (fingertip-length drape jacket, pegged trousers) drew a sleeveless cropped vest with no chain. |
 | Renaissance noblewoman, Victorian lady, Edwardian lady, Greek noblewoman, Steampunk aristocrat (2.2.0 historical list) | **Already ship** as `Renaissance Noble`, `Victorian Lady`, `Gibson Girl`, `Greek Goddess` and `Steampunk Inventor`. Baroque gentleman, Rococo marquise and Georgian gentleman were folded into the new `Rococo Courtier`. |
+| Edo, Victorian and Regency period looks (2.3.0 plan) | **Already ship** as `Samurai`, `Geisha`, `Stealth Ninja`, `Victorian Lady`, `Victorian Dandy` and `Regency Aristocrat`. `Aztec Noble` shipped from the same list. |
+| Silk Road merchant (2.3.0 plan) | A blend of `Mongolian Deel`, `Ottoman Court` and `Hanfu` with no silhouette of its own; the name would be doing the work. |
 | Mughal noblewoman, Belle Epoque gown, "cinematic period costume" (2.2.0 historical list) | Mughal court dress overlaps `Lehenga & Sherwani`; a Belle Epoque gown sits between `Victorian Lady` and `Gibson Girl`; "cinematic period costume" is a style, not a look. |
 | Rockabilly (1.11.0 plan) | Sits between two shipped entries: `1950s Greaser` carries the cuffed jeans, leather jacket and pompadour, and `Pin-up Model` the halter dress, victory rolls and red lip. A third entry would be a blend of the two, not a new look. |
 
