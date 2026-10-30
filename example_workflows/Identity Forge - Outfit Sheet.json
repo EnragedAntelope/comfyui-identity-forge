@@ -1,0 +1,2116 @@
+{
+  "id": "5a3c3141-6c5c-40be-8a4e-b1d238e747c4",
+  "revision": 0,
+  "last_node_id": 18,
+  "last_link_id": 17,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "IdentityForge",
+      "pos": [
+        60,
+        330
+      ],
+      "size": [
+        270,
+        2234
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "archetype_json",
+          "name": "archetype_json",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "gender",
+          "name": "gender",
+          "type": "COMBO",
+          "widget": {
+            "name": "gender"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "wardrobe",
+          "name": "wardrobe",
+          "type": "COMBO",
+          "widget": {
+            "name": "wardrobe"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "size_scale",
+          "name": "size_scale",
+          "type": "COMBO",
+          "widget": {
+            "name": "size_scale"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_color_scope",
+          "name": "hair_color_scope",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_color_scope"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "accessory_density",
+          "name": "accessory_density",
+          "type": "COMBO",
+          "widget": {
+            "name": "accessory_density"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "location_setting",
+          "name": "location_setting",
+          "type": "COMBO",
+          "widget": {
+            "name": "location_setting"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "set_all_fields",
+          "name": "set_all_fields",
+          "type": "COMBO",
+          "widget": {
+            "name": "set_all_fields"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "age",
+          "name": "age",
+          "type": "COMBO",
+          "widget": {
+            "name": "age"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "ethnicity",
+          "name": "ethnicity",
+          "type": "COMBO",
+          "widget": {
+            "name": "ethnicity"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "skin_tone",
+          "name": "skin_tone",
+          "type": "COMBO",
+          "widget": {
+            "name": "skin_tone"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "body_type",
+          "name": "body_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "body_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "COMBO",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bust",
+          "name": "bust",
+          "type": "COMBO",
+          "widget": {
+            "name": "bust"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "waist",
+          "name": "waist",
+          "type": "COMBO",
+          "widget": {
+            "name": "waist"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hips",
+          "name": "hips",
+          "type": "COMBO",
+          "widget": {
+            "name": "hips"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "face_shape",
+          "name": "face_shape",
+          "type": "COMBO",
+          "widget": {
+            "name": "face_shape"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "forehead",
+          "name": "forehead",
+          "type": "COMBO",
+          "widget": {
+            "name": "forehead"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cheekbones",
+          "name": "cheekbones",
+          "type": "COMBO",
+          "widget": {
+            "name": "cheekbones"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "eyebrows",
+          "name": "eyebrows",
+          "type": "COMBO",
+          "widget": {
+            "name": "eyebrows"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "eye_color",
+          "name": "eye_color",
+          "type": "COMBO",
+          "widget": {
+            "name": "eye_color"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "eye_shape",
+          "name": "eye_shape",
+          "type": "COMBO",
+          "widget": {
+            "name": "eye_shape"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "nose",
+          "name": "nose",
+          "type": "COMBO",
+          "widget": {
+            "name": "nose"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lips",
+          "name": "lips",
+          "type": "COMBO",
+          "widget": {
+            "name": "lips"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "smile_type",
+          "name": "smile_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "smile_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "jawline",
+          "name": "jawline",
+          "type": "COMBO",
+          "widget": {
+            "name": "jawline"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "chin",
+          "name": "chin",
+          "type": "COMBO",
+          "widget": {
+            "name": "chin"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "complexion",
+          "name": "complexion",
+          "type": "COMBO",
+          "widget": {
+            "name": "complexion"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "skin_details",
+          "name": "skin_details",
+          "type": "COMBO",
+          "widget": {
+            "name": "skin_details"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "freckles_density",
+          "name": "freckles_density",
+          "type": "COMBO",
+          "widget": {
+            "name": "freckles_density"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_color",
+          "name": "hair_color",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_color"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_length",
+          "name": "hair_length",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_texture",
+          "name": "hair_texture",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_texture"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_style",
+          "name": "hair_style",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_style"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "facial_hair",
+          "name": "facial_hair",
+          "type": "COMBO",
+          "widget": {
+            "name": "facial_hair"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_accessory",
+          "name": "hair_accessory",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_accessory"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "makeup_style",
+          "name": "makeup_style",
+          "type": "COMBO",
+          "widget": {
+            "name": "makeup_style"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "eyebrow_makeup",
+          "name": "eyebrow_makeup",
+          "type": "COMBO",
+          "widget": {
+            "name": "eyebrow_makeup"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "eye_makeup",
+          "name": "eye_makeup",
+          "type": "COMBO",
+          "widget": {
+            "name": "eye_makeup"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "eyeliner",
+          "name": "eyeliner",
+          "type": "COMBO",
+          "widget": {
+            "name": "eyeliner"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lashes",
+          "name": "lashes",
+          "type": "COMBO",
+          "widget": {
+            "name": "lashes"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "contour",
+          "name": "contour",
+          "type": "COMBO",
+          "widget": {
+            "name": "contour"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "highlight",
+          "name": "highlight",
+          "type": "COMBO",
+          "widget": {
+            "name": "highlight"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "blush",
+          "name": "blush",
+          "type": "COMBO",
+          "widget": {
+            "name": "blush"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lips_makeup",
+          "name": "lips_makeup",
+          "type": "COMBO",
+          "widget": {
+            "name": "lips_makeup"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "skin_finish",
+          "name": "skin_finish",
+          "type": "COMBO",
+          "widget": {
+            "name": "skin_finish"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "earrings",
+          "name": "earrings",
+          "type": "COMBO",
+          "widget": {
+            "name": "earrings"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "necklace",
+          "name": "necklace",
+          "type": "COMBO",
+          "widget": {
+            "name": "necklace"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "other_jewelry",
+          "name": "other_jewelry",
+          "type": "COMBO",
+          "widget": {
+            "name": "other_jewelry"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "piercings",
+          "name": "piercings",
+          "type": "COMBO",
+          "widget": {
+            "name": "piercings"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "nails",
+          "name": "nails",
+          "type": "COMBO",
+          "widget": {
+            "name": "nails"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "outfit_style",
+          "name": "outfit_style",
+          "type": "COMBO",
+          "widget": {
+            "name": "outfit_style"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bag",
+          "name": "bag",
+          "type": "COMBO",
+          "widget": {
+            "name": "bag"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "accessories",
+          "name": "accessories",
+          "type": "COMBO",
+          "widget": {
+            "name": "accessories"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "expression",
+          "name": "expression",
+          "type": "COMBO",
+          "widget": {
+            "name": "expression"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "location",
+          "name": "location",
+          "type": "COMBO",
+          "widget": {
+            "name": "location"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lighting",
+          "name": "lighting",
+          "type": "COMBO",
+          "widget": {
+            "name": "lighting"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "shot_type",
+          "name": "shot_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "shot_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "shoulder_width",
+          "name": "shoulder_width",
+          "type": "COMBO",
+          "widget": {
+            "name": "shoulder_width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "neck_length",
+          "name": "neck_length",
+          "type": "COMBO",
+          "widget": {
+            "name": "neck_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "posture",
+          "name": "posture",
+          "type": "COMBO",
+          "widget": {
+            "name": "posture"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "fitness_level",
+          "name": "fitness_level",
+          "type": "COMBO",
+          "widget": {
+            "name": "fitness_level"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_part",
+          "name": "hair_part",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_part"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "hair_highlights",
+          "name": "hair_highlights",
+          "type": "COMBO",
+          "widget": {
+            "name": "hair_highlights"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "rings",
+          "name": "rings",
+          "type": "COMBO",
+          "widget": {
+            "name": "rings"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bracelet",
+          "name": "bracelet",
+          "type": "COMBO",
+          "widget": {
+            "name": "bracelet"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "watch_type",
+          "name": "watch_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "watch_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "footwear",
+          "name": "footwear",
+          "type": "COMBO",
+          "widget": {
+            "name": "footwear"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "clothing_color",
+          "name": "clothing_color",
+          "type": "COMBO",
+          "widget": {
+            "name": "clothing_color"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "clothing_pattern",
+          "name": "clothing_pattern",
+          "type": "COMBO",
+          "widget": {
+            "name": "clothing_pattern"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "season",
+          "name": "season",
+          "type": "COMBO",
+          "widget": {
+            "name": "season"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mood",
+          "name": "mood",
+          "type": "COMBO",
+          "widget": {
+            "name": "mood"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "pose",
+          "name": "pose",
+          "type": "COMBO",
+          "widget": {
+            "name": "pose"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "composition",
+          "name": "composition",
+          "type": "COMBO",
+          "widget": {
+            "name": "composition"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "tattoos",
+          "name": "tattoos",
+          "type": "COMBO",
+          "widget": {
+            "name": "tattoos"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "legwear",
+          "name": "legwear",
+          "type": "COMBO",
+          "widget": {
+            "name": "legwear"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "tattoo_placement",
+          "name": "tattoo_placement",
+          "type": "COMBO",
+          "widget": {
+            "name": "tattoo_placement"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "outerwear",
+          "name": "outerwear",
+          "type": "COMBO",
+          "widget": {
+            "name": "outerwear"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "gaze",
+          "name": "gaze",
+          "type": "COMBO",
+          "widget": {
+            "name": "gaze"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "prompt_text",
+          "name": "prompt_text",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "localized_name": "prompt_json",
+          "name": "prompt_json",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        },
+        {
+          "localized_name": "subject_text",
+          "name": "subject_text",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IdentityForge",
+        "if_widget_order": "schema"
+      },
+      "widgets_values": [
+        13,
+        "fixed",
+        "Female",
+        "Match gender",
+        "Auto",
+        "Natural only",
+        "Minimal",
+        "Any indoor/outdoor",
+        "Off",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random",
+        "Random"
+      ],
+      "widgets_values_named": {
+        "seed": 13,
+        "control_after_generate": "fixed",
+        "gender": "Female",
+        "wardrobe": "Match gender",
+        "size_scale": "Auto",
+        "hair_color_scope": "Natural only",
+        "accessory_density": "Minimal",
+        "location_setting": "Any indoor/outdoor",
+        "set_all_fields": "Off",
+        "🎲 Unlock all (set to Random)": null,
+        "🔒 Roll + lock all fields": null,
+        "▾ Demographics": null,
+        "age": "Random",
+        "ethnicity": "Random",
+        "▾ Body": null,
+        "skin_tone": "Random",
+        "body_type": "Random",
+        "height": "Random",
+        "bust": "Random",
+        "waist": "Random",
+        "hips": "Random",
+        "shoulder_width": "Random",
+        "neck_length": "Random",
+        "posture": "Random",
+        "fitness_level": "Random",
+        "tattoos": "Random",
+        "tattoo_placement": "Random",
+        "▾ Face": null,
+        "face_shape": "Random",
+        "forehead": "Random",
+        "cheekbones": "Random",
+        "eyebrows": "Random",
+        "eye_color": "Random",
+        "eye_shape": "Random",
+        "nose": "Random",
+        "lips": "Random",
+        "smile_type": "Random",
+        "jawline": "Random",
+        "chin": "Random",
+        "complexion": "Random",
+        "skin_details": "Random",
+        "freckles_density": "Random",
+        "▾ Hair": null,
+        "hair_color": "Random",
+        "hair_length": "Random",
+        "hair_texture": "Random",
+        "hair_style": "Random",
+        "facial_hair": "Random",
+        "hair_accessory": "Random",
+        "hair_part": "Random",
+        "hair_highlights": "Random",
+        "▾ Makeup": null,
+        "makeup_style": "Random",
+        "eyebrow_makeup": "Random",
+        "eye_makeup": "Random",
+        "eyeliner": "Random",
+        "lashes": "Random",
+        "contour": "Random",
+        "highlight": "Random",
+        "blush": "Random",
+        "lips_makeup": "Random",
+        "skin_finish": "Random",
+        "▾ Jewelry & Nails": null,
+        "earrings": "Random",
+        "necklace": "Random",
+        "other_jewelry": "Random",
+        "piercings": "Random",
+        "nails": "Random",
+        "rings": "Random",
+        "bracelet": "Random",
+        "watch_type": "Random",
+        "▾ Clothing": null,
+        "outfit_style": "Random",
+        "bag": "Random",
+        "accessories": "Random",
+        "footwear": "Random",
+        "clothing_color": "Random",
+        "clothing_pattern": "Random",
+        "legwear": "Random",
+        "outerwear": "Random",
+        "▾ Setting & Shot": null,
+        "expression": "Random",
+        "location": "Random",
+        "lighting": "Random",
+        "shot_type": "Random",
+        "season": "Random",
+        "mood": "Random",
+        "pose": "Random",
+        "composition": "Random",
+        "gaze": "Random"
+      }
+    },
+    {
+      "id": 2,
+      "type": "MarkdownNote",
+      "pos": [
+        60,
+        60
+      ],
+      "size": [
+        270,
+        230
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "## 1. Character\n\n- **Identity Forge** builds the person. The seed is fixed at 13 so this file reproduces the README example; set `control_after_generate` to `randomize` for a new person every queue.\n- Lock any field to keep it, or wire a Cosplayer / Archetype / Creature node into `archetype_json`.\n- Wire `prompt_json` (not `prompt_text`) into the sheet."
+      ],
+      "widgets_values_named": {
+        "text": "## 1. Character\n\n- **Identity Forge** builds the person. The seed is fixed at 13 so this file reproduces the README example; set `control_after_generate` to `randomize` for a new person every queue.\n- Lock any field to keep it, or wire a Cosplayer / Archetype / Creature node into `archetype_json`.\n- Wire `prompt_json` (not `prompt_text`) into the sheet."
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "IdentityForgeOutfitSheet",
+      "pos": [
+        410,
+        330
+      ],
+      "size": [
+        420,
+        198
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "character_json",
+          "name": "character_json",
+          "type": "STRING",
+          "link": 1
+        },
+        {
+          "localized_name": "sheet",
+          "name": "sheet",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "backdrop",
+          "name": "backdrop",
+          "type": "COMBO",
+          "widget": {
+            "name": "backdrop"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "framing",
+          "name": "framing",
+          "type": "COMBO",
+          "widget": {
+            "name": "framing"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "pose",
+          "name": "pose",
+          "type": "COMBO",
+          "widget": {
+            "name": "pose"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "outfit_seed",
+          "name": "outfit_seed",
+          "type": "INT",
+          "widget": {
+            "name": "outfit_seed"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            2,
+            5
+          ]
+        },
+        {
+          "localized_name": "view_label",
+          "name": "view_label",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IdentityForgeOutfitSheet"
+      },
+      "widgets_values": [
+        "Range (6)",
+        "Grey studio backdrop",
+        "Full body",
+        "standing with arms relaxed at the sides",
+        0,
+        "fixed"
+      ],
+      "widgets_values_named": {
+        "sheet": "Range (6)",
+        "backdrop": "Grey studio backdrop",
+        "framing": "Full body",
+        "pose": "standing with arms relaxed at the sides",
+        "outfit_seed": 0,
+        "control_after_generate": "fixed"
+      }
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        410,
+        60
+      ],
+      "size": [
+        420,
+        230
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "## 2. Outfit Sheet\n\nOne prompt per outfit style, as a **list**: one queue renders every view of the **same person**.\n\n- `sheet`: Range (6), Everyday (4), Work to evening (4) or Every style.\n- `backdrop`: a grey, white or black studio (every style fits), or keep the character's own scene (styles that place does not allow are skipped).\n- Face, body and hair colour stay; makeup, jewellery and hair styling follow the outfit when needed.\n- A cosplay or full-suit character gives one view: the costume is the outfit."
+      ],
+      "widgets_values_named": {
+        "text": "## 2. Outfit Sheet\n\nOne prompt per outfit style, as a **list**: one queue renders every view of the **same person**.\n\n- `sheet`: Range (6), Everyday (4), Work to evening (4) or Every style.\n- `backdrop`: a grey, white or black studio (every style fits), or keep the character's own scene (styles that place does not allow are skipped).\n- Face, body and hair colour stay; makeup, jewellery and hair styling follow the outfit when needed.\n- A cosplay or full-suit character gives one view: the costume is the outfit."
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 5,
+      "type": "PreviewAny",
+      "pos": [
+        410,
+        560
+      ],
+      "size": [
+        420,
+        420
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "Prompt preview (one per view)",
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": [],
+      "widgets_values_named": {}
+    },
+    {
+      "id": 6,
+      "type": "UNETLoader",
+      "pos": [
+        910,
+        330
+      ],
+      "size": [
+        340,
+        82
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_dtype",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "krea2\\krea2_raw_int8_convrot.safetensors",
+        "default"
+      ],
+      "widgets_values_named": {
+        "unet_name": "krea2\\krea2_raw_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    {
+      "id": 7,
+      "type": "CLIPLoader",
+      "pos": [
+        910,
+        450
+      ],
+      "size": [
+        340,
+        106
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "Krea2-Engineer-V1-bf16.safetensors",
+        "krea2",
+        "default"
+      ],
+      "widgets_values_named": {
+        "clip_name": "Krea2-Engineer-V1-bf16.safetensors",
+        "type": "krea2",
+        "device": "default"
+      }
+    },
+    {
+      "id": 8,
+      "type": "VAELoader",
+      "pos": [
+        910,
+        590
+      ],
+      "size": [
+        340,
+        58
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "krea2RealVae_v10.safetensors"
+      ],
+      "widgets_values_named": {
+        "vae_name": "krea2RealVae_v10.safetensors"
+      }
+    },
+    {
+      "id": 9,
+      "type": "LoraLoader",
+      "pos": [
+        910,
+        690
+      ],
+      "size": [
+        340,
+        126
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 4
+        },
+        {
+          "localized_name": "lora_name",
+          "name": "lora_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "lora_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "strength_model",
+          "name": "strength_model",
+          "type": "FLOAT",
+          "widget": {
+            "name": "strength_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "strength_clip",
+          "name": "strength_clip",
+          "type": "FLOAT",
+          "widget": {
+            "name": "strength_clip"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            9
+          ]
+        },
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoader"
+      },
+      "widgets_values": [
+        "krea2\\krea2_turbo_r64_bf16.safetensors",
+        0.6,
+        0.6
+      ],
+      "widgets_values_named": {
+        "lora_name": "krea2\\krea2_turbo_r64_bf16.safetensors",
+        "strength_model": 0.6,
+        "strength_clip": 0.6
+      }
+    },
+    {
+      "id": 10,
+      "type": "StringConcatenate",
+      "pos": [
+        1330,
+        330
+      ],
+      "size": [
+        340,
+        166
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "string_a",
+          "name": "string_a",
+          "type": "STRING",
+          "widget": {
+            "name": "string_a"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "string_b",
+          "name": "string_b",
+          "type": "STRING",
+          "widget": {
+            "name": "string_b"
+          },
+          "link": 5
+        },
+        {
+          "localized_name": "delimiter",
+          "name": "delimiter",
+          "type": "STRING",
+          "widget": {
+            "name": "delimiter"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Style prefix + prompt",
+      "properties": {
+        "Node name for S&R": "StringConcatenate"
+      },
+      "widgets_values": [
+        "professional photograph, DSLR quality, sharp focus, natural lighting, high detail skin texture",
+        "",
+        " . "
+      ],
+      "widgets_values_named": {
+        "string_a": "professional photograph, DSLR quality, sharp focus, natural lighting, high detail skin texture",
+        "string_b": "",
+        "delimiter": " . "
+      }
+    },
+    {
+      "id": 11,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1330,
+        530
+      ],
+      "size": [
+        340,
+        90
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 7
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            8,
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "widgets_values_named": {
+        "text": ""
+      }
+    },
+    {
+      "id": 12,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        1330,
+        660
+      ],
+      "size": [
+        340,
+        30
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "title": "Negative (cfg 1: zeroed)",
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut"
+      }
+    },
+    {
+      "id": 13,
+      "type": "EmptyLatentImage",
+      "pos": [
+        1330,
+        730
+      ],
+      "size": [
+        340,
+        106
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "batch_size",
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1664,
+        2432,
+        1
+      ],
+      "widgets_values_named": {
+        "width": 1664,
+        "height": 2432,
+        "batch_size": 1
+      }
+    },
+    {
+      "id": 14,
+      "type": "StringConcatenate",
+      "pos": [
+        1330,
+        880
+      ],
+      "size": [
+        340,
+        166
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "string_a",
+          "name": "string_a",
+          "type": "STRING",
+          "widget": {
+            "name": "string_a"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "string_b",
+          "name": "string_b",
+          "type": "STRING",
+          "widget": {
+            "name": "string_b"
+          },
+          "link": 16
+        },
+        {
+          "localized_name": "delimiter",
+          "name": "delimiter",
+          "type": "STRING",
+          "widget": {
+            "name": "delimiter"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "title": "File name from view_label",
+      "properties": {
+        "Node name for S&R": "StringConcatenate"
+      },
+      "widgets_values": [
+        "identityforge/outfit_sheet/",
+        "",
+        ""
+      ],
+      "widgets_values_named": {
+        "string_a": "identityforge/outfit_sheet/",
+        "string_b": "",
+        "delimiter": ""
+      }
+    },
+    {
+      "id": 15,
+      "type": "KSampler",
+      "pos": [
+        1710,
+        330
+      ],
+      "size": [
+        320,
+        262
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 10
+        },
+        {
+          "localized_name": "negative",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 11
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 12
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampler_name",
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "scheduler",
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "denoise",
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        424242,
+        "fixed",
+        10,
+        1,
+        "er_sde",
+        "beta",
+        1
+      ],
+      "widgets_values_named": {
+        "seed": 424242,
+        "control_after_generate": "fixed",
+        "steps": 10,
+        "cfg": 1,
+        "sampler_name": "er_sde",
+        "scheduler": "beta",
+        "denoise": 1
+      }
+    },
+    {
+      "id": 16,
+      "type": "VAEDecode",
+      "pos": [
+        1710,
+        640
+      ],
+      "size": [
+        320,
+        46
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 13
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 17,
+      "type": "SaveImage",
+      "pos": [
+        1710,
+        730
+      ],
+      "size": [
+        320,
+        420
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 15
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "ComfyUI"
+      }
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "pos": [
+        910,
+        60
+      ],
+      "size": [
+        1120,
+        230
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "## 3. Render (stock nodes only)\n\n- Swap in your own model loaders: any text-to-image model works. These are the Krea2 settings the pack's galleries use.\n- The **sampler seed is fixed** so every view starts from the same noise, which keeps the person more consistent across the sheet.\n- The style prefix goes **first**: a trailing style phrase gets drawn as scene content.\n- Files are named from `view_label`."
+      ],
+      "widgets_values_named": {
+        "text": "## 3. Render (stock nodes only)\n\n- Swap in your own model loaders: any text-to-image model works. These are the Krea2 settings the pack's galleries use.\n- The **sampler seed is fixed** so every view starts from the same noise, which keeps the person more consistent across the sheet.\n- The style prefix goes **first**: a trailing style phrase gets drawn as scene content.\n- Files are named from `view_label`."
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      1,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      3,
+      0,
+      5,
+      0,
+      "STRING"
+    ],
+    [
+      3,
+      6,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      7,
+      0,
+      9,
+      1,
+      "CLIP"
+    ],
+    [
+      5,
+      3,
+      0,
+      10,
+      1,
+      "STRING"
+    ],
+    [
+      6,
+      10,
+      0,
+      11,
+      1,
+      "STRING"
+    ],
+    [
+      7,
+      9,
+      1,
+      11,
+      0,
+      "CLIP"
+    ],
+    [
+      8,
+      11,
+      0,
+      12,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      9,
+      9,
+      0,
+      15,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      11,
+      0,
+      15,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      12,
+      0,
+      15,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      12,
+      13,
+      0,
+      15,
+      3,
+      "LATENT"
+    ],
+    [
+      13,
+      15,
+      0,
+      16,
+      0,
+      "LATENT"
+    ],
+    [
+      14,
+      8,
+      0,
+      16,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      16,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      3,
+      1,
+      14,
+      1,
+      "STRING"
+    ],
+    [
+      17,
+      14,
+      0,
+      17,
+      1,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "1. Character",
+      "bounding": [
+        40,
+        0,
+        310,
+        2584
+      ],
+      "color": "#3f789e",
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "2. Outfit Sheet",
+      "bounding": [
+        390,
+        0,
+        460,
+        1000
+      ],
+      "color": "#8A8",
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "3. Render",
+      "bounding": [
+        890,
+        0,
+        1160,
+        1170
+      ],
+      "color": "#b06634",
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9,
+      "offset": [
+        416,
+        110
+      ]
+    }
+  },
+  "version": 0.4
+}

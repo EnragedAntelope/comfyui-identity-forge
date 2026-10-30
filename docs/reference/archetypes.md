@@ -3,7 +3,7 @@
 
 # Archetype reference
 
-**291 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
+**292 archetypes.** Each is a curated look wired through the Archetype node. `gender` shows a locked gender (blank = either); `outfit` is the archetype's outfit style.
 
 - **1940s Factory Worker** [Female] -- vintage retro
 - **1940s Swing Dancer** [Any]
@@ -42,6 +42,7 @@
 - **Astronaut** -- athletic
 - **Astronomer** -- smart casual
 - **Athlete** [Any] -- athletic
+- **Aztec Noble** [Any] -- evening formal
 - **B-Boy / B-Girl**
 - **Babushka** [Female] -- vintage retro
 - **Backyard Country Casual** [Any]

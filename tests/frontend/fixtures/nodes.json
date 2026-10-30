@@ -2209,6 +2209,7 @@
         "Astronaut",
         "Astronomer",
         "Athlete",
+        "Aztec Noble",
         "B-Boy / B-Girl",
         "Babushka",
         "Backyard Country Casual",
@@ -7469,6 +7470,96 @@
         "tilting the head slightly",
         "lifting the chin slightly",
         "None"
+      ]
+    }
+  ],
+  "IdentityForgeOutfitSheet": [
+    {
+      "name": "sheet",
+      "default": "Range (6)",
+      "type": "combo",
+      "options": [
+        "Range (6)",
+        "Everyday (4)",
+        "Work to evening (4)",
+        "Every style (15)"
+      ]
+    },
+    {
+      "name": "backdrop",
+      "default": "Grey studio backdrop",
+      "type": "combo",
+      "options": [
+        "Grey studio backdrop",
+        "White studio backdrop",
+        "Black studio backdrop",
+        "Keep the character's scene"
+      ]
+    },
+    {
+      "name": "framing",
+      "default": "Full body",
+      "type": "combo",
+      "options": [
+        "Full body",
+        "Cowboy (mid-thigh up)",
+        "Waist up",
+        "Chest up",
+        "Head and shoulders",
+        "Unspecified"
+      ]
+    },
+    {
+      "name": "pose",
+      "default": "standing with arms relaxed at the sides",
+      "type": "combo",
+      "options": [
+        "standing with arms relaxed at the sides",
+        "standing naturally",
+        "standing tall with shoulders back",
+        "standing with feet planted wide",
+        "Keep the character's pose"
+      ]
+    },
+    {
+      "name": "outfit_seed",
+      "default": 0,
+      "type": "INT"
+    },
+    {
+      "name": "control_after_generate",
+      "type": "combo",
+      "default": "randomize",
+      "options": [
+        "fixed",
+        "increment",
+        "decrement",
+        "randomize"
+      ]
+    }
+  ],
+  "IdentityForgeAgeProgression": [
+    {
+      "name": "stages",
+      "default": "Life stages (4)",
+      "type": "combo",
+      "options": [
+        "Life stages (4)",
+        "Decades (6)",
+        "Young and old (2)"
+      ]
+    },
+    {
+      "name": "framing",
+      "default": "Head and shoulders",
+      "type": "combo",
+      "options": [
+        "Full body",
+        "Cowboy (mid-thigh up)",
+        "Waist up",
+        "Chest up",
+        "Head and shoulders",
+        "Unspecified"
       ]
     }
   ],

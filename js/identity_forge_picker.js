@@ -1,4 +1,5 @@
 import { app } from "../../scripts/app.js";
+import { api } from "../../scripts/api.js";
 
 /*
  * Identity Forge roster picker — Phase 4b (1.1.0).
@@ -217,17 +218,28 @@ function traitChips(entry) {
 // --- opt-in thumbnails --------------------------------------------------------
 //
 // Text-first, zero image payload by default. Enabling "Show preview images"
-// fetches the LIVE gh-pages gallery manifest for a kind with a plain, absolute
-// `fetch` -- explicitly not `api.fetchApi`, which targets the ComfyUI server,
-// not GitHub Pages -- and lazy-loads <img> tags via IntersectionObserver.
-// Gallery manifests are deployment output on gh-pages, not source artifacts
-// on main; only the published file is ever fetched here.
+// fetches the gallery manifest for a kind and lazy-loads <img> tags via
+// IntersectionObserver. 2.3.0: both go through the pack's own server routes
+// (nodes/gallery_cache.py), which fetch the gh-pages gallery and keep it on
+// disk -- ComfyUI's --offline CSP allows only the page's own origin, and the
+// cache also keeps previews showing after the network goes away. Gallery
+// manifests are deployment output on gh-pages, not source artifacts on main.
 
 const GH_PAGES_GALLERY_ROOT = "https://enragedantelope.github.io/comfyui-identity-forge/gallery/";
 const PREVIEW_PREF_KEY = "identity_forge.picker.show_previews";
 
+/** The public gallery page (the "Open the full gallery" links). */
 function galleryFolderURL(kind) {
   return GH_PAGES_GALLERY_ROOT + KIND_GALLERY_FOLDER[kind] + "/";
+}
+
+/** The same folder through the server's cache, on ComfyUI's own origin. */
+function galleryCacheURL(kind) {
+  return api.apiURL("/identity_forge/gallery/" + KIND_GALLERY_FOLDER[kind] + "/");
+}
+
+function formatMegabytes(bytes) {
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
 function loadPreviewPref() {
@@ -278,7 +290,7 @@ const manifestFetches = new Map();
 
 function loadManifest(kind) {
   if (manifestFetches.has(kind)) return manifestFetches.get(kind);
-  const promise = fetch(galleryFolderURL(kind) + "manifest.json")
+  const promise = fetch(galleryCacheURL(kind) + "manifest.json")
     .then((response) => {
       if (!response.ok) throw new Error("HTTP " + response.status);
       return response.json();
@@ -561,7 +573,35 @@ class IdentityForgePicker {
     const notice = document.createElement("div");
     notice.className = "if-picker-notice";
     notice.textContent =
-      "Enabling previews fetches images from this project's GitHub Pages site (enragedantelope.github.io) — nothing else phones home.";
+      "Enabling previews has the ComfyUI server fetch images from this project's GitHub Pages site " +
+      "(enragedantelope.github.io) and keep them on disk, so they still show offline. Nothing else phones home. ";
+    const clearCache = document.createElement("button");
+    clearCache.type = "button";
+    clearCache.className = "if-picker-btn if-picker-clear-cache";
+    clearCache.textContent = "Clear cached previews";
+    clearCache.addEventListener("click", async () => {
+      try {
+        const resp = await api.fetchApi("/identity_forge/gallery/cache/clear", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: "{}",
+        });
+        clearCache.textContent = resp.ok ? "Cached previews cleared" : "Could not clear the cache";
+      } catch (_) {
+        clearCache.textContent = "Could not clear the cache";
+      }
+    });
+    // Best-effort size readout; the button works without it.
+    api
+      .fetchApi("/identity_forge/gallery/cache")
+      .then((resp) => (resp.ok ? resp.json() : null))
+      .then((data) => {
+        if (data && typeof data.bytes === "number" && data.bytes > 0) {
+          clearCache.textContent = "Clear cached previews (" + formatMegabytes(data.bytes) + ")";
+        }
+      })
+      .catch(() => {});
+    notice.append(clearCache);
 
     const links = document.createElement("div");
     links.className = "if-picker-links";
@@ -909,7 +949,10 @@ class IdentityForgePicker {
       if (!relative || el.querySelector("img")) continue;
       const img = document.createElement("img");
       img.alt = "";
-      img.setAttribute("data-src", galleryFolderURL(kind) + relative);
+      img.setAttribute(
+        "data-src",
+        galleryCacheURL(kind) + relative.split("/").map(encodeURIComponent).join("/"),
+      );
       img.loading = "lazy";
       el.replaceChildren(img);
       if (this.imageObserver) this.imageObserver.observe(img);

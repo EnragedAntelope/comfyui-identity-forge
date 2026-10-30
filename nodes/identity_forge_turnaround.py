@@ -47,6 +47,7 @@ Text-only, zero new dependencies, no IMAGE anywhere.
 from __future__ import annotations
 
 import json
+import zlib
 from typing import Any
 
 try:
@@ -230,6 +231,71 @@ def replay_steering(character_json: str) -> "dict[str, str]":
     }
 
 
+def replay_base(character_json: str) -> "dict[str, Any]":
+    """Main-node kwargs that replay ``character_json`` unchanged: every input on its
+    schema default, the replay seed, the document, and its recorded steering. See
+    :func:`resolve_turnaround` for why the defaults (not "Random") are load-bearing."""
+    forge = _forge_class()
+    base: "dict[str, Any]" = {
+        spec.id: getattr(spec, "default", None) for spec in forge.define_schema().inputs
+    }
+    base["seed"] = _REPLAY_SEED
+    base["archetype_json"] = character_json or ""
+    base.update(replay_steering(character_json))
+    return base
+
+
+def character_seed(character_json: str, salt: str = "") -> int:
+    """A replay seed for sheets that RELEASE fields (Outfit Sheet, Age Progression).
+
+    The fixed :data:`_REPLAY_SEED` is right for a replay that redraws nothing, but a
+    released field redrawn from it lands on the same value for every character (2.3.0:
+    40 characters' casual views shared four outfits). Hashing the document makes the
+    redraw differ between characters and repeat for the same one.
+    """
+    return zlib.crc32(f"{salt}|{character_json or ''}".encode("utf-8"))
+
+
+def parse_document(character_json: str) -> "dict[str, Any]":
+    """The resolved document as a dict, or ``{}`` for anything malformed."""
+    try:
+        document = json.loads(character_json or "{}")
+    except (ValueError, TypeError):
+        return {}
+    return document if isinstance(document, dict) else {}
+
+
+def document_meta(document: "dict[str, Any]") -> "dict[str, Any]":
+    meta = document.get("_meta")
+    return meta if isinstance(meta, dict) else {}
+
+
+def document_fields(document: "dict[str, Any]") -> "dict[str, str]":
+    """Every concrete field value in the document, flattened out of its groups."""
+    return {
+        name: value
+        for key, group in document.items() if key != "_meta" and isinstance(group, dict)
+        for name, value in group.items()
+        if name in FIELD_DEFINITIONS and isinstance(value, str)
+    }
+
+
+def release_fields(document: "dict[str, Any]", names: "set[str]") -> None:
+    """Unlock ``names`` in place, so a replay draws them again under the engine's rules.
+
+    A field is locked twice over in a resolved document: by its value in a group, and,
+    when it was deliberately absent, by ``_meta.omitted`` (re-injected as a "None"
+    lock). Both have to go or the field stays pinned.
+    """
+    for key, group in document.items():
+        if key != "_meta" and isinstance(group, dict):
+            for name in names:
+                group.pop(name, None)
+    meta = document_meta(document)
+    if isinstance(meta.get("omitted"), list):
+        meta["omitted"] = [n for n in meta["omitted"] if n not in names]
+
+
 #: Rotations that show the costume's back, where a roster entry's ``costume_back``
 #: replaces its front-facing costume text (2.0.0).
 _BACK_OF_COSTUME: "frozenset[str]" = frozenset({_BACK, _REAR_THREE_QUARTER})
@@ -293,12 +359,7 @@ def resolve_turnaround(
     # engine re-rolled it, turning a woman into a man between the main node and the
     # turnaround. Defaults also mean a control added to the main node later is
     # deferred to correctly here without this node knowing it exists.
-    base: "dict[str, Any]" = {
-        spec.id: getattr(spec, "default", None) for spec in forge.define_schema().inputs
-    }
-    base["seed"] = _REPLAY_SEED
-    base["archetype_json"] = character_json or ""
-    base.update(replay_steering(character_json))
+    base = replay_base(character_json)
     if pose_name != _KEEP_POSE:
         base["pose"] = pose_name
         # A neutral stance faces the way the camera says; a gaze ("looking over one

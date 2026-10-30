@@ -227,6 +227,53 @@ Each view sets a fixed, curated expression/mood/smile combination, so a sheet is
 deterministic and no two views land on the same face. A face-covering character (a mascot
 head, a full helmet) has no visible expression, so the sheet emits one view, `1-masked`.
 
+## Outfit sheets
+
+The **Identity Forge Outfit Sheet** node is wired like the Turnaround and keeps the person while
+it redresses them once per outfit style.
+
+- **`sheet`** - `Range (6)` (casual, smart casual, business formal, evening formal, athletic,
+  resort vacation), `Everyday (4)`, `Work to evening (4)` or `Every style`.
+- **`backdrop`** - a grey (default), white or black studio backdrop, or `Keep the character's
+  scene`. A studio backdrop also redraws lighting and composition to suit the studio, so every
+  style fits.
+  Keeping the scene skips styles the place does not allow (no evening gown on a hiking trail),
+  so that sheet is often shorter.
+- **`framing`** - `Full body` by default, so the whole outfit shows. **`pose`** - a standing
+  pose by default; `Keep the character's pose` keeps theirs.
+- **`outfit_seed`** - every outfit is drawn at random within its style, and differs from one
+  character to the next. Change this number to re-dress the same person; set its control to
+  `randomize` for new outfits every queue.
+
+The face, body and hair colour stay; makeup, jewellery and hair styling follow each outfit when
+the old ones would clash with it. Labels read `1-casual`, `2-smart-casual` and so on. A cosplay
+character or a full-body suit has its costume, so the sheet emits one view as resolved.
+A ready-made workflow is `example_workflows/Identity Forge - Outfit Sheet.json` (also in
+ComfyUI's template browser).
+
+## Age progression
+
+The **Identity Forge Age Progression** node shows the same person at several ages.
+
+- **`stages`** - `Life stages (4)` (20, 35, 50, 70), `Decades (6)` (20 to 70) or `Young and old
+  (2)` (25, 70).
+- **`framing`** - `Head and shoulders` by default; `Unspecified` keeps the character's own.
+
+Only the age and what depends on it change (skin detail, and an outfit or hair style the new
+age does not allow). With a natural hair colour scope, hair greys past 55: dark hair goes salt
+and pepper, then silver from 70. A grey-haired character shown younger gets a natural colour.
+Dyed or vivid scopes, cosplay hair and covered hair are left alone. A face-covering character
+emits one view as resolved. Labels read `1-age-20` and so on. A ready-made workflow is
+`example_workflows/Identity Forge - Age Progression.json`.
+
+## Preview images in the picker
+
+"Show preview images" in the roster picker is off by default. When it is on, your ComfyUI
+server downloads each sample image the first time you scroll to it and keeps it in
+`<ComfyUI user folder>/identity_forge/gallery_cache/`, so previews also show when ComfyUI runs
+with `--offline` (once the server has fetched them). Only images you view are stored. "Clear
+cached previews" in the picker deletes the folder and shows how much it freed.
+
 ## Holding something specific
 
 The Modifier node's optional **`held_item`** box takes a free-text noun phrase - `a red

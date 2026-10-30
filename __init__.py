@@ -1,6 +1,6 @@
 """comfyui-identity-forge — V3 custom node pack entrypoint.
 
-Exposes nine nodes:
+Exposes eleven nodes:
 
 * ``IdentityForge`` — a multi-field character description randomizer with a
   constraint engine and dual prose/JSON output.
@@ -15,6 +15,10 @@ Exposes nine nodes:
   view of it as a list, so one queue renders a whole reference set.
 * ``IdentityForgeExpressionSheet`` - the same idea for the face: one resolved
   character, several expressions, as a list.
+* ``IdentityForgeOutfitSheet`` - the same idea for the clothes: one resolved
+  character, several outfit styles, as a list.
+* ``IdentityForgeAgeProgression`` - one resolved character at several ages, as a
+  list.
 * ``IdentityForgeVaultSave`` — save a generated character to a local vault.
 * ``IdentityForgeVaultLoad`` — recall a saved character as a chainable preset.
 
@@ -43,6 +47,8 @@ try:
     from .nodes.identity_forge_modifier import IdentityForgeModifier
     from .nodes.identity_forge_turnaround import IdentityForgeTurnaround
     from .nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet
+    from .nodes.identity_forge_outfit_sheet import IdentityForgeOutfitSheet
+    from .nodes.identity_forge_age_progression import IdentityForgeAgeProgression
     from .nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from .nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 except ImportError:  # pragma: no cover
@@ -53,6 +59,8 @@ except ImportError:  # pragma: no cover
     from nodes.identity_forge_modifier import IdentityForgeModifier
     from nodes.identity_forge_turnaround import IdentityForgeTurnaround
     from nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet
+    from nodes.identity_forge_outfit_sheet import IdentityForgeOutfitSheet
+    from nodes.identity_forge_age_progression import IdentityForgeAgeProgression
     from nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 
@@ -204,8 +212,67 @@ def _register_roll_route() -> None:
         return web.json_response({"values": roll_field_values(widgets, seed)})
 
 
+def _register_gallery_routes() -> None:
+    """2.3.0: the roster picker's preview images, served from ComfyUI's own origin.
+
+    The server fetches the gh-pages gallery on the browser's behalf and caches it on
+    disk (see ``nodes/gallery_cache.py``), so previews work under ``--offline``'s CSP
+    and survive a later loss of network. Only the picker's opt-in preview toggle calls
+    these. ``clear`` is a POST with a JSON body for the CSRF reason in
+    ``_register_vault_routes``.
+    """
+    try:
+        import asyncio
+
+        from aiohttp import web
+        from server import PromptServer  # type: ignore[import-not-found]
+
+        from .nodes import gallery_cache
+    except Exception as exc:  # noqa: BLE001 - never block node registration
+        _LOG.warning("Gallery routes not registered: %s", exc)
+        return
+
+    routes = PromptServer.instance.routes
+
+    async def _serve(fetch, *args):  # type: ignore[no-untyped-def]
+        try:
+            # urllib blocks; keep it off the event loop.
+            path = await asyncio.to_thread(fetch, *args, gallery_cache.default_root())
+        except gallery_cache.GalleryError as exc:
+            return web.Response(status=404, text=str(exc))
+        return web.FileResponse(path)
+
+    @routes.get("/identity_forge/gallery/{kind}/manifest.json")
+    async def _manifest(request):  # type: ignore[no-untyped-def]
+        response = await _serve(gallery_cache.manifest_path, request.match_info["kind"])
+        # Freshness is the cache's job (revalidated every 10 minutes); the browser
+        # must ask again rather than hold its own copy.
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+    @routes.get("/identity_forge/gallery/{kind}/{relative:images/.+}")
+    async def _image(request):  # type: ignore[no-untyped-def]
+        return await _serve(gallery_cache.image_path, request.match_info["kind"],
+                            request.match_info["relative"])
+
+    @routes.get("/identity_forge/gallery/cache")
+    async def _size(_request):  # type: ignore[no-untyped-def]
+        root = gallery_cache.default_root()
+        return web.json_response(
+            {"bytes": await asyncio.to_thread(gallery_cache.cache_bytes, root)})
+
+    @routes.post("/identity_forge/gallery/cache/clear")
+    async def _clear(request):  # type: ignore[no-untyped-def]
+        _body, error = await _json_body(request)
+        if error is not None:
+            return error
+        await asyncio.to_thread(gallery_cache.clear, gallery_cache.default_root())
+        return web.json_response({"bytes": 0})
+
+
 _register_vault_routes()
 _register_roll_route()
+_register_gallery_routes()
 
 
 class IdentityForgeExtension(ComfyExtension):
@@ -214,7 +281,8 @@ class IdentityForgeExtension(ComfyExtension):
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
         return [IdentityForge, IdentityForgeArchetype, IdentityForgeCosplayer,
                 IdentityForgeCreature, IdentityForgeModifier, IdentityForgeTurnaround,
-                IdentityForgeExpressionSheet,
+                IdentityForgeExpressionSheet, IdentityForgeOutfitSheet,
+                IdentityForgeAgeProgression,
                 IdentityForgeVaultSave, IdentityForgeVaultLoad]
 
 

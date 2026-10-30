@@ -165,9 +165,16 @@ def _gallery_shot(seed: int) -> str | None:
 #: not in the manifest hash.
 _GALLERY_GENDER: dict[str, dict[str, str]] = {
     "archetypes": {"Carhop": "Female", "Cheerleader": "Female",
-                   "Irish Step Dancer": "Female"},
+                   "Irish Step Dancer": "Female",
+                   # 2.3.0: the toga is the look people expect; the stola variant stays.
+                   "Ancient Roman Patrician": "Male"},
     "creatures": {"leprechaun": "Male"},  # 2.2.0: the folklore leprechaun is a bearded man
 }
+
+#: Gallery-only Archetype lock level, same terms as _GALLERY_GENDER: a period look whose
+#: ethnicity is part of the look renders at "Full preset" so the sample shows it as
+#: intended (2.3.0: at "Essentials" the Aztec Noble sample drew a random ethnicity).
+_GALLERY_LOCK_LEVEL: dict[str, str] = {"Aztec Noble": "Full preset"}
 
 #: Gallery-only pose pins, same terms as _GALLERY_GENDER: a sample whose defining
 #: feature only shows in one pose (Black Bolt's underarm wings spread only with the arms
@@ -546,7 +553,8 @@ def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
     elif kind == "archetypes":
         _check_options(IdentityForgeArchetype, ARCHETYPE_WIDGETS)
         preset = IdentityForgeArchetype.execute(
-            archetype=name, seed=seed, upstream="", **ARCHETYPE_WIDGETS
+            archetype=name, seed=seed, upstream="",
+            **{**ARCHETYPE_WIDGETS, "lock_level": _GALLERY_LOCK_LEVEL.get(name, "Essentials")},
         )
     elif kind == "creatures":
         _check_options(IdentityForgeCreature, CREATURE_WIDGETS)
@@ -983,6 +991,10 @@ def main(argv: list[str] | None = None) -> int:
                        if results[kind]["unpublished"]}
             if not pending:
                 print("Nothing unpublished.")
+                return 0
+            if args.dry_run:
+                for kind, names in sorted(pending.items()):
+                    print(f"  {kind}: would publish {', '.join(names)}")
                 return 0
             for kind, names in sorted(pending.items()):
                 if not publish_kind(kind, names):

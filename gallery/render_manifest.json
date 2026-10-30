@@ -107,7 +107,7 @@
       "Ancient Roman Patrician": {
         "hash": "ce7702a21069f41f",
         "published": true,
-        "rendered": "2026-10-28"
+        "rendered": "2026-10-30"
       },
       "Andean Cholita": {
         "hash": "8781c8cb0ec2c4aa",
@@ -152,6 +152,11 @@
       "Athlete": {
         "hash": "d112bb5a6c998317",
         "rendered": "2026-09-28"
+      },
+      "Aztec Noble": {
+        "hash": "69de2588ed803265",
+        "published": true,
+        "rendered": "2026-10-30"
       },
       "B-Boy / B-Girl": {
         "hash": "5e5fb1d046cb95ea",
@@ -11165,7 +11170,7 @@
       }
     }
   },
-  "generated": "2026-10-28T15:28:32",
+  "generated": "2026-10-30T08:39:13",
   "render": {
     "cfg": 1,
     "height": 2432,

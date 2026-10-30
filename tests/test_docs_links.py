@@ -3,7 +3,7 @@
 Scans README.md and docs/*.md (excluding docs/worklog/, which is gitignored
 and so would make this test behave differently locally than on a fresh
 clone) for `[text](path)` links, and checks that every relative path
-resolves to a real file. External links (http(s)://, mailto:) and same-file
+resolves to a real file or folder. External links (http(s)://, mailto:) and same-file
 anchor links (`#section`) are skipped; an anchor fragment on a cross-file
 link (`architecture.md#some-heading`) is stripped before checking, since
 verifying the fragment itself actually exists in the target file is not
@@ -39,7 +39,7 @@ class RelativeDocLinksTests(unittest.TestCase):
         broken = []
         for doc_path, path_part in _iter_relative_links():
             resolved = (doc_path.parent / path_part).resolve()
-            if not resolved.is_file():
+            if not resolved.exists():  # a folder link (example_workflows/) is valid too
                 broken.append(f"{doc_path.relative_to(ROOT)} -> {path_part}")
         self.assertFalse(
             broken,

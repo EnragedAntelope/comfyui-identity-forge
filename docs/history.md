@@ -1486,3 +1486,60 @@ lacked, because the model only draws what the prose says:
   manifest): the biomechanical alien ("biomechanical" is a Giger style token and restyled
   a gilded palace around it), the ocean sunfish (drew a woman holding a fish) and the
   crystalline alien (a hoodie hid the translucent body).
+
+## 2.3.0 - offline picker previews, Outfit Sheet, Age Progression, Aztec Noble, more back views
+
+**Picker previews survive `--offline`.** ComfyUI's `--offline` adds a CSP that blocks the
+browser from fetching github.io, so the picker's thumbnails silently showed nothing. Checked in
+ComfyUI's `server.py`: the policy is a response header, so it binds the browser only. The pack's
+server now fetches the manifest and images and serves them from ComfyUI's own origin, caching
+them under the user directory. Measured before choosing the design: the published galleries
+total a few hundred MiB (about 100 KiB an image), so the cache is lazy, never a full mirror;
+GitHub Pages returns ETags and honours `If-None-Match`, and image filenames are stable across
+re-renders, so revalidation is cheap. Verified on an isolated ComfyUI started with `--offline`:
+a direct github.io fetch was blocked, the cached routes served the manifest and a JPEG, and
+unlisted, traversal and unknown-kind paths returned 404. Design and safety rules:
+architecture.md -> "Superseded in 2.3.0: previews go through a server-side cache".
+
+**Outfit Sheet and Age Progression.** Both replay a resolved `prompt_json` like the Turnaround,
+but they change fields other fields depend on. The first Outfit Sheet draft overrode only the
+Clothing group and skipped nearly every style: makeup, jewellery and hair accessories are
+style-gated, so a casual look's ponytail or a formal look's earrings refused the next style.
+Overriding is the wrong tool; the nodes now ask `lock_clash` what each pin refuses and release
+those fields for a redraw (architecture.md -> "Sheets that change the person"). Three more
+conflict sources turned up in seed sweeps and are covered the same way: a locked season under
+a studio backdrop, a close-up framing against a locked composition or pose, and pinned grey hair
+against locked highlights. A 20-year-old also briefly gained laugh lines, because the natural
+hair colour was drawn from a replay that kept the old skin detail; both paths now share one
+helper. Final sweep: every studio-backdrop sheet and every age sheet kept all its views with no
+engine conflicts; keep-scene sheets usually keep 3 to 4 of 6 styles, by design. The first
+example render looked grey in four of six outfits: each style replayed with one fixed seed, so
+every character drew the same few outfits per style (40 characters, four casual looks). The
+seed now hashes the character, and an `outfit_seed` input re-dresses the same person; measured
+after, 36 to 40 distinct outfits per style over 40 characters and a grey share matching plain
+random characters.
+
+**Period archetypes.** Edo, Victorian and Regency were proposed and dropped: Samurai, Geisha,
+Victorian Lady, Victorian Dandy and Regency Aristocrat already ship. Silk Road was declined as a
+blend of Mongolian Deel, Ottoman Court and Hanfu. Aztec Noble is new (Codex Mendoza and
+Florentine Codex dress: huipil and cueitl, or tilmatli and maxtlatl with a quetzal headdress).
+
+**Gallery samples.** The first Aztec Noble tile, rendered at the gallery's default
+`Essentials` lock level, drew a random ethnicity; the look needs `Full preset`, now a per-entry
+gallery pin (`_GALLERY_LOCK_LEVEL` in `scripts/render_gallery.py`). The Ancient Roman Patrician
+sample is pinned Male (the toga is the expected look; the node still offers both). Example
+workflows for the two new nodes ship in `example_workflows/`, built in the real frontend on an
+isolated instance and reloaded to confirm what they execute. `--publish-pending` ignored
+`--dry-run` and pushed; it now only lists what it would publish.
+
+**More `costume_back` entries,** starting with caped and back-emblem heroes (Survey Corps
+wings, Gotei 13 captains' haori, capes for Thor, Doctor Strange, Shazam, Supergirl, Robin,
+Saitama and Vision, plus suit backs for Captain Marvel and Green Lantern). Each is checked by
+rendering the Turnaround's back view text, never by parsing the front costume. Test renders of
+six back views (Thor, Doctor Strange, Saitama, Levi, Byakuya, Superman) showed the cape or back
+emblem and no chest emblem; Byakuya's kanji is not the right glyph (a model text limit).
+
+Random characters are unchanged: no field pool, weight or draw order moved (verified by hashing
+the prose of several hundred seeds before and after, and the Turnaround and Expression Sheet
+output over the shared-helper refactor). The Archetype node's `Random` pick moves on some seeds,
+as with every archetype addition, because it chooses from a longer list.
