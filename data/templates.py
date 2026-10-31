@@ -163,7 +163,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "outfit_style": "edgy alternative",
         "accessories": "no accessories",
         "expression": "confident",
-        "location": "factory floor",
+        "location": "blacksmith forge with an anvil",
         "lighting": "warm incandescent lamp glow",
         "shot_type": "low angle looking up",
         "mood": "self-assured",
@@ -486,7 +486,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "outfit_style": "casual",
         "accessories": "no accessories",
         "expression": "confident",
-        "location": "sleek modern kitchen with marble countertops",
+        "location": "commercial kitchen",
         "lighting": "warm incandescent lamp glow",
         "shot_type": "medium shot from waist up",
         "mood": "self-assured",
@@ -810,8 +810,8 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "complexion": "ruddy", "outfit_style": "edgy alternative",
         "outfit_description": "weathered brown leather coat over a loose linen shirt, a wide red sash, and a tricorn hat",
         "bag": "no bag", "accessories": "no accessories",
-        "expression": "smirking", "location": "dimly lit cocktail lounge",
-        "lighting": "warm candlelight",
+        "expression": "smirking", "location": "harbor with moored boats",
+        "lighting": "golden hour sunlight",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "carefree",
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
@@ -1059,7 +1059,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     "Gladiator": {
         "accessories": "no accessories",
         "gender": "Any", "body_type": "athletic", "fitness_level": "muscular", "hair_color": ["dark brown", "medium brown", "near black"],         "outfit_style": "athletic", "expression": "determined",
-        "location": "museum gallery with white walls", "lighting": "dramatic chiaroscuro side lighting",
+        "location": "the Colosseum exterior", "lighting": "harsh overhead midday sun",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
@@ -1335,7 +1335,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     "Veterinarian": {
         "hair_length": ["shoulder length", "long"], "hair_style": "low ponytail",
         "outfit_style": "business casual",
-        "expression": "warm smile", "location": "doctor's examination room",
+        "expression": "warm smile", "location": "veterinary clinic exam room",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
@@ -1348,7 +1348,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     "Glassblower": {
         "outfit_style": "casual", "expression": "determined",
-        "location": "factory floor", "lighting": "fire and flame warm flicker",
+        "location": "glassblowing studio with a furnace", "lighting": "fire and flame warm flicker",
         "shot_type": "medium shot from waist up", "mood": "intense",
     },
 
@@ -1642,7 +1642,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "gender": "Any", "ethnicity": "Cuban", "body_type": "athletic", "height": "tall",
         "fitness_level": "muscular", "hair_color": ["jet black", "raven black", "near black"],
         "skin_tone": "warm brown", "outfit_style": "athletic",
-        "expression": "intense gaze", "location": "local gym weight room",
+        "expression": "intense gaze", "location": "boxing gym with hanging heavy bags",
         "lighting": "dramatic chiaroscuro side lighting", "shot_type": "cowboy shot from mid-thigh up",
         "mood": "intense",
         "variants": {
@@ -2234,7 +2234,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "hair_color": ["chestnut", "light chestnut", "warm brown"], "hair_length": "shoulder length", "hair_texture": "wavy",
         "hair_style": "half up half down", "skin_tone": "fair", "outfit_style": "casual",
         "accessories": "no accessories", "expression": "warm smile",
-        "location": "farmers market indoor stall", "lighting": "soft window light from the side",
+        "location": "flower shop interior", "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
     "Plumber": {
@@ -2345,12 +2345,12 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     "Potter": {
         "outfit_style": "casual", "expression": "at ease",
-        "location": "artist's painting studio", "lighting": "soft window light from the side",
+        "location": "ceramics studio with pottery wheels", "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "peaceful",
     },
     "Tailor": {
         "outfit_style": "smart casual", "expression": "subtle soft smile",
-        "location": "luxury retail boutique", "lighting": "soft window light from the side",
+        "location": "tailor's workroom with dress forms", "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Calligrapher": {
@@ -2630,7 +2630,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
             "a heavyweight white cotton martial-arts gi with a wrapped black belt knotted at the waist, worn barefoot",
             "a sleeveless {dark_color} training top with loose black kung-fu trousers, wrapped hand wraps, and bare feet",
         ],
-        "expression": "determined", "location": "yoga studio with wood floors",
+        "expression": "determined", "location": "martial arts dojo",
         "lighting": "soft window light from the side", "shot_type": "full body shot", "mood": "intense",
     },
     "Kendo Practitioner": {
@@ -2650,7 +2650,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
             "a dark navy kendogi jacket under a white do chest plate with red accents, a tare waist guard with a name tag, thick padded kote gauntlets, a men grille mask with a padded fukin head covering, and a dark hakama with suneate shin guards",
             "a white keikogi under a dark blue do with white trim, padded kote gloves, a men face grille with a tenugui head cloth, a tare waist protector, and dark blue hakama trousers with shin guards",
         ],
-        "expression": "focused", "location": "yoga studio with wood floors",
+        "expression": "focused", "location": "martial arts dojo",
         "lighting": "soft window light from the side",
         "shot_type": "full body shot", "mood": "intense",
         "held_item": "a bamboo shinai",
@@ -3290,6 +3290,10 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     "Figure Skater": {
         "gender": "Any",
+        # 2.4.0: on blades a skater stands and strikes a pose; never walks or kneels.
+        # A pose lock is Setting & Shot, so it holds in Essentials too.
+        "pose": ["standing tall with shoulders back", "in a confident power pose",
+                 "standing with weight on one leg", "stretching both arms overhead"],
         "variants": {
             "Female": {
                 "body_type": ["athletic", "petite and slim", "toned"], "fitness_level": "very fit",
@@ -3303,7 +3307,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
                     "a {pastel} competition skating dress with cascading rhinestones, sheer mesh sleeves, and white figure skates",
                 ],
                 "expression": ["determined", "bright smile"],
-                "location": ["roller skating rink", "dance studio with mirrors"],
+                "location": "indoor ice rink",
                 "lighting": ["high key bright even lighting", "stage spotlight from above"],
                 "shot_type": "full body shot", "mood": ["triumphant", "radiant"],
             },
@@ -3317,7 +3321,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
                     "a sleek {jewel_tone} competition skating shirt with an asymmetric beaded seam, black stretch trousers, and black figure skates",
                 ],
                 "expression": ["determined", "bright smile"],
-                "location": ["roller skating rink", "dance studio with mirrors"],
+                "location": "indoor ice rink",
                 "lighting": ["high key bright even lighting", "stage spotlight from above"],
                 "shot_type": "full body shot", "mood": ["triumphant", "radiant"],
             },
@@ -3892,14 +3896,18 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "height": "average height",
         "fitness_level": "athletic",
         "outfit_style": "athletic",
-        "outfit_description": "bulky {color} goaltender pads strapped over the legs, a heavily "
-                              "padded chest protector under a loose team jersey, an oversized "
+        # 2.4.0: team colours on pads and jersey; a charcoal draw on white ice rendered
+        # the whole frame black and white.
+        "outfit_description": "bulky {team_color} goaltender pads strapped over the legs, a heavily "
+                              "padded chest protector under a loose {team_color} team jersey, an oversized "
                               "blocker on one hand and a deep catching glove on the other, and "
                               "a painted cage-fronted goalie mask",
         "accessories": "no accessories",
         "bag": "no bag",
         "expression": "determined",
         "location": "indoor ice rink",
+        # 2.4.0: on blades, a set stance rather than a walk.
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back"],
         "lighting": "cool LED overhead lighting",
         "shot_type": "full body shot",
         "mood": "intense",
@@ -5691,6 +5699,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "earrings": "no earrings",
         "expression": "defiant",
         "location": "roller skating rink",
+        # 2.4.0: on wheels, a set stance rather than a walk.
+        "pose": ["standing with feet planted wide", "in a confident power pose",
+                 "standing with arms crossed"],
         "lighting": "cool LED overhead lighting",
         "shot_type": "full body shot",
         "mood": "fierce",

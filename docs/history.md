@@ -1543,3 +1543,29 @@ Random characters are unchanged: no field pool, weight or draw order moved (veri
 the prose of several hundred seeds before and after, and the Turnaround and Expression Sheet
 output over the shared-helper refactor). The Archetype node's `Random` pick moves on some seeds,
 as with every archetype addition, because it chooses from a longer list.
+
+## 2.4.0 - archetype scene coherence (in progress)
+
+**Figure Skater was set off the ice.** It locked "roller skating rink" or "dance studio with
+mirrors", so a skater in blades stood among mirrors and barres, sometimes on a wood floor. It
+now locks "indoor ice rink". Its pose was never locked, so the random pool drew "walking
+mid-stride" on blades; it now locks four standing poses. Hockey Goalie and Roller Derby (also
+on blades or wheels) got the same treatment. A pose lock is Setting & Shot, so it holds in
+Essentials as well as Full preset. Both rinks already ban floor poses (kneel, crouch, sit), so
+"crouching low" could never draw there and is not in the lists.
+
+**The goalie rendered in black and white.** Its pads drew from `{color}` and its jersey named
+no colour; a charcoal draw on white ice under cool LED light left nothing colourful in the
+prompt, and the model went monochrome. Pads and jersey now share one `{team_color}` draw.
+
+**Locations written before a better one existed.** Audited every archetype's locked location
+against the current pool. Moved where a matching place now exists and the engine reports no new
+conflict: Swashbuckling Pirate (cocktail lounge to a harbour, lighting candlelight to golden
+hour), Gladiator (museum gallery to the Colosseum exterior, lighting to midday sun), Chef
+(home kitchen to commercial kitchen), Veterinarian (doctor's room to a veterinary exam room),
+Boxer (weight room to a boxing gym), Glassblower and Dwarven Blacksmith (factory floor to their
+own studio and forge), Florist, Potter, Tailor, Martial Artist and Kendo Practitioner (to a
+flower shop, ceramics studio, tailor's workroom and dojo). Egyptian Pharaoh stays in the museum
+hall: the Giza plateau adds clashes with its locked spotlight and evening-formal style.
+
+Each change touches only that archetype's draws; random characters are unchanged.

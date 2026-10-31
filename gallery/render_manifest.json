@@ -224,8 +224,9 @@
         "rendered": "2026-09-28"
       },
       "Boxer": {
-        "hash": "0f10627f6c11cdc3",
-        "rendered": "2026-09-28"
+        "hash": "cbfd59e50fd08238",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Bridal Portrait": {
         "hash": "b273a22e41e7f019",
@@ -274,8 +275,9 @@
         "seed": 1022670364302622099
       },
       "Chef": {
-        "hash": "dd0b634768aa7924",
-        "rendered": "2026-09-28"
+        "hash": "acd89303d5e0c922",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Chimney Sweep": {
         "hash": "23f742abe508f846",
@@ -370,8 +372,9 @@
         "rendered": "2026-10-10"
       },
       "Dwarven Blacksmith": {
-        "hash": "77833a426c2fae0c",
-        "rendered": "2026-09-28"
+        "hash": "3a25f856a17b2a10",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Día de los Muertos": {
         "hash": "8c9a5ee569f12bd7",
@@ -427,8 +430,9 @@
         "rendered": "2026-08-10"
       },
       "Figure Skater": {
-        "hash": "7b8ea97bbb9a2460",
-        "rendered": "pre-existing"
+        "hash": "a4846ebed39e41a1",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Filipiniana Terno": {
         "hash": "daa697e40ea86ca0",
@@ -447,8 +451,9 @@
         "rendered": "2026-09-28"
       },
       "Florist": {
-        "hash": "74743bcb8464d676",
-        "rendered": "pre-existing"
+        "hash": "99c32c3d05636f23",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Fly-Fishing Angler": {
         "hash": "691305eade8ebaca",
@@ -487,12 +492,14 @@
         "rendered": "pre-existing"
       },
       "Gladiator": {
-        "hash": "2288c1787c8950d2",
-        "rendered": "2026-09-28"
+        "hash": "a17ec570908ffb48",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Glassblower": {
-        "hash": "2556a175b274505b",
-        "rendered": "pre-existing"
+        "hash": "25dee9530a0686c6",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Gondolier": {
         "hash": "52eb0bb3919b3357",
@@ -550,8 +557,9 @@
         "rendered": "2026-10-10"
       },
       "Hockey Goalie": {
-        "hash": "8d90208c052aa89e",
-        "rendered": "2026-08-10"
+        "hash": "890f367ee0414dc9",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Holy Paladin": {
         "hash": "9819b13e74d68b9e",
@@ -603,8 +611,9 @@
         "seed": 167834477226695871
       },
       "Kendo Practitioner": {
-        "hash": "e6388683add56776",
-        "rendered": "2026-09-28"
+        "hash": "a14c38a073afc893",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Korean Hanbok": {
         "hash": "14d1929cfe1114d9",
@@ -672,8 +681,9 @@
         "rendered": "2026-09-28"
       },
       "Martial Artist": {
-        "hash": "a78faa17d99b03e7",
-        "rendered": "pre-existing"
+        "hash": "bce498bf5eec45ed",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Masquerade Guest": {
         "hash": "1a956c6c3948338b",
@@ -825,8 +835,9 @@
         "rendered": "2026-09-28"
       },
       "Potter": {
-        "hash": "7ae5b86b91c6fa57",
-        "rendered": "pre-existing"
+        "hash": "6147a1302fd29568",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Prehistoric Hunter": {
         "hash": "d7ef29de80bfba60",
@@ -903,9 +914,9 @@
         "rendered": "2026-10-20"
       },
       "Roller Derby": {
-        "hash": "cc68c4d0308d8476",
-        "published": true,
-        "rendered": "2026-10-20"
+        "hash": "39da86b3d2fa613e",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Roman Centurion": {
         "hash": "df00a2955214c06e",
@@ -1029,16 +1040,18 @@
         "rendered": "2026-09-28"
       },
       "Swashbuckling Pirate": {
-        "hash": "82cc12cd5c8b5f28",
-        "rendered": "2026-09-28"
+        "hash": "ae418788a50af899",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Swim Instructor": {
         "hash": "259a74831a01aee1",
         "rendered": "2026-09-28"
       },
       "Tailor": {
-        "hash": "73e9203187e771fc",
-        "rendered": "pre-existing"
+        "hash": "923ab5a9cecbd6a6",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Tattoo Artist": {
         "hash": "a70e301a917d4074",
@@ -1109,8 +1122,9 @@
         "rendered": "pre-existing"
       },
       "Veterinarian": {
-        "hash": "a822de38532c0dc4",
-        "rendered": "pre-existing"
+        "hash": "f1fa60b905e540ec",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Victorian Dandy": {
         "hash": "dd4e410ab7082725",
@@ -11170,7 +11184,7 @@
       }
     }
   },
-  "generated": "2026-10-30T08:39:13",
+  "generated": "2026-10-31T12:39:41",
   "render": {
     "cfg": 1,
     "height": 2432,
