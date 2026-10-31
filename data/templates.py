@@ -1102,8 +1102,12 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "accessories": "no accessories",
         "gender": "Any", "ethnicity": "Japanese", "hair_color": ["jet black", "raven black", "near black"],
         "outfit_style": "edgy alternative", "expression": "stern",
-        "location": "photography studio with backdrop", "lighting": "soft studio three-point lighting",
+        # 2.4.0: out of the photo studio and into the landscape the look belongs to.
+        "location": "the Mount Fuji foothills", "lighting": "overcast diffused daylight",
         "shot_type": "full body shot", "mood": "tense",
+        # Armour and a horned helm: a warrior's stance or seiza, not a lounge or a hair touch.
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back",
+                 "standing with arms crossed", "kneeling seiza-style"],
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
         "variants": {
@@ -5515,6 +5519,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "expression": "confident",
         "location": ["wide sandy beach", "working harbor dock", "harbor with moored boats",
                      "lakeside pier"],
+        # 2.4.0: fins on the feet: a diver stands, never strides.
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back",
+                 "standing with arms relaxed at the sides", "posing with a hand on one hip"],
         "lighting": "golden hour sunlight",
         "shot_type": "full body shot",
         "mood": "self-assured",
@@ -5608,6 +5615,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "expression": "bright smile",
         # Skating the order out to the cars is the job.
         "location": "the parking lot of a retro drive-in diner with classic cars",
+        # 2.4.0: rolling or posing on skates; never sat or kneeling on the tarmac.
+        "pose": ["posing with a hand on one hip", "standing with weight on one leg",
+                 "pausing mid-step", "turning toward the viewer mid-stride"],
         "lighting": ["golden hour sunlight", "neon sign glow in multiple colors"],
         "shot_type": "full body shot",
         "mood": "cheerful",

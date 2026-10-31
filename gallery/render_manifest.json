@@ -253,9 +253,9 @@
         "rendered": "2026-09-28"
       },
       "Carhop": {
-        "hash": "fc33c03556bc24ee",
-        "published": true,
-        "rendered": "2026-10-20"
+        "hash": "8f34180bd21435e8",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Carpenter": {
         "hash": "87e3ecae3c18d7ef",
@@ -939,8 +939,9 @@
         "rendered": "2026-09-28"
       },
       "Samurai": {
-        "hash": "3eebaa915f540746",
-        "rendered": "2026-09-28"
+        "hash": "31dd7de9297c80b2",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Sapeur": {
         "hash": "d078ecaa6898de72",
@@ -955,8 +956,9 @@
         "rendered": "2026-09-28"
       },
       "Scuba Diver": {
-        "hash": "fe06b286651b4924",
-        "rendered": "2026-10-15"
+        "hash": "02ff9f6a4d7e0043",
+        "published": false,
+        "rendered": "2026-10-31"
       },
       "Sea Captain": {
         "hash": "2d7f2f998e399a76",
@@ -11184,7 +11186,7 @@
       }
     }
   },
-  "generated": "2026-10-31T12:39:41",
+  "generated": "2026-10-31T12:53:57",
   "render": {
     "cfg": 1,
     "height": 2432,

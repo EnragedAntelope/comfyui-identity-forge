@@ -1558,6 +1558,19 @@ Essentials as well as Full preset. Both rinks already ban floor poses (kneel, cr
 no colour; a charcoal draw on white ice under cool LED light left nothing colourful in the
 prompt, and the model went monochrome. Pads and jersey now share one `{team_color}` draw.
 
+**More pose locks.** Carhop skates the order out, so motion stays, but the drive-in lot does
+not ban floor poses: it now locks two posed and two mid-step poses. Scuba Diver wears fins, so
+standing poses only. Samurai drew lounging, wall-leaning and hair-touching poses in armour and
+a horned helm; it now locks warrior stances and seiza, and moved from a photo studio (with
+three-point lighting) to the Mount Fuji foothills in overcast daylight.
+
+**Found, not fixed (candidates):** no rule keeps "leaning against a wall" or "perched on the
+edge of a seat" out of open landscapes (meadow, dunes, beach, foothills), which affects random
+characters too and would need a marginals re-baseline. Emo, Indie Sleaze and 1980s New Wave
+lock eyeliner, but a man's "no makeup" default wins and drops it. Many archetypes lock a
+location their own `outfit_style` gate refuses; the engine keeps both and only logs it, so the
+prose is unaffected.
+
 **Locations written before a better one existed.** Audited every archetype's locked location
 against the current pool. Moved where a matching place now exists and the engine reports no new
 conflict: Swashbuckling Pirate (cocktail lounge to a harbour, lighting candlelight to golden
