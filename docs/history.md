@@ -1543,3 +1543,162 @@ Random characters are unchanged: no field pool, weight or draw order moved (veri
 the prose of several hundred seeds before and after, and the Turnaround and Expression Sheet
 output over the shared-helper refactor). The Archetype node's `Random` pick moves on some seeds,
 as with every archetype addition, because it chooses from a longer list.
+
+## 2.4.0 - archetype scene coherence, creatures as one hybrid, gallery render fixes
+
+**Figure Skater was set off the ice.** It locked "roller skating rink" or "dance studio with
+mirrors", so a skater in blades stood among mirrors and barres, sometimes on a wood floor. It
+now locks "indoor ice rink". Its pose was never locked, so the random pool drew "walking
+mid-stride" on blades; it now locks four standing poses. Hockey Goalie and Roller Derby (also
+on blades or wheels) got the same treatment. A pose lock is Setting & Shot, so it holds in
+Essentials as well as Full preset. Both rinks already ban floor poses (kneel, crouch, sit), so
+"crouching low" could never draw there and is not in the lists.
+
+**The goalie rendered in black and white.** Its pads drew from `{color}` and its jersey named
+no colour; a charcoal draw on white ice under cool LED light left nothing colourful in the
+prompt, and the model went monochrome. Pads and jersey now share one `{team_color}` draw.
+
+**More pose locks.** Carhop skates the order out, so motion stays, but the drive-in lot does
+not ban floor poses: it now locks two posed and two mid-step poses. Scuba Diver wears fins, so
+standing poses only. Samurai drew lounging, wall-leaning and hair-touching poses in armour and
+a horned helm; it now locks warrior stances and seiza, and moved from a photo studio (with
+three-point lighting) to the Mount Fuji foothills in overcast daylight.
+
+**Nothing to lean on in an open landscape.** A new rule drops the whole `leaning` and
+`seated_perch` pose families at a curated list of open places (beach, dunes, meadow, moor,
+fields, salt flats, savanna, frozen lake, the Fuji foothills and similar). Places with rails,
+rocks or benches (piers, canyons, parks, the lighthouse) are left out. Whole families only, so
+the marginals baseline holds; random seeds that land in one of those places draw a new pose
+(the pool shrinks before the draw), everything else is unchanged.
+
+**A man keeps a locked eyeliner.** Emo, Indie Sleaze and 1980s New Wave lock eyeliner, but a
+man's "no makeup" default hid it. The engine now voices a LOCKED `eye_makeup` or `eyeliner`
+on a bare face (`_BARE_FACE_KEEPS`); lips, blush and contour stay hidden, and random men lock
+nothing, so their prose is unchanged. Done in the engine, not the data: a Male-variant
+`makeup_style` lock clashed with the archetype's own presentation gate.
+
+**1980s New Wave women drew a 1950s face.** The Female variant locked no `makeup_style`, so a
+random "pin-up" could draw beside the 80s hair and eyeliner. It now picks bold glam or
+editorial makeup.
+
+**Four new venues.** "wrestling ring under arena lights" (leisure_fitness; stage, studio-lit
+and venue-light allowlists so Pro Wrestler's locked spotlight holds), "outdoor tennis court
+with a net" and "racetrack pit lane" (urban_outdoor, no floor poses) and "racecourse paddock
+with a white rail" (nature_outdoor, race-day dress allowed). Pro Wrestler and Luchador left
+the school gym, Tennis Player the city park, Race Car Driver the parking garage (lighting to
+midday sun), Jockey the meadow. A family-weighted add only re-splits its family, so overall
+location shares hold; seeds inside those three families can land on a different place.
+
+**A furnished interior is not a backdrop.** "the subject small against open negative space"
+is the seamless-sweep look, and indoors the model dropped the room for it: 1980s New Wave and
+Indie Sleaze both rendered a nightclub as a blank wall. It is now excluded at every interior
+except the photography studio; it falls from about 11% to under 3% of random characters and
+stays at outdoor places and backdrops. The engine filters the pool before drawing, so every
+indoor composition draw re-indexes, not only the excluded one.
+
+**Indie Sleaze men read as drag.** Its four costumes were unisex (`_COSTUMES`), so a man drew
+the metallic disco bodysuit with opaque tights, plus the locked smoky eyeshadow. The costumes
+moved into variants (men get the three jeans-and-jacket looks) and the eyeshadow is hers only;
+he keeps the smudged liner.
+
+**Gallery samples.** Maasai, Tuareg and Sami Gakti render at Full preset, like Aztec Noble:
+at Essentials their sample drew a German woman, a Chinese man and so on. The node is
+unchanged (ethnicity locks only at Full preset, 1.8.0). Silver Surfer's sample is pinned
+standing; seated, the board fused into his shoulder. Ahsoka Tano's is pinned standing too;
+seated with two sabers, she drew a third hand. Sabrina Spellman's costume now names
+colours; with none, a midday render came back black and white (the goalie cause).
+
+**Location vs `outfit_style` clashes: audited, left alone.** Many archetypes lock a
+location whose style rule refuses their own locked style (Bridal Portrait in a chapel, Opera
+Singer at an amphitheater). Both locks are kept, so the prompt and image are unaffected; the
+only symptom is an INFO log line. Most pairings are true to life and the style rule is aimed
+at random people, so neither side was changed.
+
+**Gallery cost.** Of the tiles these changes touched, those that lost the blank-backdrop
+composition or changed location were re-rendered; tiles whose only change was one harmless
+composition swapping for another were accepted with `--rehash`.
+
+**Yoda drew a man under the robe.** The entry had no `covers_face`, so at Full character
+the node filled a random human face, hair and beard, and human hands. He now takes Grogu's
+treatment: `covers_face` + `covers_body`, a `mask` for the head (worded "a smooth wrinkled
+chin", since "no beard" summons one), the all-over green skin marker, and a `subject` so
+the lead reads "a wizened green alien Jedi Master" instead of "a man". A scan of unmasked
+entries whose costume names an alien head found two more drawing random hair: Ahsoka Tano
+(over her montrals) and Piccolo (hair and stubble). Both now set `bald: True`, which clears
+scalp and facial hair. The rest of that scan already suppress hair or are human-faced.
+
+**A prop in each hand leaves no free hand.** A held prop already dropped the two-handed
+poses, on the reading that the free hand holds it, but a dual prop ("one in each hand",
+"in the other") left one-handed poses in: Star-Lord "adjusting one cuff" with a blaster in
+each hand drew a third hand. `ONE_HAND_POSES` now drops too when the prop text says both
+hands are full. Only cosplay renders with the prop switched on move.
+
+**Render fixes from the gallery review.** Bayonetta's prop was "four handguns, one in each
+hand" (two of the four are on her heels in canon) and drew a fan of guns and half-arms; it
+is a pair now. Bane's "tactical vest" drew a modern plate carrier on an average man: he is
+hulking, in a white-trimmed luchador mask, with the Venom tubes routed down the arm, since
+"into the back of the head" never rendered. The Imperial Royal Guard drew bare human hands
+and a random man's skin: it gains crimson gloves and `covers_body`. The Praetorian Guard
+showed skin between plates and an open-faced helmet: a full undersuit and an enclosed
+helmet. Bayonetta and the Praetorian are pinned standing in the gallery, like Ahsoka.
+An "empty scabbard" in a `prop_costume` renders as a sheathed sword beside the drawn one
+(Yamada Asaemon Sagiri held two), so Sagiri's and Kirito's prop looks drop the scabbard
+rather than describe it as empty. Roronoa Zoro's three swords are canon (Santoryu), but his
+text named only the sash, bandana and earrings, so he rendered shirtless: it now names the
+white T-shirt, black trousers and boots. Kirito's twin swords drew in one hand: they are
+"one in each hand" now, and he and Zoro are pinned standing (seated, the drawn sword went to
+the floor). Blue Beetle (Jaime Reyes) drew a random muscular man's bare arms and mouth under
+foam armor: he gains `covers_body`, an enclosed helmet, the scarab pack with its legs over
+the shoulders, and a lean build. Three more drew a random man under the costume: The
+Spectre (bare-chested in trunks; his white is a bodysuit, and his face is now a chalk-white
+mask under the hood), Bib Fortuna (now `covers_face` with a Twi'lek head and a `subject`),
+and the TIE Pilot (open helmet and bare hands; now an enclosed helmet, gloves and
+`covers_body`). Zoro holding his sword reads as three swords with two more at the hip, so
+his prop look drops the sheathed pair.
+
+A second review round: X-23 is recoloured to canon (jet black hair, pale skin) and her
+claws lead the costume, two per fist, since a trailing clause never rendered. Baraka drew
+a human face and hand-held swords: he is `covers_face` with a Tarkatan head, a `subject`,
+and blades that grow out of the forearms. Maz Kanata unmasked drew a random woman: her
+alien face is a mask now, with a `subject`. Black Panther's "panther mask" drew a bare
+face: an enclosed helmet, gloves and `covers_body`. King Dedede's mallet is held in both
+hands (one hand drew a third arm). Krusty's red nose and The Spectre's neck are named
+where they render. Rosie's "single caster in place of legs" drew legs: her base is
+described as the cone skirt on wheels it is. The Praetorian and Imperial Royal Guard
+helmets still drew an open face: the Praetorian's names a solid faceplate, and the Royal
+Guard needed a `subject` ("faceless crimson-helmeted guard") before the helmet closed.
+A third round: the TIE Pilot's face still showed between lenses and mask, fixed the same
+way; the Praetorian drew bare hands under its gauntlets and gains `covers_body`; Baraka's
+blades, named last, drew short knives behind the arms, so they lead the costume now.
+Bayonetta drew a curly bob in a sleeveless leotard: rebuilt from her first-game look
+(beehive, butterfly-wing glasses, full catsuit, white gloves, Umbra Watch). Her hair in
+the costume's opening words went grey and read as something she "wears"; named last as
+"a beehive of hair", the way Marge Simpson's is, it came out black.
+
+**Creatures rendered as people in clothes.** On the turbo Krea2 setup the anthro creature
+tiles drew a person with a skeleton print, a mole nose, or a whole animal standing beside
+them. Anthropomorphic is meant to stay a clothed hybrid, so nothing is stripped;
+three things changed instead. Monsters and Aliens lead with "humanoid skeleton", not
+"anthropomorphic skeleton hybrid", and drop the human proportions their slots already
+replace; every Anthro creature drops `fitness_level` ("a sedentary nautilus"). The gallery
+renderer gained the optional Krea2T Enhancer (text_scale 1.5), which fixed the skeleton,
+flesh golem and mole outright. Prompt rewording, the LoRA at half strength, more steps and
+a higher cfg made no difference. A few animals still rendered whole beside a person, so a
+creature entry may carry an `anthro` block: replacement slot text for that form, plus a
+lead noun. Nautilus (a shell-shaped head), gaseous alien ("humanoid figure made entirely
+of glowing gas") and stegosaurus ("scaly reptilian humanoid") now render as one figure;
+the cicada is one figure with its wings behind, though its head and legs still dominate.
+Jiangshi, the ghost (two arms, not three) and the gaseous alien's arms were reworded too.
+
+**Locations written before a better one existed.** Audited every archetype's locked location
+against the current pool. Moved where a matching place now exists and the engine reports no new
+conflict: Swashbuckling Pirate (cocktail lounge to a harbour, lighting candlelight to golden
+hour), Gladiator (museum gallery to the Colosseum exterior, lighting to midday sun), Chef
+(home kitchen to commercial kitchen), Veterinarian (doctor's room to a veterinary exam room),
+Boxer (weight room to a boxing gym), Glassblower and Dwarven Blacksmith (factory floor to their
+own studio and forge), Florist, Potter, Tailor, Martial Artist and Kendo Practitioner (to a
+flower shop, ceramics studio, tailor's workroom and dojo). Egyptian Pharaoh stays in the museum
+hall: the Giza plateau adds clashes with its locked spotlight and evening-formal style.
+
+Random characters move through the open-landscape pose rule, the indoor composition rule and
+the new venues; the marginals baseline was rewritten for those three.

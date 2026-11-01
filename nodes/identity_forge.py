@@ -40,7 +40,7 @@ try:
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
-        QUADRUPED_UNPERFORMABLE_POSES,
+        QUADRUPED_UNPERFORMABLE_POSES, ONE_HAND_POSES,
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
@@ -60,7 +60,7 @@ except ImportError:  # pragma: no cover — standalone/test context
         FIELD_DEFINITIONS, FIELD_FAMILIES, FIELD_HELP, OUTFIT_DESCRIPTIONS,
         SKIN_TONE_BANDS, ETHNICITY_REGION, OUTDOOR_LOCATIONS, STUDIO_BACKDROPS,
         HAIR_DEPENDENT_POSES, GARMENT_DEPENDENT_POSES, HAND_OCCUPIED_POSES,
-        QUADRUPED_UNPERFORMABLE_POSES,
+        QUADRUPED_UNPERFORMABLE_POSES, ONE_HAND_POSES,
         FURNITURE_DEPENDENT_POSES,
         PALETTE_ADJECTIVES, PATTERN_TAILS, WORN_ITEM_RES,
         SHOE_RE, COLOUR_WORD_RE, PATTERN_WORD_RE, LEADING_ARTICLE_RE,
@@ -151,6 +151,11 @@ _SELFIE_SHOT_TYPE: str = "selfie framing at arm's length"
 #: to the natural male pool. Only fields whose pools actually differ by gender (e.g.
 #: makeup_style) are affected; identical-pool fields already pass the gate.
 _GENDER_FLEXIBLE_GROUPS: frozenset[str] = frozenset({"Makeup"})
+
+#: 2.4.0: eye cosmetics a LOCK keeps voiced on a bare face. A man's "no makeup"
+#: default hid an Emo's or a New Wave look's locked eyeliner; random men lock nothing,
+#: so their prose is unchanged. Lips, blush and contour stay hidden on purpose.
+_BARE_FACE_KEEPS: tuple[str, ...] = ("eye_makeup", "eyeliner")
 
 #: ``set_all_fields`` control values. "All to None" omits every field still on
 #: "Random" (a blank-slate baseline) so only locked fields appear; a wired
@@ -330,6 +335,10 @@ _VARIANTS_KEY = "__variants__"
 _FORM_ANTHRO = "Anthropomorphic"
 _FORM_FERAL = "Feral"
 _FORM_SUBTLE = "Subtle"
+#: Creature classes whose anatomy slots describe the whole body (undead, golems,
+#: aliens): the Anthropomorphic form calls them "humanoid", not a human "hybrid",
+#: and drops the human body proportions (2.4.0).
+_BODY_DEFINED_CLASSES = frozenset({"Monsters", "Aliens"})
 
 #: Order anatomy slots are voiced / serialized in.
 _SPECIES_SLOT_ORDER: tuple[str, ...] = (
@@ -1608,6 +1617,11 @@ _HAND_PROP_RE = re.compile(
     r"(?<=, )(?:holding|carrying|swirling|presenting|raising))\b",
     re.IGNORECASE)
 
+#: 2.4.0: a held prop that fills both hands (twin pistols, a book in both hands).
+_BOTH_HANDS_PROP_RE = re.compile(
+    r"\b(?:in each hand|in either hand|in the other(?: hand)?|in both hands|"
+    r"with both hands|in two hands)\b", re.IGNORECASE)
+
 
 def _performable_poses(
     pool: list[str],
@@ -1688,6 +1702,9 @@ def _performable_poses(
     if ((held and not _is_absent(held)) or resolved.get("shot_type") == _SELFIE_SHOT_TYPE
             or _HAND_PROP_RE.search(outfit)):
         excluded |= HAND_OCCUPIED_POSES
+    # 2.4.0: a prop in each hand leaves none free ("adjusting one cuff" drew a third hand).
+    if held and _BOTH_HANDS_PROP_RE.search(held):
+        excluded |= ONE_HAND_POSES
     # 1.5.0 round 4: "adjusting one cuff" in a poncho, "touching the collar" in a harness
     # top. Only once a garment exists (inside the fill loop it does not yet).
     if outfit and not _CUFFED_RE.search(outfit):
@@ -3148,7 +3165,15 @@ def _species_subject(species: dict, gender: str) -> str:
     """
     base = species.get("creature_of") or "creature"
     form = species.get("form", "")
-    if form == _FORM_ANTHRO:
+    if form == _FORM_ANTHRO and species.get("anthro_subject"):
+        # 2.4.0: a creature's own anthro lead noun, for bodies the model otherwise
+        # draws whole beside a person (see data/creatures.py "anthro").
+        noun = species["anthro_subject"]
+    elif form == _FORM_ANTHRO and species.get("creature_class") in _BODY_DEFINED_CLASSES:
+        # 2.4.0: "anthropomorphic skeleton hybrid" read as a human with skeleton
+        # traits; a skeleton, ghost or golem is already person-shaped.
+        noun = f"humanoid {base}"
+    elif form == _FORM_ANTHRO:
         noun = f"anthropomorphic {base} hybrid"
     elif form == _FORM_FERAL:
         creature_class = species.get("creature_class", "")
@@ -3189,6 +3214,7 @@ def _format_prose(
     feet_visible: bool = True,        # APPENDED (1.7.0): see _FEET_OUT_OF_FRAME_SHOTS
     subject_only: bool = False,       # APPENDED (1.8.0): person + outfit, no pose/scene
     subject_override: str | None = None,  # APPENDED (2.1.0): see _SUBJECT_NOUN_KEY
+    kept_cosmetics: "tuple[str, ...]" = (),  # APPENDED (2.4.0): see _BARE_FACE_KEEPS
 ) -> str:
     """Build a natural-language description from resolved field values.
 
@@ -3459,8 +3485,12 @@ def _format_prose(
     # (field, noun, stem) — append " noun" only when the value doesn't already
     # carry the category (stem), avoiding "ombre lip lip colour" / "… liner
     # eyeliner" style doubling.
-    if g("makeup_style"):
-        makeup = [g("makeup_style")]
+    # 2.4.0: with no style (a man's bare-faced default), only the locked eye fields in
+    # ``kept_cosmetics`` are voiced; the random rest stays hidden as before.
+    style = g("makeup_style")
+    kept = () if style else tuple(f for f in kept_cosmetics if g(f))
+    if style or kept:
+        makeup = [style] if style else []
         for field, noun, stem in (
             ("eye_makeup", "eyeshadow", "shadow"), ("eyeliner", "eyeliner", "liner"),
             ("lashes", "lashes", "lash"), ("lips_makeup", "lip colour", "lip"),
@@ -3469,7 +3499,7 @@ def _format_prose(
             ("skin_finish", "finish", "finish"),
         ):
             val = g(field)
-            if val:
+            if val and (style or field in kept):
                 makeup.append(_OBJECT_TOKEN_CLAUSES.get((field, val))
                               or (val if stem in val else f"{val} {noun}"))
         sentences.append(f"{subj} {wears} " + _join(makeup))
@@ -3837,7 +3867,7 @@ def _format_json(
     if slots:
         # ``size`` belongs with them: it prefixes the subject noun ("A towering lion"),
         # so leaving it out recalled a towering creature as a plain one.
-        for key in ("creature_of", "creature_class", "form", "size"):
+        for key in ("creature_of", "creature_class", "form", "size", "anthro_subject"):
             if species.get(key):
                 meta[key] = species[key]
         # The suppression lists travel with the form, for the same reason the five
@@ -4561,11 +4591,12 @@ def generate_character(
         # 2.0.0: a skirt length the frame cannot show is dropped from the prose too.
         trimmed = _LENGTH_WORD_RE.sub("", prose_fields.get("outfit_description") or "")
         prose_fields = {**prose_fields, "outfit_description": trimmed}
+    kept_cosmetics = tuple(f for f in _BARE_FACE_KEEPS if f in locked_clean)
     prose = _format_prose(prose_fields, gender, cosplay_label, species,
                           hands_visible=not hands_covered, mask_text=mask_text,
                           anatomy_note=anatomy_note, presentation=presentation,
                           subject_override=subject_noun,
-                          feet_visible=feet_visible)
+                          feet_visible=feet_visible, kept_cosmetics=kept_cosmetics)
     # Fields a preset or a widget deliberately locked ABSENT. They are stripped from
     # the group output (``group_fields`` drops "None"), so without recording them the
     # document cannot round-trip through the vault -- a recalled She-Hulk grew a
@@ -4590,7 +4621,8 @@ def generate_character(
                                 hands_visible=not hands_covered, mask_text=mask_text,
                                 anatomy_note=anatomy_note, presentation=presentation,
                                 subject_override=subject_noun,
-                                feet_visible=True, subject_only=True)
+                                feet_visible=True, subject_only=True,
+                                kept_cosmetics=kept_cosmetics)
         return prose, json_output, subject
     return prose, json_output
 
@@ -4749,7 +4781,7 @@ def _parse_archetype_json(raw: str) -> dict[str, Any]:
             if isinstance(form, str) and form:
                 species = flat.setdefault(_SPECIES_KEY, {})
                 species["form"] = form
-                for str_key in ("creature_of", "creature_class", "size"):
+                for str_key in ("creature_of", "creature_class", "size", "anthro_subject"):
                     if isinstance(meta.get(str_key), str):
                         species[str_key] = meta[str_key]
                 for list_key in ("suppress_groups", "suppress_fields"):

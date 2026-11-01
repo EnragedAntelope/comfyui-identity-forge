@@ -200,7 +200,7 @@
 - **ghost** (pale spectral white)
 - **goblin** (sickly green)
 - **hag** (sallow grey-green)
-- **jiangshi** (greyed corpse-blue)
+- **jiangshi** (pale greenish-white)
 - **lich** (bone-white and sickly green)
 - **mummy** (dusty bandage-beige)
 - **ogre** (mottled green-grey)

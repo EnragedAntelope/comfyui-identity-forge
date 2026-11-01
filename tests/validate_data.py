@@ -947,7 +947,7 @@ def validate() -> list[str]:
     # field engine), so only structure is checked here, not value membership.
     if len(CREATURES) < 40:
         errors.append(f"CREATURES has {len(CREATURES)}; need >= 40")
-    allowed_keys = {"class", "palette", "palette_pool"} | set(CREATURE_SLOTS)
+    allowed_keys = {"class", "palette", "palette_pool", "anthro"} | set(CREATURE_SLOTS)
     class_counts = {cls: 0 for cls in CREATURE_CLASSES}
     for name, entry in CREATURES.items():
         if not isinstance(entry, dict):
@@ -969,6 +969,17 @@ def validate() -> list[str]:
                     isinstance(v, str) and v for v in value
                 ):
                     errors.append(f"creature '{name}': 'palette_pool' must be a non-empty list of strings")
+            elif key == "anthro":
+                # Anthropomorphic-form rewrites: slot -> text ("" drops it), plus an
+                # optional lead noun.
+                if not isinstance(value, dict) or not value:
+                    errors.append(f"creature '{name}': 'anthro' must be a non-empty dict")
+                    continue
+                for sub, text in value.items():
+                    if sub not in set(CREATURE_SLOTS) | {"subject"}:
+                        errors.append(f"creature '{name}': anthro key {sub!r} is not a slot")
+                    elif not isinstance(text, str) or (sub == "subject" and not text):
+                        errors.append(f"creature '{name}': anthro {sub!r} must be a string")
             elif value is not None and (not isinstance(value, str) or not value):
                 errors.append(f"creature '{name}': slot {key!r} must be a non-empty string")
     thin = [cls for cls, count in class_counts.items() if count < 3]

@@ -174,13 +174,31 @@ _GALLERY_GENDER: dict[str, dict[str, str]] = {
 #: Gallery-only Archetype lock level, same terms as _GALLERY_GENDER: a period look whose
 #: ethnicity is part of the look renders at "Full preset" so the sample shows it as
 #: intended (2.3.0: at "Essentials" the Aztec Noble sample drew a random ethnicity).
-_GALLERY_LOCK_LEVEL: dict[str, str] = {"Aztec Noble": "Full preset"}
+_GALLERY_LOCK_LEVEL: dict[str, str] = {
+    "Aztec Noble": "Full preset",
+    # 2.4.0: looks named for a people (the Maasai sample drew a German woman).
+    "Maasai": "Full preset", "Tuareg": "Full preset", "Sami Gakti": "Full preset",
+}
 
 #: Gallery-only pose pins, same terms as _GALLERY_GENDER: a sample whose defining
 #: feature only shows in one pose (Black Bolt's underarm wings spread only with the arms
 #: raised; at his sides they rendered as a cape).
 _GALLERY_POSE: dict[str, dict[str, str]] = {
-    "cosplay": {"Black Bolt": "stretching both arms overhead"},
+    "cosplay": {"Black Bolt": "stretching both arms overhead",
+                # 2.4.0: seated, the board fused into his shoulder; standing keeps it apart.
+                "Silver Surfer": "standing with feet planted wide",
+                # 2.4.0: seated with two sabers, she drew a third hand.
+                "Ahsoka Tano": "standing with feet planted wide",
+                "Bayonetta": "standing with feet planted wide",
+                # Reclining, the plate pulled apart and bared the body under it.
+                "Praetorian Guard": "standing with feet planted wide",
+                # Seated or kneeling, the drawn swords went to the floor or into one hand.
+                "Kirito": "standing with feet planted wide",
+                # Seated, her hands relaxed and the knuckle claws never drew.
+                "X-23": "standing with feet planted wide",
+                "Roronoa Zoro": "standing with feet planted wide"},
+    # 2.4.0: a hands-in-pockets pose fought her rigid outstretched arms.
+    "creatures": {"jiangshi": "standing with feet planted wide"},
 }
 
 #: Gallery-only framing pins, same terms: a sample whose defining feature is below
@@ -276,6 +294,10 @@ def read_render_settings(overrides: dict[str, Any] | None = None) -> dict[str, A
         "denoise": _one(groups, "KSampler", 6, "denoise"),
         "style_prefix": _style_prefix(groups),
         "style_delimiter": _style_delimiter(groups),
+        # Optional Krea2T Enhancer (custom node) between the LoRA and the sampler.
+        # 0 = off. At 1.5 creatures stopped rendering as a person in a costume (2.4.0).
+        "enhancer_text_scale": 0,
+        "enhancer_strength": 1.0,
     }
 
     if LOCAL_CONFIG.is_file():
@@ -589,6 +611,9 @@ def positive_prompt(prose: str, settings: dict[str, Any]) -> str:
 # The API graph - no Identity Forge nodes, the text is already resolved
 # ---------------------------------------------------------------------------
 
+ENHANCER_NODE = "Krea2T-Enhancer-Advanced"
+
+
 def build_graph(positive: str, seed: int, settings: dict[str, Any],
                 save_originals: bool, filename_stem: str) -> dict:
     graph = {
@@ -626,6 +651,13 @@ def build_graph(positive: str, seed: int, settings: dict[str, Any],
         "9": {"class_type": "VAEDecode",
               "inputs": {"samples": ["8", 0], "vae": ["3", 0]}},
     }
+    if settings.get("enhancer_text_scale"):
+        graph["11"] = {"class_type": ENHANCER_NODE,
+                       "inputs": {"model": ["4", 0], "enabled": True,
+                                  "strength": settings["enhancer_strength"],
+                                  "text_scale": settings["enhancer_text_scale"],
+                                  "debug": False}}
+        graph["8"]["inputs"]["model"] = ["11", 0]
     if save_originals:
         # SaveImage numbers from the highest existing counter, so it adds files
         # and never replaces one already in the output folder.
@@ -745,6 +777,14 @@ def preflight(client: ComfyClient, settings: dict[str, Any]) -> bool:
             print(f"  {node_type}.{field}: {wanted!r} is not installed there.")
             print(f"    available: {available[:12]}"
                   f"{' ...' if len(available) > 12 else ''}")
+            ok = False
+    if settings.get("enhancer_text_scale"):
+        try:
+            found = bool(client._get_json(f"/object_info/{ENHANCER_NODE}"))
+        except (OSError, ValueError):
+            found = False
+        if not found:
+            print(f"  {ENHANCER_NODE} is not installed there (enhancer_text_scale is set).")
             ok = False
     return ok
 
@@ -1084,6 +1124,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  {settings['unet_name']} + {settings['lora_name']}, "
               f"{settings['steps']} steps, {settings['sampler_name']}/"
               f"{settings['scheduler']}, {settings['width']}x{settings['height']}")
+        if settings.get("enhancer_text_scale"):
+            print(f"  {ENHANCER_NODE}, text_scale {settings['enhancer_text_scale']}")
         if args.save_originals:
             print(f"  originals kept on the instance under {ORIGINALS_PREFIX}/")
 
@@ -1094,7 +1136,7 @@ def main(argv: list[str] | None = None) -> int:
         manifest["render"] = {
             key: settings[key] for key in
             ("unet_name", "lora_name", "steps", "cfg", "sampler_name",
-             "scheduler", "width", "height")
+             "scheduler", "width", "height", "enhancer_text_scale")
         }
         today = _datetime.date.today().isoformat()
         done = failed = 0
@@ -1108,6 +1150,11 @@ def main(argv: list[str] | None = None) -> int:
                           "published": False}
                 if args.reroll:
                     record["seed"] = entry_seed(name, args.reroll)
+                # Reload first: another run may have saved since this one started, and
+                # writing back a stale copy would drop its records (2.4.0).
+                fresh = load_manifest()
+                fresh["render"] = manifest["render"]
+                manifest = fresh
                 manifest["entries"].setdefault(kind, {})[name] = record
                 touched.setdefault(kind, []).append(name)
                 done += 1

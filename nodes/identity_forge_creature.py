@@ -52,7 +52,7 @@ try:
     )
     from .identity_forge import (
         merge_preset_documents, _prepend_descriptor, _SPECIES_GROUP,
-        _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE,
+        _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE, _BODY_DEFINED_CLASSES,
     )
 except ImportError:  # pragma: no cover — standalone/test context
     from data.creatures import (
@@ -61,7 +61,7 @@ except ImportError:  # pragma: no cover — standalone/test context
     )
     from nodes.identity_forge import (
         merge_preset_documents, _prepend_descriptor, _SPECIES_GROUP,
-        _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE,
+        _FORM_ANTHRO, _FORM_FERAL, _FORM_SUBTLE, _BODY_DEFINED_CLASSES,
     )
 
 try:
@@ -124,8 +124,13 @@ _FORM_SUPPRESS_GROUPS: dict[str, set[str]] = {
 #: but ``fitness_level``'s low values state a human *lifestyle* — a fire elemental
 #: described as "sedentary" or "lightly active" is asserting gym habits for a being that
 #: has none. Shape stays, lifestyle goes.
+#:
+#: 2.4.0: Anthro drops ``fitness_level`` for the same reason ("a nautilus hybrid with a
+#: sedentary physique"). An Anthro Monster or Alien also drops the human proportions
+#: (see _BODY_DEFINED_CLASSES): its anatomy slots already ARE the body.
+_HUMAN_PROPORTION_FIELDS = {"bust", "waist", "hips", "shoulder_width", "neck_length"}
 _FORM_SUPPRESS_FIELDS: dict[str, set[str]] = {
-    _FORM_ANTHRO: set(),
+    _FORM_ANTHRO: {"fitness_level"},
     _FORM_FERAL: {"bust", "waist", "hips", "shoulder_width", "neck_length", "posture",
                   "fitness_level"},
     _FORM_SUBTLE: set(),
@@ -179,14 +184,22 @@ def _resolve_creature(creature: str, rng: random.Random) -> str | None:
     return creature
 
 
+def _slot_text(entry: dict, slot: str, anthro: bool):
+    """The entry's text for ``slot``; in Anthro form its ``anthro`` text wins ("" drops it)."""
+    rewrites = entry.get("anthro") or {}
+    return rewrites[slot] if anthro and slot in rewrites else entry.get(slot)
+
+
 def _resolve_slot(
-    slot: str, base_name: str | None, selection: str, rng: random.Random
+    slot: str, base_name: str | None, selection: str, rng: random.Random,
+    anthro: bool = False,
 ) -> tuple[str | None, str | None]:
     """Resolve one slot to ``(value, source_creature)``.
 
     ``Follow base`` uses the base creature; ``Random`` picks any creature for that
     slot; a name uses that creature. Returns ``(None, None)`` when nothing applies
-    (e.g. the source creature does not fill that slot).
+    (e.g. the source creature does not fill that slot). ``anthro`` prefers the
+    source's ``anthro`` text for the slot (2.4.0; no extra draw, so seed-safe).
     """
     if selection == _FOLLOW:
         source = base_name
@@ -199,7 +212,7 @@ def _resolve_slot(
         source = None
     if not source:
         return None, None
-    value = get_creature(source).get(slot)
+    value = _slot_text(get_creature(source), slot, anthro)
     return (value if isinstance(value, str) and value else None), source
 
 
@@ -229,10 +242,13 @@ def _parse_more_features(text: str, slots: "OrderedDict[str, str]") -> list[str]
     return extras
 
 
-def _suppression(form_token: str, slots: "OrderedDict[str, str]") -> tuple[list[str], list[str]]:
+def _suppression(form_token: str, slots: "OrderedDict[str, str]",
+                 creature_class: str = "") -> tuple[list[str], list[str]]:
     """Return ``(suppress_groups, suppress_fields)`` for the form and filled slots."""
     groups = set(_FORM_SUPPRESS_GROUPS.get(form_token, set()))
     fields = set(_FORM_SUPPRESS_FIELDS.get(form_token, set()))
+    if form_token == _FORM_ANTHRO and creature_class in _BODY_DEFINED_CLASSES:
+        fields |= _HUMAN_PROPORTION_FIELDS
     if form_token != _FORM_SUBTLE:  # Subtle keeps the human; its creature bits are accents
         for slot in slots:
             groups |= _SLOT_CONCEAL_GROUPS.get(slot, set())
@@ -284,11 +300,12 @@ def build_creature_json(
     integument_source = base_name
     for slot in CREATURE_SLOTS:
         if slot in _OVERRIDE_SLOTS:
-            value, source = _resolve_slot(slot, base_name, overrides[slot], rng)
+            value, source = _resolve_slot(slot, base_name, overrides[slot], rng,
+                                          anthro=form_token == _FORM_ANTHRO)
             if slot == "integument" and source:
                 integument_source = source
         elif base_name:  # base-only slots (extras)
-            raw = get_creature(base_name).get(slot)
+            raw = _slot_text(get_creature(base_name), slot, form_token == _FORM_ANTHRO)
             value = raw if isinstance(raw, str) and raw else None
         else:
             value = None
@@ -338,7 +355,10 @@ def build_creature_json(
     meta["form"] = form_token
     if size:
         meta["size"] = size
-    suppress_groups, suppress_fields = _suppression(form_token, slots)
+    anthro_subject = (get_creature(base_name).get("anthro") or {}).get("subject") if base_name else None
+    if form_token == _FORM_ANTHRO and anthro_subject:
+        meta["anthro_subject"] = anthro_subject
+    suppress_groups, suppress_fields = _suppression(form_token, slots, meta["creature_class"])
     meta["suppress_groups"] = suppress_groups
     meta["suppress_fields"] = suppress_fields
 

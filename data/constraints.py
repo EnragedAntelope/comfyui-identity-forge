@@ -1165,6 +1165,18 @@ for _backdrop in _VOID_BACKDROPS:
         "reason": f"a {_backdrop} is a seamless sweep: no horizon, no sky, and no "
                   f"lines in it to lead the eye"})
 
+# 2.4.0: "small against open negative space" is the sweep look, so in a furnished interior
+# the model drops the room for a blank wall (a nightclub rendered as a white backdrop).
+# The photography studio keeps it: its backdrop is the point.
+for _loc in _INDOOR_LOCATIONS:
+    if _loc != "photography studio with backdrop":
+        CONSTRAINT_RULES.append({
+            "type": "exclusion", "field": "location", "value": _loc,
+            "excludes_field": "composition",
+            "excludes_values": ["the subject small against open negative space"],
+            "reason": f"'{_loc}' is a furnished interior: open negative space renders "
+                      f"as a blank backdrop"})
+
 
 # --- outfit_style answers to the place (1.5.0) ------------------------------------
 # Before 1.5.0 `outfit_style` was drawn with no reference to `location` at all:
@@ -1232,7 +1244,14 @@ OUTFIT_STYLE_VENUES: dict[str, frozenset[str]] = {
         "local gym weight room", "yoga studio with wood floors",
         "climbing gym with colorful holds", "dance studio with mirrors",
         "martial arts dojo", "boxing gym with hanging heavy bags",
-        "high school gymnasium", "trampoline park with foam pits"], _GYM),
+        "high school gymnasium", "trampoline park with foam pits",
+        "wrestling ring under arena lights"], _GYM),
+    # 2.4.0 venues: players, crews and race-day spectators.
+    "outdoor tennis court with a net": frozenset(["athletic", "casual", "preppy", "streetwear"]),
+    "racetrack pit lane": _SHOP_FLOOR | {"athletic", "smart casual"},
+    "racecourse paddock with a white rail": frozenset([
+        "athletic", "casual", "smart casual", "preppy", "cocktail semi-formal",
+        "vintage retro"]),
     "indoor swimming pool": frozenset(["athletic", "resort vacation", "casual"]),
     **dict.fromkeys([
         "factory floor", "warehouse interior", "auto repair shop service bay",
@@ -1657,7 +1676,7 @@ _STUDIO_LIT_INTERIORS = frozenset([
     "photography studio with backdrop", "empty theater stage with the curtain up",
     "community theatre auditorium", "backstage dressing room", "art gallery opening night",
     "natural history museum hall", "luxury retail boutique", "newsroom with desks and monitors",
-    "high school gymnasium",
+    "high school gymnasium", "wrestling ring under arena lights",
 ])
 _STUDIO_SHAPE_ONLY: list[str] = list(FIELD_FAMILIES["lighting"]["studio_shape"]["variants"])
 for _loc, _fam in _LOCATION_FAMILY.items():
@@ -1683,7 +1702,7 @@ _FLOOR_FREE_PLACES = frozenset([
     "the parking lot of a retro drive-in diner with classic cars",
     "construction site with scaffolding", "working harbor dock", "Times Square",
     "Shibuya Crossing", "the Brooklyn Bridge pedestrian walkway", "Trafalgar Square",
-    "rooftop cocktail bar",
+    "rooftop cocktail bar", "racetrack pit lane", "outdoor tennis court with a net",
 ])
 for _loc, _fam in _LOCATION_FAMILY.items():
     if _fam in _FLOOR_FREE_FAMILIES or _loc in _FLOOR_FREE_PLACES:
@@ -1691,6 +1710,28 @@ for _loc, _fam in _LOCATION_FAMILY.items():
             "type": "exclusion", "field": "location", "value": _loc,
             "excludes_field": "pose", "excludes_values": list(_FLOOR_POSES),
             "reason": f"nobody kneels, crouches or sits on the floor at '{_loc}'"})
+
+# --- 2.4.0: no wall to lean on, no seat to perch on, in an open landscape -----------
+# Whole `leaning` + `seated_perch` families, so no other seed moves. Places with rails,
+# rocks or benches (piers, canyons, parks, the lighthouse) are left out on purpose.
+_PROPLESS_POSES: list[str] = (list(FIELD_FAMILIES["pose"]["leaning"]["variants"])
+                              + list(FIELD_FAMILIES["pose"]["seated_perch"]["variants"]))
+_OPEN_LANDSCAPES = frozenset([
+    "wide sandy beach", "rolling desert dune", "open meadow", "misty moor",
+    "flower field in bloom", "lavender field", "alpine meadow with wildflowers",
+    "cracked salt flats", "golden savanna with acacia trees", "frozen lake surface",
+    "rolling wheat field", "terraced rice paddies", "volcanic black sand beach",
+    "tide pools at low tide", "high desert with joshua trees",
+    "the red desert plain below Uluru", "a Yosemite valley meadow", "the Mount Fuji foothills",
+    "the Table Mountain plateau", "mountain overlook", "alpine glacier lake",
+    "geothermal geyser basin",
+])
+assert _OPEN_LANDSCAPES <= _LOCATION_FAMILY.keys(), _OPEN_LANDSCAPES - _LOCATION_FAMILY.keys()
+for _loc in sorted(_OPEN_LANDSCAPES):
+    CONSTRAINT_RULES.append({
+        "type": "exclusion", "field": "location", "value": _loc,
+        "excludes_field": "pose", "excludes_values": _PROPLESS_POSES,
+        "reason": f"nothing to lean on or perch on at '{_loc}'"})
 
 # --- grey hair comes with age -------------------------------------------------------
 # The DRAW is age-aware (nodes.identity_forge._GREY_BY_AGE), so a random character never

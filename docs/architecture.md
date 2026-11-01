@@ -993,6 +993,22 @@ free-form prose (own render path — not validated against human fields). Rules:
 - **Suppression:** a creature `head` hides human Face/Hair/Makeup; `integument` hides skin
   fields; `form` (Anthropomorphic/Feral/Subtle) sets group-level suppression. Generalizes the
   cosplayer `covers_face` mechanism via `_meta.suppress_groups` / `suppress_fields`.
+- **Anthropomorphic is a clothed hybrid, Feral is the creature itself.** Anthro keeps the
+  outfit and body build, and drops only `fitness_level` (a lifestyle word: "a sedentary
+  nautilus"). For classes in `_BODY_DEFINED_CLASSES` (Monsters, Aliens), whose anatomy
+  slots already describe a whole person-shaped body, Anthro also drops the human
+  proportions (bust, waist, hips, shoulders, neck) and the lead noun is "humanoid
+  skeleton", not "anthropomorphic skeleton hybrid": "hybrid" read as a human with
+  skeleton traits and rendered a person in a windbreaker (2.4.0). Suppression pops fields
+  after the draw, so no seed moves; only prose changes.
+- **A creature's `anthro` block rewrites it for the Anthropomorphic form.** Some animals
+  render whole beside a person in Anthro form (a stegosaurus with forelegs and hind legs,
+  a nautilus shell, a gas cloud). An optional `anthro` dict in the entry gives
+  replacement slot text for that form only (`""` drops a slot), plus an optional
+  `subject` lead noun ("scaly reptilian humanoid"), carried in `_meta.anthro_subject` so
+  recall keeps it. Feral and Subtle use the normal slots. The text swap happens where a
+  slot is read, so it adds no draw. Prefer naming body parts on a person-shaped body over
+  naming the whole animal; the Krea2T Enhancer in the gallery pipeline does the rest.
 
 ## Extending at runtime — user_options.json
 
@@ -1138,6 +1154,12 @@ never a guessed default, and **never a substring match on a model name**: the si
 `comfyui-stylebook` pipeline did exactly that and rendered a whole gallery off the wrong Turbo
 merge, plausible enough that nobody noticed until it was published. Preflight checks every
 model, `sampler_name` and `scheduler` against live `/object_info` before the first queue.
+
+An optional `enhancer_text_scale` in `render_config.json` (0 = off) puts the
+`Krea2T-Enhancer-Advanced` node (ComfyUI-Krea2T-Enhancer) between the LoRA and the sampler;
+preflight checks the node is installed. At 1.5 it stopped the turbo model drawing a
+skeleton, golem or mole as a plain person (2.4.0); the setting is recorded in each
+manifest entry's `render` record.
 
 **Render settings are excluded from the entry hash, on purpose.** Stylebook folds its render
 settings into each tile's hash, which is right there because every tile was produced under
