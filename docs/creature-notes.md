@@ -101,7 +101,11 @@ cosplayer + an integument creature drop both the face and the skin).
 
 3. **Render quality varies by model.** Anthropomorphic and hybrid forms are harder for
    some checkpoints than realistic humans. Lean on a checkpoint that knows the
-   creature, and use `form`/`palette` to steer.
+   creature, and use `form`/`palette` to steer. On Krea2 with a turbo LoRA, the
+   Krea2T Enhancer node (text_scale around 1.5) between the LoRA and the sampler made
+   the model draw the creature instead of a person in clothes. A few non-humanoid
+   animals carry their own Anthropomorphic wording so they render as one figure
+   rather than a person beside the whole animal.
 
 4. **Feral form vs a wired costume.** Feral drops Clothing, so a costume wired in front
    of a feral creature is intentionally discarded (a feral dragon is not wearing a

@@ -986,6 +986,7 @@ COSPLAYERS: dict[str, dict] = {
 
     # --- Star Wars --------------------------------------------------------
     "Ahsoka Tano": {
+        "bald": True,  # 2.4.0: montrals, no hair (random hair drew over them)
         "franchise": "Star Wars",
         "gender": "Female",
         "costume": "a practical grey-and-blue tunic with leggings and armored pieces, a "
@@ -2239,12 +2240,21 @@ COSPLAYERS: dict[str, dict] = {
     "Bayonetta": {
         "franchise": "Bayonetta",
         "gender": "Female",
-        "costume": "a skin-tight black bodysuit embroidered with arcane sigils, chic "
-                   "angular glasses, gunmetal gloves, and black heeled boots",
+        # 2.4.0: rendered as a curly bob in a sleeveless leotard; rebuilt from the
+        # Bayonetta 1 look.
+        "costume": "dark glasses with butterfly-wing frames, a skin-tight glossy black "
+                   "full-length catsuit woven from living hair covering the arms and "
+                   "legs, with rose and thorn motifs, long white gloves, a gold Umbra "
+                   "Watch with a red jewel on the chest, golden cat-shaped earrings, a "
+                   "small mole below the left corner of the lips, black stiletto heels "
+                   "with pistols mounted on the heels, and a towering glossy jet-black "
+                   "beehive of hair",
         "signature": {"hair_color": "raven black", "hair_length": "hip length",
-                      "hair_style": "updo", "eye_color": "blue-gray"},
+                      "hair_texture": "sleek straight", "hair_style": "updo",
+                      "eye_color": "gray"},
         "physique": {"body_type": "slender", "height": "very tall", "skin_tone": "fair"},
-        "prop": "four ornate long-barreled handguns, one in each hand",
+        # 2.4.0: "four ... one in each hand" drew a fan of guns and extra half-arms.
+        "prop": "a pair of ornate long-barreled pistols, one in each hand",
     },
     "Morrigan Aensland": {
         "franchise": "Darkstalkers",
@@ -2281,11 +2291,17 @@ COSPLAYERS: dict[str, dict] = {
     "X-23": {
         "franchise": "Marvel",
         "gender": "Female",
-        "costume": "tight black and gray combat gear, fingerless gloves, reinforced "
-                   "boots, and metal claws extending from the knuckles of each hand",
-        "signature": {"hair_color": "dark brown", "hair_length": "long",
-                      "hair_texture": "sleek straight", "eye_color": "green"},
-        "physique": {"body_type": "athletic", "height": "very petite", "skin_tone": "tan"},
+        # 2.4.0: canon is jet black hair and alabaster skin, and the claws went unrendered
+        # as a trailing clause; they lead now, two per fist.
+        "costume": "a sleeveless black crop top, dark fitted combat pants, thick black "
+                   "combat boots, a studded leather choker, and two long silver "
+                   "Wolverine-style metal claw blades popping out from between the "
+                   "knuckles of each clenched fist",
+        "signature": {"hair_color": "jet black", "hair_length": "long",
+                      "hair_texture": "sleek straight", "hair_style": "worn down",
+                      "eye_color": "green", "makeup_style": "gothic dark makeup"},
+        "physique": {"body_type": "lean", "height": "average height",
+                     "skin_tone": "porcelain", "age": "20"},
     },
     "Emma Frost": {
         "franchise": "Marvel",
@@ -2524,9 +2540,13 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Marvel",
         "gender": "Male",
         "covers_face": True,
+        # 2.4.0: "a panther mask" rendered as a bare face; the helmet covers the head.
+        "covers_body": True,
         "costume": "a sleek matte-black vibranium catsuit with a faint raised silver "
-                   "triangular weave and a silver vibranium necklace",
-        "mask": "a panther mask with small rounded ears",
+                   "triangular weave, black gloves, and a silver vibranium necklace",
+        "mask": "a fully enclosed matte-black panther helmet covering the whole head and "
+                "face, with small pointed cat ears and angular silver-rimmed white eye "
+                "lenses",
         "physique": {"body_type": "athletic", "height": "tall"},
     },
     "Doctor Strange": {
@@ -2932,10 +2952,17 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a tactical vest, broad bare muscular arms, and a thick green venom "
-                   "tube feeding into the back of the skull",
-        "mask": "a black luchador mask covering the whole head",
-        "physique": {"body_type": "athletic", "height": "very tall"},
+        # 2.4.0: "a tactical vest" drew a modern plate carrier on an average man, and
+        # the bare mask a plain hood. Knightfall look: hulking, wrist pump, Venom tubes.
+        # Tubes routed down the front: "into the back of the head" never rendered.
+        "costume": "a black sleeveless bodysuit and black combat trousers on a hulking, "
+                   "massively muscular frame, with a chunky metal Venom pump gauntlet on "
+                   "one wrist and thick translucent glowing green tubes running from it "
+                   "along the bare forearm, over the shoulder and into the side of the "
+                   "mask",
+        "mask": "a black luchador wrestling mask covering the whole head, with white "
+                "trim outlining the eye openings and the mouth opening",
+        "physique": {"body_type": "athletic", "height": "very tall", "skin_tone": "warm tan"},
     },
     "Deathstroke": {
         "franchise": "DC",
@@ -3014,8 +3041,17 @@ COSPLAYERS: dict[str, dict] = {
     "Yoda": {
         "franchise": "Star Wars",
         "gender": "Male",
-        "costume": "a simple brown Jedi robe, with green wrinkled skin, very large pointed "
-                   "ears, and sparse white hair, on a diminutive figure barely two feet tall",
+        # 2.4.0: Grogu's treatment. Unmasked, the node drew a random man under the
+        # costume text (curly blond hair, a goatee, human hands).
+        "covers_face": True,
+        "covers_body": True,
+        "subject": "wizened green alien Jedi Master",  # else the lead reads "a man"
+        "costume": "a simple brown Jedi robe over a rough cream tunic, on a diminutive "
+                   "hunched figure barely two feet tall, over uniform, all-over green "
+                   "wrinkled skin",
+        "mask": "a wizened green alien head with deep forehead wrinkles, heavy-lidded "
+                "green eyes, very large pointed ears angled out to the sides, a smooth "
+                "wrinkled chin, and a few sparse wisps of white hair",
         "signature": {"eye_color": "green"},
         "size_scale": "tiny",
         "scale_prose": "diminutive and barely two feet tall",
@@ -3398,10 +3434,22 @@ COSPLAYERS: dict[str, dict] = {
     "Baraka": {
         "franchise": "Mortal Kombat",
         "gender": "Male",
-        "costume": "leather warrior garb, a bald head, a wide mouth of jagged sharp teeth, "
-                   "and long retractable blades extending from both forearms",
-        "signature": {"eye_color": "nearly black"},
-        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair"},
+        # 2.4.0: drew a human face and hand-held swords; the blades grow from his arms.
+        "covers_face": True,
+        "subject": "Tarkatan warrior",
+        # 2.4.0 (round 2): blades named at the end drew short knives behind the arms;
+        # they lead now, pointing forward past the fists.
+        "costume": "a long curved steel blade jutting out of each forearm and extending "
+                   "forward past the fist like a sword, a shirtless, hyper-muscular "
+                   "torso of pale sickly grey skin with bone spikes jutting from the "
+                   "shoulders and tribal scars across the chest, studded leather bracers, "
+                   "red and black Outworld combat trousers, and a wide leather belt",
+        "mask": "a bald pale grey Tarkatan head with a huge lipless grin of bared serrated "
+                "fangs stretching from ear to ear, pointed animal ears, glowing yellow "
+                "slit-pupil eyes, and a furrowed ridged brow",
+        "body_paint": True,
+        "skin": "pale sickly grey",
+        "physique": {"body_type": "athletic", "height": "very tall"},
     },
 
     # --- Anime (male) -----------------------------------------------------
@@ -3424,6 +3472,7 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "athletic", "height": "short", "skin_tone": "fair"},
     },
     "Piccolo": {
+        "bald": True,  # 2.4.0: a Namekian is hairless (random hair and stubble drew)
         "franchise": "Dragon Ball",
         "gender": "Male",
         "costume": "a white turban and a white cape over shoulder pads, a purple gi with a "
@@ -3472,13 +3521,17 @@ COSPLAYERS: dict[str, dict] = {
     "Roronoa Zoro": {
         "franchise": "One Piece",
         "gender": "Male",
-        "costume": "a green haramaki sash holding three sheathed swords at the hip, a "
-                   "black bandana, gold earrings, and a long vertical scar over the left eye",
-        # Santoryu: the prop draws one of the three, so the sash keeps the other two
-        # rather than the count reading as six.
-        "prop_costume": "a green haramaki sash holding two sheathed swords at the hip, a "
-                        "black bandana, gold earrings, and a long vertical scar over the left eye",
-        "prop": "a drawn katana held ready",
+        "costume": "a plain white short-sleeved T-shirt, a green haramaki sash holding three "
+                   "sheathed swords at the hip, black trousers tucked into black boots, a "
+                   "black bandana tied around the left upper arm, three gold drop earrings "
+                   "on the left ear, and a long vertical scar over the left eye",
+        # 2.4.0: with two sheathed swords beside the drawn one, every render read as a
+        # cluster of three; holding one, the sash is plain.
+        "prop_costume": "a plain white short-sleeved T-shirt, a green haramaki sash at the "
+                        "waist, black trousers tucked into black boots, a "
+                        "black bandana tied around the left upper arm, three gold drop "
+                        "earrings on the left ear, and a long vertical scar over the left eye",
+        "prop": "a drawn katana held ready in one hand",
         "signature": {"hair_color": "emerald green", "hair_length": "very short",
                       "eye_color": "dark brown"},
         "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "tan"},
@@ -6492,9 +6545,15 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "DC",
         "gender": "Male",
         "covers_face": True,
-        "costume": "blue chitinous scarab armor with black accents and a clawed gauntlet",
-        "mask": "a smooth blue beetle-carapace helmet with large round yellow eye-lenses",
-        "physique": {"body_type": "athletic", "height": "average height"},
+        # 2.4.0: was drawing a random muscular man's bare arms and mouth under foam armor.
+        "covers_body": True,
+        "costume": "a sleek full-body insectoid alien armor suit in dark and light blue with "
+                   "black segmented plating, covering the arms, hands, legs and neck, a "
+                   "beetle-shaped scarab pack on the back with mechanical legs wrapping over "
+                   "the shoulders, and two horn-like spines rising behind the shoulders",
+        "mask": "a fully enclosed blue-and-black beetle helmet covering the whole head and "
+                "face, with large glowing yellow eye-lenses and a smooth blue faceplate",
+        "physique": {"body_type": "lean", "height": "average height"},
     },
     "Blue Beetle (Ted Kord)": {
         "franchise": "DC",
@@ -8755,8 +8814,15 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "flowing deep crimson robes and a hooded cloak over crimson armor",
-        "mask": "a smooth crimson helmet with a narrow vertical visor slit",
+        "covers_body": True,  # 2.4.0: fully suited; was drawing a random man's skin and hands
+        # 2.4.0: helmet text alone still showed a man's face under the visor.
+        "subject": "faceless crimson-helmeted guard",
+        "costume": "flowing deep crimson robes and a hooded cloak over crimson armor, "
+                   "with crimson gloves covering both hands",
+        # 2.4.0: "a smooth crimson helmet" rendered as an open hood over a man's face.
+        "mask": "a smooth rounded crimson helmet enclosing the whole head down to the neck, "
+                "its front a solid crimson faceplate covering the mouth and chin, with only "
+                "a thin black visor strip across the eyes",
         "physique": {"body_type": "athletic", "height": "average height"},
         "prop": "a tall force pike with a slender black shaft and a gleaming metal "
                 "blade tip",
@@ -8765,8 +8831,14 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "articulated crimson plate armor with a layered crimson fabric skirt",
-        "mask": "a crimson helmet with a fin-like crest and a dark narrow visor",
+        "covers_body": True,  # 2.4.0: drew bare human hands under the gauntlets
+        "costume": "articulated crimson plate armor over a full-length padded crimson "
+                   "undersuit that covers the arms, torso and legs, with a layered crimson "
+                   "fabric skirt, and crimson gloves under crimson armored gauntlets "
+                   "covering both hands and fingers, no bare skin",
+        # 2.4.0: still drew an open Roman-style helmet; the faceplate is named outright.
+        "mask": "a fully enclosed, featureless crimson helmet with a solid faceplate hiding "
+                "the whole face, a fin-like crest, and only a dark narrow visor slit",
         "physique": {"body_type": "athletic", "height": "tall"},
         "prop": "a vibro-voulge, a long black polearm with a glinting bladed head",
     },
@@ -8774,9 +8846,16 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "Star Wars",
         "gender": "Male",
         "covers_face": True,
-        "costume": "a black Imperial flight suit with a ribbed chest control box and a "
+        "costume": "a black Imperial flight suit with black gloves, a ribbed chest control box and a "
                    "harness of cables",
-        "mask": "a black flight helmet with a slotted face mask and ribbed breathing hoses",
+        # 2.4.0: an open helmet showed a random man's face; the canon helmet hides it entirely.
+        "covers_body": True,
+        # 2.4.0 (round 2): the face still showed between lenses and mask, as the Royal
+        # Guard's did until it got a lead noun.
+        "subject": "faceless black-helmeted pilot",
+        "mask": "a fully enclosed glossy black TIE pilot helmet covering the whole face, with "
+                "two large dark round eye lenses, a slotted breathing mask, and ribbed "
+                "breathing hoses running down to the chest box",
         "physique": {"body_type": "athletic", "height": "average height"},
     },
     "Death Trooper": {
@@ -8884,14 +8963,19 @@ COSPLAYERS: dict[str, dict] = {
         "costume": "layered dark robes - a floor-length deep blue inner robe with matching "
                    "deep blue fingerless gloves beneath a tiered, floor-length dark brown "
                    "outer robe - with a weathered grey chest plate and matching grey wrist "
-                   "bracer, pale waxy mottled skin, pointed ears, sharp snaggly teeth, long "
-                   "pale pointed claws, and two long tapering head-tails coiling over the "
-                   "shoulders",
-        "eyes": "sunken and glowing reddish pink",
+                   "bracer, chalk-white skin, and long pale fingers tipped with sharp claw-like "
+                   "nails",
+        # 2.4.0: with the face visible, a random middle-aged man drew under the robes.
+        "covers_face": True,
+        "subject": "gaunt pale Twi'lek alien",
+        "mask": "a gaunt, angular Twi'lek alien head with deathly chalk-white skin, faint lavender "
+                "undertones, bald and browless, deep-set pinkish-red eyes rimmed with dark "
+                "heavy bags, high cheekbones, a narrow chin, jagged pointed yellow teeth, and "
+                "two thick fleshy head-tails growing from the back of the skull, one draped "
+                "forward and wrapped around the neck like a collar",
         "signature": {"posture": "slouched"},
-        "covers_hair": True,
         "body_paint": True,
-        "skin": "pale waxy",  # no "coat of" clause for the anchor regex to read
+        "skin": "chalk-white waxy",  # no "coat of" clause for the anchor regex to read
         "physique": {"body_type": "slim", "height": "average height"},
     },
     "Greedo": {
@@ -9286,9 +9370,20 @@ COSPLAYERS: dict[str, dict] = {
     "Maz Kanata": {
         "franchise": "Star Wars",
         "gender": "Female",
-        "costume": "layered earth-toned robes over a tiny deeply wrinkled orange-skinned "
-                   "body, with oversized round vision goggles pushed up on the brow",
-        "eyes": "large warm brown behind thick round goggle lenses",
+        # 2.4.0: unmasked, she drew a random human woman; the alien head is a mask now.
+        "covers_face": True,
+        "subject": "tiny ancient orange-skinned alien",
+        "costume": "a dusty teal-blue knit sweater with a wide rolled collar under a padded "
+                   "grey quilted vest, high-waisted baggy maroon suede pants tucked into "
+                   "dark brown boots, striped multicoloured knit knee socks, a light brown "
+                   "leather belt with pouches, a wooden bead necklace, many stacked "
+                   "bracelets and rings, and deeply wrinkled orange skin on the hands",
+        "mask": "a wide, rounded, deeply wrinkled orange alien face with age spots, high "
+                "cheekbones, a small pointed chin, two slit nostrils, a thin lipless "
+                "mouth, and small brown eyes hugely magnified behind massive worn silver "
+                "goggles, under a dark charcoal quilted domed cap on a dark blue band",
+        "body_paint": True,
+        "skin": "wrinkled orange",
         "signature": {},
         "size_scale": "tiny",
         "scale_prose": "diminutive and barely three feet tall",
@@ -9782,7 +9877,7 @@ COSPLAYERS: dict[str, dict] = {
                    "a red-and-yellow zigzag belt, and yellow mittens",
         "mask": "a round blue penguin face with a wide yellow beak and a smug grin, "
                 "under a red tuque with a white pom-pom and a gold crown-like brim",
-        "prop": "a giant wooden mallet",
+        "prop": "a giant wooden mallet held in both hands",  # 2.4.0: one hand drew a third
         "physique": {"body_type": "plus size", "height": "tall"},
     },
     "Fox McCloud": {
@@ -10879,9 +10974,14 @@ COSPLAYERS: dict[str, dict] = {
     "The Spectre": {
         "franchise": "DC",
         "gender": "Male",
-        "costume": "a deep green hooded cloak clasped at the shoulders, green trunks, green "
-                   "gloves, and green boots, over smooth, flawless chalk white skin",
-        "eyes": "solid glowing white pupil-less",
+        # 2.4.0: drew a random grey-bearded man bare-chested in trunks; the white is a bodysuit.
+        "covers_face": True,
+        "covers_body": True,
+        "costume": "a stark white form-fitting bodysuit covering the neck, arms, chest and legs, "
+                   "green trunks over it, green gloves, flared green boots, and a flowing "
+                   "deep green cloak with a deep hood, wrapped in a faint ghostly green mist",
+        "mask": "a stern, statuesque chalk-white bald face and neck with glowing white "
+                "pupil-less eyes, half in shadow under the deep green hood",
         "physique": {"body_type": "athletic", "height": "very tall"},
     },
     "Sandman (Wesley Dodds)": {
@@ -16071,9 +16171,8 @@ COSPLAYERS: dict[str, dict] = {
         "prop_costume": "the white Yamada Asaemon executioner's uniform -- a white hakama "
                         "and wide-sleeved white top with deep red lining running from the "
                         "collar down the chest, a red corset-like haramaki bound with four "
-                        "red ribbon straps, white tabi and straw sandals, an empty black "
-                        "lacquered scabbard thrust through the sash at the hip, and a very "
-                        "long red ribbon tying back the hair",
+                        "red ribbon straps, white tabi and straw sandals, and a very long red "
+                        "ribbon tying back the hair",
         "prop": "a drawn executioner's katana, a slender curved blade held level in both hands",
         "signature": {"hair_color": "medium brown", "hair_length": "long",
                       "hair_texture": "sleek straight", "hair_style": "low ponytail",
@@ -18725,13 +18824,15 @@ COSPLAYERS: dict[str, dict] = {
         # with covers_face and the leftover skin_tone/ethnicity go with the shell.
         "covers_face": True,
         "covers_body": True,
-        "mask": "a rounded brushed-steel robot head with wide painted eyes, a "
-                "hinged mouth grille, and a frilled white lace maid's cap pinned "
-                "on top",
-        "costume": "a rounded brushed-steel robot shell with a segmented barrel "
-                   "torso and jointed metal arms, a frilled white maid's apron "
-                   "tied at the waist, and a single rolling caster in place of "
-                   "legs",
+        # 2.4.0: "in place of legs" drew legs; the base is named as what it is.
+        "mask": "a large metallic blue horizontal cylinder head like a tin drum, with two "
+                "round red light eyes, a small grey rectangular mouth grille, and two red "
+                "pole antennae tipped with small balls on either side",
+        "costume": "a retro-futuristic robot body: a wide light-blue domed upper torso with "
+                   "a rigid white frilly maid's collar, ribbed light-grey hose arms ending "
+                   "in three-fingered white pincers, a white frilly apron trim at the waist, "
+                   "and a heavy black flared cone-shaped skirt base tapering to a single "
+                   "black pillar on small blue caster wheels",
         "physique": {"height": "average height"},
     },
     "Mr. Spacely": {
@@ -18757,11 +18858,11 @@ COSPLAYERS: dict[str, dict] = {
         "franchise": "The Simpsons",
         "gender": "Male",
         "costume": "a baggy sky blue clown suit with an oversized red bow tie and "
-                   "a ruffled white collar, enormous red clown shoes, a bald crown "
-                   "flanked by two large flared tufts of mint green hair, white "
-                   "greasepaint over the face with a bulbous red nose and a wide "
-                   "red painted grin, and bright yellow skin on the neck, body and "
-                   "hands",
+                   "a ruffled white collar, enormous red clown shoes, a big round "
+                   "shiny red clown nose, a bald crown flanked by two large flared "
+                   "tufts of mint green hair, white greasepaint over the face with a "
+                   "wide red painted grin, and bright yellow skin on the neck, body "
+                   "and hands",  # 2.4.0: the nose went unrendered as a trailing clause
         "body_paint": True,
         "skin": "chalk-white greasepainted",
         "signature": {"facial_hair": "clean shaven"},
@@ -18828,11 +18929,10 @@ COSPLAYERS: dict[str, dict] = {
                    "black shirt and black trousers, black fingerless gloves, "
                    "black boots, and two sword scabbards crossed at the back",
         "prop": "a pair of drawn one-handed straight swords, one black and one "
-                "blue-white",
+                "blue-white, one in each hand",  # 2.4.0: both drew in one hand
         "prop_costume": "a long black high-collared coat with silver buckles over "
                         "a black shirt and black trousers, black fingerless "
-                        "gloves, black boots, and two empty sword scabbards "
-                        "crossed at the back",
+                        "gloves, and black boots",  # 2.4.0: "empty scabbards" drew sheathed swords
         "signature": {"hair_color": "jet black", "hair_length": "ear length",
                       "eye_color": "nearly black"},
         "physique": {"body_type": "lean", "height": "average height",
@@ -24796,8 +24896,10 @@ COSPLAYERS: dict[str, dict] = {
     "Sabrina Spellman": {
         "franchise": "Archie",
         "gender": "Female",
-        "costume": "a bright headband holding back a chin-length bob, a fitted "
-                   "sweater over a pleated skirt, opaque tights, and loafers",
+        # 2.4.0: named colours; with none, a midday render came back black and white.
+        "costume": "a black headband holding back a chin-length bob, a fitted red "
+                   "sweater with a white collar over a pleated red plaid skirt, black "
+                   "opaque tights, and black loafers",
         "signature": {"hair_color": "golden blonde", "hair_length": "chin length bob",
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "average height", "skin_tone": "fair"},

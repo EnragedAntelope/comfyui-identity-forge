@@ -163,7 +163,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "outfit_style": "edgy alternative",
         "accessories": "no accessories",
         "expression": "confident",
-        "location": "factory floor",
+        "location": "blacksmith forge with an anvil",
         "lighting": "warm incandescent lamp glow",
         "shot_type": "low angle looking up",
         "mood": "self-assured",
@@ -486,7 +486,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "outfit_style": "casual",
         "accessories": "no accessories",
         "expression": "confident",
-        "location": "sleek modern kitchen with marble countertops",
+        "location": "commercial kitchen",
         "lighting": "warm incandescent lamp glow",
         "shot_type": "medium shot from waist up",
         "mood": "self-assured",
@@ -810,8 +810,8 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "complexion": "ruddy", "outfit_style": "edgy alternative",
         "outfit_description": "weathered brown leather coat over a loose linen shirt, a wide red sash, and a tricorn hat",
         "bag": "no bag", "accessories": "no accessories",
-        "expression": "smirking", "location": "dimly lit cocktail lounge",
-        "lighting": "warm candlelight",
+        "expression": "smirking", "location": "harbor with moored boats",
+        "lighting": "golden hour sunlight",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "carefree",
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
@@ -1059,7 +1059,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     "Gladiator": {
         "accessories": "no accessories",
         "gender": "Any", "body_type": "athletic", "fitness_level": "muscular", "hair_color": ["dark brown", "medium brown", "near black"],         "outfit_style": "athletic", "expression": "determined",
-        "location": "museum gallery with white walls", "lighting": "dramatic chiaroscuro side lighting",
+        "location": "the Colosseum exterior", "lighting": "harsh overhead midday sun",
         "shot_type": "cowboy shot from mid-thigh up", "mood": "intense",
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
@@ -1102,8 +1102,12 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "accessories": "no accessories",
         "gender": "Any", "ethnicity": "Japanese", "hair_color": ["jet black", "raven black", "near black"],
         "outfit_style": "edgy alternative", "expression": "stern",
-        "location": "photography studio with backdrop", "lighting": "soft studio three-point lighting",
+        # 2.4.0: out of the photo studio and into the landscape the look belongs to.
+        "location": "the Mount Fuji foothills", "lighting": "overcast diffused daylight",
         "shot_type": "full body shot", "mood": "tense",
+        # Armour and a horned helm: a warrior's stance or seiza, not a lounge or a hair touch.
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back",
+                 "standing with arms crossed", "kneeling seiza-style"],
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
         "variants": {
@@ -1335,7 +1339,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     "Veterinarian": {
         "hair_length": ["shoulder length", "long"], "hair_style": "low ponytail",
         "outfit_style": "business casual",
-        "expression": "warm smile", "location": "doctor's examination room",
+        "expression": "warm smile", "location": "veterinary clinic exam room",
         "lighting": "cool LED overhead lighting",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
@@ -1348,7 +1352,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     "Glassblower": {
         "outfit_style": "casual", "expression": "determined",
-        "location": "factory floor", "lighting": "fire and flame warm flicker",
+        "location": "glassblowing studio with a furnace", "lighting": "fire and flame warm flicker",
         "shot_type": "medium shot from waist up", "mood": "intense",
     },
 
@@ -1642,7 +1646,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "gender": "Any", "ethnicity": "Cuban", "body_type": "athletic", "height": "tall",
         "fitness_level": "muscular", "hair_color": ["jet black", "raven black", "near black"],
         "skin_tone": "warm brown", "outfit_style": "athletic",
-        "expression": "intense gaze", "location": "local gym weight room",
+        "expression": "intense gaze", "location": "boxing gym with hanging heavy bags",
         "lighting": "dramatic chiaroscuro side lighting", "shot_type": "cowboy shot from mid-thigh up",
         "mood": "intense",
         "variants": {
@@ -1838,7 +1842,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "fitness_level": "muscular",
         "hair_color": ["jet black", "raven black", "near black"], "hair_length": "shoulder length", "hair_texture": "wavy",
         "skin_tone": "warm tan", "outfit_style": "athletic",
-        "expression": "intense gaze", "location": "high school gymnasium",
+        "expression": "intense gaze", "location": "wrestling ring under arena lights",
         "lighting": "dramatic single overhead spotlight", "shot_type": "cowboy shot from mid-thigh up",
         "mood": "intense",
         "variants": {
@@ -1863,7 +1867,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "gender": "Any", "ethnicity": "Mexican", "body_type": "athletic", "height": "average height",
         "fitness_level": "very fit",
         "hair_color": ["jet black", "raven black", "near black"], "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
-        "location": "high school gymnasium", "lighting": "dramatic single overhead spotlight",
+        "location": "wrestling ring under arena lights", "lighting": "dramatic single overhead spotlight",
         "shot_type": "full body shot", "mood": "self-assured",
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
@@ -1889,7 +1893,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "accessories": "no accessories",
         "gender": "Any", "ethnicity": "Brazilian", "body_type": "fit", "height": "average height",
         "hair_color": ["dark brown", "medium brown", "near black"], "skin_tone": "tan", "outfit_style": "athletic", "expression": "confident",
-        "location": "parking garage", "lighting": "harsh fluorescent lighting",
+        "location": "racetrack pit lane", "lighting": "harsh overhead midday sun",
         "shot_type": "medium shot from waist up", "mood": "self-assured",
         # 1.5.1 (maintainer): a gender-neutral role coin-flips; the Male look
         # is the old lean, unchanged.
@@ -2142,6 +2146,8 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
             },
             "Female": {
                 "hair_length": "short pixie",
+                # 2.4.0: an 80s look, not a random 1950s pin-up face.
+                "makeup_style": ["bold glam", "editorial makeup"],
                 "outfit_description": [
                     "an oversized {jewel_tone} blazer with sharply padded shoulders and pushed-up sleeves over a graphic tee, slim trousers, and pointed boots",
                     "a boxy {jewel_tone} cropped jacket with padded shoulders over a black mesh-panel top, a high-waisted pencil skirt, and pointed ankle boots",
@@ -2210,7 +2216,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "fitness_level": "very fit",
         "hair_color": ["dark brown", "medium brown", "near black"], "hair_length": "shoulder length", "hair_style": "high ponytail",
         "skin_tone": "warm tan", "outfit_style": "athletic", "accessories": "no accessories",
-        "expression": "determined", "location": "sunny city park",
+        "expression": "determined", "location": "outdoor tennis court with a net",
         "lighting": "harsh overhead midday sun", "shot_type": "full body shot", "mood": "self-assured",
     },
     "Gymnast": {
@@ -2234,7 +2240,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "hair_color": ["chestnut", "light chestnut", "warm brown"], "hair_length": "shoulder length", "hair_texture": "wavy",
         "hair_style": "half up half down", "skin_tone": "fair", "outfit_style": "casual",
         "accessories": "no accessories", "expression": "warm smile",
-        "location": "farmers market indoor stall", "lighting": "soft window light from the side",
+        "location": "flower shop interior", "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "cheerful",
     },
     "Plumber": {
@@ -2345,12 +2351,12 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     "Potter": {
         "outfit_style": "casual", "expression": "at ease",
-        "location": "artist's painting studio", "lighting": "soft window light from the side",
+        "location": "ceramics studio with pottery wheels", "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "peaceful",
     },
     "Tailor": {
         "outfit_style": "smart casual", "expression": "subtle soft smile",
-        "location": "luxury retail boutique", "lighting": "soft window light from the side",
+        "location": "tailor's workroom with dress forms", "lighting": "soft window light from the side",
         "shot_type": "medium shot from waist up", "mood": "tranquil",
     },
     "Calligrapher": {
@@ -2630,7 +2636,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
             "a heavyweight white cotton martial-arts gi with a wrapped black belt knotted at the waist, worn barefoot",
             "a sleeveless {dark_color} training top with loose black kung-fu trousers, wrapped hand wraps, and bare feet",
         ],
-        "expression": "determined", "location": "yoga studio with wood floors",
+        "expression": "determined", "location": "martial arts dojo",
         "lighting": "soft window light from the side", "shot_type": "full body shot", "mood": "intense",
     },
     "Kendo Practitioner": {
@@ -2650,7 +2656,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
             "a dark navy kendogi jacket under a white do chest plate with red accents, a tare waist guard with a name tag, thick padded kote gauntlets, a men grille mask with a padded fukin head covering, and a dark hakama with suneate shin guards",
             "a white keikogi under a dark blue do with white trim, padded kote gloves, a men face grille with a tenugui head cloth, a tare waist protector, and dark blue hakama trousers with shin guards",
         ],
-        "expression": "focused", "location": "yoga studio with wood floors",
+        "expression": "focused", "location": "martial arts dojo",
         "lighting": "soft window light from the side",
         "shot_type": "full body shot", "mood": "intense",
         "held_item": "a bamboo shinai",
@@ -2696,11 +2702,30 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     "Indie Sleaze": {
         "body_type": "lean", "hair_color": ["near black", "jet black", "dark brown"], "hair_length": "shoulder length",
         "hair_texture": "slightly wavy", "hair_style": "natural and unstyled", "skin_tone": "pale",
-        "eye_makeup": "smoky black", "eyeliner": "smudged kohl", "outfit_style": "edgy alternative",
+        "eyeliner": "smudged kohl", "outfit_style": "edgy alternative",
         "accessories": "no accessories",
-        "outfit_description": "a rumpled vintage graphic tee under a worn leather jacket, tight shiny disco pants, and scuffed ankle boots, styled with a careless thrifted look",
         "expression": "smirking", "location": "neon-lit nightclub", "lighting": "club strobe lighting",
         "shot_type": "medium shot from waist up", "mood": "moody",
+        # 2.4.0: a man drew the disco bodysuit with tights and smoky shadow and read as
+        # drag; the scene's men wore skinny jeans and just the smudged liner.
+        "variants": {
+            "Male": {
+                "outfit_description": [
+                    "a rumpled vintage graphic tee under a worn leather jacket, skinny black jeans, and scuffed ankle boots, styled with a careless thrifted look",
+                    "a rumpled vintage graphic tee under a {dark_color} moto jacket with skinny jeans and battered canvas sneakers, styled with a careless thrifted look",
+                    "an oversized thrifted blazer over a slogan tee with tight {color} jeans and scuffed loafers, layered with a haphazard second-hand look",
+                ],
+            },
+            "Female": {
+                "eye_makeup": "smoky black",
+                "outfit_description": [
+                    "a rumpled vintage graphic tee under a worn leather jacket, tight shiny disco pants, and scuffed ankle boots, styled with a careless thrifted look",
+                    "a rumpled vintage graphic tee under a {dark_color} moto jacket with skinny jeans and battered canvas sneakers, styled with a careless thrifted look",
+                    "an oversized thrifted blazer over a slogan tee with tight {color} jeans and scuffed loafers, layered with a haphazard second-hand look",
+                    "a metallic {color} disco bodysuit under a cropped denim jacket with opaque tights and beat-up ankle boots",
+                ],
+            },
+        },
     },
     "Y2K Mall Casual": {
         "gender": "Any",
@@ -3290,6 +3315,10 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
     },
     "Figure Skater": {
         "gender": "Any",
+        # 2.4.0: on blades a skater stands and strikes a pose; never walks or kneels.
+        # A pose lock is Setting & Shot, so it holds in Essentials too.
+        "pose": ["standing tall with shoulders back", "in a confident power pose",
+                 "standing with weight on one leg", "stretching both arms overhead"],
         "variants": {
             "Female": {
                 "body_type": ["athletic", "petite and slim", "toned"], "fitness_level": "very fit",
@@ -3303,7 +3332,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
                     "a {pastel} competition skating dress with cascading rhinestones, sheer mesh sleeves, and white figure skates",
                 ],
                 "expression": ["determined", "bright smile"],
-                "location": ["roller skating rink", "dance studio with mirrors"],
+                "location": "indoor ice rink",
                 "lighting": ["high key bright even lighting", "stage spotlight from above"],
                 "shot_type": "full body shot", "mood": ["triumphant", "radiant"],
             },
@@ -3317,7 +3346,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
                     "a sleek {jewel_tone} competition skating shirt with an asymmetric beaded seam, black stretch trousers, and black figure skates",
                 ],
                 "expression": ["determined", "bright smile"],
-                "location": ["roller skating rink", "dance studio with mirrors"],
+                "location": "indoor ice rink",
                 "lighting": ["high key bright even lighting", "stage spotlight from above"],
                 "shot_type": "full body shot", "mood": ["triumphant", "radiant"],
             },
@@ -3892,14 +3921,18 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "height": "average height",
         "fitness_level": "athletic",
         "outfit_style": "athletic",
-        "outfit_description": "bulky {color} goaltender pads strapped over the legs, a heavily "
-                              "padded chest protector under a loose team jersey, an oversized "
+        # 2.4.0: team colours on pads and jersey; a charcoal draw on white ice rendered
+        # the whole frame black and white.
+        "outfit_description": "bulky {team_color} goaltender pads strapped over the legs, a heavily "
+                              "padded chest protector under a loose {team_color} team jersey, an oversized "
                               "blocker on one hand and a deep catching glove on the other, and "
                               "a painted cage-fronted goalie mask",
         "accessories": "no accessories",
         "bag": "no bag",
         "expression": "determined",
         "location": "indoor ice rink",
+        # 2.4.0: on blades, a set stance rather than a walk.
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back"],
         "lighting": "cool LED overhead lighting",
         "shot_type": "full body shot",
         "mood": "intense",
@@ -5011,7 +5044,7 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "necklace": "no necklace",
         "earrings": "no earrings",
         "expression": "determined",
-        "location": ["open meadow", "country dirt road"],
+        "location": "racecourse paddock with a white rail",
         "lighting": ["golden hour sunlight", "overcast diffused daylight"],
         "shot_type": "full body shot",
         "mood": "intense",
@@ -5507,6 +5540,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "expression": "confident",
         "location": ["wide sandy beach", "working harbor dock", "harbor with moored boats",
                      "lakeside pier"],
+        # 2.4.0: fins on the feet: a diver stands, never strides.
+        "pose": ["standing with feet planted wide", "standing tall with shoulders back",
+                 "standing with arms relaxed at the sides", "posing with a hand on one hip"],
         "lighting": "golden hour sunlight",
         "shot_type": "full body shot",
         "mood": "self-assured",
@@ -5600,6 +5636,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "expression": "bright smile",
         # Skating the order out to the cars is the job.
         "location": "the parking lot of a retro drive-in diner with classic cars",
+        # 2.4.0: rolling or posing on skates; never sat or kneeling on the tarmac.
+        "pose": ["posing with a hand on one hip", "standing with weight on one leg",
+                 "pausing mid-step", "turning toward the viewer mid-stride"],
         "lighting": ["golden hour sunlight", "neon sign glow in multiple colors"],
         "shot_type": "full body shot",
         "mood": "cheerful",
@@ -5691,6 +5730,9 @@ ARCHETYPES: dict[str, dict[str, Any]] = {
         "earrings": "no earrings",
         "expression": "defiant",
         "location": "roller skating rink",
+        # 2.4.0: on wheels, a set stance rather than a walk.
+        "pose": ["standing with feet planted wide", "in a confident power pose",
+                 "standing with arms crossed"],
         "lighting": "cool LED overhead lighting",
         "shot_type": "full body shot",
         "mood": "fierce",
@@ -6311,10 +6353,7 @@ _COSTUMES: dict[str, str | list[str]] = {
      "a black band tee under an unzipped {dark_color} hoodie with tight black skinny jeans, a studded belt, fingerless gloves, and worn high-tops",
      "a black-and-{jewel_tone} striped long-sleeve under a graphic band tee, black skinny jeans with a chain wallet, and scuffed skate shoes",
      "a snug {dark_color} zip hoodie over a studded belt and drainpipe jeans, with checkerboard slip-ons and rubber wristbands stacked up one forearm"],
-    "Indie Sleaze": ["a rumpled vintage graphic tee under a worn leather jacket, tight shiny disco pants, and scuffed ankle boots, styled with a careless thrifted look",
-     "a rumpled vintage graphic tee under a {dark_color} moto jacket with skinny jeans and battered canvas sneakers, styled with a careless thrifted look",
-     "an oversized thrifted blazer over a slogan tee with tight {color} jeans and scuffed loafers, layered with a haphazard second-hand look",
-     "a metallic {color} disco bodysuit under a cropped denim jacket with opaque tights and beat-up ankle boots"],
+    # Indie Sleaze: costume moved into its variants (2.4.0).
     # --- 0.67.0 additions (lean unisex archetypes) ---
     "Butler": "a formal black tailcoat over a white wing-collar shirt with a {dark_color} waistcoat, a black bow tie, pressed trousers, and white cotton gloves",
     "Coal Miner": "grimy {earth_tone} coveralls streaked with coal dust, a battered hard hat with a headlamp, heavy canvas gloves, and steel-toe boots, the face smudged with soot",

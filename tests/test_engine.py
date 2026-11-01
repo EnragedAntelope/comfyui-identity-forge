@@ -265,6 +265,27 @@ class GenderTests(unittest.TestCase):
             self.assertEqual(flat.get(field), value, field)
 
 
+class LockedEyeMakeupOnBareFaceTests(unittest.TestCase):
+    """2.4.0: a man's "no makeup" default hid an archetype's locked eyeliner (Emo,
+    Indie Sleaze, 1980s New Wave). Locked eye fields are voiced; random cosmetics and
+    lips stay hidden."""
+
+    def test_emo_man_keeps_his_eyeliner_only(self):
+        for seed in range(10):
+            flat = _parse_archetype_json(build_archetype_json("Emo", seed, "Essentials"))
+            gv = flat.pop(_VARIANTS_KEY, None)
+            prose, _ = generate_character(seed, "Male", flat, gender_variants=gv)
+            self.assertIn("He wears smoky black eyeshadow and smudged kohl eyeliner.",
+                          prose, f"seed {seed}")
+            for word in ("lip colour", "blush", "mascara", "highlighter", "finish"):
+                self.assertNotIn(word, prose, f"'{word}' on seed {seed}")
+
+    def test_random_man_stays_bare_faced(self):
+        for seed in range(30):
+            prose, _ = generate_character(seed, "Male", {})
+            self.assertNotIn("eyeliner", prose, f"seed {seed}")
+
+
 class ERNurseGenderMakeupTests(unittest.TestCase):
     """0.67.0: ER Nurse is a unisex archetype whose only per-gender difference is
     makeup. It carries a costume-less ``variants`` block (Female -> soft natural
@@ -4158,6 +4179,17 @@ class PerformablePoseTests(unittest.TestCase):
                      "running one hand through the hair", "adjusting one cuff"):
             self.assertIn(pose, got)
 
+    def test_prop_in_each_hand_drops_one_handed_poses(self):
+        # 2.4.0: Star-Lord drew "adjusting one cuff" with a blaster in each hand.
+        resolved = {"hair_length": "long", "outfit_description": "a wool overcoat",
+                    "held_item": "a pair of blasters, one in each hand"}
+        got = _performable_poses(self._pool(), resolved, False, False, False)
+        for pose in ("posing with a hand on one hip", "adjusting one cuff",
+                     "running one hand through the hair", "waving at the camera"):
+            self.assertNotIn(pose, got)
+        self.assertFalse(HAND_OCCUPIED_POSES & set(got))
+        self.assertTrue(got)
+
     def test_absent_held_item_changes_nothing(self):
         # `held_item` is optional and preset-only; an absent value must not narrow.
         base = {"hair_length": "long", "outfit_description": "a wool overcoat"}
@@ -5061,8 +5093,8 @@ class FeralFitnessTests(unittest.TestCase):
         feral = _FORM_SUPPRESS_FIELDS[_FORM_FERAL]
         self.assertNotIn("body_type", feral, "a shape reads fine on a beast")
         self.assertNotIn("height", feral, "a towering creature reads fine")
-        self.assertEqual(_FORM_SUPPRESS_FIELDS[_FORM_ANTHRO], set(),
-                         "anthro is humanoid and keeps everything")
+        # 2.4.0: anthro keeps its shape and drops only the lifestyle word.
+        self.assertEqual(_FORM_SUPPRESS_FIELDS[_FORM_ANTHRO], {"fitness_level"})
 
 
 class WornItemDeduplicationTests(unittest.TestCase):
@@ -6910,10 +6942,8 @@ class NewRosterEntryTests(unittest.TestCase):
             "Yamada Asaemon Sagiri", 2, include_prop=True))
         self.assertIn("a katana in a black lacquered scabbard",
                       worn["Clothing"]["outfit_description"])
-        self.assertIn("an empty black lacquered scabbard",
-                      held["Clothing"]["outfit_description"])
-        self.assertNotIn("a katana in a black lacquered scabbard",
-                         held["Clothing"]["outfit_description"])
+        # 2.4.0: an "empty scabbard" rendered as a second sheathed sword, so none is named.
+        self.assertNotIn("scabbard", held["Clothing"]["outfit_description"])
 
     def test_alternate_looks_actually_roll(self):
         for name, expected in (("Yuzuriha", 3), ("Gabimaru", 2), ("Fern", 2)):
@@ -7889,6 +7919,34 @@ class SpeciesRoundTripTests(unittest.TestCase):
         self.assertEqual(meta.get("form"), _FORM_FERAL)
         self.assertIn("Demographics", meta.get("suppress_groups", []))
         self.assertIn("waist", meta.get("suppress_fields", []))
+
+    def test_anthro_monster_is_humanoid_not_a_human_hybrid(self):
+        # 2.4.0: "anthropomorphic skeleton hybrid ... a full waist, wide hips" drew a
+        # person; an animal hybrid keeps its proportions and clothes.
+        for seed in range(6):
+            prose, _ = self._save("skeleton", "Anthropomorphic", seed=seed)
+            self.assertIn("humanoid skeleton", prose)
+            self.assertNotIn("hybrid", prose)
+            self.assertNotRegex(prose, r"\b(?:hips|waist|physique)\b")
+            self.assertIn(" wears ", prose)
+            lion, _ = self._save("lion", "Anthropomorphic", seed=seed)
+            self.assertIn("anthropomorphic lion hybrid", lion)
+            self.assertNotIn("physique", lion)
+
+    def test_anthro_rewrites_apply_only_in_anthro_form(self):
+        # 2.4.0: a creature's "anthro" text replaces its whole-animal slots, so the
+        # model draws one hybrid, not a person beside a stegosaurus. Feral keeps
+        # the animal, and recall at a new seed keeps the lead noun.
+        prose, saved = self._save("stegosaurus", "Anthropomorphic")
+        self.assertIn("scaly reptilian humanoid", prose)
+        self.assertIn("sturdy scaly legs", prose)
+        self.assertNotIn("forelegs", prose)
+        self.assertIn("scaly reptilian humanoid", self._recall(saved, 41)[0])
+        feral, _ = self._save("stegosaurus", "Feral / full creature")
+        self.assertIn("forelegs", feral)
+        self.assertNotIn("humanoid", feral)
+        nautilus, _ = self._save("nautilus", "Anthropomorphic")
+        self.assertNotIn("siphon", nautilus)  # "" drops the slot
 
     def test_a_feral_creature_survives_recall_at_a_new_seed(self):
         for creature in ("lion", "dragon", "bison", "octopus"):

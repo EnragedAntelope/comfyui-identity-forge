@@ -946,7 +946,8 @@ CREATURES: dict[str, dict] = {
         "head": "a translucent sorrowful face that drifts in and out of focus",
         "eyes": "hollow glowing eyes",
         "integument": "a semi-transparent vaporous form",
-        "arms": "trailing wispy arms",
+        # 2.4.0: "trailing wispy arms" drew a third arm; the count anchors it.
+        "arms": "two wispy arms",
         "hands": "fading translucent hands",
         "legs_feet": "a dissolving misty trail instead of legs",
         "extras": "a cold ectoplasmic glow",
@@ -1712,10 +1713,19 @@ CREATURES: dict[str, dict] = {
         "class": "Marine Life", "palette": "cream and russet",
         "head": "a hooded nautilus head ringed with slender tentacles",
         "eyes": "simple pinhole eyes",
-        "integument": "a coiled chambered spiral shell over soft flesh",
+        # 2.4.0: placed on the back, or the shell vanished and only a person was left.
+        "integument": "a tiger-striped coiled spiral shell carried on the back like a snail's, over soft pale flesh",
         "arms": "many small grasping tentacle-arms",
         "hands": "clusters of fine tentacle tips",
         "extras": "a gentle jet-propulsion siphon",
+        # 2.4.0: in Anthropomorphic form a whole nautilus rendered beside a person.
+        "anthro": {
+            "head": "a head shaped like a coiled nautilus shell, slender tentacles around the mouth",
+            "integument": "smooth skin banded with tiger stripes",
+            "arms": "two slender arms",
+            "hands": "hands with fine tentacle-tip fingers",
+            "extras": "",
+        },
     },
     "djinn": {
         "class": "Mythic & Fantasy", "palette": "smokeless blue flame",
@@ -1733,10 +1743,17 @@ CREATURES: dict[str, dict] = {
         "head": "a diffuse glowing core suggesting a head within a gas cloud",
         "eyes": "scattered points of brighter light for eyes",
         "integument": "a shifting translucent cloud of luminous gas",
-        "arms": "tendrils of condensing vapor for arms",
+        # 2.4.0: "tendrils ... for arms" rendered a third arm.
+        "arms": "two arms of condensing vapor",
         "hands": "wisps that gather into hand-like shapes",
         "extras": "a slow internal aurora",
         "palette_pool": ["luminous cyan", "rose nebula", "amber haze", "violet plasma", "pale green glow"],
+        # 2.4.0: "humanoid gaseous alien" rendered a grey alien beside a gas cloud.
+        "anthro": {
+            "subject": "humanoid figure made entirely of glowing gas",
+            "head": "a head of dense glowing vapor with no solid face",
+            "integument": "a translucent body of swirling luminous gas",
+        },
     },
 
     # --- Mammals (0.44 expansion) ------------------------------------------
@@ -2222,8 +2239,17 @@ CREATURES: dict[str, dict] = {
         "arms": "stout clasping forelimbs",
         "hands": "small clawed grips",
         "legs_feet": "six clinging clawed legs",
-        "wings": "large clear membranous wings veined and held roof-like",
+        # 2.4.0: "held roof-like" alone rendered the wings across the chest.
+        "wings": "large clear veined membranous wings folded roof-like over the back",
         "extras": "a loud droning song from the abdomen",
+        # 2.4.0: in Anthropomorphic form a giant cicada rendered behind a shirt.
+        "anthro": {
+            "subject": "insectoid humanoid",
+            "head": "a human-sized cicada head with short bristle antennae",
+            "integument": "a chitinous exoskeleton over the torso",
+            "arms": "two clasping insect arms",
+            "legs_feet": "two jointed insect legs",
+        },
     },
     # --- Monsters ---
     "ogre": {
@@ -2395,16 +2421,18 @@ CREATURES: dict[str, dict] = {
     "jiangshi": {
         # Stiff-armed Qing-robed hopping undead: not a vampire (aristocratic,
         # fanged, fluid) and not a zombie (shambling, rotted).
-        "class": "Monsters", "palette": "greyed corpse-blue",
+        "class": "Monsters", "palette": "pale greenish-white",
         # The palette is prepended to `integument` only, never to `head`, so a
         # creature's FACE has no colour anchor at all - the creature-layer
         # equivalent of the green-body/pale-face bug. "corpse face" rendered as
         # a healthy woman wearing a paper slip. Pallor has to be carried by
         # colour-FREE words in the head slot itself (bloodless, waxen, sunken);
         # naming a colour here would break the colour-free slot convention.
-        "head": "a bloodless, waxen corpse face, sunken and hollow-cheeked, the jaw slack and expressionless, a long yellow paper talisman pasted down the brow",
+        "head": "a bloodless, waxen corpse face, sunken and hollow-cheeked, small fangs at the slack lips, a long yellow paper talisman pasted down the brow",
         "eyes": "clouded milky eyes with no life in them",
-        "integument": "stiff, desiccated corpse skin drawn tight over the bones",
+        # 2.4.0: palette + "stiff, desiccated corpse skin" voiced "greyed
+        # corpse-blue stiff, desiccated corpse skin"; the palette needs "skin" first.
+        "integument": "skin, stiff and desiccated, drawn tight over the bones like a corpse",
         "arms": "arms locked straight out in front and held rigid",
         "hands": "hooked stiffened fingers with long dark nails",
         "legs_feet": "stiff unbending legs that move in short hops",
@@ -3296,7 +3324,7 @@ CREATURES: dict[str, dict] = {
     "stegosaurus": {
         "class": "Reptiles & Amphibians", "palette": "mottled olive",
         "palette_pool": ["mottled olive", "earthy brown", "slate grey-green"],
-        "head": "a small low narrow head with a toothless beaked snout",
+        "head": "a small low narrow dinosaur head with a toothless beaked snout",
         "eyes": "small dark eyes set on the sides of the head",
         "integument": "a double row of broad upright diamond-shaped bony plates running "
                       "down the back over thick pebbled hide",
@@ -3304,6 +3332,17 @@ CREATURES: dict[str, dict] = {
         "hands": "broad blunt-toed forefeet",
         "legs_feet": "tall massive hind legs",
         "tail": "a heavy tail ending in four long horizontal bony spikes",
+        # 2.4.0: in Anthropomorphic form a whole stegosaurus rendered beside a person.
+        "anthro": {
+            "subject": "scaly reptilian humanoid",
+            "head": "a stegosaurus-like dinosaur head with a toothless beaked snout",
+            "integument": "a double row of broad upright diamond-shaped bony plates running "
+                          "down the spine over thick pebbled hide",
+            "arms": "thick scaly arms",
+            "hands": "broad blunt-clawed hands",
+            "legs_feet": "sturdy scaly legs",
+            "tail": "a short tail ending in four bony spikes",
+        },
     },
 
     # ======================================================================
