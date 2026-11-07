@@ -185,7 +185,6 @@ if _COMFY_AVAILABLE:
                 ],
             )
 
-        # No fingerprint_inputs: no RNG and no auto-advancing widget (see Turnaround).
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":

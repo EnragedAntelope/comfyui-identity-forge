@@ -207,8 +207,7 @@ def _character_fingerprint(vault_root: Path | str, name: str) -> Any:
     cached ``character_json`` instead of re-reading the file. Folding the
     selected entry's mtime + size into :meth:`fingerprint_inputs` makes a
     changed (or now-missing) file force a cache miss; an unchanged file still
-    caches normally, unlike the NaN pattern the other preset nodes use (which
-    disables caching on every queue, not only on a real change).
+    caches normally.
     """
     try:
         entry = _entry_dir(Path(vault_root), name)

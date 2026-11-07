@@ -452,16 +452,11 @@ class SchemaShapeTests(unittest.TestCase):
                          "only 'pose' may share a name with an IdentityForge input")
 
     def test_no_widget_auto_advances(self):
-        # The corollary of having no fingerprint_inputs: this node is a pure
-        # function, so ComfyUI's normal caching is correct. A widget with
-        # control_after_generate would reintroduce ComfyUI#11905 and need the
-        # NaN signature back (architecture.md -> "Seeded nodes re-roll every queue").
         for spec in self.schema.inputs:
             self.assertIsNone(getattr(spec, "control_after_generate", None), spec.id)
         # `vars`, not `hasattr`: the real comfy_api's ComfyNode base declares
         # fingerprint_inputs (raising NotImplementedError), so hasattr is True on
-        # every node and would assert nothing. The stub declares no such method,
-        # which is exactly how a hasattr check passes here and fails in ComfyUI.
+        # every node. The test stub also declares the base method.
         self.assertNotIn("fingerprint_inputs", vars(IdentityForgeTurnaround))
 
     def test_character_json_is_a_required_socket_not_a_multiline_box(self):
