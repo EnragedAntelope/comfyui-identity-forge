@@ -281,26 +281,122 @@ test("the gender filter keeps that gender plus entries that suit either", async 
   }
 });
 
-test("the franchise filter lists roster franchises by category and keeps only that franchise", async () => {
+test("the franchise box suggests every franchise, keeps an exact name only, and part of a name broadly", async () => {
   resetDom();
   __testing.__resetForTests();
   const stub = installFetchStub(rosterOkHandler);
   try {
     const picker = await openPicker();
-    const select = picker.franchiseSelect;
-    assert.ok(select.querySelectorAll("optgroup").length > 1, "options are grouped by category");
-    const franchise = REAL_ROSTER.find((e) => e.franchise).franchise;
-    assert.ok([...select.options].some((o) => o.value === franchise));
-    select.value = franchise;
-    select.dispatchEvent(new window.Event("change"));
+    const franchises = new Set(REAL_ROSTER.filter((e) => e.franchise).map((e) => e.franchise));
+    assert.equal(picker.franchiseList.options.length, franchises.size, "one suggestion per franchise");
+    assert.ok(picker.franchiseList.options[0].label, "suggestions carry their category");
+
+    const input = picker.franchiseInput;
+    input.value = "star wars";
+    input.dispatchEvent(new window.Event("input"));
+    picker.renderGrid();
     assert.ok(picker.visible.length > 0);
-    assert.ok(picker.visible.every((e) => e.franchise === franchise));
+    assert.ok(picker.visible.every((e) => e.franchise === "Star Wars"), "an exact name (any case) keeps that franchise only");
+
+    picker.franchise = "star";
+    picker.renderGrid();
+    const hit = new Set(picker.visible.map((e) => e.franchise));
+    assert.ok(hit.has("Star Wars") && hit.has("Star Trek"), "part of a name keeps every franchise containing it");
+
     picker.close();
     picker.open();
-    await new Promise((r) => setTimeout(r, 0));
-    assert.equal(picker.franchiseSelect.value, franchise, "the choice survives a reopen");
+    await flush();
+    assert.equal(picker.franchiseInput.value, "star", "the text survives a reopen");
     picker.close();
   } finally {
+    stub.restore();
+  }
+});
+
+test("archetype and creature pickers hide the cosplayer-only filters", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    for (const [kind, widget, gender] of [["archetype", "archetype", true], ["creature", "creature", false]]) {
+      const picker = await openPicker(kind, widget);
+      const header = picker.overlay.querySelector(".if-picker-header");
+      assert.ok(!header.contains(picker.franchiseInput), kind + ": no franchise box");
+      assert.ok(!header.contains(picker.facetSelect), kind + ": no trait facet");
+      assert.equal(header.contains(picker.genderSelect), gender, kind + ": gender only where entries have one");
+      picker.close();
+    }
+    const cos = await openPicker();
+    const header = cos.overlay.querySelector(".if-picker-header");
+    assert.ok(header.contains(cos.franchiseInput) && header.contains(cos.facetSelect) && header.contains(cos.genderSelect));
+    cos.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("search matches from a word's start, quoted phrases, and the SEARCH_ALSO synonyms", () => {
+  const find = (q) => REAL_ROSTER.filter((e) => __testing.matchesQuery(e, __testing.tokenize(q)));
+  const elbowOnly = (e) => /elbow|rainbow/.test(e.haystack) && !/(^|[^a-z0-9])bow/.test(e.haystack)
+    && !e.name.toLowerCase().includes("bow");
+  assert.ok(REAL_ROSTER.some(elbowOnly), "sanity: some entries mention bow only inside elbow/rainbow");
+  assert.ok(!find("bow").some(elbowOnly), '"bow" must not match inside "elbow" or "rainbow"');
+  assert.ok(find("man").some((e) => e.name === "Batman"), "a name still matches anywhere");
+  assert.deepEqual(__testing.tokenize('red "bow tie"'), ["red", "bow tie"]);
+  for (const q of ["dia de los", "día", "DÍA"]) {
+    assert.ok(find(q).some((e) => e.name === "Día de los Muertos"), `"${q}" finds Día de los Muertos`);
+  }
+  assert.equal(__testing.tokenize("Øyvind Straße")[1], "strasse");
+  assert.ok(find('"bow tie"').length > 0 && find('"bow tie"').length < find("bow").length);
+  const trousersOnly = REAL_ROSTER.filter((e) => /(^|[^a-z0-9])trousers/.test(e.haystack) && !/pants/.test(e.haystack));
+  assert.ok(trousersOnly.length > 0, "sanity");
+  const pants = new Set(find("pants"));
+  assert.ok(trousersOnly.every((e) => pants.has(e)), '"pants" finds trousers');
+  assert.ok(find("suit").some((e) => /bodysuit/.test(e.haystack) && !/(^|[^a-z0-9])suit/.test(e.haystack)),
+    '"suit" finds bodysuits');
+});
+
+test("reopening lands on the node's current pick, marked, instead of the top of the list", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    const target = picker.visible[40];
+    picker.select(target);
+    picker.open();
+    await flush();
+    assert.equal(picker.visible[picker.focusIndex].name, target.name);
+    const tile = picker.grid.children[picker.focusIndex];
+    assert.ok(tile.classList.contains("current") && tile.classList.contains("focused"));
+    picker.close();
+  } finally {
+    stub.restore();
+  }
+});
+
+test("Queue each queues one run per matching entry, then restores the pick", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  const seen = [];
+  try {
+    const picker = await openPicker();
+    assert.equal(picker.queueAllButton.style.display, "none", "hidden with no filter: never the whole roster");
+    const widget = picker.config.node.widgets.find((w) => w.name === "character");
+    widget.value = "None";
+    app.queuePrompt = async () => { seen.push(widget.value); return true; };
+    picker.franchise = "Star Wars";
+    picker.tabs.querySelector('[data-tab="__all__"]').click(); // mixed kinds: only cosplayers queue
+    const expected = picker.visible.filter((e) => e.kind === "cosplayer").map((e) => e.name);
+    assert.ok(expected.length > 1);
+    assert.equal(picker.queueAllButton.textContent, "Queue each (" + expected.length + ")");
+    await picker.queueEach();
+    assert.deepEqual(seen, expected);
+    assert.equal(widget.value, "None", "the original pick is put back");
+    picker.close();
+  } finally {
+    delete app.queuePrompt;
     stub.restore();
   }
 });

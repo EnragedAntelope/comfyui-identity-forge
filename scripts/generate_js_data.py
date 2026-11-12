@@ -251,6 +251,17 @@ def _cosplayer_traits(entry: dict) -> list[str]:
     return traits
 
 
+def _text_leaves(value) -> list[str]:
+    """Every string inside a nested dict/list value, in order."""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        value = list(value.values())
+    if isinstance(value, list):
+        return [s for v in value for s in _text_leaves(v)]
+    return []
+
+
 def _cosplayer_roster_entry(
     name: str, entry: dict, franchise_categories: dict[str, str], default_category: str,
 ) -> dict:
@@ -270,6 +281,10 @@ def _cosplayer_roster_entry(
     aliases = entry.get("aliases")
     if aliases:
         haystack_parts.extend(aliases)
+    # 2.5.0: every other piece of descriptive text is searchable too, including
+    # each alternate look in `costumes`.
+    for key in ("eyes", "subject", "skin", "costume_back", "prop_costume", "anatomy", "costumes"):
+        haystack_parts.extend(_text_leaves(entry.get(key)))
     roster = {
         "kind": "cosplayer",
         "name": name,

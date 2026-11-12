@@ -1702,3 +1702,33 @@ hall: the Giza plateau adds clashes with its locked spotlight and evening-formal
 
 Random characters move through the open-landscape pose rule, the indoor composition rule and
 the new venues; the marginals baseline was rewritten for those three.
+
+## 2.5.0 - picker search
+
+**Substring search was noisy.** "bow" matched every "elbow-length" glove and "rainbow", "hat"
+matched "that", "red" matched "layered". Tokens now match from a word's start (a name still
+matches anywhere). Measured on the roster: "bow" 167 to 111 entries, "hat" 224 to 149, "red"
+1378 to 770. Word-start alone lost real compounds ("suit" missed 235 "bodysuit" entries,
+"sword" missed longswords), so `SEARCH_ALSO` lists the compounds the roster actually uses, plus
+a few synonyms (pants/trousers, gray/grey). One-way on purpose, so a specific word stays
+specific. A matcher on word endings was rejected: it brought "necklace" for "lace", "earring"
+for "ring" and "ponytail" for "tail".
+
+**Accents fold** on both sides (Unicode NFD, plus a few letters NFD keeps, such as ø and ß), so a plain US keyboard finds Día de los Muertos.
+
+**Description text that was not searched:** `eyes`, the alternate looks in `costumes`,
+`subject`, `skin`, `costume_back`, `prop_costume` and `anatomy` now go into the roster index.
+
+**The franchise dropdown** was a native select of hundreds of names that only jumped by first
+letter. It is a type-to-filter box with the franchises as suggestions. It and the trait facet
+only match cosplayers, so the Archetype and Creature pickers no longer show them (nor gender on
+Creature, whose entries have none).
+
+**Lost place after a pick.** Reopening rebuilt the grid at the top. It now scrolls to, and
+outlines, the entry the node holds.
+
+**Queue each** queues one run per matching entry through `app.queuePrompt`, setting the widget
+before each call and restoring the pick after. It shows only while filtering, so the whole
+roster cannot be queued by accident, and asks for confirmation with the count.
+
+Frontend only plus the generated roster index: no schema, data or seed change.
