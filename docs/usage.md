@@ -266,6 +266,28 @@ Dyed or vivid scopes, cosplay hair and covered hair are left alone. A face-cover
 emits one view as resolved. Labels read `1-age-20` and so on. A ready-made workflow is
 `example_workflows/Identity Forge - Age Progression.json`.
 
+## Searching the picker
+
+- **Words match from their start.** `bow` finds a bow tie or a bowler hat, not "elbow" or
+  "rainbow". A name still matches anywhere (`man` finds Batman). Several words must all match,
+  in any order; put a phrase in quotes (`"bow tie"`) to match it as written.
+- **Accents are optional.** `dia` and `día` both find Día de los Muertos; `pokemon` finds
+  Pokémon. The same holds in the franchise box.
+- **Everything in an entry's description is searched:** name, franchise, costume, alternate
+  costumes, back view, mask, prop, eyes, hair and body text.
+- **A few words also find their synonyms and compounds:** `pants` finds trousers, slacks and
+  jeans, `suit` finds bodysuits and jumpsuits, `sword` finds katanas, `gray` finds grey. The
+  list is `SEARCH_ALSO` in `js/identity_forge_picker.js`; it is one-way (`jeans` does not
+  find slacks).
+- **Franchise box (Cosplayer node):** type part of a name. `star` keeps Star Wars and Star
+  Trek; picking a suggestion, or typing a full name, keeps that franchise only. Trait, gender
+  and franchise filters only appear on nodes where they can narrow something.
+- **Your place is kept.** Reopening the picker scrolls to the character the node holds (outlined),
+  with the same search and filters, so you can pick, queue, and come back to the next one.
+- **Queue each (N)** appears while you are filtering: it queues one run per matching entry the
+  node can take, then puts your original pick back. Each run uses the rest of the workflow as it
+  stands, so a seed set to randomize gives each one a new person.
+
 ## Preview images in the picker
 
 "Show preview images" in the roster picker is off by default. When it is on, your ComfyUI

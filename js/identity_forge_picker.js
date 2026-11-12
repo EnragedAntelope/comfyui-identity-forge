@@ -122,15 +122,90 @@ function tabLabel(tab) {
   return tab === TAB_ALL ? "All" : KIND_LABEL[tab] || tab;
 }
 
-// --- search: substring, multi-token AND, case-insensitive -------------------
+// --- search: word-start, multi-token AND, case-insensitive -------------------
+//
+// 2.5.0: a token matches where a WORD starts in the description ("bow" finds
+// "bow tie" and "bowler hat", no longer "elbow" or "rainbow"), or anywhere in
+// the entry's name. A quoted phrase ("bow tie") is one token. SEARCH_ALSO widens
+// a few words to their synonyms and to the compounds the roster really uses
+// (scripts measured: "suit" alone missed 235 "bodysuit" entries under word-start).
+// Directional on purpose: "pants" finds trousers, "jeans" does not find slacks.
+
+const SEARCH_ALSO = {
+  pants: ["trousers", "slacks", "jeans", "sweatpants", "breeches"],
+  trousers: ["pants", "slacks"],
+  suit: ["bodysuit", "jumpsuit", "catsuit", "supersuit", "tracksuit", "spacesuit", "swimsuit", "wetsuit", "plugsuit", "batsuit", "exosuit"],
+  sword: ["longsword", "greatsword", "broadsword", "katana", "sabre", "saber", "rapier", "scimitar", "cutlass"],
+  coat: ["waistcoat", "tailcoat", "overcoat", "greatcoat", "raincoat", "trenchcoat", "longcoat"],
+  dress: ["minidress", "sundress", "gown"],
+  skirt: ["miniskirt", "overskirt"],
+  shirt: ["sweatshirt", "undershirt", "overshirt"],
+  glasses: ["sunglasses", "spectacles", "eyeglasses"],
+  gun: ["shotgun", "handgun", "minigun", "railgun", "pistol", "rifle", "revolver", "blaster"],
+  band: ["headband", "armband", "wristband", "hairband"],
+  sweater: ["jumper", "pullover"],
+  sneakers: ["trainers"],
+  trainers: ["sneakers"],
+  gray: ["grey"],
+  grey: ["gray"],
+  blonde: ["blond"],
+  armor: ["armour"],
+  armour: ["armor"],
+  color: ["colour"],
+  colour: ["color"],
+  mustache: ["moustache"],
+  moustache: ["mustache"],
+  saber: ["sabre"],
+  sabre: ["saber"],
+  robot: ["android", "droid", "cyborg", "mech"],
+};
+
+// Accents and special letters fold to their plain-keyboard form on both sides,
+// so "dia", "día" and "Día" all find Día de los Muertos, "pokemon" finds Pokémon.
+const FOLD_EXTRA = { "ø": "o", "æ": "ae", "œ": "oe", "ß": "ss", "ł": "l", "đ": "d", "ð": "d", "þ": "th", "ı": "i" };
+
+function fold(text) {
+  return String(text || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[øæœßłđðþı]/g, (c) => FOLD_EXTRA[c]);
+}
+
+const foldedEntries = new WeakMap(); // entry -> { name, haystack }, folded once
+
+function foldedEntry(entry) {
+  let f = foldedEntries.get(entry);
+  if (!f) {
+    f = { name: fold(entry.name), haystack: fold(entry.haystack) };
+    foldedEntries.set(entry, f);
+  }
+  return f;
+}
 
 function tokenize(query) {
-  return String(query || "").trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const tokens = [];
+  for (const m of fold(query).matchAll(/"([^"]*)"|(\S+)/g)) {
+    const token = (m[1] ?? m[2]).trim().replace(/\s+/g, " ");
+    if (token) tokens.push(token);
+  }
+  return tokens;
+}
+
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const tokenPatterns = new Map(); // token -> RegExp, built once per distinct token
+
+function tokenPattern(token) {
+  let re = tokenPatterns.get(token);
+  if (!re) {
+    const words = [token, ...(SEARCH_ALSO[token] || [])].map(escapeRegExp);
+    re = new RegExp("(?:^|[^a-z0-9])(?:" + words.join("|") + ")");
+    tokenPatterns.set(token, re);
+  }
+  return re;
 }
 
 function matchesQuery(entry, tokens) {
   if (!tokens.length) return true;
-  return tokens.every((token) => entry.haystack.includes(token));
+  const { name, haystack } = foldedEntry(entry);
+  return tokens.every((token) => name.includes(token) || tokenPattern(token).test(haystack));
 }
 
 // --- trait facets -------------------------------------------------------------
@@ -177,8 +252,21 @@ function matchesGender(entry, gender) {
 }
 
 // Franchise filter (2.2.0). Only cosplayers carry a franchise, so picking one
-// narrows to cosplayers. Options come from the loaded roster, grouped by category.
-const FRANCHISE_ALL = "All franchises";
+// narrows to cosplayers. 2.5.0: a type-to-filter box (there are hundreds of
+// franchises) with the franchises as suggestions. Text that names a franchise
+// exactly keeps only that one; any other text keeps every franchise containing it
+// ("star" -> Star Wars and Star Trek). Empty means all.
+const FRANCHISE_ALL = "";
+let pickerSerial = 0; // unique datalist ids, one per picker
+
+function franchiseMatcher(text, entries) {
+  const q = fold(text).trim();
+  if (!q) return null;
+  const exact = entries.some((e) => e.franchise && fold(e.franchise) === q);
+  return exact
+    ? (e) => Boolean(e.franchise) && fold(e.franchise) === q
+    : (e) => Boolean(e.franchise) && fold(e.franchise).includes(q);
+}
 
 function franchiseGroups(entries) {
   const groups = new Map();
@@ -370,6 +458,9 @@ class IdentityForgePicker {
   open() {
     if (this.overlay) return;
     this.previousFocus = document.activeElement;
+    // 2.5.0: reopen on the node's current pick, so a long filtered list keeps
+    // its place between picks instead of jumping back to the top.
+    this._revealCurrent = true;
     try {
       this.build();
       document.body.appendChild(this.overlay);
@@ -488,12 +579,7 @@ class IdentityForgePicker {
     search.setAttribute("aria-label", "Search the roster by name, franchise, or trait");
     search.addEventListener("input", (event) => {
       this.query = event.target.value || "";
-      this.focusIndex = 0;
-      if (this._searchTimer) clearTimeout(this._searchTimer);
-      this._searchTimer = setTimeout(() => {
-        this._searchTimer = null;
-        this.renderGrid();
-      }, 80);
+      this.scheduleRender();
     });
     search.value = this.query; // restore the surviving query (see close())
     this.searchInput = search;
@@ -537,15 +623,23 @@ class IdentityForgePicker {
     });
     this.genderSelect = genderSelect;
 
-    const franchiseSelect = document.createElement("select");
-    franchiseSelect.className = "if-picker-facet";
-    franchiseSelect.setAttribute("aria-label", "Filter by franchise");
-    franchiseSelect.addEventListener("change", () => {
-      this.franchise = franchiseSelect.value;
-      this.focusIndex = 0;
-      this.renderGrid();
+    const franchiseInput = document.createElement("input");
+    franchiseInput.type = "search";
+    franchiseInput.className = "if-picker-facet if-picker-franchise";
+    franchiseInput.placeholder = "Franchise...";
+    franchiseInput.spellcheck = false;
+    franchiseInput.autocomplete = "off";
+    franchiseInput.setAttribute("aria-label", "Filter by franchise (type part of a name)");
+    const franchiseList = document.createElement("datalist");
+    franchiseList.id = "if-picker-franchises-" + ++pickerSerial;
+    franchiseInput.setAttribute("list", franchiseList.id);
+    franchiseInput.value = this.franchise;
+    franchiseInput.addEventListener("input", () => {
+      this.franchise = franchiseInput.value;
+      this.scheduleRender();
     });
-    this.franchiseSelect = franchiseSelect;
+    this.franchiseInput = franchiseInput;
+    this.franchiseList = franchiseList;
     this.fillFranchiseOptions();
 
     const previewLabel = document.createElement("label");
@@ -568,7 +662,25 @@ class IdentityForgePicker {
     close.setAttribute("aria-label", "Close (" + this.config.title + ")");
     close.addEventListener("click", () => this.close());
 
-    header.append(search, facet, genderSelect, franchiseSelect, count, previewLabel, close);
+    // 2.5.0: queue one run per matching character, so a filtered set can be
+    // cycled through in one go. Shown only while filtering (never the whole roster).
+    const queueAll = document.createElement("button");
+    queueAll.type = "button";
+    queueAll.className = "if-picker-btn if-picker-queue-all";
+    queueAll.title = "Queue one run for each matching entry, then put your current pick back.";
+    queueAll.addEventListener("click", () => this.queueEach());
+    this.queueAllButton = queueAll;
+
+    // 2.5.0: trait and franchise filters match cosplayers only, and creatures carry
+    // no gender, so a node shows only the filters that can narrow what it can pick.
+    const kind = this.config.kind;
+    header.append(
+      search,
+      ...(kind === "cosplayer" ? [facet] : []),
+      ...(kind !== "creature" ? [genderSelect] : []),
+      ...(kind === "cosplayer" ? [franchiseInput, franchiseList] : []),
+      count, queueAll, previewLabel, close,
+    );
 
     const notice = document.createElement("div");
     notice.className = "if-picker-notice";
@@ -629,7 +741,9 @@ class IdentityForgePicker {
     footer.className = "if-picker-footer";
     footer.textContent =
       "Searches roster entries (cosplayers, archetypes, creatures) — not the randomizable "
-      + "field pools on the main node. Arrow keys move, Enter selects, Escape closes.";
+      + "field pools on the main node. Words match from their start; \"quote a phrase\"; "
+      + "a few words also find synonyms (pants finds trousers). "
+      + "Arrow keys move, Enter selects, Escape closes.";
 
     dialog.append(header, notice, links, tabs, grid, footer);
     overlay.appendChild(dialog);
@@ -722,11 +836,11 @@ class IdentityForgePicker {
     return Math.max(1, Math.floor(width / 210));
   }
 
-  highlight() {
+  highlight(block = "nearest") {
     if (!this.grid) return;
     const next = this.visible.length ? this.grid.children[this.focusIndex] || null : null;
     if (this._focused === next) {
-      if (next && next.scrollIntoView) next.scrollIntoView({ block: "nearest" });
+      if (next && next.scrollIntoView) next.scrollIntoView({ block });
       return;
     }
     if (this._focused) {
@@ -737,7 +851,7 @@ class IdentityForgePicker {
     if (next) {
       next.classList.add("focused");
       next.setAttribute("aria-selected", "true");
-      if (next.scrollIntoView) next.scrollIntoView({ block: "nearest" });
+      if (next.scrollIntoView) next.scrollIntoView({ block });
     }
   }
 
@@ -796,30 +910,99 @@ class IdentityForgePicker {
     if (this.gender !== GENDER_ANY) {
       list = list.filter((entry) => matchesGender(entry, this.gender));
     }
-    if (this.franchise !== FRANCHISE_ALL) {
-      list = list.filter((entry) => entry.franchise === this.franchise);
-    }
+    const inFranchise = franchiseMatcher(this.franchise, roster);
+    if (inFranchise) list = list.filter(inFranchise);
     return list;
   }
 
-  /** (Re)build the franchise dropdown; a no-op until the roster has loaded. */
+  /** Fill the franchise suggestions (category as the label); a no-op until the roster has loaded. */
   fillFranchiseOptions() {
-    const select = this.franchiseSelect;
-    if (!select || (roster && select.options.length > 1)) return;
-    const all = document.createElement("option");
-    all.value = all.textContent = FRANCHISE_ALL;
-    select.replaceChildren(all);
-    for (const [category, names] of franchiseGroups(roster || [])) {
-      const group = document.createElement("optgroup");
-      group.label = category;
+    const list = this.franchiseList;
+    if (!list || !roster || list.options.length) return;
+    for (const [category, names] of franchiseGroups(roster)) {
       for (const name of names) {
         const option = document.createElement("option");
-        option.value = option.textContent = name;
-        group.appendChild(option);
+        option.value = name;
+        option.label = category;
+        list.appendChild(option);
       }
-      select.appendChild(group);
     }
-    select.value = this.franchise;
+  }
+
+  /** Re-render shortly after typing stops, so each keystroke does not rebuild the grid. */
+  scheduleRender() {
+    this.focusIndex = 0;
+    if (this._searchTimer) clearTimeout(this._searchTimer);
+    this._searchTimer = setTimeout(() => {
+      this._searchTimer = null;
+      this.renderGrid();
+    }, 80);
+  }
+
+  /** The visible entries this node can take -- what "Queue each" runs. */
+  queueableEntries() {
+    return this.visible.filter((entry) => entry.kind === this.config.kind);
+  }
+
+  /**
+   * Queue one run per matching entry, then restore the node's own pick.
+   * Each app.queuePrompt() call snapshots the graph, so setting the widget and
+   * awaiting the call in turn gives one job per character.
+   */
+  async queueEach() {
+    const entries = this.queueableEntries();
+    const node = this.config.node;
+    const widget = findWidget(node, this.config.targetWidgetName);
+    if (!entries.length || !widget || this._queueing) return;
+    if (typeof app.queuePrompt !== "function") {
+      alert("This ComfyUI frontend does not expose app.queuePrompt, so runs cannot be queued from here.");
+      return;
+    }
+    const noun = entries.length === 1 ? "run" : "runs";
+    if (!confirm("Queue " + entries.length + " " + noun + ", one for each matching entry?")) return;
+    this._queueing = true;
+    const original = widget.value;
+    const button = this.queueAllButton;
+    let queued = 0;
+    try {
+      for (const entry of entries) {
+        widget.value = entry.name;
+        // false = ComfyUI was already building another prompt and only queued ours
+        // for later, when the widget would hold a different name. Stop rather than
+        // queue the wrong character.
+        if ((await app.queuePrompt(0, 1)) === false) break;
+        queued += 1;
+        if (button && button.isConnected) button.textContent = "Queued " + queued + " / " + entries.length;
+      }
+    } catch (error) {
+      console.error("[IdentityForgePicker] queueing failed", error);
+    } finally {
+      setWidgetValue(node, widget, original);
+      this.resyncFranchiseFilter();
+      if (typeof node.setDirtyCanvas === "function") node.setDirtyCanvas(true, true);
+      this._queueing = false;
+      if (queued < entries.length) {
+        alert("Queued " + queued + " of " + entries.length + " runs; the rest were not queued.");
+      }
+      this.updateQueueButton();
+    }
+  }
+
+  updateQueueButton() {
+    const button = this.queueAllButton;
+    if (!button || this._queueing) return;
+    const n = this.isFiltering() ? this.queueableEntries().length : 0;
+    button.style.display = n ? "" : "none";
+    button.textContent = "Queue each (" + n + ")";
+  }
+
+  /** Re-run franchise_filter's callback so the node's pick stays in its combo list. */
+  resyncFranchiseFilter() {
+    if (!this.config.franchiseFilterWidgetName) return;
+    const filterWidget = findWidget(this.config.node, this.config.franchiseFilterWidgetName);
+    if (filterWidget && typeof filterWidget.callback === "function") {
+      filterWidget.callback(filterWidget.value);
+    }
   }
 
   /** The grid's contents: the query/facet matches, narrowed to the active tab. */
@@ -841,7 +1024,7 @@ class IdentityForgePicker {
   /** True while anything is narrowing the roster -- when the counts are worth showing. */
   isFiltering() {
     return Boolean(tokenize(this.query).length) || this.facet !== FACET_ALL
-      || this.gender !== GENDER_ANY || this.franchise !== FRANCHISE_ALL;
+      || this.gender !== GENDER_ANY || Boolean(String(this.franchise).trim());
   }
 
   renderGrid() {
@@ -862,6 +1045,19 @@ class IdentityForgePicker {
 
     if (this.count) {
       this.count.textContent = this.visible.length + (this.visible.length === 1 ? " result" : " results");
+    }
+    this.updateQueueButton();
+
+    const current = findWidget(this.config.node, this.config.targetWidgetName)?.value;
+    let reveal = false;
+    // Only once the dialog is on the page: build() renders before it is attached.
+    if (this._revealCurrent && this.overlay && this.overlay.isConnected) {
+      this._revealCurrent = false;
+      const index = this.visible.findIndex((e) => e.kind === this.config.kind && e.name === current);
+      if (index > -1) {
+        this.focusIndex = index;
+        reveal = true;
+      }
     }
 
     if (!this.visible.length) {
@@ -923,10 +1119,12 @@ class IdentityForgePicker {
 
     const fragment = document.createDocumentFragment();
     this.visible.forEach((entry, index) => {
-      fragment.appendChild(this.buildTile(entry, index));
+      const tile = this.buildTile(entry, index);
+      if (entry.kind === this.config.kind && entry.name === current) tile.classList.add("current");
+      fragment.appendChild(tile);
     });
     this.grid.appendChild(fragment);
-    this.highlight();
+    this.highlight(reveal ? "center" : "nearest");
 
     if (this.showPreviews) {
       // One manifest fetch per kind actually shown, not per card.
@@ -1026,12 +1224,7 @@ class IdentityForgePicker {
       // its own current value recomputes that rule with the new selection,
       // reusing the exact logic in identity_forge_cosplayer.js rather than
       // duplicating it.
-      if (this.config.franchiseFilterWidgetName) {
-        const filterWidget = findWidget(node, this.config.franchiseFilterWidgetName);
-        if (filterWidget && typeof filterWidget.callback === "function") {
-          filterWidget.callback(filterWidget.value);
-        }
-      }
+      this.resyncFranchiseFilter();
       if (typeof node.setDirtyCanvas === "function") node.setDirtyCanvas(true, true);
     } catch (error) {
       console.error("[IdentityForgePicker] selection failed", error);
