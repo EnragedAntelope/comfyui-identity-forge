@@ -29,7 +29,14 @@ Nothing is open; the last row (the Tellarite snout) closed in 2.1.0 with the `su
 tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
 `docs/history.md`):
 
-Empty: the gaze field and the noun-expression article both shipped in 2.0.0.
+The gaze field and the noun-expression article both shipped in 2.0.0. Open, from the 2.5.0
+picker-search review (maintainer is considering them):
+
+- **Random from these** - a picker button that queues one run with a random pick from the
+  filtered set, a lighter option than Queue each.
+- **Plural search** - "boots" does not find a costume that says "boot" (word-start matching
+  already covers the reverse). Rare in practice; a naive trailing-s strip turns "glasses" into
+  "glass".
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,
@@ -77,6 +84,8 @@ Closed with a reason. Reopen only with a **new** argument, not a repeat of the r
 |---|---|
 | A negative and/or tags output | Maintainer: not needed. (The subject/scene half of the same row shipped at 1.8.0 as `subject_text`.) |
 | An on-node readout of the resolved prompt | Maintainer: not needed. |
+| Saved picker searches (a remembered list of frequent filters) (2.5.0) | Maintainer: not wanted. |
+| Hair-colour and era filters in the picker (2.5.0) | Maintainer: not wanted; word search covers them. |
 | A pair / group node (two or more resolved characters in one prompt) (2.3.0 plan) | Maintainer: deferred, not refused. Most current t2i models blend or swap traits between two described people in one prompt, so the output would not match the characters. Reopen if models hold separate subjects reliably. |
 
 ### Individual characters
