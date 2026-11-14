@@ -40,14 +40,14 @@ try:
     from .identity_forge import FIELD_DEFINITIONS
     from .identity_forge_turnaround import (
         _FRAMINGS, _forge_class, _unwrap, document_fields, document_meta,
-        character_seed, parse_document, release_fields, replay_base,
+        character_seed, parse_document, pin_framing, release_fields, replay_base,
     )
 except ImportError:  # pragma: no cover - standalone/test context
     from data.constraints import FIELD_FAMILIES, lock_clash
     from nodes.identity_forge import FIELD_DEFINITIONS
     from nodes.identity_forge_turnaround import (
         _FRAMINGS, _forge_class, _unwrap, document_fields, document_meta,
-        character_seed, parse_document, release_fields, replay_base,
+        character_seed, parse_document, pin_framing, release_fields, replay_base,
     )
 
 _LOG = logging.getLogger(__name__)
@@ -115,14 +115,11 @@ def resolve_age_progression(
     meta = document_meta(document)
     fields = document_fields(document)
     base = replay_base(character_json)
+    # A close-up refuses a horizon-line composition and a full-standing pose. 2.6.0:
+    # the one-view path below replays the released document too, not the original.
+    pin_framing(base, document, character_json, _FRAMINGS.get(framing_name, ""))
     # Released fields (skin detail at 70, say) redraw per character, not one shared draw.
     base["seed"] = character_seed(character_json, "age")
-    framing = _FRAMINGS.get(framing_name, "")
-    if framing:
-        base["shot_type"] = framing
-        # A close-up refuses a horizon-line composition and a full-standing pose.
-        release_fields(document, {name for name, value in fields.items()
-                                  if lock_clash("shot_type", framing, {name: value})})
 
     character_age = fields.get("age", "")
     if meta.get("covers_face") or not character_age.isdigit():

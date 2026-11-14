@@ -67,8 +67,8 @@ Reload the node / restart ComfyUI to apply. Notes:
 * For the three gender-specific fields (``bust``, ``facial_hair``,
   ``makeup_style``) custom options may not survive a live gender switch in the UI.
 * ``archetypes`` adds presets to the Archetype node (same ``{field: value}``
-  shape as the built-ins; ``outfit_description`` may use ``{slot}`` costume
-  placeholders). ``cosplayers`` adds characters to the Cosplayer node (keys:
+  shape as the built-ins, list values and a ``variants`` block included;
+  ``outfit_description`` may use ``{slot}`` costume placeholders). ``cosplayers`` adds characters to the Cosplayer node (keys:
   ``franchise``, ``gender`` Female/Male, ``costume`` text, optional ``prop`` (a
   signature held item, voiced as "holding …" when the node's prop toggle is on),
   optional ``signature`` / ``physique`` ``{field: value}`` maps). A user entry whose name matches a
@@ -98,8 +98,13 @@ The file is parsed as plain JSON — no code is executed.
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any
+
+#: 2.6.0: messages go to the logger like the rest of the pack (ComfyUI owns the
+#: handlers); the logger name replaces the old '[IdentityForge]' prefix.
+_LOG = logging.getLogger(__name__)
 
 #: Default location of the user file: the pack root, next to __init__.py.
 USER_OPTIONS_PATH = Path(__file__).resolve().parents[1] / "user_options.json"
@@ -214,7 +219,7 @@ def apply_user_options(
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (ValueError, OSError) as exc:  # malformed JSON or unreadable
-        print(f"[IdentityForge] Ignoring {path.name}: {exc}")
+        _LOG.warning(f"Ignoring {path.name}: {exc}")
         return 0
     if not isinstance(data, dict):
         return 0
@@ -229,7 +234,7 @@ def apply_user_options(
         added += _apply_outfits(outfits, field_definitions, outfit_descriptions)
 
     if added:
-        print(f"[IdentityForge] Loaded {added} custom option(s) from {path.name}.")
+        _LOG.info(f"Loaded {added} custom option(s) from {path.name}.")
     return added
 
 
@@ -244,7 +249,7 @@ def _load_user_section(path: Path, section: str) -> dict[str, Any]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (ValueError, OSError) as exc:
-        print(f"[IdentityForge] Ignoring {path.name}: {exc}")
+        _LOG.warning(f"Ignoring {path.name}: {exc}")
         return {}
     block = data.get(section) if isinstance(data, dict) else None
     return block if isinstance(block, dict) else {}
@@ -255,6 +260,24 @@ def _clean_field_map(value: Any) -> dict[str, str]:
     if not isinstance(value, dict):
         return {}
     return {f: v for f, v in value.items() if isinstance(f, str) and isinstance(v, str) and v}
+
+
+def _clean_preset(value: Any) -> dict[str, Any]:
+    """An archetype field map: ``{field: text}`` or ``{field: [text, ...]}`` (2.6.0).
+
+    A list is a seed-picked choice, as in the built-ins; non-text entries are dropped.
+    """
+    if not isinstance(value, dict):
+        return {}
+    out: dict[str, Any] = {}
+    for field, v in value.items():
+        if not isinstance(field, str):
+            continue
+        if isinstance(v, str) and v:
+            out[field] = v
+        elif isinstance(v, list) and (items := [x for x in v if isinstance(x, str) and x]):
+            out[field] = items
+    return out
 
 
 def apply_user_archetypes(archetypes: dict[str, dict], path: Path | None = None) -> int:
@@ -269,15 +292,24 @@ def apply_user_archetypes(archetypes: dict[str, dict], path: Path | None = None)
     path = path or USER_OPTIONS_PATH
     added = 0
     for name, preset in _load_user_section(path, "archetypes").items():
-        if not isinstance(name, str) or not name:
+        if not isinstance(name, str) or not name or not isinstance(preset, dict):
             continue
-        cleaned = _clean_field_map(preset)
+        cleaned: dict[str, Any] = _clean_preset(preset)
+        variants = preset.get("variants")
+        if isinstance(variants, dict):
+            kept = {g: v for g in ("Female", "Male") if (v := _clean_preset(variants.get(g)))}
+            if kept:
+                cleaned["variants"] = kept
         if not cleaned:
             continue
+        dropped = sorted(set(preset) - set(cleaned))
+        if dropped:
+            _LOG.warning("Archetype %r: ignored %s (values must be text, a list of text, "
+                         "or a variants block).", name, ", ".join(dropped))
         archetypes[name] = cleaned
         added += 1
     if added:
-        print(f"[IdentityForge] Loaded {added} custom archetype(s) from {path.name}.")
+        _LOG.info(f"Loaded {added} custom archetype(s) from {path.name}.")
     return added
 
 
@@ -320,11 +352,32 @@ def apply_user_creatures(creatures: dict[str, dict], path: Path | None = None) -
             creatures[name] = record
             added += 1
             continue
-        print(f"[IdentityForge] Skipping creature {name!r}: needs class, palette, "
+        _LOG.warning(f"Skipping creature {name!r}: needs class, palette, "
               f"head, eyes and integument.")
     if added:
-        print(f"[IdentityForge] Loaded {added} custom creature(s) from {path.name}.")
+        _LOG.info(f"Loaded {added} custom creature(s) from {path.name}.")
     return added
+
+
+def _clean_looks(value: Any) -> list[Any]:
+    """Alternate looks (2.6.0): plain costume strings, or overlay dicts with a costume.
+
+    An overlay may also set the per-look keys the built-ins use (``mask``,
+    ``signature``, ``covers_face`` and so on); ``tests/validate_data.py`` reports a
+    key the node does not read.
+    """
+    if not isinstance(value, list):
+        return []
+    looks: list[Any] = []
+    for look in value:
+        if isinstance(look, str) and look:
+            looks.append(look)
+        elif isinstance(look, dict) and isinstance(look.get("costume"), str) and look["costume"]:
+            overlay = {k: v for k, v in look.items() if isinstance(k, str)}
+            if "signature" in overlay:
+                overlay["signature"] = _clean_field_map(overlay["signature"])
+            looks.append(overlay)
+    return looks
 
 
 def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None) -> int:
@@ -366,10 +419,30 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
         # Optional free-text keys follow the built-in schema: OMITTED when unused,
         # never stored as "" (validate_data treats an empty string as an error and
         # a present-but-empty 'mask' as a mask/covers_face mismatch).
-        for optional_key in ("mask", "prop", "eyes", "skin"):
+        for optional_key in ("mask", "prop", "eyes", "skin", "costume_back"):
             value = entry.get(optional_key)
             if isinstance(value, str) and value:
                 record[optional_key] = value
+        # 2.6.0: the lead noun for a non-human head, voiced "a short <subject>", so an
+        # article or trailing full stop the user typed would be doubled; drop them.
+        subject = entry.get("subject")
+        if isinstance(subject, str):
+            words = subject.strip().rstrip(".,").split()
+            if words and words[0].lower() in ("a", "an", "the"):
+                words = words[1:]
+            if words:
+                record["subject"] = " ".join(words)
+        looks = _clean_looks(entry.get("costumes"))
+        if looks:
+            record["costumes"] = looks
+            weights = entry.get("costume_weights")
+            if (isinstance(weights, list) and len(weights) == 1 + len(looks)
+                    and all(isinstance(w, (int, float)) and not isinstance(w, bool)
+                            and w > 0 for w in weights)):
+                record["costume_weights"] = weights
+            elif weights is not None:
+                _LOG.warning("Cosplayer %r: ignored costume_weights (needs one positive "
+                             "number per look: the costume, then each alternate).", name)
         # Advanced bool flags, likewise omitted unless explicitly true so user
         # records mirror the built-in shape (built-ins never carry a False flag).
         for flag in ("covers_body", "covers_hair", "bald", "body_paint"):
@@ -378,5 +451,5 @@ def apply_user_cosplayers(cosplayers: dict[str, dict], path: Path | None = None)
         cosplayers[name] = record
         added += 1
     if added:
-        print(f"[IdentityForge] Loaded {added} custom cosplayer(s) from {path.name}.")
+        _LOG.info(f"Loaded {added} custom cosplayer(s) from {path.name}.")
     return added

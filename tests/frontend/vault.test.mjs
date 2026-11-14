@@ -64,11 +64,12 @@ test("both picker buttons and the inline preview DOM widget are present, buttons
   assert.equal(preview.options?.serialize, false);
 });
 
-test("refresh populates the character combo from the vault characters route", async () => {
+test("refresh populates the character combo, keeping the random option last (2.6.0)", async () => {
   const node = await setup();
   const charW = node.widgets.find((w) => w.name === "character");
   assert.ok(charW);
-  assert.deepEqual(charW.options.values, SAMPLE_CHARACTERS.map((c) => c.name));
+  assert.deepEqual(charW.options.values,
+    [...SAMPLE_CHARACTERS.map((c) => c.name), "(random saved character)"]);
 });
 
 test("an empty vault falls back to the no-characters sentinel, matching the Python default", async () => {

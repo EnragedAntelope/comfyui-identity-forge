@@ -58,9 +58,11 @@ except ImportError:  # pragma: no cover — exercised only outside ComfyUI
 
 
 try:
+    from ..data.constraints import lock_clash
     from ..data.cosplayers import COSPLAYERS
     from .identity_forge import FIELD_DEFINITIONS
 except ImportError:  # pragma: no cover — standalone/test context
+    from data.constraints import lock_clash
     from data.cosplayers import COSPLAYERS
     from nodes.identity_forge import FIELD_DEFINITIONS
 
@@ -294,6 +296,27 @@ def release_fields(document: "dict[str, Any]", names: "set[str]") -> None:
     meta = document_meta(document)
     if isinstance(meta.get("omitted"), list):
         meta["omitted"] = [n for n in meta["omitted"] if n not in names]
+
+
+def pin_framing(base: "dict[str, Any]", document: "dict[str, Any]", character_json: str,
+                framing: str) -> None:
+    """Pin ``framing`` on the replay kwargs and release every kept field it refuses.
+
+    2.6.0: a sheet that pins a framing must also let go of what the framing excludes
+    (a standing pose in a close-up, "the subject small in the frame" at chest height),
+    or the replay voices both. Released fields redraw from a per-character seed, so
+    every character does not land on the same replacement pose. ``document`` is
+    released in place and becomes the replayed preset.
+    """
+    if not framing:
+        return
+    base["shot_type"] = framing
+    refused = {name for name, value in document_fields(document).items()
+               if lock_clash("shot_type", framing, {name: value})}
+    if refused:
+        release_fields(document, refused)
+        base["archetype_json"] = json.dumps(document)
+        base["seed"] = character_seed(character_json, "framing")
 
 
 #: Rotations that show the costume's back, where a roster entry's ``costume_back``

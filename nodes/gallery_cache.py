@@ -43,6 +43,7 @@ MAX_MANIFEST_BYTES = 8 * 1024 * 1024
 TIMEOUT = 15
 
 _ETAG = ".etag"
+_RASTER = (".jpg", ".jpeg", ".png", ".webp")
 
 
 class GalleryError(Exception):
@@ -103,7 +104,10 @@ def _fetch(url: str, path: Path, max_age: float, limit: int,
     except (OSError, GalleryError, ValueError) as exc:  # URLError is an OSError
         failure = exc
     if path.is_file():
-        return path  # offline or failing: what we had before
+        # Offline or failing: serve what we had, and wait out another max_age before
+        # retrying, or every thumbnail request would wait out a timeout again (2.6.0).
+        os.utime(path)
+        return path
     raise GalleryError(f"{url} unavailable and not cached: {failure}")
 
 
@@ -150,6 +154,9 @@ def _listed_images(kind: str, root: Path, opener=None) -> "frozenset[str]":
 def image_path(kind: str, relative: str, root: Path, opener=None) -> Path:
     """The cached file for one manifest-listed image, downloading it if needed."""
     _check_kind(kind)
+    # Served from ComfyUI's own origin, so only raster images: an SVG can carry script.
+    if not relative.lower().endswith(_RASTER):
+        raise GalleryError(f"{relative!r} is not a raster image")
     if relative not in _listed_images(kind, root, opener):
         raise GalleryError(f"{relative!r} is not in the {kind} manifest")
     target = (root / kind / relative).resolve()

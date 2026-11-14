@@ -1,6 +1,6 @@
 """comfyui-identity-forge — V3 custom node pack entrypoint.
 
-Exposes eleven nodes:
+Exposes twelve nodes:
 
 * ``IdentityForge`` — a multi-field character description randomizer with a
   constraint engine and dual prose/JSON output.
@@ -18,6 +18,8 @@ Exposes eleven nodes:
 * ``IdentityForgeOutfitSheet`` - the same idea for the clothes: one resolved
   character, several outfit styles, as a list.
 * ``IdentityForgeAgeProgression`` - one resolved character at several ages, as a
+  list.
+* ``IdentityForgeSceneSheet`` - one resolved character in several places, as a
   list.
 * ``IdentityForgeVaultSave`` — save a generated character to a local vault.
 * ``IdentityForgeVaultLoad`` — recall a saved character as a chainable preset.
@@ -49,6 +51,7 @@ try:
     from .nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet
     from .nodes.identity_forge_outfit_sheet import IdentityForgeOutfitSheet
     from .nodes.identity_forge_age_progression import IdentityForgeAgeProgression
+    from .nodes.identity_forge_scene_sheet import IdentityForgeSceneSheet
     from .nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from .nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 except ImportError:  # pragma: no cover
@@ -61,6 +64,7 @@ except ImportError:  # pragma: no cover
     from nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet
     from nodes.identity_forge_outfit_sheet import IdentityForgeOutfitSheet
     from nodes.identity_forge_age_progression import IdentityForgeAgeProgression
+    from nodes.identity_forge_scene_sheet import IdentityForgeSceneSheet
     from nodes.identity_forge_vault_save import IdentityForgeVaultSave
     from nodes.identity_forge_vault_load import IdentityForgeVaultLoad
 
@@ -205,8 +209,7 @@ def _register_roll_route() -> None:
         if error is not None:
             return error
         widgets, seed = body.get("widgets"), body.get("seed")
-        if (not isinstance(widgets, dict) or not isinstance(seed, int)
-                or not all(isinstance(v, (str, int, float)) for v in widgets.values())):
+        if not isinstance(widgets, dict) or not isinstance(seed, int) or isinstance(seed, bool):
             return web.json_response(
                 {"error": "expected {'widgets': {name: value}, 'seed': int}"}, status=400)
         return web.json_response({"values": roll_field_values(widgets, seed)})
@@ -282,7 +285,7 @@ class IdentityForgeExtension(ComfyExtension):
         return [IdentityForge, IdentityForgeArchetype, IdentityForgeCosplayer,
                 IdentityForgeCreature, IdentityForgeModifier, IdentityForgeTurnaround,
                 IdentityForgeExpressionSheet, IdentityForgeOutfitSheet,
-                IdentityForgeAgeProgression,
+                IdentityForgeAgeProgression, IdentityForgeSceneSheet,
                 IdentityForgeVaultSave, IdentityForgeVaultLoad]
 
 

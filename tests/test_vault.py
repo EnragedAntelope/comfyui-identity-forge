@@ -76,6 +76,12 @@ class SanitizeTests(unittest.TestCase):
     def test_collapses_whitespace_and_trims_dots(self):
         self.assertEqual(sanitize_name("  hi   there.. "), "hi there")
 
+    def test_length_cap_never_leaves_a_trailing_dot(self):
+        # 2.6.0: a cut landing just after a dot kept it; Windows then drops it from
+        # the folder name, so the saved folder and the returned name differed.
+        name = sanitize_name("a" * 119 + ".b")
+        self.assertEqual(name, "a" * 119)
+
     def test_rejects_traversal_and_empty(self):
         self.assertEqual(sanitize_name(".."), "")
         self.assertEqual(sanitize_name("///"), "")
@@ -256,6 +262,15 @@ class RoundTripTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             rename_character(self.root, "ghost", "C")
 
+    def test_case_only_rename(self):
+        # 2.6.0: on a case-insensitive filesystem "bob" and "Bob" resolve to one
+        # folder, and the rename reported success without changing anything.
+        save_character(self.root, "bob", SAMPLE_JSON)
+        self.assertEqual(rename_character(self.root, "bob", "Bob"), "Bob")
+        self.assertEqual(list_character_names(self.root), ["Bob"])
+        meta = json.loads((self.root / "Bob" / "meta.json").read_text(encoding="utf-8"))
+        self.assertEqual(meta["display_name"], "Bob")
+
 
 
 class VaultRecallControlDeferralTests(unittest.TestCase):
@@ -398,6 +413,17 @@ class FingerprintTests(unittest.TestCase):
         self.assertEqual(_character_fingerprint(self.root, "(no characters saved)"),
                          _NO_FINGERPRINT)
         self.assertEqual(_character_fingerprint(self.root, "ghost"), _NO_FINGERPRINT)
+
+    def test_random_pick_is_seeded_and_lands_on_a_saved_entry(self):
+        from nodes.identity_forge_vault_load import _NO_CHARACTERS, _RANDOM, resolve_selection
+        self.assertEqual(resolve_selection(self.root, "X", 5), "X")
+        for name in ("X", "Y", "Z"):
+            save_character(self.root, name, SAMPLE_JSON)
+        picks = {resolve_selection(self.root, _RANDOM, seed) for seed in range(40)}
+        self.assertEqual(picks, set(list_character_names(self.root)))
+        self.assertEqual(resolve_selection(self.root, _RANDOM, 7),
+                         resolve_selection(self.root, _RANDOM, 7))
+        self.assertEqual(resolve_selection(self.root / "empty", _RANDOM, 7), _NO_CHARACTERS)
 
     def test_unchanged_file_gives_the_same_fingerprint(self):
         save_character(self.root, "X", SAMPLE_JSON)

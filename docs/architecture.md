@@ -90,6 +90,9 @@ sample render per roster entry to GitHub Pages. Full detail in
   `tests/test_gallery.py::CopiesStayInSyncTests` fails until it is. `BatchLauncherTests`
   guards the `.bat` launchers (every exit pauses, no parenthesised `if` blocks, ASCII
   only, CRLF via `.gitattributes`).
+- **The page assets are not copies (2.6.0).** `style.css` and `gallery.js` live once in
+  `gallery/shared/`; each page links `../shared/` and every `publish.py` stages that folder
+  to `gh-pages`. Details in gallery/README.md -> "Editing the page files".
 - Adding a fourth gallery is a folder copy plus one config block per file; the checklist
   is at the bottom of `gallery/README.md`.
 
@@ -322,6 +325,21 @@ fixed replay seed.
   than the character turns dark hair salt and pepper (silver from 70), any other colour silver;
   a grey-haired character shown younger gets a natural colour drawn once at age 20 with hair
   colour released. A face-covering character, or one with no numeric age, gives one view.
+- **Every framing pin goes through `pin_framing()` (2.6.0).** It sets `shot_type` and
+  releases what that framing refuses (a standing pose in a close-up), with a per-character
+  `character_seed(..., "framing")`. Before 2.6.0 the Expression Sheet pinned a close-up and
+  released nothing, and the one-view paths of Age Progression and the Outfit Sheet returned
+  before their release step, so a masked or suited character kept a pose its framing
+  excludes. `tests/test_sheet_framing.py` holds all three paths.
+- **Scene Sheet (2.6.0):** pins `location` per view and releases the scene drawn against the
+  old place (`location_setting`, lighting, composition, season). By default it also releases
+  the Clothing group so each place dresses the person again; "Keep the outfit" keeps it and
+  skips any place that refuses it. A place that refuses pose, gaze, framing or the
+  `_RESTYLED` styling redraws that field for the view (`_RESTAGED`); refusing anything else
+  (age, body, a held item, a pinned framing) skips the place. A cosplay or a full-body suit
+  never has its clothing released. The view seed is `character_seed(doc, "scene|<place>")`.
+  Measured over 60 characters per sheet: dress mode kept every place with no clash; keep
+  mode skipped about 30% of everyday places, mostly the beach and the trail.
 
 ### Vault recall and the control sentinels (1.0.0)
 
@@ -358,9 +376,14 @@ each of these. The Turnaround shipped its first draft missing the last two.
 4. `fingerprint_inputs` returning NaN **if** any widget sets `control_after_generate` —
    see "Seeded nodes re-roll every queue" below. The trigger is the auto-advancing
    widget, not the presence of a seed.
-5. A tooltip on **every** input. There is no lint for this; the frontend fixture records
-   widget names and defaults, not help text, so only `tests/test_*.py` can hold the line
-   (`test_every_widget_carries_a_tooltip`).
+5. A tooltip on **every** input and output. There is no lint for this; the frontend fixture
+   records widget names and defaults, not help text. Since 2.6.0
+   `tests/test_node_contracts.py` walks every class in `nodes/` and checks both tooltips and
+   item 4, so a new node is covered without being listed (the Outfit Sheet had shipped with
+   an auto-advancing `outfit_seed` and no cache buster).
+6. An example workflow, if the node is meant to be wired by hand: build it in a real
+   frontend, then `tests/test_example_workflows.py` checks every pack node's
+   `widgets_values` count and combo values against the fixture.
 
 ## fields.py — the field engine
 

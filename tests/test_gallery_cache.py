@@ -45,6 +45,7 @@ class _Opener:
         self.not_modified = False
         self.image_type = "image/jpeg"
         self.image_body = b"\xff\xd8jpeg"
+        self.manifest = _MANIFEST
 
     def __call__(self, request):
         url = request.full_url
@@ -54,7 +55,7 @@ class _Opener:
         if self.not_modified and request.get_header("If-none-match"):
             raise urllib.error.HTTPError(url, 304, "Not Modified", Message(), None)
         if url.endswith("manifest.json"):
-            return _Response(_MANIFEST, "application/json")
+            return _Response(self.manifest, "application/json")
         return _Response(self.image_body, self.image_type)
 
 
@@ -95,6 +96,25 @@ class GalleryCacheTests(unittest.TestCase):
         self.opener.offline = True
         self.assertEqual(
             gc.image_path("cosplay", "images/AKI.jpeg", self.root, self.opener), image)
+
+    def test_offline_backs_off_instead_of_retrying_every_request(self):
+        # 2.6.0: a failed refresh renews the cached copy, so the next requests do not
+        # each wait out a network timeout again.
+        image = gc.image_path("cosplay", "images/AKI.jpeg", self.root, self.opener)
+        self._age(image, gc.IMAGE_MAX_AGE + 5)
+        self._age(self.root / "cosplay" / "manifest.json", gc.MANIFEST_MAX_AGE + 5)
+        self.opener.offline = True
+        before = len(self.opener.calls)
+        for _ in range(5):
+            gc.image_path("cosplay", "images/AKI.jpeg", self.root, self.opener)
+        self.assertEqual(len(self.opener.calls) - before, 2, "one manifest + one image try")
+
+    def test_svg_is_never_served(self):
+        self.opener.manifest = json.dumps({"entries": [{"image": "images/x.svg"}]}).encode()
+        self.opener.image_type, self.opener.image_body = "image/svg+xml", b"<svg/>"
+        with self.assertRaises(gc.GalleryError):
+            gc.image_path("cosplay", "images/x.svg", self.root, self.opener)
+        self.assertFalse((self.root / "cosplay" / "images" / "x.svg").exists())
 
     def test_offline_with_nothing_cached_is_an_error(self):
         self.opener.offline = True

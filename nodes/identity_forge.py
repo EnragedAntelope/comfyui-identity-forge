@@ -4926,9 +4926,11 @@ def roll_field_values(widgets: dict[str, Any], seed: int) -> dict[str, str]:
 
     1.7.0: "Roll + lock all" used to pick each dropdown uniformly in JS, so it ignored
     the weights and could lock a pair the engine forbids. Fields the run left absent
-    are omitted; the frontend locks those to "None".
+    are omitted; the frontend locks those to "None". Every input the button sends is a
+    dropdown, so non-text values are dropped (2.6.0: ``{"age": 3.5}`` raised a 500).
     """
-    _, json_output, _ = run_identity_forge({**widgets, "seed": seed})
+    text = {name: value for name, value in widgets.items() if isinstance(value, str)}
+    _, json_output, _ = run_identity_forge({**text, "seed": seed})
     return {name: value for name, value in _parse_archetype_json(json_output).items()
             if name in FIELD_DEFINITIONS and name not in _HIDDEN_FIELDS
             and name not in _CONTROL_FIELDS}
@@ -5102,10 +5104,13 @@ if _COMFY_AVAILABLE:
                             "natural-language prose and structured JSON.",
                 inputs=inputs,
                 outputs=[
-                    io.String.Output(display_name="prompt_text"),
-                    io.String.Output(display_name="prompt_json"),
+                    io.String.Output(display_name="prompt_text",
+                                     tooltip="The full description as prose. Wire into CLIPTextEncode."),
+                    io.String.Output(display_name="prompt_json",
+                                     tooltip="The resolved character as JSON. Wire into a sheet node, Vault Save, or another Identity Forge's 'archetype_json' to reuse the person."),
                     # Appended last (1.8.0) so links on slots 0 and 1 stay intact.
-                    io.String.Output(display_name="subject_text"),
+                    io.String.Output(display_name="subject_text",
+                                     tooltip="The person and outfit only, without the scene, lighting or framing."),
                 ],
             )
 

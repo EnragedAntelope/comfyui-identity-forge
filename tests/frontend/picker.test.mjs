@@ -281,6 +281,44 @@ test("the gender filter keeps that gender plus entries that suit either", async 
   }
 });
 
+test("starring a card keeps it under Starred only, persists, and never picks it (2.6.0)", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  window.localStorage.removeItem("identity_forge.picker.starred");
+  const stub = installFetchStub(rosterOkHandler);
+  try {
+    const picker = await openPicker();
+    const widget = picker.config.node.widgets.find((w) => w.name === picker.config.targetWidgetName);
+    const before = widget.value;
+    const tile = picker.grid.children[1];
+    const name = tile.dataset.ifName;
+    tile.querySelector(".if-picker-star").click();
+    assert.equal(widget.value, before, "the star click must not select the entry");
+    assert.equal(tile.querySelector(".if-picker-star").getAttribute("aria-pressed"), "true");
+    assert.deepEqual(JSON.parse(window.localStorage.getItem("identity_forge.picker.starred")),
+      [picker.config.kind + ":" + name]);
+
+    picker.starredCheckbox.click();
+    assert.deepEqual(picker.visible.map((e) => e.name), [name]);
+    assert.ok(picker.isFiltering());
+
+    // A fresh session reads the stars back from storage.
+    __testing.__resetForTests();
+    picker.close();
+    const again = await openPicker();
+    again.starredOnly = true;
+    again.renderGrid();
+    assert.deepEqual(again.visible.map((e) => e.name), [name]);
+    again.grid.children[0].querySelector(".if-picker-star").click(); // unstar
+    assert.equal(again.visible.length, 0);
+    assert.match(again.grid.textContent, /Nothing starred yet/);
+    again.close();
+  } finally {
+    window.localStorage.removeItem("identity_forge.picker.starred");
+    stub.restore();
+  }
+});
+
 test("the franchise box suggests every franchise, keeps an exact name only, and part of a name broadly", async () => {
   resetDom();
   __testing.__resetForTests();

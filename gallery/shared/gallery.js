@@ -1,5 +1,6 @@
 /* =============================================================
-   Identity Forge — Archetype Gallery Script
+   Identity Forge - Sample Gallery Script
+   One file for the cosplay, archetype and creature galleries.
    Lazy-loading image grid with search, lightbox, keyboard nav.
    ============================================================= */
 
