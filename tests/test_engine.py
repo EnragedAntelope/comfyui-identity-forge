@@ -6709,6 +6709,14 @@ class AdvertisedCharacterCountTests(unittest.TestCase):
                 f"only in the generated docs/reference/*.md -- describe the roster "
                 f"qualitatively here and link the reference index instead.")
 
+    def test_registry_description_fits(self):
+        """The Comfy Registry rejects a description over 1000 characters (400
+        "description is too long"); 2.6.0 failed to publish on this. (2.6.1)"""
+        text = self._sources()[1].read_text(encoding="utf-8")
+        match = re.search(r'^description = "(.*)"$', text, re.M)
+        self.assertIsNotNone(match)
+        self.assertLessEqual(len(match.group(1)), 1000)
+
 
 class EveryScopeGenderComboTests(unittest.TestCase):
     """Every scope x every gender must return an IN-SCOPE character. (0.75.0)
