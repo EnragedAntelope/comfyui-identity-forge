@@ -1766,3 +1766,12 @@ Turnaround, Expression Sheet and Scene Sheet (derived from the Outfit Sheet one 
 re-serialized by a real frontend).
 
 Random characters unchanged: no data or engine draw changed.
+
+## 2.6.1 - Registry description length
+
+2.6.0 merged and tagged but never reached the Comfy Registry: naming the Scene Sheet in
+the `pyproject.toml` description took it past the Registry's 1000-character limit, and
+the publish run failed with `400 description is too long` (CI on `main` was green, so
+nothing earlier caught it). The description is trimmed, and
+`AdvertisedCharacterCountTests.test_registry_description_fits` now fails CI before a
+merge instead. 2.6.1 is the first Registry release carrying the 2.6.0 changes.
