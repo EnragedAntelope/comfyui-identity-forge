@@ -34,10 +34,12 @@ except ImportError:  # pragma: no cover - exercised only outside ComfyUI
     _COMFY_AVAILABLE = False
 
 try:
-    from .identity_forge_turnaround import _FRAMINGS, _forge_class, _unwrap, replay_base
+    from .identity_forge_turnaround import (
+        _FRAMINGS, _forge_class, _unwrap, parse_document, pin_framing, replay_base,
+    )
 except ImportError:  # pragma: no cover - standalone/test context
     from nodes.identity_forge_turnaround import (
-        _FRAMINGS, _forge_class, _unwrap, replay_base,
+        _FRAMINGS, _forge_class, _unwrap, parse_document, pin_framing, replay_base,
     )
 
 _LOG = logging.getLogger(__name__)
@@ -90,9 +92,9 @@ def resolve_expression_sheet(
     forge = _forge_class()
     # The Turnaround's replay recipe (schema defaults, then the document).
     base = replay_base(character_json)
-    framing = _FRAMINGS.get(framing_name, "")
-    if framing:
-        base["shot_type"] = framing
+    # 2.6.0: a close-up refuses a standing pose; release it rather than voice both.
+    pin_framing(base, parse_document(character_json), character_json,
+                _FRAMINGS.get(framing_name, ""))
     if gaze_name in _GAZES and gaze_name != _KEEP_GAZE:
         base["gaze"] = gaze_name
 

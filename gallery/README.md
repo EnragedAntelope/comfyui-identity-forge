@@ -74,12 +74,13 @@ is the right failure mode — it has no image on `gh-pages` either.
 
 ## Editing the page files
 
-`gallery.js` and `style.css` are copies too, exactly like the four `.py` scripts. `style.css` is
-byte-identical across all three and `gallery.js` differs **only** in its header banner;
-`PageAssetsStayInSyncTests` in `tests/test_gallery.py` fails until a change has landed in all
-three. It also checks that every `$('#id')` the script reaches for exists in that gallery's
-`index.html` — a lookup returning `null` is how the "Clear search" button sat dead for several
-releases without anyone noticing.
+`gallery.js` and `style.css` exist once, in `gallery/shared/` (2.6.0; they used to be three
+copies). Each `index.html` links `../shared/`, and every `publish.py` stages that folder to
+`gallery/shared/` on `gh-pages` beside its own page, so a fix lands once and any gallery's
+publish ships it to all three. `SharedPageAssetsTests` in `tests/test_gallery.py` fails if a
+per-gallery copy comes back. It also checks that every `$('#id')` the script reaches for exists
+in each gallery's `index.html` - a lookup returning `null` is how the "Clear search" button sat
+dead for several releases without anyone noticing.
 
 ---
 

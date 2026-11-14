@@ -2661,6 +2661,45 @@ class UserPresetExtensionTests(unittest.TestCase):
         self.assertNotIn("Broken", store)
         self.assertNotIn("Empty", store)
 
+    def test_archetypes_keep_list_values_and_variants(self):
+        # 2.6.0: both are built-in shapes; they used to be dropped silently.
+        from data.user_options import apply_user_archetypes
+        store = {}
+        f = self._write({"archetypes": {
+            "Listy": {"gender": "Female", "hair_color": ["copper", 7, "auburn"], "x": []},
+            "Paired": {"variants": {"Female": {"age": "25"}, "Male": {"age": "30"},
+                                    "Other": {"age": "40"}}},
+        }})
+        with self.assertLogs("data.user_options", "WARNING") as logs:
+            self.assertEqual(apply_user_archetypes(store, path=f), 2)
+        self.assertEqual(store["Listy"], {"gender": "Female", "hair_color": ["copper", "auburn"]})
+        self.assertEqual(store["Paired"],
+                         {"variants": {"Female": {"age": "25"}, "Male": {"age": "30"}}})
+        self.assertIn("'Listy': ignored x", logs.output[0])
+
+    def test_cosplayers_keep_alternates_back_and_subject(self):
+        from data.user_options import apply_user_cosplayers
+        store = {}
+        f = self._write({"cosplayers": {
+            "Alt": {"costume": "a red suit", "costume_back": "a red suit with a cape",
+                    "costumes": ["a blue suit", {"costume": "a gold suit", "mask": "a gold helm",
+                                                 "signature": {"hair_color": "white", "n": 1}},
+                                 {"mask": "no costume key"}, ""],
+                    "costume_weights": [2, 1, 1], "subject": " A pig-headed alien. "},
+            "Bad Weights": {"costume": "a robe", "costumes": ["a cloak"],
+                            "costume_weights": [1]},
+        }})
+        with self.assertLogs("data.user_options", "WARNING"):
+            apply_user_cosplayers(store, path=f)
+        alt = store["Alt"]
+        self.assertEqual(alt["costume_back"], "a red suit with a cape")
+        self.assertEqual(alt["subject"], "pig-headed alien")
+        self.assertEqual(alt["costumes"], ["a blue suit", {
+            "costume": "a gold suit", "mask": "a gold helm", "signature": {"hair_color": "white"}}])
+        self.assertEqual(alt["costume_weights"], [2, 1, 1])
+        self.assertNotIn("costume_weights", store["Bad Weights"])
+        self.assertEqual(store["Bad Weights"]["costumes"], ["a cloak"])
+
     def test_cosplayers_merge_requires_costume_and_defaults(self):
         from data.user_options import apply_user_cosplayers
         store = {}
@@ -2971,6 +3010,12 @@ class RollAndLockTests(unittest.TestCase):
             again = roll_field_values(widgets, seed + 1)
             for f in fields:
                 self.assertEqual(again.get(f, "None"), widgets[f], f"{gender} @{seed}: {f}")
+
+    def test_non_text_widget_values_are_ignored(self):
+        # 2.6.0: the route passes JSON through, and {"age": 3.5} crashed the engine.
+        from nodes.identity_forge import roll_field_values
+        self.assertEqual(roll_field_values({"age": 3.5, "hair_color": 7, "gender": True}, 4),
+                         roll_field_values({}, 4))
 
 
 class FeetOutOfFrameTests(unittest.TestCase):

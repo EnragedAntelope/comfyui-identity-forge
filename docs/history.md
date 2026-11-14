@@ -1732,3 +1732,37 @@ before each call and restoring the pick after. It shows only while filtering, so
 roster cannot be queued by accident, and asks for confirmation with the count.
 
 Frontend only plus the generated roster index: no schema, data or seed change.
+
+## 2.6.0 - audit fixes, Scene Sheet, picker stars, random vault pick
+
+**Framing pins replayed clashes.** The Expression Sheet pinned a close-up and kept the
+character's own pose ("standing with arms crossed" in a head-and-shoulders view), and the
+one-view paths of Age Progression and the Outfit Sheet returned before releasing anything.
+Measured before the fix: 314 of 400 expression views and 200 of 300 one-view replays voiced a
+value the framing refuses. `pin_framing()` now does it for every sheet; 0 after.
+
+**The Outfit Sheet never busted the cache.** Its `outfit_seed` auto-advances, which is the
+ComfyUI#11905 case, but it had no `fingerprint_inputs`. Fixed, and
+`tests/test_node_contracts.py` now walks every node class for this and for tooltips on every
+input and output (the main node and the preset outputs had none).
+
+**User presets lost data.** A user archetype dropped list values and `variants`; a user
+cosplayer dropped `costumes`, `costume_weights`, `costume_back` and `subject`. All are kept
+now (weights only when they fit the look count), and anything ignored is logged by key
+instead of vanishing. `data/user_options.py` logs instead of printing.
+
+**Smaller fixes.** The gallery cache retried the network on every request once offline with
+a stale copy (it now backs off by touching the copy) and accepted any `image/*` (now raster
+only, so no SVG). The roll route returned a 500 on a numeric widget value. A case-only vault
+rename was a no-op on Windows, and the 120-character name cut could leave a trailing dot. The
+three galleries' `style.css` and `gallery.js` copies are one set in `gallery/shared/`. Ruff is
+pinned in `pyproject.toml` to the CI version, and the example workflows are checked against
+the node schemas.
+
+**Additions.** The Scene Sheet node (one person in several places, dressed for each by
+default; see architecture.md -> "Sheets that change the person"), starred favourites in the
+picker, a seeded `(random saved character)` on Vault Load, and example workflows for the
+Turnaround, Expression Sheet and Scene Sheet (derived from the Outfit Sheet one and
+re-serialized by a real frontend).
+
+Random characters unchanged: no data or engine draw changed.

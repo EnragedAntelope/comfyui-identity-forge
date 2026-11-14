@@ -346,6 +346,39 @@ function savePreviewPref(value) {
   }
 }
 
+// --- starred entries (2.6.0) -------------------------------------------------
+// A per-browser favourites list, keyed "kind:name" so one set serves every
+// picker. localStorage can be missing or throw (private window, blocked site
+// data); stars then last only until the page reloads.
+
+const STARRED_KEY = "identity_forge.picker.starred";
+let starred = null;
+
+function starKey(entry) {
+  return entry.kind + ":" + entry.name;
+}
+
+function starredSet() {
+  if (starred) return starred;
+  starred = new Set();
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(STARRED_KEY) || "[]");
+    if (Array.isArray(saved)) for (const key of saved) if (typeof key === "string") starred.add(key);
+  } catch (_) { /* unreadable or blocked storage: start empty */ }
+  return starred;
+}
+
+function toggleStar(entry) {
+  const set = starredSet();
+  const key = starKey(entry);
+  if (set.has(key)) set.delete(key);
+  else set.add(key);
+  try {
+    window.localStorage.setItem(STARRED_KEY, JSON.stringify([...set]));
+  } catch (_) { /* best-effort, see above */ }
+  return set.has(key);
+}
+
 //: kind -> Promise<Map<name, image-relative-path>>, held ONLY while a fetch
 //: for that kind is in flight -- cleared the instant it settles, success or
 //: failure, via `.finally()`. This is deliberately NOT a cache of the
@@ -447,6 +480,7 @@ class IdentityForgePicker {
     this.facet = FACET_ALL;
     this.gender = GENDER_ANY;
     this.franchise = FRANCHISE_ALL;
+    this.starredOnly = false;
     this.showPreviews = loadPreviewPref();
     this.focusIndex = 0;
     this.visible = [];
@@ -655,6 +689,20 @@ class IdentityForgePicker {
     previewLabel.append(previewCheckbox, document.createTextNode(" Show preview images"));
     this.previewCheckbox = previewCheckbox;
 
+    const starredLabel = document.createElement("label");
+    starredLabel.className = "if-picker-preview-toggle";
+    starredLabel.title = "Star an entry with the star on its card (or the S key).";
+    const starredCheckbox = document.createElement("input");
+    starredCheckbox.type = "checkbox";
+    starredCheckbox.checked = this.starredOnly;
+    starredCheckbox.addEventListener("change", () => {
+      this.starredOnly = starredCheckbox.checked;
+      this.focusIndex = 0;
+      this.renderGrid();
+    });
+    starredLabel.append(starredCheckbox, document.createTextNode(" Starred only"));
+    this.starredCheckbox = starredCheckbox;
+
     const close = document.createElement("button");
     close.type = "button";
     close.className = "if-picker-btn if-picker-close";
@@ -679,7 +727,7 @@ class IdentityForgePicker {
       ...(kind === "cosplayer" ? [facet] : []),
       ...(kind !== "creature" ? [genderSelect] : []),
       ...(kind === "cosplayer" ? [franchiseInput, franchiseList] : []),
-      count, queueAll, previewLabel, close,
+      count, queueAll, starredLabel, previewLabel, close,
     );
 
     const notice = document.createElement("div");
@@ -811,7 +859,16 @@ class IdentityForgePicker {
     else if (event.key === "ArrowUp") next = this.focusIndex - columns;
     else if (event.key === "Home") next = 0;
     else if (event.key === "End") next = lastIndex;
-    else if (event.key === "Enter") {
+    else if ((event.key === "s" || event.key === "S") && !/^(INPUT|SELECT|TEXTAREA)$/.test(event.target.tagName)) {
+      const entry = this.visible[this.focusIndex];
+      if (entry) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleStar(entry);
+        this.renderGrid();
+      }
+      return;
+    } else if (event.key === "Enter") {
       const entry = this.visible[this.focusIndex];
       if (entry) {
         event.preventDefault();
@@ -912,6 +969,10 @@ class IdentityForgePicker {
     }
     const inFranchise = franchiseMatcher(this.franchise, roster);
     if (inFranchise) list = list.filter(inFranchise);
+    if (this.starredOnly) {
+      const set = starredSet();
+      list = list.filter((entry) => set.has(starKey(entry)));
+    }
     return list;
   }
 
@@ -1024,7 +1085,7 @@ class IdentityForgePicker {
   /** True while anything is narrowing the roster -- when the counts are worth showing. */
   isFiltering() {
     return Boolean(tokenize(this.query).length) || this.facet !== FACET_ALL
-      || this.gender !== GENDER_ANY || Boolean(String(this.franchise).trim());
+      || this.gender !== GENDER_ANY || Boolean(String(this.franchise).trim()) || this.starredOnly;
   }
 
   renderGrid() {
@@ -1067,7 +1128,9 @@ class IdentityForgePicker {
       // answer -- say whether the same query hits another category, and make
       // getting there one click rather than a hunt across the tab strip.
       const elsewhere = this.activeTab === TAB_ALL ? 0 : matching.length;
-      if (this.query && this.activeTab === TAB_ALL) {
+      if (this.starredOnly && !starredSet().size) {
+        empty.textContent = "Nothing starred yet. Click the star on a card (or press S) to keep it here.";
+      } else if (this.query && this.activeTab === TAB_ALL) {
         empty.textContent = 'Nothing matches "' + this.query + '".';
       } else if (this.query) {
         empty.textContent = 'No ' + tabLabel(this.activeTab).toLowerCase()
@@ -1197,7 +1260,24 @@ class IdentityForgePicker {
       chips.appendChild(span);
     }
 
-    tile.append(art, name, sub, chips);
+    const star = document.createElement("button");
+    star.type = "button";
+    star.tabIndex = -1; // keyboard users press S on the focused card instead
+    star.className = "if-picker-star";
+    const paintStar = (on) => {
+      star.textContent = String.fromCharCode(on ? 0x2605 : 0x2606); // filled / outline star
+      star.classList.toggle("on", on);
+      star.setAttribute("aria-pressed", on ? "true" : "false");
+      star.setAttribute("aria-label", (on ? "Unstar " : "Star ") + entry.name);
+    };
+    paintStar(starredSet().has(starKey(entry)));
+    star.addEventListener("click", (event) => {
+      event.stopPropagation(); // starring is not picking
+      paintStar(toggleStar(entry));
+      if (this.starredOnly) this.renderGrid();
+    });
+
+    tile.append(art, star, name, sub, chips);
 
     if (!selectable) {
       tile.title = "Browsing only — open the " + KIND_LABEL[entry.kind].slice(0, -1)
@@ -1469,5 +1549,6 @@ export const __testing = {
     roster = null;
     rosterPromise = null;
     manifestFetches.clear();
+    starred = null;
   },
 };

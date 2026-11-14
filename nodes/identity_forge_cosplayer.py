@@ -1035,7 +1035,10 @@ if _COMFY_AVAILABLE:
                                 "a specific character is picked.",
                     ),
                 ],
-                outputs=[io.String.Output(display_name="character_json")],
+                outputs=[io.String.Output(
+                    display_name="character_json",
+                    tooltip="The preset as JSON. Wire into Identity Forge's 'archetype_json', or into another preset's 'upstream' to stack them.",
+                )],
             )
 
         @classmethod

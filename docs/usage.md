@@ -106,7 +106,9 @@ optional sections:
   Buckets are `unisex`
   (always eligible) plus `female` / `male`, chosen by the `wardrobe` control; any subset works.
 - **`archetypes`** adds presets to the Archetype node (same `{field: value}` shape as the
-  built-ins; `outfit_description` may use `{slot}` placeholders).
+  built-ins; `outfit_description` may use `{slot}` placeholders). A value may be a list, one
+  picked per seed (`"hair_color": ["copper", "auburn"]`), and a `"variants"` object holds
+  separate `"Female"` / `"Male"` looks. Anything else is skipped with a warning in the log.
 - **`cosplayers`** adds characters to the Cosplayer node. `costume` (worn items only) is required;
   `franchise`/`gender` are optional; `signature` (both modes) and `physique` (Full character) are
   `{field: value}` maps. An optional `"prop"` string adds a signature held item; an optional
@@ -117,7 +119,12 @@ optional sections:
   bare skin, suppresses jewellery/nails), `"covers_hair": true` (hood/cowl hides the hair while
   the face shows), `"bald": true` (fully hairless head), `"body_paint": true` (the skin itself is
   the costume colour; add `"skin": "warm green"` to name the colour when it isn't obvious from
-  the costume text). Word a full-body colour skin-native — `"smooth, flawless <colour> skin"` —
+  the costume text). Four more keys match the built-ins: `"costumes"` (a list of alternate
+  looks, each a costume string or an object with its own `"costume"` plus per-look keys such
+  as `"mask"` or `"signature"`; one look is picked per seed), `"costume_weights"` (one
+  positive number per look, the main costume first), `"costume_back"` (the costume seen from
+  behind, used by the Turnaround's back views) and `"subject"` (a lead noun for a non-human
+  head, such as `"pig-headed alien"`). Word a full-body colour skin-native - `"smooth, flawless <colour> skin"` -
   not as "body paint"/"dye", which t2i models render as a streaky coat over a human tone; the
   skin-native marker is auto-detected, so the flag is only needed for other phrasings. See the
   worked examples in
@@ -208,6 +215,7 @@ their usual costume text in every view.
 Everything else belongs on the Identity Forge node - it owns the character and the scene,
 the Turnaround owns only the camera. For a clean reference sheet, set that node's
 `location_setting` to `Studio / solid backdrop` and lock `composition` to `centered symmetry`.
+A ready-made workflow is `example_workflows/Identity Forge - Turnaround.json`.
 
 ## Expression sheets
 
@@ -226,6 +234,7 @@ Image's `filename_prefix`), and it owns only the face's emotion: `expression`, `
 Each view sets a fixed, curated expression/mood/smile combination, so a sheet is
 deterministic and no two views land on the same face. A face-covering character (a mascot
 head, a full helmet) has no visible expression, so the sheet emits one view, `1-masked`.
+A ready-made workflow is `example_workflows/Identity Forge - Expression Sheet.json`.
 
 ## Outfit sheets
 
@@ -250,6 +259,25 @@ the old ones would clash with it. Labels read `1-casual`, `2-smart-casual` and s
 character or a full-body suit has its costume, so the sheet emits one view as resolved.
 A ready-made workflow is `example_workflows/Identity Forge - Outfit Sheet.json` (also in
 ComfyUI's template browser).
+
+## Scene sheets
+
+The **Identity Forge Scene Sheet** node (2.6.0) is wired like the Turnaround and shows the same
+person in several places.
+
+- **`sheet`** - `Everyday (6)` (city park, coffee shop, living room, office, beach, forest trail),
+  `Indoors (4)`, `Outdoors (4)` or `Studio backdrops (3)`.
+- **`framing`** - `Cowboy (mid-thigh up)` by default, so the place shows around the person;
+  `Unspecified` keeps the character's own framing.
+- **`clothes`** - `Dress for each place` (default) picks a new outfit that suits each place.
+  `Keep the outfit` keeps the character's clothes and skips any place they do not suit, so that
+  sheet can be shorter, or a single view as resolved if no place fits.
+
+Lighting, composition and season are drawn again for each place. A pose, gaze, makeup,
+jewellery or hair styling a place refuses is redrawn for that view; anything else a place
+refuses (age, body, a held item) skips it. The face and body never change. A cosplay character
+or a full-body suit keeps the costume. Labels read `1-sunny-city-park` and so on. A ready-made
+workflow is `example_workflows/Identity Forge - Scene Sheet.json`.
 
 ## Age progression
 
@@ -287,6 +315,15 @@ emits one view as resolved. Labels read `1-age-20` and so on. A ready-made workf
 - **Queue each (N)** appears while you are filtering: it queues one run per matching entry the
   node can take, then puts your original pick back. Each run uses the rest of the workflow as it
   stands, so a seed set to randomize gives each one a new person.
+- **Star your favourites (2.6.0).** Click the star on a card (or press S on the focused card),
+  then tick **Starred only** to see just those. Stars are kept in this browser, shared by all
+  three pickers, and work with every other filter and with Queue each.
+
+## Recalling a random saved character
+
+Vault Load's `character` list ends with `(random saved character)` once anything is saved
+(2.6.0). It picks one saved character by the node's `seed`: the same seed and vault give the
+same pick, and `randomize` gives a different one each queue.
 
 ## Preview images in the picker
 

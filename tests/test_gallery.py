@@ -113,8 +113,7 @@ class CopiesStayInSyncTests(unittest.TestCase):
 
     def test_every_gallery_ships_the_full_script_set(self):
         for kind in KINDS:
-            for name in SCRIPTS + ("update_gallery.bat", "index.html",
-                                   "style.css", "gallery.js"):
+            for name in SCRIPTS + ("update_gallery.bat", "index.html"):
                 self.assertTrue((GALLERY_ROOT / kind / name).is_file(),
                                 f"gallery/{kind}/{name} is missing")
 
@@ -457,43 +456,42 @@ class SourceMatchingTests(unittest.TestCase):
         self.assertNotIn(published_only, {supplied})
 
 
-class PageAssetsStayInSyncTests(unittest.TestCase):
-    """The three PAGE files are copies too, and nothing pinned them (0.97.0).
+class SharedPageAssetsTests(unittest.TestCase):
+    """2.6.0: ``style.css`` and ``gallery.js`` exist once, in ``gallery/shared/``.
 
-    ``CopiesStayInSyncTests`` covers the four ``.py`` scripts. It never covered
-    ``gallery.js`` or ``style.css``, which are also maintained as copies -- and an
-    audit found the consequence: all three shipped a ``style.css`` whose header
-    comment claimed to be the *cosplay* sheet, because the file had been copied
-    twice and the header never re-read.
+    They used to be three copies held together by drift tests; an audit found a
+    stylesheet header claiming to be the cosplay sheet inside the other two. Now
+    each page links ``../shared/`` and ``publish.py`` stages the folder beside it.
     """
 
-    def test_gallery_js_is_identical_outside_its_header_comment(self):
-        bodies = {}
+    SHARED = GALLERY_ROOT / "shared"
+
+    def test_one_copy_and_every_page_links_it(self):
+        for name in ("style.css", "gallery.js"):
+            self.assertTrue((self.SHARED / name).is_file(), name)
         for kind in KINDS:
-            text = (GALLERY_ROOT / kind / "gallery.js").read_text(encoding="utf-8")
-            # The leading /* ... */ banner names the gallery; everything after it
-            # must match byte for byte.
-            self.assertTrue(text.startswith("/*"), f"{kind}: no header banner")
-            bodies[kind] = text[text.index("*/") + 2:]
-        for kind in KINDS[1:]:
-            self.assertEqual(
-                bodies["cosplay"], bodies[kind],
-                f"gallery/{kind}/gallery.js has drifted from gallery/cosplay/"
-                f"gallery.js -- port the change to all three (gallery/README.md).")
+            with self.subTest(kind):
+                html = (GALLERY_ROOT / kind / "index.html").read_text(encoding="utf-8")
+                self.assertIn('href="../shared/style.css"', html)
+                self.assertIn('src="../shared/gallery.js"', html)
+                for name in ("style.css", "gallery.js"):
+                    self.assertFalse((GALLERY_ROOT / kind / name).exists(),
+                                     f"gallery/{kind}/{name} is a stale copy")
 
-    def test_style_css_is_byte_identical(self):
-        base = (GALLERY_ROOT / "cosplay" / "style.css").read_text(encoding="utf-8")
-        for kind in KINDS[1:]:
-            self.assertEqual(
-                base, (GALLERY_ROOT / kind / "style.css").read_text(encoding="utf-8"),
-                f"gallery/{kind}/style.css has drifted from gallery/cosplay/style.css")
+    def test_every_publish_copy_stages_the_shared_folder(self):
+        for kind in KINDS:
+            pub = load(kind, "publish")
+            with self.subTest(kind):
+                self.assertEqual(pub.SHARED_SRC_DIR, self.SHARED)
+                self.assertEqual(pub.SHARED_REL_DIR, "gallery/shared")
+                for name in pub.SHARED_FILES:
+                    self.assertTrue((self.SHARED / name).is_file(), name)
 
-    def test_the_shared_stylesheet_does_not_claim_to_be_one_gallery(self):
-        # The bug this pins: a header saying "Cosplay Gallery Styles" inside the
-        # creature and archetype copies, which is how the drift went unnoticed.
-        head = (GALLERY_ROOT / "cosplay" / "style.css").read_text(
-            encoding="utf-8")[:600].lower()
-        self.assertNotIn("cosplay gallery styles", head)
+    def test_the_shared_assets_name_no_single_gallery(self):
+        for name in ("style.css", "gallery.js"):
+            head = (self.SHARED / name).read_text(encoding="utf-8")[:600].lower()
+            for kind in ("cosplay gallery", "creature gallery", "archetype gallery"):
+                self.assertNotIn(kind, head, name)
 
     def test_every_page_ships_the_sort_controls(self):
         for kind in KINDS:
@@ -512,7 +510,7 @@ class PageAssetsStayInSyncTests(unittest.TestCase):
         # A `$('#id')` that resolves to null is how a control silently does
         # nothing -- the dead "Clear search" button shipped that way for releases.
         for kind in KINDS:
-            js = (GALLERY_ROOT / kind / "gallery.js").read_text(encoding="utf-8")
+            js = (self.SHARED / "gallery.js").read_text(encoding="utf-8")
             html = (GALLERY_ROOT / kind / "index.html").read_text(encoding="utf-8")
             queried = set(re.findall(r"\$\('#([\w-]+)'\)", js))
             for element_id in sorted(queried - self.INJECTED_IDS):

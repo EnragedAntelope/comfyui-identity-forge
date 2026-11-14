@@ -26,6 +26,7 @@ from __future__ import annotations
 import logging
 
 import json
+import random
 from pathlib import Path
 from typing import Any
 
@@ -57,6 +58,21 @@ except ImportError:  # pragma: no cover — exercised only outside ComfyUI
 
 #: Shown in the combo when the vault is empty (kept stable so saved workflows match).
 _NO_CHARACTERS = "(no characters saved)"
+
+#: 2.6.0: last combo option when the vault has entries; ``seed`` picks one of them.
+#: Appended, never first, so the default (the first saved name) is unchanged.
+_RANDOM = "(random saved character)"
+
+
+def resolve_selection(vault_root: Path | str, character: str, seed: int) -> str:
+    """The entry name ``character`` stands for: itself, or a seeded pick for
+    :data:`_RANDOM` (the same seed and vault give the same pick)."""
+    if character != _RANDOM:
+        return character
+    names = list_character_names(vault_root)
+    if not names:
+        return _NO_CHARACTERS
+    return names[random.Random(seed).randrange(len(names))]
 
 
 def _is_entry(path: Path) -> bool:
@@ -175,9 +191,18 @@ def rename_character(vault_root: Path | str, old: str, new: str) -> str:
     if not sanitize_name(new):
         raise ValueError(f"Unusable new name: {new!r}.")
     dst = _entry_dir(root, new)
-    if dst.exists() and dst != src:
+    wanted = sanitize_name(new)
+    if dst == src and src.name != wanted:
+        # 2.6.0: a case-only rename ("bob" -> "Bob") on a case-insensitive filesystem
+        # resolves to the same folder, so a direct rename did nothing; go via a temp name.
+        dst = src.with_name(wanted)
+        hop = src.with_name(f".{src.name}.renaming")
+        src.rename(hop)
+        hop.rename(dst)
+    elif dst.exists() and dst != src:
         raise ValueError(f"A character named {dst.name!r} already exists.")
-    src.rename(dst)
+    else:
+        src.rename(dst)
     # Keep the sidecar's display_name in step with the folder.
     meta_path = dst / _META_FILE
     try:
@@ -235,7 +260,8 @@ if _COMFY_AVAILABLE:
 
         @classmethod
         def define_schema(cls) -> "io.Schema":
-            names = list_character_names(_vault_root()) or [_NO_CHARACTERS]
+            saved = list_character_names(_vault_root())
+            names = saved + [_RANDOM] if saved else [_NO_CHARACTERS]
             return io.Schema(
                 node_id="IdentityForgeVaultLoad",
                 display_name="Identity Forge Vault Load",
@@ -252,7 +278,8 @@ if _COMFY_AVAILABLE:
                         options=names,
                         default=names[0],
                         tooltip="Saved character to recall. Click Refresh after saving new "
-                                "ones, or Manage Vault to browse with thumbnails.",
+                                "ones, or Manage Vault to browse with thumbnails. "
+                                "'(random saved character)' picks one by 'seed'.",
                     ),
                     io.String.Input(
                         "upstream",
@@ -262,8 +289,22 @@ if _COMFY_AVAILABLE:
                         tooltip="Optional: connect another preset's character_json here to "
                                 "stack presets. This saved character wins on overlap.",
                     ),
+                    # 2.6.0: appended last so older workflows' widgets_values still line up.
+                    io.Int.Input(
+                        "seed",
+                        default=0,
+                        min=0,
+                        max=0xFFFFFFFFFFFFFFFF,
+                        control_after_generate=True,
+                        tooltip="Only used with '(random saved character)': picks which "
+                                "saved character to recall. Set the control to "
+                                "'randomize' for a different one every queue.",
+                    ),
                 ],
-                outputs=[io.String.Output(display_name="character_json")],
+                outputs=[io.String.Output(
+                    display_name="character_json",
+                    tooltip="The preset as JSON. Wire into Identity Forge's 'archetype_json', or into another preset's 'upstream' to stack them.",
+                )],
             )
 
         @classmethod
@@ -271,11 +312,17 @@ if _COMFY_AVAILABLE:
             # 1.5.5: see _character_fingerprint. Folds the SELECTED entry's
             # mtime+size into the cache key so an Overwrite/rename/delete that
             # left the `character` widget unchanged still invalidates the cache.
+            # 2.6.0: a random pick rides an auto-advancing seed, which ComfyUI#11905
+            # can serve stale from cache; NaN never equals itself, so it always re-runs
+            # (cheap: one file read, and identical output keeps downstream cached).
+            if kwargs.get("character") == _RANDOM:
+                return float("nan")
             return _character_fingerprint(_vault_root(), kwargs.get("character", _NO_CHARACTERS))
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
-            character = kwargs.get("character", _NO_CHARACTERS)
+            character = resolve_selection(_vault_root(), kwargs.get("character", _NO_CHARACTERS),
+                                          int(kwargs.get("seed", 0) or 0))
             own = "{}"
             if character and character != _NO_CHARACTERS:
                 own, _ = load_character(_vault_root(), character)

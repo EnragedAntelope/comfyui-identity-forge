@@ -48,14 +48,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # === GALLERY CONFIG — the only part that differs between the three copies ====
 GALLERY_KIND = "creatures"
 GALLERY_TITLE = "creature form"
-PAGE_FILES = ["index.html", "style.css", "gallery.js",
-              "Krea2_IdentityForge_CreatureCycle.json"]
+PAGE_FILES = ["index.html", "Krea2_IdentityForge_CreatureCycle.json"]
 # ============================================================================
 
 from build_manifest import entry_names, generate_manifest, normalize_name  # noqa: E402
 from build_gallery_images import optimize_image  # noqa: E402
 
 GALLERY_SRC_DIR = Path(__file__).resolve().parent
+#: 2.6.0: the page assets all three galleries share, published to gallery/shared/.
+SHARED_SRC_DIR = GALLERY_SRC_DIR.parent / "shared"
+SHARED_FILES = ["style.css", "gallery.js"]
+SHARED_REL_DIR = "gallery/shared"
 BRANCH = "gh-pages"
 REL_DIR = f"gallery/{GALLERY_KIND}"
 
@@ -247,9 +250,15 @@ def main() -> int:
                 (worktree / REL_DIR / fname).write_text(
                     src.read_text(encoding="utf-8"), encoding="utf-8", newline="")
 
+        for fname in SHARED_FILES:
+            target = worktree / SHARED_REL_DIR / fname
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text((SHARED_SRC_DIR / fname).read_text(encoding="utf-8"),
+                              encoding="utf-8", newline="")
+
         # -A, not a bare add: a plain `git add` stages additions and
         # modifications but NOT deletions, so a prune would be silently undone.
-        run("git", "add", "-A", REL_DIR, cwd=worktree)
+        run("git", "add", "-A", REL_DIR, SHARED_REL_DIR, cwd=worktree)
         if not run("git", "status", "--porcelain", cwd=worktree):
             print("\nNothing changed on the branch.")
             return 0

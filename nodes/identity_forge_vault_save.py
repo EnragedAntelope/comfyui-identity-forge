@@ -92,7 +92,9 @@ def sanitize_name(raw: str) -> str:
     name = re.sub(r"\s+", " ", name).strip().strip(".").strip()
     if name in {"", ".", ".."}:
         return ""
-    name = name[:120].strip()
+    # 2.6.0: re-strip dots after the cut too; Windows drops a trailing dot from a
+    # folder name, so the saved folder and the returned name used to differ.
+    name = name[:120].rstrip(". ")
     if name.split(".", 1)[0].upper() in _WINDOWS_RESERVED_NAMES:
         name += "_"
     return name

@@ -43,7 +43,7 @@
       ]
     }
   },
-  "_comment_archetypes": "'archetypes' adds presets to the Archetype node. Same {field: value} shape as the built-ins; outfit_description may use {slot} placeholders (color, fabric, metal, gem, fur, flower, ...). A name matching a built-in overrides it. A custom value used here (like Sky Pirate's expression/location below) should also be listed under 'fields' above so it becomes a real option. Run 'python tests/validate_data.py' to check your field values.",
+  "_comment_archetypes": "'archetypes' adds presets to the Archetype node. Same {field: value} shape as the built-ins: a value may be a list (one is picked per seed), and a 'variants' object gives separate 'Female' / 'Male' looks; outfit_description may use {slot} placeholders (color, fabric, metal, gem, fur, flower, ...). A name matching a built-in overrides it. A custom value used here (like Sky Pirate's expression/location below) should also be listed under 'fields' above so it becomes a real option. Run 'python tests/validate_data.py' to check your field values.",
   "archetypes": {
     "Sky Pirate": {
       "gender": "Female",
@@ -59,11 +59,17 @@
   "_comment_mask": "For a fully masked head set 'covers_face': true AND put the head covering in a separate 'mask' string (kept OUT of 'costume'). covers_face hides the randomized face/hair; the mask is appended to the costume by default but kept apart so the node's 'Unmask (show face)' toggle can drop it and reveal the random head. Omit both when the face is visible.",
   "_comment_required": "Only 'costume' is required in a cosplayer entry. Everything else is optional \u2014 copy an example below, rename it, and keep just the keys you need.",
   "_comment_advanced": "Optional advanced flags (all default off; only add one when it is true): 'covers_body': true = a full hard suit/armor hides bare skin, so jewelry/nails are suppressed. 'covers_hair': true = a hood/cowl hides the hair while the face shows. 'bald': true = fully hairless head (also clears facial hair). 'body_paint': true = the skin itself is the costume color; optionally add 'skin': 'warm green' to name the color when it is not obvious from the costume text. Word a full-body color as the character's own skin ('smooth, flawless deep green skin') rather than 'body paint' or 'dye' -- paint wording renders as a streaky coat over a human tone; the skin-native wording is auto-detected, so the flag is only needed for other phrasings.",
+  "_comment_alternates": "Optional per-cosplayer extras: 'costumes' is a list of alternate looks (a costume string, or an object with its own 'costume' plus per-look keys such as 'mask' or 'signature'); one look is picked per seed. 'costume_weights' gives one positive number per look, the main costume first. 'costume_back' is the costume seen from behind, used by the Turnaround's back views. 'subject' is a lead noun for a non-human head, with no article ('pig-headed alien').",
   "cosplayers": {
     "Custom Hero (My OC)": {
       "franchise": "Original",
       "gender": "Female",
       "costume": "a teal-and-silver bodysuit with a star emblem, white gloves, and white boots",
+      "costume_back": "a teal-and-silver bodysuit with a silver stripe down the spine, white gloves, and white boots",
+      "costumes": [
+        "a black-and-gold stealth bodysuit with a dim star emblem, black gloves, and black boots"
+      ],
+      "costume_weights": [3, 1],
       "signature": {
         "hair_color": "electric blue",
         "hair_length": "long",

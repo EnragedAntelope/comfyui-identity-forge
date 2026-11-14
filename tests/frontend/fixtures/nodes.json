@@ -7542,6 +7542,41 @@
       ]
     }
   ],
+  "IdentityForgeSceneSheet": [
+    {
+      "name": "sheet",
+      "default": "Everyday (6)",
+      "type": "combo",
+      "options": [
+        "Everyday (6)",
+        "Indoors (4)",
+        "Outdoors (4)",
+        "Studio backdrops (3)"
+      ]
+    },
+    {
+      "name": "framing",
+      "default": "Cowboy (mid-thigh up)",
+      "type": "combo",
+      "options": [
+        "Full body",
+        "Cowboy (mid-thigh up)",
+        "Waist up",
+        "Chest up",
+        "Head and shoulders",
+        "Unspecified"
+      ]
+    },
+    {
+      "name": "clothes",
+      "default": "Dress for each place",
+      "type": "combo",
+      "options": [
+        "Dress for each place",
+        "Keep the outfit (skip places that refuse it)"
+      ]
+    }
+  ],
   "IdentityForgeAgeProgression": [
     {
       "name": "stages",
@@ -7574,6 +7609,22 @@
       "type": "combo",
       "options": [
         "(no characters saved)"
+      ]
+    },
+    {
+      "name": "seed",
+      "default": 0,
+      "type": "INT"
+    },
+    {
+      "name": "control_after_generate",
+      "type": "combo",
+      "default": "randomize",
+      "options": [
+        "fixed",
+        "increment",
+        "decrement",
+        "randomize"
       ]
     }
   ],

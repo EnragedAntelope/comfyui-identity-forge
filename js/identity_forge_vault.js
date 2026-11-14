@@ -26,6 +26,9 @@ const NO_CHARACTERS = "(no characters saved)";
 //: yet" are different situations that used to render identically, so a failed
 //: fetch was indistinguishable from an empty vault.
 const VAULT_UNAVAILABLE = "(vault unavailable — press Refresh)";
+//: 2.6.0: mirrors _RANDOM in nodes/identity_forge_vault_load.py; last option
+//: whenever the vault has entries, so Refresh must keep it.
+const RANDOM_CHARACTER = "(random saved character)";
 //: First widget this file adds; its presence is the re-entry guard in
 //: `setupVaultLoad`. See js/identity_forge.js.
 const REFRESH_LABEL = "🔄 Refresh";
@@ -87,7 +90,7 @@ function updatePreview(node) {
   if (!el) return;
   const w = getCharacterWidget(node);
   const name = w && w.value;
-  if (!name || name === NO_CHARACTERS) {
+  if (!name || name === NO_CHARACTERS || name === RANDOM_CHARACTER) {
     el.style.display = "none";
     el.removeAttribute("src");
     return;
@@ -104,7 +107,7 @@ function applyCharacterList(node, characters) {
     list = [VAULT_UNAVAILABLE];
   } else {
     const names = characters.map((c) => (typeof c === "string" ? c : c.name));
-    list = names.length ? names : [NO_CHARACTERS];
+    list = names.length ? [...names, RANDOM_CHARACTER] : [NO_CHARACTERS];
   }
   setComboValues(w, list);
   if (!list.includes(w.value)) w.value = list[0];

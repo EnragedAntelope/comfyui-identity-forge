@@ -48,6 +48,7 @@ from nodes.identity_forge_modifier import IdentityForgeModifier  # noqa: E402
 from nodes.identity_forge_turnaround import IdentityForgeTurnaround  # noqa: E402
 from nodes.identity_forge_expression_sheet import IdentityForgeExpressionSheet  # noqa: E402
 from nodes.identity_forge_outfit_sheet import IdentityForgeOutfitSheet  # noqa: E402
+from nodes.identity_forge_scene_sheet import IdentityForgeSceneSheet  # noqa: E402
 from nodes.identity_forge_age_progression import IdentityForgeAgeProgression  # noqa: E402
 from nodes.identity_forge_vault_load import (  # noqa: E402
     IdentityForgeVaultLoad, _NO_CHARACTERS,
@@ -66,6 +67,7 @@ _NODE_CLASSES = {
     "IdentityForgeTurnaround": IdentityForgeTurnaround,
     "IdentityForgeExpressionSheet": IdentityForgeExpressionSheet,
     "IdentityForgeOutfitSheet": IdentityForgeOutfitSheet,
+    "IdentityForgeSceneSheet": IdentityForgeSceneSheet,
     "IdentityForgeAgeProgression": IdentityForgeAgeProgression,
     "IdentityForgeVaultLoad": IdentityForgeVaultLoad,
     "IdentityForgeVaultSave": IdentityForgeVaultSave,

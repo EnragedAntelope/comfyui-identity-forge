@@ -41,14 +41,14 @@ try:
     from .identity_forge import FIELD_DEFINITIONS
     from .identity_forge_turnaround import (
         _FRAMINGS, _KEEP_POSE, _NEUTRAL_POSES, _forge_class, _unwrap, document_fields,
-        character_seed, document_meta, parse_document, release_fields, replay_base,
+        character_seed, document_meta, parse_document, pin_framing, release_fields, replay_base,
     )
 except ImportError:  # pragma: no cover - standalone/test context
     from data.constraints import lock_clash
     from nodes.identity_forge import FIELD_DEFINITIONS
     from nodes.identity_forge_turnaround import (
         _FRAMINGS, _KEEP_POSE, _NEUTRAL_POSES, _forge_class, _unwrap, document_fields,
-        character_seed, document_meta, parse_document, release_fields, replay_base,
+        character_seed, document_meta, parse_document, pin_framing, release_fields, replay_base,
     )
 
 _LOG = logging.getLogger(__name__)
@@ -114,9 +114,9 @@ def resolve_outfit_sheet(
     document = parse_document(character_json)
     meta = document_meta(document)
     base = replay_base(character_json)
-    framing = _FRAMINGS.get(framing_name, "")
-    if framing:
-        base["shot_type"] = framing
+    # 2.6.0: released before the one-view path below, which used to replay the
+    # framing's clashes (a standing pose in a close-up) unchanged.
+    pin_framing(base, document, character_json, _FRAMINGS.get(framing_name, ""))
     if pose_name != _KEEP_POSE:
         base["pose"] = pose_name
 
@@ -130,9 +130,6 @@ def resolve_outfit_sheet(
     if backdrop:
         released |= _SCENE
         base["location"] = backdrop
-    if framing:
-        released |= {name for name, value in document_fields(document).items()
-                     if lock_clash("shot_type", framing, {name: value})}
     release_fields(document, released)
     base["archetype_json"] = json.dumps(document)
     # What the outfit must agree with: everything the replay keeps, plus the pins.
@@ -259,8 +256,12 @@ if _COMFY_AVAILABLE:
                 ],
             )
 
-        # No fingerprint_inputs: every seed is derived, nothing auto-advances (see
-        # Turnaround), so the node is a pure function of its inputs.
+        @classmethod
+        def fingerprint_inputs(cls, **kwargs: Any) -> Any:
+            # 2.6.0: outfit_seed auto-advances (control_after_generate), and
+            # ComfyUI#11905 can serve a stale cached result for that; NaN never equals
+            # itself, so the node always re-runs. Identical prompts keep downstream cached.
+            return float("nan")
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
