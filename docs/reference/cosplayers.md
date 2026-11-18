@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2160 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2179 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (416)
+## Anime & Manga (422)
 
 ### Akame ga Kill
 
@@ -80,6 +80,10 @@
 - **Toshiro Hitsugaya** (M, prop)
 - **Yoruichi** (F)
 
+### Bocchi the Rock!
+
+- **Hitori Gotoh** (F, prop)
+
 ### Chainsaw Man
 
 - **Aki Hayakawa** (M)
@@ -108,6 +112,7 @@
 
 ### Danganronpa
 
+- **Celestia Ludenberg** (F, prop)
 - **Chiaki Nanami** (F, prop)
 - **Junko Enoshima** (F)
 - **Monokuma** (M, tiny, masked)
@@ -291,6 +296,8 @@
 ### Hellsing
 
 - **Alucard (Hellsing)** (M, prop)
+- **Integra Hellsing** (F, prop)
+- **Seras Victoria** (F, prop)
 
 ### High School DxD
 
@@ -367,6 +374,10 @@
 ### Lupin III
 
 - **Fujiko Mine** (F)
+
+### Lycoris Recoil
+
+- **Chisato Nishikigi** (F)
 
 ### Madoka Magica
 
@@ -481,6 +492,7 @@
 - **Monkey D. Luffy** (M)
 - **Nami** (F)
 - **Nico Robin** (F)
+- **Perona** (F, prop)
 - **Portgas D. Ace** (M)
 - **Roronoa Zoro** (M, prop)
 - **Sanji** (M)
@@ -1903,7 +1915,7 @@
 
 - **Zorro** (M, prop)
 
-## Marvel (196)
+## Marvel (197)
 
 ### Marvel
 
@@ -1964,6 +1976,7 @@
 - **Gorgon** (M)
 - **Green Goblin** (M, masked, prop)
 - **Groot** (M, giant)
+- **Gwenpool** (F, prop)
 - **Hawkeye** (M, prop)
 - **Hela** (F)
 - **Hellcat** (F)
@@ -2822,7 +2835,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (520)
+## Video Games (532)
 
 ### A Certain Scientific Railgun
 
@@ -3067,15 +3080,18 @@
 - **Cecil Harvey** (M)
 - **Celes Chere** (F)
 - **Chocobo** (M, beast)
+- **Cindy Aurum** (F, prop)
 - **Cloud Strife** (M, prop)
 - **Fran** (F)
 - **Kain Highwind** (M, masked, prop)
 - **Kefka Palazzo** (M)
 - **Lightning** (F, prop)
 - **Lulu** (F, prop)
+- **Lunafreya Nox Fleuret** (F, prop)
 - **Moogle** (M, tiny, masked)
 - **Noctis** (M)
 - **Rikku** (F)
+- **Rinoa Heartilly** (F)
 - **Rosa Farrell** (F)
 - **Rydia** (F)
 - **Sephiroth** (M, prop)
@@ -3087,6 +3103,7 @@
 - **Ultros** (M, masked)
 - **Vincent Valentine** (M)
 - **Vivi Ornitier** (M, masked)
+- **Y'shtola Rhul** (F)
 - **Yuffie Kisaragi** (F, prop)
 - **Yuna** (F, prop)
 - **Zidane** (M)
@@ -3293,8 +3310,10 @@
 
 ### Metal Gear
 
+- **EVA (Metal Gear)** (F, prop)
 - **Quiet** (F)
 - **Solid Snake** (M)
+- **The Boss** (F, prop)
 
 ### Metroid
 
@@ -3439,6 +3458,7 @@
 
 ### Silent Hill
 
+- **Heather Mason** (F, prop)
 - **Nurse (Silent Hill)** (F, masked)
 - **Pyramid Head** (M, masked, prop)
 
@@ -3464,6 +3484,7 @@
 - **Siegfried Schtauffen** (M, prop)
 - **Sophitia Alexandra** (F, prop)
 - **Taki** (F, prop)
+- **Tira** (F, prop)
 - **Voldo** (M, masked, prop)
 - **Xianghua** (F, prop)
 - **Yoshimitsu** (M, masked, prop)
@@ -3545,6 +3566,12 @@
 ### System Shock
 
 - **SHODAN** (F)
+
+### Tales series
+
+- **Judith (Tales)** (F, prop)
+- **Sheena Fujibayashi** (F, +2 alt, prop)
+- **Velvet Crowe** (F)
 
 ### Team Fortress 2
 
@@ -3671,6 +3698,10 @@
 ### Xenoblade Chronicles
 
 - **Pyra** (F, +1 alt)
+
+### Xenosaga
+
+- **KOS-MOS** (F)
 
 ### Zenless Zone Zero
 

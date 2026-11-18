@@ -6144,19 +6144,19 @@ class RandomPoolTests(unittest.TestCase):
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
         # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
-        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0, at 2.1.0 and at 2.2.0 to
+        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0, at 2.1.0, at 2.2.0 and at 2.7.0 to
         # the new ground truth. It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Rhino',
-            (_RANDOM_ANY, 1): 'Enid Sinclair',
+            (_RANDOM_ANY, 0): 'Reinhardt',
+            (_RANDOM_ANY, 1): 'Enchantress (Suicide Squad)',
             (_RANDOM_ANY, 2): 'Booster Gold',
-            (_RANDOM_ANY, 3): 'Kimberly Jackson',
-            (_RANDOM_ANY, 4): 'Kikyo',
-            (_RANDOM_FEMALE, 0): 'Rikku',
-            (_RANDOM_FEMALE, 1): 'Fire',
+            (_RANDOM_ANY, 3): 'Kida',
+            (_RANDOM_ANY, 4): 'Kazuya Mishima',
+            (_RANDOM_FEMALE, 0): 'Rebecca (Cyberpunk)',
+            (_RANDOM_FEMALE, 1): 'Faye Valentine',
             (_RANDOM_FEMALE, 2): 'Bloody Mary',
-            (_RANDOM_FEMALE, 3): 'Leone',
-            (_RANDOM_FEMALE, 4): 'Leeloo',
+            (_RANDOM_FEMALE, 3): 'Launch',
+            (_RANDOM_FEMALE, 4): 'Lapras',
             (_RANDOM_MALE, 0): 'Reverse-Flash',
             (_RANDOM_MALE, 1): 'Duff Killigan',
             (_RANDOM_MALE, 2): 'Bowser',

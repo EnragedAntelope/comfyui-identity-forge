@@ -5,11 +5,11 @@
     python gallery/creatures/publish.py --source <dir> --dry-run    # report, change nothing
 
 =============================================================================
- THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
+ THIS FILE IS ONE OF FOUR NEAR-IDENTICAL COPIES
  gallery/cosplay/publish.py - gallery/archetypes/publish.py -
- gallery/creatures/publish.py
+ gallery/creatures/publish.py - gallery/people/publish.py
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
- it to the other two (see gallery/README.md).
+ it to the other three (see gallery/README.md).
 =============================================================================
 
 THE SAFETY MODEL, which is the whole point of this script:
@@ -45,7 +45,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-# === GALLERY CONFIG — the only part that differs between the three copies ====
+# === GALLERY CONFIG - the only part that differs between the four copies ====
 GALLERY_KIND = "creatures"
 GALLERY_TITLE = "creature form"
 PAGE_FILES = ["index.html", "Krea2_IdentityForge_CreatureCycle.json"]
@@ -55,7 +55,7 @@ from build_manifest import entry_names, generate_manifest, normalize_name  # noq
 from build_gallery_images import optimize_image  # noqa: E402
 
 GALLERY_SRC_DIR = Path(__file__).resolve().parent
-#: 2.6.0: the page assets all three galleries share, published to gallery/shared/.
+#: 2.6.0: the page assets every gallery shares, published to gallery/shared/.
 SHARED_SRC_DIR = GALLERY_SRC_DIR.parent / "shared"
 SHARED_FILES = ["style.css", "gallery.js"]
 SHARED_REL_DIR = "gallery/shared"

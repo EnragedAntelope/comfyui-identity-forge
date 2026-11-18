@@ -1,12 +1,13 @@
 # Sample galleries
 
-Three sibling galleries, one per preset node:
+Four sibling galleries, one per preset node plus one for the plain node:
 
 | Folder | Entries from | Live page |
 | --- | --- | --- |
 | [`cosplay/`](cosplay/) | `data/cosplayers.py` | [cosplay gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/cosplay/) |
 | [`archetypes/`](archetypes/) | `data/templates.py` (`ARCHETYPES`) | [archetype gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/archetypes/) |
 | [`creatures/`](creatures/) | `data/creatures.py` (`CREATURES`) | [creature gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/creatures/) |
+| [`people/`](people/) | `PEOPLE` in `scripts/render_gallery.py` | [people gallery](https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/) |
 
 **Images live only on the `gh-pages` branch.** `gallery/.gitignore` blocks `images/`
 on `main`, so cloning or pulling the repo never drags down hundreds of megabytes of
@@ -21,6 +22,23 @@ For a local gallery preview, generate its manifest against your local optimized 
 ```bash
 python gallery/cosplay/build_manifest.py --images gallery/cosplay/images
 ```
+
+---
+
+## The people gallery (2.7.0)
+
+The original point of the pack is random people, and the roster galleries cannot show
+them: a person has no name to file the image under. So each sample is a **fixed seed** on
+the plain Identity Forge node, with no preset node and every widget at its schema default
+except the gender. Its card shows the seed and gender, and the full prompt the node wrote
+with a copy button, so a viewer can reproduce the prompt exactly on a fresh node. The
+seeds were scouted so the set spans gender, age, outfit style and indoor/outdoor places.
+
+The samples go through the same render gate as the roster: `render_gallery.py` resolves
+them in-process, hashes the prose, and `--check` reports a sample stale when an engine
+change moves what its seed draws. Re-render it, or pick a new seed if the spread suffers.
+The page needs no release stamps (a seed is not a roster entry; the sort controls stay
+hidden) and ships no cycle workflow (the card carries everything needed).
 
 ---
 
@@ -77,7 +95,7 @@ is the right failure mode — it has no image on `gh-pages` either.
 `gallery.js` and `style.css` exist once, in `gallery/shared/` (2.6.0; they used to be three
 copies). Each `index.html` links `../shared/`, and every `publish.py` stages that folder to
 `gallery/shared/` on `gh-pages` beside its own page, so a fix lands once and any gallery's
-publish ships it to all three. `SharedPageAssetsTests` in `tests/test_gallery.py` fails if a
+publish ships it to every gallery. `SharedPageAssetsTests` in `tests/test_gallery.py` fails if a
 per-gallery copy comes back. It also checks that every `$('#id')` the script reaches for exists
 in each gallery's `index.html` - a lookup returning `null` is how the "Clear search" button sat
 dead for several releases without anyone noticing.
@@ -114,13 +132,13 @@ python gallery/cosplay/cross_reference.py     # what still needs an image, what 
 
 ---
 
-## Three copies, deliberately
+## Four copies, deliberately
 
 Each gallery owns its scripts rather than importing a shared package. The four Python
 files are **byte-identical outside their docstring and their `GALLERY CONFIG` block** —
 that block is where the data module, the roster accessor and the page file list live.
 
-**If you fix a bug or make an improvement in one, port it to the other two.**
+**If you fix a bug or make an improvement in one, port it to the other three.**
 `tests/test_gallery.py::CopiesStayInSyncTests` enforces this: it strips the docstring
 and config block, neutralises the gallery name, and fails if the remaining code differs.
 You cannot land a one-gallery fix by accident.
@@ -131,12 +149,14 @@ parenthesised `if` blocks, ASCII only, and CRLF enforced by `.gitattributes`.
 
 ---
 
-## Adding a fourth gallery
+## Adding another gallery
 
 1. Copy a gallery folder wholesale.
 2. Edit only the `GALLERY CONFIG` block in each of the four `.py` files: `GALLERY_KIND`,
    the data import, `entry_names()`, `entry_meta()`, and `PAGE_FILES`.
 3. Update the title, subtitle and search placeholder in `index.html`.
-4. Add the new kind to `KINDS` in `tests/test_gallery.py`.
+4. Add the new kind to `KINDS` in `tests/test_gallery.py` (and to `ROSTER_KINDS` if it
+   is built from a stamped roster with a downloadable workflow), and to `KINDS` and
+   `entries_for()` in `scripts/render_gallery.py`.
 5. Run `python gallery/<kind>/cross_reference.py` — it should list every entry as
    missing. That is the empty gallery, ready for its first publish.

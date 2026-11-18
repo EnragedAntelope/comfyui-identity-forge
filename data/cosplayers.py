@@ -24089,23 +24089,30 @@ COSPLAYERS: dict[str, dict] = {
     "Pyra": {
         "franchise": "Xenoblade Chronicles",
         "gender": "Female",
-        "costume": "a crimson armored bodysuit with gold filigree across the chest "
-                   "and a glowing green crystal set into the sternum, segmented "
-                   "red-and-gold pauldrons, a pleated dark skirt over armored hip "
-                   "plates, and thigh-high red boots",
-        "signature": {"hair_color": "deep red", "hair_length": "shoulder length",
-                      "hair_style": "side ponytail", "eye_color": "amber"},
+        # Re-sourced at 2.7.0 (Danbooru tag co-occurrence): both looks had the wrong hair
+        # (side ponytail / braided ponytail), Pyra a skirt for her red shorts and Mythra a
+        # yellow crystal. Canon: a short bob (Pyra) or very long loose hair (Mythra) with
+        # swept bangs, a slim tiara, gem earrings and the green cross-shaped Core Crystal.
+        "costume": "a glowing green cross-shaped crystal set into the sternum, a fitted "
+                   "black-and-red bodysuit top with gold trim, short red shorts, red "
+                   "thigh-high stockings, black fingerless gloves, a slim gold tiara and "
+                   "gem drop earrings",
+        "eyes": "crimson",
+        "signature": {"hair_color": "bright red", "hair_length": "chin length bob",
+                      "hair_style": "side-swept bangs"},
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair"},
         "costumes": [
             {   # Mythra -- alternate Aegis form
-                "costume": "a white-and-gold armored bodysuit with a glowing yellow crystal "
-                           "set into the sternum, blue-and-silver accents along the limbs, "
-                           "a short pleated skirt over gilded hip plates, and thigh-high "
-                           "white boots",
-                "signature": {"hair_color": "golden blonde", "hair_length": "long",
-                              "hair_style": "braided ponytail", "eye_color": "golden brown"},
+                "costume": "a glowing green cross-shaped crystal set into the chest through "
+                           "a diamond-shaped cutout, a short white sleeveless dress with gold "
+                           "trim, white elbow-length gloves, a strap around one thigh, white "
+                           "thigh-high boots, a slim gold tiara and gem drop earrings",
+                "eyes": "golden",
+                "signature": {"hair_color": "golden blonde", "hair_length": "hip length",
+                              "hair_style": "side-swept bangs"},
             },
         ],
+        "aliases": ["Mythra"],
     },
     "Adam Smasher": {
         "franchise": "Cyberpunk 2077",
@@ -27524,6 +27531,296 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
                      "age": "18"},
     },
+    # --- 2.7.0: women's roster survey (a "female characters" spreadsheet, cut to the
+    # iconic, adult, distinct-silhouette names; canon checked against Danbooru tag
+    # co-occurrence and the series wikis). ---------------------------------------
+    "Sheena Fujibayashi": {
+        # The three looks a maintainer-supplied LoRA trained on (Default, "Queen of the
+        # Beach", "You Look Great"). Its default tags said "blue kimono"; Danbooru has 21
+        # purple_kimono posts to 0 blue, so the kimono is purple here.
+        "franchise": "Tales series",
+        "gender": "Female",
+        "costume": "a short purple kimono-style ninja top over a white bustier and a black "
+                   "undershirt, detached purple sleeves, a wide pink obi sash tied in a "
+                   "large bow at the back, black fingerless gloves, close-fitting black "
+                   "pants and dark boots, with a pink ribbon tying the ponytail",
+        "costumes": [
+            # "Queen of the Beach" title costume.
+            "a red one-piece swimsuit with criss-cross lacing down the front, a black "
+            "choker, silver crescent-moon earrings, a single silver bracelet, an anklet "
+            "and red sandals, with sunglasses pushed up on the head",
+            {   # "You Look Great" title costume (hair up in a bun).
+                "costume": "a purple harem-dancer outfit with a jewelled cropped top and a "
+                           "short skirt trailing long coattails, a gold neck ring, a single "
+                           "gold armlet, gold bangles and gold earrings, black thigh-high "
+                           "stockings and purple slippers, with a gold clip in the hair",
+                "signature": {"hair_color": "jet black", "hair_length": "shoulder length",
+                              "hair_style": "braided bun", "eye_color": "medium brown"},
+            },
+        ],
+        "signature": {"hair_color": "jet black", "hair_length": "mid back",
+                      "hair_style": "high ponytail", "eye_color": "medium brown"},
+        "physique": {"body_type": "hourglass", "height": "average height",
+                     "skin_tone": "fair", "age": "19"},
+        "prop": "a fan of white paper ofuda charm cards inked with red seals",
+        "aliases": ["Shihna Fujibayashi", "Tales of Symphonia"],
+    },
+    "Velvet Crowe": {
+        "franchise": "Tales series",
+        "gender": "Female",
+        # The bandaged daemon arm leads: it is the one thing the rest of the look
+        # (black rags, shorts, torn stockings) cannot carry alone.
+        "costume": "a left arm wrapped from shoulder to fingertips in grimy white "
+                   "bandages, a long tattered black coat with a high collar and a ragged "
+                   "torn hem, a scrap of red top bound across the chest with black belts "
+                   "and straps, a single armored gauntlet on the right forearm, black "
+                   "shorts, torn black thigh-high stockings, armored black boots and a "
+                   "black choker",
+        "eyes": "golden",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "athletic", "height": "average height",
+                     "skin_tone": "fair", "age": "19"},
+        "aliases": ["Tales of Berseria"],
+    },
+    "Judith (Tales)": {
+        "franchise": "Tales series",
+        "gender": "Female",
+        "costume": "two long antenna-like feelers sweeping back from the head and pointed "
+                   "elf ears, a blue halter top trimmed in yellow with white detached "
+                   "sleeves and a high white collar, a bare midriff, a blue loincloth-style "
+                   "front panel over a short white waist cape, white gloves, a strap around "
+                   "one thigh and blue knee-high boots",
+        "signature": {"hair_color": "navy blue", "hair_length": "waist length",
+                      "hair_style": "low ponytail"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair",
+                     "age": "19"},
+        "prop": "a long spear with a slender curved blade",
+        "aliases": ["Judith", "Tales of Vesperia"],
+    },
+    "Seras Victoria": {
+        "franchise": "Hellsing",
+        "gender": "Female",
+        "costume": "a mustard-yellow Hellsing military uniform: a fitted short-sleeved "
+                   "jacket with breast pockets and a matching short pencil skirt, a black "
+                   "belt, brown gloves, white thigh-high stockings and brown fold-down "
+                   "ankle boots",
+        "eyes": "crimson",
+        "signature": {"hair_color": "golden blonde", "hair_length": "jaw length",
+                      "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "curvy", "height": "average height",
+                     "skin_tone": "fair", "age": "19"},
+        "prop": "the Harkonnen, a massive 30mm anti-midian cannon with a long black "
+                "barrel and a boxy receiver, braced on one shoulder",
+        "aliases": ["Police Girl"],
+    },
+    "Integra Hellsing": {
+        "franchise": "Hellsing",
+        "gender": "Female",
+        "costume": "a dark green tailored three-piece suit with a long jacket, a red ascot "
+                   "at the throat fastened with a small silver cross, white gloves, black "
+                   "dress shoes and round wire-rimmed glasses",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "hip length",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "tan",
+                     "age": "22"},
+        "prop": "a thick lit cigar trailing a thin ribbon of smoke",
+        "aliases": ["Sir Integral Fairbrook Wingates Hellsing"],
+    },
+    "Rinoa Heartilly": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a long sleeveless powder-blue knit duster with white angel-wing designs "
+                   "on the back, a black sleeveless top, blue arm warmers tied with black "
+                   "ribbons, a short navy blue skirt over black bike shorts, dark ankle boots "
+                   "and two silver rings worn on a chain necklace",
+        "signature": {"hair_color": "near black", "hair_length": "slightly past shoulders",
+                      "hair_style": "worn down", "eye_color": "dark brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+    },
+    "Y'shtola Rhul": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a pair of white cat ears atop the head and a long white cat tail, dark "
+                   "whisker-like markings striped across both cheeks, a long black "
+                   "sorceress's dress trimmed with white fur at the collar and cuffs, a "
+                   "black choker, a black feather ornament tucked into the hair and black "
+                   "boots",
+        "eyes": "pale milky gray",
+        "signature": {"hair_color": "white", "hair_length": "chin length bob",
+                      "hair_style": "blunt bangs"},
+        "physique": {"body_type": "petite and slim", "height": "petite",
+                     "skin_tone": "warm tan", "age": "25"},
+        "aliases": ["Yshtola", "Final Fantasy XIV"],
+    },
+    "Lunafreya Nox Fleuret": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a long white sleeveless gown with a fitted lace bodice and a softly "
+                   "flared floor-length skirt, a delicate silver necklace and white heels, "
+                   "with a small blue sylleblossom flower pinned in the hair",
+        "signature": {"hair_color": "golden blonde", "hair_length": "mid back",
+                      "hair_style": "crown braid", "eye_color": "bright blue"},
+        "physique": {"body_type": "slender", "height": "average height",
+                     "skin_tone": "fair", "age": "25"},
+        "prop": "the Trident of the Oracle, a slender silver trident with an ornate "
+                "gilded head",
+        "aliases": ["Luna", "Final Fantasy XV"],
+    },
+    "Cindy Aurum": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "a red baseball cap with mechanic's goggles slung around the neck, a "
+                   "cropped yellow mechanic's jacket worn open with the sleeves pushed up "
+                   "over a black bikini-style crop top, frayed denim short shorts with a "
+                   "leather tool belt, black work gloves, black thigh-high stockings, "
+                   "brown work boots and smudges of engine grease on the cheeks",
+        "signature": {"hair_color": "light blonde", "hair_length": "jaw length",
+                      "hair_texture": "loosely wavy", "eye_color": "green"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "fair",
+                     "age": "22"},
+        "prop": "a large chrome adjustable wrench",
+        "aliases": ["Final Fantasy XV"],
+    },
+    "The Boss": {
+        "franchise": "Metal Gear",
+        "gender": "Female",
+        "costume": "an off-white skintight sneaking suit zipped up the front, a black "
+                   "tactical belt with pouches, black combat gloves and black boots",
+        "signature": {"hair_color": "platinum blonde", "hair_length": "jaw length",
+                      "hair_texture": "loosely wavy", "eye_color": "pale blue"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair",
+                     "age": "43"},
+        "prop": "the Patriot, a compact short-barreled assault rifle with a drum "
+                "magazine",
+        "aliases": ["Metal Gear Solid 3"],
+    },
+    "EVA (Metal Gear)": {
+        "franchise": "Metal Gear",
+        "gender": "Female",
+        "costume": "a black leather motorcycle jumpsuit unzipped to the sternum over a "
+                   "black bra, motorcycle goggles slung around the neck, black leather "
+                   "gloves and black boots",
+        "signature": {"hair_color": "golden blonde", "hair_length": "shoulder length",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "curvy", "height": "average height", "skin_tone": "fair",
+                     "age": "30"},
+        "prop": "a Mauser C96 broomhandle pistol",
+        "aliases": ["Eva", "Metal Gear Solid 3"],
+    },
+    "KOS-MOS": {
+        "franchise": "Xenosaga",
+        "gender": "Female",
+        "costume": "a sleek white-and-blue android combat body with a high-cut white "
+                   "leotard-style chassis, segmented metallic joints at the shoulders and "
+                   "hips, white armored elbow-length gloves, white armored thigh-high boots "
+                   "with garter-strap fittings, and a slim metallic headband with a forehead "
+                   "plate and swept-back side fins",
+        "eyes": "crimson",
+        "signature": {"hair_color": "electric blue", "hair_length": "hip length",
+                      "hair_style": "worn down"},
+        "physique": {"body_type": "slender", "height": "tall", "skin_tone": "porcelain",
+                     "age": "22"},
+    },
+    "Perona": {
+        "franchise": "One Piece",
+        "gender": "Female",
+        "costume": "a strapless black gothic-lolita dress with a full frilled skirt and "
+                   "lace trim, a short red capelet over the shoulders, black-and-white "
+                   "striped stockings, black boots and a small black crown perched atop "
+                   "the head",
+        "eyes": "nearly black",
+        "signature": {"hair_color": "hot pink", "hair_length": "hip length",
+                      "hair_style": "curled pigtails"},
+        "physique": {"body_type": "petite and slim", "height": "petite",
+                     "skin_tone": "fair", "age": "25"},
+        "prop": "a pink frilled parasol",
+        "aliases": ["Ghost Princess"],
+    },
+    "Celestia Ludenberg": {
+        "franchise": "Danganronpa",
+        "gender": "Female",
+        "costume": "a black gothic-lolita outfit: a frilled black jacket over a white "
+                   "collared blouse, a red necktie, a layered frilled black skirt, black "
+                   "thigh-high stockings and black lace-up shoes, a black lace-trimmed "
+                   "bonnet headdress, and a silver claw ring on one index finger",
+        "eyes": "crimson",
+        "signature": {"hair_color": "jet black", "hair_length": "waist length",
+                      "hair_style": "curled pigtails"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "porcelain", "age": "18"},
+        "prop": "a fanned hand of playing cards",
+        "aliases": ["Celeste", "Taeko Yasuhiro"],
+    },
+    "Hitori Gotoh": {
+        "franchise": "Bocchi the Rock!",
+        "gender": "Female",
+        "costume": "a baggy pink track jacket zipped up with the sleeves pulled over the "
+                   "hands, a short black pleated school skirt, and two cube-shaped hair "
+                   "clips, one yellow and one blue, on one side of the head",
+        "signature": {"hair_color": "baby pink", "hair_length": "hip length",
+                      "hair_style": "worn down", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "short", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a black Gibson Les Paul Custom electric guitar with gold hardware",
+        "aliases": ["Bocchi"],
+    },
+    "Chisato Nishikigi": {
+        "franchise": "Lycoris Recoil",
+        "gender": "Female",
+        "costume": "a red-and-grey Lycoris uniform: a long-sleeved red pleated dress with "
+                   "a pale grey bib panel over a white collared shirt, a red neck ribbon, a "
+                   "red belt, black socks and brown loafers, with a red ribbon tied in the "
+                   "hair on one side",
+        "eyes": "crimson",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+    },
+    "Tira": {
+        "franchise": "Soul Calibur",
+        "gender": "Female",
+        "costume": "a tattered green-and-black outfit of torn rags with feathered fringes "
+                   "at the shoulders and hips, a ragged cropped top, black elbow gloves "
+                   "under armored gauntlets, crossed belts and suspenders, black thigh-high "
+                   "boots, green lipstick and a beauty mark under one eye",
+        "eyes": "violet",
+        "signature": {"hair_color": "teal", "hair_length": "jaw length",
+                      "hair_style": "high pigtails"},
+        "physique": {"body_type": "slender", "height": "petite", "skin_tone": "pale",
+                     "age": "19"},
+        "prop": "Eiserne Drossel, a large circular ring blade with a bladed outer edge "
+                "and a grip across its center",
+    },
+    "Gwenpool": {
+        "franchise": "Marvel",
+        "gender": "Female",
+        "costume": "a pink-and-white superhero bodysuit styled after Deadpool's with a "
+                   "white hood, white gloves and pink shin guards, a brown utility belt "
+                   "hung with pouches, wrist straps and a thigh strap, with the tips of the "
+                   "hair dyed pink",
+        "signature": {"hair_color": "light blonde", "hair_length": "chin length bob",
+                      "hair_style": "natural and unstyled", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "19"},
+        "prop": "a katana in each hand",
+        "aliases": ["Gwen Poole"],
+    },
+    "Heather Mason": {
+        "franchise": "Silent Hill",
+        "gender": "Female",
+        "costume": "a white padded sleeveless vest over an orange sleeveless turtleneck, "
+                   "a short olive-green pencil skirt, black wristbands and brown knee-high "
+                   "boots",
+        "signature": {"hair_color": "light blonde", "hair_length": "jaw length",
+                      "hair_style": "natural and unstyled", "eye_color": "light brown"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "18"},
+        "prop": "a rusted steel lead pipe",
+        "aliases": ["Silent Hill 3"],
+    },
 }
 
 
@@ -27557,6 +27854,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Hunter x Hunter", "Trigun", "Black Butler", "Yu-Gi-Oh!",
         "Mobile Suit Gundam", "Solo Leveling",
         "Inuyasha", "Yu Yu Hakusho", "Ranma 1/2", "Hellsing",
+        "Bocchi the Rock!", "Lycoris Recoil",  # 2.7.0
         "Akira", "Oshi no Ko",  # 0.98.0
         "Urusei Yatsura", "Lupin III", "FLCL",
         "Durarara!!", "Panty & Stocking with Garterbelt", "Gintama",
@@ -27615,6 +27913,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Ghost of Tsushima",  # 1.11.0
         "Touhou Project", "Shantae", "BlazBlue",  # 2.1.0
         "Xenoblade Chronicles", "Valkyria Chronicles", "Magic: The Gathering",
+        "Tales series", "Xenosaga",  # 2.7.0
         "Ace Attorney", "The Rising of the Shield Hero", "A Certain Scientific Railgun",
         "Destiny",  # 1.2.0 -- Mara Sov
         "Ratchet & Clank", "Spyro",

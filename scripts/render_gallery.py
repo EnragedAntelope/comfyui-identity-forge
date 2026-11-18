@@ -1,7 +1,8 @@
 """Render, record and publish the gallery images for roster entries.
 
-The three galleries show one image per cosplayer, archetype and creature.
-Keeping ~2,200 of those honest by hand is not possible, so the build is
+The galleries show one image per cosplayer, archetype and creature, plus a set
+of fixed-seed people from the plain Identity Forge node (``PEOPLE``).
+Keeping thousands of those honest by hand is not possible, so the build is
 content-addressed: every image records a hash of the prose that produced it,
 and an entry whose prose has changed (its own text, or an engine change) is
 reported stale until it is re-rendered.
@@ -77,7 +78,24 @@ SEED_FORMULA = "int(sha256(name)[:15], 16)"
 #: workflow uses, so originals land beside their hand-run renders.
 ORIGINALS_PREFIX = "identityforge"
 
-KINDS = ("cosplay", "archetypes", "creatures")
+KINDS = ("cosplay", "archetypes", "creatures", "people")
+
+#: The people gallery (2.7.0): the plain Identity Forge node, no preset node, every
+#: widget at its schema default except the gender. Seeds were scouted so the set
+#: spans age, outfit style and indoor/outdoor places; an engine change can move what
+#: a seed draws, and the prose hash then reports the tile stale. No gallery pins
+#: apply, so a card's seed and gender reproduce its prompt on a fresh node.
+PEOPLE: dict[str, dict[str, Any]] = {
+    f"Sample {number:02d}": {"seed": seed, "widgets": {"gender": gender}}
+    for number, (seed, gender) in enumerate((
+        (43, "Female"), (82, "Male"), (4, "Female"), (59, "Male"),
+        (7, "Female"), (73, "Male"), (11, "Female"), (76, "Male"),
+        (50, "Female"), (61, "Male"), (58, "Female"), (83, "Male"),
+        (27, "Female"), (30, "Male"), (19, "Female"), (37, "Male"),
+        (6, "Female"), (86, "Male"), (70, "Female"), (74, "Male"),
+        (62, "Female"), (46, "Male"), (52, "Female"), (23, "Male"),
+    ), 1)
+}
 
 #: Widget values, mirrored from the workflows the gallery images were rendered
 #: with. Every one is checked against the node's own option list before use, so
@@ -368,6 +386,8 @@ def entries_for(kind: str) -> dict[str, dict]:
         from data.creatures import CREATURES
 
         return CREATURES
+    if kind == "people":
+        return PEOPLE
     raise RenderError(f"Unknown kind: {kind!r}")
 
 
@@ -396,12 +416,12 @@ def entry_hash(kind: str, name: str, reroll: int = 0) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
-def record_reroll(name: str, record: dict) -> int:
+def record_reroll(kind: str, name: str, record: dict) -> int:
     """The ``--reroll`` a manifest record was rendered with (0 when it has no seed)."""
-    return record.get("seed", entry_seed(name)) - entry_seed(name)
+    return record.get("seed", entry_seed(kind, name)) - entry_seed(kind, name)
 
 
-def entry_seed(name: str, reroll: int = 0) -> int:
+def entry_seed(kind: str, name: str, reroll: int = 0) -> int:
     """Deterministic per entry, so the same entry always re-renders the same person.
 
     ``reroll`` re-draws a single bad tile without touching the data. The seed
@@ -410,7 +430,11 @@ def entry_seed(name: str, reroll: int = 0) -> int:
     in profile against a window shows neither the mask nor the face. A non-zero
     reroll is recorded in the manifest as an explicit ``seed``, because a tile
     nobody can reproduce is worse than a tile nobody likes.
+
+    A people sample's seed is its own fixed one, shown on its card.
     """
+    if kind == "people":
+        return PEOPLE[name]["seed"] + reroll
     return int(hashlib.sha256(name.encode("utf-8")).hexdigest()[:15], 16) + reroll
 
 
@@ -468,7 +492,7 @@ def survey(kinds: tuple[str, ...] = KINDS) -> dict[str, dict[str, list[str]]]:
             record = recorded.get(name)
             if record is None:
                 missing.append(name)
-            elif record.get("hash") != entry_hash(kind, name, record_reroll(name, record)):
+            elif record.get("hash") != entry_hash(kind, name, record_reroll(kind, name, record)):
                 stale.append(name)
             # 1.10.0: rendered but never pushed to gh-pages, which --check used to
             # pass. A record without the key predates it: published.
@@ -566,7 +590,14 @@ def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
     from nodes.identity_forge_cosplayer import IdentityForgeCosplayer
     from nodes.identity_forge_creature import IdentityForgeCreature
 
-    seed = entry_seed(name, reroll)
+    seed = entry_seed(kind, name, reroll)
+    if kind == "people":
+        widgets = PEOPLE[name]["widgets"]
+        _check_options(IdentityForge, widgets)
+        forge_kwargs = {spec.id: spec.default for spec in IdentityForge.define_schema().inputs
+                        if hasattr(spec, "default")}
+        forge_kwargs.update(seed=seed, archetype_json="", **widgets)
+        return _forged_prose(IdentityForge, forge_kwargs, kind, name)
     if kind == "cosplay":
         _check_options(IdentityForgeCosplayer, COSPLAYER_WIDGETS)
         preset = IdentityForgeCosplayer.execute(
@@ -595,11 +626,28 @@ def resolve_prose(kind: str, name: str, reroll: int = 0) -> str:
         forge_kwargs["gender"] = _GALLERY_GENDER[kind][name]
     if name in _GALLERY_POSE.get(kind, {}):
         forge_kwargs["pose"] = _GALLERY_POSE[kind][name]
-    forged = IdentityForge.execute(**forge_kwargs)
-    prose = _unwrap(forged)[0]
+    return _forged_prose(IdentityForge, forge_kwargs, kind, name)
+
+
+def _forged_prose(forge_class: Any, forge_kwargs: dict[str, Any], kind: str, name: str) -> str:
+    prose = _unwrap(forge_class.execute(**forge_kwargs))[0]
     if not isinstance(prose, str) or not prose.strip():
         raise RenderError(f"{kind}/{name}: the engine produced no prose")
     return prose
+
+
+def people_card(name: str) -> dict[str, Any]:
+    """A people sample's card: its seed, the widgets it pins, and its full prompt.
+
+    Read by ``gallery/people/build_manifest.py``. Honours a recorded ``--reroll``, so
+    the card always names the seed its image was rendered with.
+    """
+    record = load_manifest()["entries"].get("people", {}).get(name, {})
+    reroll = record_reroll("people", name, record)
+    seed = entry_seed("people", name, reroll)
+    pins = ", ".join(f"{key} {value}" for key, value in PEOPLE[name]["widgets"].items())
+    return {"seed": seed, "settings": f"seed {seed}, {pins}",
+            "prompt": resolve_prose("people", name, reroll)}
 
 
 def positive_prompt(prose: str, settings: dict[str, Any]) -> str:
@@ -815,7 +863,7 @@ def render_one(client: ComfyClient, kind: str, name: str, settings: dict[str, An
     stem = normalize_name(name)
     prose = resolve_prose(kind, name, reroll)
     graph = build_graph(
-        positive_prompt(prose, settings), entry_seed(name, reroll), settings,
+        positive_prompt(prose, settings), entry_seed(kind, name, reroll), settings,
         save_originals, stem,
     )
     prompt_id = client.submit(graph, front=front)
@@ -1055,7 +1103,7 @@ def main(argv: list[str] | None = None) -> int:
                     record = recorded.get(name)
                     if record is None:
                         continue
-                    fresh = entry_hash(kind, name, record_reroll(name, record))
+                    fresh = entry_hash(kind, name, record_reroll(kind, name, record))
                     if record.get("hash") != fresh:
                         record["hash"] = fresh
                         moved += 1
@@ -1100,12 +1148,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.dry_run:
             for kind, name in targets:
                 prose = resolve_prose(kind, name, args.reroll)
-                print(f"\n=== {kind} / {name}  (seed {entry_seed(name, args.reroll)}) ===")
+                print(f"\n=== {kind} / {name}  (seed {entry_seed(kind, name, args.reroll)}) ===")
                 print(positive_prompt(prose, settings))
             print(f"\n--- graph for {targets[0][1]} ---")
             print(json.dumps(
                 build_graph(positive_prompt(resolve_prose(*targets[0], args.reroll), settings),
-                            entry_seed(targets[0][1], args.reroll), settings,
+                            entry_seed(*targets[0], args.reroll), settings,
                             args.save_originals, targets[0][1]),
                 indent=2,
             ))
@@ -1149,7 +1197,7 @@ def main(argv: list[str] | None = None) -> int:
                 record = {"hash": entry_hash(kind, name, args.reroll), "rendered": today,
                           "published": False}
                 if args.reroll:
-                    record["seed"] = entry_seed(name, args.reroll)
+                    record["seed"] = entry_seed(kind, name, args.reroll)
                 # Reload first: another run may have saved since this one started, and
                 # writing back a stale copy would drop its records (2.4.0).
                 fresh = load_manifest()

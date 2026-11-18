@@ -8,6 +8,8 @@ Browse the galleries: [cosplay](https://enragedantelope.github.io/comfyui-identi
 [archetypes](https://enragedantelope.github.io/comfyui-identity-forge/gallery/archetypes/) ·
 [creatures](https://enragedantelope.github.io/comfyui-identity-forge/gallery/creatures/) — every roster
 entry with a sample render, searchable by name and franchise, each linked to the exact workflow it was made with.
+The [people](https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/) gallery shows random people
+from the plain node, each card with its seed and the full prompt.
 
 ## Why Identity Forge?
 
@@ -85,7 +87,7 @@ randomized identities, so your own results will vary:
 
 ### Sample outputs
 
-**Identity Forge** — random people:
+**Identity Forge** - random people ([more, with seeds and prompts](https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/)):
 
 <table>
   <tr>

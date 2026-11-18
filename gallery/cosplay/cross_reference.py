@@ -7,10 +7,10 @@ Read-only. Writes ``missing.txt`` / ``orphans.txt`` beside this script (both
 git-ignored) and prints a summary. Deletes nothing, publishes nothing.
 
 =============================================================================
- THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/cosplay/ - gallery/archetypes/ - gallery/creatures/
+ THIS FILE IS ONE OF FOUR NEAR-IDENTICAL COPIES
+ gallery/cosplay/ - gallery/archetypes/ - gallery/creatures/ - gallery/people/
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
- it to the other two (see gallery/README.md).
+ it to the other three (see gallery/README.md).
 =============================================================================
 """
 from __future__ import annotations
@@ -23,7 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-# === GALLERY CONFIG - the only part that differs between the three copies ====
+# === GALLERY CONFIG - the only part that differs between the four copies ====
 GALLERY_KIND = "cosplay"
 # ============================================================================
 

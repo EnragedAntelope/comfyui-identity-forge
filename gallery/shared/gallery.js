@@ -1,6 +1,6 @@
 /* =============================================================
    Identity Forge - Sample Gallery Script
-   One file for the cosplay, archetype and creature galleries.
+   One file for every gallery page.
    Lazy-loading image grid with search, lightbox, keyboard nav.
    ============================================================= */
 
@@ -183,6 +183,7 @@
 
     card.appendChild(wrapper);
     card.appendChild(nameEl);
+    if (entry.prompt) card.appendChild(createPromptBlock(entry));
 
     // Click handler
     if (entry.has_image) {
@@ -196,6 +197,43 @@
     }
 
     return card;
+  }
+
+  /* People gallery (2.7.0): a sample has no name worth showing, so its card carries
+     the seed and settings, and the prompt the node wrote with a copy button. */
+  function createPromptBlock(entry) {
+    const block = document.createElement('div');
+    block.className = 'card-prompt';
+    if (entry.settings) {
+      const settings = document.createElement('div');
+      settings.className = 'card-settings';
+      settings.textContent = entry.settings;
+      block.appendChild(settings);
+    }
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+    summary.textContent = 'Prompt';
+    const text = document.createElement('p');
+    text.textContent = entry.prompt;
+    const copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'btn-secondary card-copy';
+    copy.textContent = 'Copy prompt';
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(entry.prompt);
+        copy.textContent = 'Copied';
+      } catch (e) {
+        copy.textContent = 'Copy failed';
+      }
+      setTimeout(() => { copy.textContent = 'Copy prompt'; }, 1500);
+    });
+    details.append(summary, text, copy);
+    block.appendChild(details);
+    // Clicks and keys in here must not open the lightbox.
+    block.addEventListener('click', (e) => e.stopPropagation());
+    block.addEventListener('keydown', (e) => e.stopPropagation());
+    return block;
   }
 
   // ── Lazy Loading ───────────────────────────────────────
@@ -252,7 +290,8 @@
     if (state.onlyMissing) list = list.filter((e) => !e.has_image);
     if (state.onlyNew) list = list.filter(isNew);
     if (state.searchTerm) {
-      list = list.filter((e) => e.name.toLowerCase().includes(state.searchTerm));
+      list = list.filter((e) => (e.name + ' ' + (e.prompt || '')).toLowerCase()
+        .includes(state.searchTerm));
     }
 
     // The manifest is already name-sorted, so A-Z needs no work; sorting a copy
