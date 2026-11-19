@@ -232,8 +232,7 @@ def _character_fingerprint(vault_root: Path | str, name: str) -> Any:
     cached ``character_json`` instead of re-reading the file. Folding the
     selected entry's mtime + size into :meth:`fingerprint_inputs` makes a
     changed (or now-missing) file force a cache miss; an unchanged file still
-    caches normally, unlike the NaN pattern the other preset nodes use (which
-    disables caching on every queue, not only on a real change).
+    caches normally.
     """
     try:
         entry = _entry_dir(Path(vault_root), name)
@@ -312,12 +311,12 @@ if _COMFY_AVAILABLE:
             # 1.5.5: see _character_fingerprint. Folds the SELECTED entry's
             # mtime+size into the cache key so an Overwrite/rename/delete that
             # left the `character` widget unchanged still invalidates the cache.
-            # 2.6.0: a random pick rides an auto-advancing seed, which ComfyUI#11905
-            # can serve stale from cache; NaN never equals itself, so it always re-runs
-            # (cheap: one file read, and identical output keeps downstream cached).
-            if kwargs.get("character") == _RANDOM:
-                return float("nan")
-            return _character_fingerprint(_vault_root(), kwargs.get("character", _NO_CHARACTERS))
+            # 2.7.1: a random pick folds in WHICH entry the seed lands on, so a save or
+            # delete that moves the pick re-runs; the seed itself is already in the key.
+            root = _vault_root()
+            name = resolve_selection(root, kwargs.get("character", _NO_CHARACTERS),
+                                     int(kwargs.get("seed", 0) or 0))
+            return (name, _character_fingerprint(root, name))
 
         @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
