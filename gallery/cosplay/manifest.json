@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "gallery": "cosplay",
-  "generated": "2026-11-01T08:00:20.339917",
-  "version": "2.4.0",
+  "generated": "2026-11-18T22:05:35.866985",
+  "version": "2.7.0",
   "releases": [
     "0.5.0",
     "0.5.1",
@@ -132,10 +132,11 @@
     "1.11.0",
     "2.1.0",
     "2.2.0",
-    "2.3.0"
+    "2.3.0",
+    "2.7.0"
   ],
-  "total_entries": 2160,
-  "entries_with_images": 2160,
+  "total_entries": 2187,
+  "entries_with_images": 2187,
   "entries_missing_images": 0,
   "missing": [],
   "entries": [
@@ -490,6 +491,14 @@
       "group": "Food Wars",
       "added": "0.79.0",
       "image": "images/Alice Nakiri.jpeg"
+    },
+    {
+      "name": "Alisa Bosconovitch",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tekken",
+      "added": "2.7.0",
+      "image": "images/Alisa Bosconovitch.jpeg"
     },
     {
       "name": "Alita",
@@ -1554,6 +1563,14 @@
       "group": "Masters of the Universe",
       "added": "0.17.0",
       "image": "images/Beast Man.jpeg"
+    },
+    {
+      "name": "Beatrix (Final Fantasy)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Final Fantasy",
+      "added": "2.7.0",
+      "image": "images/Beatrix (Final Fantasy).jpeg"
     },
     {
       "name": "Beerus",
@@ -2660,6 +2677,14 @@
       "image": "images/Celes Chere.jpeg"
     },
     {
+      "name": "Celestia Ludenberg",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Danganronpa",
+      "added": "2.7.0",
+      "image": "images/Celestia Ludenberg.jpeg"
+    },
+    {
       "name": "Cell",
       "has_image": true,
       "gender": "Male",
@@ -2674,6 +2699,14 @@
       "group": "Durarara!!",
       "added": "1.0.0",
       "image": "images/Celty Sturluson.jpeg"
+    },
+    {
+      "name": "Cerebella",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Skullgirls",
+      "added": "2.7.0",
+      "image": "images/Cerebella.jpeg"
     },
     {
       "name": "Cersei Lannister",
@@ -2876,6 +2909,14 @@
       "image": "images/Chief Chirpa.jpeg"
     },
     {
+      "name": "Chisato Nishikigi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Lycoris Recoil",
+      "added": "2.7.0",
+      "image": "images/Chisato Nishikigi.jpeg"
+    },
+    {
       "name": "Chizuru Mizuhara",
       "has_image": true,
       "gender": "Female",
@@ -2970,6 +3011,14 @@
       "group": "Cinderella",
       "added": "0.6.0",
       "image": "images/Cinderella.jpeg"
+    },
+    {
+      "name": "Cindy Aurum",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Final Fantasy",
+      "added": "2.7.0",
+      "image": "images/Cindy Aurum.jpeg"
     },
     {
       "name": "Circe",
@@ -4212,6 +4261,14 @@
       "image": "images/E. Honda.jpeg"
     },
     {
+      "name": "EVA (Metal Gear)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Metal Gear",
+      "added": "2.7.0",
+      "image": "images/EVA (Metal Gear).jpeg"
+    },
+    {
       "name": "EVE (Stellar Blade)",
       "has_image": true,
       "gender": "Female",
@@ -4674,6 +4731,14 @@
       "group": "League of Legends",
       "added": "0.18.0",
       "image": "images/Evelynn.jpeg"
+    },
+    {
+      "name": "Evie Frye",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Assassin's Creed",
+      "added": "2.7.0",
+      "image": "images/Evie Frye.jpeg"
     },
     {
       "name": "Evil Queen",
@@ -5868,6 +5933,14 @@
       "image": "images/Gwen Tennyson.jpeg"
     },
     {
+      "name": "Gwenpool",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Marvel",
+      "added": "2.7.0",
+      "image": "images/Gwenpool.jpeg"
+    },
+    {
       "name": "Gyarados",
       "has_image": true,
       "gender": "Male",
@@ -6058,6 +6131,14 @@
       "group": "Masters of the Universe",
       "added": "0.16.0",
       "image": "images/He-Man.jpeg"
+    },
+    {
+      "name": "Heather Mason",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Silent Hill",
+      "added": "2.7.0",
+      "image": "images/Heather Mason.jpeg"
     },
     {
       "name": "Heavy (Team Fortress 2)",
@@ -6274,6 +6355,14 @@
       "group": "Dead or Alive",
       "added": "0.69.0",
       "image": "images/Hitomi.jpeg"
+    },
+    {
+      "name": "Hitori Gotoh",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Bocchi the Rock!",
+      "added": "2.7.0",
+      "image": "images/Hitori Gotoh.jpeg"
     },
     {
       "name": "Hoggish Greedly",
@@ -6610,6 +6699,14 @@
       "group": "Inspector Gadget",
       "added": "0.76.0",
       "image": "images/Inspector Gadget.jpeg"
+    },
+    {
+      "name": "Integra Hellsing",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hellsing",
+      "added": "2.7.0",
+      "image": "images/Integra Hellsing.jpeg"
     },
     {
       "name": "Inuyasha",
@@ -7364,6 +7461,14 @@
       "image": "images/Judge Dredd.jpeg"
     },
     {
+      "name": "Judith (Tales)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tales series",
+      "added": "2.7.0",
+      "image": "images/Judith (Tales).jpeg"
+    },
+    {
       "name": "Judy Alvarez",
       "has_image": true,
       "gender": "Female",
@@ -7490,6 +7595,14 @@
       "group": "Star Wars",
       "added": "0.21.0",
       "image": "images/K-2SO.jpeg"
+    },
+    {
+      "name": "KOS-MOS",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Xenosaga",
+      "added": "2.7.0",
+      "image": "images/KOS-MOS.jpeg"
     },
     {
       "name": "Ka D'Argo",
@@ -8202,6 +8315,14 @@
       "group": "Star Wars",
       "added": "0.21.0",
       "image": "images/Kuiil.jpeg"
+    },
+    {
+      "name": "Kula Diamond",
+      "has_image": true,
+      "gender": "Female",
+      "group": "The King of Fighters",
+      "added": "2.7.0",
+      "image": "images/Kula Diamond.jpeg"
     },
     {
       "name": "Kung Lao",
@@ -9130,6 +9251,14 @@
       "group": "Harry Potter",
       "added": "0.16.0",
       "image": "images/Luna Lovegood.jpeg"
+    },
+    {
+      "name": "Lunafreya Nox Fleuret",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Final Fantasy",
+      "added": "2.7.0",
+      "image": "images/Lunafreya Nox Fleuret.jpeg"
     },
     {
       "name": "Lune",
@@ -10204,6 +10333,14 @@
       "image": "images/Millia Rage.jpeg"
     },
     {
+      "name": "Mina Ashido",
+      "has_image": true,
+      "gender": "Female",
+      "group": "My Hero Academia",
+      "added": "2.7.0",
+      "image": "images/Mina Ashido.jpeg"
+    },
+    {
       "name": "Minato Namikaze",
       "has_image": true,
       "gender": "Male",
@@ -10290,6 +10427,14 @@
       "group": "Mass Effect",
       "added": "0.18.0",
       "image": "images/Miranda Lawson.jpeg"
+    },
+    {
+      "name": "Miriam (Bloodstained)",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Bloodstained",
+      "added": "2.7.0",
+      "image": "images/Miriam (Bloodstained).jpeg"
     },
     {
       "name": "Mirko",
@@ -11636,6 +11781,14 @@
       "image": "images/Papyrus.jpeg"
     },
     {
+      "name": "Parasoul",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Skullgirls",
+      "added": "2.7.0",
+      "image": "images/Parasoul.jpeg"
+    },
+    {
       "name": "Patrick Star",
       "has_image": true,
       "gender": "Male",
@@ -11730,6 +11883,14 @@
       "group": "Steven Universe",
       "added": "0.76.0",
       "image": "images/Peridot.jpeg"
+    },
+    {
+      "name": "Perona",
+      "has_image": true,
+      "gender": "Female",
+      "group": "One Piece",
+      "added": "2.7.0",
+      "image": "images/Perona.jpeg"
     },
     {
       "name": "Peter Griffin",
@@ -12844,6 +13005,14 @@
       "image": "images/Rindou Kobayashi.jpeg"
     },
     {
+      "name": "Rinoa Heartilly",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Final Fantasy",
+      "added": "2.7.0",
+      "image": "images/Rinoa Heartilly.jpeg"
+    },
+    {
       "name": "Riptide",
       "has_image": true,
       "gender": "Female",
@@ -13836,6 +14005,14 @@
       "image": "images/Seraphine.jpeg"
     },
     {
+      "name": "Seras Victoria",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Hellsing",
+      "added": "2.7.0",
+      "image": "images/Seras Victoria.jpeg"
+    },
+    {
       "name": "Serena",
       "has_image": true,
       "gender": "Female",
@@ -14002,6 +14179,14 @@
       "group": "Sheena, Queen of the Jungle",
       "added": "0.71.0",
       "image": "images/Sheena.jpeg"
+    },
+    {
+      "name": "Sheena Fujibayashi",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tales series",
+      "added": "2.7.0",
+      "image": "images/Sheena Fujibayashi.jpeg"
     },
     {
       "name": "Sheeva",
@@ -15380,6 +15565,14 @@
       "image": "images/The BFG.jpeg"
     },
     {
+      "name": "The Boss",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Metal Gear",
+      "added": "2.7.0",
+      "image": "images/The Boss.jpeg"
+    },
+    {
       "name": "The Bride (Beatrix Kiddo)",
       "has_image": true,
       "gender": "Female",
@@ -15842,6 +16035,14 @@
       "group": "Borderlands",
       "added": "0.77.0",
       "image": "images/Tiny Tina.jpeg"
+    },
+    {
+      "name": "Tira",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Soul Calibur",
+      "added": "2.7.0",
+      "image": "images/Tira.jpeg"
     },
     {
       "name": "Titania",
@@ -16354,6 +16555,14 @@
       "group": "Top Cow",
       "added": "0.69.0",
       "image": "images/Velocity.jpeg"
+    },
+    {
+      "name": "Velvet Crowe",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Tales series",
+      "added": "2.7.0",
+      "image": "images/Velvet Crowe.jpeg"
     },
     {
       "name": "Venom",
@@ -16922,6 +17131,14 @@
       "group": "Soul Calibur",
       "added": "0.58.0",
       "image": "images/Xianghua.jpeg"
+    },
+    {
+      "name": "Y'shtola Rhul",
+      "has_image": true,
+      "gender": "Female",
+      "group": "Final Fantasy",
+      "added": "2.7.0",
+      "image": "images/Y'shtola Rhul.jpeg"
     },
     {
       "name": "Yae Miko",
