@@ -3,11 +3,11 @@
     python gallery/archetypes/build_manifest.py --images <dir>
 
 =============================================================================
- THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
+ THIS FILE IS ONE OF FOUR NEAR-IDENTICAL COPIES
  gallery/cosplay/build_manifest.py - gallery/archetypes/build_manifest.py -
- gallery/creatures/build_manifest.py
+ gallery/creatures/build_manifest.py - gallery/people/build_manifest.py
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
- it to the other two (see gallery/README.md).
+ it to the other three (see gallery/README.md).
 =============================================================================
 
 ``publish.py`` calls this against the images that are actually on ``gh-pages``,
@@ -28,7 +28,7 @@ from pathlib import Path
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, REPO_ROOT)
 
-# === GALLERY CONFIG - the only part that differs between the three copies ====
+# === GALLERY CONFIG - the only part that differs between the four copies ====
 GALLERY_KIND = "archetypes"
 #: This gallery's key in ``data/versions.py`` (written by
 #: ``scripts/stamp_versions.py``). Differs from GALLERY_KIND for cosplay,

@@ -1,6 +1,6 @@
 /* =============================================================
    Identity Forge - Sample Gallery Styles
-   One file for the cosplay, archetype and creature galleries
+   One file for every gallery page
    (gallery/shared/, published next to each page; see gallery/README.md).
    Dark theme, tuned for browsing a large lazy-loaded grid.
    ============================================================= */
@@ -261,6 +261,24 @@ a:hover { color: var(--accent-hover); }
   text-align: center;
   color: var(--text-primary);
 }
+
+/* People gallery: seed/settings line and the expandable prompt */
+.card-prompt {
+  padding: 0 0.6rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: default;
+}
+.card-settings { text-align: center; margin-bottom: 0.3rem; }
+.card-prompt summary { cursor: pointer; color: var(--accent); }
+.card-prompt p {
+  margin: 0.4rem 0;
+  max-height: 14rem;
+  overflow-y: auto;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+.card-copy { margin-top: 0.2rem; padding: 0.3rem 0.8rem; font-size: 0.75rem; }
 
 /* Missing image card styling */
 .gallery-card.missing {

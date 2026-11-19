@@ -1775,3 +1775,69 @@ the publish run failed with `400 description is too long` (CI on `main` was gree
 nothing earlier caught it). The description is trimmed, and
 `AdvertisedCharacterCountTests.test_registry_description_fits` now fails CI before a
 merge instead. 2.6.1 is the first Registry release carrying the 2.6.0 changes.
+
+## 2.7.0 - a roster batch, Sheena's three looks, and a people gallery
+
+**The batch.** A candidate list was compared against the
+roster by name and franchise. Most of it was gacha and deep-cut entries, or classes the
+backlog already closes; the shortlist that passed the iconic-and-specific bar shipped:
+Sheena Fujibayashi, Velvet Crowe, Judith (Tales series), Seras Victoria and Integra
+Hellsing, Rinoa Heartilly, Y'shtola Rhul, Lunafreya, Cindy Aurum, The Boss and EVA (Metal
+Gear), KOS-MOS, Perona, Celestia Ludenberg, Hitori Gotoh, Chisato Nishikigi, Tira,
+Gwenpool and Heather Mason. Visual canon came from Danbooru tag co-occurrence
+(`related_tag` / `counts`), not memory.
+
+**Sheena's default kimono is purple, not blue.** The supplied outfit tags said "blue
+kimono"; Danbooru has the purple tag on her posts and the blue one on none, so the entry
+follows the posts. Her two alternates are her other title looks: the red beach swimsuit (a
+string alternate) and the purple harem outfit with the short braided-bun hair (a dict
+alternate that also moves the hair).
+
+**Eight more after a canon check.** Kula Diamond, Parasoul, Cerebella, Miriam
+(Bloodstained), Mina Ashido (hero costume), Alisa Bosconovitch, Beatrix (Final Fantasy) and
+Evie Frye were held for the maintainer's descriptions, then cross-checked against Danbooru
+before shipping. The descriptions were wrong in places the tags settle: Parasoul wears a
+black turtleneck sweater dress and a cross necklace (not a military minidress) and her eyes
+are tagged yellow over red; Miriam has short dark hair (no braids); Cerebella has dark skin,
+teal hair and argyle stockings; Kula's bodysuit is purple under a red cropped jacket and
+chaps. Evie Frye has almost no tagged art, so her entry follows the description. Cerebella's
+aqua lipstick was dropped because no `lips_makeup` value carries it and a costume clause
+would contradict the random lip colour. Her living hat's arms did not render at the
+gallery's enhancer text_scale 1.5 or at 3.0; the 3.0 tile (dark skull hat, harlequin
+diamonds) is the one kept, and the arms are left as a model limit.
+
+**No tobacco or drugs.** Integra Hellsing's first tile showed her canonical cigar, which
+breaks the maintainer's standing rule. Her prop is gone, Popeye's corncob pipe became an
+open can of spinach and Sherlock Holmes' calabash pipe a brass magnifying glass, and
+`tests/validate_data.py` now rejects tobacco and drug words in every cosplayer, archetype,
+creature, slot and field string ("cigarette trousers" stays legal as a garment cut).
+
+**Nose prose.** A nose value with a trailing clause read "a wide with flared nostrils
+nose"; the noun now goes before the clause ("a wide nose with flared nostrils"). That is a
+prose-only change on 157 existing tiles, so they were accepted with
+`render_gallery.py --rehash` rather than re-rendered.
+
+**Pyra and Mythra corrected.** Re-sourced while checking the Xenoblade entries: Pyra's
+costume now leads with the green cross-shaped core crystal and the red-and-black bodysuit,
+short shorts and thighhighs, with crimson eyes and a short red bob; the Mythra overlay
+carries the white dress, golden eyes and hip-length blonde hair. `Mythra` is an alias.
+
+**Alicent Hightower declined.** Her look is a green Westerosi court gown; Cersei's gowns
+and the Medieval Monarch archetype already cover that silhouette, and the seven-pointed
+star pendant is too small to carry the character. Lucky Chloe, Kana Arima and Akko Kagari
+were skipped by the maintainer.
+
+**The people gallery.** The pack began as a random-person generator, but the galleries only
+showed roster entries, because an image is filed under an entry name. `gallery/people/`
+files it under a fixed seed instead: each sample is the plain Identity Forge node at its
+schema defaults plus a gender, and its card shows the seed and the full prompt with a copy
+button. The samples ride the existing render gate (`PEOPLE` in `scripts/render_gallery.py`,
+hashed over the prose like every other tile), so an engine change that moves a seed is
+reported stale. They deliberately take no gallery pins: the front-facing shot pin would
+make the card's seed lie about the prompt, so the seeds were scouted to draw front-facing,
+body-showing framings instead.
+
+A "same seed, one lock changed" row was considered and dropped: locking an early-drawn
+field (age) re-rolls nearly everything after it, so the pair would show two different
+people and teach the wrong thing. A late field (the location setting) does keep the
+person, which is worth a note in the usage docs if the row is ever wanted.

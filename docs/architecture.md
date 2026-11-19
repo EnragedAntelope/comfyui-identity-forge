@@ -70,7 +70,10 @@ committed docs are stale (suitable for CI / a pre-commit guard).
 ### Sample galleries (`gallery/`)
 
 Three sibling galleries — `cosplay/`, `archetypes/`, `creatures/` — each publishing a
-sample render per roster entry to GitHub Pages. Full detail in
+sample render per roster entry to GitHub Pages, plus `people/` (2.7.0): fixed seeds on the
+plain node at its defaults, each card showing its seed and prompt. The people samples take
+no gallery pins (not even the front-facing shot), because a card's seed and gender must
+reproduce its prompt on a fresh node; pick a seed that draws a usable shot instead. Full detail in
 [gallery/README.md](../gallery/README.md); the parts that constrain future work:
 
 - **Images live only on `gh-pages`.** `gallery/.gitignore` blocks `images/` on `main`, so
@@ -84,16 +87,16 @@ sample render per roster entry to GitHub Pages. Full detail in
 - **Publishing uses `git worktree`, not `stash` + `checkout`.** The current working tree
   is never touched. Deletion requires an explicit `--prune-orphans`, and even then only
   removes images matching no roster entry at all.
-- **The three copies are byte-identical outside their docstring and `GALLERY CONFIG`
-  block.** This is copy-and-adapt by design (three independently-published sites, no
-  shared package), so **an improvement to one script must be ported to the other two** —
+- **The four copies are byte-identical outside their docstring and `GALLERY CONFIG`
+  block.** This is copy-and-adapt by design (independently-published sites, no
+  shared package), so **an improvement to one script must be ported to the others** -
   `tests/test_gallery.py::CopiesStayInSyncTests` fails until it is. `BatchLauncherTests`
   guards the `.bat` launchers (every exit pauses, no parenthesised `if` blocks, ASCII
   only, CRLF via `.gitattributes`).
 - **The page assets are not copies (2.6.0).** `style.css` and `gallery.js` live once in
   `gallery/shared/`; each page links `../shared/` and every `publish.py` stages that folder
   to `gh-pages`. Details in gallery/README.md -> "Editing the page files".
-- Adding a fourth gallery is a folder copy plus one config block per file; the checklist
+- Adding another gallery is a folder copy plus one config block per file; the checklist
   is at the bottom of `gallery/README.md`.
 
 Pack is **V3 API** (`comfy_api.latest`), category `conditioning/character`, **zero deps**,

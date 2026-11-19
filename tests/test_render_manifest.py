@@ -173,16 +173,34 @@ class EntryHashTests(unittest.TestCase):
 
     def test_a_rerolled_tile_hashes_its_own_seed(self) -> None:
         name = "2B"
-        record = {"seed": render_gallery.entry_seed(name, 3)}
-        self.assertEqual(render_gallery.record_reroll(name, record), 3)
-        self.assertEqual(render_gallery.record_reroll(name, {}), 0)
+        record = {"seed": render_gallery.entry_seed("cosplay", name, 3)}
+        self.assertEqual(render_gallery.record_reroll("cosplay", name, record), 3)
+        self.assertEqual(render_gallery.record_reroll("cosplay", name, {}), 0)
+
+    def test_a_people_sample_uses_its_own_seed_on_a_stock_node(self) -> None:
+        # 2.7.0: a card names its seed and gender, and that pair alone must
+        # reproduce the prompt on a fresh node: no preset node, no gallery pins.
+        from nodes.identity_forge import IdentityForge
+
+        seeds = [(s["seed"], s["widgets"]["gender"]) for s in render_gallery.PEOPLE.values()]
+        self.assertEqual(len(seeds), len(set(seeds)), "two samples share a seed")
+        name, sample = next(iter(render_gallery.PEOPLE.items()))
+        self.assertEqual(render_gallery.entry_seed("people", name, 2), sample["seed"] + 2)
+        stock = {s.id: s.default for s in IdentityForge.define_schema().inputs
+                 if hasattr(s, "default")}
+        stock.update(seed=sample["seed"], archetype_json="", **sample["widgets"])
+        prose = IdentityForge.execute(**stock).args[0]
+        self.assertEqual(render_gallery.resolve_prose("people", name), prose)
+        card = render_gallery.people_card(name)
+        self.assertEqual(card["prompt"], prose)
+        self.assertIn(f"seed {sample['seed']}", card["settings"])
 
     def test_seed_is_deterministic_and_matches_the_recorded_formula(self) -> None:
         import hashlib
 
         name = "Jack Skellington"
         expected = int(hashlib.sha256(name.encode("utf-8")).hexdigest()[:15], 16)
-        self.assertEqual(render_gallery.entry_seed(name), expected)
+        self.assertEqual(render_gallery.entry_seed("cosplay", name), expected)
         self.assertEqual(
             render_gallery.load_manifest()["seed_formula"],
             render_gallery.SEED_FORMULA,

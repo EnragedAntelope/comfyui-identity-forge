@@ -37,7 +37,10 @@ except ImportError:
     PILImage = None
 
 GALLERY_ROOT = ROOT / "gallery"
-KINDS = ("cosplay", "archetypes", "creatures")
+KINDS = ("cosplay", "archetypes", "creatures", "people")
+#: The galleries built from a roster. The people gallery is fixed seeds: no release
+#: stamps and no downloadable cycle workflow (its cards carry the seed and prompt).
+ROSTER_KINDS = KINDS[:3]
 SCRIPTS = ("publish.py", "build_manifest.py", "build_gallery_images.py",
            "cross_reference.py")
 
@@ -396,7 +399,7 @@ class StagedFileTests(unittest.TestCase):
                     f"the file does not exist; it would be skipped silently")
 
     def test_every_gallery_ships_a_downloadable_workflow(self):
-        for kind in KINDS:
+        for kind in ROSTER_KINDS:
             pub = load(kind, "publish")
             workflows = [f for f in pub.PAGE_FILES if f.endswith(".json")]
             self.assertEqual(len(workflows), 1,
@@ -407,7 +410,7 @@ class StagedFileTests(unittest.TestCase):
 
     def test_the_page_links_to_the_workflow_it_stages(self):
         """The link and the staged filename are set in two different files."""
-        for kind in KINDS:
+        for kind in ROSTER_KINDS:
             pub = load(kind, "publish")
             workflow = next(f for f in pub.PAGE_FILES if f.endswith(".json"))
             page = (GALLERY_ROOT / kind / "index.html").read_text(encoding="utf-8")
@@ -599,7 +602,7 @@ class ReleaseStampTests(unittest.TestCase):
         self.assertEqual({k: added["cosplayers"][k] for k in before}, before)
 
     def test_the_manifest_carries_what_the_sort_needs(self):
-        for kind in KINDS:
+        for kind in ROSTER_KINDS:
             mod = load(kind, "build_manifest")
             with self.subTest(kind):
                 self.assertTrue(mod.pack_version())

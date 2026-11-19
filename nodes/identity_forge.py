@@ -3363,7 +3363,9 @@ def _format_prose(
         eye_desc = _words(g("eye_color"), g("eye_shape"))
         features.append(eye_desc if _EYE_PART_RE.search(eye_desc) else f"{eye_desc} eyes")
     if g("nose"):
-        features.append(_an(g("nose"), "nose"))
+        # "wide with flared nostrils" -> "a wide nose with flared nostrils", not "...nostrils nose".
+        shape, sep, rest = g("nose").partition(" with ")
+        features.append(_an(shape, "nose") + (sep + rest if sep else ""))
     if g("lips"):
         features.append(g("lips") + " lips")
     if g("eyebrows"):

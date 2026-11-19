@@ -144,6 +144,7 @@ const COSPLAYER_FRANCHISES = {
     "Veronica Lodge"
   ],
   "Assassin's Creed": [
+    "Evie Frye",
     "Ezio Auditore",
     "Kassandra"
   ],
@@ -297,12 +298,18 @@ const COSPLAYER_FRANCHISES = {
   "Bloodshot": [
     "Bloodshot"
   ],
+  "Bloodstained": [
+    "Miriam (Bloodstained)"
+  ],
   "Bob's Burgers": [
     "Bob Belcher",
     "Gene Belcher",
     "Linda Belcher",
     "Louise Belcher",
     "Tina Belcher"
+  ],
+  "Bocchi the Rock!": [
+    "Hitori Gotoh"
   ],
   "Borderlands": [
     "Amara",
@@ -626,6 +633,7 @@ const COSPLAYER_FRANCHISES = {
     "Momo Ayase"
   ],
   "Danganronpa": [
+    "Celestia Ludenberg",
     "Chiaki Nanami",
     "Junko Enoshima",
     "Monokuma",
@@ -944,19 +952,23 @@ const COSPLAYER_FRANCHISES = {
     "Aerith Gainsborough",
     "Auron",
     "Barret Wallace",
+    "Beatrix (Final Fantasy)",
     "Cactuar",
     "Cecil Harvey",
     "Celes Chere",
     "Chocobo",
+    "Cindy Aurum",
     "Cloud Strife",
     "Fran",
     "Kain Highwind",
     "Kefka Palazzo",
     "Lightning",
     "Lulu",
+    "Lunafreya Nox Fleuret",
     "Moogle",
     "Noctis",
     "Rikku",
+    "Rinoa Heartilly",
     "Rosa Farrell",
     "Rydia",
     "Sephiroth",
@@ -968,6 +980,7 @@ const COSPLAYER_FRANCHISES = {
     "Ultros",
     "Vincent Valentine",
     "Vivi Ornitier",
+    "Y'shtola Rhul",
     "Yuffie Kisaragi",
     "Yuna",
     "Zidane"
@@ -1214,7 +1227,9 @@ const COSPLAYER_FRANCHISES = {
     "Pinhead"
   ],
   "Hellsing": [
-    "Alucard (Hellsing)"
+    "Alucard (Hellsing)",
+    "Integra Hellsing",
+    "Seras Victoria"
   ],
   "Hercules": [
     "Aphrodite (Hercules)",
@@ -1530,6 +1545,9 @@ const COSPLAYER_FRANCHISES = {
   "Lupin III": [
     "Fujiko Mine"
   ],
+  "Lycoris Recoil": [
+    "Chisato Nishikigi"
+  ],
   "Mad Max": [
     "Immortan Joe",
     "Imperator Furiosa",
@@ -1614,6 +1632,7 @@ const COSPLAYER_FRANCHISES = {
     "Gorgon",
     "Green Goblin",
     "Groot",
+    "Gwenpool",
     "Hawkeye",
     "Hela",
     "Hellcat",
@@ -1796,8 +1815,10 @@ const COSPLAYER_FRANCHISES = {
     "Megamind"
   ],
   "Metal Gear": [
+    "EVA (Metal Gear)",
     "Quiet",
-    "Solid Snake"
+    "Solid Snake",
+    "The Boss"
   ],
   "Metroid": [
     "Samus Aran (Power Suit)",
@@ -1907,6 +1928,7 @@ const COSPLAYER_FRANCHISES = {
     "Hawks",
     "Himiko Toga",
     "Midnight (My Hero Academia)",
+    "Mina Ashido",
     "Mirko",
     "Momo Yaoyorozu",
     "Mt. Lady",
@@ -1984,6 +2006,7 @@ const COSPLAYER_FRANCHISES = {
     "Monkey D. Luffy",
     "Nami",
     "Nico Robin",
+    "Perona",
     "Portgas D. Ace",
     "Roronoa Zoro",
     "Sanji",
@@ -2318,6 +2341,7 @@ const COSPLAYER_FRANCHISES = {
     "Shrek"
   ],
   "Silent Hill": [
+    "Heather Mason",
     "Nurse (Silent Hill)",
     "Pyramid Head"
   ],
@@ -2327,6 +2351,10 @@ const COSPLAYER_FRANCHISES = {
   "Sinbad: Legend of the Seven Seas": [
     "Eris",
     "Sinbad"
+  ],
+  "Skullgirls": [
+    "Cerebella",
+    "Parasoul"
   ],
   "Sleeping Beauty": [
     "Aurora",
@@ -2360,6 +2388,7 @@ const COSPLAYER_FRANCHISES = {
     "Siegfried Schtauffen",
     "Sophitia Alexandra",
     "Taki",
+    "Tira",
     "Voldo",
     "Xianghua",
     "Yoshimitsu"
@@ -2662,6 +2691,11 @@ const COSPLAYER_FRANCHISES = {
     "Shredder",
     "Splinter"
   ],
+  "Tales series": [
+    "Judith (Tales)",
+    "Sheena Fujibayashi",
+    "Velvet Crowe"
+  ],
   "Tangled": [
     "Flynn Rider",
     "Rapunzel"
@@ -2686,6 +2720,7 @@ const COSPLAYER_FRANCHISES = {
     "Spy (Team Fortress 2)"
   ],
   "Tekken": [
+    "Alisa Bosconovitch",
     "Anna Williams",
     "Asuka Kazama",
     "Azucena Ortiz",
@@ -2813,6 +2848,7 @@ const COSPLAYER_FRANCHISES = {
     "Athena Asamiya",
     "Iori Yagami",
     "K'",
+    "Kula Diamond",
     "Kyo Kusanagi",
     "Leona Heidern",
     "Mai Shiranui",
@@ -3171,6 +3207,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Xenoblade Chronicles": [
     "Pyra"
+  ],
+  "Xenosaga": [
+    "KOS-MOS"
   ],
   "Youngblood": [
     "Riptide",

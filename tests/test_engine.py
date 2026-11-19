@@ -5631,6 +5631,14 @@ class ValidatorGuardTests(unittest.TestCase):
             self.assertEqual(
                 _duplicate_literal_keys(ROOT / filename, dict_name), [], filename)
 
+    def test_tobacco_guard_catches_smoking_items_but_not_garment_cuts(self):
+        from tests.validate_data import _SMOKING_RE
+        for bad in ("a thick lit cigar", "a corncob pipe", "a calabash pipe", "a hookah"):
+            self.assertTrue(_SMOKING_RE.search(bad), bad)
+        for ok in ("cigarette trousers", "a rusted lead pipe", "a blowdart pipe",
+                   "barbecue joint", "jointed limbs", "a bagpipe"):
+            self.assertIsNone(_SMOKING_RE.search(ok), ok)
+
 
 class UserOptionsIntegrationTests(unittest.TestCase):
     """user_options.json additions must be first-class: reachable by the random
@@ -6144,19 +6152,19 @@ class RandomPoolTests(unittest.TestCase):
         # at 1.1.0 (Task 5 roster pass, 1977 -> 1994 cosplayers) and again at
         # 1.2.0 (1994 -> 1999), again at 1.3.0 (1999 -> 2023) and again at
         # 1.4.0 (2023 -> 2052), at 1.5.0 (2052 -> 2057) and at 1.5.1 (2057 -> 2073) and at 1.8.0 (new
-        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0, at 2.1.0 and at 2.2.0 to
+        # cosplayers, one folded duplicate), at 1.9.0, at 1.11.0, at 2.1.0, at 2.2.0 and at 2.7.0 to
         # the new ground truth. It is expected to need refreshing every time the roster grows.
         expected = {
-            (_RANDOM_ANY, 0): 'Rhino',
-            (_RANDOM_ANY, 1): 'Enid Sinclair',
-            (_RANDOM_ANY, 2): 'Booster Gold',
-            (_RANDOM_ANY, 3): 'Kimberly Jackson',
-            (_RANDOM_ANY, 4): 'Kikyo',
-            (_RANDOM_FEMALE, 0): 'Rikku',
-            (_RANDOM_FEMALE, 1): 'Fire',
-            (_RANDOM_FEMALE, 2): 'Bloody Mary',
-            (_RANDOM_FEMALE, 3): 'Leone',
-            (_RANDOM_FEMALE, 4): 'Leeloo',
+            (_RANDOM_ANY, 0): 'Rebecca (Cyberpunk)',
+            (_RANDOM_ANY, 1): 'Emma Frost',
+            (_RANDOM_ANY, 2): 'Boba Fett',
+            (_RANDOM_ANY, 3): 'Kenny McCormick',
+            (_RANDOM_ANY, 4): 'Katma Tui',
+            (_RANDOM_FEMALE, 0): 'Ranni the Witch',
+            (_RANDOM_FEMALE, 1): 'Faith Connors',
+            (_RANDOM_FEMALE, 2): 'Blake Belladonna',
+            (_RANDOM_FEMALE, 3): 'Lapis Lazuli',
+            (_RANDOM_FEMALE, 4): 'Lady Tremaine',
             (_RANDOM_MALE, 0): 'Reverse-Flash',
             (_RANDOM_MALE, 1): 'Duff Killigan',
             (_RANDOM_MALE, 2): 'Bowser',

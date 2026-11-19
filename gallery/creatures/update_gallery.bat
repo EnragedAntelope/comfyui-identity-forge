@@ -8,8 +8,8 @@ REM
 REM  Entries you do NOT supply an image for are left completely alone.
 REM  Nothing is ever deleted by this script.
 REM
-REM  ONE OF THREE NEAR-IDENTICAL COPIES (cosplay / archetypes / creatures).
-REM  Fix a bug here and apply it to the other two - see gallery\README.md.
+REM  ONE OF FOUR NEAR-IDENTICAL COPIES (cosplay / archetypes / creatures / people).
+REM  Fix a bug here and apply it to the other three - see gallery\README.md.
 REM ==========================================================================
 setlocal
 set "GALLERY=creatures"

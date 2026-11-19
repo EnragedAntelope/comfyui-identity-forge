@@ -9,10 +9,10 @@ the gh-pages checkout, so the normal workflow never needs this script directly.
 Use it when you want a local optimized copy without publishing.
 
 =============================================================================
- THIS FILE IS ONE OF THREE NEAR-IDENTICAL COPIES
- gallery/cosplay/ - gallery/archetypes/ - gallery/creatures/
+ THIS FILE IS ONE OF FOUR NEAR-IDENTICAL COPIES
+ gallery/cosplay/ - gallery/archetypes/ - gallery/creatures/ - gallery/people/
  They differ ONLY in the GALLERY CONFIG block below. Fix a bug here and apply
- it to the other two (see gallery/README.md).
+ it to the other three (see gallery/README.md).
 =============================================================================
 """
 from __future__ import annotations
@@ -33,7 +33,7 @@ except ImportError:  # pragma: no cover - exercised by the dependency-free CI ru
 
 PILLOW_HINT = "Pillow is required to optimize images. Install it: pip install Pillow"
 
-# === GALLERY CONFIG - the only part that differs between the three copies ====
+# === GALLERY CONFIG - the only part that differs between the four copies ====
 GALLERY_KIND = "cosplay"
 # ============================================================================
 
