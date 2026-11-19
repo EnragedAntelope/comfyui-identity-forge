@@ -1787,11 +1787,35 @@ Gear), KOS-MOS, Perona, Celestia Ludenberg, Hitori Gotoh, Chisato Nishikigi, Tir
 Gwenpool and Heather Mason. Visual canon came from Danbooru tag co-occurrence
 (`related_tag` / `counts`), not memory.
 
-**Sheena's default kimono is purple, not blue.** The LoRA author's training tags said
-"blue kimono"; Danbooru has the purple tag on her posts and the blue one on none, so the
-entry follows the posts. Her two alternates are the LoRA's other looks: the red beach
-swimsuit (a string alternate) and the purple harem outfit with the short braided-bun hair
-(a dict alternate that also moves the hair).
+**Sheena's default kimono is purple, not blue.** The supplied outfit tags said "blue
+kimono"; Danbooru has the purple tag on her posts and the blue one on none, so the entry
+follows the posts. Her two alternates are her other title looks: the red beach swimsuit (a
+string alternate) and the purple harem outfit with the short braided-bun hair (a dict
+alternate that also moves the hair).
+
+**Eight more after a canon check.** Kula Diamond, Parasoul, Cerebella, Miriam
+(Bloodstained), Mina Ashido (hero costume), Alisa Bosconovitch, Beatrix (Final Fantasy) and
+Evie Frye were held for the maintainer's descriptions, then cross-checked against Danbooru
+before shipping. The descriptions were wrong in places the tags settle: Parasoul wears a
+black turtleneck sweater dress and a cross necklace (not a military minidress) and her eyes
+are tagged yellow over red; Miriam has short dark hair (no braids); Cerebella has dark skin,
+teal hair and argyle stockings; Kula's bodysuit is purple under a red cropped jacket and
+chaps. Evie Frye has almost no tagged art, so her entry follows the description. Cerebella's
+aqua lipstick was dropped because no `lips_makeup` value carries it and a costume clause
+would contradict the random lip colour. Her living hat's arms did not render at the
+gallery's enhancer text_scale 1.5 or at 3.0; the 3.0 tile (dark skull hat, harlequin
+diamonds) is the one kept, and the arms are left as a model limit.
+
+**No tobacco or drugs.** Integra Hellsing's first tile showed her canonical cigar, which
+breaks the maintainer's standing rule. Her prop is gone, Popeye's corncob pipe became an
+open can of spinach and Sherlock Holmes' calabash pipe a brass magnifying glass, and
+`tests/validate_data.py` now rejects tobacco and drug words in every cosplayer, archetype,
+creature, slot and field string ("cigarette trousers" stays legal as a garment cut).
+
+**Nose prose.** A nose value with a trailing clause read "a wide with flared nostrils
+nose"; the noun now goes before the clause ("a wide nose with flared nostrils"). That is a
+prose-only change on 157 existing tiles, so they were accepted with
+`render_gallery.py --rehash` rather than re-rendered.
 
 **Pyra and Mythra corrected.** Re-sourced while checking the Xenoblade entries: Pyra's
 costume now leads with the green cross-shaped core crystal and the red-and-black bodysuit,

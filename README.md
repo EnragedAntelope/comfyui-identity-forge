@@ -91,11 +91,11 @@ randomized identities, so your own results will vary:
 
 <table>
   <tr>
-    <td><img width="200" src="https://github.com/user-attachments/assets/5c6d404d-8cb8-4466-9575-21783c6f2287" /></td>
-    <td><img width="200" src="https://github.com/user-attachments/assets/82d0bb40-d3c6-47c9-83f1-6f33aa7e9260" /></td>
-    <td><img width="200" src="https://github.com/user-attachments/assets/9755ef20-0429-4d64-949f-2826a83cc2e7" /></td>
-    <td><img width="200" src="https://github.com/user-attachments/assets/15d61d28-d79a-4ad0-b17f-7346b83ab56c" /></td>
-    <td><img width="200" src="https://github.com/user-attachments/assets/00172e67-12f7-4518-b08f-663afce2a363" /></td>
+    <td><img width="200" src="https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/images/Sample%2003.jpeg" /></td>
+    <td><img width="200" src="https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/images/Sample%2010.jpeg" /></td>
+    <td><img width="200" src="https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/images/Sample%2015.jpeg" /></td>
+    <td><img width="200" src="https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/images/Sample%2018.jpeg" /></td>
+    <td><img width="200" src="https://enragedantelope.github.io/comfyui-identity-forge/gallery/people/images/Sample%2023.jpeg" /></td>
   </tr>
 </table>
 

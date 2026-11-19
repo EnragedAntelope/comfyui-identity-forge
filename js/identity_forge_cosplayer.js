@@ -144,6 +144,7 @@ const COSPLAYER_FRANCHISES = {
     "Veronica Lodge"
   ],
   "Assassin's Creed": [
+    "Evie Frye",
     "Ezio Auditore",
     "Kassandra"
   ],
@@ -296,6 +297,9 @@ const COSPLAYER_FRANCHISES = {
   ],
   "Bloodshot": [
     "Bloodshot"
+  ],
+  "Bloodstained": [
+    "Miriam (Bloodstained)"
   ],
   "Bob's Burgers": [
     "Bob Belcher",
@@ -948,6 +952,7 @@ const COSPLAYER_FRANCHISES = {
     "Aerith Gainsborough",
     "Auron",
     "Barret Wallace",
+    "Beatrix (Final Fantasy)",
     "Cactuar",
     "Cecil Harvey",
     "Celes Chere",
@@ -1923,6 +1928,7 @@ const COSPLAYER_FRANCHISES = {
     "Hawks",
     "Himiko Toga",
     "Midnight (My Hero Academia)",
+    "Mina Ashido",
     "Mirko",
     "Momo Yaoyorozu",
     "Mt. Lady",
@@ -2346,6 +2352,10 @@ const COSPLAYER_FRANCHISES = {
     "Eris",
     "Sinbad"
   ],
+  "Skullgirls": [
+    "Cerebella",
+    "Parasoul"
+  ],
   "Sleeping Beauty": [
     "Aurora",
     "Maleficent"
@@ -2710,6 +2720,7 @@ const COSPLAYER_FRANCHISES = {
     "Spy (Team Fortress 2)"
   ],
   "Tekken": [
+    "Alisa Bosconovitch",
     "Anna Williams",
     "Asuka Kazama",
     "Azucena Ortiz",
@@ -2837,6 +2848,7 @@ const COSPLAYER_FRANCHISES = {
     "Athena Asamiya",
     "Iori Yagami",
     "K'",
+    "Kula Diamond",
     "Kyo Kusanagi",
     "Leona Heidern",
     "Mai Shiranui",

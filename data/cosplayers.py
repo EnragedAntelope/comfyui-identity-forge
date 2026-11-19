@@ -11344,7 +11344,7 @@ COSPLAYERS: dict[str, dict] = {
         "signature": {"hair_color": "dirty blonde", "hair_length": "very short",
                       "facial_hair": "stubble", "eye_color": "blue-gray"},
         "physique": {"body_type": "stocky", "height": "short", "skin_tone": "tan"},
-        "prop": "a corncob pipe",
+        "prop": "an open can of spinach",
     },
     "Olive Oyl": {
         "franchise": "Popeye",
@@ -23720,7 +23720,7 @@ COSPLAYERS: dict[str, dict] = {
                    "Inverness cape worn over a tweed three-piece suit with a "
                    "waistcoat and watch chain, a high starched collar, and polished "
                    "leather ankle boots",
-        "prop": "a curved calabash pipe held in one hand",
+        "prop": "a brass magnifying glass held in one hand",
         "signature": {
             "hair_color": "dark brown",
             "hair_length": "very short",
@@ -27531,13 +27531,11 @@ COSPLAYERS: dict[str, dict] = {
         "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
                      "age": "18"},
     },
-    # --- 2.7.0: women's roster survey (a "female characters" spreadsheet, cut to the
-    # iconic, adult, distinct-silhouette names; canon checked against Danbooru tag
-    # co-occurrence and the series wikis). ---------------------------------------
+    # --- 2.7.0: roster batch (iconic, adult, distinct-silhouette names; canon checked
+    # against Danbooru tag co-occurrence and the series wikis). --------------------
     "Sheena Fujibayashi": {
-        # The three looks a maintainer-supplied LoRA trained on (Default, "Queen of the
-        # Beach", "You Look Great"). Its default tags said "blue kimono"; Danbooru has 21
-        # purple_kimono posts to 0 blue, so the kimono is purple here.
+        # Her three looks (Default, "Queen of the Beach", "You Look Great"). Danbooru has
+        # 21 purple_kimono posts to 0 blue, so the kimono is purple.
         "franchise": "Tales series",
         "gender": "Female",
         "costume": "a short purple kimono-style ninja top over a white bustier and a black "
@@ -27564,6 +27562,118 @@ COSPLAYERS: dict[str, dict] = {
                      "skin_tone": "fair", "age": "19"},
         "prop": "a fan of white paper ofuda charm cards inked with red seals",
         "aliases": ["Shihna Fujibayashi", "Tales of Symphonia"],
+    },
+    "Kula Diamond": {
+        "franchise": "The King of Fighters",
+        "gender": "Female",
+        "costume": "a skintight purple zip-front bodysuit, a cropped red leather jacket, "
+                   "leather chaps over the legs, a belt with a gold buckle, red fingerless "
+                   "gloves and boots",
+        "eyes": "crimson",
+        "signature": {"hair_color": "electric blue", "hair_length": "waist length",
+                      "hair_texture": "sleek straight", "hair_style": "blunt bangs"},
+        "physique": {"body_type": "petite and slim", "height": "short",
+                     "skin_tone": "very pale", "age": "18"},
+        "prop": "a swirled lollipop",
+    },
+    "Parasoul": {
+        "franchise": "Skullgirls",
+        "gender": "Female",
+        "costume": "a short black turtleneck sweater dress with long sleeves, a silver "
+                   "cross pendant necklace, white gloves, black thigh-high stockings and "
+                   "black heels",
+        "eyes": "golden yellow",
+        "signature": {"hair_color": "bright red", "hair_length": "hip length",
+                      "hair_texture": "sleek straight", "hair_style": "side-swept bangs"},
+        "physique": {"body_type": "hourglass", "height": "tall", "skin_tone": "fair",
+                     "age": "22"},
+        "prop": "a long closed black umbrella",
+        "aliases": ["Krieg"],
+    },
+    "Cerebella": {
+        "franchise": "Skullgirls",
+        "gender": "Female",
+        # Vice-Versa (the living hat) is the whole read; the arms are a render risk.
+        "costume": "a huge living hat with a skull emblem on the front and two enormous "
+                   "muscular arms growing from its sides, a short strapless dress with "
+                   "detached sleeves, black-and-white argyle thigh-high stockings, pointed "
+                   "thigh-high boots and a small white mark under one eye",
+        "signature": {"hair_color": "teal", "hair_length": "ear length",
+                      "eye_color": "emerald"},
+        "physique": {"body_type": "voluptuous", "height": "tall", "skin_tone": "warm brown",
+                     "age": "22"},
+        "aliases": ["Vice-Versa"],
+    },
+    "Miriam (Bloodstained)": {
+        "franchise": "Bloodstained",
+        "gender": "Female",
+        "costume": "glowing stained-glass rose tattoos across the chest, one shoulder and "
+                   "one thigh, a short dark blue frilled dress with a low neckline and a "
+                   "black corset waist, a single long blue detached sleeve on one arm and "
+                   "a black armored gauntlet on the other, and black knee boots",
+        "signature": {"hair_color": "jet black", "hair_length": "jaw length",
+                      "hair_style": "natural and unstyled", "eye_color": "bright blue"},
+        "physique": {"body_type": "slim", "height": "average height",
+                     "skin_tone": "very pale", "age": "20"},
+        "prop": "a slim longsword",
+        "aliases": ["Miriam", "Bloodstained: Ritual of the Night"],
+    },
+    "Mina Ashido": {
+        "franchise": "My Hero Academia",
+        "gender": "Female",
+        "costume": "smooth, flawless pink skin, two short curved yellow horns, a white "
+                   "domino mask, a skintight sleeveless bodysuit in a teal and purple "
+                   "camouflage pattern, an open tan vest trimmed with white fur, and "
+                   "purple and tan boots",
+        "eyes": "bright yellow irises on black sclera",
+        "signature": {"hair_color": "baby pink", "hair_length": "ear length",
+                      "hair_texture": "curly", "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "athletic", "height": "average height", "age": "18"},
+        "aliases": ["Pinky", "Alien Queen"],
+    },
+    "Alisa Bosconovitch": {
+        "franchise": "Tekken",
+        "gender": "Female",
+        "costume": "a fitted purple dress fading to violet with a high white collar and a "
+                   "blue rose brooch, an asymmetrical ruffled skirt, detached purple "
+                   "sleeves, white gloves, mismatched dark stockings, white heeled boots, "
+                   "a white flower hairpiece, and folded metallic mechanical wings at "
+                   "the back",
+        "eyes": "bright green",
+        "signature": {"hair_color": "baby pink", "hair_length": "chin length bob",
+                      "hair_texture": "sleek straight", "hair_style": "natural and unstyled"},
+        "physique": {"body_type": "slim", "height": "average height", "skin_tone": "fair",
+                     "age": "19"},
+        "aliases": ["Alisa Boskonovich"],
+    },
+    "Beatrix (Final Fantasy)": {
+        "franchise": "Final Fantasy",
+        "gender": "Female",
+        "costume": "an eyepatch over the right eye, a long open red coat over a sleeveless "
+                   "white top, silver shoulder armor and plate gauntlets, grey fingerless "
+                   "gloves, a loose brown belt with a large gold buckle slung at the hips, "
+                   "tights and tall silver armored boots",
+        "signature": {"hair_color": "chestnut", "hair_length": "mid back",
+                      "hair_texture": "thick and voluminous", "hair_style": "worn down",
+                      "eye_color": "medium brown"},
+        "physique": {"body_type": "athletic", "height": "tall", "skin_tone": "fair",
+                     "age": "28"},
+        "prop": "Save the Queen, a long ornate broadsword",
+        "aliases": ["Beatrix", "General Beatrix"],
+    },
+    "Evie Frye": {
+        "franchise": "Assassin's Creed",
+        "gender": "Female",
+        "costume": "a fitted charcoal-black Victorian frock coat with a deep hood and "
+                   "crimson-lined coat tails, a dark waistcoat over a white collared shirt, "
+                   "black trousers, knee-high laced leather boots and a leather bracer on "
+                   "the left forearm",
+        "signature": {"hair_color": "chestnut", "hair_length": "mid back",
+                      "hair_style": "braided bun", "eye_color": "hazel",
+                      "freckles_density": "scattered"},
+        "physique": {"body_type": "lean", "height": "average height", "skin_tone": "fair",
+                     "age": "20"},
+        "aliases": ["Assassin's Creed Syndicate"],
     },
     "Velvet Crowe": {
         "franchise": "Tales series",
@@ -27624,7 +27734,6 @@ COSPLAYERS: dict[str, dict] = {
                       "hair_style": "worn down", "eye_color": "bright blue"},
         "physique": {"body_type": "slender", "height": "tall", "skin_tone": "tan",
                      "age": "22"},
-        "prop": "a thick lit cigar trailing a thin ribbon of smoke",
         "aliases": ["Sir Integral Fairbrook Wingates Hellsing"],
     },
     "Rinoa Heartilly": {
@@ -27913,7 +28022,7 @@ _CATEGORY_FRANCHISES: dict[str, tuple[str, ...]] = {
         "Ghost of Tsushima",  # 1.11.0
         "Touhou Project", "Shantae", "BlazBlue",  # 2.1.0
         "Xenoblade Chronicles", "Valkyria Chronicles", "Magic: The Gathering",
-        "Tales series", "Xenosaga",  # 2.7.0
+        "Tales series", "Xenosaga", "Skullgirls", "Bloodstained",  # 2.7.0
         "Ace Attorney", "The Rising of the Shield Hero", "A Certain Scientific Railgun",
         "Destiny",  # 1.2.0 -- Mara Sov
         "Ratchet & Clank", "Spyro",

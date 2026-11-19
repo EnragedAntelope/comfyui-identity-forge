@@ -3,9 +3,9 @@
 
 # Cosplayer reference
 
-**2179 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
+**2187 characters.** Flags: `F`/`M` = source gender, `giant`/`tiny` = size scale, `masked` = full-face covering, `beast` = rendered as the animal itself (`body_plan: feral`), `+N alt` = extra costumes, `prop` = signature held item.
 
-## Anime & Manga (422)
+## Anime & Manga (423)
 
 ### Akame ga Kill
 
@@ -296,7 +296,7 @@
 ### Hellsing
 
 - **Alucard (Hellsing)** (M, prop)
-- **Integra Hellsing** (F, prop)
+- **Integra Hellsing** (F)
 - **Seras Victoria** (F, prop)
 
 ### High School DxD
@@ -430,6 +430,7 @@
 - **Hawks** (M)
 - **Himiko Toga** (F)
 - **Midnight (My Hero Academia)** (F, prop)
+- **Mina Ashido** (F)
 - **Mirko** (F)
 - **Momo Yaoyorozu** (F)
 - **Mt. Lady** (F, giant)
@@ -2835,7 +2836,7 @@
 - **Zorii Bliss** (F, masked, prop)
 - **Zuckuss** (M, masked)
 
-## Video Games (532)
+## Video Games (539)
 
 ### A Certain Scientific Railgun
 
@@ -2859,6 +2860,7 @@
 
 ### Assassin's Creed
 
+- **Evie Frye** (F)
 - **Ezio Auditore** (M)
 - **Kassandra** (F)
 
@@ -2898,6 +2900,10 @@
 ### Bloodborne
 
 - **Lady Maria** (F, prop)
+
+### Bloodstained
+
+- **Miriam (Bloodstained)** (F, prop)
 
 ### Borderlands
 
@@ -3076,6 +3082,7 @@
 - **Aerith Gainsborough** (F, prop)
 - **Auron** (M, prop)
 - **Barret Wallace** (M)
+- **Beatrix (Final Fantasy)** (F, prop)
 - **Cactuar** (M, tiny, beast)
 - **Cecil Harvey** (M)
 - **Celes Chere** (F)
@@ -3462,6 +3469,11 @@
 - **Nurse (Silent Hill)** (F, masked)
 - **Pyramid Head** (M, masked, prop)
 
+### Skullgirls
+
+- **Cerebella** (F)
+- **Parasoul** (F, prop)
+
 ### Sonic the Hedgehog
 
 - **Amy Rose** (F, masked, prop)
@@ -3585,6 +3597,7 @@
 
 ### Tekken
 
+- **Alisa Bosconovitch** (F)
 - **Anna Williams** (F)
 - **Asuka Kazama** (F)
 - **Azucena Ortiz** (F)
@@ -3610,6 +3623,7 @@
 - **Athena Asamiya** (F)
 - **Iori Yagami** (M)
 - **K'** (M)
+- **Kula Diamond** (F, prop)
 - **Kyo Kusanagi** (M)
 - **Leona Heidern** (F)
 - **Mai Shiranui** (F, prop)

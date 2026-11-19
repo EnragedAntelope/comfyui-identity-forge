@@ -1008,7 +1008,36 @@ def validate() -> list[str]:
         if band not in SKIN_TONE_BANDS:
             errors.append(f"ETHNICITY_REGION['{ethnicity}']: unknown band {band!r}")
 
+    # --- no tobacco or drugs anywhere in the prose (maintainer's standing rule) ---
+    for where, data in (("COSPLAYERS", COSPLAYERS), ("ARCHETYPES", ARCHETYPES),
+                        ("CREATURES", CREATURES), ("COSTUME_SLOTS", COSTUME_SLOTS),
+                        ("OUTFIT_DESCRIPTIONS", OUTFIT_DESCRIPTIONS),
+                        ("FIELD_DEFINITIONS", FIELD_DEFINITIONS)):
+        for path, text in _strings(data, where):
+            hit = _SMOKING_RE.search(text)
+            if hit:
+                errors.append(f"{path}: names {hit.group(0)!r} - no tobacco or drug items")
+
     return errors
+
+
+#: Tobacco and drug items. "cigarette trousers/pants" is a garment cut, not a cigarette.
+_SMOKING_RE = re.compile(
+    r"\b(?:cigars?|cigarillos?|cheroots?|cigarettes?(?! (?:trousers|pants|jeans|skirts?))|"
+    r"tobacco|vapes?|vaping|hookahs?|bongs?|marijuana|cannabis|opium|narcotics?|"
+    r"(?:corncob|calabash|briar|clay|tobacco|smoking) pipes?)\b", re.IGNORECASE)
+
+
+def _strings(value, path: str):
+    """Yield (path, text) for every string nested in dicts, lists and tuples."""
+    if isinstance(value, str):
+        yield path, value
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            yield from _strings(item, f"{path}[{key!r}]")
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            yield from _strings(item, path)
 
 
 def _archetype_lock_clashes() -> list[str]:

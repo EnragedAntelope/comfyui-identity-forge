@@ -23,15 +23,6 @@ that is what the Creature node is for.
 
 ## Under consideration
 
-**From the 2.7.0 candidate list, waiting on the maintainer's canon check** (each has an
-unsettled iconic look or a render risk): Kula Diamond, Parasoul, Miriam (Bloodstained), Mina
-Ashido (hero costume), Alisa Bosconovitch, Beatrix (FF9), Evie Frye (thin reference set),
-Cerebella (the living hat-arms are a render risk).
-
-**Engine prose:** a nose value with a trailing clause renders as "a wide with flared
-nostrils nose"; the noun belongs before the clause. A prose-only fix, so it needs
-`render_gallery.py --rehash`, not a re-render.
-
 **Engine and UX backlog** (found in the 1.6.0 review; its five fixes shipped in 1.7.0, and the
 tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
 `docs/history.md`):
