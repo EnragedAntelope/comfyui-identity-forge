@@ -257,13 +257,6 @@ if _COMFY_AVAILABLE:
             )
 
         @classmethod
-        def fingerprint_inputs(cls, **kwargs: Any) -> Any:
-            # 2.6.0: outfit_seed auto-advances (control_after_generate), and
-            # ComfyUI#11905 can serve a stale cached result for that; NaN never equals
-            # itself, so the node always re-runs. Identical prompts keep downstream cached.
-            return float("nan")
-
-        @classmethod
         def execute(cls, **kwargs: Any) -> "io.NodeOutput":
             prompts, labels = resolve_outfit_sheet(
                 kwargs.get("character_json", ""),

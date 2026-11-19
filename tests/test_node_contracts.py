@@ -1,8 +1,7 @@
 """Contracts every node class in ``nodes/`` keeps (2.6.0).
 
-These were per-node tests (the Turnaround's tooltip check) or memory-only rules, and
-the Outfit Sheet shipped in 2.3.0 with an auto-advancing ``outfit_seed`` and no cache
-buster. Walking every module means a new node is covered without anyone listing it.
+These were per-node tests (the Turnaround's tooltip check) or memory-only rules.
+Walking every module means a new node is covered without anyone listing it.
 """
 from __future__ import annotations
 
@@ -43,20 +42,14 @@ class NodeContractTests(unittest.TestCase):
                 self.assertTrue((output.tooltip or "").strip(),
                                 f"{name} output {output.display_name}")
 
-    def test_an_auto_advancing_widget_busts_the_cache(self):
-        """ComfyUI#11905 can serve a cached result after a control_after_generate
-        widget advances; such a node must define fingerprint_inputs (NaN when it
-        matters, see the seeded nodes and Vault Load's random pick)."""
+    def test_no_node_returns_a_nan_fingerprint(self):
+        """2.7.1: NaN never equals itself, and ComfyUI folds every ancestor's
+        fingerprint into a node's cache key, so one NaN re-runs the whole graph
+        downstream (sampler included) every queue. A seed is already in the key."""
         for name, cls in self.classes.items():
-            if any(getattr(spec, "control_after_generate", None)
-                   for spec in cls.define_schema().inputs):
-                self.assertIn("fingerprint_inputs", cls.__dict__, name)
-
-    def test_outfit_sheet_and_a_random_vault_pick_always_rerun(self):
-        self.assertTrue(math.isnan(
-            self.classes["IdentityForgeOutfitSheet"].fingerprint_inputs(outfit_seed=3)))
-        self.assertTrue(math.isnan(self.classes["IdentityForgeVaultLoad"].fingerprint_inputs(
-            character="(random saved character)", seed=3)))
+            if "fingerprint_inputs" in cls.__dict__:
+                value = cls.fingerprint_inputs(character="(random saved character)", seed=3)
+                self.assertFalse(isinstance(value, float) and math.isnan(value), name)
 
 
 if __name__ == "__main__":

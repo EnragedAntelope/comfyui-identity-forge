@@ -1841,3 +1841,18 @@ A "same seed, one lock changed" row was considered and dropped: locking an early
 field (age) re-rolls nearly everything after it, so the pair would show two different
 people and teach the wrong thing. A late field (the location setting) does keep the
 person, which is worth a note in the usage docs if the row is ever wanted.
+
+## 2.7.1 - downstream nodes cache again
+
+Contributed by sobakasu in PR #20. The seeded nodes (Identity Forge, Archetype, Cosplayer,
+Creature), the Outfit Sheet and a random Vault Load pick returned `float("nan")` from
+`fingerprint_inputs` as a workaround for ComfyUI#11905. That was wrong: ComfyUI builds a
+node's cache key from every ancestor's fingerprint (`comfy_execution/caching.py`,
+`get_node_signature`), and NaN never equals itself, so the sampler, VAE decode and everything
+else downstream re-ran on every queue even with a fixed seed. The old comment claiming identical
+output kept downstream cached described a cache ComfyUI does not have. A seed value is already
+part of the key, so an auto-advanced seed re-runs the node without any override.
+
+Vault Load keeps a fingerprint, now `(picked entry, its mtime+size)` for a random pick too, so a
+save or delete that moves the pick still re-runs. `tests/test_node_contracts.py` now fails any
+node that returns NaN. Random characters unchanged.
