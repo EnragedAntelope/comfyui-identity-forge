@@ -394,6 +394,19 @@ test("search matches from a word's start, quoted phrases, and the SEARCH_ALSO sy
     '"suit" finds bodysuits');
 });
 
+test("a plural query also finds the lone singular, and only as a whole word (2.8.0)", () => {
+  const find = (q) => REAL_ROSTER.filter((e) => __testing.matchesQuery(e, __testing.tokenize(q)));
+  const lone = (word) => (e) => new RegExp("(^|[^a-z0-9])" + word + "([^a-z0-9]|$)").test(e.haystack);
+  const bootOnly = REAL_ROSTER.filter((e) => lone("boot")(e) && !/boots/.test(e.haystack));
+  assert.ok(bootOnly.length > 0, "sanity: some entries say boot, never boots");
+  assert.ok(bootOnly.every((e) => find("boots").includes(e)), '"boots" finds a lone "boot"');
+  const pantherOnly = (e) => /panther/.test(e.haystack) && !/pant/.test(e.haystack.replace(/panther/g, ""))
+    && !/trousers|slacks|jeans|sweatpants|breeches/.test(e.haystack) && !e.name.toLowerCase().includes("pants");
+  assert.ok(!find("pants").some(pantherOnly), '"pants" must not reach "panther"');
+  assert.ok(!find("glasses").some((e) => lone("glass")(e) && !/glasses|sunglasses|spectacles|eyeglasses/.test(e.haystack)
+    && !e.name.toLowerCase().includes("glasses")), '"glasses" must not find "glass"');
+});
+
 test("reopening lands on the node's current pick, marked, instead of the top of the list", async () => {
   resetDom();
   __testing.__resetForTests();
@@ -434,6 +447,36 @@ test("Queue each queues one run per matching entry, then restores the pick", asy
     assert.equal(widget.value, "None", "the original pick is put back");
     picker.close();
   } finally {
+    delete app.queuePrompt;
+    stub.restore();
+  }
+});
+
+test("Queue random queues one matching entry without asking, then restores the pick (2.8.0)", async () => {
+  resetDom();
+  __testing.__resetForTests();
+  const stub = installFetchStub(rosterOkHandler);
+  const seen = [];
+  const originalConfirm = globalThis.confirm;
+  globalThis.confirm = () => { throw new Error("Queue random must not ask"); };
+  try {
+    const picker = await openPicker();
+    assert.equal(picker.queueRandomButton.style.display, "none", "hidden with no filter");
+    const widget = picker.config.node.widgets.find((w) => w.name === "character");
+    widget.value = "None";
+    app.queuePrompt = async () => { seen.push(widget.value); return true; };
+    picker.franchise = "Star Wars";
+    picker.renderGrid();
+    assert.equal(picker.queueRandomButton.style.display, "");
+    const names = picker.queueableEntries().map((e) => e.name);
+    picker.queueRandomButton.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(seen.length, 1);
+    assert.ok(names.includes(seen[0]), "the pick comes from the filtered set");
+    assert.equal(widget.value, "None", "the original pick is put back");
+    picker.close();
+  } finally {
+    globalThis.confirm = originalConfirm;
     delete app.queuePrompt;
     stub.restore();
   }

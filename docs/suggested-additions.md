@@ -27,14 +27,8 @@ that is what the Creature node is for.
 tight-shot legwear, free-text `held_item` and expression-sheet rows in 1.10.0, see
 `docs/history.md`):
 
-The gaze field and the noun-expression article both shipped in 2.0.0. Open, from the 2.5.0
-picker-search review (maintainer is considering them):
-
-- **Random from these** - a picker button that queues one run with a random pick from the
-  filtered set, a lighter option than Queue each.
-- **Plural search** - "boots" does not find a costume that says "boot" (word-start matching
-  already covers the reverse). Rare in practice; a naive trailing-s strip turns "glasses" into
-  "glass".
+The gaze field and the noun-expression article both shipped in 2.0.0; the two items from the
+2.5.0 picker-search review (Queue random, plural search) shipped in 2.8.0. Nothing open here.
 
 **Researched and skipped — do not re-survey.** Valorant, Apex Legends,
 Monster Hunter, Skyrim, Splatoon, FNAF, Among Us, Minecraft, Mortal Shell. Each is an armoured,

@@ -128,6 +128,68 @@ test("delete posts to the delete route with a JSON content type", async () => {
 });
 
 
+/* --- A refresh never swaps the pick for another character (2.8.0) -------- */
+test("a saved name this vault lacks survives a refresh; a placeholder moves to the first entry", async () => {
+  const node = await setup();
+  const charW = node.widgets.find((w) => w.name === "character");
+  const refreshBtn = node.widgets.find((w) => w.name === "🔄 Refresh");
+  charW.value = "From another machine";
+  refreshBtn.callback();
+  await flush();
+  assert.equal(charW.value, "From another machine", "must not silently recall someone else");
+  charW.value = "(no characters saved)";
+  refreshBtn.callback();
+  await flush();
+  assert.equal(charW.value, SAMPLE_CHARACTERS[0].name);
+});
+
+test("a failed refresh keeps the current pick", async () => {
+  const node = await setup();
+  const charW = node.widgets.find((w) => w.name === "character");
+  charW.value = SAMPLE_CHARACTERS[1].name;
+  __setFetchApiHandler(async () => { throw new Error("connection refused"); });
+  node.widgets.find((w) => w.name === "🔄 Refresh").callback();
+  await flush();
+  assert.deepEqual(charW.options.values, ["(vault unavailable — press Refresh)"]);
+  assert.equal(charW.value, SAMPLE_CHARACTERS[1].name);
+});
+
+test("renaming the current pick follows it; deleting it moves to the first entry", async () => {
+  const node = await setup();
+  const charW = node.widgets.find((w) => w.name === "character");
+  charW.value = SAMPLE_CHARACTERS[1].name;
+  let characters = SAMPLE_CHARACTERS;
+  __setFetchApiHandler(async (route, opts) => {
+    if (route === "/identity_forge/vault/rename") {
+      const { to } = JSON.parse(opts.body);
+      characters = [SAMPLE_CHARACTERS[0], { ...SAMPLE_CHARACTERS[1], name: to }];
+      return { ok: true, json: async () => ({ name: to }) };
+    }
+    if (route === "/identity_forge/vault/delete") {
+      const { names } = JSON.parse(opts.body);
+      characters = characters.filter((c) => !names.includes(c.name));
+      return { ok: true, json: async () => ({ characters: characters.map((c) => c.name) }) };
+    }
+    return { ok: true, json: async () => ({ characters }) };
+  });
+  const originals = { prompt: globalThis.prompt, confirm: globalThis.confirm };
+  globalThis.prompt = () => "Renamed";
+  globalThis.confirm = () => true;
+  try {
+    node.widgets.find((w) => w.name === "🗂 Manage Vault…").callback();
+    await flush();
+    const overlay = document.body.firstElementChild;
+    [...overlay.querySelectorAll("button")].filter((b) => b.title === "Rename")[1].click();
+    await flush();
+    assert.equal(charW.value, "Renamed");
+    [...overlay.querySelectorAll("button")].filter((b) => b.title === "Delete")[1].click();
+    await flush();
+    assert.equal(charW.value, SAMPLE_CHARACTERS[0].name);
+  } finally {
+    Object.assign(globalThis, originals);
+  }
+});
+
 /* --- Re-entry guard (0.97.0) --------------------------------------------- */
 test("a second onNodeCreated adds no second Refresh, Manage or preview widget", async () => {
   resetDom();
