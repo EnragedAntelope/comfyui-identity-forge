@@ -196,6 +196,11 @@ function tokenPattern(token) {
   let re = tokenPatterns.get(token);
   if (!re) {
     const words = [token, ...(SEARCH_ALSO[token] || [])].map(escapeRegExp);
+    // 2.8.0: "boots" also finds a lone "boot". The singular must end its word, so
+    // "pants" never reaches "panther"; "glasses" gains only "glasse", never "glass".
+    if (/[a-z]{3}s$/.test(token) && !token.endsWith("ss")) {
+      words.push(escapeRegExp(token.slice(0, -1)) + "(?![a-z0-9])");
+    }
     re = new RegExp("(?:^|[^a-z0-9])(?:" + words.join("|") + ")");
     tokenPatterns.set(token, re);
   }
@@ -719,6 +724,18 @@ class IdentityForgePicker {
     queueAll.addEventListener("click", () => this.queueEach());
     this.queueAllButton = queueAll;
 
+    // 2.8.0: the lighter option - one run with one random matching entry, no prompt.
+    const queueRandom = document.createElement("button");
+    queueRandom.type = "button";
+    queueRandom.className = "if-picker-btn if-picker-queue-random";
+    queueRandom.textContent = "Queue random";
+    queueRandom.title = "Queue one run with a random matching entry, then put your current pick back.";
+    queueRandom.addEventListener("click", () => {
+      const entries = this.queueableEntries();
+      if (entries.length) this.queueEach([entries[Math.floor(Math.random() * entries.length)]], false);
+    });
+    this.queueRandomButton = queueRandom;
+
     // 2.5.0: trait and franchise filters match cosplayers only, and creatures carry
     // no gender, so a node shows only the filters that can narrow what it can pick.
     const kind = this.config.kind;
@@ -727,7 +744,7 @@ class IdentityForgePicker {
       ...(kind === "cosplayer" ? [facet] : []),
       ...(kind !== "creature" ? [genderSelect] : []),
       ...(kind === "cosplayer" ? [franchiseInput, franchiseList] : []),
-      count, queueAll, starredLabel, previewLabel, close,
+      count, queueAll, queueRandom, starredLabel, previewLabel, close,
     );
 
     const notice = document.createElement("div");
@@ -1010,8 +1027,7 @@ class IdentityForgePicker {
    * Each app.queuePrompt() call snapshots the graph, so setting the widget and
    * awaiting the call in turn gives one job per character.
    */
-  async queueEach() {
-    const entries = this.queueableEntries();
+  async queueEach(entries = this.queueableEntries(), ask = true) {
     const node = this.config.node;
     const widget = findWidget(node, this.config.targetWidgetName);
     if (!entries.length || !widget || this._queueing) return;
@@ -1020,7 +1036,7 @@ class IdentityForgePicker {
       return;
     }
     const noun = entries.length === 1 ? "run" : "runs";
-    if (!confirm("Queue " + entries.length + " " + noun + ", one for each matching entry?")) return;
+    if (ask && !confirm("Queue " + entries.length + " " + noun + ", one for each matching entry?")) return;
     this._queueing = true;
     const original = widget.value;
     const button = this.queueAllButton;
@@ -1055,6 +1071,7 @@ class IdentityForgePicker {
     const n = this.isFiltering() ? this.queueableEntries().length : 0;
     button.style.display = n ? "" : "none";
     button.textContent = "Queue each (" + n + ")";
+    if (this.queueRandomButton) this.queueRandomButton.style.display = n > 1 ? "" : "none";
   }
 
   /** Re-run franchise_filter's callback so the node's pick stays in its combo list. */

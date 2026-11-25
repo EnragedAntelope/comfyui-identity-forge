@@ -447,5 +447,21 @@ class FingerprintTests(unittest.TestCase):
         self.assertEqual(after, _NO_FINGERPRINT)
 
 
+class StaleSelectionTests(unittest.TestCase):
+    """2.8.0: a name this vault does not hold must reach execute(), not fail validation."""
+
+    def test_validate_inputs_names_character_and_accepts_anything(self):
+        import inspect
+
+        from nodes import identity_forge_vault_load as vault_load
+        node = getattr(vault_load, "IdentityForgeVaultLoad", None)
+        if node is None:
+            self.skipTest("comfy_api stub not registered")
+        # ComfyUI skips its combo check only for inputs validate_inputs names.
+        self.assertIn("character", inspect.getfullargspec(node.validate_inputs).args)
+        for stale in ("deleted long ago", "(no characters saved)", "(random saved character)"):
+            self.assertIs(node.validate_inputs(character=stale), True)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

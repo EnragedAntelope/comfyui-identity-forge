@@ -307,6 +307,14 @@ if _COMFY_AVAILABLE:
             )
 
         @classmethod
+        def validate_inputs(cls, character: Any = None) -> bool:
+            # 2.8.0: the vault is per-machine, so a workflow can name an entry that was
+            # deleted, renamed or never saved here, or still hold "(no characters saved)"
+            # after the first save. ComfyUI's combo check rejected those before execute()
+            # could pass the upstream through as documented; naming the input here skips it.
+            return True
+
+        @classmethod
         def fingerprint_inputs(cls, **kwargs: Any) -> Any:
             # 1.5.5: see _character_fingerprint. Folds the SELECTED entry's
             # mtime+size into the cache key so an Overwrite/rename/delete that

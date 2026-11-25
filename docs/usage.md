@@ -307,6 +307,9 @@ emits one view as resolved. Labels read `1-age-20` and so on. A ready-made workf
   jeans, `suit` finds bodysuits and jumpsuits, `sword` finds katanas, `gray` finds grey. The
   list is `SEARCH_ALSO` in `js/identity_forge_picker.js`; it is one-way (`jeans` does not
   find slacks).
+- **Plurals find the singular (2.8.0).** `boots` also finds a lone "boot" and `gloves` a lone
+  "glove". The singular must be a whole word, so `pants` never finds "panther", and words
+  ending in "ss" (`dress`, `glasses`) are left as typed.
 - **Franchise box (Cosplayer node):** type part of a name. `star` keeps Star Wars and Star
   Trek; picking a suggestion, or typing a full name, keeps that franchise only. Trait, gender
   and franchise filters only appear on nodes where they can narrow something.
@@ -314,7 +317,8 @@ emits one view as resolved. Labels read `1-age-20` and so on. A ready-made workf
   with the same search and filters, so you can pick, queue, and come back to the next one.
 - **Queue each (N)** appears while you are filtering: it queues one run per matching entry the
   node can take, then puts your original pick back. Each run uses the rest of the workflow as it
-  stands, so a seed set to randomize gives each one a new person.
+  stands, so a seed set to randomize gives each one a new person. **Queue random** (2.8.0), beside
+  it, queues a single run with one random matching entry and does not ask first.
 - **Star your favourites (2.6.0).** Click the star on a card (or press S on the focused card),
   then tick **Starred only** to see just those. Stars are kept in this browser, shared by all
   three pickers, and work with every other filter and with Queue each.
@@ -324,6 +328,11 @@ emits one view as resolved. Labels read `1-age-20` and so on. A ready-made workf
 Vault Load's `character` list ends with `(random saved character)` once anything is saved
 (2.6.0). It picks one saved character by the node's `seed`: the same seed and vault give the
 same pick, and `randomize` gives a different one each queue.
+
+If the node names a character this vault does not hold (a workflow from another machine, or
+an entry deleted since), it logs a warning and passes the `upstream` through instead of
+failing the queue (2.8.0). Refresh keeps such a name rather than swapping in a different
+saved character; pick another from the list to replace it.
 
 ## Preview images in the picker
 

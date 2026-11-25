@@ -110,7 +110,11 @@ function applyCharacterList(node, characters) {
     list = names.length ? [...names, RANDOM_CHARACTER] : [NO_CHARACTERS];
   }
   setComboValues(w, list);
-  if (!list.includes(w.value)) w.value = list[0];
+  // 2.8.0: only a placeholder moves to the first entry. A saved name this vault does
+  // not list (a workflow from elsewhere, or a failed fetch) stays put: the node then
+  // passes the upstream through with a warning instead of recalling someone else.
+  const placeholder = !w.value || [NO_CHARACTERS, VAULT_UNAVAILABLE, RANDOM_CHARACTER].includes(w.value);
+  if (!list.includes(w.value) && placeholder) w.value = list[0];
   updatePreview(node);
   node.setDirtyCanvas(true, true);
 }
@@ -278,6 +282,10 @@ function openManager(node) {
           if (data && data.error) detail = data.error;
         } catch (parseError) { /* not JSON - keep the status */ }
         alert(`Delete failed: ${detail}`);
+      } else {
+        // Deleting the current pick hands the node the first remaining entry.
+        const w = getCharacterWidget(node);
+        if (w && names.includes(w.value)) w.value = "";
       }
     } catch (e) {
       console.error("[IdentityForge] delete failed:", e);
@@ -296,6 +304,9 @@ function openManager(node) {
       });
       const data = await resp.json();
       if (!resp.ok) { alert(data.error || "Rename failed."); return; }
+      // Renaming the current pick keeps it picked, under its new name.
+      const w = getCharacterWidget(node);
+      if (w && w.value === from && data.name) setSelection(node, data.name);
     } catch (e) {
       console.error("[IdentityForge] rename failed:", e);
       alert("Rename failed — see console.");

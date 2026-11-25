@@ -1856,3 +1856,29 @@ part of the key, so an auto-advanced seed re-runs the node without any override.
 Vault Load keeps a fingerprint, now `(picked entry, its mtime+size)` for a random pick too, so a
 save or delete that moves the pick still re-runs. `tests/test_node_contracts.py` now fails any
 node that returns NaN. Random characters unchanged.
+
+## 2.8.0 - a vault pick that survives, and two picker backlog items
+
+**Vault Load no longer fails validation on a name this vault lacks.** The node's docstring has
+always promised that a missing entry logs a warning and passes the upstream through, but
+ComfyUI checks a combo value against the live option list before `execute()` runs, so the
+prompt was rejected first ("Value not in list"). The common way in: build a workflow on an
+empty vault (the widget holds `(no characters saved)`), save a character, queue again without
+pressing Refresh. A shared workflow naming someone else's save failed the same way. ComfyUI
+skips its combo check for any input a `validate_inputs` override names, so the node now
+names `character` and accepts it; `execute()` already handled the rest.
+
+**Refresh no longer swaps the pick for another character.** The frontend replaced any value
+missing from the list with the first entry, on every refresh, including the one that runs when
+a workflow loads. A deleted or foreign name silently recalled a different saved person, a
+failed fetch replaced the pick with the "vault unavailable" placeholder, and renaming the
+current pick in Manage Vault moved the node to the first entry. Now only a placeholder moves
+to the first entry, a rename follows the pick, and deleting the pick hands the node the first
+remaining entry.
+
+**Picker backlog.** Both open picker items from the 2.5.0 review shipped. A plural query also
+finds the lone singular ("boots" finds "boot"), but only as a whole word, so "pants" never
+reaches "panther", and a word ending in "ss" gains nothing ("glasses" never becomes "glass", the
+trap the backlog named). **Queue random** sits beside Queue each and queues one run with one
+random matching entry, without the confirm prompt; it shows while filtering with two or more
+matches. Random characters unchanged.
